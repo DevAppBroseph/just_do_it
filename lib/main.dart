@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 void main() => runApp(const MyApp());
@@ -12,9 +14,14 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
-        return const MaterialApp(
-          initialRoute: AppRoute.auth,
-          onGenerateRoute: AppRoute.onGenerateRoute,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+          ],
+          child: const MaterialApp(
+            initialRoute: AppRoute.auth,
+            onGenerateRoute: AppRoute.onGenerateRoute,
+          ),
         );
       },
     );

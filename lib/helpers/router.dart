@@ -9,6 +9,7 @@ class AppRoute {
   static const auth = '/auth';
   static const signUp = '/signUp';
   static const confirmCode = '/confirmCode';
+  static const forgotPassword = '/forgotPassword';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
