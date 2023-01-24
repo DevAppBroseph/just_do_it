@@ -8,7 +8,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/profil
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/presentation/tasks_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatelessWidget {
