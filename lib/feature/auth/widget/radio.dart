@@ -24,9 +24,9 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
             Container(
               height: 18.h,
               width: 18.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.grey[200],
+                color: Color(0xFFEAECEE),
               ),
             ),
             Container(
@@ -40,7 +40,14 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
           ],
         ),
         SizedBox(width: 10.w),
-        Text(label)
+        Text(
+          label,
+          style: TextStyle(
+            color: groupValue == value
+                ? const Color(0xFF171716)
+                : const Color(0xFFBDBDBD),
+          ),
+        )
       ],
     );
   }

@@ -30,172 +30,172 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
+    double widthTabBarItem = (MediaQuery.of(context).size.width - 48.w) / 2;
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            children: [
+              SizedBox(height: 60.h),
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Регистрация ',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 21.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '$stageRegistragion/2',
-                              style: TextStyle(
-                                color: Colors.grey[300],
-                                fontSize: 21.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Регистрация ',
+                          style: TextStyle(
+                            color: const Color(0xFF171716),
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '$stageRegistragion/2',
+                          style: TextStyle(
+                            color: const Color(0xFFBDBDBD),
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 24.h),
+              Container(
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE0E6EE),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Stack(
+                  children: [
+                    AnimatedAlign(
+                      duration: const Duration(milliseconds: 100),
+                      alignment: type == 1
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: Container(
+                        height: 40.h,
+                        width: widthTabBarItem,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.only(
+                            topLeft:
+                                !state ? Radius.circular(20.r) : Radius.zero,
+                            bottomLeft:
+                                !state ? Radius.circular(20.r) : Radius.zero,
+                            topRight:
+                                state ? Radius.circular(20.r) : Radius.zero,
+                            bottomRight:
+                                state ? Radius.circular(20.r) : Radius.zero,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Stack(
+                    Row(
                       children: [
-                        AnimatedAlign(
-                          duration: const Duration(milliseconds: 100),
-                          alignment: type == 1
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Container(
-                            height: 40.h,
-                            width: widthTabBarItem,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.only(
-                                topLeft: !state
-                                    ? Radius.circular(20.r)
-                                    : Radius.zero,
-                                bottomLeft: !state
-                                    ? Radius.circular(20.r)
-                                    : Radius.zero,
-                                topRight:
-                                    state ? Radius.circular(20.r) : Radius.zero,
-                                bottomRight:
-                                    state ? Radius.circular(20.r) : Radius.zero,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (type != 1) {
+                                  Future.delayed(
+                                    const Duration(milliseconds: 50),
+                                    (() {
+                                      setState(() {
+                                        stageRegistragion = 1;
+                                        state = !state;
+                                      });
+                                      pageController.animateToPage(0,
+                                          duration:
+                                              const Duration(milliseconds: 100),
+                                          curve: Curves.linear);
+                                    }),
+                                  );
+                                }
+                                type = 1;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Text(
+                                  'Исполнитель',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: state
+                                        ? const Color(0xFF171716)
+                                        : const Color(0xFFFFFFFF),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (type != 1) {
-                                      Future.delayed(
-                                        const Duration(milliseconds: 50),
-                                        (() {
-                                          setState(() {
-                                            stageRegistragion = 1;
-                                            state = !state;
-                                          });
-                                          pageController.animateToPage(0,
-                                              duration: const Duration(
-                                                  milliseconds: 100),
-                                              curve: Curves.linear);
-                                        }),
-                                      );
-                                    }
-                                    type = 1;
-                                  });
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Text(
-                                      'Исполнитель',
-                                      style: TextStyle(
-                                        color:
-                                            state ? Colors.black : Colors.white,
-                                      ),
-                                    ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (type != 2) {
+                                  Future.delayed(
+                                    const Duration(milliseconds: 50),
+                                    (() {
+                                      setState(() {
+                                        stageRegistragion = 1;
+                                        state = !state;
+                                      });
+                                      pageController.animateToPage(1,
+                                          duration:
+                                              const Duration(milliseconds: 100),
+                                          curve: Curves.linear);
+                                    }),
+                                  );
+                                }
+                                type = 2;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Text(
+                                  'Заказчик',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: state
+                                        ? const Color(0xFFFFFFFF)
+                                        : const Color(0xFF171716),
                                   ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (type != 2) {
-                                      Future.delayed(
-                                        const Duration(milliseconds: 50),
-                                        (() {
-                                          setState(() {
-                                            stageRegistragion = 1;
-                                            state = !state;
-                                          });
-                                          pageController.animateToPage(1,
-                                              duration: const Duration(
-                                                  milliseconds: 100),
-                                              curve: Curves.linear);
-                                        }),
-                                      );
-                                    }
-                                    type = 2;
-                                  });
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Text(
-                                      'Заказчик',
-                                      style: TextStyle(
-                                        color: !state
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                          ),
                         )
                       ],
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  Expanded(
-                    child: PageView(
-                      controller: pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        Contractor(stage),
-                        Customer(stage),
-                      ],
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
+              SizedBox(height: 50.h),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    Contractor(stage),
+                    Customer(stage),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

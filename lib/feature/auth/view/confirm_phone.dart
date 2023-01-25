@@ -50,124 +50,125 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Подтверждение телефона ',
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            children: [
+              SizedBox(height: 60.h),
+              Row(
+                children: [
+                  Text(
+                    'Подтверждение телефона ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
+              // const Spacer(),
+              SizedBox(height: 143.h),
+              Column(
+                children: [
+                  Text(
+                    'Код подтверждения отправлен на\n+7 (999) *** **-32',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: const Color(0xFF171716),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 18.h),
+                  SizedBox(
+                    height: 60.h,
+                    child: Pinput(
+                      pinAnimationType: PinAnimationType.none,
+                      showCursor: false,
+                      length: 4,
+                      androidSmsAutofillMethod:
+                          AndroidSmsAutofillMethod.smsRetrieverApi,
+                      controller: codeController,
+                      focusNode: focusNode,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      onChanged: (value) {
+                        if (value.length == 4) {
+                          focusNode.unfocus();
+                        }
+                      },
+                      defaultPinTheme: PinTheme(
+                        width: 60.sp,
+                        height: 60.sp,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10)),
+                        textStyle: TextStyle(
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromRGBO(23, 23, 23, 1.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40.h),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Повторно отправить код ',
+                          style: TextStyle(
+                            color: const Color(0xFFDADADA),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '$currentSecond сек.',
+                          style: TextStyle(
+                            color: const Color(0xFF171716),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                children: [
+                  SizedBox(height: 20.h),
+                  CustomButton(
+                    onTap: () => Navigator.of(context).pushNamed(AppRoute.home),
+                    btnColor: Colors.yellow[600]!,
+                    textLabel: Text(
+                      'Подтвердить',
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 21.sp,
-                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF171716),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
                       ),
-                    )
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  children: [
-                    Text(
-                      'Код подтверждения отправлен на\n+7 (999) *** **-32',
-                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 18.h),
+                  CustomButton(
+                    onTap: () => Navigator.of(context).pop(),
+                    btnColor: const Color(0xFFE0E6EE),
+                    textLabel: Text(
+                      'Назад',
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF515150),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 20.h),
-                    SizedBox(
-                      height: 60.h,
-                      child: Pinput(
-                        pinAnimationType: PinAnimationType.none,
-                        showCursor: false,
-                        length: 4,
-                        androidSmsAutofillMethod:
-                            AndroidSmsAutofillMethod.smsRetrieverApi,
-                        controller: codeController,
-                        focusNode: focusNode,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        onChanged: (value) {
-                          if (value.length == 4) {
-                            focusNode.unfocus();
-                          }
-                        },
-                        defaultPinTheme: PinTheme(
-                          width: 60.sp,
-                          height: 60.sp,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10)),
-                          textStyle: TextStyle(
-                            fontSize: 30.sp,
-                            fontWeight: FontWeight.w500,
-                            color: const Color.fromRGBO(23, 23, 23, 1.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 40.h),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Повторно отправить код ',
-                            style: TextStyle(
-                              color: Colors.grey[300],
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '$currentSecond сек.',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  children: [
-                    SizedBox(height: 20.h),
-                    CustomButton(
-                      onTap: () =>
-                          Navigator.of(context).pushNamed(AppRoute.home),
-                      btnColor: Colors.yellow[600]!,
-                      textLabel: Text(
-                        'Подтвердить',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    CustomButton(
-                      onTap: () => Navigator.of(context).pop(),
-                      btnColor: Colors.grey[200]!,
-                      textLabel: Text(
-                        'Назад',
-                        style: TextStyle(
-                          color: Colors.grey[800],
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 34.h),
+            ],
           ),
         ),
       ),

@@ -127,7 +127,7 @@ class CustomTextField extends StatelessWidget {
                   color: Colors.black,
                   overflow: TextOverflow.ellipsis),
               decoration: InputDecoration(
-                fillColor: fillColor,
+                fillColor: const Color(0xFFEAECEE),
                 icon: icon,
                 prefixIcon: prefixicon,
                 suffixText: suffixText,

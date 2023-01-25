@@ -37,7 +37,7 @@ void iconSelectModal(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
             insetPadding:
-                EdgeInsets.only(top: offset.dy - 12.h, left: 20.h, right: 20.h),
+                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,

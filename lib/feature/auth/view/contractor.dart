@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
@@ -32,11 +34,10 @@ class _ContractorState extends State<Contractor> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Column(
         children: [
-          SizedBox(height: 15.h),
           Expanded(
             child: page == 0 ? firstStage() : secondStage(),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
           CustomButton(
             onTap: () {
               if (page == 0) {
@@ -46,16 +47,17 @@ class _ContractorState extends State<Contractor> {
                 Navigator.of(context).pushNamed(AppRoute.confirmCode);
               }
             },
-            btnColor: Colors.yellow[600]!,
+            btnColor: yellow,
             textLabel: Text(
               page == 0 ? 'Далее' : 'Зарегистрироваться',
               style: TextStyle(
-                fontSize: 13.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w700,
+                color: const Color(0xFF171716),
               ),
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 18.h),
           CustomButton(
             onTap: () {
               if (page == 1) {
@@ -65,16 +67,17 @@ class _ContractorState extends State<Contractor> {
                 Navigator.of(context).pop();
               }
             },
-            btnColor: Colors.grey[200]!,
+            btnColor: const Color(0xFFE0E6EE),
             textLabel: Text(
               'Назад',
               style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 13.sp,
+                color: const Color(0xFF515150),
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
+          SizedBox(height: 34.h),
         ],
       ),
     );
@@ -83,6 +86,7 @@ class _ContractorState extends State<Contractor> {
   Widget firstStage() {
     return ListView(
       addAutomaticKeepAlives: false,
+      padding: EdgeInsets.zero,
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       children: [
@@ -91,20 +95,20 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Ваша фамилия',
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 30.h),
         Row(
           children: [
             Text(
               'Ваш пол',
               style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
               ),
             ),
             const Spacer(),
@@ -135,47 +139,49 @@ class _ContractorState extends State<Contractor> {
             ),
           ],
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 30.h),
         CustomTextField(
           hintText: '   Номер телефона',
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   E-mail',
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
-              onTap: () {
-                visiblePassword = !visiblePassword;
-                setState(() {});
-              },
-              child: visiblePassword
-                  ? const Icon(Icons.remove_red_eye_outlined)
-                  : const Icon(Icons.remove_red_eye)),
+            onTap: () {
+              visiblePassword = !visiblePassword;
+              setState(() {});
+            },
+            child: visiblePassword
+                ? const Icon(Icons.remove_red_eye_outlined)
+                : const Icon(Icons.remove_red_eye),
+          ),
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Повторите пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
-              onTap: () {
-                visiblePasswordRepeat = !visiblePasswordRepeat;
-                setState(() {});
-              },
-              child: visiblePasswordRepeat
-                  ? const Icon(Icons.remove_red_eye_outlined)
-                  : const Icon(Icons.remove_red_eye)),
+            onTap: () {
+              visiblePasswordRepeat = !visiblePasswordRepeat;
+              setState(() {});
+            },
+            child: visiblePasswordRepeat
+                ? const Icon(Icons.remove_red_eye_outlined)
+                : const Icon(Icons.remove_red_eye),
+          ),
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -185,20 +191,22 @@ class _ContractorState extends State<Contractor> {
               value: true,
               onChanged: (value) {},
               checkColor: Colors.black,
-              activeColor: Colors.yellow[600]!,
+              activeColor: yellow,
             ),
             Flexible(
               child: Text(
                 'Согласен на обработку персональных данных и с пользовательским соглашением',
                 textAlign: TextAlign.justify,
                 style: TextStyle(
-                  fontSize: 11.sp,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
+                  color: const Color(0xFF515150),
                 ),
               ),
             ),
           ],
         ),
+        SizedBox(height: 23.h),
       ],
     );
   }
@@ -206,26 +214,35 @@ class _ContractorState extends State<Contractor> {
   Widget secondStage() {
     return ListView(
       addAutomaticKeepAlives: false,
+      padding: EdgeInsets.zero,
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       children: [
-        SizedBox(height: 20.h),
         CustomTextField(
           hintText: '   Добавить фото',
           height: 50.h,
-          suffixIcon: Icon(
-            Icons.photo_size_select_actual_outlined,
-            color: Colors.grey[400],
+          suffixIcon: Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 16.h),
+                child: SvgPicture.asset(
+                  'assets/icons/gallery.svg',
+                  height: 15.h,
+                  width: 15.h,
+                ),
+              ),
+            ],
           ),
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Регион',
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         GestureDetector(
           onTap: () => showIconModal(
             context,
@@ -238,31 +255,35 @@ class _ContractorState extends State<Contractor> {
             'Тип документа',
           ),
           child: Stack(
+            key: iconBtn,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
+                key: iconBtn,
                 hintText: '   Тип документа',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                fillColor: Colors.grey[200],
                 textEditingController:
                     TextEditingController(text: '   Тип документа'),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: Icon(
-                  key: iconBtn,
-                  Icons.keyboard_arrow_down,
-                  size: 30,
-                  color: Colors.grey[400],
+                padding: EdgeInsets.only(right: 16.w),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/arrow_bottom.svg',
+                      width: 16.h,
+                    ),
+                  ],
                 ),
               )
             ],
           ),
         ),
         if (additionalInfo) additionalInfoWidget(),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         GestureDetector(
           onTap: () => showIconModal(
             context,
@@ -274,6 +295,7 @@ class _ContractorState extends State<Contractor> {
             'Выбор до 3ех категорий',
           ),
           child: Stack(
+            key: iconBtnCategory,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
@@ -281,25 +303,28 @@ class _ContractorState extends State<Contractor> {
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                fillColor: Colors.grey[200],
                 textEditingController:
                     TextEditingController(text: '   Дизайн, ремонт, доставка'),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: Icon(
-                  key: iconBtnCategory,
-                  Icons.arrow_forward,
-                  size: 30,
-                  color: Colors.grey[400],
-                ),
-              )
+              Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.h),
+                    child: SvgPicture.asset(
+                      'assets/icons/arrow_right.svg',
+                      height: 18.h,
+                      width: 18.h,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         Container(
-          height: 150.h,
+          height: 130.h,
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(10.r),
@@ -309,22 +334,26 @@ class _ContractorState extends State<Contractor> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: 20.h, right: 20.h, top: 5.h, bottom: 22.h),
-                child: TextFormField(
-                  maxLines: null,
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                  inputFormatters: [LengthLimitingTextInputFormatter(250)],
-                  controller: experienceController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Описание своего опыта',
-                    hintStyle: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 14,
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.w400,
+                    left: 18.h, right: 18.h, top: 18.h, bottom: 30.h),
+                child: SizedBox(
+                  height: 100.h,
+                  child: TextFormField(
+                    maxLines: null,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    inputFormatters: [LengthLimitingTextInputFormatter(250)],
+                    controller: experienceController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      border: InputBorder.none,
+                      hintText: 'Описание своего опыта',
+                      hintStyle: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 12.sp,
+                        color: const Color(0xFFBDBDBD),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -336,8 +365,9 @@ class _ContractorState extends State<Contractor> {
                   child: Text(
                     '${experienceController.text.length}/250',
                     style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 11.sp,
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 10.sp,
+                      color: const Color(0xFFBDBDBD),
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -346,46 +376,54 @@ class _ContractorState extends State<Contractor> {
             ],
           ),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         Row(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.add_circle_outline,
-                    size: 16.h,
+                  SizedBox(
+                    height: 14.h,
+                    width: 14.h,
+                    child: SvgPicture.asset('assets/icons/add_circle.svg'),
                   ),
-                  SizedBox(width: 5.w),
+                  SizedBox(width: 10.w),
                   Text(
                     'Изображения',
-                    style: TextStyle(fontSize: 10.sp),
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   )
                 ],
               ),
             ),
-            SizedBox(width: 10.h),
+            SizedBox(width: 12.h),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.drive_folder_upload_outlined,
-                    size: 16.h,
+                  SizedBox(
+                    height: 14.h,
+                    width: 14.h,
+                    child: SvgPicture.asset('assets/icons/document_text.svg'),
                   ),
-                  SizedBox(width: 5.w),
+                  SizedBox(width: 10.w),
                   Text(
                     'Загрузить резюме (10мб)',
-                    style: TextStyle(fontSize: 10.sp),
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   )
                 ],
               ),
@@ -423,32 +461,35 @@ class _ContractorState extends State<Contractor> {
     return ListView(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       children: [
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomTextField(
               hintText: '   Серия',
               height: 50.h,
-              width: ((MediaQuery.of(context).size.width - 40.w) * 40) / 100,
+              width:
+                  ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: TextEditingController(),
             ),
+            SizedBox(width: 12.w),
             CustomTextField(
               hintText: '   Номер',
               height: 50.h,
-              width: ((MediaQuery.of(context).size.width - 40.w) * 55) / 100,
+              width:
+                  ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: TextEditingController(),
             ),
           ],
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Кем выдан',
           height: 50.h,
           textEditingController: TextEditingController(),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Дата выдачи',
           height: 50.h,
