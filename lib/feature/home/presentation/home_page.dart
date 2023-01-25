@@ -11,13 +11,29 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/widget/
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   PageController pageController = PageController(initialPage: 1);
+
   final streamController = StreamController<int>();
+
   PanelController panelController = PanelController();
+
   int page = 1;
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    panelController.close();
+    streamController.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +90,16 @@ class HomePage extends StatelessWidget {
             },
           ),
         ),
-        // BlocBuilder<SearchBloc, SearchState>(
-        //   builder: (context, snapshot) {
-        //     if (snapshot is OpenSlidingPanelState) {
-        //       panelController.animatePanelToPosition(1.0);
-        //     } else if (snapshot is CloseSlidingPanelState) {
-        //       panelController.animatePanelToPosition(0.0);
-        //     }
-        //     return SlidingPanelSearch(panelController);
-        //   },
-        // ),
+        BlocBuilder<SearchBloc, SearchState>(
+          builder: (context, snapshot) {
+            if (snapshot is OpenSlidingPanelState) {
+              panelController.animatePanelToPosition(1.0);
+            } else if (snapshot is CloseSlidingPanelState) {
+              panelController.animatePanelToPosition(0.0);
+            }
+            return SlidingPanelSearch(panelController);
+          },
+        ),
       ],
     );
   }
