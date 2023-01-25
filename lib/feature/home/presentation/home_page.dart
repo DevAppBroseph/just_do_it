@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/create_page.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/profile_page.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
               SearchPage(),
               TasksPage(),
               ChatPage(),
-              ProfilePage(),
+              PersonalAccountPage(),
             ],
           ),
           bottomNavigationBar: StreamBuilder<int>(

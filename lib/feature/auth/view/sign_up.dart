@@ -13,7 +13,6 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   int type = 1;
   bool state = false;
-  GlobalKey keyBar = GlobalKey();
   PageController pageController = PageController();
   int stageRegistragion = 1;
 
@@ -71,7 +70,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: 20.h),
                   Container(
-                    key: keyBar,
                     height: 40.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
