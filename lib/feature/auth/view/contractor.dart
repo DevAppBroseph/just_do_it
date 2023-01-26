@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
@@ -227,7 +228,7 @@ class _ContractorState extends State<Contractor> {
               Padding(
                 padding: EdgeInsets.only(right: 16.h),
                 child: SvgPicture.asset(
-                  'assets/icons/gallery.svg',
+                  SvgImg.gallery,
                   height: 15.h,
                   width: 15.h,
                 ),
@@ -273,7 +274,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.center,
                   children: [
                     SvgPicture.asset(
-                      'assets/icons/arrow_bottom.svg',
+                      SvgImg.arrowBottom,
                       width: 16.h,
                     ),
                   ],
@@ -312,7 +313,7 @@ class _ContractorState extends State<Contractor> {
                   Padding(
                     padding: EdgeInsets.only(right: 16.h),
                     child: SvgPicture.asset(
-                      'assets/icons/arrow_right.svg',
+                      SvgImg.arrowRight,
                       height: 18.h,
                       width: 18.h,
                     ),
@@ -353,6 +354,7 @@ class _ContractorState extends State<Contractor> {
                         fontSize: 12.sp,
                         color: const Color(0xFFBDBDBD),
                         fontWeight: FontWeight.w400,
+                        fontFamily: 'SFPro',
                       ),
                     ),
                   ),
@@ -369,6 +371,7 @@ class _ContractorState extends State<Contractor> {
                       fontSize: 10.sp,
                       color: const Color(0xFFBDBDBD),
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'SFPro',
                     ),
                   ),
                 ),
@@ -390,7 +393,7 @@ class _ContractorState extends State<Contractor> {
                   SizedBox(
                     height: 14.h,
                     width: 14.h,
-                    child: SvgPicture.asset('assets/icons/add_circle.svg'),
+                    child: SvgPicture.asset(SvgImg.addCircle),
                   ),
                   SizedBox(width: 10.w),
                   Text(
@@ -398,6 +401,7 @@ class _ContractorState extends State<Contractor> {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'SFPro',
                     ),
                   )
                 ],
@@ -415,7 +419,7 @@ class _ContractorState extends State<Contractor> {
                   SizedBox(
                     height: 14.h,
                     width: 14.h,
-                    child: SvgPicture.asset('assets/icons/document_text.svg'),
+                    child: SvgPicture.asset(SvgImg.documentText),
                   ),
                   SizedBox(width: 10.w),
                   Text(
@@ -423,6 +427,7 @@ class _ContractorState extends State<Contractor> {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'SFPro',
                     ),
                   )
                 ],

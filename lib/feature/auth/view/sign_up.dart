@@ -52,6 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: const Color(0xFF171716),
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
+                            fontFamily: 'SFPro',
                           ),
                         ),
                         TextSpan(
@@ -60,6 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: const Color(0xFFBDBDBD),
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
+                            fontFamily: 'SFPro',
                           ),
                         ),
                       ],
@@ -134,6 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     color: state
                                         ? const Color(0xFF171716)
                                         : const Color(0xFFFFFFFF),
+                                    fontFamily: 'SFPro',
                                   ),
                                 ),
                               ),
@@ -173,6 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     color: state
                                         ? const Color(0xFFFFFFFF)
                                         : const Color(0xFF171716),
+                                    fontFamily: 'SFPro',
                                   ),
                                 ),
                               ),

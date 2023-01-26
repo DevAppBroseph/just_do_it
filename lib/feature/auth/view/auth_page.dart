@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -39,9 +40,9 @@ class _MainAuthPageState extends State<AuthPage> {
               children: [
                 SizedBox(height: 110.h),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 82.w),
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
                   child: SvgPicture.asset(
-                    'assets/icons/just_do_it.svg',
+                    SvgImg.justDoIt,
                     height: 38.h,
                   ),
                 ),
@@ -55,9 +56,9 @@ class _MainAuthPageState extends State<AuthPage> {
                       textLabel: Text(
                         forgotPassword ? 'Отправить' : 'Войти',
                         style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'SFPro'),
                       ),
                       btnColor: yellow,
                     ),
@@ -75,9 +76,9 @@ class _MainAuthPageState extends State<AuthPage> {
                       textLabel: Text(
                         forgotPassword ? 'Назад' : 'Регистрация',
                         style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'SFPro'),
                       ),
                       btnColor: const Color(0xFFE0E6EE),
                     ),
@@ -140,6 +141,7 @@ class _MainAuthPageState extends State<AuthPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 12.sp,
+                  fontFamily: 'SFPro',
                   color: const Color(0xFF515150),
                 ),
               ),
@@ -159,6 +161,7 @@ class _MainAuthPageState extends State<AuthPage> {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w700,
+            fontFamily: 'SFPro',
           ),
         ),
         SizedBox(height: 18.h),
@@ -176,6 +179,7 @@ class _MainAuthPageState extends State<AuthPage> {
               fontWeight: FontWeight.w400,
               fontSize: 12.sp,
               color: const Color(0xFF515150),
+              fontFamily: 'SFPro',
             ),
           ),
         )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
@@ -51,6 +52,7 @@ class _CustomerState extends State<Customer> {
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF171716),
+                fontFamily: 'SFPro',
               ),
             ),
           ),
@@ -71,6 +73,7 @@ class _CustomerState extends State<Customer> {
                 color: const Color(0xFF515150),
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'SFPro',
               ),
             ),
           ),
@@ -106,6 +109,7 @@ class _CustomerState extends State<Customer> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
+                fontFamily: 'SFPro',
               ),
             ),
             const Spacer(),
@@ -158,7 +162,7 @@ class _CustomerState extends State<Customer> {
               Padding(
                 padding: EdgeInsets.only(right: 16.h),
                 child: SvgPicture.asset(
-                  'assets/icons/gallery.svg',
+                  SvgImg.gallery,
                   height: 15.h,
                   width: 15.h,
                 ),
@@ -267,7 +271,7 @@ class _CustomerState extends State<Customer> {
                   alignment: Alignment.center,
                   children: [
                     SvgPicture.asset(
-                      'assets/icons/arrow_bottom.svg',
+                      SvgImg.arrowBottom,
                       width: 16.h,
                     ),
                   ],
@@ -295,6 +299,7 @@ class _CustomerState extends State<Customer> {
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w400,
+                  fontFamily: 'SFPro',
                 ),
               ),
             ),

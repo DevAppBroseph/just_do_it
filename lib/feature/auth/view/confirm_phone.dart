@@ -63,6 +63,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                       color: Colors.black,
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
+                      fontFamily: 'SFPro',
                     ),
                   )
                 ],
@@ -78,6 +79,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                       color: const Color(0xFF171716),
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'SFPro',
                     ),
                   ),
                   SizedBox(height: 18.h),
@@ -121,6 +123,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                             color: const Color(0xFFDADADA),
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
+                            fontFamily: 'SFPro',
                           ),
                         ),
                         TextSpan(
@@ -129,6 +132,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                             color: const Color(0xFF171716),
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
+                            fontFamily: 'SFPro',
                           ),
                         ),
                       ],

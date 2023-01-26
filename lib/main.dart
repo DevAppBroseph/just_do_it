@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
           ],
           child: const MaterialApp(
+            debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.auth,
             onGenerateRoute: AppRoute.onGenerateRoute,
           ),
