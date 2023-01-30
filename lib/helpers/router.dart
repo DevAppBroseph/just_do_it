@@ -24,7 +24,8 @@ class AppRoute {
       case signUp:
         return MaterialPageRoute(builder: (_) => const SignUpPage());
       case confirmCode:
-        return MaterialPageRoute(builder: (_) => const ConfirmCodePage());
+        String phone = route.arguments as String;
+        return MaterialPageRoute(builder: (_) => ConfirmCodePage(phone: phone));
       case personalAccount:
         return MaterialPageRoute(builder: (_) => PersonalAccountPage());
       case profile:

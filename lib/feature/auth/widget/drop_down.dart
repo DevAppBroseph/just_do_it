@@ -5,7 +5,7 @@ import 'package:just_do_it/feature/auth/widget/widget_position.dart';
 showIconModal(
   BuildContext context,
   GlobalKey key,
-  Function onTap,
+  Function(String) onTap,
   List<String> list,
   String label,
 ) async {
@@ -14,7 +14,7 @@ showIconModal(
     getWidgetPosition(key),
     (index) {
       Navigator.pop(context);
-      onTap();
+      onTap(list[index]);
     },
     list,
     label,

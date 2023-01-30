@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
 class ConfirmCodePage extends StatefulWidget {
-  const ConfirmCodePage({super.key});
+  final String phone;
+  const ConfirmCodePage({super.key, required this.phone});
 
   @override
   State<ConfirmCodePage> createState() => _ConfirmCodePageState();
@@ -73,7 +76,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
               Column(
                 children: [
                   Text(
-                    'Код подтверждения отправлен на\n+7 (999) *** **-32',
+                    'Код подтверждения отправлен на\n${widget.phone}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: const Color(0xFF171716),
@@ -145,7 +148,11 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                 children: [
                   SizedBox(height: 20.h),
                   CustomButton(
-                    onTap: () => Navigator.of(context).pushNamed(AppRoute.home),
+                    onTap: () {
+                      BlocProvider.of<AuthBloc>(context).add(
+                          ConfirmCodeEvent(widget.phone, codeController.text));
+                      Navigator.of(context).pushNamed(AppRoute.home);
+                    },
                     btnColor: Colors.yellow[600]!,
                     textLabel: Text(
                       'Подтвердить',
