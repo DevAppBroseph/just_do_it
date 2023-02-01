@@ -145,7 +145,7 @@ class CustomTextField extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
                 errorStyle: const TextStyle(fontSize: 10.0),
-                // contentPadding: contentPadding,
+                contentPadding: EdgeInsets.zero,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),

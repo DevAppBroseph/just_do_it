@@ -2,13 +2,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/create_page.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/bloc/create_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/widget/sliding_panel.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
+import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,13 +22,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PageController pageController = PageController(initialPage: 1);
-
-  final streamController = StreamController<int>();
-
+  PageController pageController = PageController(initialPage: 5);
   PanelController panelController = PanelController();
+  final streamController = StreamController<int>();
+  int page = 5;
 
-  int page = 1;
+  void selectUser(int value) {
+    pageController.jumpToPage(value);
+    page = value;
+    streamController.add(value);
+  }
 
   @override
   void dispose() {
@@ -46,51 +52,55 @@ class _HomePageState extends State<HomePage> {
             children: [
               CreatePage(),
               SearchPage(),
-              TasksPage(),
+              const TasksPage(),
               ChatPage(),
               PersonalAccountPage(),
+              WelcomPage(selectUser)
             ],
           ),
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
             builder: (context, snapshot) {
-              return SizedBox(
-                height: 90.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    itemBottomNavigatorBar(
-                      Icons.add_circle_rounded,
-                      'Создать',
-                      0,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.search,
-                      'Найти',
-                      1,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.task,
-                      'Задания',
-                      2,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.local_post_office_outlined,
-                      'Чат',
-                      3,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.supervised_user_circle,
-                      'Кабинет',
-                      4,
-                    ),
-                  ],
+              return MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 1.0),
+                child: Container(
+                  height: 90.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      itemBottomNavigatorBar(
+                        'assets/icons/add.svg',
+                        'Создать',
+                        0,
+                      ),
+                      itemBottomNavigatorBar(
+                        'assets/icons/search.svg',
+                        'Найти',
+                        1,
+                      ),
+                      itemBottomNavigatorBar(
+                        'assets/icons/tasks.svg',
+                        'Задания',
+                        2,
+                      ),
+                      itemBottomNavigatorBar(
+                        'assets/icons/messages.svg',
+                        'Чат',
+                        3,
+                      ),
+                      itemBottomNavigatorBar(
+                        'assets/icons/profile.svg',
+                        'Кабинет',
+                        4,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           ),
         ),
-        BlocBuilder<SearchBloc, SearchState>(
+        BlocBuilder<CreateBloc, CreateState>(
           builder: (context, snapshot) {
             if (snapshot is OpenSlidingPanelState) {
               panelController.animatePanelToPosition(1.0);
@@ -104,12 +114,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(IconData icon, String label, int index) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index) {
     return GestureDetector(
       onTap: () {
-        pageController.jumpToPage(index);
-        page = index;
-        streamController.add(index);
+        if (index == 2 || index == 3 || index == 4) {
+          Navigator.of(context).pushNamed(AppRoute.auth);
+        } else {
+          pageController.jumpToPage(index);
+          page = index;
+          streamController.add(index);
+        }
       },
       child: Container(
         width: 70.w,
@@ -118,18 +132,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            SvgPicture.asset(
               icon,
-              size: 22.h,
               color: index == page ? Colors.yellow[600]! : Colors.black,
             ),
             SizedBox(height: 5.h),
             Text(
               label,
               style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w500,
-                color: index == page ? Colors.yellow[600]! : Colors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
               ),
             ),
           ],

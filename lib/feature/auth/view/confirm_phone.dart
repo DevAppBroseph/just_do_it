@@ -87,7 +87,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                   ),
                   SizedBox(height: 18.h),
                   SizedBox(
-                    height: 60.h,
+                    height: 70.h,
                     child: Pinput(
                       pinAnimationType: PinAnimationType.none,
                       showCursor: false,
@@ -103,15 +103,15 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                         }
                       },
                       defaultPinTheme: PinTheme(
-                        width: 60.sp,
-                        height: 60.sp,
+                        width: 77.h,
+                        height: 70.h,
                         decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10)),
                         textStyle: TextStyle(
-                          fontSize: 30.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color.fromRGBO(23, 23, 23, 1.0),
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF171716),
                         ),
                       ),
                     ),

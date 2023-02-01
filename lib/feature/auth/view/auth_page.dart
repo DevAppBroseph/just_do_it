@@ -122,7 +122,15 @@ class _MainAuthPageState extends State<AuthPage> {
             },
             child: visiblePassword
                 ? const Icon(Icons.remove_red_eye_outlined)
-                : const Icon(Icons.remove_red_eye),
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
           ),
           textEditingController: TextEditingController(),
         ),

@@ -58,6 +58,7 @@ class _CustomerState extends State<Customer> {
   Uint8List? cv;
 
   bool confirmTermsPolicy = false;
+  bool physics = false;
 
   UserRegModel user = UserRegModel();
 
@@ -112,7 +113,8 @@ class _CustomerState extends State<Customer> {
                 widget.stage(2);
               } else {
                 BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user));
-                Navigator.of(context).pushNamed(AppRoute.confirmCode);
+                Navigator.of(context).pushNamed(AppRoute.confirmCode,
+                    arguments: phoneController.text);
               }
             },
             btnColor: yellow,
@@ -226,7 +228,6 @@ class _CustomerState extends State<Customer> {
           height: 50.h,
           textEditingController: phoneController,
           onChanged: (value) {
-            print('object ${value}');
             user.copyWith(phoneNumber: value);
           },
         ),
@@ -306,13 +307,22 @@ class _CustomerState extends State<Customer> {
           hintText: '   Пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
-              onTap: () {
-                visiblePassword = !visiblePassword;
-                setState(() {});
-              },
-              child: visiblePassword
-                  ? const Icon(Icons.remove_red_eye_outlined)
-                  : const Icon(Icons.remove_red_eye)),
+            onTap: () {
+              visiblePassword = !visiblePassword;
+              setState(() {});
+            },
+            child: visiblePassword
+                ? const Icon(Icons.remove_red_eye_outlined)
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
+          ),
           textEditingController: passwordController,
           onChanged: (value) {
             user.copyWith(password: value);
@@ -323,13 +333,22 @@ class _CustomerState extends State<Customer> {
           hintText: '   Повторите пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
-              onTap: () {
-                visiblePasswordRepeat = !visiblePasswordRepeat;
-                setState(() {});
-              },
-              child: visiblePasswordRepeat
-                  ? const Icon(Icons.remove_red_eye_outlined)
-                  : const Icon(Icons.remove_red_eye)),
+            onTap: () {
+              visiblePasswordRepeat = !visiblePasswordRepeat;
+              setState(() {});
+            },
+            child: visiblePasswordRepeat
+                ? const Icon(Icons.remove_red_eye_outlined)
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
+          ),
           textEditingController: repeatPasswordController,
         ),
         SizedBox(height: 16.h),
@@ -385,8 +404,12 @@ class _CustomerState extends State<Customer> {
             Checkbox(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.r)),
-              value: true,
-              onChanged: (value) {},
+              value: physics,
+              onChanged: (value) {
+                setState(() {
+                  physics = !physics;
+                });
+              },
               checkColor: Colors.black,
               activeColor: Colors.yellow[600]!,
             ),
