@@ -7,14 +7,15 @@ class UserRegModel {
   String? lastname;
   String? password;
   Uint8List? photo;
-  String? sex;
+  bool? sex;
   String? docType;
   String? docInfo;
   bool? isEntity;
   String? activity;
-  Uint8List? image;
+  List<Uint8List>? images;
   Uint8List? cv;
   List<String>? groups;
+  List<int>? activities;
 
   UserRegModel({
     this.phoneNumber,
@@ -28,9 +29,10 @@ class UserRegModel {
     this.docInfo,
     this.isEntity,
     this.activity,
-    this.image,
+    this.images,
     this.cv,
     this.groups,
+    this.activities,
   });
 
   void copyWith({
@@ -40,14 +42,15 @@ class UserRegModel {
     String? lastname,
     String? password,
     Uint8List? photo,
-    String? sex,
+    bool? sex,
     String? docType,
     String? docInfo,
     bool? isEntity,
     String? activity,
-    Uint8List? image,
+    List<Uint8List>? images,
     Uint8List? cv,
     List<String>? groups,
+    List<int>? activities,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
@@ -60,9 +63,10 @@ class UserRegModel {
     this.docInfo = docInfo ?? this.docInfo;
     this.isEntity = isEntity ?? this.isEntity;
     this.activity = activity ?? this.activity;
-    this.image = image ?? this.image;
+    this.images = images ?? this.images;
     this.cv = cv ?? this.cv;
     this.groups = groups ?? this.groups;
+    this.activities = activities ?? this.activities;
   }
 
   Map<String, dynamic> toJson() {
@@ -78,9 +82,10 @@ class UserRegModel {
     data['doc_info'] = docInfo;
     data['is_entity'] = isEntity;
     data['activity'] = activity;
-    data['image'] = image;
+    data['image'] = images;
     data['CV'] = cv;
     data['groups'] = groups;
+    data['activities'] = groups;
     return data;
   }
 }

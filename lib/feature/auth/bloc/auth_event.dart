@@ -14,3 +14,15 @@ class ConfirmCodeEvent extends AuthEvent {
 
   ConfirmCodeEvent(this.phone, this.code);
 }
+
+class RestoreCodeEvent extends AuthEvent {
+  String login;
+
+  RestoreCodeEvent(this.login);
+}
+
+class RestoreCodeCheckEvent extends AuthEvent {
+  String code;
+
+  RestoreCodeCheckEvent(this.code);
+}

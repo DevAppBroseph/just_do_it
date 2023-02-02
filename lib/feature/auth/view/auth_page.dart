@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -19,6 +21,7 @@ class _MainAuthPageState extends State<AuthPage> {
   final visiblePasswordController = StreamController<bool>();
   bool visiblePassword = false;
   bool forgotPassword = false;
+  TextEditingController loginController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,66 +33,82 @@ class _MainAuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 110.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
-                  child: SvgPicture.asset(
-                    SvgImg.justDoIt,
-                    height: 38.h,
+      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        if (current is AuthSendCodeRestoreState) {
+          Navigator.of(context)
+              .pushNamed(AppRoute.confirmCode, arguments: loginController.text);
+        }
+        return false;
+      }, builder: (context, snapshot) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 110.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    child: SvgPicture.asset(
+                      SvgImg.justDoIt,
+                      height: 38.h,
+                    ),
                   ),
-                ),
-                SizedBox(height: 82.h),
-                forgotPassword ? secondStage() : firstStage(),
-                const Spacer(),
-                Column(
-                  children: [
-                    CustomButton(
-                      onTap: () {},
-                      textLabel: Text(
-                        forgotPassword ? 'Отправить' : 'Войти',
-                        style: TextStyle(
+                  SizedBox(height: 82.h),
+                  forgotPassword ? secondStage() : firstStage(),
+                  const Spacer(),
+                  Column(
+                    children: [
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword &&
+                              loginController.text.isNotEmpty) {
+                            BlocProvider.of<AuthBloc>(context)
+                                .add(RestoreCodeEvent(loginController.text));
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Отправить' : 'Войти',
+                          style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'SFPro'),
+                            fontFamily: 'SFPro',
+                          ),
+                        ),
+                        btnColor: yellow,
                       ),
-                      btnColor: yellow,
-                    ),
-                    SizedBox(height: 18.h),
-                    CustomButton(
-                      onTap: () {
-                        if (forgotPassword) {
-                          setState(() {
-                            forgotPassword = false;
-                          });
-                        } else {
-                          Navigator.of(context).pushNamed(AppRoute.signUp);
-                        }
-                      },
-                      textLabel: Text(
-                        forgotPassword ? 'Назад' : 'Регистрация',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'SFPro'),
+                      SizedBox(height: 18.h),
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword) {
+                            setState(() {
+                              loginController.text = '';
+                              forgotPassword = false;
+                            });
+                          } else {
+                            Navigator.of(context).pushNamed(AppRoute.signUp);
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Назад' : 'Регистрация',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'SFPro'),
+                        ),
+                        btnColor: const Color(0xFFE0E6EE),
                       ),
-                      btnColor: const Color(0xFFE0E6EE),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 34.h),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 34.h),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -176,7 +195,7 @@ class _MainAuthPageState extends State<AuthPage> {
         CustomTextField(
           hintText: '   Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: loginController,
         ),
         SizedBox(height: 20.h),
         SizedBox(

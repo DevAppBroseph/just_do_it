@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,72 +25,42 @@ class Customer extends StatefulWidget {
 
 class _CustomerState extends State<Customer> {
   GlobalKey iconBtn = GlobalKey();
+  GlobalKey iconBtnCategory = GlobalKey();
+  TextEditingController experienceController = TextEditingController();
 
   int groupValue = 0;
   int page = 0;
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
   bool additionalInfo = false;
-
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
-
+  TextEditingController serialDocController = TextEditingController();
+  TextEditingController numberDocController = TextEditingController();
+  TextEditingController whoGiveDocController = TextEditingController();
+  TextEditingController dateDocController = TextEditingController();
   String? gender;
-
   TextEditingController regionController = TextEditingController();
-
   List<String> typeDocument = [];
-
   List<String> typeWork = [];
-
   TextEditingController aboutMeController = TextEditingController();
-
   Uint8List? image;
-
   List<Uint8List> photos = [];
-
   Uint8List? cv;
-
   bool confirmTermsPolicy = false;
+  UserRegModel user = UserRegModel(groups: ['4'], isEntity: false);
   bool physics = false;
-
-  UserRegModel user = UserRegModel();
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       Uint8List? file = await File(getMedia.path).readAsBytes();
       image = file;
-      user.copyWith(image: image);
-    }
-  }
-
-  _selectImages() async {
-    final getMedia = await ImagePicker().getMultiImage(imageQuality: 70);
-    if (getMedia != null) {
-      List<Uint8List> files = [];
-      for (var pickedFile in getMedia) {
-        Uint8List? file = await File(pickedFile.path).readAsBytes();
-        files.add(file);
-      }
-      setState(() {
-        photos = files;
-      });
-    }
-  }
-
-  _selectCV() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc'],
-    );
-    if (result != null) {
-      cv = result.files.first.bytes;
-      user.copyWith(cv: cv);
+      user.copyWith(photo: image);
     }
   }
 
@@ -99,58 +68,63 @@ class _CustomerState extends State<Customer> {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: page == 0 ? firstStage() : secondStage(),
-          ),
-          SizedBox(height: 10.h),
-          CustomButton(
-            onTap: () {
-              if (page == 0) {
-                page = 1;
-                widget.stage(2);
-              } else {
-                BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user));
-                Navigator.of(context).pushNamed(AppRoute.confirmCode,
-                    arguments: phoneController.text);
-              }
-            },
-            btnColor: yellow,
-            textLabel: Text(
-              page == 0 ? 'Далее' : 'Зарегистрироваться',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF171716),
-                fontFamily: 'SFPro',
+      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        if (current is AuthSendProfileState) {
+          Navigator.of(context)
+              .pushNamed(AppRoute.confirmCode, arguments: phoneController.text);
+        }
+        return false;
+      }, builder: (context, snapshot) {
+        return Column(
+          children: [
+            Expanded(child: page == 0 ? firstStage() : secondStage()),
+            SizedBox(height: 10.h),
+            CustomButton(
+              onTap: () {
+                if (page == 0) {
+                  page = 1;
+                  widget.stage(2);
+                } else {
+                  BlocProvider.of<AuthBloc>(context)
+                      .add(SendProfileEvent(user));
+                }
+              },
+              btnColor: yellow,
+              textLabel: Text(
+                page == 0 ? 'Далее' : 'Зарегистрироваться',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF171716),
+                  fontFamily: 'SFPro',
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 18.h),
-          CustomButton(
-            onTap: () {
-              if (page == 1) {
-                page = 0;
-                widget.stage(1);
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-            btnColor: const Color(0xFFE0E6EE),
-            textLabel: Text(
-              'Назад',
-              style: TextStyle(
-                color: const Color(0xFF515150),
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'SFPro',
+            SizedBox(height: 18.h),
+            CustomButton(
+              onTap: () {
+                if (page == 1) {
+                  page = 0;
+                  widget.stage(1);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              btnColor: const Color(0xFFE0E6EE),
+              textLabel: Text(
+                'Назад',
+                style: TextStyle(
+                  color: const Color(0xFF515150),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'SFPro',
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 34.h),
-        ],
-      ),
+            SizedBox(height: 34.h),
+          ],
+        );
+      }),
     );
   }
 
@@ -195,7 +169,7 @@ class _CustomerState extends State<Customer> {
                 setState(() {
                   groupValue = 0;
                   gender = 'Мужчина';
-                  user.copyWith(sex: gender);
+                  user.copyWith(sex: groupValue == 0 ? true : false);
                 });
               },
               child: CustomCircleRadioButtonItem(
@@ -210,7 +184,7 @@ class _CustomerState extends State<Customer> {
                 setState(() {
                   groupValue = 1;
                   gender = 'Женщина';
-                  user.copyWith(sex: gender);
+                  user.copyWith(sex: groupValue == 0 ? true : false);
                 });
               },
               child: CustomCircleRadioButtonItem(
@@ -363,6 +337,7 @@ class _CustomerState extends State<Customer> {
             iconBtn,
             (value) {
               additionalInfo = true;
+              user.copyWith(docType: value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -444,7 +419,8 @@ class _CustomerState extends State<Customer> {
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-              textEditingController: TextEditingController(),
+              textEditingController: serialDocController,
+              onChanged: (value) => documentEdit(),
             ),
             SizedBox(width: 12.w),
             CustomTextField(
@@ -452,7 +428,8 @@ class _CustomerState extends State<Customer> {
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
-              textEditingController: TextEditingController(),
+              textEditingController: numberDocController,
+              onChanged: (value) => documentEdit(),
             ),
           ],
         ),
@@ -460,15 +437,24 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: '   Кем выдан',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: whoGiveDocController,
+          onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: '   Дата выдачи',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: dateDocController,
+          onChanged: (value) => documentEdit(),
         ),
       ],
+    );
+  }
+
+  void documentEdit() {
+    user.copyWith(
+      docInfo:
+          'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
   }
 }
