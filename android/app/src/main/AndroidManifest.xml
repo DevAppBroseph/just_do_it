@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.just_do_it">
+    package="dev.broseph.justDoIt">
    <application
         android:label="just_do_it"
         android:name="${applicationName}"
