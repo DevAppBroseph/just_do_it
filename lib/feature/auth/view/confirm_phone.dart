@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -153,7 +154,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                           ConfirmCodeEvent(widget.phone, codeController.text));
                       Navigator.of(context).pushNamed(AppRoute.home);
                     },
-                    btnColor: Colors.yellow[600]!,
+                    btnColor: yellow,
                     textLabel: Text(
                       'Подтвердить',
                       style: TextStyle(

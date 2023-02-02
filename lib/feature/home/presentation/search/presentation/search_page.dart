@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/bloc/create_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -22,6 +22,13 @@ class SearchPage extends StatelessWidget {
       typeLoaction: 'Можно выполнить удаленно',
       whenStart: 'Начать завтра, с 15:00',
       coast: '1 500',
+    ),
+    Task(
+      icon: 'assets/images/bag.png',
+      task: 'Оформить доверенность',
+      typeLoaction: 'Москва',
+      whenStart: 'Начать 22.12.2023, с 15:00',
+      coast: '2 000',
     ),
   ];
   @override
@@ -83,7 +90,7 @@ class SearchPage extends StatelessWidget {
                   const Spacer(),
                   ScaleButton(
                     bound: 0.01,
-                    onTap: () => BlocProvider.of<CreateBloc>(context)
+                    onTap: () => BlocProvider.of<SearchBloc>(context)
                         .add(OpenSlidingPanelEvent()),
                     child: SizedBox(
                       height: 40.h,

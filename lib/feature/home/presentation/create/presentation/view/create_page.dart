@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/bloc/create_bloc.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
@@ -89,7 +88,7 @@ class _CreatePageState extends State<CreatePage> {
                             horizontal: 20.h, vertical: 20.h),
                         child: CustomButton(
                           onTap: () {},
-                          btnColor: Colors.yellow[600]!,
+                          btnColor: yellow,
                           textLabel: Text(
                             'Создать',
                             style: TextStyle(
@@ -205,6 +204,7 @@ class _CreatePageState extends State<CreatePage> {
                 'Hello world',
               ])
             : SizedBox(height: 20.h),
+        if (index != 0) SizedBox(height: 80.h),
       ],
     );
   }

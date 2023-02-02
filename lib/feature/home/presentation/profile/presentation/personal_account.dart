@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class PersonalAccountPage extends StatelessWidget {
@@ -41,7 +42,7 @@ class PersonalAccountPage extends StatelessWidget {
                         height: 10.w,
                         width: 10.w,
                         decoration: BoxDecoration(
-                          color: Colors.yellow[600],
+                          color: yellow,
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                       )

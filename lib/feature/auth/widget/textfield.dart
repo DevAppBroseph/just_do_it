@@ -30,6 +30,7 @@ class CustomTextField extends StatelessWidget {
   double? height;
   double? width;
   TextStyle? hintStyle;
+  TextStyle? style;
   EdgeInsets? contentPadding;
   CustomTextField({
     Key? key,
@@ -57,6 +58,7 @@ class CustomTextField extends StatelessWidget {
     this.enabled,
     this.fillColor,
     this.hintStyle,
+    this.style,
     this.height,
     this.width,
     this.contentPadding = const EdgeInsets.only(bottom: 5, left: 10),
@@ -72,6 +74,12 @@ class CustomTextField extends StatelessWidget {
           fontSize: 12.sp,
           color: hintTextColor,
           fontWeight: FontWeight.w400,
+        );
+    style = style ??
+        TextStyle(
+          fontSize: 12.sp,
+          color: Colors.black,
+          overflow: TextOverflow.ellipsis,
         );
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
@@ -122,12 +130,9 @@ class CustomTextField extends StatelessWidget {
               minLines: 1,
               inputFormatters: formatters,
               keyboardType: textInputType,
-              style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.black,
-                  overflow: TextOverflow.ellipsis),
+              style: style,
               decoration: InputDecoration(
-                fillColor: const Color(0xFFEAECEE),
+                fillColor: const Color(0xFFF7F7F7),
                 icon: icon,
                 prefixIcon: prefixicon,
                 suffixText: suffixText,

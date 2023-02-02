@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
-
-import '../widgets/date.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 
 class CeateTasks extends StatefulWidget {
   const CeateTasks({super.key});
@@ -67,7 +67,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         duration: const Duration(milliseconds: 600),
                         curve: Curves.easeInOut);
                   },
-                  btnColor: Colors.yellow,
+                  btnColor: yellow,
                   textLabel: Text('Далее'),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CustomerProfile extends StatelessWidget {
@@ -62,7 +63,7 @@ class CustomerProfile extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.star,
-                              color: Colors.yellow[800],
+                              color: yellow,
                               size: 16.h,
                             ),
                             SizedBox(width: 2.w),

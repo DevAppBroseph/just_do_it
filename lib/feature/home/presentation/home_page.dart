@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/bloc/create_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/widget/sliding_panel.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
-        BlocBuilder<CreateBloc, CreateState>(
+        BlocBuilder<SearchBloc, SearchState>(
           builder: (context, snapshot) {
             if (snapshot is OpenSlidingPanelState) {
               panelController.animatePanelToPosition(1.0);
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             SvgPicture.asset(
               icon,
-              color: index == page ? Colors.yellow[600]! : Colors.black,
+              color: index == page ? yellow : Colors.black,
             ),
             SizedBox(height: 5.h),
             Text(

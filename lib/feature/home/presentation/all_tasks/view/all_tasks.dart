@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 
@@ -104,7 +105,7 @@ class _AllTasksState extends State<AllTasks> {
                         MaterialPageRoute(
                             builder: (context) => const CeateTasks()));
                   },
-                  btnColor: Colors.yellow,
+                  btnColor: yellow,
                   textLabel: const Text('Создать новое'),
                 ),
               )

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -411,7 +410,7 @@ class _CustomerState extends State<Customer> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: Colors.yellow[600]!,
+              activeColor: yellow,
             ),
             Flexible(
               child: Text(

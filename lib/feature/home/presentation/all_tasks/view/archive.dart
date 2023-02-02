@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 
 class ArchivePage extends StatefulWidget {
@@ -98,7 +99,7 @@ class _ArchivePageState extends State<ArchivePage> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: CustomButton(
                   onTap: () {},
-                  btnColor: Colors.yellow,
+                  btnColor: yellow,
                   textLabel: const Text('Создать новое'),
                 ),
               )

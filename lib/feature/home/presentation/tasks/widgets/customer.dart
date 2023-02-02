@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/presentation/all_tasks/view/all_tasks.dart';
 
@@ -38,7 +39,7 @@ class Customer extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.book,
-                    color: Colors.amber,
+                    color: yellow,
                   ),
                   const SizedBox(
                     width: 10,
@@ -270,7 +271,7 @@ class Customer extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: CustomButton(
               onTap: () {},
-              btnColor: Colors.yellow,
+              btnColor: yellow,
               textLabel: const Text('Создать новое'),
             ),
           )

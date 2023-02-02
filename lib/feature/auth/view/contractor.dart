@@ -576,7 +576,7 @@ class _ContractorState extends State<Contractor> {
               value: true,
               onChanged: (value) {},
               checkColor: Colors.black,
-              activeColor: Colors.yellow[600]!,
+              activeColor: yellow,
             ),
             Flexible(
               child: Text(

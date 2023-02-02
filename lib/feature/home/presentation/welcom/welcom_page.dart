@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/bloc/create_bloc.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -356,7 +355,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             Container(
                               height: 69.h,
                               decoration: BoxDecoration(
-                                color: Colors.yellow[600],
+                                color: yellow,
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Padding(
