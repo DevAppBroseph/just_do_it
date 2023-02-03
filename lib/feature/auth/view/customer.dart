@@ -90,6 +90,7 @@ class _CustomerState extends State<Customer> {
                   page = 1;
                   widget.stage(2);
                 } else {
+                  user.copyWith(groups: [3]);
                   String error = 'Укажите:\n';
                   bool errorsFlag = false;
 

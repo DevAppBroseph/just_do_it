@@ -124,7 +124,7 @@ class _ContractorState extends State<Contractor> {
                   widget.stage(2);
                 } else {
                   user.copyWith(
-                      activitiesDocument: typeCategories, groups: [1]);
+                      activitiesDocument: typeCategories, groups: [4]);
                   String error = 'Укажите:\n';
                   bool errorsFlag = false;
 
