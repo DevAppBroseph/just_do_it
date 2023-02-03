@@ -61,7 +61,7 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.height,
     this.width,
-    this.contentPadding = const EdgeInsets.only(bottom: 5, left: 10),
+    this.contentPadding = EdgeInsets.zero,
   });
 
   @override
@@ -150,7 +150,7 @@ class CustomTextField extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
                 errorStyle: const TextStyle(fontSize: 10.0),
-                contentPadding: EdgeInsets.zero,
+                contentPadding: contentPadding,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),

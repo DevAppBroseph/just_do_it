@@ -62,6 +62,8 @@ class SearchPage extends StatelessWidget {
                         ),
                         hintText: 'Поиск',
                         textEditingController: TextEditingController(),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 8.h),
                       ),
                     ),
                     const Spacer(),

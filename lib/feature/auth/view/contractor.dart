@@ -145,7 +145,7 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (lastnameController.text.isEmpty) {
-                    error += ' - фамилию';
+                    error += ' - фамилию\n';
                     errorsFlag = true;
                   }
                   if (typeCategories.isEmpty) {
@@ -206,18 +206,22 @@ class _ContractorState extends State<Contractor> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: '   Ваше имя',
+          hintText: 'Ваше имя',
           height: 50.h,
           textEditingController: firstnameController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Ваша фамилия',
+          hintText: 'Ваша фамилия',
           height: 50.h,
           textEditingController: lastnameController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -266,25 +270,29 @@ class _ContractorState extends State<Contractor> {
         ),
         SizedBox(height: 30.h),
         CustomTextField(
-          hintText: '   Номер телефона',
+          hintText: 'Номер телефона',
           height: 50.h,
           textEditingController: phoneController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   E-mail',
+          hintText: 'E-mail',
           height: 50.h,
           textEditingController: emailController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Пароль',
+          hintText: 'Пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -304,13 +312,15 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: passwordController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Повторите пароль',
+          hintText: 'Повторите пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -330,6 +340,8 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -395,13 +407,17 @@ class _ContractorState extends State<Contractor> {
               ],
             ),
             textEditingController: TextEditingController(),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           ),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Регион',
+          hintText: 'Регион',
           height: 50.h,
           textEditingController: regionController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) {
             user.copyWith(region: value);
           },
@@ -425,12 +441,14 @@ class _ContractorState extends State<Contractor> {
             children: [
               CustomTextField(
                 key: iconBtn,
-                hintText: '   Тип документа',
+                hintText: 'Тип документа',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
                 textEditingController:
-                    TextEditingController(text: '   Тип документа'),
+                    TextEditingController(text: 'Тип документа'),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -468,12 +486,14 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: '   Выбор до 3ех категорий',
+                hintText: 'Выбор до 3ех категорий',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
                 textEditingController:
-                    TextEditingController(text: '   Дизайн, ремонт, доставка'),
+                    TextEditingController(text: 'Дизайн, ремонт, доставка'),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -651,36 +671,44 @@ class _ContractorState extends State<Contractor> {
         Row(
           children: [
             CustomTextField(
-              hintText: '   Серия',
+              hintText: 'Серия',
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
               onChanged: (value) => documentEdit(),
             ),
             SizedBox(width: 12.w),
             CustomTextField(
-              hintText: '   Номер',
+              hintText: 'Номер',
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Кем выдан',
+          hintText: 'Кем выдан',
           height: 50.h,
           textEditingController: whoGiveDocController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Дата выдачи',
+          hintText: 'Дата выдачи',
           height: 50.h,
           textEditingController: dateDocController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           onChanged: (value) => documentEdit(),
         ),
       ],

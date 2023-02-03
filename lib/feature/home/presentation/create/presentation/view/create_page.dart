@@ -56,6 +56,8 @@ class _CreatePageState extends State<CreatePage> {
                         ),
                         hintText: 'Поиск',
                         textEditingController: TextEditingController(),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 8.h),
                       ),
                     ),
                     const Spacer(),

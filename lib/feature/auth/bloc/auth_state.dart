@@ -6,7 +6,11 @@ class AuthInitState extends AuthState {}
 
 class SendProfileSuccessState extends AuthState {}
 
-class SendProfileErrorState extends AuthState {}
+class SendProfileErrorState extends AuthState {
+  String? error;
+
+  SendProfileErrorState(this.error);
+}
 
 class ConfirmCodeRegistrSuccessState extends AuthState {
   String access;

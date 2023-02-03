@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -23,11 +24,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    bool res = await Repository().confirmRegister(event.userRegModel);
-    if (res) {
+    String? res = await Repository().confirmRegister(event.userRegModel);
+    if (res == null) {
       emit(SendProfileSuccessState());
     } else {
-      emit(SendProfileErrorState());
+      showAlertToast(res);
+      emit(SendProfileErrorState(res));
     }
   }
 

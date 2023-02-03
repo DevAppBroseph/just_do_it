@@ -6,7 +6,7 @@ class Repository {
   var dio = Dio();
 
   // регистрация профиля
-  Future<bool> confirmRegister(UserRegModel userRegModel) async {
+  Future<String?> confirmRegister(UserRegModel userRegModel) async {
     final response = await dio.post(
       '$server/auth/',
       data: userRegModel.toJson(),
@@ -16,9 +16,9 @@ class Repository {
     );
 
     if (response.statusCode == 201) {
-      return true;
+      return null;
     }
-    return false;
+    return response.data.toString();
   }
 
   // подтвердить регистраци

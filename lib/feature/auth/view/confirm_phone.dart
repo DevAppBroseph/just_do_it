@@ -140,9 +140,11 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                     SizedBox(height: 40.h),
                     if (!widget.register)
                       CustomTextField(
-                        hintText: '   Новый пароль',
+                        hintText: 'Новый пароль',
                         height: 50.h,
                         textEditingController: passwordController,
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 10.h),
                       ),
                     SizedBox(height: 40.h),
                     RichText(

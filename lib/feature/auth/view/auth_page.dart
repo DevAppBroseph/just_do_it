@@ -143,13 +143,15 @@ class _MainAuthPageState extends State<AuthPage> {
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
           textEditingController: signinLoginController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Пароль',
+          hintText: 'Пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -169,6 +171,8 @@ class _MainAuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 30.h),
         Row(
@@ -210,9 +214,11 @@ class _MainAuthPageState extends State<AuthPage> {
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
           textEditingController: loginController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 20.h),
         SizedBox(

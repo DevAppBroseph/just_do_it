@@ -124,7 +124,7 @@ class UserRegModel {
     data['image'] = images;
     data['CV'] = cv;
     data['groups'] = groups;
-    data['activities'] = activitiesDocument;
+    if (activitiesDocument != null) data['activities'] = activitiesDocument;
     return data;
   }
 }
