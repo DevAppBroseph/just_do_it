@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class AuthPage extends StatefulWidget {
@@ -23,6 +25,9 @@ class _MainAuthPageState extends State<AuthPage> {
   bool forgotPassword = false;
   TextEditingController loginController = TextEditingController();
 
+  TextEditingController signinLoginController = TextEditingController();
+  TextEditingController signinPasswordController = TextEditingController();
+
   @override
   void dispose() {
     visiblePasswordController.close();
@@ -34,9 +39,17 @@ class _MainAuthPageState extends State<AuthPage> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        if (current is AuthSendCodeRestoreState) {
+        if (current is ResetPasswordSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [loginController.text, false]);
+        } else if (current is ResetPasswordErrorState) {
+          showAlertToast('Пользователь не найден');
+        } else if (current is SignInSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
           Navigator.of(context)
-              .pushNamed(AppRoute.confirmCode, arguments: loginController.text);
+              .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+        } else if (current is SignInErrorState) {
+          showAlertToast('Введены неверные данные или пользователь не найден');
         }
         return false;
       }, builder: (context, snapshot) {
@@ -67,6 +80,10 @@ class _MainAuthPageState extends State<AuthPage> {
                               loginController.text.isNotEmpty) {
                             BlocProvider.of<AuthBloc>(context)
                                 .add(RestoreCodeEvent(loginController.text));
+                          } else {
+                            BlocProvider.of<AuthBloc>(context).add(SignInEvent(
+                                signinLoginController.text,
+                                signinPasswordController.text));
                           }
                         },
                         textLabel: Text(
@@ -128,7 +145,7 @@ class _MainAuthPageState extends State<AuthPage> {
         CustomTextField(
           hintText: '   Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: signinLoginController,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -151,7 +168,7 @@ class _MainAuthPageState extends State<AuthPage> {
                     ],
                   ),
           ),
-          textEditingController: TextEditingController(),
+          textEditingController: signinPasswordController,
         ),
         SizedBox(height: 30.h),
         Row(

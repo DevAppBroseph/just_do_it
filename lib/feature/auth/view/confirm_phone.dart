@@ -3,14 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
+import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
 class ConfirmCodePage extends StatefulWidget {
+  final bool register;
   final String phone;
-  const ConfirmCodePage({super.key, required this.phone});
+  const ConfirmCodePage({
+    super.key,
+    required this.phone,
+    required this.register,
+  });
 
   @override
   State<ConfirmCodePage> createState() => _ConfirmCodePageState();
@@ -18,6 +26,7 @@ class ConfirmCodePage extends StatefulWidget {
 
 class _ConfirmCodePageState extends State<ConfirmCodePage> {
   TextEditingController codeController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   FocusNode focusNode = FocusNode();
   Timer? timer;
   int currentSecond = 59;
@@ -53,8 +62,16 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        if (current is AuthSendCodeState) {
-          Navigator.of(context).pushNamed(AppRoute.home);
+        if (current is ConfirmCodeRegistrSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+        } else if (current is ConfirmRestoreSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+        } else if (current is ConfirmCodeRegistrErrorState) {
+          showAlertToast('Неверный код');
         }
         return false;
       }, builder: (context, snapshot) {
@@ -121,6 +138,13 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                       ),
                     ),
                     SizedBox(height: 40.h),
+                    if (!widget.register)
+                      CustomTextField(
+                        hintText: '   Новый пароль',
+                        height: 50.h,
+                        textEditingController: passwordController,
+                      ),
+                    SizedBox(height: 40.h),
                     RichText(
                       text: TextSpan(
                         children: [
@@ -152,8 +176,19 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                   children: [
                     SizedBox(height: 20.h),
                     CustomButton(
-                      onTap: () => BlocProvider.of<AuthBloc>(context).add(
-                          ConfirmCodeEvent(widget.phone, codeController.text)),
+                      onTap: () {
+                        if (widget.register) {
+                          BlocProvider.of<AuthBloc>(context).add(
+                              ConfirmCodeEvent(
+                                  widget.phone, codeController.text));
+                        } else {
+                          BlocProvider.of<AuthBloc>(context).add(
+                              RestoreCodeCheckEvent(
+                                  widget.phone,
+                                  codeController.text,
+                                  passwordController.text));
+                        }
+                      },
                       btnColor: yellow,
                       textLabel: Text(
                         'Подтвердить',

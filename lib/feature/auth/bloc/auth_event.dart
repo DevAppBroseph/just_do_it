@@ -22,7 +22,18 @@ class RestoreCodeEvent extends AuthEvent {
 }
 
 class RestoreCodeCheckEvent extends AuthEvent {
+  String phone;
   String code;
+  String updatePassword;
 
-  RestoreCodeCheckEvent(this.code);
+  RestoreCodeCheckEvent(this.phone, this.code, this.updatePassword);
+}
+
+class GetCategoriesEvent extends AuthEvent {}
+
+class SignInEvent extends AuthEvent {
+  String phone;
+  String password;
+
+  SignInEvent(this.phone, this.password);
 }

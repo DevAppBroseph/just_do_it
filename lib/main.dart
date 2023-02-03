@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+            BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
           ],
           child: const MaterialApp(
             debugShowCheckedModeBanner: false,

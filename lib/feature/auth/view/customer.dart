@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
@@ -52,7 +53,8 @@ class _CustomerState extends State<Customer> {
   List<Uint8List> photos = [];
   Uint8List? cv;
   bool confirmTermsPolicy = false;
-  UserRegModel user = UserRegModel(groups: ['4'], isEntity: false);
+  UserRegModel user = UserRegModel(isEntity: false);
+  List<Activities> listCategories = [];
   bool physics = false;
 
   _selectImage() async {
@@ -69,9 +71,12 @@ class _CustomerState extends State<Customer> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        if (current is AuthSendProfileState) {
-          Navigator.of(context)
-              .pushNamed(AppRoute.confirmCode, arguments: phoneController.text);
+        if (current is SendProfileSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [phoneController.text, true]);
+        } else if (current is GetCategoriesState) {
+          listCategories.clear();
+          listCategories.addAll(current.res);
         }
         return false;
       }, builder: (context, snapshot) {
@@ -85,8 +90,36 @@ class _CustomerState extends State<Customer> {
                   page = 1;
                   widget.stage(2);
                 } else {
-                  BlocProvider.of<AuthBloc>(context)
-                      .add(SendProfileEvent(user));
+                  String error = 'Укажите:\n';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += ' - мобильный номер\n';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += ' - почту\n';
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.isEmpty) {
+                    error += ' - пароль\n';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += ' - имя\n';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += ' - фамилию';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag)
+                    showAlertToast(error);
+                  else {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(SendProfileEvent(user));
+                  }
                 }
               },
               btnColor: yellow,
@@ -329,6 +362,9 @@ class _CustomerState extends State<Customer> {
           hintText: '   Регион',
           height: 50.h,
           textEditingController: regionController,
+          onChanged: (value) {
+            user.copyWith(region: value);
+          },
         ),
         SizedBox(height: 16.h),
         GestureDetector(

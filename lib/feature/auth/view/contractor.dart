@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
@@ -47,13 +48,20 @@ class _ContractorState extends State<Contractor> {
   TextEditingController dateDocController = TextEditingController();
   String? gender;
   TextEditingController regionController = TextEditingController();
-  List<String> typeWork = [];
+  List<int> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
   Uint8List? image;
   List<Uint8List> photos = [];
   Uint8List? cv;
   bool confirmTermsPolicy = false;
-  UserRegModel user = UserRegModel(groups: ['4'], isEntity: false);
+  UserRegModel user = UserRegModel(isEntity: false);
+  List<Activities> listCategories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
+  }
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -96,9 +104,12 @@ class _ContractorState extends State<Contractor> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        if (current is AuthSendProfileState) {
-          Navigator.of(context)
-              .pushNamed(AppRoute.confirmCode, arguments: phoneController.text);
+        if (current is SendProfileSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [phoneController.text, true]);
+        } else if (current is GetCategoriesState) {
+          listCategories.clear();
+          listCategories.addAll(current.res);
         }
         return false;
       }, builder: (context, snapshot) {
@@ -112,7 +123,39 @@ class _ContractorState extends State<Contractor> {
                   page = 1;
                   widget.stage(2);
                 } else {
-                  if (phoneController.text.isNotEmpty) {
+                  user.copyWith(
+                      activitiesDocument: typeCategories, groups: [1]);
+                  String error = 'Укажите:\n';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += ' - мобильный номер\n';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += ' - почту\n';
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.isEmpty) {
+                    error += ' - пароль\n';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += ' - имя\n';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += ' - фамилию';
+                    errorsFlag = true;
+                  }
+                  if (typeCategories.isEmpty) {
+                    error += ' - до 3-ёх категорий';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
+                    showAlertToast(error);
+                  } else {
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user));
                   }
@@ -287,6 +330,9 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
+          onChanged: (value) {
+            user.copyWith(password: value);
+          },
         ),
         SizedBox(height: 16.h),
         Row(
@@ -356,6 +402,9 @@ class _ContractorState extends State<Contractor> {
           hintText: '   Регион',
           height: 50.h,
           textEditingController: regionController,
+          onChanged: (value) {
+            user.copyWith(region: value);
+          },
         ),
         SizedBox(height: 16.h),
         GestureDetector(
@@ -401,17 +450,18 @@ class _ContractorState extends State<Contractor> {
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 16.h),
         GestureDetector(
-          onTap: () => showIconModal(
+          onTap: () => showIconModalCategories(
             context,
             iconBtnCategory,
             (value) {
-              typeWork.clear();
-              additionalInfo = true;
-              typeWork.add(value);
+              // typeCategories.clear();
+              // typeCategories.addAll(value);
+              // user.copyWith(activitiesDocument: typeCategories);
               setState(() {});
             },
-            ['Дизайн', 'Ремонт', 'Доставка', 'Программирование', 'Видеомонтаж'],
+            listCategories,
             'Выбор до 3ех категорий',
+            typeCategories,
           ),
           child: Stack(
             key: iconBtnCategory,

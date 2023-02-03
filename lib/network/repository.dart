@@ -15,16 +15,14 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     }
     return false;
   }
 
   // подтвердить регистраци
-  Future<bool> confirmCodeRegistration(String phone, String code) async {
+  Future<String?> confirmCodeRegistration(String phone, String code) async {
     final response = await dio.put(
       '$server/auth/',
       data: {"phone_number": phone, "code": code},
@@ -33,12 +31,10 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
     if (response.statusCode == 200) {
-      return true;
+      return response.data['access'];
     }
-    return false;
+    return null;
   }
 
   // забыли пароль, сбросить код
@@ -51,29 +47,91 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     }
     return false;
   }
 
   // подтвердить код в забыли пароль
-  Future<bool> confirmRestorePassword(String code) async {
-    final response = await dio.post(
+  Future<String?> confirmRestorePassword(
+    String code,
+    String phone,
+    String updatePassword,
+  ) async {
+    final response = await dio.put(
       '$server/auth/',
-      data: {"code": code},
+      data: {
+        "code": code,
+        "phone_number": phone,
+        "update_passwd": true,
+        "password": updatePassword
+      },
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
     );
 
+    if (response.statusCode == 200) {
+      return response.data['access'];
+    }
+    return null;
+  }
+
+  // подтвердить код в забыли пароль
+  Future<List<Activities>?> getCategories() async {
+    final response = await dio.get(
+      '$server/auth/categories',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<Activities> list = [];
+      for (var element in response.data) {
+        list.add(Activities.fromJson(element));
+      }
+      return list;
+    }
+    return null;
+  }
+
+  // вход
+  Future<String?> signIn(String phone, String password) async {
+    final response = await dio.post(
+      '$server/auth/api/token/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+      ),
+      data: {
+        "phone_number": phone,
+        "password": password,
+      },
+    );
     print('object ${response.data}');
 
     if (response.statusCode == 200) {
-      return true;
+      return response.data['access'];
     }
-    return false;
+    return null;
+  }
+
+  // получить профиль
+  Future<UserRegModel?> getProfile(String access) async {
+    print('object token= $access');
+    final response = await dio.get(
+      '$server/auth/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    print('object ${response.data}---${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final user = UserRegModel.fromJson(response.data);
+      return user;
+    }
+    return null;
   }
 }

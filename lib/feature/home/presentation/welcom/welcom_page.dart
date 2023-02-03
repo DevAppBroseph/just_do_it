@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -70,21 +72,36 @@ class _WelcomPageState extends State<WelcomPage> {
                 shrinkWrap: true,
                 children: [
                   Container(height: 30.h, color: Colors.white),
-                  state
-                      ? Container(
-                          color: Colors.white,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 20.h),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(right: 24.w, left: 24.w),
-                                child: SizedBox(
-                                  height: 112.h,
-                                  child: Row(
-                                    children: [
-                                      Column(
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, snapshot) {
+                      final bloc = BlocProvider.of<ProfileBloc>(context);
+                      if (bloc.access == null) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 80.w),
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
+                            child: SvgPicture.asset(
+                              SvgImg.justDoIt,
+                              height: 38.h,
+                            ),
+                          ),
+                        );
+                      }
+                      return Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(height: 20.h),
+                            Padding(
+                              padding: EdgeInsets.only(right: 24.w, left: 24.w),
+                              child: SizedBox(
+                                height: 112.h,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 190.w,
+                                      child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -97,108 +114,101 @@ class _WelcomPageState extends State<WelcomPage> {
                                               fontWeight: FontWeight.w400,
                                               fontSize: 12.sp,
                                             ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: null,
                                           ),
                                           SizedBox(height: 8.h),
                                           Text(
-                                            'Елена\nКузнецова',
+                                            '${bloc.user!.firstname}\n${bloc.user!.lastname}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w800,
                                               fontSize: 32.sp,
                                             ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: null,
                                           ),
                                         ],
                                       ),
-                                      const Spacer(),
-                                      ScaleButton(
-                                        bound: 0.02,
-                                        child: Container(
-                                          height: 112.h,
-                                          width: 121.h,
-                                          padding: EdgeInsets.only(
-                                              left: 16.w,
-                                              right: 16.w,
-                                              top: 4.h,
-                                              bottom: 4.h),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[100],
-                                            borderRadius:
-                                                BorderRadius.circular(10.r),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Рейтинг',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 12.sp,
-                                                  color:
-                                                      const Color(0xFFBDBDBD),
-                                                ),
+                                    ),
+                                    const Spacer(),
+                                    ScaleButton(
+                                      bound: 0.02,
+                                      child: Container(
+                                        height: 112.h,
+                                        width: 121.h,
+                                        padding: EdgeInsets.only(
+                                            left: 16.w,
+                                            right: 16.w,
+                                            top: 4.h,
+                                            bottom: 4.h),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[100],
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Рейтинг',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12.sp,
+                                                color: const Color(0xFFBDBDBD),
                                               ),
-                                              SizedBox(height: 6.h),
-                                              Row(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      'assets/icons/star.svg'),
-                                                  SizedBox(width: 4.w),
-                                                  Text(
-                                                    '4.5',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 14.sp,
-                                                      color: const Color(
-                                                          0xFF161617),
-                                                    ),
+                                            ),
+                                            SizedBox(height: 6.h),
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                    'assets/icons/star.svg'),
+                                                SizedBox(width: 4.w),
+                                                Text(
+                                                  '4.5',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.sp,
+                                                    color:
+                                                        const Color(0xFF161617),
                                                   ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.h),
-                                              Text(
-                                                'Баллы:',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 12.sp,
-                                                  color:
-                                                      const Color(0xFFBDBDBD),
                                                 ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10.h),
+                                            Text(
+                                              'Баллы:',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12.sp,
+                                                color: const Color(0xFFBDBDBD),
                                               ),
-                                              SizedBox(height: 4.h),
-                                              Text(
-                                                '850',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14.sp,
-                                                  color:
-                                                      const Color(0xFF161617),
-                                                ),
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              '850',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14.sp,
+                                                color: const Color(0xFF161617),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(height: 50.h),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 80.w),
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
-                            child: SvgPicture.asset(
-                              SvgImg.justDoIt,
-                              height: 38.h,
                             ),
-                          ),
+                            SizedBox(height: 50.h),
+                          ],
                         ),
+                      );
+                    },
+                  ),
                   SizedBox(height: 18.h),
                   Padding(
                     padding: EdgeInsets.only(left: 24.w),

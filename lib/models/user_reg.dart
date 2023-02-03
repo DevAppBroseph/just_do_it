@@ -14,8 +14,10 @@ class UserRegModel {
   String? activity;
   List<Uint8List>? images;
   Uint8List? cv;
-  List<String>? groups;
-  List<int>? activities;
+  List<dynamic>? groups;
+  List<Activities>? activities;
+  String? region;
+  List<int>? activitiesDocument;
 
   UserRegModel({
     this.phoneNumber,
@@ -33,6 +35,8 @@ class UserRegModel {
     this.cv,
     this.groups,
     this.activities,
+    this.region,
+    this.activitiesDocument,
   });
 
   void copyWith({
@@ -49,8 +53,10 @@ class UserRegModel {
     String? activity,
     List<Uint8List>? images,
     Uint8List? cv,
-    List<String>? groups,
-    List<int>? activities,
+    List<dynamic>? groups,
+    List<Activities>? activities,
+    List<int>? activitiesDocument,
+    String? region,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
@@ -67,6 +73,39 @@ class UserRegModel {
     this.cv = cv ?? this.cv;
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
+    this.region = region ?? this.region;
+    this.activitiesDocument = activitiesDocument ?? this.activitiesDocument;
+  }
+
+  factory UserRegModel.fromJson(Map<String, dynamic> data) {
+    String? email = data['email'];
+    String? phoneNumber = data['phone_number'];
+    String? firstname = data['firstname'];
+    String? lastname = data['lastname'];
+    List<dynamic>? groups = data['groups'];
+    Uint8List? photo = data['photo'];
+    bool? sex = data['sex'];
+    String? region = data['region'];
+    String? docType = data['doc_type'];
+    String? docInfo = data['doc_info'];
+    bool? isEntity = data['is_entity'];
+    String? activity = data['activity'];
+    Uint8List? cv = data['CV'];
+    return UserRegModel(
+      email: email,
+      phoneNumber: phoneNumber,
+      firstname: firstname,
+      lastname: lastname,
+      groups: groups,
+      photo: photo,
+      sex: sex,
+      region: region,
+      docType: docType,
+      docInfo: docInfo,
+      isEntity: isEntity,
+      activity: activity,
+      cv: cv,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -85,7 +124,20 @@ class UserRegModel {
     data['image'] = images;
     data['CV'] = cv;
     data['groups'] = groups;
-    data['activities'] = groups;
+    data['activities'] = activitiesDocument;
     return data;
+  }
+}
+
+class Activities {
+  int id;
+  String? description;
+
+  Activities(this.id, this.description);
+
+  factory Activities.fromJson(Map<String, dynamic> data) {
+    int id = data['id'];
+    String? description = data['description'];
+    return Activities(id, description);
   }
 }

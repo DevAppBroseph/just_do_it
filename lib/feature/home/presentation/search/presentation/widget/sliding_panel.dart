@@ -51,7 +51,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         onPanelSlide: (position) {
           if (position == 0) {
             BlocProvider.of<SearchBloc>(context).add(HideSlidingPanelEvent());
-            print('object2');
             typeFilter = TypeFilter.main;
           }
         },

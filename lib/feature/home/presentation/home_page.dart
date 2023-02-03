@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
@@ -35,6 +37,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+  }
+
+  @override
   void dispose() {
     pageController.dispose();
     panelController.close();
@@ -47,17 +55,24 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Scaffold(
-          body: PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              CreatePage(),
-              SearchPage(),
-              const TasksPage(),
-              ChatPage(),
-              PersonalAccountPage(),
-              WelcomPage(selectUser)
-            ],
+          body: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, snapshot) {
+              if (snapshot is LoadProfileState) {
+                return const CupertinoActivityIndicator();
+              }
+              return PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  CreatePage(),
+                  SearchPage(),
+                  const TasksPage(),
+                  ChatPage(),
+                  PersonalAccountPage(),
+                  WelcomPage(selectUser)
+                ],
+              );
+            },
           ),
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
@@ -118,7 +133,8 @@ class _HomePageState extends State<HomePage> {
   Widget itemBottomNavigatorBar(String icon, String label, int index) {
     return GestureDetector(
       onTap: () {
-        if (index == 2 || index == 3 || index == 4) {
+        final bloc = BlocProvider.of<ProfileBloc>(context);
+        if ((index == 2 || index == 3 || index == 4) && bloc.access == null) {
           Navigator.of(context).pushNamed(AppRoute.auth);
         } else {
           pageController.jumpToPage(index);
