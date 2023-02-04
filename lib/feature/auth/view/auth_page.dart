@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class AuthPage extends StatefulWidget {
@@ -19,6 +23,10 @@ class _MainAuthPageState extends State<AuthPage> {
   final visiblePasswordController = StreamController<bool>();
   bool visiblePassword = false;
   bool forgotPassword = false;
+  TextEditingController loginController = TextEditingController();
+
+  TextEditingController signinLoginController = TextEditingController();
+  TextEditingController signinPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,66 +38,94 @@ class _MainAuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 110.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
-                  child: SvgPicture.asset(
-                    SvgImg.justDoIt,
-                    height: 38.h,
+      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        if (current is ResetPasswordSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [loginController.text, false]);
+        } else if (current is ResetPasswordErrorState) {
+          showAlertToast('Пользователь не найден');
+        } else if (current is SignInSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+        } else if (current is SignInErrorState) {
+          showAlertToast('Введены неверные данные или пользователь не найден');
+        }
+        return false;
+      }, builder: (context, snapshot) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 110.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    child: SvgPicture.asset(
+                      SvgImg.justDoIt,
+                      height: 38.h,
+                    ),
                   ),
-                ),
-                SizedBox(height: 82.h),
-                forgotPassword ? secondStage() : firstStage(),
-                const Spacer(),
-                Column(
-                  children: [
-                    CustomButton(
-                      onTap: () {},
-                      textLabel: Text(
-                        forgotPassword ? 'Отправить' : 'Войти',
-                        style: TextStyle(
+                  SizedBox(height: 82.h),
+                  forgotPassword ? secondStage() : firstStage(),
+                  const Spacer(),
+                  Column(
+                    children: [
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword &&
+                              loginController.text.isNotEmpty) {
+                            BlocProvider.of<AuthBloc>(context)
+                                .add(RestoreCodeEvent(loginController.text));
+                          } else {
+                            BlocProvider.of<AuthBloc>(context).add(SignInEvent(
+                                signinLoginController.text,
+                                signinPasswordController.text));
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Отправить' : 'Войти',
+                          style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'SFPro'),
+                            fontFamily: 'SFPro',
+                          ),
+                        ),
+                        btnColor: yellow,
                       ),
-                      btnColor: yellow,
-                    ),
-                    SizedBox(height: 18.h),
-                    CustomButton(
-                      onTap: () {
-                        if (forgotPassword) {
-                          setState(() {
-                            forgotPassword = false;
-                          });
-                        } else {
-                          Navigator.of(context).pushNamed(AppRoute.signUp);
-                        }
-                      },
-                      textLabel: Text(
-                        forgotPassword ? 'Назад' : 'Регистрация',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'SFPro'),
+                      SizedBox(height: 18.h),
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword) {
+                            setState(() {
+                              loginController.text = '';
+                              forgotPassword = false;
+                            });
+                          } else {
+                            Navigator.of(context).pushNamed(AppRoute.signUp);
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Назад' : 'Регистрация',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'SFPro'),
+                        ),
+                        btnColor: const Color(0xFFE0E6EE),
                       ),
-                      btnColor: const Color(0xFFE0E6EE),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 34.h),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 34.h),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -107,13 +143,15 @@ class _MainAuthPageState extends State<AuthPage> {
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: signinLoginController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Пароль',
+          hintText: 'Пароль',
           height: 50.h,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -122,9 +160,19 @@ class _MainAuthPageState extends State<AuthPage> {
             },
             child: visiblePassword
                 ? const Icon(Icons.remove_red_eye_outlined)
-                : const Icon(Icons.remove_red_eye),
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
           ),
-          textEditingController: TextEditingController(),
+          textEditingController: signinPasswordController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 30.h),
         Row(
@@ -166,9 +214,11 @@ class _MainAuthPageState extends State<AuthPage> {
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: loginController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         ),
         SizedBox(height: 20.h),
         SizedBox(

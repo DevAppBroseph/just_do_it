@@ -1,18 +1,22 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/create_page.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/search_page.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
+import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../constants/svg_and_images.dart';
+import '../data/bloc/profile_bloc.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -22,13 +26,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PageController pageController = PageController(initialPage: 1);
-
-  final streamController = StreamController<int>();
-
+  PageController pageController = PageController(initialPage: 5);
   PanelController panelController = PanelController();
+  final streamController = StreamController<int>();
+  int page = 5;
 
-  int page = 1;
+  void selectUser(int value) {
+    pageController.jumpToPage(value);
+    page = value;
+    streamController.add(value);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+  }
 
   @override
   void dispose() {
@@ -43,16 +56,24 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Scaffold(
-          body: PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              CreatePage(),
-              SearchPage(),
-              TasksPage(),
-              ChatPage(),
-              PersonalAccountPage(),
-            ],
+          body: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, snapshot) {
+              if (snapshot is LoadProfileState) {
+                return const CupertinoActivityIndicator();
+              }
+              return PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  CreatePage(),
+                  SearchPage(),
+                  const TasksPage(),
+                  ChatPage(),
+                  PersonalAccountPage(),
+                  WelcomPage(selectUser)
+                ],
+              );
+            },
           ),
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
@@ -107,9 +128,14 @@ class _HomePageState extends State<HomePage> {
   Widget itemBottomNavigatorBar(String icon, String label, int index) {
     return GestureDetector(
       onTap: () {
-        pageController.jumpToPage(index);
-        page = index;
-        streamController.add(index);
+        final bloc = BlocProvider.of<ProfileBloc>(context);
+        if ((index == 2 || index == 3 || index == 4) && bloc.access == null) {
+          Navigator.of(context).pushNamed(AppRoute.auth);
+        } else {
+          pageController.jumpToPage(index);
+          page = index;
+          streamController.add(index);
+        }
       },
       child: Container(
         width: 70.w,

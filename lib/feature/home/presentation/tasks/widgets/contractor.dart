@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../auth/widget/button.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/feature/auth/widget/button.dart';
 
 class Contractor extends StatelessWidget {
   final Size size;
@@ -150,7 +148,7 @@ class Contractor extends StatelessWidget {
             endIndent: 20,
           ),
         ),
-       Container(
+        Container(
           margin: EdgeInsets.symmetric(horizontal: 20.w),
           height: 55.h,
           child: Row(
@@ -207,7 +205,7 @@ class Contractor extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: CustomButton(
             onTap: () {},
-            btnColor: Colors.yellow,
+            btnColor: yellow,
             textLabel: const Text('Создать новое'),
           ),
         )

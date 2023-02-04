@@ -1,4 +1,4 @@
-package com.example.just_do_it
+package dev.broseph.justDoIt
 
 import io.flutter.embedding.android.FlutterActivity
 
