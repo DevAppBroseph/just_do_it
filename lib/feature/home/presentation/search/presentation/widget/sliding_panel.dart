@@ -7,7 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class SlidingPanelSearch extends StatelessWidget {
   PanelController panelController;
 
-  SlidingPanelSearch(this.panelController);
+  SlidingPanelSearch(this.panelController, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
@@ -10,6 +11,8 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/view/se
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import '../../../constants/svg_and_images.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -54,38 +57,35 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
             builder: (context, snapshot) {
-              return SizedBox(
-                height: 90.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    itemBottomNavigatorBar(
-                      Icons.add_circle_rounded,
-                      'Создать',
-                      0,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.search,
-                      'Найти',
-                      1,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.task,
-                      'Задания',
-                      2,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.local_post_office_outlined,
-                      'Чат',
-                      3,
-                    ),
-                    itemBottomNavigatorBar(
-                      Icons.supervised_user_circle,
-                      'Кабинет',
-                      4,
-                    ),
-                  ],
-                ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  itemBottomNavigatorBar(
+                    SvgImg.add,
+                    'Создать',
+                    0,
+                  ),
+                  itemBottomNavigatorBar(
+                    SvgImg.search,
+                    'Найти',
+                    1,
+                  ),
+                  itemBottomNavigatorBar(
+                    SvgImg.tasks,
+                    'Задания',
+                    2,
+                  ),
+                  itemBottomNavigatorBar(
+                    SvgImg.chat,
+                    'Чат',
+                    3,
+                  ),
+                  itemBottomNavigatorBar(
+                    SvgImg.profile,
+                    'Кабинет',
+                    4,
+                  ),
+                ],
               );
             },
           ),
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(IconData icon, String label, int index) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index) {
     return GestureDetector(
       onTap: () {
         pageController.jumpToPage(index);
@@ -118,18 +118,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            SvgPicture.asset(
               icon,
-              size: 22.h,
               color: index == page ? Colors.yellow[600]! : Colors.black,
             ),
             SizedBox(height: 5.h),
             Text(
               label,
               style: TextStyle(
-                fontSize: 15.sp,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
                 color: index == page ? Colors.yellow[600]! : Colors.black,
+                fontFamily: 'SFPro'
               ),
             ),
           ],

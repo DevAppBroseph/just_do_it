@@ -27,7 +27,10 @@ class _TasksPageState extends State<TasksPage> {
           return SafeArea(
             child: Column(
               children: [
-                SizedBox(
+                Container(
+                  margin: EdgeInsets.only(
+                    top: 30.h,
+                  ),
                   width: double.infinity,
                   height: 50.h,
                   child: Stack(
@@ -35,7 +38,9 @@ class _TasksPageState extends State<TasksPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                           icon: const Icon(
                             Icons.keyboard_backspace_rounded,
                             color: Colors.grey,
@@ -49,6 +54,8 @@ class _TasksPageState extends State<TasksPage> {
                           style: TextStyle(
                             fontSize: 20.sp,
                             color: Colors.black,
+                            fontFamily: "SFPro",
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       )
@@ -71,8 +78,9 @@ class _TasksPageState extends State<TasksPage> {
                         width: 150.w,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color:
-                              snapshot.data! == 1 ? Colors.grey : Colors.black,
+                          color: snapshot.data! == 1
+                              ? const Color(0xffE0E6EE)
+                              : Colors.black,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20.r),
                             bottomLeft: Radius.circular(20.r),
@@ -81,6 +89,8 @@ class _TasksPageState extends State<TasksPage> {
                         child: Text(
                           'Я исполнитель',
                           style: TextStyle(
+                            fontFamily: 'SFPro',
+                            fontSize: 12.sp,
                             color: snapshot.data! == 1
                                 ? Colors.black
                                 : Colors.white,
@@ -101,8 +111,9 @@ class _TasksPageState extends State<TasksPage> {
                         width: 150.w,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color:
-                              snapshot.data! == 0 ? Colors.grey : Colors.black,
+                          color: snapshot.data! == 0
+                              ? const Color(0xffE0E6EE)
+                              : Colors.black,
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(20.r),
                             bottomRight: Radius.circular(20.r),
@@ -111,6 +122,8 @@ class _TasksPageState extends State<TasksPage> {
                         child: Text(
                           'Я заказчик',
                           style: TextStyle(
+                            fontFamily: 'SFPro',
+                            fontSize: 12.sp,
                             color: snapshot.data! == 0
                                 ? Colors.black
                                 : Colors.white,

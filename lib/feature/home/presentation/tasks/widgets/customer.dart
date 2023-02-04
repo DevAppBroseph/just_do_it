@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 
+import '../../../../../constants/svg_and_images.dart';
 import '../../all_tasks/view/all_tasks.dart';
 
 class Customer extends StatelessWidget {
@@ -35,9 +37,9 @@ class Customer extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.book,
-                  color: Colors.amber,
+                SvgPicture.asset(
+                  SvgImg.task,
+                  color: const Color(0xffFFCA0D),
                 ),
                 const SizedBox(
                   width: 10,
@@ -45,14 +47,24 @@ class Customer extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       '322 задания',
                       style: TextStyle(
                         color: Colors.grey,
+                        fontFamily: 'SFPro',
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    Text('Все задания')
+                    Text(
+                      'Все задания',
+                      style: TextStyle(
+                        fontFamily: 'SFPro',
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
                   ],
                 ),
                 const Spacer(),
@@ -72,9 +84,9 @@ class Customer extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.archive_sharp,
-                color: Colors.amber,
+              SvgPicture.asset(
+                SvgImg.archive,
+                color: const Color(0xffFFCA0D),
               ),
               const SizedBox(
                 width: 10,
@@ -82,14 +94,23 @@ class Customer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     '322 задания',
                     style: TextStyle(
                       color: Colors.grey,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  Text('В архиве')
+                  Text(
+                    'В архиве',
+                    style: TextStyle(
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
                 ],
               ),
               const Spacer(),
@@ -97,12 +118,14 @@ class Customer extends StatelessWidget {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 40, left: 20, bottom: 50),
+        Padding(
+          padding: EdgeInsets.only(top: 40.h, left: 20.w, bottom: 50.h),
           child: Text(
             'Вас выбрали в 3 заданиях',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16.sp,
+              fontFamily: 'SFPro',
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -114,10 +137,11 @@ class Customer extends StatelessWidget {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(
-                    Icons.archive_sharp,
-                    color: Colors.amber,
+                children: [
+                  SvgPicture.asset(
+                    SvgImg.inProgress,
+                    height: 15.h,
+                    width: 15.w,
                   ),
                 ],
               ),
@@ -126,20 +150,26 @@ class Customer extends StatelessWidget {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Выполняются',
                     style: TextStyle(
                       color: Colors.black,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
                     '1 задания',
                     style: TextStyle(
                       color: Colors.grey,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   )
                 ],
@@ -167,11 +197,12 @@ class Customer extends StatelessWidget {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(
-                    Icons.archive_sharp,
-                    color: Colors.amber,
-                  ),
+                children: [
+                  SvgPicture.asset(
+                    SvgImg.complete,
+                    height: 15.h,
+                    width: 15.w,
+                  )
                 ],
               ),
               const SizedBox(
@@ -179,20 +210,26 @@ class Customer extends StatelessWidget {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Выполнены',
                     style: TextStyle(
                       color: Colors.black,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
                     '1 задания',
                     style: TextStyle(
                       color: Colors.grey,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   )
                 ],
@@ -220,11 +257,12 @@ class Customer extends StatelessWidget {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(
-                    Icons.archive_sharp,
-                    color: Colors.amber,
-                  ),
+                children: [
+                  SvgPicture.asset(
+                    SvgImg.needSuccess,
+                    height: 15.h,
+                    width: 15.w,
+                  )
                 ],
               ),
               const SizedBox(
@@ -232,20 +270,26 @@ class Customer extends StatelessWidget {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Ждут подтверждения',
                     style: TextStyle(
                       color: Colors.black,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
                     '1 задания',
                     style: TextStyle(
                       color: Colors.grey,
+                      fontFamily: 'SFPro',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   )
                 ],

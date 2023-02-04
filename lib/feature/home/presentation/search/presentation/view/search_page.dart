@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
@@ -62,43 +64,38 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           Expanded(
-            child: Container(
-              color: Colors.grey[100],
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20.h),
-                    child: ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const ClampingScrollPhysics(),
-                      children: [
-                        firstStageSelect ? firstStage() : secondStage()
-                      ],
-                    ),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20.h),
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: const BouncingScrollPhysics(),
+                    children: [firstStageSelect ? firstStage() : secondStage()],
                   ),
-                  if (!firstStageSelect)
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.h, vertical: 20.h),
-                        child: CustomButton(
-                          onTap: () {},
-                          btnColor: Colors.yellow[600]!,
-                          textLabel: Text(
-                            'Создать',
-                            style: TextStyle(
+                ),
+                if (!firstStageSelect)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.h, vertical: 20.h),
+                      child: CustomButton(
+                        onTap: () {},
+                        btnColor: Colors.yellow[600]!,
+                        textLabel: Text(
+                          'Создать',
+                          style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                              fontFamily: 'SFPro'),
                         ),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           )
         ],
@@ -110,7 +107,7 @@ class _SearchPageState extends State<SearchPage> {
     return Column(
       children: [
         Container(
-          height: 170.h,
+          // height: 308.h,
           color: Colors.white,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
@@ -124,14 +121,15 @@ class _SearchPageState extends State<SearchPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 12.sp,
+                        fontFamily: 'SFPro',
                       ),
                     ),
-                    SizedBox(height: 8.h),
                     Text(
                       'Елена\nКузнецова',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        fontSize: 35.sp,
+                        fontSize: 32.sp,
+                        fontFamily: 'SFPro',
                       ),
                     ),
                   ],
@@ -140,7 +138,9 @@ class _SearchPageState extends State<SearchPage> {
                 ScaleButton(
                   bound: 0.02,
                   child: Container(
-                    padding: EdgeInsets.only(left: 10.w, right: 70.w),
+                    width: 121.w,
+                    padding:
+                        EdgeInsets.only(top: 16.w, left: 12.h, bottom: 16.w),
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10.r),
@@ -153,8 +153,9 @@ class _SearchPageState extends State<SearchPage> {
                           'Рейтинг',
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 13.sp,
+                            fontSize: 12.sp,
                             color: Colors.grey[400],
+                            fontFamily: 'SFPro',
                           ),
                         ),
                         SizedBox(height: 4.h),
@@ -169,8 +170,9 @@ class _SearchPageState extends State<SearchPage> {
                             Text(
                               '4.5',
                               style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                fontFamily: 'SFPro',
                               ),
                             ),
                           ],
@@ -180,16 +182,17 @@ class _SearchPageState extends State<SearchPage> {
                           'Баллы:',
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 13.sp,
+                            fontSize: 12.sp,
                             color: Colors.grey[400],
+                            fontFamily: 'SFPro',
                           ),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           '850',
                           style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ],
@@ -208,8 +211,9 @@ class _SearchPageState extends State<SearchPage> {
               Text(
                 'Посмотреть как:',
                 style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16.sp,
+                  fontFamily: 'SFPro',
                 ),
               ),
             ],
@@ -240,10 +244,10 @@ class _SearchPageState extends State<SearchPage> {
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Icon(
-                          Icons.local_fire_department,
-                          color: Colors.red,
-                          size: 80.h,
+                        child: Image.asset(
+                          Img.customer,
+                          height: 115.h,
+                          width: 140.w,
                         ),
                       ),
                       Padding(
@@ -256,16 +260,19 @@ class _SearchPageState extends State<SearchPage> {
                               'Заказчик',
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                fontSize: 15.sp,
+                                fontSize: 12.sp,
+                                fontFamily: 'SFPro',
                               ),
                             ),
                             SizedBox(height: 2.h),
                             Text(
                               'Размести задание',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 13.sp,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w200,
+                                fontSize: 10.sp,
+                                color: Colors.grey[500],
+                                fontFamily: 'SFPro',
+                              ),
                             ),
                           ],
                         ),
@@ -295,10 +302,10 @@ class _SearchPageState extends State<SearchPage> {
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Icon(
-                          Icons.local_fire_department,
-                          color: Colors.red,
-                          size: 80.h,
+                        child: Image.asset(
+                          Img.executor,
+                          height: 103.h,
+                          width: 135.w,
                         ),
                       ),
                       Padding(
@@ -311,16 +318,19 @@ class _SearchPageState extends State<SearchPage> {
                               'Исполнитель',
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                fontSize: 15.sp,
+                                fontSize: 12.sp,
+                                fontFamily: 'SFPro',
                               ),
                             ),
                             SizedBox(height: 2.h),
                             Text(
                               'Выполняй работу',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 13.sp,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w200,
+                                fontSize: 10.sp,
+                                color: Colors.grey[500],
+                                fontFamily: 'SFPro',
+                              ),
                             ),
                           ],
                         ),
@@ -337,6 +347,8 @@ class _SearchPageState extends State<SearchPage> {
           'Русский',
           1,
           choice: choiceLanguage,
+          SvgImg.language,
+          true,
         ),
         indexLanguage == 1
             ? info([
@@ -368,8 +380,9 @@ class _SearchPageState extends State<SearchPage> {
                           Text(
                             'Узнай больше о проекте',
                             style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 14.sp,
+                              fontFamily: 'SFPro',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           const Spacer(),
@@ -378,11 +391,15 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Icon(
-                      Icons.safety_check,
-                      size: 70.h,
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Image.asset(
+                        Img.molotMain,
+                        width: 56.w,
+                        height: 56.h,
+                      ),
                     ),
                   ),
                 ],
@@ -396,14 +413,16 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget secondStage() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text(
             'Что необходимо сделать?',
             style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w900,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'SFPro',
             ),
           ),
         ),
@@ -411,6 +430,8 @@ class _SearchPageState extends State<SearchPage> {
           'Ремонт и строительство',
           1,
           choice: choice1,
+          Img.hammerAndWrench,
+          false
         ),
         index == 1
             ? info([
@@ -426,6 +447,8 @@ class _SearchPageState extends State<SearchPage> {
           'Домашний персонал',
           2,
           choice: choice2,
+          Img.house,
+          false
         ),
         index == 2
             ? info([
@@ -437,11 +460,7 @@ class _SearchPageState extends State<SearchPage> {
                 'Hello world',
               ])
             : SizedBox(height: 20.h),
-        elementCategory(
-          'Красота и здоровье',
-          3,
-          choice: choice3,
-        ),
+        elementCategory('Красота и здоровье', 3, choice: choice3, Img.soap, false),
         index == 3
             ? info([
                 'Раз',
@@ -455,7 +474,9 @@ class _SearchPageState extends State<SearchPage> {
         elementCategory(
           'Репетиторы и обучение',
           4,
+          Img.bluebook,
           choice: choice4,
+          false
         ),
         index == 4
             ? info([
@@ -471,6 +492,8 @@ class _SearchPageState extends State<SearchPage> {
           'Транспорт',
           5,
           choice: choice5,
+          Img.automobile,
+          false
         ),
         index == 5
             ? info([
@@ -486,7 +509,8 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget elementCategory(String title, int currentIndex, {String choice = ''}) {
+  Widget elementCategory(String title, int currentIndex, String icon, bool lan,
+      {String choice = ''}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: ScaleButton(
@@ -514,7 +538,13 @@ class _SearchPageState extends State<SearchPage> {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
           child: Row(
             children: [
-              const Icon(Icons.abc),
+              lan
+                  ? SvgPicture.asset(icon)
+                  : Image.asset(
+                      icon,
+                      height: 18.h,
+                      width: 18.w,
+                    ),
               SizedBox(width: 5.w),
               Text(
                 title,
