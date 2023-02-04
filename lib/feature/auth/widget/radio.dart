@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/text_style.dart';
 
 class CustomCircleRadioButtonItem extends StatelessWidget {
   final String label;
@@ -45,11 +46,9 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(
             label,
-            style: TextStyle(
-              color: groupValue == value
-                  ? const Color(0xFF171716)
-                  : const Color(0xFFBDBDBD),
-            ),
+            style: groupValue == value
+                ? CustomTextStyle.black_12_w400_171716
+                : CustomTextStyle.grey_12_w400,
           )
         ],
       ),

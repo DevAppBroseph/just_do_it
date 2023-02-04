@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
@@ -14,9 +17,6 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart'
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import '../../../constants/svg_and_images.dart';
-import '../data/bloc/profile_bloc.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -78,35 +78,55 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
             builder: (context, snapshot) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  itemBottomNavigatorBar(
-                    SvgImg.add,
-                    'Создать',
-                    0,
+              return MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 1.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorStyles.shadowFC6554,
+                        offset: const Offset(0, -4),
+                        blurRadius: 55.r,
+                      )
+                    ],
                   ),
-                  itemBottomNavigatorBar(
-                    SvgImg.search,
-                    'Найти',
-                    1,
+                  height: 96.h,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        itemBottomNavigatorBar(
+                          'assets/icons/add.svg',
+                          'Создать',
+                          0,
+                        ),
+                        itemBottomNavigatorBar(
+                          'assets/icons/search.svg',
+                          'Найти',
+                          1,
+                        ),
+                        itemBottomNavigatorBar(
+                          'assets/icons/tasks.svg',
+                          'Задания',
+                          2,
+                        ),
+                        itemBottomNavigatorBar(
+                          'assets/icons/messages.svg',
+                          'Чат',
+                          3,
+                        ),
+                        itemBottomNavigatorBar(
+                          'assets/icons/profile.svg',
+                          'Кабинет',
+                          4,
+                        ),
+                      ],
+                    ),
                   ),
-                  itemBottomNavigatorBar(
-                    SvgImg.tasks,
-                    'Задания',
-                    2,
-                  ),
-                  itemBottomNavigatorBar(
-                    SvgImg.chat,
-                    'Чат',
-                    3,
-                  ),
-                  itemBottomNavigatorBar(
-                    SvgImg.profile,
-                    'Кабинет',
-                    4,
-                  ),
-                ],
+                ),
               );
             },
           ),
@@ -137,28 +157,26 @@ class _HomePageState extends State<HomePage> {
           streamController.add(index);
         }
       },
-      child: Container(
-        width: 70.w,
-        height: 80.h,
-        color: Colors.transparent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              icon,
-              color: index == page ? Colors.yellow[600]! : Colors.black,
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-                color: index == page ? Colors.yellow[600]! : Colors.black,
-                fontFamily: 'SFPro'
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.h),
+        child: Container(
+          width: 46.h,
+          height: 46.h,
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                icon,
+                color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
               ),
-            ),
-          ],
+              SizedBox(height: 4.h),
+              Text(
+                label,
+                style: CustomTextStyle.black_12_w400_292D32,
+              ),
+            ],
+          ),
         ),
       ),
     );

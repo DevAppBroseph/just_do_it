@@ -1,3 +1,4 @@
+import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +60,7 @@ class _WelcomPageState extends State<WelcomPage> {
                         hintText: 'Поиск',
                         textEditingController: TextEditingController(),
                         contentPadding: EdgeInsets.symmetric(
-                            horizontal: 15.w, vertical: 8.h),
+                            horizontal: 11.w, vertical: 11.h),
                       ),
                     ),
                     const Spacer(),
@@ -71,6 +72,7 @@ class _WelcomPageState extends State<WelcomPage> {
             ),
             Expanded(
               child: ListView(
+                physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
                 children: [
                   Container(height: 30.h, color: Colors.white),
@@ -244,6 +246,13 @@ class _WelcomPageState extends State<WelcomPage> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorStyles.shadowFC6554,
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 45.r,
+                                )
+                              ],
                             ),
                             child: Stack(
                               children: [
@@ -298,6 +307,13 @@ class _WelcomPageState extends State<WelcomPage> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorStyles.shadowFC6554,
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 45.r,
+                                )
+                              ],
                             ),
                             child: Stack(
                               children: [
@@ -348,12 +364,13 @@ class _WelcomPageState extends State<WelcomPage> {
                     1,
                     choice: choiceLanguage,
                   ),
-                  indexLanguage == 1
-                      ? info([
-                          'Русский',
-                          'Английский',
-                        ])
-                      : SizedBox(height: 20.h),
+                  info(
+                    [
+                      'Русский',
+                      'Английский',
+                    ],
+                    indexLanguage == 1,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.w),
                     child: ScaleButton(
@@ -364,28 +381,41 @@ class _WelcomPageState extends State<WelcomPage> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               height: 69.h,
-                              decoration: BoxDecoration(
-                                color: yellow,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                child: Row(
-                                  children: [
-                                    const Spacer(),
-                                    Text(
-                                      'Узнай больше о проекте!',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(
-                                        'assets/icons/arrow-right1.svg')
+                              child: CupertinoCard(
+                                radius: BorderRadius.circular(25.r),
+                                color: ColorStyles.yellowFFD70A,
+                                margin: EdgeInsets.zero,
+                                elevation: 0,
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.yellowFFD70A,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: ColorStyles.shadowFC6554,
+                                      offset: const Offset(0, -4),
+                                      blurRadius: 55.r,
+                                    )
                                   ],
+                                ),
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: Row(
+                                    children: [
+                                      const Spacer(),
+                                      Text(
+                                        'Узнай больше о проекте!',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      SvgPicture.asset(
+                                          'assets/icons/arrow-right1.svg')
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -439,6 +469,13 @@ class _WelcomPageState extends State<WelcomPage> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10.r),
+            boxShadow: [
+              BoxShadow(
+                color: ColorStyles.shadowFC6554,
+                offset: const Offset(0, -4),
+                blurRadius: 55.r,
+              )
+            ],
           ),
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
           child: Row(
@@ -489,19 +526,21 @@ class _WelcomPageState extends State<WelcomPage> {
     );
   }
 
-  Widget info(List<String> list) {
+  Widget info(List<String> list, bool open) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
-      child: Container(
-        height: 200.h,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        height: open ? 80.h : 0.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.r),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+        padding: EdgeInsets.zero,
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
+          physics: const ClampingScrollPhysics(),
           children: list.map((e) => item(e)).toList(),
         ),
       ),

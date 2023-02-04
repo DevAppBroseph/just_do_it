@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
@@ -88,13 +89,9 @@ class _MainAuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'Отправить' : 'Войти',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'SFPro',
-                          ),
+                          style: CustomTextStyle.black_14_w600_171716,
                         ),
-                        btnColor: yellow,
+                        btnColor: ColorStyles.yellowFFD70A,
                       ),
                       SizedBox(height: 18.h),
                       CustomButton(
@@ -110,12 +107,9 @@ class _MainAuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'Назад' : 'Регистрация',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'SFPro'),
+                          style: CustomTextStyle.black_14_w600_515150,
                         ),
-                        btnColor: const Color(0xFFE0E6EE),
+                        btnColor: ColorStyles.greyE0E6EE,
                       ),
                     ],
                   ),
@@ -135,24 +129,22 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Вход',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF171716),
-          ),
+          style: CustomTextStyle.black_20_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
           hintText: 'Телефон или E-mail',
           height: 50.h,
           textEditingController: signinLoginController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
           hintText: 'Пароль',
           height: 50.h,
+          obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -171,8 +163,9 @@ class _MainAuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 30.h),
         Row(
@@ -186,12 +179,7 @@ class _MainAuthPageState extends State<AuthPage> {
               },
               child: Text(
                 'Забыли пароль?',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp,
-                  fontFamily: 'SFPro',
-                  color: const Color(0xFF515150),
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -206,31 +194,23 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Восстановление доступа',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'SFPro',
-          ),
+          style: CustomTextStyle.black_20_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
           hintText: 'Телефон или E-mail',
           height: 50.h,
           textEditingController: loginController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 20.h),
         SizedBox(
           height: 85.h,
           child: Text(
             'Для сбросы пароля, введите номер Телефона или\nE-mail который был указан при регистрации.',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 12.sp,
-              color: const Color(0xFF515150),
-              fontFamily: 'SFPro',
-            ),
+            style: CustomTextStyle.black_12_w400_515150,
           ),
         )
       ],

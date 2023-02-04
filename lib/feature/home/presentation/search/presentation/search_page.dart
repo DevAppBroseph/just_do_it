@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/models/task.dart';
@@ -36,46 +38,58 @@ class SearchPage extends StatelessWidget {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            Container(height: 60.h, color: Colors.white),
             Container(
-              height: 40.h,
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 270.w,
-                      height: 40.h,
-                      child: CustomTextField(
-                        prefixicon: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/search1.svg',
-                              height: 12.h,
-                            ),
-                          ],
-                        ),
-                        hintText: 'Поиск',
-                        textEditingController: TextEditingController(),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 15.w, vertical: 8.h),
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(width: 23.w),
-                    SvgPicture.asset('assets/icons/category.svg'),
-                  ],
-                ),
+              height: 130.h,
+              decoration: BoxDecoration(
+                color: ColorStyles.whiteFFFFFF,
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorStyles.shadowFC6554,
+                    offset: const Offset(0, -4),
+                    blurRadius: 55.r,
+                  )
+                ],
               ),
-            ),
-            Container(
-              height: 30.h,
-              color: Colors.white,
+              child: Column(
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 60.h, left: 25.w, right: 28.w),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 270.w,
+                          height: 36.h,
+                          child: CustomTextField(
+                            fillColor: ColorStyles.greyF7F7F8,
+                            prefixicon: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/search1.svg',
+                                  height: 12.h,
+                                ),
+                              ],
+                            ),
+                            hintText: 'Поиск',
+                            textEditingController: TextEditingController(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 11.w, vertical: 11.h),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(width: 23.w),
+                        SvgPicture.asset('assets/icons/category.svg'),
+                      ],
+                    ),
+                  ),
+                  Container(height: 30.h),
+                ],
+              ),
             ),
             SizedBox(height: 16.h),
             Padding(
@@ -84,10 +98,7 @@ class SearchPage extends StatelessWidget {
                 children: [
                   Text(
                     'Все задачи',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w800,
-                    ),
+                    style: CustomTextStyle.black_16_w800,
                   ),
                   const Spacer(),
                   ScaleButton(
@@ -104,7 +115,7 @@ class SearchPage extends StatelessWidget {
                             height: 36.h,
                             width: 90.h,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F8),
+                              color: ColorStyles.greyF7F7F8,
                               borderRadius: BorderRadius.circular(10.r),
                             ),
                             child: Padding(
@@ -114,14 +125,12 @@ class SearchPage extends StatelessWidget {
                                   SvgPicture.asset(
                                     'assets/icons/candle.svg',
                                     height: 16.h,
+                                    color: ColorStyles.yellowFFD70B,
                                   ),
                                   SizedBox(width: 10.w),
                                   Text(
                                     'Фильтр',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    style: CustomTextStyle.black_12_w400_171716,
                                   ),
                                 ],
                               ),
@@ -133,16 +142,13 @@ class SearchPage extends StatelessWidget {
                               height: 15.h,
                               width: 15.h,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(369),
-                                  color: const Color(0xFF171716)),
+                                borderRadius: BorderRadius.circular(369.r),
+                                color: ColorStyles.black171716,
+                              ),
                               child: Center(
                                 child: Text(
                                   '2',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  style: CustomTextStyle.white_8_w700,
                                 ),
                               ),
                             ),
@@ -158,6 +164,8 @@ class SearchPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                padding: EdgeInsets.zero,
                 children: taskList.map((e) => itemTask(e)).toList(),
               ),
             )
@@ -178,8 +186,9 @@ class SearchPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF1A2A61).withOpacity(0.06),
-                offset: const Offset(0, 1),
+                color: ColorStyles.shadowFC6554,
+                offset: const Offset(0, -4),
+                blurRadius: 55.r,
               )
             ],
           ),
@@ -216,11 +225,7 @@ class SearchPage extends StatelessWidget {
                           Flexible(
                             child: Text(
                               task.task,
-                              style: TextStyle(
-                                color: const Color(0xFF171716),
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: CustomTextStyle.black_12_w500_171716,
                             ),
                           ),
                         ],
@@ -229,20 +234,12 @@ class SearchPage extends StatelessWidget {
                     SizedBox(height: 8.h),
                     Text(
                       task.typeLoaction,
-                      style: TextStyle(
-                        color: const Color(0xFF515150),
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: CustomTextStyle.black_10_w500_515150,
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       task.whenStart,
-                      style: TextStyle(
-                        color: const Color(0xFFBDBDBD),
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: CustomTextStyle.grey_10_w400,
                     ),
                   ],
                 ),
@@ -250,14 +247,9 @@ class SearchPage extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Spacer()
                     Text(
                       'до ${task.coast} ₽',
-                      style: TextStyle(
-                        color: const Color(0xFF171716),
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: CustomTextStyle.black_12_w500_171716,
                     ),
                   ],
                 ),
@@ -265,7 +257,6 @@ class SearchPage extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // const Spacer(),
                     SvgPicture.asset(
                       'assets/icons/card.svg',
                       height: 16.h,

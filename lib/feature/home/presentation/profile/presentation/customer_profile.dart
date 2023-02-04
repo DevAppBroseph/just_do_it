@@ -63,7 +63,7 @@ class CustomerProfile extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.star,
-                              color: yellow,
+                              color: ColorStyles.yellowFFD70A,
                               size: 16.h,
                             ),
                             SizedBox(width: 2.w),

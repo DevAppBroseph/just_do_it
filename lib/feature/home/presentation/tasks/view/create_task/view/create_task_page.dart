@@ -67,7 +67,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         duration: const Duration(milliseconds: 600),
                         curve: Curves.easeInOut);
                   },
-                  btnColor: yellow,
+                  btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text('Далее'),
                 ),
               ),

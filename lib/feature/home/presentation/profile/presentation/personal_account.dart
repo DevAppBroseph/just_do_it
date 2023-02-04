@@ -11,7 +11,7 @@ class PersonalAccountPage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 10.h),
+            SizedBox(height: 60.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
@@ -42,7 +42,7 @@ class PersonalAccountPage extends StatelessWidget {
                         height: 10.w,
                         width: 10.w,
                         decoration: BoxDecoration(
-                          color: yellow,
+                          color: ColorStyles.yellowFFD70A,
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                       )

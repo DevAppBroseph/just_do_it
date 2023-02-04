@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
@@ -17,7 +18,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class SlidingPanelSearch extends StatefulWidget {
   PanelController panelController;
 
-  SlidingPanelSearch(this.panelController, {super.key});
+  SlidingPanelSearch(this.panelController);
 
   @override
   State<SlidingPanelSearch> createState() => _SlidingPanelSearchState();
@@ -30,7 +31,22 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool allCity = false;
   int groupValueCity = 0;
 
+  bool slide = false;
+
   TypeFilter typeFilter = TypeFilter.main;
+
+  TextEditingController coastMinController =
+      TextEditingController(text: '1 000 ₽');
+  TextEditingController coastMaxController =
+      TextEditingController(text: '1 000 ₽');
+  TextEditingController keyWordController =
+      TextEditingController(text: 'Например, покупка апельсинов...');
+
+  FocusNode focusCoastMin = FocusNode();
+  FocusNode focusCoastMax = FocusNode();
+  FocusNode focusCoastKeyWord = FocusNode();
+
+  ScrollController mainScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +68,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           if (position == 0) {
             BlocProvider.of<SearchBloc>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
+            focusCoastMin.unfocus();
+            focusCoastMax.unfocus();
+            focusCoastKeyWord.unfocus();
+            slide = false;
           }
         },
         maxHeight: heightPanel,
@@ -75,7 +95,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: Colors.white,
+            color: ColorStyles.whiteFFFFFF,
           ),
           child: Column(
             children: [
@@ -89,12 +109,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         : typeFilter == TypeFilter.category
                             ? categoryFirst()
                             : typeFilter == TypeFilter.category1
-                                ? SizedBox()
+                                ? const SizedBox()
                                 : typeFilter == TypeFilter.region
                                     ? cityFilter()
                                     : typeFilter == TypeFilter.date
                                         ? dateFilter()
-                                        : SizedBox()
+                                        : const SizedBox()
                   ],
                 ),
               ),
@@ -104,13 +124,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   onTap: () {
                     widget.panelController.animatePanelToPosition(0);
                   },
-                  btnColor: yellow,
+                  btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text(
                     'Показать задания',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp,
-                    ),
+                    style: CustomTextStyle.black_14_w600_171716,
                   ),
                 ),
               ),
@@ -137,7 +154,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: const Color(0xFF14376A).withOpacity(0.45),
+                color: ColorStyles.blueFC6554,
               ),
             ),
           ],
@@ -151,24 +168,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'Фильтры',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20.sp,
-                      color: Colors.black,
-                    ),
+                    style: CustomTextStyle.black_20_w700,
                   ),
                   const Spacer(),
                   Text(
                     'Очистить',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                      color: Colors.red,
-                    ),
+                    style: CustomTextStyle.red_14_w400,
                   ),
                 ],
               ),
               SizedBox(height: 20.h),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 510.h,
+          child: ListView(
+            shrinkWrap: true,
+            controller: mainScrollController,
+            physics: const ClampingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            children: [
               ScaleButton(
                 onTap: () {
                   BlocProvider.of<SearchBloc>(context)
@@ -180,7 +200,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -193,27 +213,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'Категории',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.sp,
-                              color: const Color(0xFFBDBDBD),
-                            ),
+                            style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             'Все категории',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.sp,
-                              color: const Color(0xFF171716),
-                            ),
+                            style: CustomTextStyle.black_12_w400_171716,
                           ),
                         ],
                       ),
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.grey[400],
+                        color: ColorStyles.greyBDBDBD,
                         size: 16.h,
                       ),
                     ],
@@ -232,7 +244,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -245,27 +257,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'По региону',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.sp,
-                              color: const Color(0xFFBDBDBD),
-                            ),
+                            style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             'Все регионы',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14.sp,
-                              color: const Color(0xFF171716),
-                            ),
+                            style: CustomTextStyle.black_12_w400_171716,
                           ),
                         ],
                       ),
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.grey[400],
+                        color: ColorStyles.greyBDBDBD,
                         size: 16.h,
                       ),
                     ],
@@ -284,7 +288,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -297,27 +301,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'Даты начала и окончания',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.sp,
-                              color: const Color(0xFFBDBDBD),
-                            ),
+                            style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             '21.12.22 - 22.12.22',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14.sp,
-                              color: const Color(0xFF171716),
-                            ),
+                            style: CustomTextStyle.black_12_w400_171716,
                           ),
                         ],
                       ),
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.grey[400],
+                        color: ColorStyles.greyBDBDBD,
                         size: 16.h,
                       ),
                     ],
@@ -330,11 +326,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   Expanded(
                     child: ScaleButton(
                       bound: 0.02,
+                      onTap: () {
+                        focusCoastMin.requestFocus();
+                        openKeyboard();
+                      },
                       child: Container(
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: ColorStyles.greyF9F9F9,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -343,11 +343,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               'Бюджет от',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.sp,
-                                color: const Color(0xFFBDBDBD),
-                              ),
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -355,16 +351,25 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 CustomTextField(
                                   height: 20.h,
                                   width: 80.w,
+                                  focusNode: focusCoastMin,
+                                  onTap: () {
+                                    slide = true;
+                                    mainScrollController.animateTo(heightPanel,
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
+                                    setState(() {});
+                                  },
+                                  onChanged: (value) {},
+                                  onFieldSubmitted: (value) {
+                                    slide = false;
+                                    setState(() {});
+                                  },
                                   contentPadding: EdgeInsets.zero,
-                                  hintText: '',
+                                  hintText: '1 000 ₽',
+                                  fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w300,
-                                    color: const Color(0xFF171716),
-                                  ),
-                                  textEditingController:
-                                      TextEditingController(text: '1 000 ₽'),
+                                  style: CustomTextStyle.black_12_w400_171716,
+                                  textEditingController: coastMinController,
                                 ),
                               ],
                             ),
@@ -377,11 +382,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   Expanded(
                     child: ScaleButton(
                       bound: 0.02,
+                      onTap: () {
+                        focusCoastMax.requestFocus();
+                        openKeyboard();
+                      },
                       child: Container(
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: ColorStyles.greyF9F9F9,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -390,11 +399,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               'Бюджет до',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.sp,
-                                color: const Color(0xFFBDBDBD),
-                              ),
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -402,16 +407,25 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 CustomTextField(
                                   height: 20.h,
                                   width: 80.w,
+                                  focusNode: focusCoastMax,
+                                  onTap: () {
+                                    slide = true;
+                                    mainScrollController.animateTo(heightPanel,
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
+                                    setState(() {});
+                                  },
+                                  onChanged: (value) {},
+                                  onFieldSubmitted: (value) {
+                                    slide = false;
+                                    setState(() {});
+                                  },
                                   contentPadding: EdgeInsets.zero,
-                                  hintText: '',
+                                  hintText: '1 000 ₽',
+                                  fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w300,
-                                    color: const Color(0xFF171716),
-                                  ),
-                                  textEditingController:
-                                      TextEditingController(text: '1 000 ₽'),
+                                  style: CustomTextStyle.black_12_w400_171716,
+                                  textEditingController: coastMaxController,
                                 ),
                               ],
                             ),
@@ -422,94 +436,112 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 99.h,
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset('assets/icons/quote-up-square.svg'),
-                          SizedBox(width: 10.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Ключевые слова',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.sp,
-                                  color: const Color(0xFFBDBDBD),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  CustomTextField(
-                                    height: 40.h,
-                                    width: 250.w,
-                                    contentPadding: EdgeInsets.zero,
-                                    hintText: '',
-                                    maxLines: null,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textEditingController: TextEditingController(
-                                        text:
-                                            'Например, покупка апельсинов...'),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            children: [
-              Text(
-                'Паспортные данные загружены и есть резюме',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp,
-                ),
-              ),
-              const Spacer(),
-              Switch.adaptive(
-                value: passportAndCV,
-                onChanged: (value) {
-                  passportAndCV = !passportAndCV;
-                  setState(() {});
+              SizedBox(height: 20.h),
+              ScaleButton(
+                bound: 0.02,
+                onTap: () {
+                  focusCoastKeyWord.requestFocus();
+                  openKeyboard();
                 },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 99.h,
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyF9F9F9,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/icons/quote-up-square.svg'),
+                                SizedBox(width: 10.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Ключевые слова',
+                                      style: CustomTextStyle.grey_12_w400,
+                                    ),
+                                    Row(
+                                      children: [
+                                        CustomTextField(
+                                          height: 60.h,
+                                          width: 250.w,
+                                          focusNode: focusCoastKeyWord,
+                                          onTap: () {
+                                            slide = true;
+                                            mainScrollController.animateTo(
+                                                heightPanel,
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                curve: Curves.linear);
+                                            setState(() {});
+                                          },
+                                          onChanged: (value) {},
+                                          onFieldSubmitted: (value) {
+                                            slide = false;
+                                            setState(() {});
+                                          },
+                                          contentPadding: EdgeInsets.zero,
+                                          hintText:
+                                              'Например, покупка апельсинов..',
+                                          fillColor: ColorStyles.greyF9F9F9,
+                                          maxLines: null,
+                                          style: CustomTextStyle
+                                              .black_12_w400_171716,
+                                          textEditingController:
+                                              keyWordController,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Text(
+                    'Паспортные данные загружены и есть резюме',
+                    style: CustomTextStyle.black_12_w400_171716,
+                  ),
+                  const Spacer(),
+                  Switch.adaptive(
+                    value: passportAndCV,
+                    onChanged: (value) {
+                      passportAndCV = !passportAndCV;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+              if (slide) SizedBox(height: 250.h),
             ],
           ),
         ),
       ],
     );
+  }
+
+  void openKeyboard() {
+    slide = true;
+    mainScrollController.animateTo(heightPanel,
+        duration: const Duration(seconds: 1), curve: Curves.linear);
+    setState(() {});
   }
 
   Widget categoryFirst() {
@@ -527,7 +559,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: const Color(0xFF14376A).withOpacity(0.45),
+                color: ColorStyles.blueFC6554,
               ),
             ),
           ],
@@ -553,11 +585,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'Категории',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
-                color: Colors.black,
-              ),
+              style: CustomTextStyle.black_20_w700,
             ),
           ],
         ),
@@ -575,11 +603,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'Все категории',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                    color: const Color(0xFF171716),
-                  ),
+                  style: CustomTextStyle.black_12_w400_171716,
                 ),
                 const Spacer(),
                 Switch.adaptive(
@@ -620,7 +644,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 height: 24.h,
               ),
               SizedBox(width: 12.w),
-              Text(category.title),
+              Text(
+                category.title,
+                style: CustomTextStyle.black_12_w500_171716,
+              ),
               const Spacer(),
               Icon(
                 Icons.arrow_forward_ios,
@@ -651,7 +678,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: const Color(0xFF14376A).withOpacity(0.45),
+                color: ColorStyles.blueFC6554,
               ),
             ),
           ],
@@ -677,11 +704,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'Регионы',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
-                color: Colors.black,
-              ),
+              style: CustomTextStyle.black_20_w700,
             ),
           ],
         ),
@@ -699,11 +722,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'Все регионы',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                    color: const Color(0xFF171716),
-                  ),
+                  style: CustomTextStyle.black_12_w400_171716,
                 ),
                 const Spacer(),
                 Switch.adaptive(
@@ -752,7 +771,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             const Spacer(),
             Row(
               children: [
-                Text(city.name),
+                Text(
+                  city.name,
+                  style: CustomTextStyle.black_12_w500_171716,
+                ),
                 const Spacer(),
                 CustomCircleRadioButtonItem(
                   label: '',
@@ -784,7 +806,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: const Color(0xFF14376A).withOpacity(0.45),
+                color: ColorStyles.blueFC6554,
               ),
             ),
           ],
@@ -810,11 +832,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'Даты начала и окончания',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
-                color: Colors.black,
-              ),
+              style: CustomTextStyle.black_20_w700,
             ),
           ],
         ),
@@ -825,7 +843,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 55.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: ColorStyles.greyF9F9F9,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -835,20 +853,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'Дата начала',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFFBDBDBD),
-                      ),
+                      style: CustomTextStyle.grey_12_w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       'Выберите дату начала выполнения',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFF171716),
-                      ),
+                      style: CustomTextStyle.black_12_w400_171716,
                     ),
                   ],
                 ),
@@ -857,7 +867,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
           ),
         ),
-        
         Row(
           children: [
             SizedBox(width: 16.h),
@@ -870,7 +879,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 55.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: ColorStyles.greyF9F9F9,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -880,20 +889,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'Дата завершения',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFFBDBDBD),
-                      ),
+                      style: CustomTextStyle.grey_12_w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       'Выберите дату завершения задачи',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: const Color(0xFF171716),
-                      ),
+                      style: CustomTextStyle.black_12_w400_171716,
                     ),
                   ],
                 ),

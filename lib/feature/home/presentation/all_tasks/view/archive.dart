@@ -99,7 +99,7 @@ class _ArchivePageState extends State<ArchivePage> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: CustomButton(
                   onTap: () {},
-                  btnColor: yellow,
+                  btnColor: ColorStyles.yellowFFD70A,
                   textLabel: const Text('Создать новое'),
                 ),
               )

@@ -105,7 +105,7 @@ class _AllTasksState extends State<AllTasks> {
                         MaterialPageRoute(
                             builder: (context) => const CeateTasks()));
                   },
-                  btnColor: yellow,
+                  btnColor: ColorStyles.yellowFFD70A,
                   textLabel: const Text('Создать новое'),
                 ),
               )

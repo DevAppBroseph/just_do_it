@@ -25,6 +25,7 @@ class _TasksPageState extends State<TasksPage> {
           return SafeArea(
             child: Column(
               children: [
+                SizedBox(height: 60.h),
                 Container(
                   margin: EdgeInsets.only(
                     top: 30.h,
@@ -163,92 +164,90 @@ class _TasksPageState extends State<TasksPage> {
                     ),
                   ),
                 ),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          streamController.sink.add(0);
-                          pageController.animateToPage(0,
-                              duration: const Duration(milliseconds: 600),
-                              curve: Curves.easeInOut);
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: 40.h,
-                          width: 150.w,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
+                Row(
+                  children: [
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        streamController.sink.add(0);
+                        pageController.animateToPage(0,
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeInOut);
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 40.h,
+                        width: 150.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color:
+                              snapshot.data! == 1 ? Colors.grey : Colors.black,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            bottomLeft: Radius.circular(20.r),
+                          ),
+                        ),
+                        child: Text(
+                          'Я исполнитель',
+                          style: TextStyle(
                             color: snapshot.data! == 1
-                                ? Colors.grey
-                                : Colors.black,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.r),
-                              bottomLeft: Radius.circular(20.r),
-                            ),
-                          ),
-                          child: Text(
-                            'Я исполнитель',
-                            style: TextStyle(
-                              color: snapshot.data! == 1
-                                  ? Colors.black
-                                  : Colors.white,
-                            ),
+                                ? Colors.black
+                                : Colors.white,
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          streamController.sink.add(1);
-                          pageController.animateToPage(1,
-                              duration: const Duration(milliseconds: 600),
-                              curve: Curves.easeInOut);
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: 40.h,
-                          width: 150.w,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: snapshot.data! == 0
-                                ? Colors.grey
-                                : Colors.black,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20.r),
-                              bottomRight: Radius.circular(20.r),
-                            ),
-                          ),
-                          child: Text(
-                            'Я заказчик',
-                            style: TextStyle(
-                              color: snapshot.data! == 0
-                                  ? Colors.black
-                                  : Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: PageView(
-                        controller: pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          Customer(size: size),
-                          Contractor(size: size),
-                        ],
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        streamController.sink.add(1);
+                        pageController.animateToPage(1,
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeInOut);
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 40.h,
+                        width: 150.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color:
+                              snapshot.data! == 0 ? Colors.grey : Colors.black,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20.r),
+                            bottomRight: Radius.circular(20.r),
+                          ),
+                        ),
+                        child: Text(
+                          'Я заказчик',
+                          style: TextStyle(
+                            color: snapshot.data! == 0
+                                ? Colors.black
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: PageView(
+                      controller: pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        Customer(size: size),
+                        Contractor(size: size),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

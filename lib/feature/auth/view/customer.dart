@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
@@ -87,51 +88,66 @@ class _CustomerState extends State<Customer> {
             CustomButton(
               onTap: () {
                 if (page == 0) {
-                  page = 1;
-                  widget.stage(2);
+                  String error = 'Укажите:';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += '\n - мобильный номер';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += '\n - почту';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += '\n - имя';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += '\n - фамилию';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
+                    showAlertToast(error);
+                  } else {
+                    page = 1;
+                    widget.stage(2);
+                  }
                 } else {
                   user.copyWith(groups: [3]);
                   String error = 'Укажите:\n';
                   bool errorsFlag = false;
 
-                  if (phoneController.text.isEmpty) {
-                    error += ' - мобильный номер\n';
-                    errorsFlag = true;
-                  }
-                  if (emailController.text.isEmpty) {
-                    error += ' - почту\n';
-                    errorsFlag = true;
-                  }
-                  if (passwordController.text.isEmpty) {
-                    error += ' - пароль\n';
-                    errorsFlag = true;
-                  }
-                  if (firstnameController.text.isEmpty) {
-                    error += ' - имя\n';
-                    errorsFlag = true;
-                  }
-                  if (lastnameController.text.isEmpty) {
-                    error += ' - фамилию';
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
+                    error += ' - пароль';
                     errorsFlag = true;
                   }
 
-                  if (errorsFlag)
+                  if (errorsFlag) {
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      error += '\n\n Пароли не совпадают';
+                    }
                     showAlertToast(error);
-                  else {
+                  } else if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    showAlertToast('- пароли не совпадают');
+                  } else {
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user));
                   }
                 }
               },
-              btnColor: yellow,
+              btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF171716),
-                  fontFamily: 'SFPro',
-                ),
+                style: CustomTextStyle.black_14_w600_171716,
               ),
             ),
             SizedBox(height: 18.h),
@@ -144,15 +160,10 @@ class _CustomerState extends State<Customer> {
                   Navigator.of(context).pop();
                 }
               },
-              btnColor: const Color(0xFFE0E6EE),
+              btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'Назад',
-                style: TextStyle(
-                  color: const Color(0xFF515150),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'SFPro',
-                ),
+                style: CustomTextStyle.black_14_w600_515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -171,10 +182,11 @@ class _CustomerState extends State<Customer> {
       children: [
         CustomTextField(
           hintText: 'Ваше имя',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: firstnameController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -182,10 +194,11 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Ваша фамилия',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: lastnameController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -195,11 +208,7 @@ class _CustomerState extends State<Customer> {
           children: [
             Text(
               'Ваш пол',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'SFPro',
-              ),
+              style: CustomTextStyle.black_12_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -236,10 +245,11 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 30.h),
         CustomTextField(
           hintText: 'Номер телефона',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: phoneController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -247,10 +257,11 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'E-mail',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: emailController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
@@ -260,10 +271,11 @@ class _CustomerState extends State<Customer> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
+            hintStyle: CustomTextStyle.grey_12_w400,
             height: 50.h,
             enabled: false,
             contentPadding:
-                EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             suffixIcon: Stack(
               alignment: Alignment.centerRight,
               children: [
@@ -294,16 +306,13 @@ class _CustomerState extends State<Customer> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: yellow,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Согласен на обработку персональных данных и с пользовательским соглашением',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -322,7 +331,9 @@ class _CustomerState extends State<Customer> {
       children: [
         CustomTextField(
           hintText: 'Пароль',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -342,7 +353,7 @@ class _CustomerState extends State<Customer> {
           ),
           textEditingController: passwordController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -350,7 +361,9 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Повторите пароль',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          obscureText: !visiblePasswordRepeat,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePasswordRepeat = !visiblePasswordRepeat;
@@ -370,15 +383,16 @@ class _CustomerState extends State<Customer> {
           ),
           textEditingController: repeatPasswordController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Регион',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: regionController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(region: value);
           },
@@ -390,7 +404,7 @@ class _CustomerState extends State<Customer> {
             iconBtn,
             (value) {
               additionalInfo = true;
-              user.copyWith(docType: value);
+              // user.copyWith(docType: value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -402,6 +416,7 @@ class _CustomerState extends State<Customer> {
             children: [
               CustomTextField(
                 hintText: 'Тип документа',
+                hintStyle: CustomTextStyle.grey_12_w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -409,7 +424,7 @@ class _CustomerState extends State<Customer> {
                 textEditingController:
                     TextEditingController(text: 'Тип документа'),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -440,17 +455,13 @@ class _CustomerState extends State<Customer> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: yellow,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Юридическое лицо',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'SFPro',
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -471,23 +482,25 @@ class _CustomerState extends State<Customer> {
           children: [
             CustomTextField(
               hintText: 'Серия',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
             SizedBox(width: 12.w),
             CustomTextField(
               hintText: 'Номер',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -495,19 +508,21 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Кем выдан',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: whoGiveDocController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Дата выдачи',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: dateDocController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
         ),
       ],

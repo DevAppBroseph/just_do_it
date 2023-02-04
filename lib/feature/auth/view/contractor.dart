@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
@@ -120,8 +121,48 @@ class _ContractorState extends State<Contractor> {
             CustomButton(
               onTap: () {
                 if (page == 0) {
-                  page = 1;
-                  widget.stage(2);
+                  String error = 'Укажите:';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += '\n - мобильный номер';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += '\n - почту';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += '\n - имя';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += '\n - фамилию';
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
+                    error += '\n - пароль';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      error += '\n\n Пароли не совпадают';
+                    }
+                    showAlertToast(error);
+                  } else if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    showAlertToast('- пароли не совпадают');
+                  } else {
+                    page = 1;
+                    widget.stage(2);
+                  }
                 } else {
                   user.copyWith(
                       activitiesDocument: typeCategories, groups: [4]);
@@ -161,14 +202,10 @@ class _ContractorState extends State<Contractor> {
                   }
                 }
               },
-              btnColor: yellow,
+              btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF171716),
-                ),
+                style: CustomTextStyle.black_14_w600_171716,
               ),
             ),
             SizedBox(height: 18.h),
@@ -181,14 +218,10 @@ class _ContractorState extends State<Contractor> {
                   Navigator.of(context).pop();
                 }
               },
-              btnColor: const Color(0xFFE0E6EE),
+              btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'Назад',
-                style: TextStyle(
-                  color: const Color(0xFF515150),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: CustomTextStyle.black_14_w600_515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -209,8 +242,9 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваше имя',
           height: 50.h,
           textEditingController: firstnameController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -220,8 +254,9 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваша фамилия',
           height: 50.h,
           textEditingController: lastnameController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -231,10 +266,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             Text(
               'Ваш пол',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-              ),
+              style: CustomTextStyle.black_12_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -273,8 +305,9 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Номер телефона',
           height: 50.h,
           textEditingController: phoneController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -284,8 +317,9 @@ class _ContractorState extends State<Contractor> {
           hintText: 'E-mail',
           height: 50.h,
           textEditingController: emailController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
@@ -294,6 +328,7 @@ class _ContractorState extends State<Contractor> {
         CustomTextField(
           hintText: 'Пароль',
           height: 50.h,
+          obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -312,8 +347,9 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: passwordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -322,6 +358,7 @@ class _ContractorState extends State<Contractor> {
         CustomTextField(
           hintText: 'Повторите пароль',
           height: 50.h,
+          obscureText: !visiblePasswordRepeat,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePasswordRepeat = !visiblePasswordRepeat;
@@ -340,8 +377,9 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -360,17 +398,13 @@ class _ContractorState extends State<Contractor> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: yellow,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Согласен на обработку персональных данных и с пользовательским соглашением',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF515150),
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -390,7 +424,8 @@ class _ContractorState extends State<Contractor> {
         GestureDetector(
           onTap: _selectImage,
           child: CustomTextField(
-            hintText: '   Добавить фото',
+            hintText: 'Добавить фото',
+            hintStyle: CustomTextStyle.grey_12_w400,
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -408,16 +443,17 @@ class _ContractorState extends State<Contractor> {
             ),
             textEditingController: TextEditingController(),
             contentPadding:
-                EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Регион',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: regionController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(region: value);
           },
@@ -429,7 +465,7 @@ class _ContractorState extends State<Contractor> {
             iconBtn,
             (value) {
               additionalInfo = true;
-              user.copyWith(docType: value);
+              // user.copyWith(docType: value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -448,7 +484,7 @@ class _ContractorState extends State<Contractor> {
                 textEditingController:
                     TextEditingController(text: 'Тип документа'),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -493,7 +529,7 @@ class _ContractorState extends State<Contractor> {
                 textEditingController:
                     TextEditingController(text: 'Дизайн, ремонт, доставка'),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -515,7 +551,7 @@ class _ContractorState extends State<Contractor> {
         Container(
           height: 130.h,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: ColorStyles.greyEAECEE,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -523,7 +559,7 @@ class _ContractorState extends State<Contractor> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: 18.h, right: 18.h, top: 18.h, bottom: 30.h),
+                    left: 18.h, right: 18.h, top: 5.h, bottom: 30.h),
                 child: SizedBox(
                   height: 100.h,
                   child: TextFormField(
@@ -538,13 +574,7 @@ class _ContractorState extends State<Contractor> {
                       contentPadding: EdgeInsets.zero,
                       border: InputBorder.none,
                       hintText: 'Описание своего опыта',
-                      hintStyle: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 12.sp,
-                        color: const Color(0xFFBDBDBD),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'SFPro',
-                      ),
+                      hintStyle: CustomTextStyle.grey_12_w400,
                     ),
                   ),
                 ),
@@ -555,13 +585,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/250',
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 10.sp,
-                      color: const Color(0xFFBDBDBD),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'SFPro',
-                    ),
+                    style: CustomTextStyle.grey_10_w400,
                   ),
                 ),
               ),
@@ -588,14 +612,10 @@ class _ContractorState extends State<Contractor> {
                       width: 14.h,
                       child: SvgPicture.asset(SvgImg.addCircle),
                     ),
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 9.17.w),
                     Text(
-                      'Изображения',
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'SFPro',
-                      ),
+                      'Изображения (10мб)',
+                      style: CustomTextStyle.black_10_w400,
                     )
                   ],
                 ),
@@ -619,14 +639,10 @@ class _ContractorState extends State<Contractor> {
                       width: 14.h,
                       child: SvgPicture.asset(SvgImg.documentText),
                     ),
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 9.17.w),
                     Text(
                       'Загрузить резюме (10мб)',
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'SFPro',
-                      ),
+                      style: CustomTextStyle.black_10_w400,
                     )
                   ],
                 ),
@@ -643,16 +659,13 @@ class _ContractorState extends State<Contractor> {
               value: true,
               onChanged: (value) {},
               checkColor: Colors.black,
-              activeColor: yellow,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Юридическое лицо',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -672,23 +685,25 @@ class _ContractorState extends State<Contractor> {
           children: [
             CustomTextField(
               hintText: 'Серия',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
             SizedBox(width: 12.w),
             CustomTextField(
               hintText: 'Номер',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -696,19 +711,21 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Кем выдан',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: whoGiveDocController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Дата выдачи',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: dateDocController,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
         ),
       ],
