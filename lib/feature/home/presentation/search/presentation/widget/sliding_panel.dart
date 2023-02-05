@@ -493,7 +493,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           hintText:
                                               'Например, покупка апельсинов..',
                                           fillColor: ColorStyles.greyF9F9F9,
-                                          maxLines: null,
+                                          maxLines: 4,
                                           style: CustomTextStyle
                                               .black_12_w400_171716,
                                           textEditingController:

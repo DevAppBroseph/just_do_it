@@ -51,12 +51,14 @@ class _ContractorState extends State<Contractor> {
   TextEditingController regionController = TextEditingController();
   List<int> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
-  List<Uint8List> photos = [];
-  Uint8List? cv;
+  File? image;
+  List<File> photos = [];
+  File? cv;
   bool confirmTermsPolicy = false;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
+  bool physics = false;
+  FocusNode focusNodeAbout = FocusNode();
 
   @override
   void initState() {
@@ -67,7 +69,7 @@ class _ContractorState extends State<Contractor> {
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
-      Uint8List? file = await File(getMedia.path).readAsBytes();
+      File? file = File(getMedia.path);
       image = file;
       user.copyWith(photo: image);
     }
@@ -76,9 +78,9 @@ class _ContractorState extends State<Contractor> {
   _selectImages() async {
     final getMedia = await ImagePicker().getMultiImage(imageQuality: 70);
     if (getMedia != null) {
-      List<Uint8List> files = [];
+      List<File> files = [];
       for (var pickedFile in getMedia) {
-        Uint8List? file = await File(pickedFile.path).readAsBytes();
+        File? file = File(pickedFile.path);
         files.add(file);
       }
       photos.clear();
@@ -92,16 +94,17 @@ class _ContractorState extends State<Contractor> {
   _selectCV() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc'],
+      allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result != null) {
-      cv = result.files.first.bytes;
+      cv = File(result.files.first.path!);
       user.copyWith(cv: cv);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
@@ -111,12 +114,34 @@ class _ContractorState extends State<Contractor> {
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
+        } else if (current is SendProfileErrorState) {
+          print('object ${current.error!}');
+          String messageError = 'Ошибка\n';
+          if (current.error!['email'] != null &&
+              current.error!['email'][0] != null) {
+            String email = current.error!['email'][0];
+            if (email.contains('custom user with this Email already exists.')) {
+              messageError = 'Пользователь с такой почтой уже зарегистрирован';
+            }
+          } else if (current.error!['phone_number'] != null &&
+              current.error!['phone_number'][0] != null) {
+            String phoneNumber = current.error!['phone_number'][0];
+            if (phoneNumber
+                .contains('custom user with this Телефон already exists.')) {
+              messageError =
+                  'Пользователь с таким телефоном уже зарегистрирован';
+            }
+          }
+          showAlertToast(messageError);
         }
         return false;
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(child: page == 0 ? firstStage() : secondStage()),
+            Expanded(
+                child: page == 0
+                    ? firstStage(heightKeyBoard)
+                    : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () {
@@ -159,6 +184,9 @@ class _ContractorState extends State<Contractor> {
                       (passwordController.text !=
                           repeatPasswordController.text)) {
                     showAlertToast('- пароли не совпадают');
+                  } else if (!confirmTermsPolicy) {
+                    showAlertToast(
+                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
                   } else {
                     page = 1;
                     widget.stage(2);
@@ -231,7 +259,7 @@ class _ContractorState extends State<Contractor> {
     );
   }
 
-  Widget firstStage() {
+  Widget firstStage(double heightKeyBoard) {
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
@@ -409,12 +437,12 @@ class _ContractorState extends State<Contractor> {
             ),
           ],
         ),
-        SizedBox(height: 23.h),
+        SizedBox(height: heightKeyBoard / 2),
       ],
     );
   }
 
-  Widget secondStage() {
+  Widget secondStage(double heightKeyBoard) {
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
@@ -558,24 +586,21 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.topLeft,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    left: 18.h, right: 18.h, top: 5.h, bottom: 30.h),
+                padding: EdgeInsets.only(bottom: 0.h),
                 child: SizedBox(
-                  height: 100.h,
-                  child: TextFormField(
-                    maxLines: null,
+                  child: CustomTextField(
+                    focusNode: focusNodeAbout,
+                    hintText: 'Описание своего опыта',
+                    hintStyle: CustomTextStyle.grey_12_w400,
+                    maxLines: 6,
+                    textEditingController: aboutMeController,
                     onChanged: (value) {
                       user.copyWith(activity: value);
                       setState(() {});
                     },
-                    inputFormatters: [LengthLimitingTextInputFormatter(250)],
-                    controller: aboutMeController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      border: InputBorder.none,
-                      hintText: 'Описание своего опыта',
-                      hintStyle: CustomTextStyle.grey_12_w400,
-                    ),
+                    formatters: [LengthLimitingTextInputFormatter(250)],
+                    contentPadding: EdgeInsets.only(
+                        left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),
                 ),
               ),
@@ -656,8 +681,12 @@ class _ContractorState extends State<Contractor> {
             Checkbox(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.r)),
-              value: true,
-              onChanged: (value) {},
+              value: physics,
+              onChanged: (value) {
+                setState(() {
+                  physics = !physics;
+                });
+              },
               checkColor: Colors.black,
               activeColor: ColorStyles.yellowFFD70A,
             ),
@@ -670,6 +699,7 @@ class _ContractorState extends State<Contractor> {
             ),
           ],
         ),
+        SizedBox(height: heightKeyBoard / 2 + 20.h),
       ],
     );
   }

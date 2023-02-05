@@ -7,7 +7,7 @@ class AuthInitState extends AuthState {}
 class SendProfileSuccessState extends AuthState {}
 
 class SendProfileErrorState extends AuthState {
-  String? error;
+  Map<String, dynamic>? error;
 
   SendProfileErrorState(this.error);
 }

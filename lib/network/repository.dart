@@ -6,10 +6,13 @@ class Repository {
   var dio = Dio();
 
   // регистрация профиля
-  Future<String?> confirmRegister(UserRegModel userRegModel) async {
+  Future<Map<String, dynamic>?> confirmRegister(UserRegModel userRegModel) async {
+    Map<String, dynamic> map = userRegModel.toJson();
+    FormData data = FormData.fromMap(map);
+
     final response = await dio.post(
       '$server/auth/',
-      data: userRegModel.toJson(),
+      data: data,
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -18,7 +21,7 @@ class Repository {
     if (response.statusCode == 201) {
       return null;
     }
-    return response.data.toString();
+    return response.data;
   }
 
   // подтвердить регистраци

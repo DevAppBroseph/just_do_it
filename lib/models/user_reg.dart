@@ -1,4 +1,6 @@
-import 'package:flutter/services.dart';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 
 class UserRegModel {
   String? phoneNumber;
@@ -6,14 +8,14 @@ class UserRegModel {
   String? firstname;
   String? lastname;
   String? password;
-  Uint8List? photo;
+  File? photo;
   bool? sex;
   String? docType;
   String? docInfo;
   bool? isEntity;
   String? activity;
-  List<Uint8List>? images;
-  Uint8List? cv;
+  List<File>? images;
+  File? cv;
   List<dynamic>? groups;
   List<Activities>? activities;
   String? region;
@@ -45,14 +47,14 @@ class UserRegModel {
     String? firstname,
     String? lastname,
     String? password,
-    Uint8List? photo,
+    File? photo,
     bool? sex,
     String? docType,
     String? docInfo,
     bool? isEntity,
     String? activity,
-    List<Uint8List>? images,
-    Uint8List? cv,
+    List<File>? images,
+    File? cv,
     List<dynamic>? groups,
     List<Activities>? activities,
     List<int>? activitiesDocument,
@@ -83,14 +85,14 @@ class UserRegModel {
     String? firstname = data['firstname'];
     String? lastname = data['lastname'];
     List<dynamic>? groups = data['groups'];
-    Uint8List? photo = data['photo'];
+    File? photo = data['photo'];
     bool? sex = data['sex'];
     String? region = data['region'];
     String? docType = data['doc_type'];
     String? docInfo = data['doc_info'];
     bool? isEntity = data['is_entity'];
     String? activity = data['activity'];
-    Uint8List? cv = data['CV'];
+    File? cv = data['CV'];
     return UserRegModel(
       email: email,
       phoneNumber: phoneNumber,
@@ -115,14 +117,24 @@ class UserRegModel {
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['password'] = password;
-    data['photo'] = photo;
+    if (photo != null) {
+      data['photo'] = MultipartFile.fromFileSync(
+        photo!.path,
+        filename: photo!.path.split('/').last,
+      );
+    }
     data['sex'] = sex;
     data['doc_type'] = docType;
     data['doc_info'] = docInfo;
     data['is_entity'] = isEntity;
     data['activity'] = activity;
     data['image'] = images;
-    data['CV'] = cv;
+    if (cv != null) {
+      data['CV'] = MultipartFile.fromFileSync(
+        cv!.path,
+        filename: cv!.path.split('/').last,
+      );
+    }
     data['groups'] = groups;
     if (activitiesDocument != null) data['activities'] = activitiesDocument;
     return data;

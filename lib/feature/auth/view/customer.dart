@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -50,9 +49,9 @@ class _CustomerState extends State<Customer> {
   List<String> typeDocument = [];
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
-  List<Uint8List> photos = [];
-  Uint8List? cv;
+  File? image;
+  // List<Uint8List> photos = [];
+  // Uint8List? cv;
   bool confirmTermsPolicy = false;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
@@ -61,7 +60,7 @@ class _CustomerState extends State<Customer> {
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
-      Uint8List? file = await File(getMedia.path).readAsBytes();
+      File? file = File(getMedia.path);
       image = file;
       user.copyWith(photo: image);
     }
@@ -69,6 +68,7 @@ class _CustomerState extends State<Customer> {
 
   @override
   Widget build(BuildContext context) {
+    double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
@@ -78,12 +78,34 @@ class _CustomerState extends State<Customer> {
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
+        } else if (current is SendProfileErrorState) {
+          print('object ${current.error!}');
+          String messageError = 'Ошибка\n';
+          if (current.error!['email'] != null &&
+              current.error!['email'][0] != null) {
+            String email = current.error!['email'][0];
+            if (email.contains('custom user with this Email already exists.')) {
+              messageError = 'Пользователь с такой почтой уже зарегистрирован';
+            }
+          } else if (current.error!['phone_number'] != null &&
+              current.error!['phone_number'][0] != null) {
+            String phoneNumber = current.error!['phone_number'][0];
+            if (phoneNumber
+                .contains('custom user with this Телефон already exists.')) {
+              messageError =
+                  'Пользователь с таким телефоном уже зарегистрирован';
+            }
+          }
+          showAlertToast(messageError);
         }
         return false;
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(child: page == 0 ? firstStage() : secondStage()),
+            Expanded(
+                child: page == 0
+                    ? firstStage(heightKeyBoard)
+                    : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () {
@@ -110,6 +132,9 @@ class _CustomerState extends State<Customer> {
 
                   if (errorsFlag) {
                     showAlertToast(error);
+                  } else if (!confirmTermsPolicy) {
+                    showAlertToast(
+                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
                   } else {
                     page = 1;
                     widget.stage(2);
@@ -173,7 +198,7 @@ class _CustomerState extends State<Customer> {
     );
   }
 
-  Widget firstStage() {
+  Widget firstStage(double heightKeyBoard) {
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
@@ -317,12 +342,12 @@ class _CustomerState extends State<Customer> {
             ),
           ],
         ),
-        SizedBox(height: 23.h),
+        SizedBox(height: heightKeyBoard / 2),
       ],
     );
   }
 
-  Widget secondStage() {
+  Widget secondStage(double heightKeyBoard) {
     return ListView(
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),
@@ -466,6 +491,7 @@ class _CustomerState extends State<Customer> {
             ),
           ],
         ),
+        SizedBox(height: heightKeyBoard / 2),
       ],
     );
   }

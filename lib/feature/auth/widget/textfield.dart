@@ -99,10 +99,7 @@ class CustomTextField extends StatelessWidget {
               },
               child: MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: Text(
-                  'Готово',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.red),
-                ),
+                child: const Text('Готово'),
               ),
             ),
             actions: [
