@@ -20,6 +20,8 @@ class UserRegModel {
   List<Activities>? activities;
   String? region;
   List<int>? activitiesDocument;
+  String? photoLink;
+  String? cvLink;
 
   UserRegModel({
     this.phoneNumber,
@@ -39,6 +41,8 @@ class UserRegModel {
     this.activities,
     this.region,
     this.activitiesDocument,
+    this.photoLink,
+    this.cvLink,
   });
 
   void copyWith({
@@ -59,6 +63,8 @@ class UserRegModel {
     List<Activities>? activities,
     List<int>? activitiesDocument,
     String? region,
+    String? photoLink,
+    String? cvLink,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
@@ -77,6 +83,8 @@ class UserRegModel {
     this.activities = activities ?? this.activities;
     this.region = region ?? this.region;
     this.activitiesDocument = activitiesDocument ?? this.activitiesDocument;
+    this.photoLink = photoLink ?? this.photoLink;
+    this.cvLink = cvLink ?? this.cvLink;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -85,28 +93,28 @@ class UserRegModel {
     String? firstname = data['firstname'];
     String? lastname = data['lastname'];
     List<dynamic>? groups = data['groups'];
-    File? photo = data['photo'];
+    String? photoLink = data['photo'];
     bool? sex = data['sex'];
     String? region = data['region'];
     String? docType = data['doc_type'];
     String? docInfo = data['doc_info'];
     bool? isEntity = data['is_entity'];
     String? activity = data['activity'];
-    File? cv = data['CV'];
+    String? cvLink = data['CV'];
     return UserRegModel(
       email: email,
       phoneNumber: phoneNumber,
       firstname: firstname,
       lastname: lastname,
       groups: groups,
-      photo: photo,
+      photoLink: photoLink,
       sex: sex,
       region: region,
       docType: docType,
       docInfo: docInfo,
       isEntity: isEntity,
       activity: activity,
-      cv: cv,
+      cvLink: cvLink,
     );
   }
 

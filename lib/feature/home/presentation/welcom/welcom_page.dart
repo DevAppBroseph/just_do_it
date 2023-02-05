@@ -123,7 +123,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           ),
                                           SizedBox(height: 8.h),
                                           Text(
-                                            '${bloc.user!.firstname}\n${bloc.user!.lastname}',
+                                            '${bloc.user?.firstname}\n${bloc.user?.lastname}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w800,
                                               fontSize: 32.sp,
