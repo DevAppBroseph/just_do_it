@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class AuthPage extends StatefulWidget {
@@ -18,6 +24,10 @@ class _MainAuthPageState extends State<AuthPage> {
   final visiblePasswordController = StreamController<bool>();
   bool visiblePassword = false;
   bool forgotPassword = false;
+  TextEditingController loginController = TextEditingController();
+
+  TextEditingController signinLoginController = TextEditingController();
+  TextEditingController signinPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -29,66 +39,87 @@ class _MainAuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 110.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 82.w),
-                  child: SvgPicture.asset(
-                    'assets/icons/just_do_it.svg',
-                    height: 38.h,
+      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        if (current is ResetPasswordSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [loginController.text, false]);
+        } else if (current is ResetPasswordErrorState) {
+          showAlertToast('Пользователь не найден');
+        } else if (current is SignInSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+        } else if (current is SignInErrorState) {
+          showAlertToast('Введены неверные данные или пользователь не найден');
+        }
+        return false;
+      }, builder: (context, snapshot) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 110.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    child: SvgPicture.asset(
+                      SvgImg.justDoIt,
+                      height: 38.h,
+                    ),
                   ),
-                ),
-                SizedBox(height: 82.h),
-                forgotPassword ? secondStage() : firstStage(),
-                const Spacer(),
-                Column(
-                  children: [
-                    CustomButton(
-                      onTap: () {},
-                      textLabel: Text(
-                        forgotPassword ? 'Отправить' : 'Войти',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
+                  SizedBox(height: 82.h),
+                  forgotPassword ? secondStage() : firstStage(),
+                  const Spacer(),
+                  Column(
+                    children: [
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword &&
+                              loginController.text.isNotEmpty) {
+                            BlocProvider.of<AuthBloc>(context)
+                                .add(RestoreCodeEvent(loginController.text));
+                          } else {
+                            BlocProvider.of<AuthBloc>(context).add(SignInEvent(
+                                signinLoginController.text,
+                                signinPasswordController.text));
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Отправить' : 'Войти',
+                          style: CustomTextStyle.black_14_w600_171716,
                         ),
+                        btnColor: ColorStyles.yellowFFD70A,
                       ),
-                      btnColor: yellow,
-                    ),
-                    SizedBox(height: 18.h),
-                    CustomButton(
-                      onTap: () {
-                        if (forgotPassword) {
-                          setState(() {
-                            forgotPassword = false;
-                          });
-                        } else {
-                          Navigator.of(context).pushNamed(AppRoute.signUp);
-                        }
-                      },
-                      textLabel: Text(
-                        forgotPassword ? 'Назад' : 'Регистрация',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
+                      SizedBox(height: 18.h),
+                      CustomButton(
+                        onTap: () {
+                          if (forgotPassword) {
+                            setState(() {
+                              loginController.text = '';
+                              forgotPassword = false;
+                            });
+                          } else {
+                            Navigator.of(context).pushNamed(AppRoute.signUp);
+                          }
+                        },
+                        textLabel: Text(
+                          forgotPassword ? 'Назад' : 'Регистрация',
+                          style: CustomTextStyle.black_14_w600_515150,
                         ),
+                        btnColor: ColorStyles.greyE0E6EE,
                       ),
-                      btnColor: const Color(0xFFE0E6EE),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 34.h),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 34.h),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -98,22 +129,22 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Вход',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF171716),
-          ),
+          style: CustomTextStyle.black_20_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: signinLoginController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Пароль',
+          hintText: 'Пароль',
           height: 50.h,
+          obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -121,9 +152,20 @@ class _MainAuthPageState extends State<AuthPage> {
             },
             child: visiblePassword
                 ? const Icon(Icons.remove_red_eye_outlined)
-                : const Icon(Icons.remove_red_eye),
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
           ),
-          textEditingController: TextEditingController(),
+          textEditingController: signinPasswordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 30.h),
         Row(
@@ -137,11 +179,7 @@ class _MainAuthPageState extends State<AuthPage> {
               },
               child: Text(
                 'Забыли пароль?',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp,
-                  color: const Color(0xFF515150),
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -156,27 +194,23 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Восстановление доступа',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-          ),
+          style: CustomTextStyle.black_20_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: '   Телефон или E-mail',
+          hintText: 'Телефон или E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: loginController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 20.h),
         SizedBox(
           height: 85.h,
           child: Text(
             'Для сбросы пароля, введите номер Телефона или\nE-mail который был указан при регистрации.',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 12.sp,
-              color: const Color(0xFF515150),
-            ),
+            style: CustomTextStyle.black_12_w400_515150,
           ),
         )
       ],

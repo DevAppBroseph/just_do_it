@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -30,6 +32,7 @@ class CustomTextField extends StatelessWidget {
   double? height;
   double? width;
   TextStyle? hintStyle;
+  TextStyle? style;
   EdgeInsets? contentPadding;
   CustomTextField({
     Key? key,
@@ -57,21 +60,25 @@ class CustomTextField extends StatelessWidget {
     this.enabled,
     this.fillColor,
     this.hintStyle,
+    this.style,
     this.height,
     this.width,
-    this.contentPadding = const EdgeInsets.only(bottom: 5, left: 10),
+    this.contentPadding = EdgeInsets.zero,
   });
 
   @override
   Widget build(BuildContext context) {
+    Color filColor = fillColor ?? ColorStyles.greyEAECEE;
     Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
+        CustomTextStyle.grey_12_w400.copyWith(overflow: TextOverflow.ellipsis);
+
+    style = style ??
         TextStyle(
-          overflow: TextOverflow.ellipsis,
           fontSize: 12.sp,
-          color: hintTextColor,
-          fontWeight: FontWeight.w400,
+          color: Colors.black,
+          overflow: TextOverflow.ellipsis,
         );
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
@@ -94,7 +101,7 @@ class CustomTextField extends StatelessWidget {
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: Text(
                   'Готово',
-                  style: TextStyle(fontSize: 14.sp),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.red),
                 ),
               ),
             ),
@@ -105,82 +112,77 @@ class CustomTextField extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(
-            child: TextFormField(
-              key: key,
-              onFieldSubmitted: onFieldSubmitted,
-              enabled: enabled,
-              focusNode: focusNode,
-              onTap: onTap as void Function()?,
-              validator: validateFunction,
-              readOnly: readOnly ?? false,
-              textInputAction: inputAction,
-              controller: textEditingController,
-              onChanged: onChanged,
-              obscureText: obscureText ?? false,
-              maxLines: 1,
-              minLines: 1,
-              inputFormatters: formatters,
-              keyboardType: textInputType,
-              style: TextStyle(
-                  fontSize: 12.sp,
+          child: TextFormField(
+            key: key,
+            onFieldSubmitted: onFieldSubmitted,
+            enabled: enabled,
+            focusNode: focusNode,
+            onTap: onTap as void Function()?,
+            validator: validateFunction,
+            readOnly: readOnly ?? false,
+            textInputAction: inputAction,
+            controller: textEditingController,
+            onChanged: onChanged,
+            obscureText: obscureText ?? false,
+            maxLines: maxLines ?? 1,
+            minLines: 1,
+            inputFormatters: formatters,
+            keyboardType: textInputType,
+            style: style,
+            decoration: InputDecoration(
+              fillColor: filColor,
+              icon: icon,
+              prefixIcon: prefixicon,
+              suffixText: suffixText,
+              suffix: suffix,
+              prefixText: prefixText,
+              prefixStyle: const TextStyle(
+                  fontSize: 14.5,
                   color: Colors.black,
                   overflow: TextOverflow.ellipsis),
-              decoration: InputDecoration(
-                fillColor: const Color(0xFFEAECEE),
-                icon: icon,
-                prefixIcon: prefixicon,
-                suffixText: suffixText,
-                suffix: suffix,
-                prefixText: prefixText,
-                prefixStyle: const TextStyle(
-                    fontSize: 14.5,
-                    color: Colors.black,
-                    overflow: TextOverflow.ellipsis),
-                suffixIcon: suffixIcon,
-                suffixStyle: TextStyle(
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: 14,
-                  color: hintTextColor,
-                  fontWeight: FontWeight.w400,
-                ),
-                errorStyle: const TextStyle(fontSize: 10.0),
-                // contentPadding: contentPadding,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0.0,
-                    style: BorderStyle.solid,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0.0,
-                    style: BorderStyle.solid,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0.0,
-                    style: BorderStyle.solid,
-                  ),
-                ),
-                disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: const BorderSide(
-                      color: Colors.transparent,
-                      width: 0.0,
-                      style: BorderStyle.solid,
-                    )),
-                hintStyle: hintStyle,
-                hintText: hintText,
+              suffixIcon: suffixIcon,
+              suffixStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontSize: 14,
+                color: hintTextColor,
+                fontWeight: FontWeight.w400,
               ),
+              errorStyle: const TextStyle(fontSize: 10.0),
+              contentPadding: contentPadding,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                  width: 0.0,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                  width: 0.0,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                  width: 0.0,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                  borderSide: const BorderSide(
+                    color: Colors.transparent,
+                    width: 0.0,
+                    style: BorderStyle.solid,
+                  )),
+              hintStyle: hintStyle,
+              hintText: hintText,
             ),
           ),
         ),

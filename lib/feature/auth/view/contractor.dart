@@ -1,13 +1,23 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/user_reg.dart';
+import 'package:scale_button/scale_button.dart';
 
 class Contractor extends StatefulWidget {
   Function(int) stage;
@@ -27,59 +37,197 @@ class _ContractorState extends State<Contractor> {
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
   bool additionalInfo = false;
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
+  TextEditingController serialDocController = TextEditingController();
+  TextEditingController numberDocController = TextEditingController();
+  TextEditingController whoGiveDocController = TextEditingController();
+  TextEditingController dateDocController = TextEditingController();
+  String? gender;
+  TextEditingController regionController = TextEditingController();
+  List<int> typeCategories = [];
+  TextEditingController aboutMeController = TextEditingController();
+  Uint8List? image;
+  List<Uint8List> photos = [];
+  Uint8List? cv;
+  bool confirmTermsPolicy = false;
+  UserRegModel user = UserRegModel(isEntity: false);
+  List<Activities> listCategories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
+  }
+
+  _selectImage() async {
+    final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (getMedia != null) {
+      Uint8List? file = await File(getMedia.path).readAsBytes();
+      image = file;
+      user.copyWith(photo: image);
+    }
+  }
+
+  _selectImages() async {
+    final getMedia = await ImagePicker().getMultiImage(imageQuality: 70);
+    if (getMedia != null) {
+      List<Uint8List> files = [];
+      for (var pickedFile in getMedia) {
+        Uint8List? file = await File(pickedFile.path).readAsBytes();
+        files.add(file);
+      }
+      photos.clear();
+      setState(() {
+        photos.addAll(files);
+        user.copyWith(images: photos);
+      });
+    }
+  }
+
+  _selectCV() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc'],
+    );
+    if (result != null) {
+      cv = result.files.first.bytes;
+      user.copyWith(cv: cv);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: page == 0 ? firstStage() : secondStage(),
-          ),
-          SizedBox(height: 10.h),
-          CustomButton(
-            onTap: () {
-              if (page == 0) {
-                page = 1;
-                widget.stage(2);
-              } else {
-                Navigator.of(context).pushNamed(AppRoute.confirmCode);
-              }
-            },
-            btnColor: yellow,
-            textLabel: Text(
-              page == 0 ? 'Далее' : 'Зарегистрироваться',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF171716),
+      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        if (current is SendProfileSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCode,
+              arguments: [phoneController.text, true]);
+        } else if (current is GetCategoriesState) {
+          listCategories.clear();
+          listCategories.addAll(current.res);
+        }
+        return false;
+      }, builder: (context, snapshot) {
+        return Column(
+          children: [
+            Expanded(child: page == 0 ? firstStage() : secondStage()),
+            SizedBox(height: 10.h),
+            CustomButton(
+              onTap: () {
+                if (page == 0) {
+                  String error = 'Укажите:';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += '\n - мобильный номер';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += '\n - почту';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += '\n - имя';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += '\n - фамилию';
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
+                    error += '\n - пароль';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      error += '\n\n Пароли не совпадают';
+                    }
+                    showAlertToast(error);
+                  } else if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    showAlertToast('- пароли не совпадают');
+                  } else {
+                    page = 1;
+                    widget.stage(2);
+                  }
+                } else {
+                  user.copyWith(
+                      activitiesDocument: typeCategories, groups: [4]);
+                  String error = 'Укажите:\n';
+                  bool errorsFlag = false;
+
+                  if (phoneController.text.isEmpty) {
+                    error += ' - мобильный номер\n';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += ' - почту\n';
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.isEmpty) {
+                    error += ' - пароль\n';
+                    errorsFlag = true;
+                  }
+                  if (firstnameController.text.isEmpty) {
+                    error += ' - имя\n';
+                    errorsFlag = true;
+                  }
+                  if (lastnameController.text.isEmpty) {
+                    error += ' - фамилию\n';
+                    errorsFlag = true;
+                  }
+                  if (typeCategories.isEmpty) {
+                    error += ' - до 3-ёх категорий';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
+                    showAlertToast(error);
+                  } else {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(SendProfileEvent(user));
+                  }
+                }
+              },
+              btnColor: ColorStyles.yellowFFD70A,
+              textLabel: Text(
+                page == 0 ? 'Далее' : 'Зарегистрироваться',
+                style: CustomTextStyle.black_14_w600_171716,
               ),
             ),
-          ),
-          SizedBox(height: 18.h),
-          CustomButton(
-            onTap: () {
-              if (page == 1) {
-                page = 0;
-                widget.stage(1);
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-            btnColor: const Color(0xFFE0E6EE),
-            textLabel: Text(
-              'Назад',
-              style: TextStyle(
-                color: const Color(0xFF515150),
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+            SizedBox(height: 18.h),
+            CustomButton(
+              onTap: () {
+                if (page == 1) {
+                  page = 0;
+                  widget.stage(1);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              btnColor: ColorStyles.greyE0E6EE,
+              textLabel: Text(
+                'Назад',
+                style: CustomTextStyle.black_14_w600_515150,
               ),
             ),
-          ),
-          SizedBox(height: 34.h),
-        ],
-      ),
+            SizedBox(height: 34.h),
+          ],
+        );
+      }),
     );
   }
 
@@ -91,31 +239,42 @@ class _ContractorState extends State<Contractor> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: '   Ваше имя',
+          hintText: 'Ваше имя',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: firstnameController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(firstname: value);
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Ваша фамилия',
+          hintText: 'Ваша фамилия',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: lastnameController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(lastname: value);
+          },
         ),
         SizedBox(height: 30.h),
         Row(
           children: [
             Text(
               'Ваш пол',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-              ),
+              style: CustomTextStyle.black_12_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
               onTap: () {
                 setState(() {
                   groupValue = 0;
+                  gender = 'Мужчина';
+                  user.copyWith(sex: groupValue == 0 ? true : false);
                 });
               },
               child: CustomCircleRadioButtonItem(
@@ -129,6 +288,8 @@ class _ContractorState extends State<Contractor> {
               onTap: () {
                 setState(() {
                   groupValue = 1;
+                  gender = 'Женщина';
+                  user.copyWith(sex: groupValue == 0 ? true : false);
                 });
               },
               child: CustomCircleRadioButtonItem(
@@ -141,20 +302,33 @@ class _ContractorState extends State<Contractor> {
         ),
         SizedBox(height: 30.h),
         CustomTextField(
-          hintText: '   Номер телефона',
+          hintText: 'Номер телефона',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: phoneController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(phoneNumber: value);
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   E-mail',
+          hintText: 'E-mail',
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: emailController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(email: value);
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Пароль',
+          hintText: 'Пароль',
           height: 50.h,
+          obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -162,14 +336,29 @@ class _ContractorState extends State<Contractor> {
             },
             child: visiblePassword
                 ? const Icon(Icons.remove_red_eye_outlined)
-                : const Icon(Icons.remove_red_eye),
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
           ),
-          textEditingController: TextEditingController(),
+          textEditingController: passwordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(password: value);
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Повторите пароль',
+          hintText: 'Повторите пароль',
           height: 50.h,
+          obscureText: !visiblePasswordRepeat,
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePasswordRepeat = !visiblePasswordRepeat;
@@ -177,9 +366,23 @@ class _ContractorState extends State<Contractor> {
             },
             child: visiblePasswordRepeat
                 ? const Icon(Icons.remove_red_eye_outlined)
-                : const Icon(Icons.remove_red_eye),
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/eye_close.svg',
+                        height: 18.h,
+                      ),
+                    ],
+                  ),
           ),
-          textEditingController: TextEditingController(),
+          textEditingController: repeatPasswordController,
+          hintStyle: CustomTextStyle.grey_12_w400,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(password: value);
+          },
         ),
         SizedBox(height: 16.h),
         Row(
@@ -188,20 +391,20 @@ class _ContractorState extends State<Contractor> {
             Checkbox(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.r)),
-              value: true,
-              onChanged: (value) {},
+              value: confirmTermsPolicy,
+              onChanged: (value) {
+                setState(() {
+                  confirmTermsPolicy = !confirmTermsPolicy;
+                });
+              },
               checkColor: Colors.black,
-              activeColor: yellow,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Согласен на обработку персональных данных и с пользовательским соглашением',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF515150),
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -218,37 +421,51 @@ class _ContractorState extends State<Contractor> {
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       children: [
-        CustomTextField(
-          hintText: '   Добавить фото',
-          height: 50.h,
-          suffixIcon: Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 16.h),
-                child: SvgPicture.asset(
-                  'assets/icons/gallery.svg',
-                  height: 15.h,
-                  width: 15.h,
+        GestureDetector(
+          onTap: _selectImage,
+          child: CustomTextField(
+            hintText: 'Добавить фото',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            suffixIcon: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 16.h),
+                  child: SvgPicture.asset(
+                    SvgImg.gallery,
+                    height: 15.h,
+                    width: 15.h,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            textEditingController: TextEditingController(),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
-          textEditingController: TextEditingController(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Регион',
+          hintText: 'Регион',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: regionController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) {
+            user.copyWith(region: value);
+          },
         ),
         SizedBox(height: 16.h),
         GestureDetector(
           onTap: () => showIconModal(
             context,
             iconBtn,
-            () {
+            (value) {
               additionalInfo = true;
+              // user.copyWith(docType: value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -260,12 +477,14 @@ class _ContractorState extends State<Contractor> {
             children: [
               CustomTextField(
                 key: iconBtn,
-                hintText: '   Тип документа',
+                hintText: 'Тип документа',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
                 textEditingController:
-                    TextEditingController(text: '   Тип документа'),
+                    TextEditingController(text: 'Тип документа'),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -273,7 +492,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.center,
                   children: [
                     SvgPicture.asset(
-                      'assets/icons/arrow_bottom.svg',
+                      SvgImg.arrowBottom,
                       width: 16.h,
                     ),
                   ],
@@ -285,26 +504,32 @@ class _ContractorState extends State<Contractor> {
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 16.h),
         GestureDetector(
-          onTap: () => showIconModal(
+          onTap: () => showIconModalCategories(
             context,
             iconBtnCategory,
-            () {
+            (value) {
+              // typeCategories.clear();
+              // typeCategories.addAll(value);
+              // user.copyWith(activitiesDocument: typeCategories);
               setState(() {});
             },
-            ['Дизайн', 'Ремонт', 'Доставка', 'Программирование', 'Видеомонтаж'],
+            listCategories,
             'Выбор до 3ех категорий',
+            typeCategories,
           ),
           child: Stack(
             key: iconBtnCategory,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: '   Выбор до 3ех категорий',
+                hintText: 'Выбор до 3ех категорий',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
                 textEditingController:
-                    TextEditingController(text: '   Дизайн, ремонт, доставка'),
+                    TextEditingController(text: 'Дизайн, ремонт, доставка'),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -312,7 +537,7 @@ class _ContractorState extends State<Contractor> {
                   Padding(
                     padding: EdgeInsets.only(right: 16.h),
                     child: SvgPicture.asset(
-                      'assets/icons/arrow_right.svg',
+                      SvgImg.arrowRight,
                       height: 18.h,
                       width: 18.h,
                     ),
@@ -326,7 +551,7 @@ class _ContractorState extends State<Contractor> {
         Container(
           height: 130.h,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: ColorStyles.greyEAECEE,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -334,26 +559,22 @@ class _ContractorState extends State<Contractor> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: 18.h, right: 18.h, top: 18.h, bottom: 30.h),
+                    left: 18.h, right: 18.h, top: 5.h, bottom: 30.h),
                 child: SizedBox(
                   height: 100.h,
                   child: TextFormField(
                     maxLines: null,
                     onChanged: (value) {
+                      user.copyWith(activity: value);
                       setState(() {});
                     },
                     inputFormatters: [LengthLimitingTextInputFormatter(250)],
-                    controller: experienceController,
+                    controller: aboutMeController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.zero,
                       border: InputBorder.none,
                       hintText: 'Описание своего опыта',
-                      hintStyle: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 12.sp,
-                        color: const Color(0xFFBDBDBD),
-                        fontWeight: FontWeight.w400,
-                      ),
+                      hintStyle: CustomTextStyle.grey_12_w400,
                     ),
                   ),
                 ),
@@ -363,13 +584,8 @@ class _ContractorState extends State<Contractor> {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    '${experienceController.text.length}/250',
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 10.sp,
-                      color: const Color(0xFFBDBDBD),
-                      fontWeight: FontWeight.w400,
-                    ),
+                    '${aboutMeController.text.length}/250',
+                    style: CustomTextStyle.grey_10_w400,
                   ),
                 ),
               ),
@@ -379,53 +595,57 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         Row(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 14.h,
-                    width: 14.h,
-                    child: SvgPicture.asset('assets/icons/add_circle.svg'),
-                  ),
-                  SizedBox(width: 10.w),
-                  Text(
-                    'Изображения',
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w400,
+            ScaleButton(
+              duration: const Duration(milliseconds: 50),
+              bound: 0.01,
+              onTap: _selectImages,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 14.h,
+                      width: 14.h,
+                      child: SvgPicture.asset(SvgImg.addCircle),
                     ),
-                  )
-                ],
+                    SizedBox(width: 9.17.w),
+                    Text(
+                      'Изображения (10мб)',
+                      style: CustomTextStyle.black_10_w400,
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(width: 12.h),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 14.h,
-                    width: 14.h,
-                    child: SvgPicture.asset('assets/icons/document_text.svg'),
-                  ),
-                  SizedBox(width: 10.w),
-                  Text(
-                    'Загрузить резюме (10мб)',
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w400,
+            ScaleButton(
+              duration: const Duration(milliseconds: 50),
+              bound: 0.01,
+              onTap: _selectCV,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 14.h,
+                      width: 14.h,
+                      child: SvgPicture.asset(SvgImg.documentText),
                     ),
-                  )
-                ],
+                    SizedBox(width: 9.17.w),
+                    Text(
+                      'Загрузить резюме (10мб)',
+                      style: CustomTextStyle.black_10_w400,
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -439,16 +659,13 @@ class _ContractorState extends State<Contractor> {
               value: true,
               onChanged: (value) {},
               checkColor: Colors.black,
-              activeColor: Colors.yellow[600]!,
+              activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
               child: Text(
                 'Юридическое лицо',
                 textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
           ],
@@ -467,35 +684,58 @@ class _ContractorState extends State<Contractor> {
         Row(
           children: [
             CustomTextField(
-              hintText: '   Серия',
+              hintText: 'Серия',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-              textEditingController: TextEditingController(),
+              textEditingController: serialDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
             ),
             SizedBox(width: 12.w),
             CustomTextField(
-              hintText: '   Номер',
+              hintText: 'Номер',
+              hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
-              textEditingController: TextEditingController(),
+              textEditingController: numberDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
             ),
           ],
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Кем выдан',
+          hintText: 'Кем выдан',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: whoGiveDocController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: '   Дата выдачи',
+          hintText: 'Дата выдачи',
+          hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
-          textEditingController: TextEditingController(),
+          textEditingController: dateDocController,
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          onChanged: (value) => documentEdit(),
         ),
       ],
+    );
+  }
+
+  void documentEdit() {
+    user.copyWith(
+      docInfo:
+          'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
   }
 }

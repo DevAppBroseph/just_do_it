@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/view/contractor.dart';
 import 'package:just_do_it/feature/auth/view/customer.dart';
 
@@ -36,42 +38,37 @@ class _SignUpPageState extends State<SignUpPage> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            children: [
-              SizedBox(height: 60.h),
-              Row(
+        body: Column(
+          children: [
+            SizedBox(height: 60.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
                 children: [
                   RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
                           text: 'Регистрация ',
-                          style: TextStyle(
-                            color: const Color(0xFF171716),
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: CustomTextStyle.black_20_w700,
                         ),
                         TextSpan(
                           text: '$stageRegistragion/2',
-                          style: TextStyle(
-                            color: const Color(0xFFBDBDBD),
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: CustomTextStyle.grey_20_w700,
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
-              Container(
+            ),
+            SizedBox(height: 24.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Container(
                 height: 40.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0E6EE),
+                  color: ColorStyles.greyE0E6EE,
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Stack(
@@ -128,13 +125,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Center(
                                 child: Text(
                                   'Исполнитель',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: state
-                                        ? const Color(0xFF171716)
-                                        : const Color(0xFFFFFFFF),
-                                  ),
+                                  style: state
+                                      ? CustomTextStyle.black_12_w400_171716
+                                      : CustomTextStyle.white_12_w400,
                                 ),
                               ),
                             ),
@@ -167,13 +160,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Center(
                                 child: Text(
                                   'Заказчик',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: state
-                                        ? const Color(0xFFFFFFFF)
-                                        : const Color(0xFF171716),
-                                  ),
+                                  style: state
+                                      ? CustomTextStyle.white_12_w400
+                                      : CustomTextStyle.black_12_w400_171716,
                                 ),
                               ),
                             ),
@@ -184,8 +173,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 50.h),
-              Expanded(
+            ),
+            SizedBox(height: 50.h),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: PageView(
                   controller: pageController,
                   physics: const NeverScrollableScrollPhysics(),
@@ -194,9 +186,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     Customer(stage),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
