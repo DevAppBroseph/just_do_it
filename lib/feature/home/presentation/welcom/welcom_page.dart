@@ -138,8 +138,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                           Text(
                                             // 'Елена\nКузнецова',
                                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                            style: CustomTextStyle
-                                                .black_32_w800_171716,
+                                            // style: CustomTextStyle
+                                            // .black_32_w800_171716,
+                                            style: TextStyle(
+                                                fontSize: 32.sp,
+                                                fontWeight: FontWeight.w800),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),

@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class PersonalAccountPage extends StatelessWidget {
@@ -136,20 +138,28 @@ class PersonalAccountPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      color: Colors.transparent,
-                      height: 50.h,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/logout_account.svg',
-                          ),
-                          SizedBox(width: 12.w),
-                          Text(
-                            'Выйти из аккаунта',
-                            style: CustomTextStyle.black_16_w500_171716,
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                        BlocProvider.of<ProfileBloc>(context).setUser(null);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            AppRoute.home, (route) => false);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 50.h,
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/logout_account.svg',
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              'Выйти из аккаунта',
+                              style: CustomTextStyle.black_16_w500_171716,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -179,11 +179,7 @@ class _ContractorState extends State<Contractor> {
   }
 
   void requestNextEmptyFocusStage2() {
-    if (image == null) {
-      // focusNodeName.requestFocus();
-      scrollController2.animateTo(0,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    } else if (additionalInfo) {
+    if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSeria.requestFocus();
         scrollController2.animateTo(150.h,
@@ -288,6 +284,8 @@ class _ContractorState extends State<Contractor> {
                       (passwordController.text !=
                           repeatPasswordController.text)) {
                     showAlertToast('- пароли не совпадают');
+                  } else if (passwordController.text.length < 6) {
+                    showAlertToast('- минимальная длинна пароля 6 символов');
                   } else if (!confirmTermsPolicy) {
                     showAlertToast(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');

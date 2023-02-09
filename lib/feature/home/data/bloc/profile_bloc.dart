@@ -13,7 +13,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String? access;
   UserRegModel? user;
 
-  void setAccess(String access) => this.access = access;
+  void setAccess(String? access) => this.access = access;
+
+  void setUser(UserRegModel? user) => this.user = user;
 
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());

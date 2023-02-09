@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/constants/text_style.dart';
@@ -235,11 +237,11 @@ class _CustomerState extends State<Customer> {
                   bool errorsFlag = false;
 
                   if (countryController.text.isEmpty) {
-                    error += '\n - укажите страну';
+                    error += '\n - страну';
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
-                    error += '\n - укажите город';
+                    error += '\n - город';
                     errorsFlag = true;
                   }
 
@@ -262,6 +264,10 @@ class _CustomerState extends State<Customer> {
                       error += '\n - кем был вадан документ';
                       errorsFlag = true;
                     }
+                    if (dateDocController.text.isEmpty) {
+                      error += '\n - дату выдачи документа';
+                      errorsFlag = true;
+                    }
                   }
 
                   if (errorsFlag) {
@@ -272,15 +278,23 @@ class _CustomerState extends State<Customer> {
                       error += '\n\n Пароли не совпадают';
                     }
                     showAlertToast(error);
-                  } else if ((passwordController.text.isNotEmpty &&
+                  } else if (passwordController.text.length < 6) {
+                    showAlertToast('- минимальная длинна пароля 6 символов');
+                  }
+                  else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
-                    showAlertToast('- пароли не совпадают');
+                    // error += 'Пароли не совпадают';
+                    showAlertToast('Пароли не совпадают');
                   } else {
+                    documentEdit();
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user));
                   }
+
+                  print(
+                      'object $errorsFlag ${passwordController.text}-${repeatPasswordController.text}');
                 }
               },
               btnColor: ColorStyles.yellowFFD70A,
@@ -627,6 +641,7 @@ class _CustomerState extends State<Customer> {
             context,
             iconBtn,
             (value) {
+              documentTypeController.text = value;
               additionalInfo = true;
               // user.copyWith(docType: value);
               setState(() {});
@@ -645,8 +660,7 @@ class _CustomerState extends State<Customer> {
                 enabled: false,
                 onTap: () {},
                 fillColor: Colors.grey[200],
-                textEditingController:
-                    TextEditingController(text: 'Тип документа'),
+                textEditingController: documentTypeController,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -725,6 +739,7 @@ class _CustomerState extends State<Customer> {
               hintText: 'Номер',
               hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
+              textInputType: TextInputType.number,
               focusNode: focusNodeNumber,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
@@ -753,18 +768,75 @@ class _CustomerState extends State<Customer> {
           },
         ),
         SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Дата выдачи',
-          hintStyle: CustomTextStyle.grey_12_w400,
-          height: 50.h,
-          enabled: false,
-          textEditingController: dateDocController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) => documentEdit(),
+        GestureDetector(
+          onTap: () async {
+            _showDatePicker(context);
+          },
+          child: CustomTextField(
+            hintText: 'Дата выдачи',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            textEditingController: dateDocController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
         ),
       ],
     );
+  }
+
+  void _showDatePicker(ctx) {
+    dateTime = null;
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 300,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  SizedBox(height: 5.h),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        height: 30.h,
+                        width: 80.w,
+                        child: CupertinoButton(
+                          color: Colors.grey[400],
+                          padding: EdgeInsets.zero,
+                          child: Text(
+                            'Готово',
+                            style: TextStyle(fontSize: 11.sp),
+                          ),
+                          onPressed: () {
+                            if (dateTime == null) {
+                              dateDocController.text = DateFormat('dd.MM.yyyy')
+                                  .format(DateTime.now());
+                            }
+
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 5.h),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 200.h,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          dateTime = val;
+                          dateDocController.text =
+                              DateFormat('dd.MM.yyyy').format(val);
+                        }),
+                  ),
+                ],
+              ),
+            ));
   }
 
   void documentEdit() {

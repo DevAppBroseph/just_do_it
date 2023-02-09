@@ -46,8 +46,8 @@ class CustomerProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Marvin McKinney',
-                style: CustomTextStyle.black_24_w800_171716,
+                '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
               ),
               SizedBox(width: 5.w),
               SvgPicture.asset('assets/icons/share.svg'),
