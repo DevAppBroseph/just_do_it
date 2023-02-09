@@ -876,56 +876,59 @@ class _CustomerState extends State<Customer> {
     dateTime = null;
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) => Column(
-              children: [
-                Spacer(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 40.h,
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            Spacer(),
-                            CupertinoButton(
-                              padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              borderRadius: BorderRadius.zero,
-                              child: Text(
-                                'Готово',
-                                style: TextStyle(
-                                    fontSize: 11.sp, color: Colors.black),
-                              ),
-                              onPressed: () {
-                                if (dateTime == null) {
-                                  dateDocController.text =
-                                      DateFormat('dd.MM.yyyy')
-                                          .format(DateTime.now());
-                                }
+        builder: (_) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: Column(
+                children: [
+                  Spacer(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40.h,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              CupertinoButton(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                borderRadius: BorderRadius.zero,
+                                child: Text(
+                                  'Готово',
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  if (dateTime == null) {
+                                    dateDocController.text =
+                                        DateFormat('dd.MM.yyyy')
+                                            .format(DateTime.now());
+                                  }
 
-                                Navigator.of(ctx).pop();
-                              },
-                            ),
-                            SizedBox(width: 5.w),
-                          ],
+                                  Navigator.of(ctx).pop();
+                                },
+                              ),
+                              SizedBox(width: 5.w),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 200.h,
-                  color: Colors.white,
-                  child: CupertinoDatePicker(
-                      mode: CupertinoDatePickerMode.date,
-                      initialDateTime: DateTime.now(),
-                      onDateTimeChanged: (val) {
-                        dateTime = val;
-                        dateDocController.text =
-                            DateFormat('dd.MM.yyyy').format(val);
-                      }),
-                ),
-              ],
+                    ],
+                  ),
+                  Container(
+                    height: 200.h,
+                    color: Colors.white,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          dateTime = val;
+                          dateDocController.text =
+                              DateFormat('dd.MM.yyyy').format(val);
+                        }),
+                  ),
+                ],
+              ),
             ));
   }
 

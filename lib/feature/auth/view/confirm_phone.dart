@@ -87,150 +87,203 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
         builder: (context, snapshot) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 60.h),
-                  Row(
-                    children: [
-                      Text(
-                        'Подтверждение телефона ',
-                        style: CustomTextStyle.black_20_w700,
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 143.h),
+            body: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: 60.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Подтверждение телефона ',
+                            style: CustomTextStyle.black_20_w700,
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 143.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Column(
+                        children: [
+                          RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Код подтверждения отправлен на\n',
+                                  style: CustomTextStyle.black_14_w400_515150,
+                                ),
+                                TextSpan(
+                                  text: widget.phone,
+                                  style: CustomTextStyle.black_14_w400_171716,
+                                ),
+                              ])),
+                          SizedBox(height: 18.h),
+                          SizedBox(
+                            height: 70.h,
+                            child: Pinput(
+                              pinAnimationType: PinAnimationType.none,
+                              showCursor: false,
+                              length: 4,
+                              androidSmsAutofillMethod:
+                                  AndroidSmsAutofillMethod.smsRetrieverApi,
+                              controller: codeController,
+                              focusNode: focusNode,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              onChanged: (value) {
+                                if (value.length == 4) focusNode.unfocus();
+                              },
+                              onTap: () {
+                                setState(() {});
+                              },
+                              defaultPinTheme: PinTheme(
+                                width: 77.h,
+                                height: 70.h,
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.greyEAECEE,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                textStyle: CustomTextStyle.black_24_w600_171716,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 40.h),
+                          if (!widget.register)
+                            CustomTextField(
+                              hintText: 'Новый пароль',
+                              height: 50.h,
+                              obscureText: true,
+                              focusNode: focusNodePassword,
+                              textEditingController: passwordController,
+                              hintStyle: CustomTextStyle.grey_12_w400,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 18.w, vertical: 18.h),
+                            ),
+                          SizedBox(height: 40.h),
+                          // timer != null && timer!.isActive
+                          //     ?
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Повторно отправить код ',
+                                  style: CustomTextStyle.grey_14_w400,
+                                ),
+                                TextSpan(
+                                  text: '$currentSecond сек.',
+                                  style: CustomTextStyle.black_14_w400_171716,
+                                ),
+                              ],
+                            ),
+                          )
+                          // : GestureDetector(
+                          //     onTap: () {},
+                          //     child: Text(
+                          //       'Повторно отправить код',
+                          //       style: CustomTextStyle.black_12_w400_515150,
+                          //     ),
+                          //   ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20.h),
+                          CustomButton(
+                            onTap: () {
+                              if (widget.register) {
+                                if (codeController.text.isNotEmpty) {
+                                  showLoaderWrapper(context);
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                      ConfirmCodeEvent(
+                                          widget.phone, codeController.text));
+                                } else {
+                                  showAlertToast('Введите код');
+                                }
+                              } else {
+                                if (codeController.text.isEmpty) {
+                                  showAlertToast('Введите код');
+                                } else if (passwordController.text.isEmpty) {
+                                  showAlertToast('Введите пароль');
+                                } else {
+                                  showLoaderWrapper(context);
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                      RestoreCodeCheckEvent(
+                                          widget.phone,
+                                          codeController.text,
+                                          passwordController.text));
+                                }
+                              }
+                            },
+                            btnColor: ColorStyles.yellowFFD70A,
+                            textLabel: Text(
+                              'Подтвердить',
+                              style: CustomTextStyle.black_14_w600_171716,
+                            ),
+                          ),
+                          SizedBox(height: 18.h),
+                          CustomButton(
+                            onTap: () => Navigator.of(context).pop(),
+                            btnColor: ColorStyles.greyE0E6EE,
+                            textLabel: Text(
+                              'Назад',
+                              style: CustomTextStyle.black_14_w600_515150,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 34.h),
+                  ],
+                ),
+                if (MediaQuery.of(context).viewInsets.bottom > 0 &&
+                    focusNode.hasFocus)
                   Column(
                     children: [
-                      RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: 'Код подтверждения отправлен на\n',
-                              style: CustomTextStyle.black_14_w400_515150,
-                            ),
-                            TextSpan(
-                              text: widget.phone,
-                              style: CustomTextStyle.black_14_w400_171716,
-                            ),
-                          ])),
-                      SizedBox(height: 18.h),
-                      SizedBox(
-                        height: 70.h,
-                        child: Pinput(
-                          pinAnimationType: PinAnimationType.none,
-                          showCursor: false,
-                          length: 4,
-                          androidSmsAutofillMethod:
-                              AndroidSmsAutofillMethod.smsRetrieverApi,
-                          controller: codeController,
-                          focusNode: focusNode,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          onChanged: (value) {
-                            if (value.length == 4) focusNode.unfocus();
-                          },
-                          onTap: () {},
-                          keyboardType: TextInputType.datetime,
-                          defaultPinTheme: PinTheme(
-                            width: 77.h,
-                            height: 70.h,
-                            decoration: BoxDecoration(
-                              color: ColorStyles.greyEAECEE,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            textStyle: CustomTextStyle.black_24_w600_171716,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 40.h),
-                      if (!widget.register)
-                        CustomTextField(
-                          hintText: 'Новый пароль',
-                          height: 50.h,
-                          obscureText: true,
-                          focusNode: focusNodePassword,
-                          textEditingController: passwordController,
-                          hintStyle: CustomTextStyle.grey_12_w400,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 18.w, vertical: 18.h),
-                        ),
-                      SizedBox(height: 40.h),
-                      // timer != null && timer!.isActive
-                      //     ?
-                      RichText(
-                        text: TextSpan(
+                      const Spacer(),
+                      AnimatedPadding(
+                        duration: const Duration(milliseconds: 0),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Row(
                           children: [
-                            TextSpan(
-                              text: 'Повторно отправить код ',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            TextSpan(
-                              text: '$currentSecond сек.',
-                              style: CustomTextStyle.black_14_w400_171716,
+                            Expanded(
+                              child: Container(
+                                color: Colors.grey[200],
+                                child: MediaQuery(
+                                  data: MediaQuery.of(context)
+                                      .copyWith(textScaleFactor: 1.0),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: InkWell(
+                                        onTap: () {
+                                          focusNode.unfocus();
+                                        },
+                                        child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 9.0,
+                                              horizontal: 12.0,
+                                            ),
+                                            child: const Text('Готово')),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      )
-                      // : GestureDetector(
-                      //     onTap: () {},
-                      //     child: Text(
-                      //       'Повторно отправить код',
-                      //       style: CustomTextStyle.black_12_w400_515150,
-                      //     ),
-                      //   ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Column(
-                    children: [
-                      SizedBox(height: 20.h),
-                      CustomButton(
-                        onTap: () {
-                          if (widget.register) {
-                            if (codeController.text.isNotEmpty) {
-                              showLoaderWrapper(context);
-                              BlocProvider.of<AuthBloc>(context).add(
-                                  ConfirmCodeEvent(
-                                      widget.phone, codeController.text));
-                            } else {
-                              showAlertToast('Введите код');
-                            }
-                          } else {
-                            if (codeController.text.isEmpty) {
-                              showAlertToast('Введите код');
-                            } else if (passwordController.text.isEmpty) {
-                              showAlertToast('Введите пароль');
-                            } else {
-                              showLoaderWrapper(context);
-                              BlocProvider.of<AuthBloc>(context).add(
-                                  RestoreCodeCheckEvent(
-                                      widget.phone,
-                                      codeController.text,
-                                      passwordController.text));
-                            }
-                          }
-                        },
-                        btnColor: ColorStyles.yellowFFD70A,
-                        textLabel: Text(
-                          'Подтвердить',
-                          style: CustomTextStyle.black_14_w600_171716,
-                        ),
-                      ),
-                      SizedBox(height: 18.h),
-                      CustomButton(
-                        onTap: () => Navigator.of(context).pop(),
-                        btnColor: ColorStyles.greyE0E6EE,
-                        textLabel: Text(
-                          'Назад',
-                          style: CustomTextStyle.black_14_w600_515150,
-                        ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: 34.h),
-                ],
-              ),
+                  )
+              ],
             ),
           );
         },

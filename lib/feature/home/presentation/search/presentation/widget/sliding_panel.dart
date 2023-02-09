@@ -91,7 +91,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget panel(BuildContext context) {
-    print('object $typeFilter');
+    print(
+        'object ${MediaQuery.of(context).viewInsets.bottom}  ${focusCoastMin.hasFocus} ${focusCoastMax.hasFocus} ${focusCoastKeyWord.hasFocus}');
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -104,41 +105,91 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             color: ColorStyles.whiteFFFFFF,
           ),
-          child: Column(
+          child: Stack(
             children: [
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    typeFilter == TypeFilter.main
-                        ? mainFilter()
-                        : typeFilter == TypeFilter.category
-                            ? categoryFirst()
-                            : typeFilter == TypeFilter.category1
-                                ? categorySecond('Курьерские услуги')
-                                : typeFilter == TypeFilter.date
-                                    ? dateFilter()
-                                    : typeFilter == TypeFilter.country
-                                        ? countryFilter()
-                                        : const SizedBox()
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: CustomButton(
-                  onTap: () {
-                    widget.panelController.animatePanelToPosition(0);
-                  },
-                  btnColor: ColorStyles.yellowFFD70A,
-                  textLabel: Text(
-                    'Показать задания',
-                    style: CustomTextStyle.black_14_w600_171716,
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        typeFilter == TypeFilter.main
+                            ? mainFilter()
+                            : typeFilter == TypeFilter.category
+                                ? categoryFirst()
+                                : typeFilter == TypeFilter.category1
+                                    ? categorySecond('Курьерские услуги')
+                                    : typeFilter == TypeFilter.date
+                                        ? dateFilter()
+                                        : typeFilter == TypeFilter.country
+                                            ? countryFilter()
+                                            : const SizedBox()
+                      ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: CustomButton(
+                      onTap: () {
+                        widget.panelController.animatePanelToPosition(0);
+                      },
+                      btnColor: ColorStyles.yellowFFD70A,
+                      textLabel: Text(
+                        'Показать задания',
+                        style: CustomTextStyle.black_14_w600_171716,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.h),
+                ],
               ),
-              SizedBox(height: 30.h),
+              if (MediaQuery.of(context).viewInsets.bottom > 0 &&
+                  (focusCoastMin.hasFocus ||
+                      focusCoastMax.hasFocus ||
+                      focusCoastKeyWord.hasFocus))
+                Column(
+                  children: [
+                    Spacer(),
+                    AnimatedPadding(
+                      duration: const Duration(milliseconds: 0),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              color: Colors.grey[200],
+                              child: MediaQuery(
+                                data: MediaQuery.of(context)
+                                    .copyWith(textScaleFactor: 1.0),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: InkWell(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        slide = false;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 9.0,
+                                            horizontal: 12.0,
+                                          ),
+                                          child: const Text('Готово')),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
             ],
           ),
         ),
@@ -430,7 +481,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 CustomTextField(
                                   height: 20.h,
                                   width: 80.w,
+                                  textInputType: TextInputType.number,
                                   focusNode: focusCoastMin,
+                                  actionButton: false,
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
@@ -487,6 +540,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   height: 20.h,
                                   width: 80.w,
                                   focusNode: focusCoastMax,
+                                  actionButton: false,
+                                  textInputType: TextInputType.number,
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
@@ -553,12 +608,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                         CustomTextField(
                                           height: 60.h,
                                           width: 250.w,
+                                          actionButton: false,
+                                          textInputType: TextInputType.name,
                                           focusNode: focusCoastKeyWord,
                                           onTap: () {
                                             slide = true;
                                             Future.delayed(
-                                                Duration(milliseconds: 200),
-                                                () {
+                                                const Duration(
+                                                    milliseconds: 200), () {
                                               mainScrollController.animateTo(
                                                   heightPanel,
                                                   duration: const Duration(
@@ -1049,15 +1106,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         ),
         country.select
             ? country.name == 'Россия'
-                ? asd(countryRussia)
-                : asd(countryOAE)
-            : SizedBox(),
-        country.select ? Divider() : SizedBox()
+                ? listRegion(countryRussia)
+                : listRegion(countryOAE)
+            : const SizedBox(),
+        country.select ? const Divider() : const SizedBox()
       ],
     );
   }
 
-  Widget asd(List<City> region) {
+  Widget listRegion(List<City> region) {
     return SizedBox(
       height: 200.h,
       child: ListView.builder(
@@ -1080,8 +1137,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       region[index].name,
                       style: CustomTextStyle.black_12_w500_171716,
                     ),
-                    Spacer(),
-                    if (region[index].select) Icon(Icons.check)
+                    const Spacer(),
+                    if (region[index].select) const Icon(Icons.check)
                   ],
                 ),
               ),
@@ -1386,59 +1443,62 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   void _showDatePicker(ctx, int index) {
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) => Column(
-              children: [
-                Spacer(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 40.h,
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            Spacer(),
-                            CupertinoButton(
-                              padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              borderRadius: BorderRadius.zero,
-                              child: Text(
-                                'Готово',
-                                style: TextStyle(
-                                    fontSize: 11.sp, color: Colors.black),
+        builder: (_) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40.h,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              CupertinoButton(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                borderRadius: BorderRadius.zero,
+                                child: Text(
+                                  'Готово',
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  if (index == 0 && startDate == null) {
+                                    startDate = DateTime.now();
+                                  } else if (index == 1 && endDate == null) {
+                                    endDate = DateTime.now();
+                                  }
+                                  setState(() {});
+                                  Navigator.of(ctx).pop();
+                                },
                               ),
-                              onPressed: () {
-                                if (index == 0 && startDate == null) {
-                                  startDate = DateTime.now();
-                                } else if (index == 1 && endDate == null) {
-                                  endDate = DateTime.now();
-                                }
-                                setState(() {});
-                                Navigator.of(ctx).pop();
-                              },
-                            ),
-                            SizedBox(width: 5.w),
-                          ],
+                              SizedBox(width: 5.w),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 200.h,
-                  color: Colors.white,
-                  child: CupertinoDatePicker(
-                      mode: CupertinoDatePickerMode.date,
-                      initialDateTime: DateTime.now(),
-                      onDateTimeChanged: (val) {
-                        if (index == 0) {
-                          startDate = val;
-                        } else if (index == 1) {
-                          endDate = val;
-                        }
-                        setState(() {});
-                      }),
-                ),
-              ],
+                    ],
+                  ),
+                  Container(
+                    height: 200.h,
+                    color: Colors.white,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          if (index == 0) {
+                            startDate = val;
+                          } else if (index == 1) {
+                            endDate = val;
+                          }
+                          setState(() {});
+                        }),
+                  ),
+                ],
+              ),
             ));
   }
 
