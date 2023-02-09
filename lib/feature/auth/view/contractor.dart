@@ -289,6 +289,8 @@ class _ContractorState extends State<Contractor> {
                       error += '\n\n Пароли не совпадают';
                     }
                     showAlertToast(error);
+                  } else if(phoneController.text.length < 12 || phoneController.text.length > 13) {
+                    showAlertToast('- телефон указан неверно');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
@@ -467,9 +469,10 @@ class _ContractorState extends State<Contractor> {
           formatters: [
             MaskTextInputFormatter(
               initialText: '+ ',
-              mask: '+###########',
+              mask: '+############',
               filter: {"#": RegExp(r'[0-9]')},
-            )
+            ),
+            LengthLimitingTextInputFormatter(13),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),

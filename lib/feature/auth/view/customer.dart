@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -426,9 +427,10 @@ class _CustomerState extends State<Customer> {
           formatters: [
             MaskTextInputFormatter(
               initialText: '+ ',
-              mask: '+###########',
+              mask: '+############',
               filter: {"#": RegExp(r'[0-9]')},
-            )
+            ),
+            LengthLimitingTextInputFormatter(13)
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
