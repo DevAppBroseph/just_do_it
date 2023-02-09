@@ -129,7 +129,7 @@ class _ContractorState extends State<Contractor> {
       photos.clear();
       setState(() {
         photos.addAll(files);
-        user.copyWith(images: photos);
+        // user.copyWith(images: photos);
       });
     }
   }
