@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_overlay_loader: ^2.0.0
   cached_network_image: ^3.2.3
   cupertino_rounded_corners: ^2.1.1
   pinput: ^2.2.12

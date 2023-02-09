@@ -1,10 +1,13 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
@@ -30,7 +33,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool passportAndCV = false;
   bool allCategory = false;
   bool allCity = false;
+  bool allCountry = false;
   int groupValueCity = 0;
+  int? groupValueCountry;
 
   bool slide = false;
 
@@ -39,6 +44,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
   TextEditingController keyWordController = TextEditingController();
+
+  String? country;
+  String? region;
 
   FocusNode focusCoastMin = FocusNode();
   FocusNode focusCoastMax = FocusNode();
@@ -110,10 +118,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             : typeFilter == TypeFilter.category1
                                 ? categorySecond('Курьерские услуги')
                                 : typeFilter == TypeFilter.region
-                                    ? cityFilter()
+                                    ? regionFilter()
                                     : typeFilter == TypeFilter.date
                                         ? dateFilter()
-                                        : const SizedBox()
+                                        : typeFilter == TypeFilter.country
+                                            ? countryFilter()
+                                            : const SizedBox()
                   ],
                 ),
               ),
@@ -139,6 +149,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget mainFilter() {
+    String date = '';
+    if (startDate == null && endDate == null) {
+      date =
+          '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
+    } else {
+      date =
+          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+      date +=
+          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+    }
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
@@ -237,7 +257,62 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 onTap: () {
                   BlocProvider.of<SearchBloc>(context)
                       .add(OpenSlidingPanelToEvent(686.h));
-                  typeFilter = TypeFilter.region;
+                  typeFilter = TypeFilter.country;
+                },
+                child: Container(
+                  height: 55.h,
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.greyF9F9F9,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/location.svg'),
+                      SizedBox(width: 10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'По стране',
+                            style: CustomTextStyle.grey_12_w400,
+                          ),
+                          SizedBox(height: 3.h),
+                          SizedBox(
+                            width: 200.w,
+                            child: Text(
+                              country != null && country!.isNotEmpty
+                                  ? country!
+                                  : 'Все страны',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: CustomTextStyle.black_12_w400_171716,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: ColorStyles.greyBDBDBD,
+                        size: 16.h,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              ScaleButton(
+                bound: 0.02,
+                onTap: () {
+                  if (country != null && country!.isNotEmpty) {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
+                    typeFilter = TypeFilter.region;
+                  } else {
+                    showAlertToast('Выберите страну');
+                  }
                 },
                 child: Container(
                   height: 55.h,
@@ -259,9 +334,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 3.h),
-                          Text(
-                            'Все регионы',
-                            style: CustomTextStyle.black_12_w400_171716,
+                          SizedBox(
+                            width: 200.w,
+                            child: Text(
+                              region != null && region!.isNotEmpty
+                                  ? region!
+                                  : 'Все регионы',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: CustomTextStyle.black_12_w400_171716,
+                            ),
                           ),
                         ],
                       ),
@@ -304,7 +386,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           ),
                           SizedBox(height: 3.h),
                           Text(
-                            '21.12.22 - 22.12.22',
+                            date,
                             style: CustomTextStyle.black_12_w400_171716,
                           ),
                         ],
@@ -761,7 +843,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget itemCategory2(CategorySelect category) {
-    bool state = false;
     return GestureDetector(
       onTap: () {
         // typeFilter = TypeFilter.category1;
@@ -798,7 +879,178 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget cityFilter() {
+  Widget countryFilter() {
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        SizedBox(height: 8.h),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 5.h,
+              width: 81.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.r),
+                color: ColorStyles.blueFC6554,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 27.h),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
+                typeFilter = TypeFilter.main;
+              },
+              child: Transform.rotate(
+                angle: pi,
+                child: SvgPicture.asset(
+                  'assets/icons/arrow_right.svg',
+                  height: 16.h,
+                  width: 16.h,
+                ),
+              ),
+            ),
+            SizedBox(width: 12.h),
+            Text(
+              'Страны',
+              style: CustomTextStyle.black_20_w700,
+            ),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        ScaleButton(
+          bound: 0.02,
+          child: Container(
+            height: 55.h,
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Все страны',
+                  style: CustomTextStyle.black_12_w400_171716,
+                ),
+                const Spacer(),
+                Switch.adaptive(
+                  value: allCountry,
+                  onChanged: (value) {
+                    allCountry = !allCountry;
+                    String str = '';
+                    for (var element in countryList) {
+                      element.select = value;
+                      str += '${element.name}, ';
+                    }
+                    country = str;
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20.h),
+        ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(bottom: 50.h),
+          children: [
+            Builder(
+              builder: (context) {
+                List<Widget> items = [];
+                for (int i = 0; i < countryList.length; i++) {
+                  items.add(itemCountry(countryList[i], i));
+                }
+
+                return Column(
+                  children: items,
+                );
+              },
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget itemCountry(City country, int index) {
+    return GestureDetector(
+      onTap: () {
+        country.select = !country.select;
+        String str = '';
+        for (int i = 0; i < countryList.length; i++) {
+          if (countryList[i].select && str.isEmpty) {
+            str += '${countryList[i].name}';
+          } else if (countryList[i].select) str += ', ${countryList[i].name}';
+        }
+        allCountry = false;
+        this.country = str;
+        // if (groupValueCity) groupValueCity = index;
+        setState(() {});
+      },
+      child: SizedBox(
+        height: 50.h,
+        child: Column(
+          children: [
+            const Spacer(),
+            Row(
+              children: [
+                Text(
+                  country.name,
+                  style: CustomTextStyle.black_12_w500_171716,
+                ),
+                const Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: 18.h,
+                      width: 18.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFEAECEE),
+                      ),
+                    ),
+                    Container(
+                      height: 10.h,
+                      width: 10.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color:
+                            country.select ? Colors.black : Colors.transparent,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const Spacer(),
+            const Divider()
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<City> regionList = [];
+
+  Widget regionFilter() {
+    regionList.clear();
+    for (var element in countryList) {
+      if (element.select && element.name == 'Россия') {
+        regionList.addAll(countryRussia);
+      } else if (element.select && element.name == 'ОАЭ') {
+        regionList.addAll(countryOAE);
+      }
+    }
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -864,6 +1116,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   value: allCity,
                   onChanged: (value) {
                     allCity = !allCity;
+                    for (var element in regionList) {
+                      element.select = value;
+                    }
                     setState(() {});
                   },
                 ),
@@ -879,8 +1134,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             Builder(
               builder: (context) {
                 List<Widget> items = [];
-                for (int i = 0; i < city.length; i++) {
-                  items.add(itemCity(city[i], i));
+                for (int i = 0; i < regionList.length; i++) {
+                  items.add(itemRegion(regionList[i], i));
                 }
                 return Column(
                   children: items,
@@ -893,10 +1148,20 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget itemCity(City city, int index) {
+  Widget itemRegion(City city, int index) {
     return GestureDetector(
       onTap: () {
-        groupValueCity = index;
+        allCity = !allCity;
+
+        city.select = !city.select;
+        String str = '';
+        for (int i = 0; i < regionList.length; i++) {
+          if (regionList[i].select && str.isEmpty) {
+            str += '${regionList[i].name}';
+          } else if (regionList[i].select) str += ', ${regionList[i].name}';
+        }
+        allCity = false;
+        this.region = str;
         setState(() {});
       },
       child: SizedBox(
@@ -911,11 +1176,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   style: CustomTextStyle.black_12_w500_171716,
                 ),
                 const Spacer(),
-                CustomCircleRadioButtonItem(
-                  label: '',
-                  value: index,
-                  groupValue: groupValueCity,
-                )
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: 18.h,
+                      width: 18.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFEAECEE),
+                      ),
+                    ),
+                    Container(
+                      height: 10.h,
+                      width: 10.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: city.select ? Colors.black : Colors.transparent,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             const Spacer(),
@@ -974,6 +1255,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 20.h),
         ScaleButton(
           bound: 0.02,
+          onTap: () {
+            _showDatePicker(context, 0);
+          },
           child: Container(
             height: 56.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -992,7 +1276,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      'Выберите дату начала выполнения',
+                      startDate != null
+                          ? DateFormat('dd.MM.yyyy').format(startDate!)
+                          : 'Выберите дату начала выполнения',
                       style: CustomTextStyle.black_12_w400_171716,
                     ),
                   ],
@@ -1010,6 +1296,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         ),
         ScaleButton(
           bound: 0.02,
+          onTap: () {
+            _showDatePicker(context, 1);
+          },
           child: Container(
             height: 56.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -1028,7 +1317,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      'Выберите дату завершения задачи',
+                      endDate != null
+                          ? DateFormat('dd.MM.yyyy').format(endDate!)
+                          : 'Выберите дату завершения задачи',
                       style: CustomTextStyle.black_12_w400_171716,
                     ),
                   ],
@@ -1041,6 +1332,68 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       ],
     );
   }
+
+  void _showDatePicker(ctx, int index) {
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Column(
+              children: [
+                Spacer(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 40.h,
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            CupertinoButton(
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
+                              borderRadius: BorderRadius.zero,
+                              child: Text(
+                                'Готово',
+                                style: TextStyle(
+                                    fontSize: 11.sp, color: Colors.black),
+                              ),
+                              onPressed: () {
+                                if (index == 0 && startDate == null) {
+                                  startDate = DateTime.now();
+                                } else if (index == 1 && endDate == null) {
+                                  endDate = DateTime.now();
+                                }
+                                setState(() {});
+                                Navigator.of(ctx).pop();
+                              },
+                            ),
+                            SizedBox(width: 5.w),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 200.h,
+                  color: Colors.white,
+                  child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.date,
+                      initialDateTime: DateTime.now(),
+                      onDateTimeChanged: (val) {
+                        if (index == 0) {
+                          startDate = val;
+                        } else if (index == 1) {
+                          endDate = val;
+                        }
+                        setState(() {});
+                      }),
+                ),
+              ],
+            ));
+  }
+
+  DateTime? startDate = DateTime.now();
+  DateTime? endDate = DateTime.now();
 
   List<Category> category = [
     Category(icon: 'assets/images/package.png', title: 'Курьерские услуги'),
@@ -1055,23 +1408,28 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     Category(icon: 'assets/images/computer_disk.png', title: 'Разработка ПО'),
   ];
 
-  List<City> city = [
-    City('Московская область'),
+  List<City> countryList = [
+    City('Россия'),
+    City('ОАЭ'),
+  ];
+
+  List<City> countryRussia = [
     City('Краснодарский край'),
     City('Красноярский край'),
-    City('Иркутская область'),
+    City('Пермский край'),
+    City('Белгородская область'),
+    City('Курская область'),
     City('Московская область'),
-    City('Краснодарский край'),
-    City('Красноярский край'),
-    City('Иркутская область'),
-    City('Московская область'),
-    City('Краснодарский край'),
-    City('Красноярский край'),
-    City('Иркутская область'),
-    City('Московская область'),
-    City('Краснодарский край'),
-    City('Красноярский край'),
-    City('Иркутская область'),
+    City('Смоленская область'),
+  ];
+  List<City> countryOAE = [
+    City('Дубай'),
+    City('Абу-Даби'),
+    City('Абу-Даби'),
+    City('Аджмана'),
+    City('Фуджейры'),
+    City('Рас-Эль-Хаймы'),
+    City('Шарджи'),
   ];
 
   List<CategorySelect> listCategory2 = [

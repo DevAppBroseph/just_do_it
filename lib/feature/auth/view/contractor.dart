@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,10 +16,12 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
+import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:scale_button/scale_button.dart';
 
 class Contractor extends StatefulWidget {
@@ -41,7 +44,7 @@ class _ContractorState extends State<Contractor> {
   bool additionalInfo = false;
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController(text: '+');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
@@ -71,13 +74,13 @@ class _ContractorState extends State<Contractor> {
 
   List<String> country = ['Россия', 'ОАЭ'];
   List<String> countryRussia = [
-    'Москва',
-    'Санкт-Петербург',
-    'Томск',
-    'Казань',
-    'Екатеренбург',
-    'Белгород',
-    'Крым',
+    'Краснодарский край',
+    'Красноярский край',
+    'Пермский край',
+    'Белгородская область',
+    'Курская область',
+    'Московская область',
+    'Смоленская область',
   ];
   List<String> countryOAE = [
     'Дубай',
@@ -202,6 +205,7 @@ class _ContractorState extends State<Contractor> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        Loader.hide();
         if (current is SendProfileSuccessState) {
           Navigator.of(context).pushNamed(AppRoute.confirmCode,
               arguments: [phoneController.text, true]);
@@ -271,6 +275,12 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
 
+                  String email = emailController.text;
+
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(email);
+
                   if (errorsFlag) {
                     if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
@@ -286,6 +296,8 @@ class _ContractorState extends State<Contractor> {
                     showAlertToast('- пароли не совпадают');
                   } else if (passwordController.text.length < 6) {
                     showAlertToast('- минимальная длинна пароля 6 символов');
+                  } else if (!emailValid) {
+                    showAlertToast('Введите корректный адрес почты');
                   } else if (!confirmTermsPolicy) {
                     showAlertToast(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
@@ -305,7 +317,7 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
-                    error += '\n - город';
+                    error += '\n - регион';
                     errorsFlag = true;
                   }
                   if (typeCategories.isEmpty) {
@@ -330,6 +342,8 @@ class _ContractorState extends State<Contractor> {
                   if (errorsFlag) {
                     showAlertToast(error);
                   } else {
+                    showLoaderWrapper(context);
+
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user));
                   }
@@ -450,6 +464,13 @@ class _ContractorState extends State<Contractor> {
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
           hintStyle: CustomTextStyle.grey_12_w400,
+          formatters: [
+            MaskTextInputFormatter(
+              initialText: '+ ',
+              mask: '+###########',
+              filter: {"#": RegExp(r'[0-9]')},
+            )
+          ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -473,6 +494,13 @@ class _ContractorState extends State<Contractor> {
           },
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
+          },
+          onTap: () {
+            Future.delayed(Duration(milliseconds: 250), () {
+              scrollController1.animateTo(500.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
+            });
           },
         ),
         SizedBox(height: 16.h),
@@ -508,6 +536,13 @@ class _ContractorState extends State<Contractor> {
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
           },
+          onTap: () {
+            Future.delayed(Duration(milliseconds: 300), () {
+              scrollController1.animateTo(300.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
+            });
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
@@ -541,6 +576,13 @@ class _ContractorState extends State<Contractor> {
           },
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
+          },
+          onTap: () {
+            Future.delayed(Duration(milliseconds: 300), () {
+              scrollController1.animateTo(350.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
+            });
           },
         ),
         SizedBox(height: 16.h),
@@ -636,7 +678,7 @@ class _ContractorState extends State<Contractor> {
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страна',
+            hintText: 'Страну',
             hintStyle: CustomTextStyle.grey_12_w400,
             height: 50.h,
             enabled: false,
@@ -660,14 +702,14 @@ class _ContractorState extends State<Contractor> {
                   setState(() {});
                 },
                 countryController.text == 'Россия' ? countryRussia : countryOAE,
-                'Выберите город',
+                'Выберите регион',
               );
             } else {
-              showAlertToast('Чтобы выбрать город, сначала укажите страну');
+              showAlertToast('Чтобы выбрать регион, сначала укажите страну');
             }
           },
           child: CustomTextField(
-            hintText: 'Город',
+            hintText: 'Регион',
             hintStyle: CustomTextStyle.grey_12_w400,
             height: 50.h,
             enabled: false,
@@ -709,10 +751,24 @@ class _ContractorState extends State<Contractor> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    SvgPicture.asset(
-                      SvgImg.arrowBottom,
-                      width: 16.h,
-                    ),
+                    documentTypeController.text.isNotEmpty
+                        ? GestureDetector(
+                            onTap: () {
+                              additionalInfo = false;
+                              documentTypeController.text = '';
+                              serialDocController.text = '';
+                              numberDocController.text = '';
+                              whoGiveDocController.text = '';
+                              dateDocController.text = '';
+                              dateTime = null;
+                              setState(() {});
+                            },
+                            child: Icon(Icons.close),
+                          )
+                        : SvgPicture.asset(
+                            SvgImg.arrowBottom,
+                            width: 16.h,
+                          ),
                   ],
                 ),
               )
@@ -993,6 +1049,14 @@ class _ContractorState extends State<Contractor> {
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
+              onTap: () {
+                Future.delayed(Duration(milliseconds: 300), () {
+                  scrollController2.animateTo(200.h,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                });
+              },
+              textInputType: TextInputType.number,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
@@ -1010,6 +1074,13 @@ class _ContractorState extends State<Contractor> {
               },
               height: 50.h,
               textInputType: TextInputType.number,
+              onTap: () {
+                Future.delayed(Duration(milliseconds: 300), () {
+                  scrollController2.animateTo(200.h,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                });
+              },
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
@@ -1022,6 +1093,13 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Кем выдан',
+          onTap: () {
+            Future.delayed(Duration(milliseconds: 300), () {
+              scrollController2.animateTo(300.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
+            });
+          },
           focusNode: focusNodeWhoTake,
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
@@ -1057,51 +1135,56 @@ class _ContractorState extends State<Contractor> {
     dateTime = null;
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) => Container(
-              height: 300,
-              color: const Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  SizedBox(height: 5.h),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      SizedBox(
-                        height: 30.h,
-                        width: 80.w,
-                        child: CupertinoButton(
-                          color: Colors.grey[400],
-                          padding: EdgeInsets.zero,
-                          child: Text(
-                            'Готово',
-                            style: TextStyle(fontSize: 11.sp),
-                          ),
-                          onPressed: () {
-                            if (dateTime == null) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy')
-                                  .format(DateTime.now());
-                            }
+        builder: (_) => Column(
+              children: [
+                Spacer(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 40.h,
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            CupertinoButton(
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
+                              borderRadius: BorderRadius.zero,
+                              child: Text(
+                                'Готово',
+                                style: TextStyle(
+                                    fontSize: 11.sp, color: Colors.black),
+                              ),
+                              onPressed: () {
+                                if (dateTime == null) {
+                                  dateDocController.text =
+                                      DateFormat('dd.MM.yyyy')
+                                          .format(DateTime.now());
+                                }
 
-                            Navigator.of(ctx).pop();
-                          },
+                                Navigator.of(ctx).pop();
+                              },
+                            ),
+                            SizedBox(width: 5.w),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 5.h),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 200.h,
-                    child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
-                        onDateTimeChanged: (val) {
-                          dateTime = val;
-                          dateDocController.text =
-                              DateFormat('dd.MM.yyyy').format(val);
-                        }),
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 200.h,
+                  color: Colors.white,
+                  child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.date,
+                      initialDateTime: DateTime.now(),
+                      onDateTimeChanged: (val) {
+                        dateTime = val;
+                        dateDocController.text =
+                            DateFormat('dd.MM.yyyy').format(val);
+                      }),
+                ),
+              ],
             ));
   }
 

@@ -34,8 +34,10 @@ class CustomTextField extends StatelessWidget {
   TextStyle? hintStyle;
   TextStyle? style;
   EdgeInsets? contentPadding;
+  bool dismisTap;
   CustomTextField({
     Key? key,
+    this.dismisTap = false,
     this.onTap,
     this.readOnly,
     this.inputAction,
@@ -90,6 +92,7 @@ class CustomTextField extends StatelessWidget {
         width: widthOfScreen,
         child: KeyboardActions(
           disableScroll: true,
+          tapOutsideToDismiss: dismisTap,
           config: KeyboardActionsConfig(
             defaultDoneWidget: GestureDetector(
               onTap: () {

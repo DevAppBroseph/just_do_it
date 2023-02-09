@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
@@ -9,6 +10,7 @@ import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
+import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -52,6 +54,7 @@ class _MainAuthPageState extends State<AuthPage> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+        Loader.hide();
         if (current is ResetPasswordSuccessState) {
           Navigator.of(context).pushNamed(AppRoute.confirmCode,
               arguments: [loginController.text, false]);
@@ -107,9 +110,11 @@ class _MainAuthPageState extends State<AuthPage> {
                         onTap: () {
                           if (forgotPassword &&
                               loginController.text.isNotEmpty) {
+                            showLoaderWrapper(context);
                             BlocProvider.of<AuthBloc>(context)
                                 .add(RestoreCodeEvent(loginController.text));
                           } else {
+                            showLoaderWrapper(context);
                             BlocProvider.of<AuthBloc>(context).add(SignInEvent(
                                 signinLoginController.text,
                                 signinPasswordController.text));
