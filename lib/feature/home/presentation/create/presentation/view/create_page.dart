@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
@@ -95,7 +98,12 @@ class _CreatePageState extends State<CreatePage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.h, vertical: 20.h),
                       child: CustomButton(
-                        onTap: () {},
+                        onTap: () {
+                          final bloc = BlocProvider.of<ProfileBloc>(context);
+                          if (bloc.access == null) {
+                            Navigator.of(context).pushNamed(AppRoute.auth);
+                          }
+                        },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
                           'Создать',

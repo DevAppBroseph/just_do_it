@@ -19,6 +19,41 @@ class CustomTextStyle {
   );
 
   // black
+  static TextStyle black_18_w600 = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_18_w700_171716 = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w700,
+    color: ColorStyles.black,
+    fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_24_w800_171716 = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w800,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_14_w500_171716 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_16_w500_171716 = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w500,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
   static TextStyle black_12_w500_171716 = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
@@ -110,6 +145,13 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
+  static TextStyle black_32_w800_171716 = TextStyle(
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w800,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
   // Grey
   static TextStyle grey_10_w400 = TextStyle(
     fontSize: 10.sp,
@@ -144,6 +186,22 @@ class CustomTextStyle {
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.redFF5151,
+    fontFamily: 'SFPro',
+  );
+
+  // purple
+  static TextStyle purple_18_w700 = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w700,
+    color: ColorStyles.purpleA401C4,
+    fontFamily: 'SFPro',
+  );
+
+  // purple
+  static TextStyle blue_12_w400_336FEE = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.blue336FEE,
     fontFamily: 'SFPro',
   );
 }

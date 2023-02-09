@@ -44,18 +44,54 @@ class _CustomerState extends State<Customer> {
   TextEditingController numberDocController = TextEditingController();
   TextEditingController whoGiveDocController = TextEditingController();
   TextEditingController dateDocController = TextEditingController();
+  TextEditingController documentTypeController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   String? gender;
+  TextEditingController countryController = TextEditingController();
   TextEditingController regionController = TextEditingController();
   List<String> typeDocument = [];
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
   File? image;
-  // List<Uint8List> photos = [];
-  // Uint8List? cv;
+  GlobalKey keyCountry = GlobalKey();
+  GlobalKey keyRegion = GlobalKey();
   bool confirmTermsPolicy = false;
+  DateTime? dateTime;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
+  List<String> country = ['Россия', 'ОАЭ'];
+  List<String> countryRussia = [
+    'Москва',
+    'Санкт-Петербург',
+    'Томск',
+    'Казань',
+    'Екатеренбург',
+    'Белгород',
+    'Крым',
+  ];
+  List<String> countryOAE = [
+    'Дубай',
+    'Абу-Даби',
+    'Аджмана',
+    'Фуджейры',
+    'Рас-Эль-Хаймы',
+    'Шарджи',
+  ];
+
+  FocusNode focusNodeAbout = FocusNode();
+  FocusNode focusNodeName = FocusNode();
+  FocusNode focusNodeLastName = FocusNode();
+  FocusNode focusNodePhone = FocusNode();
+  FocusNode focusNodeEmail = FocusNode();
+  FocusNode focusNodePassword1 = FocusNode();
+  FocusNode focusNodePassword2 = FocusNode();
+  FocusNode focusNodeSeria = FocusNode();
+  FocusNode focusNodeNumber = FocusNode();
+  FocusNode focusNodeWhoTake = FocusNode();
+
+  ScrollController scrollController1 = ScrollController();
+  ScrollController scrollController2 = ScrollController();
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -63,6 +99,53 @@ class _CustomerState extends State<Customer> {
       File? file = File(getMedia.path);
       image = file;
       user.copyWith(photo: image);
+    }
+    setState(() {});
+  }
+
+  void requestNextEmptyFocusStage1() {
+    if (firstnameController.text.isEmpty) {
+      focusNodeName.requestFocus();
+      scrollController1.animateTo(0,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (lastnameController.text.isEmpty) {
+      focusNodeLastName.requestFocus();
+      scrollController1.animateTo(50.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (phoneController.text.isEmpty) {
+      focusNodePhone.requestFocus();
+      scrollController1.animateTo(100.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (emailController.text.isEmpty) {
+      focusNodeEmail.requestFocus();
+      scrollController1.animateTo(150.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    }
+  }
+
+  void requestNextEmptyFocusStage2() {
+    if (passwordController.text.isEmpty) {
+      focusNodePassword1.requestFocus();
+      scrollController2.animateTo(0,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (repeatPasswordController.text.isEmpty) {
+      focusNodePassword2.requestFocus();
+      scrollController2.animateTo(50.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (additionalInfo) {
+      if (serialDocController.text.isEmpty) {
+        focusNodeSeria.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      } else if (numberDocController.text.isEmpty) {
+        focusNodeNumber.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      } else if (whoGiveDocController.text.isEmpty) {
+        focusNodeWhoTake.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      }
     }
   }
 
@@ -86,6 +169,8 @@ class _CustomerState extends State<Customer> {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
               messageError = 'Пользователь с такой почтой уже зарегистрирован';
+            } else if (email.contains('Enter a valid email address.')) {
+              messageError = 'Введите корректный адрес почты';
             }
           } else if (current.error!['phone_number'] != null &&
               current.error!['phone_number'][0] != null) {
@@ -94,6 +179,9 @@ class _CustomerState extends State<Customer> {
                 .contains('custom user with this Телефон already exists.')) {
               messageError =
                   'Пользователь с таким телефоном уже зарегистрирован';
+            } else if (phoneNumber
+                .contains('The phone number entered is not valid.')) {
+              messageError = 'Введите корректный номер телефона';
             }
           }
           showAlertToast(messageError);
@@ -110,6 +198,7 @@ class _CustomerState extends State<Customer> {
             CustomButton(
               onTap: () {
                 if (page == 0) {
+                  requestNextEmptyFocusStage1();
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
@@ -140,14 +229,39 @@ class _CustomerState extends State<Customer> {
                     widget.stage(2);
                   }
                 } else {
+                  requestNextEmptyFocusStage2();
                   user.copyWith(groups: [3]);
-                  String error = 'Укажите:\n';
+                  String error = 'Укажите:';
                   bool errorsFlag = false;
+
+                  if (countryController.text.isEmpty) {
+                    error += '\n - укажите страну';
+                    errorsFlag = true;
+                  }
+                  if (regionController.text.isEmpty) {
+                    error += '\n - укажите город';
+                    errorsFlag = true;
+                  }
 
                   if (passwordController.text.isEmpty ||
                       repeatPasswordController.text.isEmpty) {
-                    error += ' - пароль';
+                    error += '\n- пароль';
                     errorsFlag = true;
+                  }
+
+                  if (additionalInfo) {
+                    if (serialDocController.text.isEmpty) {
+                      error += '\n - серию докемента';
+                      errorsFlag = true;
+                    }
+                    if (numberDocController.text.isEmpty) {
+                      error += '\n - номер документа';
+                      errorsFlag = true;
+                    }
+                    if (whoGiveDocController.text.isEmpty) {
+                      error += '\n - кем был вадан документ';
+                      errorsFlag = true;
+                    }
                   }
 
                   if (errorsFlag) {
@@ -203,10 +317,12 @@ class _CustomerState extends State<Customer> {
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
       physics: const ClampingScrollPhysics(),
+      controller: scrollController1,
       shrinkWrap: true,
       children: [
         CustomTextField(
           hintText: 'Ваше имя',
+          focusNode: focusNodeName,
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: firstnameController,
@@ -215,10 +331,14 @@ class _CustomerState extends State<Customer> {
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Ваша фамилия',
+          focusNode: focusNodeLastName,
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: lastnameController,
@@ -226,6 +346,9 @@ class _CustomerState extends State<Customer> {
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
+          },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
           },
         ),
         SizedBox(height: 30.h),
@@ -272,11 +395,15 @@ class _CustomerState extends State<Customer> {
           hintText: 'Номер телефона',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          focusNode: focusNodePhone,
           textEditingController: phoneController,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
+          },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
           },
         ),
         SizedBox(height: 16.h),
@@ -284,11 +411,15 @@ class _CustomerState extends State<Customer> {
           hintText: 'E-mail',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          focusNode: focusNodeEmail,
           textEditingController: emailController,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
+          },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
           },
         ),
         SizedBox(height: 16.h),
@@ -306,10 +437,26 @@ class _CustomerState extends State<Customer> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 16.h),
-                  child: SvgPicture.asset(
-                    SvgImg.gallery,
-                    height: 15.h,
-                    width: 15.h,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        SvgImg.gallery,
+                        height: 15.h,
+                        width: 15.h,
+                      ),
+                      if (user.photo != null)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(width: 5.w),
+                            const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            )
+                          ],
+                        )
+                    ],
                   ),
                 ),
               ],
@@ -335,8 +482,7 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: Text(
-                'Согласен на обработку персональных данных и с пользовательским соглашением',
-                textAlign: TextAlign.justify,
+                'Согласен на обработку персональных данных и с\nпользовательским соглашением',
                 style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
@@ -352,12 +498,14 @@ class _CustomerState extends State<Customer> {
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
+      controller: scrollController2,
       shrinkWrap: true,
       children: [
         CustomTextField(
           hintText: 'Пароль',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -382,12 +530,16 @@ class _CustomerState extends State<Customer> {
           onChanged: (value) {
             user.copyWith(password: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage2();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Повторите пароль',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
           suffixIcon: GestureDetector(
             onTap: () {
@@ -406,21 +558,68 @@ class _CustomerState extends State<Customer> {
                     ],
                   ),
           ),
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage2();
+          },
           textEditingController: repeatPasswordController,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
         SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Регион',
-          hintStyle: CustomTextStyle.grey_12_w400,
-          height: 50.h,
-          textEditingController: regionController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) {
-            user.copyWith(region: value);
+        GestureDetector(
+          key: keyCountry,
+          onTap: () => showCountry(
+            context,
+            keyCountry,
+            (value) {
+              countryController.text = value;
+              regionController.text = '';
+              setState(() {});
+            },
+            country,
+            'Выберите страну',
+          ),
+          child: CustomTextField(
+            hintText: 'Страна',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            textEditingController: countryController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) {},
+          ),
+        ),
+        SizedBox(height: 16.h),
+        GestureDetector(
+          key: keyRegion,
+          onTap: () {
+            if (countryController.text.isNotEmpty) {
+              showRegion(
+                context,
+                keyRegion,
+                (value) {
+                  regionController.text = value;
+                  user.copyWith(region: value);
+                  setState(() {});
+                },
+                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                'Выберите город',
+              );
+            } else {
+              showAlertToast('Чтобы выбрать город, сначала укажите страну');
+            }
           },
+          child: CustomTextField(
+            hintText: 'Город',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            textEditingController: regionController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) {},
+          ),
         ),
         SizedBox(height: 16.h),
         GestureDetector(
@@ -510,24 +709,32 @@ class _CustomerState extends State<Customer> {
               hintText: 'Серия',
               hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
+              focusNode: focusNodeSeria,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
+              onFieldSubmitted: (value) {
+                requestNextEmptyFocusStage2();
+              },
             ),
             SizedBox(width: 12.w),
             CustomTextField(
               hintText: 'Номер',
               hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
+              focusNode: focusNodeNumber,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
+              onFieldSubmitted: (value) {
+                requestNextEmptyFocusStage2();
+              },
             ),
           ],
         ),
@@ -536,16 +743,21 @@ class _CustomerState extends State<Customer> {
           hintText: 'Кем выдан',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          focusNode: focusNodeWhoTake,
           textEditingController: whoGiveDocController,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage2();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Дата выдачи',
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
+          enabled: false,
           textEditingController: dateDocController,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),

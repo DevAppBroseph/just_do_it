@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:scale_button/scale_button.dart';
@@ -34,40 +35,54 @@ class _WelcomPageState extends State<WelcomPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: 60.h,
-              color: Colors.white,
-            ),
-            Container(
-              height: 40.h,
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 270.w,
-                      height: 40.h,
-                      child: CustomTextField(
-                        prefixicon: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/search1.svg',
-                              height: 12.h,
+              height: 100.h,
+              decoration: BoxDecoration(
+                color: ColorStyles.whiteFFFFFF,
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorStyles.shadowFC6554,
+                    offset: const Offset(0, -4),
+                    blurRadius: 55.r,
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: 60.h,
+                    color: ColorStyles.whiteFFFFFF,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 270.w,
+                          height: 36.h,
+                          child: CustomTextField(
+                            fillColor: ColorStyles.greyF7F7F8,
+                            prefixicon: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/search1.svg',
+                                  height: 12.h,
+                                ),
+                              ],
                             ),
-                          ],
+                            hintText: 'Поиск',
+                            textEditingController: TextEditingController(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 11.w, vertical: 11.h),
+                          ),
                         ),
-                        hintText: 'Поиск',
-                        textEditingController: TextEditingController(),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 11.w, vertical: 11.h),
-                      ),
+                        const Spacer(),
+                        SizedBox(width: 23.w),
+                        SvgPicture.asset('assets/icons/category.svg'),
+                      ],
                     ),
-                    const Spacer(),
-                    SizedBox(width: 23.w),
-                    SvgPicture.asset('assets/icons/category.svg'),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -75,7 +90,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
                 children: [
-                  Container(height: 30.h, color: Colors.white),
+                  Container(height: 30.h, color: ColorStyles.whiteFFFFFF),
                   BlocBuilder<ProfileBloc, ProfileState>(
                     builder: (context, snapshot) {
                       final bloc = BlocProvider.of<ProfileBloc>(context);
@@ -92,11 +107,11 @@ class _WelcomPageState extends State<WelcomPage> {
                         );
                       }
                       return Container(
-                        color: Colors.white,
+                        color: ColorStyles.whiteFFFFFF,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(height: 20.h),
+                            SizedBox(height: 15.h),
                             Padding(
                               padding: EdgeInsets.only(right: 24.w, left: 24.w),
                               child: SizedBox(
@@ -114,22 +129,19 @@ class _WelcomPageState extends State<WelcomPage> {
                                         children: [
                                           Text(
                                             'Добро пожаловать,',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12.sp,
-                                            ),
+                                            style: CustomTextStyle
+                                                .black_12_w400_515150,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: null,
                                           ),
                                           SizedBox(height: 8.h),
                                           Text(
+                                            // 'Елена\nКузнецова',
                                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 32.sp,
-                                            ),
+                                            style: CustomTextStyle
+                                                .black_32_w800_171716,
                                             overflow: TextOverflow.ellipsis,
-                                            maxLines: null,
+                                            maxLines: 2,
                                           ),
                                         ],
                                       ),
@@ -146,7 +158,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                             top: 4.h,
                                             bottom: 4.h),
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[100],
+                                          color: ColorStyles.greyF9F9F9,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                         ),
@@ -158,11 +170,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                           children: [
                                             Text(
                                               'Рейтинг',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 12.sp,
-                                                color: const Color(0xFFBDBDBD),
-                                              ),
+                                              style:
+                                                  CustomTextStyle.grey_12_w400,
                                             ),
                                             SizedBox(height: 6.h),
                                             Row(
@@ -172,32 +181,22 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 SizedBox(width: 4.w),
                                                 Text(
                                                   '4.5',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14.sp,
-                                                    color:
-                                                        const Color(0xFF161617),
-                                                  ),
+                                                  style: CustomTextStyle
+                                                      .black_14_w500_171716,
                                                 ),
                                               ],
                                             ),
                                             SizedBox(height: 10.h),
                                             Text(
                                               'Баллы:',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 12.sp,
-                                                color: const Color(0xFFBDBDBD),
-                                              ),
+                                              style:
+                                                  CustomTextStyle.grey_12_w400,
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
                                               '850',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.sp,
-                                                color: const Color(0xFF161617),
-                                              ),
+                                              style: CustomTextStyle
+                                                  .black_14_w500_171716,
                                             ),
                                           ],
                                         ),
@@ -207,7 +206,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 50.h),
+                            SizedBox(height: 40.h),
                           ],
                         ),
                       );
@@ -220,10 +219,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       children: [
                         Text(
                           'Посмотреть как:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16.sp,
-                          ),
+                          style: CustomTextStyle.black_16_w800,
                         ),
                       ],
                     ),
@@ -244,7 +240,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     100) -
                                 25.w,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: ColorStyles.whiteFFFFFF,
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: [
                                 BoxShadow(
@@ -272,19 +268,12 @@ class _WelcomPageState extends State<WelcomPage> {
                                     children: [
                                       Text(
                                         'Заказчик',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                        ),
+                                        style: CustomTextStyle
+                                            .black_12_w400_171716,
                                       ),
-                                      SizedBox(height: 2.h),
                                       Text(
                                         'Размести задание',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 10.sp,
-                                          color: const Color(0xFFBDBDBD),
-                                        ),
+                                        style: CustomTextStyle.grey_10_w400,
                                       ),
                                     ],
                                   ),
@@ -305,7 +294,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     100) -
                                 25.w,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: ColorStyles.whiteFFFFFF,
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: [
                                 BoxShadow(
@@ -333,19 +322,12 @@ class _WelcomPageState extends State<WelcomPage> {
                                     children: [
                                       Text(
                                         'Исполнитель',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                        ),
+                                        style: CustomTextStyle
+                                            .black_12_w400_171716,
                                       ),
-                                      SizedBox(height: 2.h),
                                       Text(
                                         'Выполняй работу',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 10.sp,
-                                          color: const Color(0xFFBDBDBD),
-                                        ),
+                                        style: CustomTextStyle.grey_10_w400,
                                       ),
                                     ],
                                   ),
@@ -406,10 +388,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                       const Spacer(),
                                       Text(
                                         'Узнай больше о проекте!',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        style: CustomTextStyle
+                                            .black_14_w600_171716,
                                       ),
                                       const Spacer(),
                                       SvgPicture.asset(
@@ -467,7 +447,7 @@ class _WelcomPageState extends State<WelcomPage> {
         }),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: ColorStyles.whiteFFFFFF,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
@@ -487,10 +467,7 @@ class _WelcomPageState extends State<WelcomPage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: CustomTextStyle.black_12_w400_515150,
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -499,11 +476,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     width: 100.w,
                     child: Text(
                       '- $choice',
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: CustomTextStyle.grey_12_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -533,7 +506,7 @@ class _WelcomPageState extends State<WelcomPage> {
         duration: const Duration(milliseconds: 300),
         height: open ? 80.h : 0.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ColorStyles.whiteFFFFFF,
           borderRadius: BorderRadius.circular(10.r),
         ),
         padding: EdgeInsets.zero,
@@ -566,10 +539,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: CustomTextStyle.black_12_w400_515150,
                   ),
                   const Spacer(),
                 ],

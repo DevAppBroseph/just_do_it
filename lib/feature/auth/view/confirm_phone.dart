@@ -29,6 +29,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
   TextEditingController codeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FocusNode focusNode = FocusNode();
+  FocusNode focusNodePassword = FocusNode();
   Timer? timer;
   int currentSecond = 59;
   void _startTimer() {
@@ -64,6 +65,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
+          print('object $current');
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
@@ -73,6 +75,8 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is ConfirmCodeRegistrErrorState) {
+            showAlertToast('Неверный код');
+          } else if(current is ConfirmRestoreErrorState) {
             showAlertToast('Неверный код');
           }
           return false;
@@ -123,6 +127,8 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                           onChanged: (value) {
                             if (value.length == 4) focusNode.unfocus();
                           },
+                          onTap: () {},
+                          keyboardType: TextInputType.datetime,
                           defaultPinTheme: PinTheme(
                             width: 77.h,
                             height: 70.h,
@@ -140,6 +146,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                           hintText: 'Новый пароль',
                           height: 50.h,
                           obscureText: true,
+                          focusNode: focusNodePassword,
                           textEditingController: passwordController,
                           hintStyle: CustomTextStyle.grey_12_w400,
                           contentPadding: EdgeInsets.symmetric(
@@ -178,15 +185,25 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                       CustomButton(
                         onTap: () {
                           if (widget.register) {
-                            BlocProvider.of<AuthBloc>(context).add(
-                                ConfirmCodeEvent(
-                                    widget.phone, codeController.text));
+                            if (codeController.text.isNotEmpty) {
+                              BlocProvider.of<AuthBloc>(context).add(
+                                  ConfirmCodeEvent(
+                                      widget.phone, codeController.text));
+                            } else {
+                              showAlertToast('Введите код');
+                            }
                           } else {
-                            BlocProvider.of<AuthBloc>(context).add(
-                                RestoreCodeCheckEvent(
-                                    widget.phone,
-                                    codeController.text,
-                                    passwordController.text));
+                            if (codeController.text.isEmpty) {
+                              showAlertToast('Введите код');
+                            } else if (passwordController.text.isEmpty) {
+                              showAlertToast('Введите пароль');
+                            } else {
+                              BlocProvider.of<AuthBloc>(context).add(
+                                  RestoreCodeCheckEvent(
+                                      widget.phone,
+                                      codeController.text,
+                                      passwordController.text));
+                            }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,

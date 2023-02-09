@@ -24,15 +24,27 @@ class _MainAuthPageState extends State<AuthPage> {
   final visiblePasswordController = StreamController<bool>();
   bool visiblePassword = false;
   bool forgotPassword = false;
-  TextEditingController loginController = TextEditingController();
 
+  TextEditingController loginController = TextEditingController();
   TextEditingController signinLoginController = TextEditingController();
   TextEditingController signinPasswordController = TextEditingController();
+
+  FocusNode focusNodeLogin = FocusNode();
+  FocusNode focusNodePassword = FocusNode();
+  FocusNode focusNodeResetLogin = FocusNode();
 
   @override
   void dispose() {
     visiblePasswordController.close();
     super.dispose();
+  }
+
+  void requestStage1() {
+    if (signinLoginController.text.isEmpty) {
+      focusNodeLogin.requestFocus();
+    } else if (signinPasswordController.text.isEmpty) {
+      focusNodePassword.requestFocus();
+    }
   }
 
   @override
@@ -62,7 +74,23 @@ class _MainAuthPageState extends State<AuthPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 110.h),
+                  SizedBox(height: 50.h),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (forgotPassword) {
+                            forgotPassword = !forgotPassword;
+                            setState(() {});
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const Icon(Icons.arrow_back_ios_new_rounded),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 80.w),
                     child: SvgPicture.asset(
@@ -135,8 +163,12 @@ class _MainAuthPageState extends State<AuthPage> {
         CustomTextField(
           hintText: 'Телефон или E-mail',
           height: 50.h,
+          focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
           hintStyle: CustomTextStyle.grey_12_w400,
+          onFieldSubmitted: (value) {
+            requestStage1();
+          },
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -144,7 +176,11 @@ class _MainAuthPageState extends State<AuthPage> {
         CustomTextField(
           hintText: 'Пароль',
           height: 50.h,
+          focusNode: focusNodePassword,
           obscureText: !visiblePassword,
+          onFieldSubmitted: (value) {
+            requestStage1();
+          },
           suffixIcon: GestureDetector(
             onTap: () {
               visiblePassword = !visiblePassword;
@@ -200,6 +236,7 @@ class _MainAuthPageState extends State<AuthPage> {
         CustomTextField(
           hintText: 'Телефон или E-mail',
           height: 50.h,
+          focusNode: focusNodeResetLogin,
           textEditingController: loginController,
           hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:

@@ -11,8 +11,7 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/search_page.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -26,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PageController pageController = PageController(initialPage: 5);
+  PageController pageController = PageController(initialPage: 4);
   PanelController panelController = PanelController();
   final streamController = StreamController<int>();
   int page = 5;
@@ -69,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   SearchPage(),
                   const TasksPage(),
                   ChatPage(),
-                  PersonalAccountPage(),
+                  // PersonalAccountPage(),
                   WelcomPage(selectUser)
                 ],
               );
@@ -152,9 +151,12 @@ class _HomePageState extends State<HomePage> {
         if ((index == 2 || index == 3 || index == 4) && bloc.access == null) {
           Navigator.of(context).pushNamed(AppRoute.auth);
         } else {
+          if(index == 4) {
+            Navigator.of(context).pushNamed(AppRoute.personalAccount);
+          } else {
           pageController.jumpToPage(index);
           page = index;
-          streamController.add(index);
+          streamController.add(index);}
         }
       },
       child: Padding(

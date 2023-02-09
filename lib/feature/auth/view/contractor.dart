@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/constants/text_style.dart';
@@ -47,7 +49,10 @@ class _ContractorState extends State<Contractor> {
   TextEditingController numberDocController = TextEditingController();
   TextEditingController whoGiveDocController = TextEditingController();
   TextEditingController dateDocController = TextEditingController();
+  TextEditingController documentTypeController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   String? gender;
+  TextEditingController countryController = TextEditingController();
   TextEditingController regionController = TextEditingController();
   List<int> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
@@ -58,7 +63,44 @@ class _ContractorState extends State<Contractor> {
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
+
+  GlobalKey keyCountry = GlobalKey();
+  GlobalKey keyRegion = GlobalKey();
+
+  DateTime? dateTime;
+
+  List<String> country = ['Россия', 'ОАЭ'];
+  List<String> countryRussia = [
+    'Москва',
+    'Санкт-Петербург',
+    'Томск',
+    'Казань',
+    'Екатеренбург',
+    'Белгород',
+    'Крым',
+  ];
+  List<String> countryOAE = [
+    'Дубай',
+    'Абу-Даби',
+    'Аджмана',
+    'Фуджейры',
+    'Рас-Эль-Хаймы',
+    'Шарджи',
+  ];
+
   FocusNode focusNodeAbout = FocusNode();
+  FocusNode focusNodeName = FocusNode();
+  FocusNode focusNodeLastName = FocusNode();
+  FocusNode focusNodePhone = FocusNode();
+  FocusNode focusNodeEmail = FocusNode();
+  FocusNode focusNodePassword1 = FocusNode();
+  FocusNode focusNodePassword2 = FocusNode();
+  FocusNode focusNodeSeria = FocusNode();
+  FocusNode focusNodeNumber = FocusNode();
+  FocusNode focusNodeWhoTake = FocusNode();
+
+  ScrollController scrollController1 = ScrollController();
+  ScrollController scrollController2 = ScrollController();
 
   @override
   void initState() {
@@ -73,6 +115,7 @@ class _ContractorState extends State<Contractor> {
       image = file;
       user.copyWith(photo: image);
     }
+    setState(() {});
   }
 
   _selectImages() async {
@@ -99,6 +142,61 @@ class _ContractorState extends State<Contractor> {
     if (result != null) {
       cv = File(result.files.first.path!);
       user.copyWith(cv: cv);
+      setState(() {});
+    }
+  }
+
+  void requestNextEmptyFocusStage1() {
+    if (firstnameController.text.isEmpty) {
+      focusNodeName.requestFocus();
+      scrollController1.animateTo(0,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (lastnameController.text.isEmpty) {
+      focusNodeName.unfocus();
+      focusNodeLastName.requestFocus();
+      scrollController1.animateTo(50.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (phoneController.text.isEmpty) {
+      focusNodePhone.requestFocus();
+      scrollController1.animateTo(100.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (emailController.text.isEmpty) {
+      focusNodeEmail.requestFocus();
+      scrollController1.animateTo(150.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (passwordController.text.isEmpty) {
+      focusNodePassword1.requestFocus();
+      scrollController1.animateTo(200.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (repeatPasswordController.text.isEmpty) {
+      focusNodePassword2.requestFocus();
+      scrollController1.animateTo(250.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (!confirmTermsPolicy) {
+      scrollController1.animateTo(90.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    }
+  }
+
+  void requestNextEmptyFocusStage2() {
+    if (image == null) {
+      // focusNodeName.requestFocus();
+      scrollController2.animateTo(0,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+    } else if (additionalInfo) {
+      if (serialDocController.text.isEmpty) {
+        focusNodeSeria.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      } else if (numberDocController.text.isEmpty) {
+        focusNodeNumber.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      } else if (whoGiveDocController.text.isEmpty) {
+        focusNodeWhoTake.requestFocus();
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      }
     }
   }
 
@@ -122,6 +220,8 @@ class _ContractorState extends State<Contractor> {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
               messageError = 'Пользователь с такой почтой уже зарегистрирован';
+            } else if (email.contains('Enter a valid email address.')) {
+              messageError = 'Введите корректный адрес почты';
             }
           } else if (current.error!['phone_number'] != null &&
               current.error!['phone_number'][0] != null) {
@@ -130,6 +230,9 @@ class _ContractorState extends State<Contractor> {
                 .contains('custom user with this Телефон already exists.')) {
               messageError =
                   'Пользователь с таким телефоном уже зарегистрирован';
+            } else if (phoneNumber
+                .contains('The phone number entered is not valid.')) {
+              messageError = 'Введите корректный номер телефона';
             }
           }
           showAlertToast(messageError);
@@ -146,6 +249,7 @@ class _ContractorState extends State<Contractor> {
             CustomButton(
               onTap: () {
                 if (page == 0) {
+                  requestNextEmptyFocusStage1();
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
@@ -192,34 +296,37 @@ class _ContractorState extends State<Contractor> {
                     widget.stage(2);
                   }
                 } else {
+                  requestNextEmptyFocusStage2();
                   user.copyWith(
                       activitiesDocument: typeCategories, groups: [4]);
-                  String error = 'Укажите:\n';
+                  String error = 'Укажите:';
                   bool errorsFlag = false;
 
-                  if (phoneController.text.isEmpty) {
-                    error += ' - мобильный номер\n';
+                  if (countryController.text.isEmpty) {
+                    error += '\n - страну';
                     errorsFlag = true;
                   }
-                  if (emailController.text.isEmpty) {
-                    error += ' - почту\n';
-                    errorsFlag = true;
-                  }
-                  if (passwordController.text.isEmpty) {
-                    error += ' - пароль\n';
-                    errorsFlag = true;
-                  }
-                  if (firstnameController.text.isEmpty) {
-                    error += ' - имя\n';
-                    errorsFlag = true;
-                  }
-                  if (lastnameController.text.isEmpty) {
-                    error += ' - фамилию\n';
+                  if (regionController.text.isEmpty) {
+                    error += '\n - город';
                     errorsFlag = true;
                   }
                   if (typeCategories.isEmpty) {
-                    error += ' - до 3-ёх категорий';
+                    error += '\n - до 3-ёх категорий';
                     errorsFlag = true;
+                  }
+                  if (additionalInfo) {
+                    if (serialDocController.text.isEmpty) {
+                      error += '\n - серию докемента';
+                      errorsFlag = true;
+                    }
+                    if (numberDocController.text.isEmpty) {
+                      error += '\n - номер документа';
+                      errorsFlag = true;
+                    }
+                    if (whoGiveDocController.text.isEmpty) {
+                      error += '\n - кем был вадан документ';
+                      errorsFlag = true;
+                    }
                   }
 
                   if (errorsFlag) {
@@ -263,10 +370,12 @@ class _ContractorState extends State<Contractor> {
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
+      controller: scrollController1,
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       children: [
         CustomTextField(
+          focusNode: focusNodeName,
           hintText: 'Ваше имя',
           height: 50.h,
           textEditingController: firstnameController,
@@ -276,9 +385,13 @@ class _ContractorState extends State<Contractor> {
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
+          focusNode: focusNodeLastName,
           hintText: 'Ваша фамилия',
           height: 50.h,
           textEditingController: lastnameController,
@@ -287,6 +400,9 @@ class _ContractorState extends State<Contractor> {
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
+          },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
           },
         ),
         SizedBox(height: 30.h),
@@ -330,8 +446,10 @@ class _ContractorState extends State<Contractor> {
         ),
         SizedBox(height: 30.h),
         CustomTextField(
+          focusNode: focusNodePhone,
           hintText: 'Номер телефона',
           height: 50.h,
+          textInputType: TextInputType.phone,
           textEditingController: phoneController,
           hintStyle: CustomTextStyle.grey_12_w400,
           contentPadding:
@@ -339,9 +457,13 @@ class _ContractorState extends State<Contractor> {
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
+          focusNode: focusNodeEmail,
           hintText: 'E-mail',
           height: 50.h,
           textEditingController: emailController,
@@ -351,9 +473,13 @@ class _ContractorState extends State<Contractor> {
           onChanged: (value) {
             user.copyWith(email: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
+          focusNode: focusNodePassword1,
           hintText: 'Пароль',
           height: 50.h,
           obscureText: !visiblePassword,
@@ -381,9 +507,13 @@ class _ContractorState extends State<Contractor> {
           onChanged: (value) {
             user.copyWith(password: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         CustomTextField(
+          focusNode: focusNodePassword2,
           hintText: 'Повторите пароль',
           height: 50.h,
           obscureText: !visiblePasswordRepeat,
@@ -411,6 +541,9 @@ class _ContractorState extends State<Contractor> {
           onChanged: (value) {
             user.copyWith(password: value);
           },
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage1();
+          },
         ),
         SizedBox(height: 16.h),
         Row(
@@ -430,8 +563,7 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: Text(
-                'Согласен на обработку персональных данных и с пользовательским соглашением',
-                textAlign: TextAlign.justify,
+                'Согласен на обработку персональных данных и с\nпользовательским соглашением',
                 style: CustomTextStyle.black_12_w400_515150,
               ),
             ),
@@ -446,6 +578,7 @@ class _ContractorState extends State<Contractor> {
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
+      controller: scrollController2,
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       children: [
@@ -461,10 +594,26 @@ class _ContractorState extends State<Contractor> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 16.h),
-                  child: SvgPicture.asset(
-                    SvgImg.gallery,
-                    height: 15.h,
-                    width: 15.h,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        SvgImg.gallery,
+                        height: 15.h,
+                        width: 15.h,
+                      ),
+                      if (user.photo != null)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(width: 5.w),
+                            const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            )
+                          ],
+                        )
+                    ],
                   ),
                 ),
               ],
@@ -475,16 +624,60 @@ class _ContractorState extends State<Contractor> {
           ),
         ),
         SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Регион',
-          hintStyle: CustomTextStyle.grey_12_w400,
-          height: 50.h,
-          textEditingController: regionController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) {
-            user.copyWith(region: value);
+        GestureDetector(
+          key: keyCountry,
+          onTap: () => showCountry(
+            context,
+            keyCountry,
+            (value) {
+              countryController.text = value;
+              regionController.text = '';
+              setState(() {});
+            },
+            country,
+            'Выберите страну',
+          ),
+          child: CustomTextField(
+            hintText: 'Страна',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            textEditingController: countryController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) {},
+          ),
+        ),
+        SizedBox(height: 16.h),
+        GestureDetector(
+          key: keyRegion,
+          onTap: () {
+            if (countryController.text.isNotEmpty) {
+              showRegion(
+                context,
+                keyRegion,
+                (value) {
+                  regionController.text = value;
+                  user.copyWith(region: value);
+                  setState(() {});
+                },
+                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                'Выберите город',
+              );
+            } else {
+              showAlertToast('Чтобы выбрать город, сначала укажите страну');
+            }
           },
+          child: CustomTextField(
+            hintText: 'Город',
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            enabled: false,
+            textEditingController: regionController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) {},
+          ),
         ),
         SizedBox(height: 16.h),
         GestureDetector(
@@ -492,8 +685,8 @@ class _ContractorState extends State<Contractor> {
             context,
             iconBtn,
             (value) {
+              documentTypeController.text = value;
               additionalInfo = true;
-              // user.copyWith(docType: value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -509,8 +702,7 @@ class _ContractorState extends State<Contractor> {
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                textEditingController:
-                    TextEditingController(text: 'Тип документа'),
+                textEditingController: documentTypeController,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -536,13 +728,29 @@ class _ContractorState extends State<Contractor> {
             context,
             iconBtnCategory,
             (value) {
-              // typeCategories.clear();
-              // typeCategories.addAll(value);
-              // user.copyWith(activitiesDocument: typeCategories);
+              print('object ${listCategories} $value');
+
+              categoryController.text = '';
+
+              String str = '';
+              if (value.isNotEmpty) {
+                str = listCategories[value.first - 1].description!;
+              }
+
+              if (value.length > 1) {
+                for (int i = 1; i < value.length; i++) {
+                  str += ', ' + listCategories[value[i] - 1].description!;
+                }
+              }
+
+              categoryController.text = str;
+
+              print('object $str');
+
               setState(() {});
             },
             listCategories,
-            'Выбор до 3ех категорий',
+            'Выбор до 3-ёх категорий',
             typeCategories,
           ),
           child: Stack(
@@ -550,12 +758,11 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Выбор до 3ех категорий',
+                hintText: 'Выбор до 3-ёх категорий',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                textEditingController:
-                    TextEditingController(text: 'Дизайн, ремонт, доставка'),
+                textEditingController: categoryController,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -593,6 +800,15 @@ class _ContractorState extends State<Contractor> {
                     hintText: 'Описание своего опыта',
                     hintStyle: CustomTextStyle.grey_12_w400,
                     maxLines: 6,
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        scrollController2.animateTo(
+                          400.h,
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.linear,
+                        );
+                      });
+                    },
                     textEditingController: aboutMeController,
                     onChanged: (value) {
                       user.copyWith(activity: value);
@@ -624,24 +840,56 @@ class _ContractorState extends State<Contractor> {
               duration: const Duration(milliseconds: 50),
               bound: 0.01,
               onTap: _selectImages,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
+              child: SizedBox(
+                width: 135.w,
+                height: 40.h,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    SizedBox(
-                      height: 14.h,
-                      width: 14.h,
-                      child: SvgPicture.asset(SvgImg.addCircle),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 9.h, vertical: 11.h),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: 14.h,
+                                width: 14.h,
+                                child: SvgPicture.asset(SvgImg.addCircle),
+                              ),
+                              SizedBox(width: 9.17.w),
+                              Text(
+                                'Изображения (10мб)',
+                                style: CustomTextStyle.black_10_w400,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 9.17.w),
-                    Text(
-                      'Изображения (10мб)',
-                      style: CustomTextStyle.black_10_w400,
-                    )
+                    if (photos.isNotEmpty)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          height: 12.h,
+                          width: 12.h,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(40.r),
+                          ),
+                          child: Center(
+                              child: Text(
+                            photos.length.toString(),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 10.sp),
+                          )),
+                        ),
+                      )
                   ],
                 ),
               ),
@@ -651,24 +899,50 @@ class _ContractorState extends State<Contractor> {
               duration: const Duration(milliseconds: 50),
               bound: 0.01,
               onTap: _selectCV,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 9.h, vertical: 11.h),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
+              child: SizedBox(
+                width: 155.w,
+                height: 40.h,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    SizedBox(
-                      height: 14.h,
-                      width: 14.h,
-                      child: SvgPicture.asset(SvgImg.documentText),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 9.h, vertical: 11.h),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: 14.h,
+                                width: 14.h,
+                                child: SvgPicture.asset(SvgImg.documentText),
+                              ),
+                              SizedBox(width: 9.17.w),
+                              Text(
+                                'Загрузить резюме (10мб)',
+                                style: CustomTextStyle.black_10_w400,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 9.17.w),
-                    Text(
-                      'Загрузить резюме (10мб)',
-                      style: CustomTextStyle.black_10_w400,
-                    )
+                    if (cv != null)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          height: 12.h,
+                          width: 12.h,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(40.r),
+                          ),
+                        ),
+                      )
                   ],
                 ),
               ),
@@ -717,6 +991,10 @@ class _ContractorState extends State<Contractor> {
               hintText: 'Серия',
               hintStyle: CustomTextStyle.grey_12_w400,
               height: 50.h,
+              focusNode: focusNodeSeria,
+              onFieldSubmitted: (value) {
+                requestNextEmptyFocusStage2();
+              },
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
@@ -727,8 +1005,13 @@ class _ContractorState extends State<Contractor> {
             SizedBox(width: 12.w),
             CustomTextField(
               hintText: 'Номер',
+              focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_12_w400,
+              onFieldSubmitted: (value) {
+                requestNextEmptyFocusStage2();
+              },
               height: 50.h,
+              textInputType: TextInputType.number,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
@@ -741,25 +1024,87 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Кем выдан',
+          focusNode: focusNodeWhoTake,
           hintStyle: CustomTextStyle.grey_12_w400,
           height: 50.h,
           textEditingController: whoGiveDocController,
+          onFieldSubmitted: (value) {
+            requestNextEmptyFocusStage2();
+          },
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) => documentEdit(),
         ),
         SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Дата выдачи',
-          hintStyle: CustomTextStyle.grey_12_w400,
-          height: 50.h,
-          textEditingController: dateDocController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) => documentEdit(),
+        GestureDetector(
+          onTap: () async {
+            _showDatePicker(context);
+          },
+          child: CustomTextField(
+            hintText: 'Дата выдачи',
+            enabled: false,
+            hintStyle: CustomTextStyle.grey_12_w400,
+            height: 50.h,
+            textEditingController: dateDocController,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
         ),
       ],
     );
+  }
+
+  void _showDatePicker(ctx) {
+    dateTime = null;
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 300,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  SizedBox(height: 5.h),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        height: 30.h,
+                        width: 80.w,
+                        child: CupertinoButton(
+                          color: Colors.grey[400],
+                          padding: EdgeInsets.zero,
+                          child: Text(
+                            'Готово',
+                            style: TextStyle(fontSize: 11.sp),
+                          ),
+                          onPressed: () {
+                            if (dateTime == null) {
+                              dateDocController.text = DateFormat('dd.MM.yyyy')
+                                  .format(DateTime.now());
+                            }
+
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 5.h),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 200.h,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          dateTime = val;
+                          dateDocController.text =
+                              DateFormat('dd.MM.yyyy').format(val);
+                        }),
+                  ),
+                ],
+              ),
+            ));
   }
 
   void documentEdit() {

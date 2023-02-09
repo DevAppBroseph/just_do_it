@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/contractor_profile.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/customer_profile.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -22,41 +27,44 @@ class _ProfilePageState extends State<ProfilePage> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              children: [
-                Stack(
+          child: Column(
+            children: [
+              SizedBox(height: 60.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Stack(
                   children: [
                     Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Профиль',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                        ),
+                        style: CustomTextStyle.black_20_w700,
                       ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.grey[400],
-                          size: 18.h,
+                        child: Transform.rotate(
+                          angle: pi,
+                          child: SvgPicture.asset(
+                            'assets/icons/arrow_right.svg',
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-                SizedBox(height: 20.h),
-                Container(
+              ),
+              SizedBox(height: 24.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Container(
                   height: 40.h,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: ColorStyles.greyE0E6EE,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Stack(
@@ -99,8 +107,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           state = !state;
                                         });
                                         pageController.animateToPage(0,
-                                            duration:
-                                                const Duration(milliseconds: 100),
+                                            duration: const Duration(
+                                                milliseconds: 100),
                                             curve: Curves.linear);
                                       }),
                                     );
@@ -113,9 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Center(
                                   child: Text(
                                     'Как исполнитель',
-                                    style: TextStyle(
-                                      color: state ? Colors.black : Colors.white,
-                                    ),
+                                    style: state
+                                        ? CustomTextStyle.black_12_w400_171716
+                                        : CustomTextStyle.white_12_w400,
                                   ),
                                 ),
                               ),
@@ -134,8 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           state = !state;
                                         });
                                         pageController.animateToPage(1,
-                                            duration:
-                                                const Duration(milliseconds: 100),
+                                            duration: const Duration(
+                                                milliseconds: 100),
                                             curve: Curves.linear);
                                       }),
                                     );
@@ -148,9 +156,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Center(
                                   child: Text(
                                     'Как заказчик',
-                                    style: TextStyle(
-                                      color: !state ? Colors.black : Colors.white,
-                                    ),
+                                    style: state
+                                        ? CustomTextStyle.white_12_w400
+                                        : CustomTextStyle.black_12_w400_171716,
                                   ),
                                 ),
                               ),
@@ -161,19 +169,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20.h),
-                Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      ContractorProfile(),
-                      CustomerProfile(),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              ),
+              SizedBox(height: 50.h),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    ContractorProfile(),
+                    CustomerProfile(),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

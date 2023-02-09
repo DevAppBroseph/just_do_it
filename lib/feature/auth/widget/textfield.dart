@@ -85,6 +85,7 @@ class CustomTextField extends StatelessWidget {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: SizedBox(
+        key: key,
         height: height,
         width: widthOfScreen,
         child: KeyboardActions(
@@ -92,10 +93,7 @@ class CustomTextField extends StatelessWidget {
           config: KeyboardActionsConfig(
             defaultDoneWidget: GestureDetector(
               onTap: () {
-                focusNode?.unfocus();
-                if (onFieldSubmitted != null) {
-                  onFieldSubmitted!(textEditingController.text);
-                }
+                FocusScope.of(context).unfocus();
               },
               child: MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -110,7 +108,7 @@ class CustomTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
-            key: key,
+            // key: key,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,

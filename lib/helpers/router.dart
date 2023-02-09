@@ -3,8 +3,9 @@ import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone.dart';
 import 'package:just_do_it/feature/auth/view/sign_up.dart';
 import 'package:just_do_it/feature/home/presentation/home_page.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/profile_page.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account/personal_account.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/profile_page.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/rating_page.dart';
 
 class AppRoute {
   static const home = '/';
@@ -14,11 +15,14 @@ class AppRoute {
   static const forgotPassword = '/forgotPassword';
   static const personalAccount = '/forgotPassword';
   static const profile = '/profile';
+  static const rating = '/rating';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case rating:
+        return MaterialPageRoute(builder: (_) => RatingPage());
       case auth:
         return MaterialPageRoute(builder: (_) => const AuthPage());
       case signUp:

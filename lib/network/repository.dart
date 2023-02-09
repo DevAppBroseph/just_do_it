@@ -50,6 +50,8 @@ class Repository {
       ),
     );
 
+    print('object ${response.data}');
+
     if (response.statusCode == 201) {
       return true;
     }
@@ -74,6 +76,8 @@ class Repository {
         validateStatus: ((status) => status! >= 200),
       ),
     );
+
+    print('object ${response.data}');
 
     if (response.statusCode == 200) {
       return response.data['access'];

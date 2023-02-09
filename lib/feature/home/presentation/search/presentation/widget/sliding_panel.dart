@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/models/category.dart';
+import 'package:just_do_it/models/category_select.dart';
 import 'package:just_do_it/models/city.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:scale_button/scale_button.dart';
@@ -35,12 +36,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   TypeFilter typeFilter = TypeFilter.main;
 
-  TextEditingController coastMinController =
-      TextEditingController(text: '1 000 ₽');
-  TextEditingController coastMaxController =
-      TextEditingController(text: '1 000 ₽');
-  TextEditingController keyWordController =
-      TextEditingController(text: 'Например, покупка апельсинов...');
+  TextEditingController coastMinController = TextEditingController();
+  TextEditingController coastMaxController = TextEditingController();
+  TextEditingController keyWordController = TextEditingController();
 
   FocusNode focusCoastMin = FocusNode();
   FocusNode focusCoastMax = FocusNode();
@@ -85,6 +83,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget panel(BuildContext context) {
+    print('object $typeFilter');
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -109,7 +108,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         : typeFilter == TypeFilter.category
                             ? categoryFirst()
                             : typeFilter == TypeFilter.category1
-                                ? const SizedBox()
+                                ? categorySecond('Курьерские услуги')
                                 : typeFilter == TypeFilter.region
                                     ? cityFilter()
                                     : typeFilter == TypeFilter.date
@@ -477,11 +476,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           focusNode: focusCoastKeyWord,
                                           onTap: () {
                                             slide = true;
-                                            mainScrollController.animateTo(
-                                                heightPanel,
-                                                duration:
-                                                    const Duration(seconds: 1),
-                                                curve: Curves.linear);
+                                            Future.delayed(
+                                                Duration(milliseconds: 200),
+                                                () {
+                                              mainScrollController.animateTo(
+                                                  heightPanel,
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  curve: Curves.linear);
+                                            });
                                             setState(() {});
                                           },
                                           onChanged: (value) {},
@@ -632,33 +635,165 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget itemCategory(Category category) {
-    return SizedBox(
-      height: 50.h,
-      child: Column(
-        children: [
-          const Spacer(),
-          Row(
-            children: [
-              Image.asset(
-                category.icon,
-                height: 24.h,
+    return GestureDetector(
+      onTap: () {
+        typeFilter = TypeFilter.category1;
+        BlocProvider.of<SearchBloc>(context)
+            .add(OpenSlidingPanelToEvent(686.h));
+      },
+      child: SizedBox(
+        height: 50.h,
+        child: Column(
+          children: [
+            const Spacer(),
+            Row(
+              children: [
+                Image.asset(
+                  category.icon,
+                  height: 24.h,
+                ),
+                SizedBox(width: 12.w),
+                Text(
+                  category.title,
+                  style: CustomTextStyle.black_12_w500_171716,
+                ),
+                const Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16.h,
+                  color: const Color(0xFFBDBDBD),
+                )
+              ],
+            ),
+            const Spacer(),
+            const Divider()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget categorySecond(String title) {
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        SizedBox(height: 8.h),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 5.h,
+              width: 81.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.r),
+                color: ColorStyles.blueFC6554,
               ),
-              SizedBox(width: 12.w),
-              Text(
-                category.title,
-                style: CustomTextStyle.black_12_w500_171716,
+            ),
+          ],
+        ),
+        SizedBox(height: 27.h),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
+                typeFilter = TypeFilter.category;
+              },
+              child: Transform.rotate(
+                angle: pi,
+                child: SvgPicture.asset(
+                  'assets/icons/arrow_right.svg',
+                  height: 16.h,
+                  width: 16.h,
+                ),
               ),
-              const Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16.h,
-                color: const Color(0xFFBDBDBD),
-              )
-            ],
+            ),
+            SizedBox(width: 12.h),
+            Text(
+              title,
+              style: CustomTextStyle.black_20_w700,
+            ),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        ScaleButton(
+          bound: 0.02,
+          child: Container(
+            height: 55.h,
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Все категории',
+                  style: CustomTextStyle.black_12_w400_171716,
+                ),
+                const Spacer(),
+                Switch.adaptive(
+                  value: allCategory,
+                  onChanged: (value) {
+                    allCategory = !allCategory;
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
           ),
-          const Spacer(),
-          const Divider()
-        ],
+        ),
+        SizedBox(height: 20.h),
+        Column(
+          children: [
+            ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(bottom: 50.h),
+              children: listCategory2.map((e) => itemCategory2(e)).toList(),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget itemCategory2(CategorySelect category) {
+    bool state = false;
+    return GestureDetector(
+      onTap: () {
+        // typeFilter = TypeFilter.category1;
+        // BlocProvider.of<SearchBloc>(context)
+        //     .add(OpenSlidingPanelToEvent(686.h));
+      },
+      child: SizedBox(
+        height: 62.h,
+        child: Column(
+          children: [
+            const Spacer(),
+            Row(
+              children: [
+                SizedBox(width: 12.w),
+                Text(
+                  category.title,
+                  style: CustomTextStyle.black_12_w500_171716,
+                ),
+                const Spacer(),
+                Switch.adaptive(
+                  value: category.select,
+                  onChanged: (value) {
+                    category.select = !category.select;
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+            // const Spacer(),
+            const Divider()
+          ],
+        ),
       ),
     );
   }
@@ -840,7 +975,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         ScaleButton(
           bound: 0.02,
           child: Container(
-            height: 55.h,
+            height: 56.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: ColorStyles.greyF9F9F9,
@@ -876,7 +1011,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         ScaleButton(
           bound: 0.02,
           child: Container(
-            height: 55.h,
+            height: 56.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: ColorStyles.greyF9F9F9,
@@ -937,5 +1072,29 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     City('Краснодарский край'),
     City('Красноярский край'),
     City('Иркутская область'),
+  ];
+
+  List<CategorySelect> listCategory2 = [
+    CategorySelect(
+      title: 'Услуги пешего курьера',
+    ),
+    CategorySelect(
+      title: 'Услуги курьера на легковом авто',
+    ),
+    CategorySelect(
+      title: 'Купить и доставить',
+    ),
+    CategorySelect(
+      title: 'Срочная доставка',
+    ),
+    CategorySelect(
+      title: 'Доставка продуктов',
+    ),
+    CategorySelect(
+      title: 'Услуги пешего курьера',
+    ),
+    CategorySelect(
+      title: 'Курьер на день',
+    ),
   ];
 }
