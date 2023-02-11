@@ -13,6 +13,7 @@ class ColorStyles {
   static const greyBDBDBD = Color(0xFFBDBDBD);
   static const greyF6F7F8 = Color(0xFFF6F7F8);
   static const greyF7F7F8 = Color(0xFFF7F7F8);
+  static const greyF6F7F7 = Color(0xFFF6F7F7);
   static const greyE0E6EE = Color(0xFFE0E6EE);
   static const greyDADADA = Color(0xFFDADADA);
   static const greyF9F9F9 = Color(0xFFF9F9F9);

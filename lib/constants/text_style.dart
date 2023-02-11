@@ -19,6 +19,20 @@ class CustomTextStyle {
   );
 
   // black
+  static TextStyle black_12_w400_000000 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.black,
+    fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_10_w400_515150 = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.black515150,
+    fontFamily: 'SFPro',
+  );
+
   static TextStyle black_18_w600 = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,
@@ -197,7 +211,7 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
-  // purple
+  // blue
   static TextStyle blue_12_w400_336FEE = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone.dart';
 import 'package:just_do_it/feature/auth/view/sign_up.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/personal_chat.dart';
 import 'package:just_do_it/feature/home/presentation/home_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account/personal_account.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/profile_page.dart';
@@ -16,11 +17,14 @@ class AppRoute {
   static const personalAccount = '/forgotPassword';
   static const profile = '/profile';
   static const rating = '/rating';
+  static const personalChat = '/personalChat';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case personalChat:
+        return MaterialPageRoute(builder: (_) => PersonalChat());
       case rating:
         return MaterialPageRoute(builder: (_) => RatingPage());
       case auth:
