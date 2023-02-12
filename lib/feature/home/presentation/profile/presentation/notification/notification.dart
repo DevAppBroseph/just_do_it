@@ -1,0 +1,118 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/feature/auth/widget/button.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/notification.dart' as notifModel;
+import 'package:scale_button/scale_button.dart';
+
+class NotificationPage extends StatelessWidget {
+  List<notifModel.Notification> notification = [
+    notifModel.Notification(
+        title: 'Вас выбрали исполнителем', date: '12.09.2022'),
+    notifModel.Notification(title: 'У вас новый отклик', date: '22.02.2022'),
+    notifModel.Notification(title: 'У вас новый отклик', date: '14:32'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery(
+      data: const MediaQueryData(textScaleFactor: 1.0),
+      child: Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
+        body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 60.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Transform.rotate(
+                        angle: pi,
+                        child: SvgPicture.asset(
+                          'assets/icons/arrow_right.svg',
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      'Уведомления',
+                      style: CustomTextStyle.black_20_w700,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: ListView.builder(
+                  itemCount: notification.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return ScaleButton(
+                      bound: 0.01,
+                      duration: const Duration(milliseconds: 200),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 18.h),
+                          Row(
+                            children: [
+                              const Icon(Icons.format_overline_sharp),
+                              SizedBox(width: 32.h),
+                              Text(
+                                notification[index].title,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTextStyle.black_12_w400_171716,
+                              ),
+                              const Spacer(),
+                              Text(
+                                notification[index].date,
+                                style: CustomTextStyle.grey_12_w400,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 21.h),
+                          Container(
+                            height: 1.h,
+                            color: ColorStyles.greyF7F7F8,
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: CustomButton(
+                  onTap: () {},
+                  btnColor: ColorStyles.greyE0E6EE,
+                  textLabel: Text(
+                    'Очистить',
+                    style: CustomTextStyle.black_14_w600_515150,
+                  ),
+                ),
+              ),
+              // Text(
+              //   'Удалить аккаунт',
+              //   style: CustomTextStyle.black_14_w500_171716,
+              // ),
+              SizedBox(height: 52.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

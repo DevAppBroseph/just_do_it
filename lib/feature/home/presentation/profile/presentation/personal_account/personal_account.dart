@@ -37,21 +37,26 @@ class PersonalAccountPage extends StatelessWidget {
                       style: CustomTextStyle.black_20_w700,
                     ),
                     const Spacer(),
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/notification_account.svg',
-                        ),
-                        Container(
-                          height: 10.w,
-                          width: 10.w,
-                          decoration: BoxDecoration(
-                            color: ColorStyles.yellowFFD70B,
-                            borderRadius: BorderRadius.circular(20.r),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(AppRoute.notification);
+                      },
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/notification_account.svg',
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 10.w,
+                            width: 10.w,
+                            decoration: BoxDecoration(
+                              color: ColorStyles.yellowFFD70B,
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

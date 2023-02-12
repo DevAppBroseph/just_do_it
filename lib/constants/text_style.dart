@@ -174,6 +174,13 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
+  static TextStyle grey_10_w400DADADA = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.greyDADADA,
+    fontFamily: 'SFPro',
+  );
+
   static TextStyle grey_14_w400 = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,

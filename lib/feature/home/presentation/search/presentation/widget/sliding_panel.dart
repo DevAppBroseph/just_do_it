@@ -91,8 +91,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget panel(BuildContext context) {
-    print(
-        'object ${MediaQuery.of(context).viewInsets.bottom}  ${focusCoastMin.hasFocus} ${focusCoastMax.hasFocus} ${focusCoastKeyWord.hasFocus}');
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
