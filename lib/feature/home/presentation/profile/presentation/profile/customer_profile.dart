@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,21 +24,27 @@ class CustomerProfile extends StatelessWidget {
             children: [
               ClipOval(
                 child: SizedBox.fromSize(
-                  size: Size.fromRadius(30.r),
-                  child: user!.photoLink == null
-                      ? Container(
-                          height: 60.h,
-                          width: 60.h,
-                          decoration: const BoxDecoration(
-                              color: ColorStyles.shadowFC6554),
-                        )
-                      : Image.network(
-                          BlocProvider.of<ProfileBloc>(context)
-                              .user!
-                              .photoLink!,
-                          fit: BoxFit.cover,
-                        ),
-                ),
+                    size: Size.fromRadius(30.r),
+                    child: user!.photoLink == null
+                        ? Container(
+                            height: 60.h,
+                            width: 60.h,
+                            decoration: const BoxDecoration(
+                                color: ColorStyles.shadowFC6554),
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: BlocProvider.of<ProfileBloc>(context)
+                                .user!
+                                .photoLink!,
+                            fit: BoxFit.cover,
+                          )
+                    // : Image.network(
+                    //     BlocProvider.of<ProfileBloc>(context)
+                    //         .user!
+                    //         .photoLink!,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    ),
               )
             ],
           ),
