@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -78,7 +79,12 @@ class _WelcomPageState extends State<WelcomPage> {
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
-                        SvgPicture.asset('assets/icons/category.svg'),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoute.menu);
+                          },
+                          child: SvgPicture.asset('assets/icons/category.svg'),
+                        ),
                       ],
                     ),
                   ),

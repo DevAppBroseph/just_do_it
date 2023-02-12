@@ -74,7 +74,12 @@ class _CreatePageState extends State<CreatePage> {
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
-                        SvgPicture.asset('assets/icons/category.svg'),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoute.menu);
+                          },
+                          child: SvgPicture.asset('assets/icons/category.svg'),
+                        ),
                       ],
                     ),
                   ),
