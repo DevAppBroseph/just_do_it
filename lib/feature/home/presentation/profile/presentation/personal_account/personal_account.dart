@@ -94,26 +94,31 @@ class PersonalAccountPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      color: Colors.transparent,
-                      height: 50.h,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/coin_account.svg',
-                          ),
-                          SizedBox(width: 12.w),
-                          Text(
-                            'Баллы',
-                            style: CustomTextStyle.black_16_w500_171716,
-                          ),
-                          const Spacer(),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: ColorStyles.greyBDBDBD,
-                            size: 16.h,
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(AppRoute.score);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 50.h,
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/coin_account.svg',
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              'Баллы',
+                              style: CustomTextStyle.black_16_w500_171716,
+                            ),
+                            const Spacer(),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: ColorStyles.greyBDBDBD,
+                              size: 16.h,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     GestureDetector(

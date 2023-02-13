@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/helpers/router.dart';
 
 class MenuPage extends StatelessWidget {
   @override
@@ -51,10 +52,17 @@ class MenuPage extends StatelessWidget {
                   itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет',
                       () {}),
                   itemMenu('assets/images/user_circle_add.png',
-                      'Реферальная система', () {}),
-                  itemMenu('assets/icons/mouse.svg', 'О проекте', () {}),
-                  itemMenu('assets/icons/message-favorite.svg',
-                      'Связаться с нами', () {}),
+                      'Реферальная система', () {
+                    Navigator.of(context).pushNamed(AppRoute.referal);
+                  }),
+                  itemMenu('assets/icons/mouse.svg', 'О проекте', () {
+                    Navigator.of(context).pushNamed(AppRoute.about);
+                  }),
+                  itemMenu(
+                      'assets/icons/message-favorite.svg', 'Связаться с нами',
+                      () {
+                    Navigator.of(context).pushNamed(AppRoute.contactus);
+                  }),
                   itemMenu('assets/icons/moon.svg', 'Темный режим', () {}),
                 ],
               ),
