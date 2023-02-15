@@ -13,6 +13,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/person
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/profile_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/rating_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/score_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 
 class AppRoute {
   static const home = '/';
@@ -30,11 +31,14 @@ class AppRoute {
   static const contactus = '/contactus';
   static const about = '/about';
   static const score = '/score';
+  static const tasks = '/tasks';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case tasks:
+        return MaterialPageRoute(builder: (_) => TasksPage());
       case contactus:
         return MaterialPageRoute(builder: (_) => ContactUs());
       case score:

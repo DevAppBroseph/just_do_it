@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/contractor.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/customer.dart';
 
@@ -18,6 +20,7 @@ class _TasksPageState extends State<TasksPage> {
     Size size = MediaQuery.of(context).size;
     final PageController pageController = PageController();
     return Scaffold(
+      backgroundColor: ColorStyles.whiteFFFFFF,
       body: StreamBuilder<int>(
         stream: streamController.stream,
         initialData: 0,
@@ -25,18 +28,18 @@ class _TasksPageState extends State<TasksPage> {
           return Column(
             children: [
               SizedBox(height: 60.h),
-              Container(
-                width: double.infinity,
-                height: 50.h,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Stack(
+                  alignment: Alignment.center,
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          // Navigator.of(context).pop();
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
                         },
-                        icon: const Icon(
+                        child: const Icon(
                           Icons.keyboard_backspace_rounded,
                           color: Colors.grey,
                         ),
@@ -46,17 +49,13 @@ class _TasksPageState extends State<TasksPage> {
                       alignment: Alignment.center,
                       child: Text(
                         'Мои задания',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          color: Colors.black,
-                          fontFamily: "SFPro",
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: CustomTextStyle.black_21_w700_171716,
                       ),
                     )
                   ],
                 ),
               ),
+              SizedBox(height: 24.h),
               Row(
                 children: [
                   const Spacer(),
@@ -74,8 +73,8 @@ class _TasksPageState extends State<TasksPage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: snapshot.data! == 1
-                            ? const Color(0xffE0E6EE)
-                            : Colors.black,
+                            ? ColorStyles.greyE0E6EE
+                            : ColorStyles.black171716,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
                           bottomLeft: Radius.circular(20.r),
@@ -83,12 +82,15 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                       child: Text(
                         'Я исполнитель',
-                        style: TextStyle(
-                          fontFamily: 'SFPro',
-                          fontSize: 12.sp,
-                          color:
-                              snapshot.data! == 1 ? Colors.black : Colors.white,
-                        ),
+                        style: snapshot.data! == 1
+                            ? CustomTextStyle.black_13_w400_171716
+                            : CustomTextStyle.white_13_w400,
+                        // style: TextStyle(
+                        //   fontFamily: 'SFPro',
+                        //   fontSize: 12.sp,
+                        //   color:
+                        //       snapshot.data! == 1 ? Colors.black : Colors.white,
+                        // ),
                       ),
                     ),
                   ),
@@ -106,8 +108,8 @@ class _TasksPageState extends State<TasksPage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: snapshot.data! == 0
-                            ? const Color(0xffE0E6EE)
-                            : Colors.black,
+                            ? ColorStyles.greyE0E6EE
+                            : ColorStyles.black171716,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20.r),
                           bottomRight: Radius.circular(20.r),
@@ -115,12 +117,9 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                       child: Text(
                         'Я заказчик',
-                        style: TextStyle(
-                          fontFamily: 'SFPro',
-                          fontSize: 12.sp,
-                          color:
-                              snapshot.data! == 0 ? Colors.black : Colors.white,
-                        ),
+                        style: snapshot.data! == 0
+                            ? CustomTextStyle.black_13_w400_171716
+                            : CustomTextStyle.white_13_w400,
                       ),
                     ),
                   ),

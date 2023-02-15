@@ -151,12 +151,15 @@ class _HomePageState extends State<HomePage> {
         if ((index == 2 || index == 3 || index == 4) && bloc.access == null) {
           Navigator.of(context).pushNamed(AppRoute.auth);
         } else {
-          if(index == 4) {
+          if (index == 4) {
             Navigator.of(context).pushNamed(AppRoute.personalAccount);
+          } else if (index == 2) {
+            Navigator.of(context).pushNamed(AppRoute.tasks);
           } else {
-          pageController.jumpToPage(index);
-          page = index;
-          streamController.add(index);}
+            pageController.jumpToPage(index);
+            page = index;
+            streamController.add(index);
+          }
         }
       },
       child: Padding(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ColorStyles {
   static const Color yellowFFD70A = Color(0xFFFFD70A);
   static const Color yellowFFD70B = Color(0xFFFFD70B);
+  static const Color yellowFFCA0D = Color(0xFFFFCA0D);
 
   static const black = Color(0xFF000000);
   static const black171716 = Color(0xFF171716);
