@@ -15,12 +15,14 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_first_upper.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Customer extends StatefulWidget {
   Function(int) stage;
@@ -310,10 +312,12 @@ class _CustomerState extends State<Customer> {
                       'object $errorsFlag ${passwordController.text}-${repeatPasswordController.text}');
                 }
               },
-              btnColor: ColorStyles.yellowFFD70A,
+              btnColor: confirmTermsPolicy
+                  ? ColorStyles.yellowFFD70A
+                  : ColorStyles.greyE0E6EE,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_14_w600_171716,
+                style: CustomTextStyle.black_15_w600_171716,
               ),
             ),
             SizedBox(height: 18.h),
@@ -329,7 +333,7 @@ class _CustomerState extends State<Customer> {
               btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'Назад',
-                style: CustomTextStyle.black_14_w600_515150,
+                style: CustomTextStyle.black_15_w600_515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -350,9 +354,10 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваше имя',
           focusNode: focusNodeName,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           textEditingController: firstnameController,
+          formatters: [UpperTextInputFormatter()],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -366,9 +371,10 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваша фамилия',
           focusNode: focusNodeLastName,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           textEditingController: lastnameController,
+          formatters: [UpperTextInputFormatter()],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -383,7 +389,7 @@ class _CustomerState extends State<Customer> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_12_w400_171716,
+              style: CustomTextStyle.black_13_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -420,7 +426,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 30.h),
         CustomTextField(
           hintText: 'Номер телефона',
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePhone,
           textEditingController: phoneController,
@@ -451,7 +457,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'E-mail',
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
@@ -476,7 +482,7 @@ class _CustomerState extends State<Customer> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             contentPadding:
@@ -530,13 +536,20 @@ class _CustomerState extends State<Customer> {
               activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
-              child: Text(
-                'Согласен на обработку персональных данных и с\nпользовательским соглашением',
-                style: CustomTextStyle.black_12_w400_515150,
+              child: GestureDetector(
+                onTap: () {
+                  launch('https://dzen.ru/news?issue_tld=by');
+                },
+                child: Text(
+                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
+                  style: CustomTextStyle.black_13_w400_515150
+                      .copyWith(decoration: TextDecoration.underline),
+                ),
               ),
             ),
           ],
         ),
+        SizedBox(height: 5.h),
         SizedBox(height: heightKeyBoard / 2),
       ],
     );
@@ -552,7 +565,7 @@ class _CustomerState extends State<Customer> {
       children: [
         CustomTextField(
           hintText: 'Пароль',
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
@@ -593,7 +606,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Повторите пароль',
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
@@ -644,7 +657,7 @@ class _CustomerState extends State<Customer> {
           ),
           child: CustomTextField(
             hintText: 'Страну',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -675,7 +688,7 @@ class _CustomerState extends State<Customer> {
           },
           child: CustomTextField(
             hintText: 'Регион',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -704,7 +717,7 @@ class _CustomerState extends State<Customer> {
             children: [
               CustomTextField(
                 hintText: 'Тип документа',
-                hintStyle: CustomTextStyle.grey_12_w400,
+                hintStyle: CustomTextStyle.grey_13_w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -762,7 +775,7 @@ class _CustomerState extends State<Customer> {
               child: Text(
                 'Юридическое лицо',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
             ),
           ],
@@ -784,7 +797,7 @@ class _CustomerState extends State<Customer> {
           children: [
             CustomTextField(
               hintText: 'Серия',
-              hintStyle: CustomTextStyle.grey_12_w400,
+              hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
               textInputType: TextInputType.number,
               focusNode: focusNodeSeria,
@@ -808,7 +821,7 @@ class _CustomerState extends State<Customer> {
             SizedBox(width: 12.w),
             CustomTextField(
               hintText: 'Номер',
-              hintStyle: CustomTextStyle.grey_12_w400,
+              hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
               textInputType: TextInputType.number,
               focusNode: focusNodeNumber,
@@ -834,7 +847,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Кем выдан',
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodeWhoTake,
           textEditingController: whoGiveDocController,
@@ -859,7 +872,7 @@ class _CustomerState extends State<Customer> {
           },
           child: CustomTextField(
             hintText: 'Дата выдачи',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             textEditingController: dateDocController,

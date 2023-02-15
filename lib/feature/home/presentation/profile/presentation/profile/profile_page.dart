@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.center,
                       child: Text(
                         'Профиль',
-                        style: CustomTextStyle.black_20_w700,
+                        style: CustomTextStyle.black_21_w700,
                       ),
                     ),
                     GestureDetector(
@@ -122,8 +122,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Text(
                                     'Как исполнитель',
                                     style: state
-                                        ? CustomTextStyle.black_12_w400_171716
-                                        : CustomTextStyle.white_12_w400,
+                                        ? CustomTextStyle.black_13_w400_171716
+                                        : CustomTextStyle.white_13_w400,
                                   ),
                                 ),
                               ),
@@ -157,8 +157,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Text(
                                     'Как заказчик',
                                     style: state
-                                        ? CustomTextStyle.white_12_w400
-                                        : CustomTextStyle.black_12_w400_171716,
+                                        ? CustomTextStyle.white_13_w400
+                                        : CustomTextStyle.black_13_w400_171716,
                                   ),
                                 ),
                               ),

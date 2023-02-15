@@ -16,6 +16,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/drop_down.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_first_upper.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/auth/widget/radio.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
@@ -23,6 +24,7 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Contractor extends StatefulWidget {
   Function(int) stage;
@@ -289,7 +291,8 @@ class _ContractorState extends State<Contractor> {
                       error += '\n\n Пароли не совпадают';
                     }
                     showAlertToast(error);
-                  } else if(phoneController.text.length < 12 || phoneController.text.length > 13) {
+                  } else if (phoneController.text.length < 12 ||
+                      phoneController.text.length > 13) {
                     showAlertToast('- телефон указан неверно');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
@@ -355,10 +358,12 @@ class _ContractorState extends State<Contractor> {
                   }
                 }
               },
-              btnColor: ColorStyles.yellowFFD70A,
+              btnColor: confirmTermsPolicy
+                  ? ColorStyles.yellowFFD70A
+                  : ColorStyles.greyE0E6EE,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_14_w600_171716,
+                style: CustomTextStyle.black_15_w600_171716,
               ),
             ),
             SizedBox(height: 18.h),
@@ -374,7 +379,7 @@ class _ContractorState extends State<Contractor> {
               btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'Назад',
-                style: CustomTextStyle.black_14_w600_515150,
+                style: CustomTextStyle.black_15_w600_515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -397,7 +402,8 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваше имя',
           height: 50.h,
           textEditingController: firstnameController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
+          formatters: [UpperTextInputFormatter()],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -413,7 +419,8 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваша фамилия',
           height: 50.h,
           textEditingController: lastnameController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
+          formatters: [UpperTextInputFormatter()],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -428,7 +435,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_12_w400_171716,
+              style: CustomTextStyle.black_13_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -469,7 +476,7 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           formatters: [
             MaskTextInputFormatter(
               initialText: '+ ',
@@ -493,7 +500,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'E-mail',
           height: 50.h,
           textEditingController: emailController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -534,7 +541,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: passwordController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -575,7 +582,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -609,13 +616,20 @@ class _ContractorState extends State<Contractor> {
               activeColor: ColorStyles.yellowFFD70A,
             ),
             Flexible(
-              child: Text(
-                'Согласен на обработку персональных данных и с\nпользовательским соглашением',
-                style: CustomTextStyle.black_12_w400_515150,
+              child: GestureDetector(
+                onTap: () {
+                  launch('https://dzen.ru/news?issue_tld=by');
+                },
+                child: Text(
+                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
+                  style: CustomTextStyle.black_13_w400_515150
+                      .copyWith(decoration: TextDecoration.underline),
+                ),
               ),
             ),
           ],
         ),
+        SizedBox(height: 5.h),
         SizedBox(height: heightKeyBoard / 2),
       ],
     );
@@ -633,7 +647,7 @@ class _ContractorState extends State<Contractor> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -686,7 +700,7 @@ class _ContractorState extends State<Contractor> {
           ),
           child: CustomTextField(
             hintText: 'Страну',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -717,7 +731,7 @@ class _ContractorState extends State<Contractor> {
           },
           child: CustomTextField(
             hintText: 'Регион',
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -811,7 +825,7 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             listCategories,
-            'Выбор до 3-ёх категорий',
+            'Выбор до 3х категорий',
             typeCategories,
           ),
           child: Stack(
@@ -819,7 +833,7 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Выбор до 3-ёх категорий',
+                hintText: 'Выбор до 3х категорий',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -859,7 +873,7 @@ class _ContractorState extends State<Contractor> {
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
                     hintText: 'Описание своего опыта',
-                    hintStyle: CustomTextStyle.grey_12_w400,
+                    hintStyle: CustomTextStyle.grey_13_w400,
                     maxLines: 6,
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
@@ -887,7 +901,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/250',
-                    style: CustomTextStyle.grey_10_w400,
+                    style: CustomTextStyle.grey_11_w400,
                   ),
                 ),
               ),
@@ -902,7 +916,7 @@ class _ContractorState extends State<Contractor> {
               bound: 0.01,
               onTap: _selectImages,
               child: SizedBox(
-                width: 135.w,
+                width: 145.w,
                 height: 40.h,
                 child: Stack(
                   alignment: Alignment.center,
@@ -926,7 +940,7 @@ class _ContractorState extends State<Contractor> {
                               SizedBox(width: 9.17.w),
                               Text(
                                 'Изображения (10мб)',
-                                style: CustomTextStyle.black_10_w400,
+                                style: CustomTextStyle.black_11_w400,
                               )
                             ],
                           ),
@@ -955,13 +969,13 @@ class _ContractorState extends State<Contractor> {
                 ),
               ),
             ),
-            SizedBox(width: 12.h),
+            SizedBox(width: 5.h),
             ScaleButton(
               duration: const Duration(milliseconds: 50),
               bound: 0.01,
               onTap: _selectCV,
               child: SizedBox(
-                width: 155.w,
+                width: 169.w,
                 height: 40.h,
                 child: Stack(
                   alignment: Alignment.center,
@@ -985,7 +999,7 @@ class _ContractorState extends State<Contractor> {
                               SizedBox(width: 9.17.w),
                               Text(
                                 'Загрузить резюме (10мб)',
-                                style: CustomTextStyle.black_10_w400,
+                                style: CustomTextStyle.black_11_w400,
                               )
                             ],
                           ),
@@ -1029,7 +1043,7 @@ class _ContractorState extends State<Contractor> {
               child: Text(
                 'Юридическое лицо',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
             ),
           ],
@@ -1050,7 +1064,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             CustomTextField(
               hintText: 'Серия',
-              hintStyle: CustomTextStyle.grey_12_w400,
+              hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
               focusNode: focusNodeSeria,
               onFieldSubmitted: (value) {
@@ -1075,7 +1089,7 @@ class _ContractorState extends State<Contractor> {
             CustomTextField(
               hintText: 'Номер',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_12_w400,
+              hintStyle: CustomTextStyle.grey_13_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1108,7 +1122,7 @@ class _ContractorState extends State<Contractor> {
             });
           },
           focusNode: focusNodeWhoTake,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           textEditingController: whoGiveDocController,
           onFieldSubmitted: (value) {
@@ -1126,7 +1140,7 @@ class _ContractorState extends State<Contractor> {
           child: CustomTextField(
             hintText: 'Дата выдачи',
             enabled: false,
-            hintStyle: CustomTextStyle.grey_12_w400,
+            hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -1143,8 +1157,8 @@ class _ContractorState extends State<Contractor> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: Column(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: Column(
                 children: [
                   Spacer(),
                   Row(
@@ -1170,7 +1184,7 @@ class _ContractorState extends State<Contractor> {
                                         DateFormat('dd.MM.yyyy')
                                             .format(DateTime.now());
                                   }
-        
+
                                   Navigator.of(ctx).pop();
                                 },
                               ),
@@ -1195,7 +1209,7 @@ class _ContractorState extends State<Contractor> {
                   ),
                 ],
               ),
-        ));
+            ));
   }
 
   void documentEdit() {

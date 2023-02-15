@@ -48,7 +48,7 @@ class _AboutProjectState extends State<AboutProject> {
                           children: [
                             Text(
                               'О проекте',
-                              style: CustomTextStyle.black_20_w700,
+                              style: CustomTextStyle.black_21_w700,
                             ),
                           ],
                         ),
@@ -76,14 +76,14 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.\n\n',
-                          style: CustomTextStyle.black_12_w400_515150,
+                          style: CustomTextStyle.black_13_w400_515150,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud ametAmet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                          style: CustomTextStyle.black_12_w400_515150,
+                          style: CustomTextStyle.black_13_w400_515150,
                         ),
                       ),
                       SizedBox(height: 40.h),
@@ -99,7 +99,7 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           'Вопрос ответ',
-                          style: CustomTextStyle.black_20_w700_171716,
+                          style: CustomTextStyle.black_21_w700_171716,
                         ),
                       ),
                       SizedBox(height: 30.h),
@@ -115,7 +115,7 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           "Пользовательское соглашение",
-                          style: CustomTextStyle.blue_14_w400_336FEE
+                          style: CustomTextStyle.blue_15_w400_336FEE
                               .copyWith(decoration: TextDecoration.underline),
                         ),
                       ),
@@ -124,7 +124,7 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           "Согласие на обработку персональных данных",
-                          style: CustomTextStyle.blue_14_w400_336FEE
+                          style: CustomTextStyle.blue_15_w400_336FEE
                               .copyWith(decoration: TextDecoration.underline),
                         ),
                       ),
@@ -159,7 +159,7 @@ class _AboutProjectState extends State<AboutProject> {
               Expanded(
                 child: Text(
                   'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-                  style: CustomTextStyle.black_14_w600_171716,
+                  style: CustomTextStyle.black_15_w600_171716,
                 ),
               ),
               selectIndex == index
@@ -187,7 +187,7 @@ class _AboutProjectState extends State<AboutProject> {
         child: Container(
           child: Text(
             'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-            style: CustomTextStyle.black_12_w400_515150,
+            style: CustomTextStyle.black_13_w400_515150,
           ),
         ),
       ),

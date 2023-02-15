@@ -63,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Text(
                     'Сообщения',
-                    style: CustomTextStyle.black_20_w700,
+                    style: CustomTextStyle.black_21_w700,
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
@@ -135,12 +135,12 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             Text(
                               chat.name,
-                              style: CustomTextStyle.black_12_w400_000000,
+                              style: CustomTextStyle.black_13_w400_000000,
                             ),
                             const Spacer(),
                             Text(
                               chat.date,
-                              style: CustomTextStyle.grey_10_w400,
+                              style: CustomTextStyle.grey_11_w400,
                             ),
                           ],
                         ),
@@ -150,12 +150,12 @@ class _ChatPageState extends State<ChatPage> {
                           chat.message,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: CustomTextStyle.black_12_w400_171716,
+                          style: CustomTextStyle.black_13_w400_171716,
                         ),
                         SizedBox(height: 8.h),
                         Text(
                           chat.typeWork,
-                          style: CustomTextStyle.grey_12_w400,
+                          style: CustomTextStyle.grey_13_w400,
                         ),
                       ],
                     ),

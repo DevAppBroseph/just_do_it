@@ -34,7 +34,7 @@ class PersonalAccountPage extends StatelessWidget {
                     SizedBox(width: 12.w),
                     Text(
                       'Личный кабинет',
-                      style: CustomTextStyle.black_20_w700,
+                      style: CustomTextStyle.black_21_w700,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -82,7 +82,7 @@ class PersonalAccountPage extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Text(
                               'Профиль',
-                              style: CustomTextStyle.black_16_w500_171716,
+                              style: CustomTextStyle.black_17_w500_171716,
                             ),
                             const Spacer(),
                             Icon(
@@ -109,7 +109,7 @@ class PersonalAccountPage extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Text(
                               'Баллы',
-                              style: CustomTextStyle.black_16_w500_171716,
+                              style: CustomTextStyle.black_17_w500_171716,
                             ),
                             const Spacer(),
                             Icon(
@@ -136,7 +136,7 @@ class PersonalAccountPage extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Text(
                               'Рейтинг и отзывы',
-                              style: CustomTextStyle.black_16_w500_171716,
+                              style: CustomTextStyle.black_17_w500_171716,
                             ),
                             const Spacer(),
                             Icon(
@@ -166,7 +166,7 @@ class PersonalAccountPage extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Text(
                               'Выйти из аккаунта',
-                              style: CustomTextStyle.black_16_w500_171716,
+                              style: CustomTextStyle.black_17_w500_171716,
                             ),
                           ],
                         ),
@@ -178,7 +178,7 @@ class PersonalAccountPage extends StatelessWidget {
               const Spacer(),
               Text(
                 'Удалить аккаунт',
-                style: CustomTextStyle.black_14_w500_171716,
+                style: CustomTextStyle.black_15_w500_171716,
               ),
               SizedBox(height: 72.h),
             ],

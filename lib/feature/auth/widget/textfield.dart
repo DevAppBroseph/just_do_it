@@ -76,7 +76,7 @@ class CustomTextField extends StatelessWidget {
     Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
-        CustomTextStyle.grey_12_w400.copyWith(overflow: TextOverflow.ellipsis);
+        CustomTextStyle.grey_13_w400.copyWith(overflow: TextOverflow.ellipsis);
 
     style = style ??
         TextStyle(

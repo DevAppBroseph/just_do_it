@@ -98,7 +98,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                         children: [
                           Text(
                             'Подтверждение телефона ',
-                            style: CustomTextStyle.black_20_w700,
+                            style: CustomTextStyle.black_21_w700,
                           )
                         ],
                       ),
@@ -113,11 +113,11 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                               text: TextSpan(children: [
                                 TextSpan(
                                   text: 'Код подтверждения отправлен на\n',
-                                  style: CustomTextStyle.black_14_w400_515150,
+                                  style: CustomTextStyle.black_15_w400_515150,
                                 ),
                                 TextSpan(
                                   text: widget.phone,
-                                  style: CustomTextStyle.black_14_w400_171716,
+                                  style: CustomTextStyle.black_15_w400_171716,
                                 ),
                               ])),
                           SizedBox(height: 18.h),
@@ -145,7 +145,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                                   color: ColorStyles.greyEAECEE,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                textStyle: CustomTextStyle.black_24_w600_171716,
+                                textStyle: CustomTextStyle.black_25_w600_171716,
                               ),
                             ),
                           ),
@@ -157,7 +157,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                               obscureText: true,
                               focusNode: focusNodePassword,
                               textEditingController: passwordController,
-                              hintStyle: CustomTextStyle.grey_12_w400,
+                              hintStyle: CustomTextStyle.grey_13_w400,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 18.w, vertical: 18.h),
                             ),
@@ -169,11 +169,11 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                               children: [
                                 TextSpan(
                                   text: 'Повторно отправить код ',
-                                  style: CustomTextStyle.grey_14_w400,
+                                  style: CustomTextStyle.grey_15_w400,
                                 ),
                                 TextSpan(
                                   text: '$currentSecond сек.',
-                                  style: CustomTextStyle.black_14_w400_171716,
+                                  style: CustomTextStyle.black_15_w400_171716,
                                 ),
                               ],
                             ),
@@ -223,7 +223,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
                               'Подтвердить',
-                              style: CustomTextStyle.black_14_w600_171716,
+                              style: CustomTextStyle.black_15_w600_171716,
                             ),
                           ),
                           SizedBox(height: 18.h),
@@ -232,7 +232,7 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                             btnColor: ColorStyles.greyE0E6EE,
                             textLabel: Text(
                               'Назад',
-                              style: CustomTextStyle.black_14_w600_515150,
+                              style: CustomTextStyle.black_15_w600_515150,
                             ),
                           ),
                         ],

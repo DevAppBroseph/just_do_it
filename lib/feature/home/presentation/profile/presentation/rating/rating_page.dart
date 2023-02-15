@@ -120,12 +120,12 @@ class _RatingPageState extends State<RatingPage> {
                   children: [
                     Text(
                       comment.name,
-                      style: CustomTextStyle.black_12_w500_171716,
+                      style: CustomTextStyle.black_13_w500_171716,
                     ),
                     const Spacer(),
                     Text(
                       comment.date,
-                      style: CustomTextStyle.grey_10_w400,
+                      style: CustomTextStyle.grey_11_w400,
                     ),
                   ],
                 ),
@@ -138,7 +138,7 @@ class _RatingPageState extends State<RatingPage> {
                   SizedBox(width: 4.w),
                   Text(
                     '${comment.score}/10',
-                    style: CustomTextStyle.black_12_w400_171716,
+                    style: CustomTextStyle.black_13_w400_171716,
                   ),
                 ],
               ),
@@ -147,7 +147,7 @@ class _RatingPageState extends State<RatingPage> {
                 width: 245.w,
                 child: Text(
                   comment.text,
-                  style: CustomTextStyle.black_10_w400_515150,
+                  style: CustomTextStyle.black_11_w400_515150,
                   maxLines: null,
                 ),
               ),
@@ -172,7 +172,7 @@ class _RatingPageState extends State<RatingPage> {
                             SizedBox(width: 8.h),
                             Text(
                               'Перевод',
-                              style: CustomTextStyle.blue_12_w400_336FEE,
+                              style: CustomTextStyle.blue_13_w400_336FEE,
                             )
                           ],
                         ),
@@ -203,7 +203,7 @@ class _RatingPageState extends State<RatingPage> {
                   alignment: Alignment.center,
                   child: Text(
                     'Рейтинг',
-                    style: CustomTextStyle.black_20_w700,
+                    style: CustomTextStyle.black_21_w700,
                   ),
                 ),
                 GestureDetector(
@@ -251,7 +251,7 @@ class _RatingPageState extends State<RatingPage> {
                   children: [
                     Text(
                       'Ваш рейтинг',
-                      style: CustomTextStyle.black_12_w400_515150,
+                      style: CustomTextStyle.black_13_w400_515150,
                     ),
                     SizedBox(height: 6.h),
                     Row(
@@ -260,7 +260,7 @@ class _RatingPageState extends State<RatingPage> {
                         SizedBox(width: 4.w),
                         Text(
                           '7.5',
-                          style: CustomTextStyle.black_18_w600,
+                          style: CustomTextStyle.black_19_w600,
                         ),
                       ],
                     ),
@@ -275,7 +275,7 @@ class _RatingPageState extends State<RatingPage> {
               SizedBox(width: 24.w),
               Text(
                 'Вы выполнили 23 задания',
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
             ],
           )

@@ -38,7 +38,7 @@ class _PersonalChatState extends State<PersonalChat> {
               SizedBox(width: 8.w),
               Text(
                 'Floyd Miles',
-                style: CustomTextStyle.black_20_w700,
+                style: CustomTextStyle.black_21_w700,
               ),
               const Spacer(),
               SvgPicture.asset('assets/icons/more-circle.svg'),
@@ -85,7 +85,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                 SizedBox(height: 8.h),
                                 Text(
                                   '${++index} минут назад',
-                                  style: CustomTextStyle.grey_10_w400DADADA,
+                                  style: CustomTextStyle.grey_11_w400DADADA,
                                 ),
                               ],
                             )
@@ -114,7 +114,7 @@ class _PersonalChatState extends State<PersonalChat> {
                           SizedBox(height: 8.h),
                           Text(
                             '${++index} минут назад',
-                            style: CustomTextStyle.grey_10_w400DADADA,
+                            style: CustomTextStyle.grey_11_w400DADADA,
                           ),
                         ],
                       )),

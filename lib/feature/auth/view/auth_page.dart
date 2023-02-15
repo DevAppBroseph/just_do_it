@@ -122,7 +122,7 @@ class _MainAuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'Отправить' : 'Войти',
-                          style: CustomTextStyle.black_14_w600_171716,
+                          style: CustomTextStyle.black_15_w600_171716,
                         ),
                         btnColor: ColorStyles.yellowFFD70A,
                       ),
@@ -140,7 +140,7 @@ class _MainAuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'Назад' : 'Регистрация',
-                          style: CustomTextStyle.black_14_w600_515150,
+                          style: CustomTextStyle.black_15_w600_515150,
                         ),
                         btnColor: ColorStyles.greyE0E6EE,
                       ),
@@ -162,7 +162,7 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Вход',
-          style: CustomTextStyle.black_20_w700,
+          style: CustomTextStyle.black_21_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -170,7 +170,7 @@ class _MainAuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           onFieldSubmitted: (value) {
             requestStage1();
           },
@@ -204,7 +204,7 @@ class _MainAuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -220,7 +220,7 @@ class _MainAuthPageState extends State<AuthPage> {
               },
               child: Text(
                 'Забыли пароль?',
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
             ),
           ],
@@ -235,7 +235,7 @@ class _MainAuthPageState extends State<AuthPage> {
       children: [
         Text(
           'Восстановление доступа',
-          style: CustomTextStyle.black_20_w700,
+          style: CustomTextStyle.black_21_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -243,7 +243,7 @@ class _MainAuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeResetLogin,
           textEditingController: loginController,
-          hintStyle: CustomTextStyle.grey_12_w400,
+          hintStyle: CustomTextStyle.grey_13_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -252,7 +252,7 @@ class _MainAuthPageState extends State<AuthPage> {
           height: 85.h,
           child: Text(
             'Для сбросы пароля, введите номер Телефона или\nE-mail который был указан при регистрации.',
-            style: CustomTextStyle.black_12_w400_515150,
+            style: CustomTextStyle.black_13_w400_515150,
           ),
         )
       ],

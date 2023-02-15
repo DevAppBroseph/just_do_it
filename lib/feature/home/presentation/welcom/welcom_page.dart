@@ -136,7 +136,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           Text(
                                             'Добро пожаловать,',
                                             style: CustomTextStyle
-                                                .black_12_w400_515150,
+                                                .black_13_w400_515150,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: null,
                                           ),
@@ -180,7 +180,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                             Text(
                                               'Рейтинг',
                                               style:
-                                                  CustomTextStyle.grey_12_w400,
+                                                  CustomTextStyle.grey_13_w400,
                                             ),
                                             SizedBox(height: 6.h),
                                             Row(
@@ -191,7 +191,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 Text(
                                                   '4.5',
                                                   style: CustomTextStyle
-                                                      .black_14_w500_171716,
+                                                      .black_15_w500_171716,
                                                 ),
                                               ],
                                             ),
@@ -199,13 +199,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                             Text(
                                               'Баллы:',
                                               style:
-                                                  CustomTextStyle.grey_12_w400,
+                                                  CustomTextStyle.grey_13_w400,
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
                                               '850',
                                               style: CustomTextStyle
-                                                  .black_14_w500_171716,
+                                                  .black_15_w500_171716,
                                             ),
                                           ],
                                         ),
@@ -228,7 +228,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       children: [
                         Text(
                           'Посмотреть как:',
-                          style: CustomTextStyle.black_16_w800,
+                          style: CustomTextStyle.black_17_w800,
                         ),
                       ],
                     ),
@@ -278,11 +278,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Заказчик',
                                         style: CustomTextStyle
-                                            .black_12_w400_171716,
+                                            .black_13_w400_171716,
                                       ),
                                       Text(
                                         'Размести задание',
-                                        style: CustomTextStyle.grey_10_w400,
+                                        style: CustomTextStyle.grey_11_w400,
                                       ),
                                     ],
                                   ),
@@ -332,11 +332,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Исполнитель',
                                         style: CustomTextStyle
-                                            .black_12_w400_171716,
+                                            .black_13_w400_171716,
                                       ),
                                       Text(
                                         'Выполняй работу',
-                                        style: CustomTextStyle.grey_10_w400,
+                                        style: CustomTextStyle.grey_11_w400,
                                       ),
                                     ],
                                   ),
@@ -398,7 +398,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Узнай больше о проекте!',
                                         style: CustomTextStyle
-                                            .black_14_w600_171716,
+                                            .black_15_w600_171716,
                                       ),
                                       const Spacer(),
                                       SvgPicture.asset(
@@ -476,7 +476,7 @@ class _WelcomPageState extends State<WelcomPage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -485,7 +485,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     width: 100.w,
                     child: Text(
                       '- $choice',
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey_13_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -548,7 +548,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_515150,
+                    style: CustomTextStyle.black_13_w400_515150,
                   ),
                   const Spacer(),
                 ],

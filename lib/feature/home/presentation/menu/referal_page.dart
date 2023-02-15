@@ -40,7 +40,7 @@ class ReferalPage extends StatelessWidget {
                       children: [
                         Text(
                           'Реферальная система',
-                          style: CustomTextStyle.black_20_w700,
+                          style: CustomTextStyle.black_21_w700,
                         ),
                       ],
                     ),
@@ -53,7 +53,7 @@ class ReferalPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'Это ваша реферальная ссылка',
-                style: CustomTextStyle.black_14_w500_000000,
+                style: CustomTextStyle.black_15_w500_000000,
               ),
             ),
             SizedBox(height: 8.h),
@@ -61,7 +61,7 @@ class ReferalPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'За каждого нового пользователя, кто установит приложение\nпо вашей ссылке, Вы получите от 100 баллов.',
-                style: CustomTextStyle.black_12_w400_515150,
+                style: CustomTextStyle.black_13_w400_515150,
               ),
             ),
             SizedBox(height: 50.h),
@@ -78,7 +78,7 @@ class ReferalPage extends StatelessWidget {
                 children: [
                   Text(
                     'Установите приложение JUSTDOIT и получите\nдополнительно 200 баллов на свой счет!',
-                    style: CustomTextStyle.black_12_w400_515150,
+                    style: CustomTextStyle.black_13_w400_515150,
                   ),
                 ],
               ),
@@ -102,7 +102,7 @@ class ReferalPage extends StatelessWidget {
                       children: [
                         Text(
                           'www.link//32xs2cw',
-                          style: CustomTextStyle.white_14_w600,
+                          style: CustomTextStyle.white_15_w600,
                         ),
                         const Spacer(),
                         SvgPicture.asset('assets/icons/copy.svg')
@@ -127,7 +127,7 @@ class ReferalPage extends StatelessWidget {
                       SizedBox(width: 24.w),
                       Text(
                         'Поделиться',
-                        style: CustomTextStyle.grey_12_w400,
+                        style: CustomTextStyle.grey_13_w400,
                       ),
                       SizedBox(width: 24.w),
                       Expanded(

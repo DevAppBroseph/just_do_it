@@ -112,7 +112,7 @@ class _CreatePageState extends State<CreatePage> {
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
                           'Создать',
-                          style: CustomTextStyle.black_14_w600_171716,
+                          style: CustomTextStyle.black_15_w600_171716,
                         ),
                       ),
                     ),
@@ -135,7 +135,7 @@ class _CreatePageState extends State<CreatePage> {
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text(
             'Что необходимо сделать?',
-            style: CustomTextStyle.black_16_w800,
+            style: CustomTextStyle.black_17_w800,
           ),
         ),
         elementCategory(
@@ -277,16 +277,16 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_12_w400_171716,
+                style: CustomTextStyle.black_13_w400_171716,
               ),
               if (choice.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
-                    width: 100.w,
+                    width: 70.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey_13_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -343,7 +343,7 @@ class _CreatePageState extends State<CreatePage> {
         if (choice.contains(label)) {
           choice.remove(label);
         } else {
-          choice.add(label);
+          if(choice.length<1) choice.add(label);
         }
         setState(() {});
       },
@@ -359,7 +359,7 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_515150,
+                    style: CustomTextStyle.black_13_w400_515150,
                   ),
                   const Spacer(),
                   if (choice.contains(label)) const Icon(Icons.check)

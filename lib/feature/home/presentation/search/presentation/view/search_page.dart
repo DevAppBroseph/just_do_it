@@ -107,7 +107,7 @@ class SearchPage extends StatelessWidget {
                 children: [
                   Text(
                     'Все задачи',
-                    style: CustomTextStyle.black_16_w800,
+                    style: CustomTextStyle.black_17_w800,
                   ),
                   const Spacer(),
                   ScaleButton(
@@ -139,7 +139,7 @@ class SearchPage extends StatelessWidget {
                                   SizedBox(width: 10.w),
                                   Text(
                                     'Фильтр',
-                                    style: CustomTextStyle.black_12_w400_171716,
+                                    style: CustomTextStyle.black_13_w400_171716,
                                   ),
                                 ],
                               ),
@@ -157,7 +157,7 @@ class SearchPage extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   '2',
-                                  style: CustomTextStyle.white_8_w700,
+                                  style: CustomTextStyle.white_9_w700,
                                 ),
                               ),
                             ),
@@ -234,7 +234,7 @@ class SearchPage extends StatelessWidget {
                           Flexible(
                             child: Text(
                               task.task,
-                              style: CustomTextStyle.black_12_w500_171716,
+                              style: CustomTextStyle.black_13_w500_171716,
                             ),
                           ),
                         ],
@@ -243,12 +243,12 @@ class SearchPage extends StatelessWidget {
                     SizedBox(height: 8.h),
                     Text(
                       task.typeLoaction,
-                      style: CustomTextStyle.black_10_w500_515150,
+                      style: CustomTextStyle.black_11_w500_515150,
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       task.whenStart,
-                      style: CustomTextStyle.grey_10_w400,
+                      style: CustomTextStyle.grey_11_w400,
                     ),
                   ],
                 ),
@@ -258,7 +258,7 @@ class SearchPage extends StatelessWidget {
                   children: [
                     Text(
                       'до ${task.coast} ₽',
-                      style: CustomTextStyle.black_12_w500_171716,
+                      style: CustomTextStyle.black_13_w500_171716,
                     ),
                   ],
                 ),
