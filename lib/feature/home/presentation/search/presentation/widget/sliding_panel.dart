@@ -470,7 +470,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Бюджет от',
+                              'Бюджет от ₽',
                               style: CustomTextStyle.grey_13_w400,
                             ),
                             SizedBox(height: 3.h),
@@ -495,7 +495,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                     setState(() {});
                                   },
                                   contentPadding: EdgeInsets.zero,
-                                  hintText: '1 000 ₽',
+                                  hintText: '',
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_13_w400_171716,
@@ -528,7 +528,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Бюджет до',
+                              'Бюджет до ₽',
                               style: CustomTextStyle.grey_13_w400,
                             ),
                             SizedBox(height: 3.h),
@@ -553,7 +553,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                     setState(() {});
                                   },
                                   contentPadding: EdgeInsets.zero,
-                                  hintText: '1 000 ₽',
+                                  hintText: '',
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_13_w400_171716,

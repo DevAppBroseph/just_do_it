@@ -37,3 +37,10 @@ class SignInEvent extends AuthEvent {
 
   SignInEvent(this.phone, this.password);
 }
+
+class CheckUserExistEvent extends AuthEvent {
+  String phone;
+  String email;
+
+  CheckUserExistEvent(this.phone, this.email);
+}

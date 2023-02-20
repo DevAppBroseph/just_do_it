@@ -13,6 +13,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RestoreCodeCheckEvent>(_restoreCodeConfirm);
     on<GetCategoriesEvent>(_getCategories);
     on<SignInEvent>(_signIn);
+    on<CheckUserExistEvent>(_checkUser);
+  }
+
+  void _checkUser(CheckUserExistEvent event, Emitter<AuthState> emit) async {
+    String? res = await Repository().checkUserExist(event.phone, event.email);
+    emit(CheckUserState(res));
   }
 
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
@@ -23,7 +29,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    Map<String, dynamic>? res = await Repository().confirmRegister(event.userRegModel);
+    Map<String, dynamic>? res =
+        await Repository().confirmRegister(event.userRegModel);
     if (res == null) {
       emit(SendProfileSuccessState());
     } else {

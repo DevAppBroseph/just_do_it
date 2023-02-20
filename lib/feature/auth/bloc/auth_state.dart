@@ -42,3 +42,8 @@ class SignInSuccessState extends AuthState {
 }
 
 class SignInErrorState extends AuthState {}
+
+class CheckUserState extends AuthState {
+  String? error;
+  CheckUserState(this.error);
+}

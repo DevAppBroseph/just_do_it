@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  auto_size_text: ^3.0.0
   dash_chat_2: ^0.0.11
   flutter_overlay_loader: ^2.0.0
   cached_network_image: ^3.2.3

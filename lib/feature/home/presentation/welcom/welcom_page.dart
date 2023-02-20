@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -141,15 +142,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                             maxLines: null,
                                           ),
                                           SizedBox(height: 8.h),
-                                          Text(
-                                            // 'Елена\nКузнецова',
+                                          AutoSizeText(
                                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                            // style: CustomTextStyle
-                                            // .black_32_w800_171716,
                                             style: TextStyle(
                                                 fontSize: 32.sp,
                                                 fontWeight: FontWeight.w800),
-                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),
                                         ],

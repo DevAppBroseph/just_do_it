@@ -155,6 +155,7 @@ class _CreatePageState extends State<CreatePage> {
           ],
           index == 1,
           choice1,
+          1,
         ),
         elementCategory(
           'assets/images/house.png',
@@ -173,6 +174,7 @@ class _CreatePageState extends State<CreatePage> {
           ],
           index == 2,
           choice2,
+          2,
         ),
         elementCategory(
           'assets/images/soap.png',
@@ -191,6 +193,7 @@ class _CreatePageState extends State<CreatePage> {
           ],
           index == 3,
           choice3,
+          3,
         ),
         elementCategory(
           'assets/images/book.png',
@@ -209,6 +212,7 @@ class _CreatePageState extends State<CreatePage> {
           ],
           index == 4,
           choice4,
+          4,
         ),
         elementCategory(
           'assets/images/auto.png',
@@ -227,6 +231,7 @@ class _CreatePageState extends State<CreatePage> {
           ],
           index == 5,
           choice5,
+          5,
         ),
         if (index != 0) SizedBox(height: 80.h),
       ],
@@ -309,7 +314,7 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Widget info(List<String> list, bool open, List<String> choice) {
+  Widget info(List<String> list, bool open, List<String> choice, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
       child: AnimatedContainer(
@@ -331,19 +336,53 @@ class _CreatePageState extends State<CreatePage> {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: const ClampingScrollPhysics(),
-          children: list.map((e) => item(e, choice)).toList(),
+          children: list.map((e) => item(e, choice, index)).toList(),
         ),
       ),
     );
   }
 
-  Widget item(String label, List<String> choice) {
+  Widget item(String label, List<String> choice, int index) {
     return GestureDetector(
       onTap: () {
         if (choice.contains(label)) {
           choice.remove(label);
         } else {
-          if(choice.length<1) choice.add(label);
+          if (choice.length < 1) choice.add(label);
+        }
+        switch (index) {
+          case 1:
+            choice2.clear();
+            choice3.clear();
+            choice4.clear();
+            choice5.clear();
+            break;
+          case 2:
+            choice1.clear();
+            choice3.clear();
+            choice4.clear();
+            choice5.clear();
+            break;
+          case 3:
+            choice1.clear();
+            choice2.clear();
+            choice4.clear();
+            choice5.clear();
+            break;
+          case 4:
+            choice1.clear();
+            choice2.clear();
+            choice3.clear();
+            choice5.clear();
+            break;
+          case 5:
+            choice1.clear();
+            choice2.clear();
+            choice3.clear();
+            choice4.clear();
+            break;
+
+          default:
         }
         setState(() {});
       },

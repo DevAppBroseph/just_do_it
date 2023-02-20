@@ -164,9 +164,18 @@ class _CustomerState extends State<Customer> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
         Loader.hide();
-        if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCode,
-              arguments: [phoneController.text, true]);
+        if (current is CheckUserState) {
+          if (current.error != null) {
+            //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
+            showAlertToast(
+                'Пользователь с такой почтой или номером телефона уже зарегистрирован');
+          } else {
+            page = 1;
+            widget.stage(2);
+          }
+        } else if (current is SendProfileSuccessState) {
+          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+              arguments: [phoneController.text]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
@@ -242,8 +251,9 @@ class _CustomerState extends State<Customer> {
                     showAlertToast(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
                   } else {
-                    page = 1;
-                    widget.stage(2);
+                    showLoaderWrapper(context);
+                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
+                        phoneController.text, emailController.text));
                   }
                 } else {
                   requestNextEmptyFocusStage2();

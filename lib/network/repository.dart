@@ -141,4 +141,24 @@ class Repository {
     }
     return null;
   }
+
+  // проверка на зарегистрированного пользователя
+  Future<String?> checkUserExist(String phone, String email) async {
+    final response = await dio.post(
+      '$server/auth/check',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+      ),
+      data: {
+        "phone_number": phone,
+        "email": email,
+      },
+    );
+    print('object ${response.data}');
+
+    if (response.statusCode == 200) {
+      return null;
+    }
+    return '';
+  }
 }

@@ -9,29 +9,25 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
-class ConfirmCodePage extends StatefulWidget {
-  final bool register;
+class ConfirmCodeRegisterPage extends StatefulWidget {
   final String phone;
-  const ConfirmCodePage({
+  const ConfirmCodeRegisterPage({
     super.key,
     required this.phone,
-    required this.register,
   });
 
   @override
-  State<ConfirmCodePage> createState() => _ConfirmCodePageState();
+  State<ConfirmCodeRegisterPage> createState() =>
+      _ConfirmCodeRegisterPageState();
 }
 
-class _ConfirmCodePageState extends State<ConfirmCodePage> {
+class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   TextEditingController codeController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   FocusNode focusNode = FocusNode();
-  FocusNode focusNodePassword = FocusNode();
   Timer? timer;
   int currentSecond = 59;
   void _startTimer() {
@@ -68,7 +64,6 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
-          print('object $current');
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
@@ -150,20 +145,6 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                             ),
                           ),
                           SizedBox(height: 40.h),
-                          if (!widget.register)
-                            CustomTextField(
-                              hintText: 'Новый пароль',
-                              height: 50.h,
-                              obscureText: true,
-                              focusNode: focusNodePassword,
-                              textEditingController: passwordController,
-                              hintStyle: CustomTextStyle.grey_13_w400,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 18.w, vertical: 18.h),
-                            ),
-                          SizedBox(height: 40.h),
-                          // timer != null && timer!.isActive
-                          //     ?
                           RichText(
                             text: TextSpan(
                               children: [
@@ -178,13 +159,6 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                               ],
                             ),
                           )
-                          // : GestureDetector(
-                          //     onTap: () {},
-                          //     child: Text(
-                          //       'Повторно отправить код',
-                          //       style: CustomTextStyle.black_12_w400_515150,
-                          //     ),
-                          //   ),
                         ],
                       ),
                     ),
@@ -196,28 +170,13 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: () {
-                              if (widget.register) {
-                                if (codeController.text.isNotEmpty) {
-                                  showLoaderWrapper(context);
-                                  BlocProvider.of<AuthBloc>(context).add(
-                                      ConfirmCodeEvent(
-                                          widget.phone, codeController.text));
-                                } else {
-                                  showAlertToast('Введите код');
-                                }
+                              if (codeController.text.isNotEmpty) {
+                                showLoaderWrapper(context);
+                                BlocProvider.of<AuthBloc>(context).add(
+                                    ConfirmCodeEvent(
+                                        widget.phone, codeController.text));
                               } else {
-                                if (codeController.text.isEmpty) {
-                                  showAlertToast('Введите код');
-                                } else if (passwordController.text.isEmpty) {
-                                  showAlertToast('Введите пароль');
-                                } else {
-                                  showLoaderWrapper(context);
-                                  BlocProvider.of<AuthBloc>(context).add(
-                                      RestoreCodeCheckEvent(
-                                          widget.phone,
-                                          codeController.text,
-                                          passwordController.text));
-                                }
+                                showAlertToast('Введите код');
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,

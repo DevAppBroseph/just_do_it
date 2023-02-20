@@ -56,8 +56,8 @@ class _MainAuthPageState extends State<AuthPage> {
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
         Loader.hide();
         if (current is ResetPasswordSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCode,
-              arguments: [loginController.text, false]);
+          Navigator.of(context).pushNamed(AppRoute.confirmPhoneCode,
+              arguments: [loginController.text]);
         } else if (current is ResetPasswordErrorState) {
           showAlertToast('Пользователь не найден');
         } else if (current is SignInSuccessState) {
