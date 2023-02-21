@@ -47,3 +47,14 @@ class CheckUserState extends AuthState {
   String? error;
   CheckUserState(this.error);
 }
+
+class ConfirmCodeResetSuccessState extends AuthState {
+  String access;
+  ConfirmCodeResetSuccessState(this.access);
+}
+
+class ConfirmCodeResetErrorState extends AuthState {}
+
+class EditPasswordSuccessState extends AuthState {}
+
+class EditPasswordErrorState extends AuthState {}

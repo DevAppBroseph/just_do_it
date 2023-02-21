@@ -6,7 +6,8 @@ class Repository {
   var dio = Dio();
 
   // регистрация профиля
-  Future<Map<String, dynamic>?> confirmRegister(UserRegModel userRegModel) async {
+  Future<Map<String, dynamic>?> confirmRegister(
+      UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -160,5 +161,44 @@ class Repository {
       return null;
     }
     return '';
+  }
+
+  // подтвердить код изменения пароля
+  Future<String?> confirmCodeReset(String phone, String code) async {
+    final response = await dio.put(
+      '$server/auth/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+      ),
+      data: {
+        "phone_number": phone,
+        "code": code,
+        "update_passwd": true,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.data['access'];
+    }
+    return null;
+  }
+
+  // новый пароль
+  Future<bool> editPassword(String password, String access) async {
+    final response = await dio.post(
+      '$server/auth/reset_password_confirm',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+      data: {
+        "password": password,
+      },
+    );
+    print('object ${response.data}');
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

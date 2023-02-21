@@ -8,11 +8,25 @@ class SendProfileEvent extends AuthEvent {
   SendProfileEvent(this.userRegModel);
 }
 
+class ConfirmCodeResetEvent extends AuthEvent {
+  String phone;
+  String code;
+
+  ConfirmCodeResetEvent(this.phone, this.code);
+}
+
 class ConfirmCodeEvent extends AuthEvent {
   String phone;
   String code;
 
   ConfirmCodeEvent(this.phone, this.code);
+}
+
+class EditPasswordEvent extends AuthEvent {
+  String password;
+  String token;
+
+  EditPasswordEvent(this.password, this.token);
 }
 
 class RestoreCodeEvent extends AuthEvent {

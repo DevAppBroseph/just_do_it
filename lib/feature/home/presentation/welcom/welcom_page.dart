@@ -101,7 +101,7 @@ class _WelcomPageState extends State<WelcomPage> {
                   BlocBuilder<ProfileBloc, ProfileState>(
                     builder: (context, snapshot) {
                       final bloc = BlocProvider.of<ProfileBloc>(context);
-                      if (bloc.access == null) {
+                      if (bloc.user == null) {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 80.w),
                           child: Padding(

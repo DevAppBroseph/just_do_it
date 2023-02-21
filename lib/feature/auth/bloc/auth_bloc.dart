@@ -14,6 +14,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GetCategoriesEvent>(_getCategories);
     on<SignInEvent>(_signIn);
     on<CheckUserExistEvent>(_checkUser);
+    on<ConfirmCodeResetEvent>(_confirmCodeReset);
+    on<EditPasswordEvent>(_editPassword);
+  }
+
+  void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
+    bool res = await Repository().editPassword(event.password, event.token);
+    if (res) {
+      emit(EditPasswordSuccessState());
+    } else {
+      emit(EditPasswordErrorState());
+    }
+  }
+
+  void _confirmCodeReset(
+      ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
+    String? res = await Repository().confirmCodeReset(event.phone, event.code);
+    if (res != null) {
+      emit(ConfirmCodeResetSuccessState(res));
+    } else {
+      emit(ConfirmCodeResetErrorState());
+    }
   }
 
   void _checkUser(CheckUserExistEvent event, Emitter<AuthState> emit) async {

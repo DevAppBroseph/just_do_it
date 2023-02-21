@@ -60,6 +60,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
   @override
   void dispose() {
     timer?.cancel();
+    BlocProvider.of<ProfileBloc>(context).setAccess(null);
     super.dispose();
   }
 
@@ -70,17 +71,16 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
-          if (current is ConfirmCodeRegistrSuccessState) {
-            BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+          if (current is EditPasswordSuccessState) {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-          } else if (current is ConfirmRestoreSuccessState) {
+          } else if (current is EditPasswordErrorState) {
+            showAlertToast('Ошибка');
+          } else if (current is ConfirmCodeResetSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-          } else if (current is ConfirmCodeRegistrErrorState) {
-            showAlertToast('Неверный код');
-          } else if (current is ConfirmRestoreErrorState) {
+            confirmCode = true;
+            return true;
+          } else if (current is ConfirmCodeResetErrorState) {
             showAlertToast('Неверный код');
           }
           return false;
@@ -106,14 +106,13 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                 if (codeController.text.isEmpty) {
                                   showAlertToast('Введите код');
                                 } else {
-                                  // showLoaderWrapper(context);
-                                  // BlocProvider.of<AuthBloc>(context).add(
-                                  //     RestoreCodeCheckEvent(
-                                  //         widget.phone,
-                                  //         codeController.text,
-                                  //         passwordController.text));
-                                  confirmCode = true;
-                                  setState(() {});
+                                  showLoaderWrapper(context);
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                    ConfirmCodeResetEvent(
+                                      widget.phone,
+                                      codeController.text,
+                                    ),
+                                  );
                                 }
                               } else {
                                 if (passwordController.text.isEmpty) {
@@ -125,8 +124,14 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                     passwordRepeatController.text) {
                                   showAlertToast('Пароли не совпадают');
                                 } else {
-                                  showAlertToast('отправить запрос');
-                                  // отправить запрос
+                                  showLoaderWrapper(context);
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                    EditPasswordEvent(
+                                      passwordController.text,
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .access!,
+                                    ),
+                                  );
                                 }
                               }
                             },
@@ -141,6 +146,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             onTap: () {
                               if (confirmCode) {
                                 confirmCode = false;
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .setAccess(null);
                                 setState(() {});
                               } else {
                                 Navigator.of(context).pop();

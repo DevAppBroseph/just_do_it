@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         final bloc = BlocProvider.of<ProfileBloc>(context);
-        if ((index == 2 || index == 3 || index == 4) && bloc.access == null) {
+        if ((index == 2 || index == 3 || index == 4) && bloc.user == null) {
           Navigator.of(context).pushNamed(AppRoute.auth);
         } else {
           if (index == 4) {

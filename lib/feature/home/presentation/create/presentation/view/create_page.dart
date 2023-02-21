@@ -105,7 +105,7 @@ class _CreatePageState extends State<CreatePage> {
                       child: CustomButton(
                         onTap: () {
                           final bloc = BlocProvider.of<ProfileBloc>(context);
-                          if (bloc.access == null) {
+                          if (bloc.user == null) {
                             Navigator.of(context).pushNamed(AppRoute.auth);
                           }
                         },
