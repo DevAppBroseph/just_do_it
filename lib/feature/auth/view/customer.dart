@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,17 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/svg_and_images.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
-import 'package:just_do_it/feature/auth/widget/button.dart';
-import 'package:just_do_it/feature/auth/widget/drop_down.dart';
-import 'package:just_do_it/feature/auth/widget/formatter_first_upper.dart';
-import 'package:just_do_it/feature/auth/widget/loader.dart';
-import 'package:just_do_it/feature/auth/widget/radio.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -68,24 +62,6 @@ class _CustomerState extends State<Customer> {
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
-  List<String> country = ['Россия', 'ОАЭ'];
-  List<String> countryRussia = [
-    'Краснодарский край',
-    'Красноярский край',
-    'Пермский край',
-    'Белгородская область',
-    'Курская область',
-    'Московская область',
-    'Смоленская область',
-  ];
-  List<String> countryOAE = [
-    'Дубай',
-    'Абу-Даби',
-    'Аджмана',
-    'Фуджейры',
-    'Рас-Эль-Хаймы',
-    'Шарджи',
-  ];
 
   FocusNode focusNodeAbout = FocusNode();
   FocusNode focusNodeName = FocusNode();
@@ -155,6 +131,11 @@ class _CustomerState extends State<Customer> {
             duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:scale_button/scale_button.dart';

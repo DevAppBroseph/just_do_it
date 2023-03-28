@@ -17,7 +17,7 @@ class ConfirmCodeRegistrSuccessState extends AuthState {
   ConfirmCodeRegistrSuccessState(this.access);
 }
 
-class ConfirmCodeRegistrErrorState extends AuthState {}
+class ConfirmCodeRegisterErrorState extends AuthState {}
 
 class ResetPasswordSuccessState extends AuthState {}
 

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
@@ -70,7 +69,7 @@ class SearchPage extends StatelessWidget {
                           height: 36.h,
                           child: CustomTextField(
                             fillColor: ColorStyles.greyF7F7F8,
-                            prefixicon: Stack(
+                            prefixIcon: Stack(
                               alignment: Alignment.center,
                               children: [
                                 SvgPicture.asset(

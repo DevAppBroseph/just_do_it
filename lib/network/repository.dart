@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:just_do_it/constants/server.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 class Repository {

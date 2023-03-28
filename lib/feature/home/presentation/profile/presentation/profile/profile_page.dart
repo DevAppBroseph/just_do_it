@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
 
@@ -19,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool state = false;
 
   PageController pageController = PageController();
-  int stageRegistragion = 1;
+  int stageRegistration = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       const Duration(milliseconds: 50),
                                       (() {
                                         setState(() {
-                                          stageRegistragion = 1;
+                                          stageRegistration = 1;
                                           state = !state;
                                         });
                                         pageController.animateToPage(0,
@@ -138,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       const Duration(milliseconds: 50),
                                       (() {
                                         setState(() {
-                                          stageRegistragion = 1;
+                                          stageRegistration = 1;
                                           state = !state;
                                         });
                                         pageController.animateToPage(1,

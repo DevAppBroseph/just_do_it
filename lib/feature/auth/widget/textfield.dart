@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -25,7 +24,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffix;
   final Widget? suffixIcon;
   final String? suffixText;
-  final Widget? prefixicon;
+  final Widget? prefixIcon;
   final String? prefixText;
   final bool? enabled;
   final Color? fillColor;
@@ -34,11 +33,11 @@ class CustomTextField extends StatelessWidget {
   TextStyle? hintStyle;
   TextStyle? style;
   EdgeInsets? contentPadding;
-  bool dismisTap;
+  bool dismissTap;
   bool actionButton;
   CustomTextField({
-    Key? key,
-    this.dismisTap = false,
+    super.key,
+    this.dismissTap = false,
     this.actionButton = true,
     this.onTap,
     this.readOnly,
@@ -59,7 +58,7 @@ class CustomTextField extends StatelessWidget {
     this.suffix,
     this.suffixIcon,
     this.suffixText,
-    this.prefixicon,
+    this.prefixIcon,
     this.prefixText,
     this.enabled,
     this.fillColor,
@@ -114,7 +113,7 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: filColor,
               icon: icon,
-              prefixIcon: prefixicon,
+              prefixIcon: prefixIcon,
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
@@ -178,7 +177,7 @@ class CustomTextField extends StatelessWidget {
         width: widthOfScreen,
         child: KeyboardActions(
           disableScroll: true,
-          tapOutsideToDismiss: dismisTap,
+          tapOutsideToDismiss: dismissTap,
           config: KeyboardActionsConfig(
             defaultDoneWidget: GestureDetector(
               onTap: () {
@@ -216,7 +215,7 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: filColor,
               icon: icon,
-              prefixIcon: prefixicon,
+              prefixIcon: prefixIcon,
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,

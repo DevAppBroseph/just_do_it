@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
-import 'package:just_do_it/feature/auth/widget/button.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
+  const CreatePage({super.key});
+
   @override
   State<CreatePage> createState() => _CreatePageState();
 }
@@ -57,7 +57,7 @@ class _CreatePageState extends State<CreatePage> {
                           height: 36.h,
                           child: CustomTextField(
                             fillColor: ColorStyles.greyF7F7F8,
-                            prefixicon: Stack(
+                            prefixIcon: Stack(
                               alignment: Alignment.center,
                               children: [
                                 SvgPicture.asset(

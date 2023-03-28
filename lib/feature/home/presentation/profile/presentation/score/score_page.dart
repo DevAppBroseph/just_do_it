@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 
 class ScorePage extends StatelessWidget {
   @override
@@ -103,7 +102,7 @@ class ScorePage extends StatelessWidget {
                                   SizedBox(height: 12.h),
                                   Container(
                                     height: 29.h,
-                                    width: 142.w,
+                                    // width: 160.w,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 12.w,
                                       vertical: 8.h,
@@ -121,7 +120,9 @@ class ScorePage extends StatelessWidget {
                                           style: CustomTextStyle
                                               .black_11_w500_171716,
                                         ),
-                                        Spacer(),
+                                        const SizedBox(
+                                          width: 9,
+                                        ),
                                         SvgPicture.asset(
                                           'assets/icons/share.svg',
                                           color: ColorStyles.black,

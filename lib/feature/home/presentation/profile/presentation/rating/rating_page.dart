@@ -1,10 +1,10 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/comment.dart';
 
@@ -153,13 +153,13 @@ class _RatingPageState extends State<RatingPage> {
               ),
               SizedBox(height: 18.h),
               SizedBox(
+                // todo do not make the width fixed cause it varies from one phone to another
                 width: 245.w,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
                       height: 36.h,
-                      width: 93.h,
                       decoration: BoxDecoration(
                         color: ColorStyles.whiteF5F5F5,
                         borderRadius: BorderRadius.circular(8.r),

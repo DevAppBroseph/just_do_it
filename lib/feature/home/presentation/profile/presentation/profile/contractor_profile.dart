@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/svg_and_images.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
@@ -23,6 +22,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     print('object ${MediaQuery.of(context).viewInsets}');
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
@@ -262,7 +262,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   // onTap: _selectCV,
                   child: Container(
                     height: 40.h,
-                    width: 154.w,
                     padding:
                         EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
                     decoration: BoxDecoration(
@@ -270,6 +269,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
                           height: 14.h,
@@ -361,9 +361,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           border: InputBorder.none,
                           hintStyle: CustomTextStyle.black_13_w400_515150,
                         ),
-                        controller: TextEditingController(),
+                        controller: experienceController,
                         style: CustomTextStyle.black_13_w400_515150,
                         maxLines: null,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(250),
+                        ],
+                        onChanged: (String value) {
+                          setState(() {});
+                        },
                       ),
                     ),
                     const Spacer(),
@@ -371,7 +377,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '0/250',
+                          '${experienceController.text.length}/250',
                           style: CustomTextStyle.grey_11_w400,
                         )
                       ],
@@ -390,13 +396,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   bound: 0.02,
                   child: Container(
                     height: 36.h,
-                    width: 102.w,
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     decoration: BoxDecoration(
                       color: ColorStyles.greyF9F9F9,
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
                           height: 14.h,

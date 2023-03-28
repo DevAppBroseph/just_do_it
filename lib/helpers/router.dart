@@ -38,9 +38,9 @@ class AppRoute {
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(builder: (_) => const HomePage());
       case tasks:
-        return MaterialPageRoute(builder: (_) => TasksPage());
+        return MaterialPageRoute(builder: (_) => const TasksPage());
       case contactus:
         return MaterialPageRoute(builder: (_) => ContactUs());
       case score:

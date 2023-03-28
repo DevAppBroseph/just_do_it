@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/feature/auth/widget/button.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 
 class DatePicker extends StatefulWidget {
   const DatePicker({super.key});

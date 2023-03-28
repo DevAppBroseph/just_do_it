@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/feature/auth/widget/widget_position.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 showIconModal(

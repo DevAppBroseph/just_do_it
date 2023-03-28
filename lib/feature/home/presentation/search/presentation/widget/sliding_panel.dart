@@ -1,16 +1,13 @@
 import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
-import 'package:just_do_it/core/utils/toasts.dart';
-import 'package:just_do_it/feature/auth/widget/button.dart';
-import 'package:just_do_it/feature/auth/widget/radio.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/models/category.dart';
 import 'package:just_do_it/models/category_select.dart';
@@ -1045,9 +1042,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             String str = '';
             for (int i = 0; i < countryList.length; i++) {
               if (countryList[i].select && str.isEmpty) {
-                str += '${countryList[i].name}';
-              } else if (countryList[i].select)
+                str += countryList[i].name;
+              } else if (countryList[i].select) {
                 str += ', ${countryList[i].name}';
+              }
             }
             allCountry = false;
             this.country = str;
@@ -1485,7 +1483,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: index == 0 ? startDate : endDate,
+                        minimumDate:
+                            index == 1 && startDate != null ? startDate : null,
+                        maximumDate:
+                            index == 0 && endDate != null ? endDate : null,
                         onDateTimeChanged: (val) {
                           if (index == 0) {
                             startDate = val;

@@ -1,13 +1,11 @@
 import 'dart:math';
 
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
-import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
+import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 
 class PersonalChat extends StatefulWidget {
   @override
@@ -48,6 +46,7 @@ class _PersonalChatState extends State<PersonalChat> {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: 9,
+              reverse: true,
               controller: scrollController,
               physics: const ClampingScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.w),
@@ -79,7 +78,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 16.w, vertical: 16.w),
-                                    child: Text('привет $index'),
+                                    child: Text('привет ${8 - index}'),
                                   ),
                                 ),
                                 SizedBox(height: 8.h),
@@ -157,7 +156,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                 () {
                               scrollController.animateTo(
                                 scrollController.position.maxScrollExtent,
-                                duration: Duration(milliseconds: 100),
+                                duration: const Duration(milliseconds: 100),
                                 curve: Curves.linear,
                               );
                             });

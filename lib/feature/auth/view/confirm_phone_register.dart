@@ -1,14 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
-import 'package:just_do_it/feature/auth/widget/button.dart';
-import 'package:just_do_it/feature/auth/widget/loader.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
@@ -72,7 +71,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-          } else if (current is ConfirmCodeRegistrErrorState) {
+          } else if (current is ConfirmCodeRegisterErrorState) {
             showAlertToast('Неверный код');
           } else if (current is ConfirmRestoreErrorState) {
             showAlertToast('Неверный код');

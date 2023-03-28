@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (res != null) {
       emit(ConfirmCodeRegistrSuccessState(res));
     } else {
-      emit(ConfirmCodeRegistrErrorState());
+      emit(ConfirmCodeRegisterErrorState());
     }
   }
 
