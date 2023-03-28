@@ -9,6 +9,8 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class PersonalAccountPage extends StatelessWidget {
+  const PersonalAccountPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(

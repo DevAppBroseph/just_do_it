@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 class Repository {
   var dio = Dio();
 
   // регистрация профиля
+  // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(
       UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
@@ -36,6 +38,8 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      await Storage().setAccessToken(accessToken);
       return response.data['access'];
     }
     return null;
@@ -81,6 +85,8 @@ class Repository {
     print('object ${response.data}');
 
     if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      await Storage().setAccessToken(accessToken);
       return response.data['access'];
     }
     return null;
@@ -118,14 +124,15 @@ class Repository {
       },
     );
     print('object ${response.data}');
-
     if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      await Storage().setAccessToken(accessToken);
       return response.data['access'];
     }
     return null;
   }
 
-  // получить профиль
+  // auth/ get
   Future<UserRegModel?> getProfile(String access) async {
     print('object token= $access');
     final response = await dio.get(
@@ -133,6 +140,41 @@ class Repository {
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
+    );
+    print('object ${response.data}---${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final user = UserRegModel.fromJson(response.data);
+      return user;
+    }
+    return null;
+  }
+
+  // auth/ put
+  Future<UserRegModel?> editBasicProfileInfo(UserRegModel newUserData) async {
+    final response = await dio.put(
+      '$server/auth/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer ${newUserData.access}'}),
+    );
+    print('object ${response.data}---${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final user = UserRegModel.fromJson(response.data);
+      return user;
+    }
+    return null;
+  }
+
+  // auth/ put
+  Future<UserRegModel?> editIdentityProfileInfo(
+      UserRegModel newUserData) async {
+    final response = await dio.put(
+      '$server/auth/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer ${newUserData.access}'}),
     );
     print('object ${response.data}---${response.statusCode}');
 
@@ -178,6 +220,8 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      await Storage().setAccessToken(accessToken);
       return response.data['access'];
     }
     return null;

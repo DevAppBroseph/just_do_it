@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  CreatePage(),
+                  const CreatePage(),
                   SearchPage(),
                   const TasksPage(),
                   ChatPage(),

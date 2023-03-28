@@ -3,46 +3,51 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class UserRegModel {
+  String? access;
+
   String? phoneNumber;
   String? email;
   String? firstname;
   String? lastname;
   String? password;
-  File? photo;
-  bool? sex;
   String? docType;
   String? docInfo;
-  bool? isEntity;
   String? activity;
+  String? region;
+  String? photoLink;
+  String? cvLink;
+
+  File? photo;
+  bool? sex;
+  bool? isEntity;
+
   List<File>? images;
   File? cv;
   List<dynamic>? groups;
   List<Activities>? activities;
-  String? region;
   List<int>? activitiesDocument;
-  String? photoLink;
-  String? cvLink;
 
   UserRegModel({
+    this.access,
     this.phoneNumber,
     this.email,
     this.firstname,
     this.lastname,
     this.password,
-    this.photo,
-    this.sex,
     this.docType,
     this.docInfo,
-    this.isEntity,
     this.activity,
+    this.region,
+    this.photoLink,
+    this.cvLink,
+    this.photo,
+    this.sex,
+    this.isEntity,
     this.images,
     this.cv,
     this.groups,
     this.activities,
-    this.region,
     this.activitiesDocument,
-    this.photoLink,
-    this.cvLink,
   });
 
   void copyWith({
@@ -101,7 +106,9 @@ class UserRegModel {
     bool? isEntity = data['is_entity'];
     String? activity = data['activity'];
     String? cvLink = data['CV'];
+    String? token = data['token'];
     return UserRegModel(
+      access: token,
       email: email,
       phoneNumber: phoneNumber,
       firstname: firstname,
