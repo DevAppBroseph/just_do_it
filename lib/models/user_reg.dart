@@ -3,20 +3,17 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class UserRegModel {
-  String? access;
-
   String? phoneNumber;
   String? email;
   String? firstname;
   String? lastname;
   String? password;
   String? docType;
-  String? docInfo;
   String? activity;
   String? region;
   String? photoLink;
   String? cvLink;
-
+  String? docInfo;
   File? photo;
   bool? sex;
   bool? isEntity;
@@ -28,7 +25,6 @@ class UserRegModel {
   List<int>? activitiesDocument;
 
   UserRegModel({
-    this.access,
     this.phoneNumber,
     this.email,
     this.firstname,
@@ -106,9 +102,7 @@ class UserRegModel {
     bool? isEntity = data['is_entity'];
     String? activity = data['activity'];
     String? cvLink = data['CV'];
-    String? token = data['token'];
     return UserRegModel(
-      access: token,
       email: email,
       phoneNumber: phoneNumber,
       firstname: firstname,
@@ -166,5 +160,25 @@ class Activities {
     int id = data['id'];
     String? description = data['description'];
     return Activities(id, description);
+  }
+}
+
+class DocumentInfo {
+  String? serial, documentNumber, whoGiveDocument, documentData;
+  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument,
+      this.documentData);
+  factory DocumentInfo.fromJson(String data) {
+    print('data');
+    print(data);
+    print(data.split(' '));
+    int sz = data.split(' ').length;
+    String? serial = sz>2?data.split(' ')[1]:'';
+    String? documentNumber =sz>4? data.split(' ')[3]:'';
+    String? whoGiveDocument = sz>6?data.split(' ')[5]:'';
+    String? documentData = sz>8?data.split(' ')[7]:'';
+    return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);
+  }
+  String toJson() {
+    return 'Серия: ${serial}\nНомер: ${documentNumber}\nКем выдан: ${whoGiveDocument}\nДата выдачи: ${documentData}';
   }
 }

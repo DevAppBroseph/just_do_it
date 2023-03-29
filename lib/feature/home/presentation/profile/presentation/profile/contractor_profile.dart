@@ -6,10 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
+  const ContractorProfile({super.key});
+
   @override
   State<ContractorProfile> createState() => _ContractorProfileState();
 }
@@ -165,6 +168,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: ScaleButton(
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+              },
               bound: 0.02,
               child: Container(
                 height: 68.h,
@@ -210,6 +216,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: ScaleButton(
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+              },
               bound: 0.02,
               child: Container(
                 height: 68.h,

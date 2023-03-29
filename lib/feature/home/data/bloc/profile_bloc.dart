@@ -9,6 +9,7 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitState()) {
     on<GetProfileEvent>(_getProfile);
+    on<UpdateProfileEvent>(_updateProfile);
   }
 
   String? access;
@@ -20,6 +21,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void setUser(UserRegModel? user) => this.user = user;
+
+  void _updateProfile(
+    UpdateProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(LoadProfileState());
+    String? accessToken = await Storage().getAccessToken();
+    access = accessToken;
+    user = event.newUser;
+    if (access != null) {
+      int? res = await Repository().updateUser(access!, user!);
+      if (res != null) {
+        emit(UpdateProfileSuccessState());
+      }
+    }
+    emit(ProfileInitState());
+  }
 
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());

@@ -27,6 +27,26 @@ class Repository {
     return response.data;
   }
 
+  // auth/ put
+  Future<int?> updateUser(String? access, UserRegModel userRegModel) async {
+    print('access $access');
+    Map<String, dynamic> map = userRegModel.toJson();
+    FormData data = FormData.fromMap(map);
+
+    final response = await dio.patch(
+      '$server/profile/',
+      data: data,
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+
+    print('updating user data ${response.data}');
+    print('updating user data ${response.statusCode}');
+    return response.statusCode;
+    // return response.data;
+  }
+
   // подтвердить регистраци
   Future<String?> confirmCodeRegistration(String phone, String code) async {
     final response = await dio.put(
@@ -132,49 +152,14 @@ class Repository {
     return null;
   }
 
-  // auth/ get
+  // profile/ get
   Future<UserRegModel?> getProfile(String access) async {
     print('object token= $access');
     final response = await dio.get(
-      '$server/auth/',
+      '$server/profile/',
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
-    );
-    print('object ${response.data}---${response.statusCode}');
-
-    if (response.statusCode == 200) {
-      final user = UserRegModel.fromJson(response.data);
-      return user;
-    }
-    return null;
-  }
-
-  // auth/ put
-  Future<UserRegModel?> editBasicProfileInfo(UserRegModel newUserData) async {
-    final response = await dio.put(
-      '$server/auth/',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer ${newUserData.access}'}),
-    );
-    print('object ${response.data}---${response.statusCode}');
-
-    if (response.statusCode == 200) {
-      final user = UserRegModel.fromJson(response.data);
-      return user;
-    }
-    return null;
-  }
-
-  // auth/ put
-  Future<UserRegModel?> editIdentityProfileInfo(
-      UserRegModel newUserData) async {
-    final response = await dio.put(
-      '$server/auth/',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer ${newUserData.access}'}),
     );
     print('object ${response.data}---${response.statusCode}');
 

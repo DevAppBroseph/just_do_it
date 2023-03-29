@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 List<String> countryOAE = [
   'Дубай',
   'Абу-Даби',
@@ -17,3 +19,9 @@ List<String> countryRussia = [
   'Московская область',
   'Смоленская область',
 ];
+
+class GlobalKeys {
+  static final GlobalKey keyIconBtn1 = GlobalKey();
+  static final GlobalKey keyIconBtn2 = GlobalKey();
+  static final GlobalKey keyIconBtn3 = GlobalKey();
+}

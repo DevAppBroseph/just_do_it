@@ -5,10 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CustomerProfile extends StatelessWidget {
+  const CustomerProfile({super.key});
+
   @override
   Widget build(BuildContext context) {
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
@@ -154,6 +157,9 @@ class CustomerProfile extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: ScaleButton(
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+              },
               bound: 0.02,
               child: Container(
                 height: 68.h,
@@ -199,6 +205,9 @@ class CustomerProfile extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: ScaleButton(
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+              },
               bound: 0.02,
               child: Container(
                 height: 68.h,

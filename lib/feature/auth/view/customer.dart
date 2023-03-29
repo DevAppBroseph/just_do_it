@@ -21,14 +21,12 @@ import 'package:url_launcher/url_launcher.dart';
 class Customer extends StatefulWidget {
   Function(int) stage;
 
-  Customer(this.stage);
+  Customer(this.stage, {super.key});
   @override
   State<Customer> createState() => _CustomerState();
 }
 
 class _CustomerState extends State<Customer> {
-  GlobalKey iconBtn = GlobalKey();
-  GlobalKey iconBtnCategory = GlobalKey();
   TextEditingController experienceController = TextEditingController();
 
   int groupValue = 0;
@@ -55,9 +53,9 @@ class _CustomerState extends State<Customer> {
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
   File? image;
-  GlobalKey keyCountry = GlobalKey();
-  GlobalKey keyRegion = GlobalKey();
   bool confirmTermsPolicy = false;
+  final GlobalKey _countryKey = GlobalKey();
+  final GlobalKey _regionKey = GlobalKey();
   DateTime? dateTime;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
@@ -70,7 +68,7 @@ class _CustomerState extends State<Customer> {
   FocusNode focusNodeEmail = FocusNode();
   FocusNode focusNodePassword1 = FocusNode();
   FocusNode focusNodePassword2 = FocusNode();
-  FocusNode focusNodeSeria = FocusNode();
+  FocusNode focusNodeSerial = FocusNode();
   FocusNode focusNodeNumber = FocusNode();
   FocusNode focusNodeWhoTake = FocusNode();
 
@@ -118,7 +116,7 @@ class _CustomerState extends State<Customer> {
           duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
-        focusNodeSeria.requestFocus();
+        focusNodeSerial.requestFocus();
         scrollController2.animateTo(150.h,
             duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
@@ -438,7 +436,7 @@ class _CustomerState extends State<Customer> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 350), () {
+            Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -461,7 +459,7 @@ class _CustomerState extends State<Customer> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(250.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -587,7 +585,7 @@ class _CustomerState extends State<Customer> {
             requestNextEmptyFocusStage2();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(0.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -625,7 +623,7 @@ class _CustomerState extends State<Customer> {
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(50.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -634,10 +632,10 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         GestureDetector(
-          key: keyCountry,
+          key: _countryKey,
           onTap: () => showCountry(
             context,
-            keyCountry,
+            _countryKey,
             (value) {
               countryController.text = value;
               regionController.text = '';
@@ -659,12 +657,12 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         GestureDetector(
-          key: keyRegion,
+          key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
               showRegion(
                 context,
-                keyRegion,
+                _regionKey,
                 (value) {
                   regionController.text = value;
                   user.copyWith(region: value);
@@ -692,7 +690,7 @@ class _CustomerState extends State<Customer> {
         GestureDetector(
           onTap: () => showIconModal(
             context,
-            iconBtn,
+            GlobalKeys.keyIconBtn2,
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
@@ -703,7 +701,7 @@ class _CustomerState extends State<Customer> {
             'Тип документа',
           ),
           child: Stack(
-            key: iconBtn,
+            key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
@@ -734,7 +732,7 @@ class _CustomerState extends State<Customer> {
                               dateTime = null;
                               setState(() {});
                             },
-                            child: Icon(Icons.close),
+                            child: const Icon(Icons.close),
                           )
                         : SvgPicture.asset(
                             SvgImg.arrowBottom,
@@ -791,7 +789,7 @@ class _CustomerState extends State<Customer> {
               hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
               textInputType: TextInputType.number,
-              focusNode: focusNodeSeria,
+              focusNode: focusNodeSerial,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
               textEditingController: serialDocController,
@@ -802,7 +800,7 @@ class _CustomerState extends State<Customer> {
                 requestNextEmptyFocusStage2();
               },
               onTap: () {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(350.h,
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear);
@@ -826,7 +824,7 @@ class _CustomerState extends State<Customer> {
                 requestNextEmptyFocusStage2();
               },
               onTap: () {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(350.h,
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear);
@@ -849,7 +847,7 @@ class _CustomerState extends State<Customer> {
             requestNextEmptyFocusStage2();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(350.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -884,7 +882,7 @@ class _CustomerState extends State<Customer> {
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: Column(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Row(
                     children: [
                       Expanded(
@@ -893,7 +891,7 @@ class _CustomerState extends State<Customer> {
                           color: Colors.white,
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               CupertinoButton(
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,

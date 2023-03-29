@@ -11,6 +11,8 @@ import 'package:just_do_it/feature/home/presentation/menu/menu.dart';
 import 'package:just_do_it/feature/home/presentation/menu/referal_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/notification/notification.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/personal_account/personal_account.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/edit_basic_info.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/edit_identity_info.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/profile_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/rating_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/score_page.dart';
@@ -25,6 +27,8 @@ class AppRoute {
   static const forgotPassword = '/forgotPassword';
   static const personalAccount = '/forgotPassword';
   static const profile = '/profile';
+  static const editBasicInfo = '/profile/editBasicInfo';
+  static const editIdentityInfo = '/profile/editIdentityInfo';
   static const rating = '/rating';
   static const personalChat = '/personalChat';
   static const notification = '/notification';
@@ -72,9 +76,13 @@ class AppRoute {
         return MaterialPageRoute(
             builder: (_) => ConfirmCodeRegisterPage(phone: phone));
       case personalAccount:
-        return MaterialPageRoute(builder: (_) => PersonalAccountPage());
+        return MaterialPageRoute(builder: (_) => const PersonalAccountPage());
       case profile:
         return MaterialPageRoute(builder: (_) => ProfilePage());
+      case editBasicInfo:
+        return MaterialPageRoute(builder: (_) => const EditBasicInfo());
+      case editIdentityInfo:
+        return MaterialPageRoute(builder: (_) => const EditIdentityInfo());
       default:
         return null;
     }

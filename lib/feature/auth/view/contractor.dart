@@ -23,14 +23,12 @@ import 'package:url_launcher/url_launcher.dart';
 class Contractor extends StatefulWidget {
   Function(int) stage;
 
-  Contractor(this.stage);
+  Contractor(this.stage, {super.key});
   @override
   State<Contractor> createState() => _ContractorState();
 }
 
 class _ContractorState extends State<Contractor> {
-  GlobalKey iconBtn = GlobalKey();
-  GlobalKey iconBtnCategory = GlobalKey();
   TextEditingController experienceController = TextEditingController();
 
   int groupValue = 0;
@@ -51,6 +49,9 @@ class _ContractorState extends State<Contractor> {
   TextEditingController documentTypeController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   String? gender;
+  final GlobalKey _countryKey = GlobalKey();
+  final GlobalKey _categoryButtonKey = GlobalKey();
+  final GlobalKey _regionKey = GlobalKey();
   TextEditingController countryController = TextEditingController();
   TextEditingController regionController = TextEditingController();
   List<int> typeCategories = [];
@@ -63,29 +64,7 @@ class _ContractorState extends State<Contractor> {
   List<Activities> listCategories = [];
   bool physics = false;
 
-  GlobalKey keyCountry = GlobalKey();
-  GlobalKey keyRegion = GlobalKey();
-
   DateTime? dateTime;
-
-  List<String> country = ['Россия', 'ОАЭ'];
-  List<String> countryRussia = [
-    'Краснодарский край',
-    'Красноярский край',
-    'Пермский край',
-    'Белгородская область',
-    'Курская область',
-    'Московская область',
-    'Смоленская область',
-  ];
-  List<String> countryOAE = [
-    'Дубай',
-    'Абу-Даби',
-    'Аджмана',
-    'Фуджейры',
-    'Рас-Эль-Хаймы',
-    'Шарджи',
-  ];
 
   FocusNode focusNodeAbout = FocusNode();
   FocusNode focusNodeName = FocusNode();
@@ -94,7 +73,7 @@ class _ContractorState extends State<Contractor> {
   FocusNode focusNodeEmail = FocusNode();
   FocusNode focusNodePassword1 = FocusNode();
   FocusNode focusNodePassword2 = FocusNode();
-  FocusNode focusNodeSeria = FocusNode();
+  FocusNode focusNodeSerial = FocusNode();
   FocusNode focusNodeNumber = FocusNode();
   FocusNode focusNodeWhoTake = FocusNode();
 
@@ -180,7 +159,7 @@ class _ContractorState extends State<Contractor> {
   void requestNextEmptyFocusStage2() {
     if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
-        focusNodeSeria.requestFocus();
+        focusNodeSerial.requestFocus();
         scrollController2.animateTo(150.h,
             duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
@@ -515,7 +494,7 @@ class _ContractorState extends State<Contractor> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 250), () {
+            Future.delayed(const Duration(milliseconds: 250), () {
               scrollController1.animateTo(500.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -556,7 +535,7 @@ class _ContractorState extends State<Contractor> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(300.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -597,7 +576,7 @@ class _ContractorState extends State<Contractor> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(350.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -691,10 +670,10 @@ class _ContractorState extends State<Contractor> {
         ),
         SizedBox(height: 16.h),
         GestureDetector(
-          key: keyCountry,
+          key: _countryKey,
           onTap: () => showCountry(
             context,
-            keyCountry,
+            _countryKey,
             (value) {
               countryController.text = value;
               regionController.text = '';
@@ -716,12 +695,12 @@ class _ContractorState extends State<Contractor> {
         ),
         SizedBox(height: 16.h),
         GestureDetector(
-          key: keyRegion,
+          key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
               showRegion(
                 context,
-                keyRegion,
+                _regionKey,
                 (value) {
                   regionController.text = value;
                   user.copyWith(region: value);
@@ -749,7 +728,7 @@ class _ContractorState extends State<Contractor> {
         GestureDetector(
           onTap: () => showIconModal(
             context,
-            iconBtn,
+            GlobalKeys.keyIconBtn1,
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
@@ -759,11 +738,11 @@ class _ContractorState extends State<Contractor> {
             'Тип документа',
           ),
           child: Stack(
-            key: iconBtn,
+            key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                key: iconBtn,
+                key: GlobalKeys.keyIconBtn1,
                 hintText: 'Тип документа',
                 height: 50.h,
                 enabled: false,
@@ -789,7 +768,7 @@ class _ContractorState extends State<Contractor> {
                               dateTime = null;
                               setState(() {});
                             },
-                            child: Icon(Icons.close),
+                            child: const Icon(Icons.close),
                           )
                         : SvgPicture.asset(
                             SvgImg.arrowBottom,
@@ -806,9 +785,9 @@ class _ContractorState extends State<Contractor> {
         GestureDetector(
           onTap: () => showIconModalCategories(
             context,
-            iconBtnCategory,
+            _categoryButtonKey,
             (value) {
-              print('object ${listCategories} $value');
+              print('object $listCategories $value');
 
               categoryController.text = '';
 
@@ -819,7 +798,7 @@ class _ContractorState extends State<Contractor> {
 
               if (value.length > 1) {
                 for (int i = 1; i < value.length; i++) {
-                  str += ', ' + listCategories[value[i] - 1].description!;
+                  str += ', ${listCategories[value[i] - 1].description!}';
                 }
               }
 
@@ -834,7 +813,7 @@ class _ContractorState extends State<Contractor> {
             typeCategories,
           ),
           child: Stack(
-            key: iconBtnCategory,
+            key: _categoryButtonKey,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
@@ -1071,12 +1050,12 @@ class _ContractorState extends State<Contractor> {
               hintText: 'Серия',
               hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
-              focusNode: focusNodeSeria,
+              focusNode: focusNodeSerial,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
               onTap: () {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(200.h,
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear);
@@ -1101,7 +1080,7 @@ class _ContractorState extends State<Contractor> {
               height: 50.h,
               textInputType: TextInputType.number,
               onTap: () {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(200.h,
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear);
@@ -1120,7 +1099,7 @@ class _ContractorState extends State<Contractor> {
         CustomTextField(
           hintText: 'Кем выдан',
           onTap: () {
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(300.h,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.linear);
@@ -1165,7 +1144,7 @@ class _ContractorState extends State<Contractor> {
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: Column(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Row(
                     children: [
                       Expanded(
@@ -1174,7 +1153,7 @@ class _ContractorState extends State<Contractor> {
                           color: Colors.white,
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               CupertinoButton(
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,
