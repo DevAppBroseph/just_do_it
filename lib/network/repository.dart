@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 class Repository {
@@ -29,7 +30,6 @@ class Repository {
 
   // auth/ put
   Future<int?> updateUser(String? access, UserRegModel userRegModel) async {
-    print('access $access');
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -127,6 +127,22 @@ class Repository {
         list.add(Activities.fromJson(element));
       }
       return list;
+    }
+    return null;
+  }
+
+  // get reviews
+  Future<Reviews?> getReviews(String? access) async {
+    final response = await dio.get(
+      '$server/ranking/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+
+    if (response.statusCode == 200) {
+      Reviews reviews = Reviews.fromJson(response.data);
+      return reviews;
     }
     return null;
   }

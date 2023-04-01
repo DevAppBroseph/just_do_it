@@ -17,56 +17,56 @@ class UserRegModel {
   File? photo;
   bool? sex;
   bool? isEntity;
-
   List<File>? images;
   File? cv;
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
+  int? id;
 
-  UserRegModel({
-    this.phoneNumber,
-    this.email,
-    this.firstname,
-    this.lastname,
-    this.password,
-    this.docType,
-    this.docInfo,
-    this.activity,
-    this.region,
-    this.photoLink,
-    this.cvLink,
-    this.photo,
-    this.sex,
-    this.isEntity,
-    this.images,
-    this.cv,
-    this.groups,
-    this.activities,
-    this.activitiesDocument,
-  });
+  UserRegModel(
+      {this.phoneNumber,
+      this.email,
+      this.firstname,
+      this.lastname,
+      this.password,
+      this.docType,
+      this.docInfo,
+      this.activity,
+      this.region,
+      this.photoLink,
+      this.cvLink,
+      this.photo,
+      this.sex,
+      this.isEntity,
+      this.images,
+      this.cv,
+      this.groups,
+      this.activities,
+      this.activitiesDocument,
+      this.id});
 
-  void copyWith({
-    String? phoneNumber,
-    String? email,
-    String? firstname,
-    String? lastname,
-    String? password,
-    File? photo,
-    bool? sex,
-    String? docType,
-    String? docInfo,
-    bool? isEntity,
-    String? activity,
-    List<File>? images,
-    File? cv,
-    List<dynamic>? groups,
-    List<Activities>? activities,
-    List<int>? activitiesDocument,
-    String? region,
-    String? photoLink,
-    String? cvLink,
-  }) {
+  void copyWith(
+      {String? phoneNumber,
+      String? email,
+      String? firstname,
+      String? lastname,
+      String? password,
+      File? photo,
+      bool? sex,
+      String? docType,
+      String? docInfo,
+      bool? isEntity,
+      String? activity,
+      List<File>? images,
+      File? cv,
+      List<dynamic>? groups,
+      List<Activities>? activities,
+      List<int>? activitiesDocument,
+      String? region,
+      String? photoLink,
+      String? cvLink,
+      int? id}) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
     this.firstname = firstname ?? this.firstname;
@@ -74,7 +74,7 @@ class UserRegModel {
     this.password = password ?? this.password;
     this.photo = photo ?? this.photo;
     this.sex = sex ?? this.sex;
-    this.docType = docType ?? this.docType;
+    this.docType = docType ?? this.docType; //
     this.docInfo = docInfo ?? this.docInfo;
     this.isEntity = isEntity ?? this.isEntity;
     this.activity = activity ?? this.activity;
@@ -86,6 +86,7 @@ class UserRegModel {
     this.activitiesDocument = activitiesDocument ?? this.activitiesDocument;
     this.photoLink = photoLink ?? this.photoLink;
     this.cvLink = cvLink ?? this.cvLink;
+    this.id = id ?? this.id;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -102,6 +103,7 @@ class UserRegModel {
     bool? isEntity = data['is_entity'];
     String? activity = data['activity'];
     String? cvLink = data['CV'];
+    int? id = data['id'];
     return UserRegModel(
       email: email,
       phoneNumber: phoneNumber,
@@ -116,6 +118,7 @@ class UserRegModel {
       isEntity: isEntity,
       activity: activity,
       cvLink: cvLink,
+      id: id,
     );
   }
 
@@ -168,17 +171,34 @@ class DocumentInfo {
   DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument,
       this.documentData);
   factory DocumentInfo.fromJson(String data) {
-    print('data');
-    print(data);
-    print(data.split(' '));
-    int sz = data.split(' ').length;
-    String? serial = sz>2?data.split(' ')[1]:'';
-    String? documentNumber =sz>4? data.split(' ')[3]:'';
-    String? whoGiveDocument = sz>6?data.split(' ')[5]:'';
-    String? documentData = sz>8?data.split(' ')[7]:'';
+    List<String> list = data.split('\n');
+    list.map((e) => e.split(' ').length > 1 ? e.split(' ')[1] : e);
+
+    String? serial = list[0];
+    String? documentNumber = list[1];
+    String? whoGiveDocument = list[2];
+    String? documentData = list[3];
     return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);
   }
   String toJson() {
-    return 'Серия: ${serial}\nНомер: ${documentNumber}\nКем выдан: ${whoGiveDocument}\nДата выдачи: ${documentData}';
+    return 'Серия: $serial\nНомер: $documentNumber\nКем выдан: $whoGiveDocument\nДата выдачи: $documentData';
   }
+}
+
+String mapDocumentType(String value) {
+  if (value == 'Паспорт РФ') {
+    return 'Passport';
+  } else if (value == 'Заграничный паспорт') {
+    return 'International Passport';
+  }
+  return 'Resident_ID';
+}
+
+String reverseMapDocumentType(String value) {
+  if (value == 'Passport') {
+    return 'Паспорт РФ';
+  } else if (value == 'International Passport') {
+    return 'Заграничный паспорт';
+  }
+  return 'Резидент ID';
 }

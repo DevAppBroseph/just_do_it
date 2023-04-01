@@ -275,7 +275,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
-              // user.copyWith(docType: value);
+              user?.copyWith(docType: mapDocumentType(value));
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -326,30 +326,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           ),
         ),
         if (additionalInfo) additionalInfoWidget(),
-        SizedBox(height: 16.h),
-        Row(
-          children: [
-            Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.r)),
-              value: physics,
-              onChanged: (value) {
-                setState(() {
-                  physics = !physics;
-                });
-              },
-              checkColor: Colors.black,
-              activeColor: ColorStyles.yellowFFD70A,
-            ),
-            Flexible(
-              child: Text(
-                'Юридическое лицо',
-                textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_13_w400_515150,
-              ),
-            ),
-          ],
-        ),
         SizedBox(height: heightKeyBoard / 2),
       ],
     );
@@ -541,10 +517,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;
-    // todo check where to update it
-    print(userRegModel.docType);
     if (userRegModel.docType != null) {
-      documentTypeController.text = userRegModel.docType!;
+      documentTypeController.text =
+          reverseMapDocumentType(userRegModel.docType!);
     }
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;

@@ -1,14 +1,19 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/models/comment.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/models/review.dart';
 
 class RatingPage extends StatefulWidget {
+  const RatingPage({super.key});
+
   @override
   State<RatingPage> createState() => _RatingPageState();
 }
@@ -17,30 +22,7 @@ class _RatingPageState extends State<RatingPage> {
   int type = 1;
   bool state = false;
   PageController pageController = PageController();
-  int stageRegistragion = 1;
-
-  List<Comment> listComment = [
-    Comment(
-      name: 'Guy Hawkins',
-      date: '18.20.2022',
-      score: '10',
-      text:
-          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-    ),
-    Comment(
-      name: 'Kristin Watson',
-      date: '18.20.2022',
-      score: '9',
-      text:
-          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-    ),
-    Comment(
-      name: 'Darlene Robertson',
-      date: '18.20.2022',
-      score: '10',
-      text: 'Amet minim mollit non deserunt ullamco',
-    ),
-  ];
+  int stageRegistration = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -48,50 +30,58 @@ class _RatingPageState extends State<RatingPage> {
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
-        body: SafeArea(
-          child: Column(
-            children: [
-              header(),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: ColorStyles.greyF7F7F8,
-                  ),
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    shrinkWrap: true,
-                    children: [
-                      SizedBox(height: 30.h),
-                      Text(
-                        'Отзывы о вашей работе',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w800),
-                      ),
-                      SizedBox(height: 30.h),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: listComment.length,
-                        itemBuilder: ((context, index) {
-                          return itemComment(listComment[index]);
-                        }),
-                      ),
-                      SizedBox(height: 50.h),
-                    ],
+        body:
+            BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+          if (snapshot is LoadingRatingState) {
+            return const CupertinoActivityIndicator();
+          }
+          Reviews reviews = BlocProvider.of<RatingBloc>(context).reviews;
+          return SafeArea(
+            child: Column(
+              children: [
+                header(reviews),
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: ColorStyles.greyF7F7F8,
+                    ),
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      shrinkWrap: true,
+                      children: [
+                        SizedBox(height: 30.h),
+                        Text(
+                          'Отзывы о вашей работе',
+                          style: TextStyle(
+                              fontSize: 16.sp, fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(height: 30.h),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: reviews.reviewsDetail.length,
+                          itemBuilder: ((context, index) {
+                            return itemComment(reviews.reviewsDetail[index]);
+                          }),
+                        ),
+                        SizedBox(height: 50.h),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Widget itemComment(Comment comment) {
+  Widget itemComment(ReviewsDetail review) {
+    double width = MediaQuery.of(context).size.width - (24 * 2);
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
-      width: 327.w,
+      width: width.w,
       padding:
           EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
@@ -101,30 +91,52 @@ class _RatingPageState extends State<RatingPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 34.h,
-            width: 34.h,
-            decoration: BoxDecoration(
-              color: ColorStyles.shadowFC6554,
-              borderRadius: BorderRadius.circular(50.r),
-            ),
+          ClipOval(
+            child: SizedBox.fromSize(
+                size: Size.fromRadius(25.r),
+                child: review.reviewerDetails.photo == null
+                    ? Container(
+                        height: 34.h,
+                        width: 34.h,
+                        decoration: const BoxDecoration(
+                            color: ColorStyles.shadowFC6554),
+                      )
+                    : CachedNetworkImage(
+                        height: 34.h,
+                        width: 34.h,
+                        imageUrl: review.reviewerDetails.photo!,
+                        fit: BoxFit.cover,
+                      )
+                // : Image.network(
+                //     BlocProvider.of<ProfileBloc>(context)
+                //         .user!
+                //         .photoLink!,
+                //     fit: BoxFit.cover,
+                //   ),
+                ),
           ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     color: ColorStyles.shadowFC6554,
+          //     borderRadius: BorderRadius.circular(50.r),
+          //   ),
+          // ),
           SizedBox(width: 16.w),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 245.w,
+                width: width - (66 + 50),
                 child: Row(
                   children: [
                     Text(
-                      comment.name,
+                      '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
                       style: CustomTextStyle.black_13_w500_171716,
                     ),
                     const Spacer(),
                     Text(
-                      comment.date,
+                      '01.04.2023',
                       style: CustomTextStyle.grey_11_w400,
                     ),
                   ],
@@ -137,24 +149,23 @@ class _RatingPageState extends State<RatingPage> {
                   SvgPicture.asset('assets/icons/star.svg'),
                   SizedBox(width: 4.w),
                   Text(
-                    '${comment.score}/10',
+                    '${review.mark}/10',
                     style: CustomTextStyle.black_13_w400_171716,
                   ),
                 ],
               ),
               SizedBox(height: 12.h),
               SizedBox(
-                width: 245.w,
+                width: width - (66 + 50),
                 child: Text(
-                  comment.text,
+                  review.message,
                   style: CustomTextStyle.black_11_w400_515150,
                   maxLines: null,
                 ),
               ),
               SizedBox(height: 18.h),
               SizedBox(
-                // todo do not make the width fixed cause it varies from one phone to another
-                width: 245.w,
+                width: width - (66 + 50),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -188,7 +199,7 @@ class _RatingPageState extends State<RatingPage> {
     );
   }
 
-  Widget header() {
+  Widget header(Reviews reviews) {
     final bloc = BlocProvider.of<ProfileBloc>(context);
     return SizedBox(
       height: 274.h,
@@ -259,7 +270,9 @@ class _RatingPageState extends State<RatingPage> {
                         SvgPicture.asset('assets/icons/star.svg'),
                         SizedBox(width: 4.w),
                         Text(
-                          '7.5',
+                          reviews.ranking == null
+                              ? 'No Reviews yet.'
+                              : (reviews.ranking!).toString(),
                           style: CustomTextStyle.black_19_w600,
                         ),
                       ],
@@ -274,7 +287,7 @@ class _RatingPageState extends State<RatingPage> {
             children: [
               SizedBox(width: 24.w),
               Text(
-                'Вы выполнили 23 задания',
+                'Вы выполнили ${reviews.reviewsDetail.length} задания',
                 style: CustomTextStyle.black_13_w400_515150,
               ),
             ],

@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -25,6 +27,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     print('object ${MediaQuery.of(context).viewInsets}');
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+    Reviews reviews = BlocProvider.of<RatingBloc>(context).reviews;
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -100,7 +103,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               SvgPicture.asset('assets/icons/star.svg'),
                               SizedBox(width: 4.w),
                               Text(
-                                '5',
+                                reviews.ranking == null
+                                    ? 'No Reviews yet'
+                                    : (reviews.ranking!).toString(),
                                 style: CustomTextStyle.black_19_w700_171716,
                               ),
                             ],

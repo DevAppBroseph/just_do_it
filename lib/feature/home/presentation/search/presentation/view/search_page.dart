@@ -14,21 +14,21 @@ class SearchPage extends StatelessWidget {
     Task(
       icon: 'assets/images/pen.png',
       task: 'Сделать инфографику',
-      typeLoaction: 'Можно выполнить удаленно',
+      typeLocation: 'Можно выполнить удаленно',
       whenStart: 'Начать сегодня',
       coast: '1 000',
     ),
     Task(
       icon: 'assets/images/laptop.png',
       task: 'На сайте у товаров поменять цены по прайсу',
-      typeLoaction: 'Можно выполнить удаленно',
+      typeLocation: 'Можно выполнить удаленно',
       whenStart: 'Начать завтра, с 15:00',
       coast: '1 500',
     ),
     Task(
       icon: 'assets/images/bag.png',
       task: 'Оформить доверенность',
-      typeLoaction: 'Москва',
+      typeLocation: 'Москва',
       whenStart: 'Начать 22.12.2023, с 15:00',
       coast: '2 000',
     ),
@@ -241,7 +241,7 @@ class SearchPage extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      task.typeLoaction,
+                      task.typeLocation,
                       style: CustomTextStyle.black_11_w500_515150,
                     ),
                     SizedBox(height: 8.h),
