@@ -22,13 +22,20 @@ class ContractorProfile extends StatefulWidget {
 class _ContractorProfileState extends State<ContractorProfile> {
   FocusNode focusNode = FocusNode();
   TextEditingController experienceController = TextEditingController();
+  late UserRegModel? user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    user = BlocProvider.of<ProfileBloc>(context).user;
+    experienceController.text = user?.activity == null ? '' : user!.activity!;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     print('object ${MediaQuery.of(context).viewInsets}');
-    UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     Reviews reviews = BlocProvider.of<RatingBloc>(context).reviews;
-
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
@@ -49,9 +56,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 color: ColorStyles.shadowFC6554),
                           )
                         : CachedNetworkImage(
-                            imageUrl: BlocProvider.of<ProfileBloc>(context)
-                                .user!
-                                .photoLink!,
+                            imageUrl: user!.photoLink!,
                             fit: BoxFit.cover,
                           )
                     // : Image.network(
@@ -69,7 +74,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                '${user!.firstname ?? ''} ${user!.lastname ?? ''}',
                 style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
               ),
               SizedBox(width: 5.w),
@@ -368,6 +373,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       //   maxLines: null,
                       // ),
                       child: TextFormField(
+                        onTapOutside: (p) {
+                          if (user!.activity != experienceController.text) {
+                            user!.copyWith(activity: experienceController.text);
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(UpdateProfileWithoutLoadingEvent(user));
+                          }
+                        },
                         focusNode: focusNode,
                         decoration: InputDecoration.collapsed(
                           hintText:

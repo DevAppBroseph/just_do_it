@@ -8,3 +8,8 @@ class UpdateProfileEvent extends ProfileEvent {
   UserRegModel? newUser;
   UpdateProfileEvent(this.newUser);
 }
+
+class UpdateProfileWithoutLoadingEvent extends ProfileEvent {
+  UserRegModel? newUser;
+  UpdateProfileWithoutLoadingEvent(this.newUser);
+}

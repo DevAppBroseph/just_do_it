@@ -10,6 +10,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitState()) {
     on<GetProfileEvent>(_getProfile);
     on<UpdateProfileEvent>(_updateProfile);
+    on<UpdateProfileWithoutLoadingEvent>(_updateWithoutLoadingProfile);
   }
 
   String? access;
@@ -31,12 +32,29 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     access = accessToken;
     user = event.newUser;
     if (access != null) {
-      int? res = await Repository().updateUser(access!, user!);
-      if (res != null) {
+      bool res = await Repository().updateUser(access!, user!);
+      if (res) {
         emit(UpdateProfileSuccessState());
       }
     }
-    emit(ProfileInitState());
+    // emit(ProfileInitState());
+  }
+
+  void _updateWithoutLoadingProfile(
+    UpdateProfileWithoutLoadingEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    // emit(LoadProfileState());
+    String? accessToken = await Storage().getAccessToken();
+    access = accessToken;
+    user = event.newUser;
+    if (access != null) {
+      bool res = await Repository().updateUser(access!, user!);
+      if (res) {
+        emit(UpdateProfileSuccessState());
+      }
+    }
+    // emit(ProfileInitState());
   }
 
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {

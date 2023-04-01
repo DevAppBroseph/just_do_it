@@ -29,7 +29,7 @@ class Repository {
   }
 
   // auth/ put
-  Future<int?> updateUser(String? access, UserRegModel userRegModel) async {
+  Future<bool> updateUser(String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -43,7 +43,7 @@ class Repository {
 
     print('updating user data ${response.data}');
     print('updating user data ${response.statusCode}');
-    return response.statusCode;
+    return response.statusCode == 200;
     // return response.data;
   }
 
