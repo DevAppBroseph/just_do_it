@@ -34,7 +34,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   @override
   Widget build(BuildContext context) {
-    print('object ${MediaQuery.of(context).viewInsets}');
     Reviews reviews = BlocProvider.of<RatingBloc>(context).reviews;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -109,7 +108,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               SizedBox(width: 4.w),
                               Text(
                                 reviews.ranking == null
-                                    ? 'No Reviews yet'
+                                    ? '-'
                                     : (reviews.ranking!).toString(),
                                 style: CustomTextStyle.black_19_w700_171716,
                               ),
@@ -373,7 +372,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       //   maxLines: null,
                       // ),
                       child: TextFormField(
-                        onTapOutside: (p) {
+                        onTap: () {
                           if (user!.activity != experienceController.text) {
                             user!.copyWith(activity: experienceController.text);
                             BlocProvider.of<ProfileBloc>(context)

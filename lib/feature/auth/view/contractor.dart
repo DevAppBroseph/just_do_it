@@ -197,7 +197,6 @@ class _ContractorState extends State<Contractor> {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
-          print('object ${current.error!}');
           String messageError = 'Ошибка\n';
           if (current.error!['email'] != null &&
               current.error!['email'][0] != null) {
@@ -787,8 +786,6 @@ class _ContractorState extends State<Contractor> {
             context,
             _categoryButtonKey,
             (value) {
-              print('object $listCategories $value');
-
               categoryController.text = '';
 
               String str = '';
@@ -803,8 +800,6 @@ class _ContractorState extends State<Contractor> {
               }
 
               categoryController.text = str;
-
-              print('object $str');
 
               setState(() {});
             },

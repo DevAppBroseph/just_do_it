@@ -159,7 +159,6 @@ class _CustomerState extends State<Customer> {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
-          print('object ${current.error!}');
           String messageError = 'Ошибка\n';
           if (current.error!['email'] != null &&
               current.error!['email'][0] != null) {
@@ -296,9 +295,6 @@ class _CustomerState extends State<Customer> {
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user));
                   }
-
-                  print(
-                      'object $errorsFlag ${passwordController.text}-${repeatPasswordController.text}');
                 }
               },
               btnColor: confirmTermsPolicy

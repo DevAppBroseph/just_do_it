@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -159,7 +163,6 @@ class Repository {
         "password": password,
       },
     );
-    print('object ${response.data}');
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       await Storage().setAccessToken(accessToken);
@@ -177,7 +180,6 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    print('object ${response.data}---${response.statusCode}');
 
     if (response.statusCode == 200) {
       final user = UserRegModel.fromJson(response.data);
@@ -198,7 +200,6 @@ class Repository {
         "email": email,
       },
     );
-    print('object ${response.data}');
 
     if (response.statusCode == 200) {
       return null;
@@ -239,11 +240,58 @@ class Repository {
         "password": password,
       },
     );
-    print('object ${response.data}');
 
     if (response.statusCode == 200) {
       return true;
     }
     return false;
+  }
+
+  // сообщения пользователей
+  Future<List<ChatList>> getListMessage(String access) async {
+    final response = await dio.get(
+      '$server/chat/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<ChatList> chatList = [];
+      for (var element in response.data) {
+        chatList.add(ChatList.fromJson(element));
+      }
+      return chatList;
+    }
+    return [];
+  }
+
+  // личные сообщения
+  Future<List<ChatMessage>> getListMessageItem(String access, String id) async {
+    final response = await dio.get(
+      '$server/chat/$id',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<ChatMessage> chatList = [];
+      for (var element in response.data['messages_list']) {
+        chatList.add(
+          ChatMessage(
+            user:
+                ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
+            createdAt: DateTime.now(),
+            text: element['text'],
+          ),
+        );
+      }
+
+      return chatList;
+    }
+    return [];
   }
 }

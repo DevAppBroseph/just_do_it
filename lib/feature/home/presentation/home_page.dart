@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
@@ -40,6 +40,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+    Future.delayed(Duration(seconds: 3), () {
+      if (BlocProvider.of<ProfileBloc>(context).access != null) {
+        BlocProvider.of<ChatBloc>(context).add(StartSocket());
+      }
+    });
   }
 
   @override

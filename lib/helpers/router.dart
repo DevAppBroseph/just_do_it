@@ -58,9 +58,10 @@ class AppRoute {
       case notification:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:
-        return MaterialPageRoute(builder: (_) => PersonalChat());
+        List<String> arg = route.arguments as List<String>;
+        return MaterialPageRoute(builder: (_) => PersonalChat(arg[0], arg[1]));
       case rating:
-        return MaterialPageRoute(builder: (_) => RatingPage());
+        return MaterialPageRoute(builder: (_) => const RatingPage());
       case auth:
         return MaterialPageRoute(builder: (_) => const AuthPage());
       case signUp:

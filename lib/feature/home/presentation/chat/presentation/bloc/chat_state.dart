@@ -4,6 +4,6 @@ class ChatState {}
 
 class InitialState extends ChatState {}
 
-class OpenSlidingPanelState extends ChatState {}
+class UpdateListMessageState extends ChatState {}
 
-class CloseSlidingPanelState extends ChatState {}
+class UpdateListMessageItemState extends ChatState {}

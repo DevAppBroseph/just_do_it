@@ -94,7 +94,7 @@ class CustomerProfile extends StatelessWidget {
                               SizedBox(width: 4.w),
                               Text(
                                 reviews.ranking == null
-                                    ? 'No Reviews yet'
+                                    ? '-'
                                     : (reviews.ranking!).toString(),
                                 style: CustomTextStyle.black_19_w700_171716,
                               ),

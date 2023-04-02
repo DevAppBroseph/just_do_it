@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -23,8 +25,10 @@ class MyApp extends StatelessWidget {
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
             BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
+            BlocProvider<ChatBloc>(create: (context) => ChatBloc())
           ],
-          child: const MaterialApp(
+          child:  MaterialApp(
+            builder: FlutterSmartDialog.init(),
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.home,
             onGenerateRoute: AppRoute.onGenerateRoute,
