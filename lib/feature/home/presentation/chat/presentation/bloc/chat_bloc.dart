@@ -40,8 +40,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     reversedList.add(
       ChatMessage(
-        user: ChatUser(id: event.id),
-        createdAt: DateTime.now(),
+        user: ChatUser(id: event.myId),
+        createdAt: DateTime.now().toUtc(),
         text: event.message,
       ),
     );
@@ -58,7 +58,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       messages.add(
         ChatMessage(
           user: ChatUser(id: element.user.id),
-          createdAt: DateTime.now(),
+          createdAt: DateTime.now().toUtc(),
           text: element.text,
         ),
       );
@@ -72,7 +72,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     chatList.clear();
     final res = await Repository().getListMessage(event.access);
     chatList.addAll(res);
-    emit(UpdateListMessageState());
+    emit(UpdateListMessageState(idChat));
   }
 
   void _startSocket(StartSocket event, Emitter<ChatState> emit) async {
@@ -83,23 +83,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
-          log('message NEW $event');
+          log('message NEW $event ${jsonDecode(event)}');
 
-          var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
-          if (showPersonChat) {
-            MessageDialogs()
-                .showMessage(newMessage.fromName, newMessage.message);
+          if (jsonDecode(event)['chat_id'] != null) {
+            idChat = jsonDecode(event)['chat_id'];
+          } else {
+            var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
+            if (showPersonChat) {
+              MessageDialogs()
+                  .showMessage(newMessage.fromName, newMessage.message);
+            }
+            messages.add(
+              ChatMessage(
+                user: ChatUser(id: newMessage.from),
+                createdAt: DateTime.now(),
+                text: newMessage.message,
+              ),
+            );
           }
-          messages.add(
-            ChatMessage(
-              user: ChatUser(id: newMessage.from),
-              createdAt: DateTime.now(),
-              text: newMessage.message,
-            ),
-          );
-          add(GetListMessageItem(token ?? '', ''));
+          add(GetListMessageItem(token ?? ''));
+          add(GetListMessage(token ?? ''));
         } catch (e) {
-          log('message cathc connection destroyed, for reason: $e');
+          log('message catch connection destroyed, for reason: $e');
         }
       },
       onError: (e) {

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -280,11 +281,12 @@ class Repository {
     if (response.statusCode == 200) {
       List<ChatMessage> chatList = [];
       for (var element in response.data['messages_list']) {
+        log('message list ${element}');
         chatList.add(
           ChatMessage(
             user:
                 ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
-            createdAt: DateTime.now(),
+            createdAt: DateTime.parse(element['time']),
             text: element['text'],
           ),
         );
@@ -293,5 +295,48 @@ class Repository {
       return chatList;
     }
     return [];
+  }
+
+  Future<List<OrderTask>> getListTasks(String access) async {
+    final response = await dio.get(
+      '$server/orders/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    log('message ${response.data}');
+
+    if (response.statusCode == 200) {
+      List<OrderTask> orderTask = [];
+      for (var element in response.data) {
+        orderTask.add(OrderTask.fromJson(element));
+      }
+
+      return orderTask;
+    }
+    return [];
+  }
+
+  Future<bool> createTask(
+      String access, String name, String description) async {
+    Map<String, String> data = {
+      "name": name,
+      "description": description,
+    };
+    final response = await dio.post(
+      '$server/orders/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    }
+    return false;
   }
 }

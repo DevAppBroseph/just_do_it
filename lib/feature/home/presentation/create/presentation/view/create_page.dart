@@ -107,6 +107,8 @@ class _CreatePageState extends State<CreatePage> {
                           final bloc = BlocProvider.of<ProfileBloc>(context);
                           if (bloc.user == null) {
                             Navigator.of(context).pushNamed(AppRoute.auth);
+                          } else {
+                            Navigator.of(context).pushNamed(AppRoute.createTasks);
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,

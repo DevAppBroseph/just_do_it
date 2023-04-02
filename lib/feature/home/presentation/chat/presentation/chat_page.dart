@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,16 +89,21 @@ class _ChatPageState extends State<ChatPage> {
         bound: 0.02,
         onTap: () async {
           final chatBloc = BlocProvider.of<ChatBloc>(context);
+          final profileBloc = BlocProvider.of<ProfileBloc>(context);
           chatBloc.editShowPersonChat(false);
           chatBloc.editChatId(chat.id);
           chatBloc.messages = [];
-          await Navigator.of(context)
-              .pushNamed(AppRoute.personalChat, arguments: [
-            '${chat.id}',
-            '${chat.chatWith?.firstname ?? ''}${chat.chatWith?.lastname ?? ''}',
-          ]);
+          await Navigator.of(context).pushNamed(
+            AppRoute.personalChat,
+            arguments: [
+              '${chat.id}',
+              '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
+              '${chat.chatWith?.id}'
+            ],
+          );
           chatBloc.editShowPersonChat(true);
           chatBloc.editChatId(null);
+          getInitMessage();
         },
         duration: const Duration(milliseconds: 50),
         child: Container(
@@ -107,24 +113,37 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(height: 20.h),
               Row(
                 children: [
-                  Container(
-                    height: 50.h,
-                    width: 50.h,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyF6F7F7,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          height: 24.h,
-                          width: 24.h,
-                          child: SvgPicture.asset('assets/icons/user.svg'),
+                  chat.chatWith != null
+                      ? SizedBox(
+                          height: 50.h,
+                          width: 50.h,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100.r),
+                            child: CachedNetworkImage(
+                              imageUrl: '$server/${chat.chatWith!.photo}',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 50.h,
+                          width: 50.h,
+                          decoration: BoxDecoration(
+                            color: ColorStyles.greyF6F7F7,
+                            borderRadius: BorderRadius.circular(50.r),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                height: 24.h,
+                                width: 24.h,
+                                child:
+                                    SvgPicture.asset('assets/icons/user.svg'),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
                   SizedBox(width: 12.h),
                   SizedBox(
                     width: 265.w,
@@ -134,13 +153,18 @@ class _ChatPageState extends State<ChatPage> {
                         Row(
                           children: [
                             Text(
-                              '${chat.chatWith?.firstname ?? ''}${chat.chatWith?.lastname ?? ''}',
+                              '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
                               style: CustomTextStyle.black_13_w400_000000,
                             ),
                             const Spacer(),
                             Text(
-                              chat.lastMsg?.time ?? '-',
+                              chat.lastMsg?.time
+                                      ?.toUtc()
+                                      .toString()
+                                      .substring(0, 10) ??
+                                  '-',
                               style: CustomTextStyle.grey_11_w400,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),

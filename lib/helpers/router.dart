@@ -4,6 +4,7 @@ import 'package:just_do_it/feature/auth/view/confirm_phone_code.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone_register.dart';
 import 'package:just_do_it/feature/auth/view/sign_up.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/personal_chat.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/view/list_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/home_page.dart';
 import 'package:just_do_it/feature/home/presentation/menu/about_project.dart';
 import 'package:just_do_it/feature/home/presentation/menu/contact_us.dart';
@@ -38,6 +39,7 @@ class AppRoute {
   static const about = '/about';
   static const score = '/score';
   static const tasks = '/tasks';
+  static const createTasks = '/createTasks';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
@@ -45,6 +47,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case tasks:
         return MaterialPageRoute(builder: (_) => const TasksPage());
+      case createTasks:
+        return MaterialPageRoute(builder: (_) => ListTasks());
       case contactus:
         return MaterialPageRoute(builder: (_) => ContactUs());
       case score:
@@ -59,7 +63,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:
         List<String> arg = route.arguments as List<String>;
-        return MaterialPageRoute(builder: (_) => PersonalChat(arg[0], arg[1]));
+        return MaterialPageRoute(
+            builder: (_) => PersonalChat(arg[0], arg[1], arg[2]));
       case rating:
         return MaterialPageRoute(builder: (_) => const RatingPage());
       case auth:

@@ -11,7 +11,8 @@ class StartSocket extends ChatEvent {}
 class SendMessageEvent extends ChatEvent {
   String message;
   String id;
-  SendMessageEvent(this.message, this.id);
+  String myId;
+  SendMessageEvent(this.message, this.id, this.myId);
 }
 
 class GetListMessage extends ChatEvent {
@@ -21,8 +22,7 @@ class GetListMessage extends ChatEvent {
 
 class GetListMessageItem extends ChatEvent {
   String access;
-  String id;
-  GetListMessageItem(this.access, this.id);
+  GetListMessageItem(this.access);
 }
 
 class ChatStarted extends ChatEvent {

@@ -1,4 +1,6 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
+
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +13,15 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 
 class PersonalChat extends StatefulWidget {
-  String id;
+  String? id;
   String name;
-  PersonalChat(this.id, this.name);
+  String idWithChat;
+
+  PersonalChat(
+    this.id,
+    this.name,
+    this.idWithChat,
+  );
   @override
   State<PersonalChat> createState() => _PersonalChatState();
 }
@@ -30,16 +38,16 @@ class _PersonalChatState extends State<PersonalChat> {
   }
 
   void getInitMessage() async {
+    log('${widget.id} --- ${widget.idWithChat}');
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    BlocProvider.of<ChatBloc>(context)
-        .add(GetListMessageItem(access!, widget.id));
+    if (widget.id != null)
+      BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
   }
 
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: ColorStyles.whiteFFFFFF,
       body: Column(
         children: [
@@ -51,7 +59,7 @@ class _PersonalChatState extends State<PersonalChat> {
                 GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
                   child: Transform.rotate(
-                    angle: pi,
+                    angle: math.pi,
                     child: SvgPicture.asset('assets/icons/arrow_right.svg'),
                   ),
                 ),
@@ -69,6 +77,8 @@ class _PersonalChatState extends State<PersonalChat> {
             child: BlocBuilder<ChatBloc, ChatState>(
               buildWhen: (previous, current) {
                 if (current is UpdateListMessageItemState) {
+                  widget.id =
+                      BlocProvider.of<ChatBloc>(context).idChat.toString();
                   return true;
                 }
                 return false;
@@ -234,7 +244,8 @@ class _PersonalChatState extends State<PersonalChat> {
                                     BlocProvider.of<ChatBloc>(context).add(
                                       SendMessageEvent(
                                         textController.text,
-                                        user?.id.toString() ?? '',
+                                        widget.idWithChat,
+                                        user!.id!.toString(),
                                       ),
                                     );
                                     textController.text = '';

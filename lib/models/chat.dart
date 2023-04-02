@@ -9,25 +9,30 @@ class ChatList {
     required this.lastMsg,
   });
 
-  factory ChatList.fromJson(Map<String, dynamic> json) => ChatList(
-        id: json['id'],
-        chatWith: ChatWith.fromJson(json['chat_with']),
-        lastMsg: LastMsg.fromJson(json['last_msg']),
-      );
+  factory ChatList.fromJson(Map<String, dynamic> json) {
+    return ChatList(
+      id: json['id'],
+      chatWith: ChatWith.fromJson(json['chat_with']),
+      lastMsg: LastMsg.fromJson(json['last_msg']),
+    );
+  }
 }
 
 class ChatWith {
+  int? id;
   String? firstname;
   String? lastname;
   dynamic photo;
 
   ChatWith({
+    required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
   });
 
   factory ChatWith.fromJson(Map<String, dynamic> json) => ChatWith(
+        id: json['id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
         photo: json['photo'],
@@ -35,7 +40,7 @@ class ChatWith {
 }
 
 class LastMsg {
-  String? time;
+  DateTime? time;
   String? text;
   Sender? sender;
 
@@ -46,7 +51,7 @@ class LastMsg {
   });
 
   factory LastMsg.fromJson(Map<String, dynamic> json) => LastMsg(
-        time: json['time'],
+        time: DateTime.parse(json['time']),
         text: json['text'],
         sender: Sender.fromJson(json['sender']),
       );
