@@ -317,13 +317,13 @@ class _CreatePageState extends State<CreatePage> {
   Widget item(String label, int index) {
     return GestureDetector(
       onTap: () {
+        dev.log('message ${label}');
         if (activities[index].selectSubcategory.contains(label)) {
           activities[index].selectSubcategory.remove(label);
         } else {
-        //   if (activities[index].selectSubcategory.isEmpty) {
-            activities[index].selectSubcategory.add(label);
-          }
-        // }
+          activities[index].selectSubcategory.clear();
+          activities[index].selectSubcategory.add(label);
+        }
         for (int i = 0; i < activities.length; i++) {
           if (i != index) {
             activities[i].selectSubcategory.clear();
