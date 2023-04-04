@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -184,7 +185,8 @@ class Activities {
   int id;
   String? description;
   String? photo;
-  Subcategory? subcategory;
+  List<Subcategory> subcategory;
+  List<String> selectSubcategory = [];
 
   Activities(this.id, this.description, this.photo, this.subcategory);
 
@@ -192,7 +194,10 @@ class Activities {
     int id = data['id'];
     String? description = data['description'];
     String? photo = data['photo'];
-    Subcategory? subcategory = Subcategory.fromJson(data['description']);
+    List<Subcategory> subcategory = [];
+    for (var element in data['subcategories']) {
+      subcategory.add(Subcategory.fromJson(element));
+    }
     return Activities(id, description, photo, subcategory);
   }
 }

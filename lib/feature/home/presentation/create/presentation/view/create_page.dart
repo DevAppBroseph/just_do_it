@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -21,23 +22,24 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  int index = 0;
-
-  List<String> choice1 = [];
-  List<String> choice2 = [];
-  List<String> choice3 = [];
-  List<String> choice4 = [];
-  List<String> choice5 = [];
+  int openCategory = -1;
+  List<Activities> activities = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+    return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+      if (current is GetCategoriesState) {
+        activities.clear();
+        activities.addAll(current.res);
+      }
+      return false;
+    }, builder: (context, snapshot) {
       var bloc = BlocProvider.of<AuthBloc>(context);
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
@@ -161,33 +163,6 @@ class _CreatePageState extends State<CreatePage> {
     });
   }
 
-  Widget _stage(Activities activities, int currentIndex) {
-    // activities.subcategory.
-    return Column(
-      children: [
-        elementCategory(
-          activities.photo ?? '',
-          'Ремонт и строительство',
-          1,
-          choice: choice1,
-        ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == currentIndex + 1,
-          choice1,
-          currentIndex + 1,
-        ),
-      ],
-    );
-  }
-
   Widget firstStage() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -200,102 +175,32 @@ class _CreatePageState extends State<CreatePage> {
             style: CustomTextStyle.black_17_w800,
           ),
         ),
-        elementCategory(
-          'assets/images/build.png',
-          'Ремонт и строительство',
-          1,
-          choice: choice1,
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 1.8,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: activities.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  elementCategory(
+                    'assets/images/build.png',
+                    activities[index].description ?? '',
+                    index,
+                    choice: activities[index].selectSubcategory,
+                  ),
+                  info(
+                    activities[index].subcategory,
+                    index == openCategory,
+                    index,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == 1,
-          choice1,
-          1,
-        ),
-        elementCategory(
-          'assets/images/house.png',
-          'Домашний персонал',
-          2,
-          choice: choice2,
-        ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == 2,
-          choice2,
-          2,
-        ),
-        elementCategory(
-          'assets/images/soap.png',
-          'Красота и здоровье',
-          3,
-          choice: choice3,
-        ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == 3,
-          choice3,
-          3,
-        ),
-        elementCategory(
-          'assets/images/book.png',
-          'Репетиторы и обучение',
-          4,
-          choice: choice4,
-        ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == 4,
-          choice4,
-          4,
-        ),
-        elementCategory(
-          'assets/images/auto.png',
-          'Транспорт',
-          5,
-          choice: choice5,
-        ),
-        info(
-          [
-            'Раз',
-            'Два',
-            'Три',
-            'Иннакентий',
-            'Аврам',
-            'Hello world',
-          ],
-          index == 5,
-          choice5,
-          5,
-        ),
-        if (index != 0) SizedBox(height: 80.h),
+        if (openCategory != 0) SizedBox(height: 80.h),
       ],
     );
   }
@@ -316,10 +221,10 @@ class _CreatePageState extends State<CreatePage> {
       child: ScaleButton(
         bound: 0.02,
         onTap: () => setState(() {
-          if (index != currentIndex) {
-            index = currentIndex;
+          if (openCategory != currentIndex) {
+            openCategory = currentIndex;
           } else {
-            index = 0;
+            openCategory = -1;
           }
         }),
         child: Container(
@@ -360,7 +265,7 @@ class _CreatePageState extends State<CreatePage> {
                   ),
                 ),
               const Spacer(),
-              index == currentIndex
+              openCategory == currentIndex
                   ? const Icon(
                       Icons.keyboard_arrow_up,
                       color: Colors.blue,
@@ -376,7 +281,7 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Widget info(List<String> list, bool open, List<String> choice, int index) {
+  Widget info(List<Subcategory> list, bool open, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
       child: AnimatedContainer(
@@ -398,53 +303,31 @@ class _CreatePageState extends State<CreatePage> {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: const ClampingScrollPhysics(),
-          children: list.map((e) => item(e, choice, index)).toList(),
+          children: list
+              .map((e) => item(
+                    e.description ?? '',
+                    index,
+                  ))
+              .toList(),
         ),
       ),
     );
   }
 
-  Widget item(String label, List<String> choice, int index) {
+  Widget item(String label, int index) {
     return GestureDetector(
       onTap: () {
-        if (choice.contains(label)) {
-          choice.remove(label);
+        if (activities[index].selectSubcategory.contains(label)) {
+          activities[index].selectSubcategory.remove(label);
         } else {
-          if (choice.length < 1) choice.add(label);
-        }
-        switch (index) {
-          case 1:
-            choice2.clear();
-            choice3.clear();
-            choice4.clear();
-            choice5.clear();
-            break;
-          case 2:
-            choice1.clear();
-            choice3.clear();
-            choice4.clear();
-            choice5.clear();
-            break;
-          case 3:
-            choice1.clear();
-            choice2.clear();
-            choice4.clear();
-            choice5.clear();
-            break;
-          case 4:
-            choice1.clear();
-            choice2.clear();
-            choice3.clear();
-            choice5.clear();
-            break;
-          case 5:
-            choice1.clear();
-            choice2.clear();
-            choice3.clear();
-            choice4.clear();
-            break;
-
-          default:
+        //   if (activities[index].selectSubcategory.isEmpty) {
+            activities[index].selectSubcategory.add(label);
+          }
+        // }
+        for (int i = 0; i < activities.length; i++) {
+          if (i != index) {
+            activities[i].selectSubcategory.clear();
+          }
         }
         setState(() {});
       },
@@ -458,12 +341,16 @@ class _CreatePageState extends State<CreatePage> {
             children: [
               Row(
                 children: [
-                  Text(
-                    label,
-                    style: CustomTextStyle.black_13_w400_515150,
+                  SizedBox(
+                    width: 250.w,
+                    child: Text(
+                      label,
+                      style: CustomTextStyle.black_13_w400_515150,
+                    ),
                   ),
                   const Spacer(),
-                  if (choice.contains(label)) const Icon(Icons.check)
+                  if (activities[index].selectSubcategory.contains(label))
+                    const Icon(Icons.check)
                 ],
               ),
             ],
