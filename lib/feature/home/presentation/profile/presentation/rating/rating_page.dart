@@ -24,6 +24,33 @@ class _RatingPageState extends State<RatingPage> {
   PageController pageController = PageController();
   int stageRegistration = 1;
 
+  List<ReviewsDetail> _reviews = [
+    ReviewsDetail(
+        id: 0,
+        reviewerDetails: ReviewerDetails(
+            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
+        message: 'Задача выполнена на 5+! Спасибо!',
+        mark: 5),
+    ReviewsDetail(
+        id: 0,
+        reviewerDetails: ReviewerDetails(
+            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
+        message: 'Задача выполнена на 5+! Спасибо!',
+        mark: 5),
+    ReviewsDetail(
+        id: 0,
+        reviewerDetails: ReviewerDetails(
+            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
+        message: 'Задача выполнена на 5+! Спасибо!',
+        mark: 5),
+    ReviewsDetail(
+        id: 0,
+        reviewerDetails: ReviewerDetails(
+            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
+        message: 'Задача выполнена на 5+! Спасибо!',
+        mark: 5),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -35,11 +62,11 @@ class _RatingPageState extends State<RatingPage> {
           if (snapshot is LoadingRatingState) {
             return const CupertinoActivityIndicator();
           }
-          Reviews reviews = BlocProvider.of<RatingBloc>(context).reviews;
+          Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
           return SafeArea(
             child: Column(
               children: [
-                header(reviews),
+                header(reviews!),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -56,12 +83,24 @@ class _RatingPageState extends State<RatingPage> {
                               fontSize: 16.sp, fontWeight: FontWeight.w800),
                         ),
                         SizedBox(height: 30.h),
+                        //TODO Эта логика для сервера
+
+                        // ListView.builder(
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   itemCount: reviews.reviewsDetail.length,
+                        //   itemBuilder: ((context, index) {
+                        //     return itemComment(reviews.reviewsDetail[index]);
+                        //   }),
+
+                        //TODO Эта логика для сервера
+
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: reviews.reviewsDetail.length,
+                          itemCount: _reviews.length,
                           itemBuilder: ((context, index) {
-                            return itemComment(reviews.reviewsDetail[index]);
+                            return itemCommentNew(_reviews[index]);
                           }),
                         ),
                         SizedBox(height: 50.h),
@@ -73,6 +112,116 @@ class _RatingPageState extends State<RatingPage> {
             ),
           );
         }),
+      ),
+    );
+  }
+
+  Widget itemCommentNew(ReviewsDetail review) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 18.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.r),
+        color: ColorStyles.whiteFFFFFF,
+      ),
+      padding: EdgeInsets.all(16.w),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // SizedBox(width: 16.w),
+          ClipOval(
+            child: SizedBox.fromSize(
+              size: Size.fromRadius(25.r),
+              child: review.reviewerDetails.photo == null
+                  ? Container(
+                      height: 34.h,
+                      width: 34.h,
+                      decoration:
+                          const BoxDecoration(color: ColorStyles.shadowFC6554),
+                    )
+                  : CachedNetworkImage(
+                      height: 34.h,
+                      width: 34.h,
+                      imageUrl: review.reviewerDetails.photo!,
+                      fit: BoxFit.cover,
+                    ),
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 225.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
+                      style: CustomTextStyle.black_13_w500_171716,
+                    ),
+                    Text(
+                      '01.04.2023',
+                      style: CustomTextStyle.grey_11_w400,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SvgPicture.asset('assets/icons/star.svg'),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '${review.mark}/10',
+                    style: CustomTextStyle.black_13_w400_171716,
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              SizedBox(
+                child: Text(
+                  review.message,
+                  style: CustomTextStyle.black_11_w400_515150,
+                  maxLines: null,
+                ),
+              ),
+              SizedBox(height: 18.h),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  width: 229.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                          color: ColorStyles.whiteF5F5F5,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.h),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset('assets/icons/translate.svg'),
+                              SizedBox(width: 8.h),
+                              Text(
+                                'Перевод',
+                                style: CustomTextStyle.blue_13_w400_336FEE,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -122,10 +271,80 @@ class _RatingPageState extends State<RatingPage> {
           //   ),
           // ),
           SizedBox(width: 16.w),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Stack(
             children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // SizedBox(
+                  //   width: width - (66 + 50),
+                  //   child: Row(
+                  //     children: [
+                  Text(
+                    '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
+                    style: CustomTextStyle.black_13_w500_171716,
+                  ),
+                  //       const Spacer(),
+                  //       Text(
+                  //         '01.04.2023',
+                  //         style: CustomTextStyle.grey_11_w400,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset('assets/icons/star.svg'),
+                      SizedBox(width: 4.w),
+                      Text(
+                        '${review.mark}/10',
+                        style: CustomTextStyle.black_13_w400_171716,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
+                  SizedBox(
+                    width: width - (66 + 50),
+                    child: Text(
+                      review.message,
+                      style: CustomTextStyle.black_11_w400_515150,
+                      maxLines: null,
+                    ),
+                  ),
+                  SizedBox(height: 18.h),
+                  SizedBox(
+                    width: width - (66 + 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            color: ColorStyles.whiteF5F5F5,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/icons/translate.svg'),
+                                SizedBox(width: 8.h),
+                                Text(
+                                  'Перевод',
+                                  style: CustomTextStyle.blue_13_w400_336FEE,
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
               SizedBox(
                 width: width - (66 + 50),
                 child: Row(
@@ -142,56 +361,6 @@ class _RatingPageState extends State<RatingPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 12.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset('assets/icons/star.svg'),
-                  SizedBox(width: 4.w),
-                  Text(
-                    '${review.mark}/10',
-                    style: CustomTextStyle.black_13_w400_171716,
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              SizedBox(
-                width: width - (66 + 50),
-                child: Text(
-                  review.message,
-                  style: CustomTextStyle.black_11_w400_515150,
-                  maxLines: null,
-                ),
-              ),
-              SizedBox(height: 18.h),
-              SizedBox(
-                width: width - (66 + 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 36.h,
-                      decoration: BoxDecoration(
-                        color: ColorStyles.whiteF5F5F5,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.h),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/icons/translate.svg'),
-                            SizedBox(width: 8.h),
-                            Text(
-                              'Перевод',
-                              style: CustomTextStyle.blue_13_w400_336FEE,
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ],
@@ -287,7 +456,7 @@ class _RatingPageState extends State<RatingPage> {
             children: [
               SizedBox(width: 24.w),
               Text(
-                'Вы выполнили ${reviews.reviewsDetail.length} задания',
+                'Вы выполнили ${reviews.reviewsDetail.length} заданий',
                 style: CustomTextStyle.black_13_w400_515150,
               ),
             ],

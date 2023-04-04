@@ -98,7 +98,8 @@ class _ChatPageState extends State<ChatPage> {
             arguments: [
               '${chat.id}',
               '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
-              '${chat.chatWith?.id}'
+              '${chat.chatWith?.id}',
+              '${chat.chatWith?.photo}',
             ],
           );
           chatBloc.editShowPersonChat(true);
@@ -146,7 +147,7 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                   SizedBox(width: 12.h),
                   SizedBox(
-                    width: 265.w,
+                    width: 255.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

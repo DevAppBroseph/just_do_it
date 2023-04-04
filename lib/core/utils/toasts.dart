@@ -8,6 +8,7 @@ void showAlertToast(String msg) {
     backgroundColor: Colors.black,
     textColor: Colors.white,
     toastLength: Toast.LENGTH_LONG,
+    timeInSecForIosWeb: 3,
     fontSize: 16,
   );
 }

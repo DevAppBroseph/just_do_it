@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -133,85 +134,85 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       controller: scrollController2,
       shrinkWrap: true,
       children: [
-        CustomTextField(
-          hintText: 'Пароль',
-          hintStyle: CustomTextStyle.grey_13_w400,
-          height: 50.h,
-          focusNode: focusNodePassword1,
-          obscureText: !visiblePassword,
-          suffixIcon: GestureDetector(
-            onTap: () {
-              visiblePassword = !visiblePassword;
-              setState(() {});
-            },
-            child: visiblePassword
-                ? const Icon(Icons.remove_red_eye_outlined)
-                : Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/eye_close.svg',
-                        height: 18.h,
-                      ),
-                    ],
-                  ),
-          ),
-          textEditingController: passwordController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) {
-            user!.copyWith(password: value);
-          },
-          onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage2();
-          },
-          onTap: () {
-            Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(0.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
-            });
-          },
-        ),
-        SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Повторите пароль',
-          hintStyle: CustomTextStyle.grey_13_w400,
-          height: 50.h,
-          focusNode: focusNodePassword2,
-          obscureText: !visiblePasswordRepeat,
-          suffixIcon: GestureDetector(
-            onTap: () {
-              visiblePasswordRepeat = !visiblePasswordRepeat;
-              setState(() {});
-            },
-            child: visiblePasswordRepeat
-                ? const Icon(Icons.remove_red_eye_outlined)
-                : Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/eye_close.svg',
-                        height: 18.h,
-                      ),
-                    ],
-                  ),
-          ),
-          onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage2();
-          },
-          textEditingController: repeatPasswordController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onTap: () {
-            Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(50.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
-            });
-          },
-        ),
-        SizedBox(height: 16.h),
+        // CustomTextField(
+        //   hintText: 'Пароль',
+        //   hintStyle: CustomTextStyle.grey_13_w400,
+        //   height: 50.h,
+        //   focusNode: focusNodePassword1,
+        //   obscureText: !visiblePassword,
+        //   suffixIcon: GestureDetector(
+        //     onTap: () {
+        //       visiblePassword = !visiblePassword;
+        //       setState(() {});
+        //     },
+        //     child: visiblePassword
+        //         ? const Icon(Icons.remove_red_eye_outlined)
+        //         : Stack(
+        //             alignment: Alignment.center,
+        //             children: [
+        //               SvgPicture.asset(
+        //                 'assets/icons/eye_close.svg',
+        //                 height: 18.h,
+        //               ),
+        //             ],
+        //           ),
+        //   ),
+        //   textEditingController: passwordController,
+        //   contentPadding:
+        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+        //   onChanged: (value) {
+        //     user!.copyWith(password: value);
+        //   },
+        //   onFieldSubmitted: (value) {
+        //     requestNextEmptyFocusStage2();
+        //   },
+        //   onTap: () {
+        //     Future.delayed(const Duration(milliseconds: 300), () {
+        //       scrollController2.animateTo(0.h,
+        //           duration: const Duration(milliseconds: 100),
+        //           curve: Curves.linear);
+        //     });
+        //   },
+        // ),
+        // SizedBox(height: 16.h),
+        // CustomTextField(
+        //   hintText: 'Повторите пароль',
+        //   hintStyle: CustomTextStyle.grey_13_w400,
+        //   height: 50.h,
+        //   focusNode: focusNodePassword2,
+        //   obscureText: !visiblePasswordRepeat,
+        //   suffixIcon: GestureDetector(
+        //     onTap: () {
+        //       visiblePasswordRepeat = !visiblePasswordRepeat;
+        //       setState(() {});
+        //     },
+        //     child: visiblePasswordRepeat
+        //         ? const Icon(Icons.remove_red_eye_outlined)
+        //         : Stack(
+        //             alignment: Alignment.center,
+        //             children: [
+        //               SvgPicture.asset(
+        //                 'assets/icons/eye_close.svg',
+        //                 height: 18.h,
+        //               ),
+        //             ],
+        //           ),
+        //   ),
+        //   onFieldSubmitted: (value) {
+        //     requestNextEmptyFocusStage2();
+        //   },
+        //   textEditingController: repeatPasswordController,
+        //   contentPadding:
+        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+        //   onTap: () {
+        //     Future.delayed(const Duration(milliseconds: 300), () {
+        //       scrollController2.animateTo(50.h,
+        //           duration: const Duration(milliseconds: 100),
+        //           curve: Curves.linear);
+        //     });
+        //   },
+        // ),
+        // SizedBox(height: 16.h),
         GestureDetector(
           key: _countryKey,
           onTap: () => showCountry(
@@ -220,13 +221,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             (value) {
               countryController.text = value;
               regionController.text = '';
+              user?.copyWith(country: countryController.text);
               setState(() {});
             },
             country,
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страну',
+            hintText: 'Страна',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -389,6 +391,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
+              formatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
               height: 50.h,
               textInputType: TextInputType.number,
               onTap: () {
@@ -419,6 +424,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           },
           focusNode: focusNodeWhoTake,
           hintStyle: CustomTextStyle.grey_13_w400,
+          formatters: [
+            LengthLimitingTextInputFormatter(35),
+          ],
           height: 50.h,
           textEditingController: whoGiveDocController,
           onFieldSubmitted: (value) {
@@ -441,6 +449,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             textEditingController: dateDocController,
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            formatters: [
+              LengthLimitingTextInputFormatter(15),
+            ],
             onChanged: (value) => documentEdit(),
           ),
         ),
@@ -497,10 +508,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: DateTime.now(),
+                        maximumDate: DateTime.now(),
+                        minimumDate: DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
                           dateDocController.text =
                               DateFormat('dd.MM.yyyy').format(val);
+                          user!.copyWith(
+                              docInfo:
+                                  'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                         }),
                   ),
                 ],
@@ -509,6 +525,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   void documentEdit() {
+    print(dateDocController.text);
     user!.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
@@ -524,11 +541,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;
     }
+    print(countryController.text);
+    if (userRegModel.country != null) {
+      countryController.text = userRegModel.country!;
+    }
 
     if (userRegModel.docInfo == null) return;
     additionalInfo = true;
     serialDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
+    print(DocumentInfo.fromJson(userRegModel.docInfo!).serial);
     numberDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
     whoGiveDocController.text =

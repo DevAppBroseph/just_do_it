@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/models/category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -17,6 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ConfirmCodeResetEvent>(_confirmCodeReset);
     on<EditPasswordEvent>(_editPassword);
   }
+
+  List<Activities> activities = [];
 
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
     bool res = await Repository().editPassword(event.password, event.token);
@@ -44,6 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
     List<Activities>? res = await Repository().getCategories();
+    activities = res ?? [];
     if (res != null) {
       emit(GetCategoriesState(res));
     }

@@ -36,7 +36,7 @@ class _CustomerState extends State<Customer> {
   bool additionalInfo = false;
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController(text: '+');
+  TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
@@ -197,21 +197,20 @@ class _CustomerState extends State<Customer> {
                   requestNextEmptyFocusStage1();
                   String error = 'Укажите:';
                   bool errorsFlag = false;
-
-                  if (phoneController.text.isEmpty) {
-                    error += '\n - мобильный номер';
-                    errorsFlag = true;
-                  }
-                  if (emailController.text.isEmpty) {
-                    error += '\n - почту';
-                    errorsFlag = true;
-                  }
                   if (firstnameController.text.isEmpty) {
                     error += '\n - имя';
                     errorsFlag = true;
                   }
                   if (lastnameController.text.isEmpty) {
                     error += '\n - фамилию';
+                    errorsFlag = true;
+                  }
+                  if (phoneController.text.isEmpty) {
+                    error += '\n - мобильный номер';
+                    errorsFlag = true;
+                  }
+                  if (emailController.text.isEmpty) {
+                    error += '\n - почту';
                     errorsFlag = true;
                   }
 
@@ -239,18 +238,18 @@ class _CustomerState extends State<Customer> {
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
+                    error += '\n- пароль';
+                    errorsFlag = true;
+                  }
+
                   if (countryController.text.isEmpty) {
                     error += '\n - страну';
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
-                    error += '\n - город';
-                    errorsFlag = true;
-                  }
-
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
-                    error += '\n- пароль';
+                    error += '\n - регион';
                     errorsFlag = true;
                   }
 
@@ -282,7 +281,7 @@ class _CustomerState extends State<Customer> {
                     }
                     showAlertToast(error);
                   } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длинна пароля 6 символов');
+                    showAlertToast('- минимальная длина пароля 6 символов');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
@@ -337,12 +336,15 @@ class _CustomerState extends State<Customer> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: 'Ваше имя',
+          hintText: 'Ваше имя*',
           focusNode: focusNodeName,
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           textEditingController: firstnameController,
-          formatters: [UpperTextInputFormatter()],
+          formatters: [
+            UpperTextInputFormatter(),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+          ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -354,12 +356,15 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: 'Ваша фамилия',
+          hintText: 'Ваша фамилия*',
           focusNode: focusNodeLastName,
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           textEditingController: lastnameController,
-          formatters: [UpperTextInputFormatter()],
+          formatters: [
+            UpperTextInputFormatter(),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+          ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -410,14 +415,14 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 30.h),
         CustomTextField(
-          hintText: 'Номер телефона',
+          hintText: 'Номер телефона*',
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePhone,
           textEditingController: phoneController,
           formatters: [
             MaskTextInputFormatter(
-              initialText: '+ ',
+              // initialText: '+ ',
               mask: '+############',
               filter: {"#": RegExp(r'[0-9]')},
             ),
@@ -441,7 +446,7 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: 'E-mail',
+          hintText: 'E-mail*',
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodeEmail,
@@ -523,7 +528,7 @@ class _CustomerState extends State<Customer> {
             Flexible(
               child: GestureDetector(
                 onTap: () {
-                  launch('https://dzen.ru/news?issue_tld=by');
+                  // launch('https://dzen.ru/news?issue_tld=by');
                 },
                 child: Text(
                   'Согласен на обработку персональных данных\nи с пользовательским соглашением',
@@ -918,6 +923,8 @@ class _CustomerState extends State<Customer> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
+                        minimumDate: DateTime(2000, 1, 1, 1),
+                        maximumDate: DateTime.now(),
                         initialDateTime: DateTime.now(),
                         onDateTimeChanged: (val) {
                           dateTime = val;

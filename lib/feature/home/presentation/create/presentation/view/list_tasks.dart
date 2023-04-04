@@ -137,6 +137,7 @@ class _ListTasksState extends State<ListTasks> {
                                       '${orderTask[index].chatId}',
                                       '${orderTask[index].owner?.firstname ?? ''} ${orderTask[index].owner?.lastname ?? ''}',
                                       '${orderTask[index].owner?.id}',
+                                      '${orderTask[index].owner?.photo}',
                                     ],
                                   );
                                   chatBloc.editShowPersonChat(true);

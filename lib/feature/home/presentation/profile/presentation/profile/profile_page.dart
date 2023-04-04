@@ -32,9 +32,9 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, snapshot) {
-          if (snapshot is LoadProfileState) {
-            return const CupertinoActivityIndicator();
-          }
+          // if (snapshot is LoadProfileState) {
+          //   return const CupertinoActivityIndicator();
+          // }
           return SafeArea(
             child: Column(
               children: [

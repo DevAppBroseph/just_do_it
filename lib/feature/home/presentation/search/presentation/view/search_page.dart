@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +12,9 @@ import 'package:just_do_it/models/task.dart';
 import 'package:scale_button/scale_button.dart';
 
 class SearchPage extends StatelessWidget {
+  final Function() onBackPressed;
+
+  SearchPage({required this.onBackPressed});
   List<Task> taskList = [
     Task(
       icon: 'assets/images/pen.png',
@@ -64,8 +69,23 @@ class SearchPage extends StatelessWidget {
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: Row(
                       children: [
+                        GestureDetector(
+                          onTap: onBackPressed,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Transform.rotate(
+                              angle: pi,
+                              child: SvgPicture.asset(
+                                'assets/icons/arrow_right.svg',
+                                height: 20.h,
+                                width: 20.w,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 15.w),
                         SizedBox(
-                          width: 270.w,
+                          width: 240.w,
                           height: 36.h,
                           child: CustomTextField(
                             fillColor: ColorStyles.greyF7F7F8,

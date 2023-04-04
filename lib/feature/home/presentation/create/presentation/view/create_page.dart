@@ -1,15 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
-  const CreatePage({super.key});
+  final Function() onBackPressed;
+  const CreatePage({super.key, required this.onBackPressed});
 
   @override
   State<CreatePage> createState() => _CreatePageState();
@@ -25,106 +30,161 @@ class _CreatePageState extends State<CreatePage> {
   List<String> choice5 = [];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Container(
-              height: 130.h,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
-                ],
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 60.h, left: 25.w, right: 28.w),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 270.w,
-                          height: 36.h,
-                          child: CustomTextField(
-                            fillColor: ColorStyles.greyF7F7F8,
-                            prefixIcon: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/search1.svg',
-                                  height: 12.h,
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+      var bloc = BlocProvider.of<AuthBloc>(context);
+      return MediaQuery(
+        data: const MediaQueryData(textScaleFactor: 1.0),
+        child: Scaffold(
+          backgroundColor: ColorStyles.whiteFFFFFF,
+          resizeToAvoidBottomInset: false,
+          body: Column(
+            children: [
+              Container(
+                height: 130.h,
+                decoration: BoxDecoration(
+                  color: ColorStyles.whiteFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorStyles.shadowFC6554,
+                      offset: const Offset(0, -4),
+                      blurRadius: 55.r,
+                    )
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 60.h, left: 25.w, right: 28.w),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: widget.onBackPressed,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Transform.rotate(
+                                angle: pi,
+                                child: SvgPicture.asset(
+                                  'assets/icons/arrow_right.svg',
+                                  height: 20.h,
+                                  width: 20.w,
                                 ),
-                              ],
+                              ),
                             ),
-                            hintText: 'Поиск',
-                            textEditingController: TextEditingController(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 11.w, vertical: 11.h),
                           ),
-                        ),
-                        const Spacer(),
-                        SizedBox(width: 23.w),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(AppRoute.menu);
-                          },
-                          child: SvgPicture.asset('assets/icons/category.svg'),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 15.w,
+                          ),
+                          SizedBox(
+                            width: 240.w,
+                            height: 36.h,
+                            child: CustomTextField(
+                              fillColor: ColorStyles.greyF7F7F8,
+                              prefixIcon: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/search1.svg',
+                                    height: 12.h,
+                                  ),
+                                ],
+                              ),
+                              hintText: 'Поиск',
+                              textEditingController: TextEditingController(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 11.w, vertical: 11.h),
+                            ),
+                          ),
+                          const Spacer(),
+                          SizedBox(width: 23.w),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(AppRoute.menu);
+                            },
+                            child:
+                                SvgPicture.asset('assets/icons/category.svg'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(height: 30.h),
-                ],
+                    Container(height: 30.h),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const ClampingScrollPhysics(),
-                    children: [firstStage()],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.h, vertical: 20.h),
-                      child: CustomButton(
-                        onTap: () {
-                          final bloc = BlocProvider.of<ProfileBloc>(context);
-                          if (bloc.user == null) {
-                            Navigator.of(context).pushNamed(AppRoute.auth);
-                          } else {
-                            Navigator.of(context).pushNamed(AppRoute.createTasks);
-                          }
-                        },
-                        btnColor: ColorStyles.yellowFFD70A,
-                        textLabel: Text(
-                          'Создать',
-                          style: CustomTextStyle.black_15_w600_171716,
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: const ClampingScrollPhysics(),
+                      children: [firstStage()],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.h, vertical: 20.h),
+                        child: CustomButton(
+                          onTap: () {
+                            final bloc = BlocProvider.of<ProfileBloc>(context);
+                            if (bloc.user == null) {
+                              Navigator.of(context).pushNamed(AppRoute.auth);
+                            } else {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoute.createTasks);
+                            }
+                          },
+                          btnColor: ColorStyles.yellowFFD70A,
+                          textLabel: Text(
+                            'Создать',
+                            style: CustomTextStyle.black_15_w600_171716,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+      );
+    });
+  }
+
+  Widget _stage(Activities activities, int currentIndex) {
+    // activities.subcategory.
+    return Column(
+      children: [
+        elementCategory(
+          activities.photo ?? '',
+          'Ремонт и строительство',
+          1,
+          choice: choice1,
+        ),
+        info(
+          [
+            'Раз',
+            'Два',
+            'Три',
+            'Иннакентий',
+            'Аврам',
+            'Hello world',
+          ],
+          index == currentIndex + 1,
+          choice1,
+          currentIndex + 1,
+        ),
+      ],
     );
   }
 

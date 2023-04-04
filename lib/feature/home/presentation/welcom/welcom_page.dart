@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -24,6 +26,14 @@ class _WelcomPageState extends State<WelcomPage> {
   int indexLanguage = 0;
   int index = 0;
   String choiceLanguage = '';
+
+  @override
+  void initState() {
+    // String? access = BlocProvider.of<ProfileBloc>(context).access;
+    // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
+    BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,61 +161,72 @@ class _WelcomPageState extends State<WelcomPage> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    ScaleButton(
-                                      bound: 0.02,
-                                      child: Container(
-                                        height: 112.h,
-                                        width: 121.h,
-                                        padding: EdgeInsets.only(
+                                    BlocBuilder<RatingBloc, RatingState>(
+                                        builder: (context, snapshot) {
+                                      var reviews =
+                                          BlocProvider.of<RatingBloc>(context)
+                                              .reviews;
+                                      return ScaleButton(
+                                        bound: 0.02,
+                                        child: Container(
+                                          height: 112.h,
+                                          width: 121.h,
+                                          padding: EdgeInsets.only(
                                             left: 16.w,
                                             right: 16.w,
                                             top: 4.h,
-                                            bottom: 4.h),
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.greyF9F9F9,
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                            bottom: 4.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.greyF9F9F9,
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Рейтинг',
+                                                style: CustomTextStyle
+                                                    .grey_13_w400,
+                                              ),
+                                              SizedBox(height: 6.h),
+                                              Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/icons/star.svg',
+                                                  ),
+                                                  SizedBox(width: 4.w),
+                                                  Text(
+                                                    reviews?.ranking == null
+                                                        ? '-'
+                                                        : reviews!.ranking!
+                                                            .toString(),
+                                                    style: CustomTextStyle
+                                                        .black_15_w500_171716,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10.h),
+                                              Text(
+                                                'Баллы:',
+                                                style: CustomTextStyle
+                                                    .grey_13_w400,
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              Text(
+                                                '850',
+                                                style: CustomTextStyle
+                                                    .black_15_w500_171716,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Рейтинг',
-                                              style:
-                                                  CustomTextStyle.grey_13_w400,
-                                            ),
-                                            SizedBox(height: 6.h),
-                                            Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                    'assets/icons/star.svg'),
-                                                SizedBox(width: 4.w),
-                                                Text(
-                                                  '4.5',
-                                                  style: CustomTextStyle
-                                                      .black_15_w500_171716,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 10.h),
-                                            Text(
-                                              'Баллы:',
-                                              style:
-                                                  CustomTextStyle.grey_13_w400,
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              '850',
-                                              style: CustomTextStyle
-                                                  .black_15_w500_171716,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ],
                                 ),
                               ),

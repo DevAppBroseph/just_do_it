@@ -9,6 +9,11 @@ class UpdateProfileEvent extends ProfileEvent {
   UpdateProfileEvent(this.newUser);
 }
 
+class UpdateProfilePhotoEvent extends ProfileEvent {
+  XFile photo;
+  UpdateProfilePhotoEvent({required this.photo});
+}
+
 class UpdateProfileWithoutLoadingEvent extends ProfileEvent {
   UserRegModel? newUser;
   UpdateProfileWithoutLoadingEvent(this.newUser);

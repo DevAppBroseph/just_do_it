@@ -38,7 +38,7 @@ class _ContractorState extends State<Contractor> {
   bool additionalInfo = false;
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController(text: '+');
+  TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
@@ -107,7 +107,7 @@ class _ContractorState extends State<Contractor> {
       photos.clear();
       setState(() {
         photos.addAll(files);
-        // user.copyWith(images: photos);
+        user.copyWith(images: photos);
       });
     }
   }
@@ -236,22 +236,26 @@ class _ContractorState extends State<Contractor> {
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
-                  if (phoneController.text.isEmpty) {
-                    error += '\n - мобильный номер';
-                    errorsFlag = true;
-                  }
-                  if (emailController.text.isEmpty) {
-                    error += '\n - почту';
-                    errorsFlag = true;
-                  }
                   if (firstnameController.text.isEmpty) {
                     error += '\n - имя';
                     errorsFlag = true;
                   }
+
                   if (lastnameController.text.isEmpty) {
                     error += '\n - фамилию';
                     errorsFlag = true;
                   }
+
+                  if (phoneController.text.isEmpty) {
+                    error += '\n - мобильный номер';
+                    errorsFlag = true;
+                  }
+
+                  if (emailController.text.isEmpty) {
+                    error += '\n - почту';
+                    errorsFlag = true;
+                  }
+
                   if (passwordController.text.isEmpty ||
                       repeatPasswordController.text.isEmpty) {
                     error += '\n - пароль';
@@ -281,7 +285,7 @@ class _ContractorState extends State<Contractor> {
                           repeatPasswordController.text)) {
                     showAlertToast('- пароли не совпадают');
                   } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длинна пароля 6 символов');
+                    showAlertToast('- минимальная длина пароля 6 символов');
                   } else if (!emailValid) {
                     showAlertToast('Введите корректный адрес почты');
                   } else if (!confirmTermsPolicy) {
@@ -382,11 +386,14 @@ class _ContractorState extends State<Contractor> {
       children: [
         CustomTextField(
           focusNode: focusNodeName,
-          hintText: 'Ваше имя',
+          hintText: 'Ваше имя*',
           height: 50.h,
           textEditingController: firstnameController,
           hintStyle: CustomTextStyle.grey_13_w400,
-          formatters: [UpperTextInputFormatter()],
+          formatters: [
+            UpperTextInputFormatter(),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+          ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -399,11 +406,14 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           focusNode: focusNodeLastName,
-          hintText: 'Ваша фамилия',
+          hintText: 'Ваша фамилия*',
           height: 50.h,
           textEditingController: lastnameController,
           hintStyle: CustomTextStyle.grey_13_w400,
-          formatters: [UpperTextInputFormatter()],
+          formatters: [
+            UpperTextInputFormatter(),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+          ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -455,14 +465,14 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 30.h),
         CustomTextField(
           focusNode: focusNodePhone,
-          hintText: 'Номер телефона',
+          hintText: 'Номер телефона*',
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
           hintStyle: CustomTextStyle.grey_13_w400,
           formatters: [
             MaskTextInputFormatter(
-              initialText: '+ ',
+              // initialText: '',
               mask: '+############',
               filter: {"#": RegExp(r'[0-9]')},
             ),
@@ -480,7 +490,7 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           focusNode: focusNodeEmail,
-          hintText: 'E-mail',
+          hintText: 'E-mail*',
           height: 50.h,
           textEditingController: emailController,
           hintStyle: CustomTextStyle.grey_13_w400,
@@ -503,7 +513,7 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           focusNode: focusNodePassword1,
-          hintText: 'Пароль',
+          hintText: 'Пароль*',
           height: 50.h,
           obscureText: !visiblePassword,
           suffixIcon: GestureDetector(
@@ -544,7 +554,7 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         CustomTextField(
           focusNode: focusNodePassword2,
-          hintText: 'Повторите пароль',
+          hintText: 'Повторите пароль*',
           height: 50.h,
           obscureText: !visiblePasswordRepeat,
           suffixIcon: GestureDetector(
@@ -601,7 +611,7 @@ class _ContractorState extends State<Contractor> {
             Flexible(
               child: GestureDetector(
                 onTap: () {
-                  launch('https://dzen.ru/news?issue_tld=by');
+                  // launch('https://dzen.ru/news?issue_tld=by');
                 },
                 child: Text(
                   'Согласен на обработку персональных данных\nи с пользовательским соглашением',
@@ -676,13 +686,15 @@ class _ContractorState extends State<Contractor> {
             (value) {
               countryController.text = value;
               regionController.text = '';
+              user.copyWith(country: countryController.text);
               setState(() {});
+              print(countryController.text);
             },
             country,
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страну',
+            hintText: 'Страну*',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -702,7 +714,7 @@ class _ContractorState extends State<Contractor> {
                 _regionKey,
                 (value) {
                   regionController.text = value;
-                  user.copyWith(region: value);
+                  user.copyWith(region: regionController.text);
                   setState(() {});
                 },
                 countryController.text == 'Россия' ? countryRussia : countryOAE,
@@ -713,7 +725,7 @@ class _ContractorState extends State<Contractor> {
             }
           },
           child: CustomTextField(
-            hintText: 'Регион',
+            hintText: 'Регион*',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -731,6 +743,13 @@ class _ContractorState extends State<Contractor> {
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
+              user.copyWith(
+                docType: value == 'Паспорт РФ'
+                    ? 'Passport'
+                    : value == 'Резидент ID'
+                        ? 'Resident_ID'
+                        : 'International Passport',
+              );
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -804,7 +823,7 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             listCategories,
-            'Выбор до 3х категорий',
+            'Выбор до 3х категорий*',
             typeCategories,
           ),
           child: Stack(
@@ -812,7 +831,7 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Выбор до 3х категорий',
+                hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -1056,6 +1075,9 @@ class _ContractorState extends State<Contractor> {
                       curve: Curves.linear);
                 });
               },
+              formatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
               textInputType: TextInputType.number,
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
@@ -1081,6 +1103,9 @@ class _ContractorState extends State<Contractor> {
                       curve: Curves.linear);
                 });
               },
+              formatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
               width:
                   ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
@@ -1162,6 +1187,7 @@ class _ContractorState extends State<Contractor> {
                                     dateDocController.text =
                                         DateFormat('dd.MM.yyyy')
                                             .format(DateTime.now());
+                                    documentEdit();
                                   }
 
                                   Navigator.of(ctx).pop();
@@ -1180,6 +1206,8 @@ class _ContractorState extends State<Contractor> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: DateTime.now(),
+                        maximumDate: DateTime.now(),
+                        minimumDate: DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
                           dateDocController.text =

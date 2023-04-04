@@ -10,7 +10,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     on<GetRatingEvent>(_getRating);
     on<UpdateRatingEvent>(_updateRating);
   }
-  late Reviews reviews;
+  Reviews? reviews;
 
   void _updateRating(
     UpdateRatingEvent event,
@@ -21,7 +21,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
       if (res != null) {
         if (res.ranking == null) {
           emit(NoRatingState());
-        } else if (reviews.needsToGetUpdated(res)) {
+        } else if (reviews!.needsToGetUpdated(res)) {
           reviews = res;
           emit(UpdateRatingSuccessState());
         }
@@ -37,7 +37,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
       Reviews? res = await Repository().getReviews(event.access);
       if (res != null) {
         reviews = res;
-        if (reviews.ranking == null) {
+        if (reviews?.ranking == null) {
           emit(NoRatingState());
         } else {
           emit(UpdateRatingSuccessState());

@@ -9,6 +9,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
@@ -40,6 +41,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     Future.delayed(Duration(seconds: 3), () {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket());
@@ -69,8 +72,20 @@ class _HomePageState extends State<HomePage> {
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  const CreatePage(),
-                  SearchPage(),
+                  CreatePage(
+                    onBackPressed: () {
+                      pageController.jumpToPage(4);
+                      page = 5;
+                      streamController.add(4);
+                    },
+                  ),
+                  SearchPage(
+                    onBackPressed: () {
+                      pageController.jumpToPage(4);
+                      page = 5;
+                      streamController.add(4);
+                    },
+                  ),
                   const TasksPage(),
                   ChatPage(),
                   // PersonalAccountPage(),

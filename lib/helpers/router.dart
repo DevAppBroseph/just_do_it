@@ -64,7 +64,7 @@ class AppRoute {
       case personalChat:
         List<String> arg = route.arguments as List<String>;
         return MaterialPageRoute(
-            builder: (_) => PersonalChat(arg[0], arg[1], arg[2]));
+            builder: (_) => PersonalChat(arg[0], arg[1], arg[2], arg[3]));
       case rating:
         return MaterialPageRoute(builder: (_) => const RatingPage());
       case auth:

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -10,6 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitState()) {
     on<GetProfileEvent>(_getProfile);
     on<UpdateProfileEvent>(_updateProfile);
+    on<UpdateProfilePhotoEvent>(_updateProfilePhoto);
     on<UpdateProfileWithoutLoadingEvent>(_updateWithoutLoadingProfile);
   }
 
@@ -35,6 +37,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       bool res = await Repository().updateUser(access!, user!);
       if (res) {
         emit(UpdateProfileSuccessState());
+      }
+    }
+    // emit(ProfileInitState());
+  }
+
+  void _updateProfilePhoto(
+    UpdateProfilePhotoEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(LoadProfileState());
+    String? accessToken = await Storage().getAccessToken();
+    access = accessToken;
+    if (access != null) {
+      UserRegModel? res =
+          await Repository().updateUserPhoto(access!, event.photo);
+      if (res != null) {
+        user?.copyWith(photoLink: res.photoLink);
+        emit(UpdateProfileSuccessState());
+      } else {
+        emit(UpdateProfileErrorState());
       }
     }
     // emit(ProfileInitState());

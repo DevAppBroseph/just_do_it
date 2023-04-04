@@ -11,6 +11,7 @@ class UserRegModel {
   String? docType;
   String? activity;
   String? region;
+  String? country;
   String? photoLink;
   String? cvLink;
   String? docInfo;
@@ -34,6 +35,7 @@ class UserRegModel {
       this.docInfo,
       this.activity,
       this.region,
+      this.country,
       this.photoLink,
       this.cvLink,
       this.photo,
@@ -64,6 +66,7 @@ class UserRegModel {
       List<Activities>? activities,
       List<int>? activitiesDocument,
       String? region,
+      String? country,
       String? photoLink,
       String? cvLink,
       int? id}) {
@@ -83,6 +86,7 @@ class UserRegModel {
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
     this.region = region ?? this.region;
+    this.country = country ?? this.country;
     this.activitiesDocument = activitiesDocument ?? this.activitiesDocument;
     this.photoLink = photoLink ?? this.photoLink;
     this.cvLink = cvLink ?? this.cvLink;
@@ -98,6 +102,7 @@ class UserRegModel {
     String? photoLink = data['photo'];
     bool? sex = data['sex'];
     String? region = data['region'];
+    String? country = data['country'];
     String? docType = data['doc_type'];
     String? docInfo = data['doc_info'];
     bool? isEntity = data['is_entity'];
@@ -115,6 +120,7 @@ class UserRegModel {
       region: region,
       docType: docType,
       docInfo: docInfo,
+      country: country,
       isEntity: isEntity,
       activity: activity,
       cvLink: cvLink,
@@ -138,9 +144,30 @@ class UserRegModel {
     data['sex'] = sex;
     data['doc_type'] = docType;
     data['doc_info'] = docInfo;
+    data['region'] = region;
+    data['country'] = country;
     data['is_entity'] = isEntity;
     data['activity'] = activity;
-    data['image'] = images;
+    //TODO Это для будущей логики отправки списка изображений
+
+    // if (images != null) {
+    //   List<MultipartFile> files = [];
+    //   images!.forEach((element) {
+    //     files.add(MultipartFile.fromFileSync(
+    //       element.path,
+    //       filename: element.path.split('/').last,
+    //     ));
+    //   });
+    //   data['image'] = files;
+    // }
+    if (images != null) {
+      if (images?.first != null) {
+        data['image'] = MultipartFile.fromFileSync(
+          images!.first.path,
+          filename: images!.first.path.split('/').last,
+        );
+      }
+    }
     if (cv != null) {
       data['CV'] = MultipartFile.fromFileSync(
         cv!.path,
@@ -156,13 +183,30 @@ class UserRegModel {
 class Activities {
   int id;
   String? description;
+  String? photo;
+  Subcategory? subcategory;
 
-  Activities(this.id, this.description);
+  Activities(this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
-    return Activities(id, description);
+    String? photo = data['photo'];
+    Subcategory? subcategory = Subcategory.fromJson(data['description']);
+    return Activities(id, description, photo, subcategory);
+  }
+}
+
+class Subcategory {
+  int id;
+  String? description;
+
+  Subcategory({required this.id, required this.description});
+
+  factory Subcategory.fromJson(Map<String, dynamic> data) {
+    int id = data['id'];
+    String? description = data['description'];
+    return Subcategory(id: id, description: description);
   }
 }
 
@@ -174,10 +218,14 @@ class DocumentInfo {
     List<String> list = data.split('\n');
     list.map((e) => e.split(' ').length > 1 ? e.split(' ')[1] : e);
 
-    String? serial = list[0];
-    String? documentNumber = list[1];
-    String? whoGiveDocument = list[2];
-    String? documentData = list[3];
+    String? serial = list[0].split(':').last.replaceAll(' ', '');
+    String? documentNumber = list[1].split(':').last.replaceAll(' ', '');
+    String? whoGiveDocument = list[2].split(':').last != ' '
+        ? list[2].split(':').last.substring(1, list[2].split(':').last.length)
+        : '';
+
+    String? documentData = list[3].split(':').last.replaceAll(' ', '');
+    print(documentData);
     return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);
   }
   String toJson() {

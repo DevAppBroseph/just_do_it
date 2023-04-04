@@ -45,9 +45,9 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
       child: Scaffold(
         body:
             BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-          if (snapshot is LoadingRatingState) {
-            return const CupertinoActivityIndicator();
-          }
+          // if (snapshot is LoadingRatingState) {
+          //   return const CupertinoActivityIndicator();
+          // }
 
           return SafeArea(
             child: Column(
@@ -184,38 +184,46 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                          BlocProvider.of<ProfileBloc>(context).setUser(null);
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              AppRoute.home, (route) => false);
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          height: 50.h,
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/logout_account.svg',
-                              ),
-                              SizedBox(width: 12.w),
-                              Text(
-                                'Выйти из аккаунта',
-                                style: CustomTextStyle.black_17_w500_171716,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                      //     BlocProvider.of<ProfileBloc>(context).setUser(null);
+                      //     Navigator.of(context).pushNamedAndRemoveUntil(
+                      //         AppRoute.home, (route) => false);
+                      //   },
+                      //   child: Container(
+                      //     color: Colors.transparent,
+                      //     height: 50.h,
+                      //     child: Row(
+                      //       children: [
+                      //         SvgPicture.asset(
+                      //           'assets/icons/logout_account.svg',
+                      //         ),
+                      //         SizedBox(width: 12.w),
+                      //         Text(
+                      //           'Выйти из аккаунта',
+                      //           style: CustomTextStyle.black_17_w500_171716,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  'Удалить аккаунт',
-                  style: CustomTextStyle.black_15_w500_171716,
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                //     BlocProvider.of<ProfileBloc>(context).setUser(null);
+                //     Navigator.of(context).pushNamedAndRemoveUntil(
+                //         AppRoute.home, (route) => false);
+                //   },
+                //   child: Text(
+                //     'Удалить аккаунт',
+                //     style: CustomTextStyle.black_15_w500_171716,
+                //   ),
+                // ),
                 SizedBox(height: 72.h),
               ],
             ),

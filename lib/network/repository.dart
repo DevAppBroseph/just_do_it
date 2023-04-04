@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
@@ -18,6 +20,7 @@ class Repository {
       UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
+    print(map);
 
     final response = await dio.post(
       '$server/auth/',
@@ -34,6 +37,35 @@ class Repository {
   }
 
   // auth/ put
+  Future<UserRegModel?> updateUserPhoto(String? access, XFile photo) async {
+    // print(photo.path);
+    FormData data = FormData.fromMap({
+      'photo': MultipartFile.fromFileSync(
+        photo.path,
+        filename: photo.path.split('/').last,
+      ),
+    });
+    final response = await dio.patch(
+      '$server/profile/',
+      data: data,
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+
+    if (response.statusCode == 200) {
+      return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
+    }
+
+    // print('updating user data ${response.data}');
+    // print('updating user data ${response.statusCode}');
+
+    // return response.statusCode == 200;
+    // return response.data;
+  }
+
   Future<bool> updateUser(String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
@@ -183,6 +215,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      print(response.data);
       final user = UserRegModel.fromJson(response.data);
       return user;
     }

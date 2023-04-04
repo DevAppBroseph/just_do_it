@@ -16,11 +16,13 @@ class PersonalChat extends StatefulWidget {
   String? id;
   String name;
   String idWithChat;
+  String? image;
 
   PersonalChat(
     this.id,
     this.name,
     this.idWithChat,
+    this.image,
   );
   @override
   State<PersonalChat> createState() => _PersonalChatState();
@@ -103,12 +105,20 @@ class _PersonalChatState extends State<PersonalChat> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 40.h,
-                                  width: 40.h,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.greyE0E6EE,
-                                    borderRadius: BorderRadius.circular(50.r),
+                                ClipOval(
+                                  child: Container(
+                                    height: 40.h,
+                                    width: 40.h,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.greyE0E6EE,
+                                      borderRadius: BorderRadius.circular(50.r),
+                                    ),
+                                    child: widget.image != null
+                                        ? Image.network(
+                                            server + widget.image!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : null,
                                   ),
                                 ),
                                 SizedBox(width: 8.h),

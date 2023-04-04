@@ -1535,7 +1535,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   List<City> countryOAE = [
     City('Дубай'),
     City('Абу-Даби'),
-    City('Абу-Даби'),
+    // City('Абу-Даби'),
     City('Аджмана'),
     City('Фуджейры'),
     City('Рас-Эль-Хаймы'),
