@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
+import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class MenuPage extends StatelessWidget {
+  final Function(String page) onBackPressed;
+
+  MenuPage({required this.onBackPressed});
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -44,16 +50,39 @@ class MenuPage extends StatelessWidget {
                 children: [
                   itemMenu('assets/icons/add_circle.svg', 'Создать задание',
                       () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreatePage(onBackPressed: () {
+                          Navigator.pop(context);
+                        }),
+                      ),
+                    );
                   }),
                   itemMenu('assets/icons/search2.svg', 'Найти задания', () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchPage(onBackPressed: () {
+                          Navigator.pop(context);
+                        }),
+                      ),
+                    );
                   }),
                   itemMenu('assets/icons/note.svg', 'Мои задания', () {
                     Navigator.of(context).pushNamed(AppRoute.tasks);
                   }),
                   itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                          () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    );
                   }),
                   itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет',
                       () {

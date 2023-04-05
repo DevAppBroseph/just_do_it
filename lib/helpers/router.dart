@@ -56,7 +56,12 @@ class AppRoute {
       case about:
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
-        return MaterialPageRoute(builder: (_) => MenuPage());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => MenuPage(
+            onBackPressed: arg[0],
+          ),
+        );
       case referal:
         return MaterialPageRoute(builder: (_) => ReferalPage());
       case notification:

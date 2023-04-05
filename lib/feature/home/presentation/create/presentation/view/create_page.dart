@@ -108,7 +108,8 @@ class _CreatePageState extends State<CreatePage> {
                           SizedBox(width: 23.w),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.menu);
+                              Navigator.of(context).pushNamed(AppRoute.menu,
+                                  arguments: [(page) {}]);
                             },
                             child:
                                 SvgPicture.asset('assets/icons/category.svg'),
@@ -142,7 +143,8 @@ class _CreatePageState extends State<CreatePage> {
                               Navigator.of(context).pushNamed(AppRoute.auth);
                             } else {
                               Navigator.of(context)
-                                  .pushNamed(AppRoute.createTasks);
+                                  .pushNamed(AppRoute.createTasks)
+                                  .then((value) => print(value));
                             }
                           },
                           btnColor: ColorStyles.yellowFFD70A,

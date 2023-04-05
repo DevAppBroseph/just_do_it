@@ -90,7 +90,12 @@ class _WelcomPageState extends State<WelcomPage> {
                         SizedBox(width: 23.w),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed(AppRoute.menu);
+                            Navigator.of(context)
+                                .pushNamed(AppRoute.menu, arguments: [
+                              (page) {},
+                            ]).then((value) {
+                              if (value == 'create') {}
+                            });
                           },
                           child: SvgPicture.asset('assets/icons/category.svg'),
                         ),

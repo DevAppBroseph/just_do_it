@@ -101,6 +101,26 @@ class CustomerProfile extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 297.w,
+                    child: Text(
+                      '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 32.sp, fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  SizedBox(width: 5.w),
+                  SvgPicture.asset('assets/icons/share.svg'),
+                ],
+              ),
+            ),
             SizedBox(height: 18.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),

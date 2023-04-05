@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,9 @@ import 'package:just_do_it/models/chat.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ChatPage extends StatefulWidget {
+  final Function()? onBackPressed;
+
+  ChatPage(this.onBackPressed);
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -42,6 +47,22 @@ class _ChatPageState extends State<ChatPage> {
               padding: EdgeInsets.only(left: 25.w, right: 28.w),
               child: Row(
                 children: [
+                  if (widget.onBackPressed != null)
+                    GestureDetector(
+                      onTap: widget.onBackPressed,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Transform.rotate(
+                          angle: pi,
+                          child: SvgPicture.asset(
+                            'assets/icons/arrow_right.svg',
+                            height: 20.h,
+                            width: 20.w,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (widget.onBackPressed != null) SizedBox(width: 15.w),
                   Text(
                     'Сообщения',
                     style: CustomTextStyle.black_21_w700,
@@ -50,7 +71,8 @@ class _ChatPageState extends State<ChatPage> {
                   SizedBox(width: 23.w),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(AppRoute.menu);
+                      Navigator.of(context)
+                          .pushNamed(AppRoute.menu, arguments: [(page) {}]);
                     },
                     child: SvgPicture.asset('assets/icons/category.svg'),
                   ),

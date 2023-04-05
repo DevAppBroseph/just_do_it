@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   const TasksPage(),
-                  ChatPage(),
+                  ChatPage(null),
                   // PersonalAccountPage(),
                   WelcomPage(selectUser)
                 ],
