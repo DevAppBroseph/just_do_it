@@ -20,8 +20,7 @@ class Repository {
       UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
-    print(map);
-
+    
     final response = await dio.post(
       '$server/auth/',
       data: data,
@@ -215,7 +214,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
-      print(response.data);
+      // print(response.data['activities_info']);
       final user = UserRegModel.fromJson(response.data);
       return user;
     }

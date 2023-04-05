@@ -299,8 +299,17 @@ class _ContractorState extends State<Contractor> {
                         phoneController.text, emailController.text));
                   }
                 } else {
+                  List<int> categorySelect = [];
+                  for (int i = 0; i < typeCategories.length; i++) {
+                    for (int j = 0; j < listCategories.length; j++) {
+                      if (typeCategories[i] == listCategories[j].description) {
+                        categorySelect.add(listCategories[j].id);
+                      }
+                    }
+                  }
+                  log('message ${user.cv}');
                   requestNextEmptyFocusStage2();
-                  user.copyWith(activitiesDocument: [], groups: [4]);
+                  user.copyWith(activitiesDocument: categorySelect, groups: [4]);
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 

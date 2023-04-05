@@ -25,29 +25,32 @@ class UserRegModel {
   List<Activities>? activities;
   List<int>? activitiesDocument;
   int? id;
+  List<ActivitiesInfo>? activitiesInfo;
 
-  UserRegModel(
-      {this.phoneNumber,
-      this.email,
-      this.firstname,
-      this.lastname,
-      this.password,
-      this.docType,
-      this.docInfo,
-      this.activity,
-      this.region,
-      this.country,
-      this.photoLink,
-      this.cvLink,
-      this.photo,
-      this.sex,
-      this.isEntity,
-      this.images,
-      this.cv,
-      this.groups,
-      this.activities,
-      this.activitiesDocument,
-      this.id});
+  UserRegModel({
+    this.phoneNumber,
+    this.email,
+    this.firstname,
+    this.lastname,
+    this.password,
+    this.docType,
+    this.docInfo,
+    this.activity,
+    this.region,
+    this.country,
+    this.photoLink,
+    this.cvLink,
+    this.photo,
+    this.sex,
+    this.isEntity,
+    this.images,
+    this.cv,
+    this.groups,
+    this.activities,
+    this.activitiesDocument,
+    this.id,
+    this.activitiesInfo,
+  });
 
   void copyWith(
       {String? phoneNumber,
@@ -70,7 +73,8 @@ class UserRegModel {
       String? country,
       String? photoLink,
       String? cvLink,
-      int? id}) {
+      int? id,
+      List<ActivitiesInfo>? activitiesInfo}) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
     this.firstname = firstname ?? this.firstname;
@@ -92,6 +96,7 @@ class UserRegModel {
     this.photoLink = photoLink ?? this.photoLink;
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
+    this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -110,6 +115,12 @@ class UserRegModel {
     String? activity = data['activity'];
     String? cvLink = data['CV'];
     int? id = data['id'];
+    List<ActivitiesInfo> list = [];
+    if (data['activities_info'] != null) {
+      for (var element in data['activities_info']) {
+        list.add(ActivitiesInfo.fromJson(element));
+      }
+    }
     return UserRegModel(
       email: email,
       phoneNumber: phoneNumber,
@@ -126,6 +137,7 @@ class UserRegModel {
       activity: activity,
       cvLink: cvLink,
       id: id,
+      activitiesInfo: list,
     );
   }
 
@@ -178,6 +190,22 @@ class UserRegModel {
     data['groups'] = groups;
     if (activitiesDocument != null) data['activities'] = activitiesDocument;
     return data;
+  }
+}
+
+class ActivitiesInfo {
+  int? id;
+  String? description;
+  String? photo;
+
+  ActivitiesInfo(this.id, this.description, this.photo);
+
+  factory ActivitiesInfo.fromJson(Map<String, dynamic> data) {
+    int id = data['id'];
+    String? description = data['description'];
+    String? photo = data['photo'];
+
+    return ActivitiesInfo(id, description, photo);
   }
 }
 

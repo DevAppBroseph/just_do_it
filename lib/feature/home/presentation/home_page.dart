@@ -43,6 +43,8 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
+    BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
+    // GetCategorieProfileEvent
     Future.delayed(Duration(seconds: 3), () {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket());

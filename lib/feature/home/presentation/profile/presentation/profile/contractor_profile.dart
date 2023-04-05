@@ -34,11 +34,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
   List<File> photos = [];
   @override
   void initState() {
-    // TODO: implement initState
     user = BlocProvider.of<ProfileBloc>(context).user;
-    BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
-    print(user?.activity);
-    print(user?.images);
+    listCategories = BlocProvider.of<ProfileBloc>(context).activities;
+
+    for (int i = 0; i < listCategories.length; i++) {
+      for (int j = 0; j < user!.activitiesInfo!.length; j++) {
+        if (listCategories[i].description ==
+            user!.activitiesInfo?[j].description) {
+          typeCategories.add(listCategories[i].description!);
+        }
+      }
+    }
     experienceController.text = user?.activity == null ? '' : user!.activity!;
 
     super.initState();
@@ -76,9 +82,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   @override
   Widget build(BuildContext context) {
-    UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
+    // UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    print(widget.padding);
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       if (current is UpdateProfileSuccessState) {
@@ -100,72 +105,81 @@ class _ContractorProfileState extends State<ContractorProfile> {
           child: ListView(
             shrinkWrap: true,
             padding: MediaQuery.of(context).viewInsets,
-            physics: const BouncingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () async {
-                      var image = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        BlocProvider.of<ProfileBloc>(context).add(
-                          UpdateProfilePhotoEvent(photo: image),
-                        );
-                      }
-                    },
-                    child: ClipOval(
-                      child: SizedBox.fromSize(
-                          size: Size.fromRadius(30.r),
-                          child: userReg!.photoLink == null
-                              ? Container(
-                                  height: 60.h,
-                                  width: 60.h,
-                                  padding: EdgeInsets.all(10.h),
-                                  decoration: const BoxDecoration(
-                                    color: ColorStyles.shadowFC6554,
+                  SizedBox(width: 25.h),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              var image = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              if (image != null) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateProfilePhotoEvent(photo: image),
+                                );
+                              }
+                            },
+                            child: ClipOval(
+                              child: SizedBox.fromSize(
+                                  size: Size.fromRadius(30.r),
+                                  child: user!.photoLink == null
+                                      ? Container(
+                                          height: 60.h,
+                                          width: 60.h,
+                                          padding: EdgeInsets.all(10.h),
+                                          decoration: const BoxDecoration(
+                                            color: ColorStyles.shadowFC6554,
+                                          ),
+                                          child: Image.asset(
+                                              'assets/images/camera.png'),
+                                        )
+                                      : CachedNetworkImage(
+                                          imageUrl:
+                                              user!.photoLink!.contains(server)
+                                                  ? user!.photoLink!
+                                                  : server + user!.photoLink!,
+                                          fit: BoxFit.cover,
+                                        )
+                                  // : Image.network(
+                                  //     BlocProvider.of<ProfileBloc>(context)
+                                  //         .user!
+                                  //         .photoLink!,
+                                  //     fit: BoxFit.cover,
+                                  //   ),
                                   ),
-                                  child:
-                                      Image.asset('assets/images/camera.png'),
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: userReg.photoLink!.contains(server)
-                                      ? userReg.photoLink!
-                                      : server + userReg.photoLink!,
-                                  fit: BoxFit.cover,
-                                )
-                          // : Image.network(
-                          //     BlocProvider.of<ProfileBloc>(context)
-                          //         .user!
-                          //         .photoLink!,
-                          //     fit: BoxFit.cover,
-                          //   ),
-                          ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 8.h),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 297.w,
-                      child: Text(
-                        '${user!.firstname ?? ''} ${user!.lastname ?? ''}',
-                        // 'Яна Александровна',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 32.h, fontWeight: FontWeight.w800),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    SizedBox(width: 5.w),
-                    SvgPicture.asset('assets/icons/share.svg'),
-                  ],
-                ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 32.sp, fontWeight: FontWeight.w800),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SvgPicture.asset(
+                    'assets/icons/share.svg',
+                    height: 25.h,
+                  ),
+                ],
               ),
               SizedBox(height: 18.h),
               Padding(
@@ -395,7 +409,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               ),
                             ),
                           ),
-                          if (user?.cv != null)
+                          if (user?.cvLink != null)
                             Align(
                               alignment: Alignment.topRight,
                               child: Container(
@@ -447,7 +461,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
                             setState(() {});
                           },
-                          BlocProvider.of<ProfileBloc>(context).activities,
+                          listCategories,
                           'Выбор до 3х категорий*',
                           typeCategories,
                         );

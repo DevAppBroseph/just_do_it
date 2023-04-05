@@ -30,61 +30,76 @@ class CustomerProfile extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    var image = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (image != null) {
-                      BlocProvider.of<ProfileBloc>(context).add(
-                        UpdateProfilePhotoEvent(photo: image),
-                      );
-                    }
-                  },
-                  child: ClipOval(
-                    child: SizedBox.fromSize(
-                        size: Size.fromRadius(30.r),
-                        child: user!.photoLink == null
-                            ? Container(
-                                height: 60.h,
-                                width: 60.h,
-                                padding: EdgeInsets.all(10.h),
-                                decoration: const BoxDecoration(
-                                  color: ColorStyles.shadowFC6554,
+                SizedBox(width: 25.h),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            var image = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            if (image != null) {
+                              BlocProvider.of<ProfileBloc>(context).add(
+                                UpdateProfilePhotoEvent(photo: image),
+                              );
+                            }
+                          },
+                          child: ClipOval(
+                            child: SizedBox.fromSize(
+                                size: Size.fromRadius(30.r),
+                                child: user!.photoLink == null
+                                    ? Container(
+                                        height: 60.h,
+                                        width: 60.h,
+                                        padding: EdgeInsets.all(10.h),
+                                        decoration: const BoxDecoration(
+                                          color: ColorStyles.shadowFC6554,
+                                        ),
+                                        child: Image.asset(
+                                            'assets/images/camera.png'),
+                                      )
+                                    : CachedNetworkImage(
+                                        imageUrl:
+                                            user.photoLink!.contains(server)
+                                                ? user.photoLink!
+                                                : server + user.photoLink!,
+                                        fit: BoxFit.cover,
+                                      )
+                                // : Image.network(
+                                //     BlocProvider.of<ProfileBloc>(context)
+                                //         .user!
+                                //         .photoLink!,
+                                //     fit: BoxFit.cover,
+                                //   ),
                                 ),
-                                child: Image.asset('assets/images/camera.png'),
-                              )
-                            : CachedNetworkImage(
-                                imageUrl: user.photoLink!.contains(server)
-                                    ? user.photoLink!
-                                    : server + user.photoLink!,
-                                fit: BoxFit.cover,
-                              )
-                        // : Image.network(
-                        //     BlocProvider.of<ProfileBloc>(context)
-                        //         .user!
-                        //         .photoLink!,
-                        //     fit: BoxFit.cover,
-                        //   ),
-                        ),
-                  ),
-                )
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${user.firstname ?? ''}\n${user.lastname ?? ''}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 32.sp, fontWeight: FontWeight.w800),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SvgPicture.asset(
+                  'assets/icons/share.svg',
+                  height: 25.h,
+                ),
               ],
-            ),
-            SizedBox(height: 8.h),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${user.firstname ?? ''} ${user.lastname ?? ''}',
-                    style:
-                        TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(width: 5.w),
-                  SvgPicture.asset('assets/icons/share.svg'),
-                ],
-              ),
             ),
             SizedBox(height: 18.h),
             Padding(
