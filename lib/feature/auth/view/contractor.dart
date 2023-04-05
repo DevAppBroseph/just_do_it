@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -54,7 +55,7 @@ class _ContractorState extends State<Contractor> {
   final GlobalKey _regionKey = GlobalKey();
   TextEditingController countryController = TextEditingController();
   TextEditingController regionController = TextEditingController();
-  List<int> typeCategories = [];
+  List<String> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
   File? image;
   List<File> photos = [];
@@ -299,8 +300,7 @@ class _ContractorState extends State<Contractor> {
                   }
                 } else {
                   requestNextEmptyFocusStage2();
-                  user.copyWith(
-                      activitiesDocument: typeCategories, groups: [4]);
+                  user.copyWith(activitiesDocument: [], groups: [4]);
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
@@ -810,12 +810,12 @@ class _ContractorState extends State<Contractor> {
 
               String str = '';
               if (value.isNotEmpty) {
-                str = listCategories[value.first - 1].description!;
+                str = value.first;
               }
 
               if (value.length > 1) {
-                for (int i = 1; i < value.length; i++) {
-                  str += ', ${listCategories[value[i] - 1].description!}';
+                for (int i = 1; i < typeCategories.length; i++) {
+                  str += ', ${typeCategories[i]}';
                 }
               }
 
@@ -832,13 +832,14 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
+                key: _categoryButtonKey,
                 hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
                 textEditingController: categoryController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.only(
+                    left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,

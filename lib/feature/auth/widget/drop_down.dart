@@ -162,10 +162,10 @@ void iconSelectModal(
 showIconModalCategories(
   BuildContext context,
   GlobalKey key,
-  Function(List<int>) onTap,
+  Function(List<String>) onTap,
   List<Activities> list,
   String label,
-  List<int> selectCategories,
+  List<String> selectCategories,
 ) async {
   iconSelectModalCategories(
     context,
@@ -179,11 +179,11 @@ showIconModalCategories(
 
 void iconSelectModalCategories(
   BuildContext context,
-  Function(List<int>) onTap,
+  Function(List<String>) onTap,
   Offset offset,
   List<Activities> list,
   String label,
-  List<int> selectCategories,
+  List<String> selectCategories,
 ) {
   showDialog(
     useSafeArea: false,
@@ -268,15 +268,18 @@ void iconSelectModalCategories(
                                   onPressed: () {
                                     if (selectCategories.length < 3) {
                                       if (selectCategories
-                                          .contains(list[index].id)) {
-                                        selectCategories.remove(list[index].id);
+                                          .contains(list[index].description)) {
+                                        selectCategories.remove(
+                                            list[index].description ?? '');
                                       } else {
-                                        selectCategories.add(list[index].id);
+                                        selectCategories
+                                            .add(list[index].description ?? '');
                                       }
                                     } else {
                                       if (selectCategories
-                                          .contains(list[index].id)) {
-                                        selectCategories.remove(list[index].id);
+                                          .contains(list[index].description)) {
+                                        selectCategories
+                                            .remove(list[index].description);
                                       }
                                     }
                                     onTap(selectCategories);
@@ -314,9 +317,9 @@ void iconSelectModalCategories(
                                             ),
                                           ),
                                           const Spacer(),
-                                          if (selectCategories
-                                              .contains(list[index].id))
-                                            Icon(
+                                          if (selectCategories.contains(
+                                              list[index].description!))
+                                            const Icon(
                                               Icons.check,
                                               color: Colors.black,
                                             )
