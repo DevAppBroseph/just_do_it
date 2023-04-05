@@ -23,6 +23,12 @@ class _RatingPageState extends State<RatingPage> {
   bool state = false;
   PageController pageController = PageController();
   int stageRegistration = 1;
+  @override
+  void initState() {
+    BlocProvider.of<RatingBloc>(context)
+        .add(UpdateRatingEvent(BlocProvider.of<ProfileBloc>(context).access));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

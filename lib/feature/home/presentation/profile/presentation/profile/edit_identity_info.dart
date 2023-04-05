@@ -12,7 +12,6 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 
 class EditIdentityInfo extends StatefulWidget {
   const EditIdentityInfo({Key? key}) : super(key: key);
@@ -106,9 +105,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               child: CustomButton(
                 onTap: () {
                   user!.copyWith(isEntity: physics);
-                  BlocProvider.of<ProfileBloc>(context).setUser(user);
-                  Repository().updateUser(
-                      BlocProvider.of<ProfileBloc>(context).access, user!);
+                  BlocProvider.of<ProfileBloc>(context)
+                      .add(UpdateProfileEvent(user!));
                   Navigator.of(context).pop();
                 },
                 btnColor: ColorStyles.yellowFFD70B,

@@ -4,12 +4,12 @@ class ProfileState {}
 
 class ProfileInitState extends ProfileState {}
 
-class LoadProfileState extends ProfileState {}
+class LoadingProfileState extends ProfileState {}
 
-class UpdateProfileSuccessState extends ProfileState {}
+class UpdatedProfileSuccessState extends ProfileState {}
 
-class UpdateProfileErrorState extends ProfileState {}
+class UpdatedProfileErrorState extends ProfileState {}
 
-class LoadProfileSuccessState extends ProfileState {}
+class LoadedProfileSuccessState extends ProfileState {}
 
-class LoadProfileErrorState extends ProfileState {}
+class LoadedProfileErrorState extends ProfileState {}

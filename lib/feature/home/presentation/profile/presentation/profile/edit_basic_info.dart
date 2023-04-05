@@ -50,9 +50,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, snapshot) {
-          if (snapshot is LoadProfileState) {
+          if (snapshot is LoadingProfileState) {
             return const CupertinoActivityIndicator();
           }
+          user = BlocProvider.of<ProfileBloc>(context).user;
+
           return SafeArea(
             child: Column(
               children: [

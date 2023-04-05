@@ -13,7 +13,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
-import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
+import 'package:just_do_it/feature/home/presentation/welcome/welcome_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -57,9 +57,10 @@ class _HomePageState extends State<HomePage> {
         Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, snapshot) {
-              if (snapshot is LoadProfileState) {
+              if (snapshot is LoadingProfileState) {
                 return const CupertinoActivityIndicator();
               }
+
               return PageView(
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   const TasksPage(),
                   ChatPage(),
                   // PersonalAccountPage(),
-                  WelcomPage(selectUser)
+                  WelcomePage(selectUser)
                 ],
               );
             },
@@ -165,6 +166,7 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(
+          // todo, remove the width and handle it in the padding according to mediaquery.width
           width: 50.h,
           height: 46.h,
           color: Colors.transparent,

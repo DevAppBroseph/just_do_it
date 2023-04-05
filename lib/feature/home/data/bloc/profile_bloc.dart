@@ -27,14 +27,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(LoadProfileState());
+    emit(LoadingProfileState());
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     user = event.newUser;
     if (access != null) {
-      bool res = await Repository().updateUser(access!, user!);
-      if (res) {
-        emit(UpdateProfileSuccessState());
+      UserRegModel? newUser = await Repository().updateUser(access!, user!);
+      if (newUser != null) {
+        user = newUser;
+        emit(UpdatedProfileSuccessState());
+      } else {
+        emit(UpdatedProfileErrorState());
       }
     }
     // emit(ProfileInitState());
@@ -49,23 +52,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     access = accessToken;
     user = event.newUser;
     if (access != null) {
-      bool res = await Repository().updateUser(access!, user!);
-      if (res) {
-        emit(UpdateProfileSuccessState());
+      UserRegModel? newUser = await Repository().updateUser(access!, user!);
+      if (newUser != null) {
+        user = newUser;
+
+        emit(UpdatedProfileSuccessState());
+      } else {
+        emit(UpdatedProfileErrorState());
       }
     }
     // emit(ProfileInitState());
   }
 
-  void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
-    emit(LoadProfileState());
+  Future<void> _getProfile(
+      GetProfileEvent event, Emitter<ProfileState> emit) async {
+    emit(LoadingProfileState());
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().getProfile(access!);
       if (res != null) {
         user = res;
-        emit(LoadProfileSuccessState());
+        emit(LoadedProfileSuccessState());
       }
     }
     emit(ProfileInitState());

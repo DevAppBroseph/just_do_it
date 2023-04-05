@@ -58,7 +58,9 @@ class AppRoute {
       case notification:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:
-        return MaterialPageRoute(builder: (_) => PersonalChat());
+        final list = route.arguments as List<dynamic>;
+        int chatId = list[0] as int;
+        return MaterialPageRoute(builder: (_) => PersonalChat(chatId));
       case rating:
         return MaterialPageRoute(builder: (_) => RatingPage());
       case auth:

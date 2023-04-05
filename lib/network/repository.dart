@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Repository {
   var dio = Dio();
@@ -15,7 +19,7 @@ class Repository {
     FormData data = FormData.fromMap(map);
 
     final response = await dio.post(
-      '$server/auth/',
+      'http://$server/auth/',
       data: data,
       options: Options(
         validateStatus: ((status) => status! >= 200),
@@ -29,28 +33,27 @@ class Repository {
   }
 
   // auth/ put
-  Future<bool> updateUser(String? access, UserRegModel userRegModel) async {
+  Future<UserRegModel?> updateUser(
+      String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
     final response = await dio.patch(
-      '$server/profile/',
+      'http://$server/profile/',
       data: data,
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-
-    print('updating user data ${response.data}');
-    print('updating user data ${response.statusCode}');
-    return response.statusCode == 200;
+    if (response.statusCode == 200) return UserRegModel.fromJson(response.data);
+    return null;
     // return response.data;
   }
 
   // подтвердить регистраци
   Future<String?> confirmCodeRegistration(String phone, String code) async {
     final response = await dio.put(
-      '$server/auth/',
+      'http://$server/auth/',
       data: {"phone_number": phone, "code": code},
       options: Options(
         validateStatus: ((status) => status! >= 200),
@@ -68,7 +71,7 @@ class Repository {
   // забыли пароль, сбросить код
   Future<bool> resetPassword(String login) async {
     final response = await dio.post(
-      '$server/auth/reset_password',
+      'http://$server/auth/reset_password',
       data: {"phone_number": login},
       options: Options(
         validateStatus: ((status) => status! >= 200),
@@ -90,7 +93,7 @@ class Repository {
     String updatePassword,
   ) async {
     final response = await dio.put(
-      '$server/auth/',
+      'http://$server/auth/',
       data: {
         "code": code,
         "phone_number": phone,
@@ -115,7 +118,7 @@ class Repository {
   // подтвердить код в забыли пароль
   Future<List<Activities>?> getCategories() async {
     final response = await dio.get(
-      '$server/auth/categories',
+      'http://$server/auth/categories',
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -134,7 +137,7 @@ class Repository {
   // get reviews
   Future<Reviews?> getReviews(String? access) async {
     final response = await dio.get(
-      '$server/ranking/',
+      'http://$server/ranking/',
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
@@ -150,7 +153,7 @@ class Repository {
   // вход
   Future<String?> signIn(String phone, String password) async {
     final response = await dio.post(
-      '$server/auth/api/token/',
+      'http://$server/auth/api/token/',
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -172,7 +175,7 @@ class Repository {
   Future<UserRegModel?> getProfile(String access) async {
     print('object token= $access');
     final response = await dio.get(
-      '$server/profile/',
+      'http://$server/profile/',
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
@@ -189,7 +192,7 @@ class Repository {
   // проверка на зарегистрированного пользователя
   Future<String?> checkUserExist(String phone, String email) async {
     final response = await dio.post(
-      '$server/auth/check',
+      'http://$server/auth/check',
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -209,7 +212,7 @@ class Repository {
   // подтвердить код изменения пароля
   Future<String?> confirmCodeReset(String phone, String code) async {
     final response = await dio.put(
-      '$server/auth/',
+      'http://$server/auth/',
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -231,7 +234,7 @@ class Repository {
   // новый пароль
   Future<bool> editPassword(String password, String access) async {
     final response = await dio.post(
-      '$server/auth/reset_password_confirm',
+      'http://$server/auth/reset_password_confirm',
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
@@ -245,5 +248,43 @@ class Repository {
       return true;
     }
     return false;
+  }
+
+  Future<List<ChatList>?> getChatList(String? access) async {
+    final response = await dio.get(
+      'http://$server/chat/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    if (response.statusCode == 200) {
+      List<ChatList> list = [];
+      for (var element in response.data) {
+        list.add(ChatList.fromJson(element));
+      }
+      return list;
+    }
+    return null;
+  }
+
+  Future<Chat?> getChat(String? access, int chatId) async {
+    final response = await dio.get(
+      'http://$server/chat/$chatId',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    if (response.statusCode == 200) {
+      return Chat.fromJson(response.data);
+    }
+    return null;
+  }
+
+  Future<void> sendMessage(String msg, String? access, int to) async {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://$server/ws/$access'),
+    );
+    channel.sink.add(jsonEncode({'message': msg, 'to': to}));
+    channel.sink.close();
   }
 }

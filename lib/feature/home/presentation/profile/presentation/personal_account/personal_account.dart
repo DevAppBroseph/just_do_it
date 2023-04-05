@@ -25,7 +25,8 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
   void initState() {
     super.initState();
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
+
+    BlocProvider.of<RatingBloc>(context).add(UpdateRatingEvent(access));
     timer = Timer.periodic(
         const Duration(seconds: 30),
         (Timer t) => BlocProvider.of<RatingBloc>(context)

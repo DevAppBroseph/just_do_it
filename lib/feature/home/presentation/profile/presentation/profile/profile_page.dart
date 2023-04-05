@@ -11,6 +11,8 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/profil
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -32,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, snapshot) {
-          if (snapshot is LoadProfileState) {
+          if (snapshot is LoadingProfileState) {
             return const CupertinoActivityIndicator();
           }
           return SafeArea(
