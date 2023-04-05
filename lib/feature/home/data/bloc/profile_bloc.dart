@@ -13,10 +13,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateProfileEvent>(_updateProfile);
     on<UpdateProfilePhotoEvent>(_updateProfilePhoto);
     on<UpdateProfileWithoutLoadingEvent>(_updateWithoutLoadingProfile);
+    on<GetCategorieProfileEvent>(_getCategories);
   }
 
   String? access;
   UserRegModel? user;
+  List<Activities> activities = [];
 
   void setAccess(String? accessToken) async {
     await Storage().setAccessToken(accessToken);
@@ -40,6 +42,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
     // emit(ProfileInitState());
+  }
+
+  void _getCategories(
+      GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
+    List<Activities>? res = await Repository().getCategories();
+    activities = res ?? [];
+    if (res != null) {
+      emit(GetCategoriesProfileState(activities: res));
+    }
   }
 
   void _updateProfilePhoto(

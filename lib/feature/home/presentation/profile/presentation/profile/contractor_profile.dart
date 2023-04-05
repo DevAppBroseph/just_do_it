@@ -9,11 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/drop_down.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
@@ -27,11 +29,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
   FocusNode focusNode = FocusNode();
   TextEditingController experienceController = TextEditingController();
   late UserRegModel? user;
+  final GlobalKey _categoryButtonKey = GlobalKey();
+  List<String> typeCategories = [];
+  List<Activities> listCategories = [];
   List<File> photos = [];
   @override
   void initState() {
     // TODO: implement initState
     user = BlocProvider.of<ProfileBloc>(context).user;
+    BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     print(user?.activity);
     print(user?.images);
     experienceController.text = user?.activity == null ? '' : user!.activity!;
@@ -73,6 +79,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
+    print(userReg?.activities);
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       if (current is UpdateProfileSuccessState) {
@@ -418,19 +425,161 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       style: CustomTextStyle.grey_13_w400,
                     ),
                     const Spacer(),
-                    Text(
-                      'Изменить',
-                      style: CustomTextStyle.blue_13_w400_336FEE,
+                    GestureDetector(
+                      onTap: () {
+                        showIconModalCategories(
+                          context,
+                          _categoryButtonKey,
+                          (value) {
+                            // categoryController.text = '';
+
+                            String str = '';
+                            if (value.isNotEmpty) {
+                              str = value.first;
+                            }
+
+                            if (value.length > 1) {
+                              for (int i = 1; i < typeCategories.length; i++) {
+                                str += ', ${typeCategories[i]}';
+                              }
+                            }
+
+                            // categoryController.text = str;
+
+                            setState(() {});
+                          },
+                          BlocProvider.of<ProfileBloc>(context).activities,
+                          'Выбор до 3х категорий*',
+                          typeCategories,
+                        );
+                      },
+                      child: Text(
+                        'Изменить',
+                        key: _categoryButtonKey,
+                        style: CustomTextStyle.blue_13_w400_336FEE,
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Text(
-                  'Вы не выбрали ни одной категории',
-                  style: CustomTextStyle.black_13_w400_515150,
+              SizedBox(height: 12.h),
+              // if (user.activities)
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+              //   child: Text(
+              //     'Вы не выбрали ни одной категории',
+              //     style: CustomTextStyle.black_13_w400_515150,
+              //   ),
+              // ),
+
+              Container(
+                height: 74.h,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    SizedBox(width: 24.w),
+                    Container(
+                      height: 74.h,
+                      width: 105.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color.fromRGBO(255, 234, 203, 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 8.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/HammerAndWrench.png',
+                              width: 24.w,
+                              height: 24.h,
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              'Красота и здоровье',
+                              style:
+                                  CustomTextStyle.black_15_w400_515150.copyWith(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 6.w),
+                    Container(
+                      height: 74.h,
+                      width: 105.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color.fromRGBO(255, 224, 237, 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 8.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/soap.png',
+                              width: 24.w,
+                              height: 24.h,
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              'Красота и здоровье',
+                              style:
+                                  CustomTextStyle.black_15_w400_515150.copyWith(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // color: Colors.red,
+                    ),
+                    SizedBox(width: 6.w),
+                    Container(
+                      height: 74.h,
+                      width: 105.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color.fromRGBO(213, 247, 254, 1),
+                      ),
+                      // color: Colors.red,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 8.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/book.png',
+                              width: 24.w,
+                              height: 24.h,
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              'Репетиторы и обучение',
+                              style:
+                                  CustomTextStyle.black_15_w400_515150.copyWith(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 6.w),
+                  ],
                 ),
               ),
               SizedBox(height: 50.h),
@@ -474,31 +623,55 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           //   style: CustomTextStyle.black_12_w400_515150,
                           //   maxLines: null,
                           // ),
-                          child: TextFormField(
-                            onTap: () {
-                              if (user!.activity != experienceController.text) {
-                                user!.copyWith(
-                                    activity: experienceController.text);
-                                BlocProvider.of<ProfileBloc>(context).add(
-                                    UpdateProfileWithoutLoadingEvent(user));
-                              }
-                            },
-                            focusNode: focusNode,
-                            decoration: InputDecoration.collapsed(
-                              hintText:
-                                  "Опишите свой опыт работы и прикрепите изображения",
-                              border: InputBorder.none,
-                              hintStyle: CustomTextStyle.black_13_w400_515150,
+                          child: KeyboardActions(
+                            disableScroll: true,
+                            tapOutsideToDismiss: true,
+                            config: KeyboardActionsConfig(
+                              defaultDoneWidget: GestureDetector(
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                },
+                                child: MediaQuery(
+                                  data: MediaQuery.of(context)
+                                      .copyWith(textScaleFactor: 1.0),
+                                  child: const Text('Готово'),
+                                ),
+                              ),
+                              actions: [
+                                KeyboardActionsItem(
+                                  focusNode: focusNode,
+                                  onTapAction: () => focusNode,
+                                ),
+                              ],
                             ),
-                            controller: experienceController,
-                            style: CustomTextStyle.black_13_w400_515150,
-                            maxLines: null,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(500),
-                            ],
-                            onChanged: (String value) {
-                              setState(() {});
-                            },
+                            child: TextFormField(
+                              onTap: () {
+                                if (user!.activity !=
+                                    experienceController.text) {
+                                  user!.copyWith(
+                                      activity: experienceController.text);
+                                  BlocProvider.of<ProfileBloc>(context).add(
+                                    UpdateProfileWithoutLoadingEvent(user),
+                                  );
+                                }
+                              },
+                              focusNode: focusNode,
+                              decoration: InputDecoration.collapsed(
+                                hintText:
+                                    "Опишите свой опыт работы и прикрепите изображения",
+                                border: InputBorder.none,
+                                hintStyle: CustomTextStyle.black_13_w400_515150,
+                              ),
+                              controller: experienceController,
+                              style: CustomTextStyle.black_13_w400_515150,
+                              maxLines: null,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              onChanged: (String value) {
+                                setState(() {});
+                              },
+                            ),
                           ),
                         ),
                         if (photos.isEmpty) const Spacer(),
@@ -622,6 +795,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 ),
               ),
               SizedBox(height: 60.h),
+              GestureDetector(
+                onTap: () {
+                  BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                  BlocProvider.of<ProfileBloc>(context).setUser(null);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                },
+                child: Center(
+                  child: Text(
+                    'Удалить аккаунт',
+                    style: CustomTextStyle.black_13_w500_171716,
+                  ),
+                ),
+              ),
               // GestureDetector(
               //   onTap: () {
               //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
@@ -637,23 +824,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
               //   ),
               // ),
               SizedBox(
-                height: 183.h + MediaQuery.of(context).viewInsets.bottom,
+                height: 163.h + MediaQuery.of(context).viewInsets.bottom,
               ),
-              GestureDetector(
-                onTap: () {
-                  BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                  BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
-                },
-                child: Center(
-                  child: Text(
-                    'Удалить аккаунт',
-                    style: CustomTextStyle.black_13_w500_171716,
-                  ),
-                ),
-              ),
-              SizedBox(height: 60.h),
             ],
           ),
         ),

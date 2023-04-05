@@ -71,17 +71,20 @@ class CustomerProfile extends StatelessWidget {
               ],
             ),
             SizedBox(height: 8.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${user.firstname ?? ''} ${user.lastname ?? ''}',
-                  style:
-                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
-                ),
-                SizedBox(width: 5.w),
-                SvgPicture.asset('assets/icons/share.svg'),
-              ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                    style:
+                        TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
+                  ),
+                  SizedBox(width: 5.w),
+                  SvgPicture.asset('assets/icons/share.svg'),
+                ],
+              ),
             ),
             SizedBox(height: 18.h),
             Padding(

@@ -405,12 +405,16 @@ class _RatingPageState extends State<RatingPage> {
           Row(
             children: [
               SizedBox(width: 24.w),
-              Text(
-                '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                // style: CustomTextStyle.black_32_w800_171716,
-                style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
-                overflow: TextOverflow.ellipsis,
-                maxLines: null,
+              SizedBox(
+                width: 188.w,
+                child: Text(
+                  '${bloc.user?.firstname}\n${bloc.user?.lastname}',
+                  // style: CustomTextStyle.black_32_w800_171716,
+                  style:
+                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: null,
+                ),
               ),
               const Spacer(),
               Container(

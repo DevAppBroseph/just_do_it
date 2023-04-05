@@ -9,6 +9,8 @@ class UpdateProfileEvent extends ProfileEvent {
   UpdateProfileEvent(this.newUser);
 }
 
+class GetCategorieProfileEvent extends ProfileEvent {}
+
 class UpdateProfilePhotoEvent extends ProfileEvent {
   XFile photo;
   UpdateProfilePhotoEvent({required this.photo});

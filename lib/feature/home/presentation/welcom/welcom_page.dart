@@ -280,8 +280,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Image.asset(
-                                    'assets/images/customer.png',
-                                    height: 115.h,
+                                    'assets/images/planning.png',
+                                    height: 105.h,
                                   ),
                                 ),
                                 Padding(
@@ -334,7 +334,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Image.asset(
-                                    'assets/images/contractor.png',
+                                    'assets/images/workplace.png',
                                     height: 103.h,
                                   ),
                                 ),

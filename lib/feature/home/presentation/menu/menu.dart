@@ -42,14 +42,23 @@ class MenuPage extends StatelessWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  itemMenu(
-                      'assets/icons/add_circle.svg', 'Создать задание', () {}),
-                  itemMenu('assets/icons/search2.svg', 'Найти задания', () {}),
-                  itemMenu('assets/icons/note.svg', 'Мои задания', () {}),
-                  itemMenu(
-                      'assets/icons/messages1.svg', 'Мои сообщения', () {}),
+                  itemMenu('assets/icons/add_circle.svg', 'Создать задание',
+                      () {
+                    Navigator.pop(context);
+                  }),
+                  itemMenu('assets/icons/search2.svg', 'Найти задания', () {
+                    Navigator.pop(context);
+                  }),
+                  itemMenu('assets/icons/note.svg', 'Мои задания', () {
+                    Navigator.of(context).pushNamed(AppRoute.tasks);
+                  }),
+                  itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
+                    Navigator.pop(context);
+                  }),
                   itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет',
-                      () {}),
+                      () {
+                    Navigator.of(context).pushNamed(AppRoute.personalAccount);
+                  }),
                   itemMenu(
                       'assets/icons/user_circle_add.svg', 'Реферальная система',
                       () {

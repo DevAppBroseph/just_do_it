@@ -13,3 +13,9 @@ class UpdateProfileErrorState extends ProfileState {}
 class LoadProfileSuccessState extends ProfileState {}
 
 class LoadProfileErrorState extends ProfileState {}
+
+class GetCategoriesProfileState extends ProfileState {
+  List<Activities> activities;
+
+  GetCategoriesProfileState({required this.activities});
+}
