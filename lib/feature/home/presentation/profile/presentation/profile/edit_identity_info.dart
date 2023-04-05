@@ -360,32 +360,33 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         SizedBox(height: 16.h),
         Row(
           children: [
+            if (user?.docType != 'Resident_ID')
+              CustomTextField(
+                hintText: 'Серия',
+                hintStyle: CustomTextStyle.grey_13_w400,
+                height: 50.h,
+                focusNode: focusNodeSerial,
+                onFieldSubmitted: (value) {
+                  requestNextEmptyFocusStage2();
+                },
+                onTap: () {
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    scrollController2.animateTo(200.h,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
+                  });
+                },
+                textInputType: TextInputType.number,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
+                textEditingController: serialDocController,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                onChanged: (value) => documentEdit(),
+              ),
+            if (user?.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: 'Серия',
-              hintStyle: CustomTextStyle.grey_13_w400,
-              height: 50.h,
-              focusNode: focusNodeSerial,
-              onFieldSubmitted: (value) {
-                requestNextEmptyFocusStage2();
-              },
-              onTap: () {
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
-                });
-              },
-              textInputType: TextInputType.number,
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-              textEditingController: serialDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-              onChanged: (value) => documentEdit(),
-            ),
-            SizedBox(width: 12.w),
-            CustomTextField(
-              hintText: 'Номер',
+              hintText: user?.docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_13_w400,
               onFieldSubmitted: (value) {
@@ -403,8 +404,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       curve: Curves.linear);
                 });
               },
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+              width: user?.docType != 'Resident_ID'
+                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w
+                  : MediaQuery.of(context).size.width - 42.w,
               textEditingController: numberDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -412,37 +415,71 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Кем выдан',
-          onTap: () {
-            Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(300.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
-            });
-          },
-          focusNode: focusNodeWhoTake,
-          hintStyle: CustomTextStyle.grey_13_w400,
-          formatters: [
-            LengthLimitingTextInputFormatter(35),
-          ],
-          height: 50.h,
-          textEditingController: whoGiveDocController,
-          onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage2();
-          },
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) => documentEdit(),
-        ),
+        if (user?.docType == 'Passport') SizedBox(height: 16.h),
+        if (user?.docType == 'Passport')
+          CustomTextField(
+            hintText: 'Кем выдан',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
+            hintStyle: CustomTextStyle.grey_13_w400,
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
+            height: 50.h,
+            textEditingController: whoGiveDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
+        if (user?.docType == 'International Passport') SizedBox(height: 16.h),
+        if (user?.docType == 'International Passport')
+          GestureDetector(
+            onTap: () async {
+              _showDatePicker(context, false,
+                  title: user?.docType == 'Resident_ID'
+                      ? 'Срок действия'
+                      : 'Дата выдачи');
+            },
+            child: CustomTextField(
+              hintText: user?.docType == 'Resident_ID'
+                  ? 'Срок действия'
+                  : 'Дата выдачи',
+              enabled: false,
+              hintStyle: CustomTextStyle.grey_13_w400,
+              height: 50.h,
+              textEditingController: whoGiveDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              formatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
+              onChanged: (value) => documentEdit(),
+            ),
+          ),
         SizedBox(height: 16.h),
         GestureDetector(
           onTap: () async {
-            _showDatePicker(context);
+            _showDatePicker(
+              context,
+              user?.docType == 'Resident_ID'
+                  ? true
+                  : user?.docType == 'Passport'
+                      ? true
+                      : true,
+              title: 'Срок действия',
+            );
           },
           child: CustomTextField(
-            hintText: 'Дата выдачи',
+            hintText: 'Срок действия',
             enabled: false,
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
@@ -455,11 +492,37 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onChanged: (value) => documentEdit(),
           ),
         ),
+        if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
+        if (user?.docType == 'Resident_ID')
+          CustomTextField(
+            hintText: 'Место выдачи',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
+            hintStyle: CustomTextStyle.grey_13_w400,
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
+            height: 50.h,
+            textEditingController: whoGiveDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
       ],
     );
   }
 
-  void _showDatePicker(ctx) {
+  void _showDatePicker(ctx, bool isInternational, {String? title}) {
+    print('title is: $title');
     dateTime = null;
     showCupertinoModalPopup(
         context: ctx,
@@ -487,9 +550,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 ),
                                 onPressed: () {
                                   if (dateTime == null) {
-                                    dateDocController.text =
-                                        DateFormat('dd.MM.yyyy')
-                                            .format(DateTime.now());
+                                    if (isInternational) {
+                                      dateDocController.text =
+                                          DateFormat('dd.MM.yyyy')
+                                              .format(DateTime.now());
+                                    } else {
+                                      whoGiveDocController.text =
+                                          DateFormat('dd.MM.yyyy')
+                                              .format(DateTime.now());
+                                    }
                                   }
 
                                   Navigator.of(ctx).pop();
@@ -508,12 +577,22 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: DateTime.now(),
-                        maximumDate: DateTime.now(),
+                        maximumDate: title != null
+                            ? title == 'Срок действия'
+                                ? DateTime(DateTime.now().year + 10,
+                                    DateTime.now().month, DateTime.now().day)
+                                : DateTime.now()
+                            : DateTime.now(),
                         minimumDate: DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
-                          dateDocController.text =
-                              DateFormat('dd.MM.yyyy').format(val);
+                          if (isInternational) {
+                            dateDocController.text =
+                                DateFormat('dd.MM.yyyy').format(val);
+                          } else {
+                            whoGiveDocController.text =
+                                DateFormat('dd.MM.yyyy').format(val);
+                          }
                           user!.copyWith(
                               docInfo:
                                   'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');

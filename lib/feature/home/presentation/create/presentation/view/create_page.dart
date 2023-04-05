@@ -185,7 +185,7 @@ class _CreatePageState extends State<CreatePage> {
               return Column(
                 children: [
                   elementCategory(
-                    'assets/images/build.png',
+                    activities[index].photo ?? '',
                     activities[index].description ?? '',
                     index,
                     choice: activities[index].selectSubcategory,
@@ -242,10 +242,11 @@ class _CreatePageState extends State<CreatePage> {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
           child: Row(
             children: [
-              Image.asset(
-                icon,
-                height: 20.h,
-              ),
+              if (icon != '')
+                Image.network(
+                  server + icon,
+                  height: 20.h,
+                ),
               SizedBox(width: 9.w),
               Text(
                 title,

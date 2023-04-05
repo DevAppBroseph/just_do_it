@@ -317,7 +317,8 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (additionalInfo) {
-                    if (serialDocController.text.isEmpty) {
+                    if (serialDocController.text.isEmpty &&
+                        user.docType != 'Resident_ID') {
                       error += '\n - серию докемента';
                       errorsFlag = true;
                     }
@@ -1060,35 +1061,36 @@ class _ContractorState extends State<Contractor> {
         SizedBox(height: 16.h),
         Row(
           children: [
+            if (user.docType != 'Resident_ID')
+              CustomTextField(
+                hintText: 'Серия',
+                hintStyle: CustomTextStyle.grey_13_w400,
+                height: 50.h,
+                focusNode: focusNodeSerial,
+                onFieldSubmitted: (value) {
+                  requestNextEmptyFocusStage2();
+                },
+                onTap: () {
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    scrollController2.animateTo(200.h,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
+                  });
+                },
+                formatters: [
+                  LengthLimitingTextInputFormatter(15),
+                ],
+                textInputType: TextInputType.number,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
+                textEditingController: serialDocController,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                onChanged: (value) => documentEdit(),
+              ),
+            if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: 'Серия',
-              hintStyle: CustomTextStyle.grey_13_w400,
-              height: 50.h,
-              focusNode: focusNodeSerial,
-              onFieldSubmitted: (value) {
-                requestNextEmptyFocusStage2();
-              },
-              onTap: () {
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
-                });
-              },
-              formatters: [
-                LengthLimitingTextInputFormatter(15),
-              ],
-              textInputType: TextInputType.number,
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-              textEditingController: serialDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-              onChanged: (value) => documentEdit(),
-            ),
-            SizedBox(width: 12.w),
-            CustomTextField(
-              hintText: 'Номер',
+              hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_13_w400,
               onFieldSubmitted: (value) {
@@ -1106,8 +1108,10 @@ class _ContractorState extends State<Contractor> {
               formatters: [
                 LengthLimitingTextInputFormatter(15),
               ],
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+              width: user.docType == 'Resident_ID'
+                  ? MediaQuery.of(context).size.width - 30.w - 18.w
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w,
               textEditingController: numberDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -1115,48 +1119,89 @@ class _ContractorState extends State<Contractor> {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Кем выдан',
-          onTap: () {
-            Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(300.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
-            });
-          },
-          focusNode: focusNodeWhoTake,
-          hintStyle: CustomTextStyle.grey_13_w400,
-          height: 50.h,
-          textEditingController: whoGiveDocController,
-          onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage2();
-          },
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) => documentEdit(),
-        ),
-        SizedBox(height: 16.h),
-        GestureDetector(
-          onTap: () async {
-            _showDatePicker(context);
-          },
-          child: CustomTextField(
-            hintText: 'Дата выдачи',
-            enabled: false,
+        if (user.docType == 'Passport') SizedBox(height: 16.h),
+        if (user.docType == 'Passport')
+          CustomTextField(
+            hintText: 'Кем выдан',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
-            textEditingController: dateDocController,
+            textEditingController: whoGiveDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
-        ),
+        if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
+        if (user.docType != 'Resident_ID')
+          GestureDetector(
+            onTap: () async {
+              _showDatePicker(context, true);
+            },
+            child: CustomTextField(
+              hintText: 'Дата выдачи',
+              enabled: false,
+              hintStyle: CustomTextStyle.grey_13_w400,
+              height: 50.h,
+              textEditingController: dateDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
+            ),
+          ),
+        if (user.docType != 'Passport') SizedBox(height: 16.h),
+        if (user.docType != 'Passport')
+          GestureDetector(
+            onTap: () async {
+              _showDatePicker(context, false, title: 'Срок действия');
+            },
+            child: CustomTextField(
+              hintText: 'Срок действия',
+              enabled: false,
+              hintStyle: CustomTextStyle.grey_13_w400,
+              height: 50.h,
+              textEditingController: whoGiveDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
+            ),
+          ),
+        if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
+        if (user.docType == 'Resident_ID')
+          CustomTextField(
+            hintText: 'Место выдачи',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
+            hintStyle: CustomTextStyle.grey_13_w400,
+            height: 50.h,
+            textEditingController: dateDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
       ],
     );
   }
 
-  void _showDatePicker(ctx) {
+  void _showDatePicker(ctx, bool isPassport, {String? title}) {
     dateTime = null;
     showCupertinoModalPopup(
         context: ctx,
@@ -1184,10 +1229,17 @@ class _ContractorState extends State<Contractor> {
                                 ),
                                 onPressed: () {
                                   if (dateTime == null) {
-                                    dateDocController.text =
-                                        DateFormat('dd.MM.yyyy')
-                                            .format(DateTime.now());
-                                    documentEdit();
+                                    if (isPassport) {
+                                      dateDocController.text =
+                                          DateFormat('dd.MM.yyyy')
+                                              .format(DateTime.now());
+                                      documentEdit();
+                                    } else {
+                                      whoGiveDocController.text =
+                                          DateFormat('dd.MM.yyyy')
+                                              .format(DateTime.now());
+                                      documentEdit();
+                                    }
                                   }
 
                                   Navigator.of(ctx).pop();
@@ -1206,12 +1258,22 @@ class _ContractorState extends State<Contractor> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: DateTime.now(),
-                        maximumDate: DateTime.now(),
+                        maximumDate: title != null
+                            ? title == 'Срок действия'
+                                ? DateTime(DateTime.now().year + 10,
+                                    DateTime.now().month, DateTime.now().day)
+                                : DateTime.now()
+                            : DateTime.now(),
                         minimumDate: DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
-                          dateDocController.text =
-                              DateFormat('dd.MM.yyyy').format(val);
+                          if (isPassport) {
+                            dateDocController.text =
+                                DateFormat('dd.MM.yyyy').format(val);
+                          } else {
+                            whoGiveDocController.text =
+                                DateFormat('dd.MM.yyyy').format(val);
+                          }
                         }),
                   ),
                 ],

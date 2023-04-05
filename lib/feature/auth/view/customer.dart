@@ -139,192 +139,198 @@ class _CustomerState extends State<Customer> {
   @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        Loader.hide();
-        if (current is CheckUserState) {
-          if (current.error != null) {
-            //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            showAlertToast(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован');
-          } else {
-            page = 1;
-            widget.stage(2);
-          }
-        } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
-        } else if (current is GetCategoriesState) {
-          listCategories.clear();
-          listCategories.addAll(current.res);
-        } else if (current is SendProfileErrorState) {
-          String messageError = 'Ошибка\n';
-          if (current.error!['email'] != null &&
-              current.error!['email'][0] != null) {
-            String email = current.error!['email'][0];
-            if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            } else if (email.contains('Enter a valid email address.')) {
-              messageError = 'Введите корректный адрес почты';
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+          Loader.hide();
+          if (current is CheckUserState) {
+            if (current.error != null) {
+              //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
+              showAlertToast(
+                  'Пользователь с такой почтой или номером телефона уже зарегистрирован');
+            } else {
+              page = 1;
+              widget.stage(2);
             }
-          } else if (current.error!['phone_number'] != null &&
-              current.error!['phone_number'][0] != null) {
-            String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber
-                .contains('custom user with this Телефон already exists.')) {
-              messageError =
-                  'Пользователь с таким телефоном уже зарегистрирован';
-            } else if (phoneNumber
-                .contains('The phone number entered is not valid.')) {
-              messageError = 'Введите корректный номер телефона';
+          } else if (current is SendProfileSuccessState) {
+            Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+                arguments: [phoneController.text]);
+          } else if (current is GetCategoriesState) {
+            listCategories.clear();
+            listCategories.addAll(current.res);
+          } else if (current is SendProfileErrorState) {
+            String messageError = 'Ошибка\n';
+            if (current.error!['email'] != null &&
+                current.error!['email'][0] != null) {
+              String email = current.error!['email'][0];
+              if (email
+                  .contains('custom user with this Email already exists.')) {
+                messageError =
+                    'Пользователь с такой почтой уже зарегистрирован';
+              } else if (email.contains('Enter a valid email address.')) {
+                messageError = 'Введите корректный адрес почты';
+              }
+            } else if (current.error!['phone_number'] != null &&
+                current.error!['phone_number'][0] != null) {
+              String phoneNumber = current.error!['phone_number'][0];
+              if (phoneNumber
+                  .contains('custom user with this Телефон already exists.')) {
+                messageError =
+                    'Пользователь с таким телефоном уже зарегистрирован';
+              } else if (phoneNumber
+                  .contains('The phone number entered is not valid.')) {
+                messageError = 'Введите корректный номер телефона';
+              }
             }
+            showAlertToast(messageError);
           }
-          showAlertToast(messageError);
-        }
-        return false;
-      }, builder: (context, snapshot) {
-        return Column(
-          children: [
-            Expanded(
-                child: page == 0
-                    ? firstStage(heightKeyBoard)
-                    : secondStage(heightKeyBoard)),
-            SizedBox(height: 10.h),
-            CustomButton(
-              onTap: () {
-                if (page == 0) {
-                  requestNextEmptyFocusStage1();
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
-                  if (firstnameController.text.isEmpty) {
-                    error += '\n - имя';
-                    errorsFlag = true;
-                  }
-                  if (lastnameController.text.isEmpty) {
-                    error += '\n - фамилию';
-                    errorsFlag = true;
-                  }
-                  if (phoneController.text.isEmpty) {
-                    error += '\n - мобильный номер';
-                    errorsFlag = true;
-                  }
-                  if (emailController.text.isEmpty) {
-                    error += '\n - почту';
-                    errorsFlag = true;
-                  }
+          return false;
+        }, builder: (context, snapshot) {
+          return Column(
+            children: [
+              Expanded(
+                  child: page == 0
+                      ? firstStage(heightKeyBoard)
+                      : secondStage(heightKeyBoard)),
+              SizedBox(height: 10.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 0) {
+                    requestNextEmptyFocusStage1();
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
+                    if (firstnameController.text.isEmpty) {
+                      error += '\n - имя';
+                      errorsFlag = true;
+                    }
+                    if (lastnameController.text.isEmpty) {
+                      error += '\n - фамилию';
+                      errorsFlag = true;
+                    }
+                    if (phoneController.text.isEmpty) {
+                      error += '\n - мобильный номер';
+                      errorsFlag = true;
+                    }
+                    if (emailController.text.isEmpty) {
+                      error += '\n - почту';
+                      errorsFlag = true;
+                    }
 
-                  String email = emailController.text;
+                    String email = emailController.text;
 
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
 
-                  if (errorsFlag) {
-                    showAlertToast(error);
-                  } else if (!emailValid) {
-                    showAlertToast('Введите корректный адрес почты');
-                  } else if (!confirmTermsPolicy) {
-                    showAlertToast(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
+                    if (errorsFlag) {
+                      showAlertToast(error);
+                    } else if (!emailValid) {
+                      showAlertToast('Введите корректный адрес почты');
+                    } else if (!confirmTermsPolicy) {
+                      showAlertToast(
+                          'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
+                    } else {
+                      showLoaderWrapper(context);
+                      BlocProvider.of<AuthBloc>(context).add(
+                          CheckUserExistEvent(
+                              phoneController.text, emailController.text));
+                    }
                   } else {
-                    showLoaderWrapper(context);
-                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
-                        phoneController.text, emailController.text));
-                  }
-                } else {
-                  requestNextEmptyFocusStage2();
-                  user.copyWith(groups: [3]);
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
+                    requestNextEmptyFocusStage2();
+                    user.copyWith(groups: [3]);
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
 
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
-                    error += '\n- пароль';
-                    errorsFlag = true;
-                  }
-
-                  if (countryController.text.isEmpty) {
-                    error += '\n - страну';
-                    errorsFlag = true;
-                  }
-                  if (regionController.text.isEmpty) {
-                    error += '\n - регион';
-                    errorsFlag = true;
-                  }
-
-                  if (additionalInfo) {
-                    if (serialDocController.text.isEmpty) {
-                      error += '\n - серию докемента';
+                    if (passwordController.text.isEmpty ||
+                        repeatPasswordController.text.isEmpty) {
+                      error += '\n- пароль';
                       errorsFlag = true;
                     }
-                    if (numberDocController.text.isEmpty) {
-                      error += '\n - номер документа';
-                      errorsFlag = true;
-                    }
-                    if (whoGiveDocController.text.isEmpty) {
-                      error += '\n - кем был выдан документ';
-                      errorsFlag = true;
-                    }
-                    if (dateDocController.text.isEmpty) {
-                      error += '\n - дату выдачи документа';
-                      errorsFlag = true;
-                    }
-                  }
 
-                  if (errorsFlag) {
-                    if ((passwordController.text.isNotEmpty &&
+                    if (countryController.text.isEmpty) {
+                      error += '\n - страну';
+                      errorsFlag = true;
+                    }
+                    if (regionController.text.isEmpty) {
+                      error += '\n - регион';
+                      errorsFlag = true;
+                    }
+
+                    if (additionalInfo) {
+                      if (serialDocController.text.isEmpty &&
+                          user.docType != 'Resident_ID') {
+                        error += '\n - серию докемента';
+                        errorsFlag = true;
+                      }
+                      if (numberDocController.text.isEmpty) {
+                        error += '\n - номер документа';
+                        errorsFlag = true;
+                      }
+                      if (whoGiveDocController.text.isEmpty) {
+                        error += '\n - кем был выдан документ';
+                        errorsFlag = true;
+                      }
+                      if (dateDocController.text.isEmpty) {
+                        error += '\n - дату выдачи документа';
+                        errorsFlag = true;
+                      }
+                    }
+
+                    if (errorsFlag) {
+                      if ((passwordController.text.isNotEmpty &&
+                              repeatPasswordController.text.isNotEmpty) &&
+                          (passwordController.text !=
+                              repeatPasswordController.text)) {
+                        error += '\n\n Пароли не совпадают';
+                      }
+                      showAlertToast(error);
+                    } else if (passwordController.text.length < 6) {
+                      showAlertToast('- минимальная длина пароля 6 символов');
+                    } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      error += '\n\n Пароли не совпадают';
+                      // error += 'Пароли не совпадают';
+                      showAlertToast('Пароли не совпадают');
+                    } else {
+                      showLoaderWrapper(context);
+                      documentEdit();
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SendProfileEvent(user));
                     }
-                    showAlertToast(error);
-                  } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длина пароля 6 символов');
-                  } else if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    // error += 'Пароли не совпадают';
-                    showAlertToast('Пароли не совпадают');
-                  } else {
-                    showLoaderWrapper(context);
-                    documentEdit();
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SendProfileEvent(user));
                   }
-                }
-              },
-              btnColor: confirmTermsPolicy
-                  ? ColorStyles.yellowFFD70A
-                  : ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_15_w600_171716,
+                },
+                btnColor: confirmTermsPolicy
+                    ? ColorStyles.yellowFFD70A
+                    : ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  page == 0 ? 'Далее' : 'Зарегистрироваться',
+                  style: CustomTextStyle.black_15_w600_171716,
+                ),
               ),
-            ),
-            SizedBox(height: 18.h),
-            CustomButton(
-              onTap: () {
-                if (page == 1) {
-                  page = 0;
-                  widget.stage(1);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-              btnColor: ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                'Назад',
-                style: CustomTextStyle.black_15_w600_515150,
+              SizedBox(height: 18.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 1) {
+                    page = 0;
+                    widget.stage(1);
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+                btnColor: ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  'Назад',
+                  style: CustomTextStyle.black_15_w600_515150,
+                ),
               ),
-            ),
-            SizedBox(height: 34.h),
-          ],
-        );
-      }),
-    );
+              SizedBox(height: 34.h),
+            ],
+          );
+        }),
+      );
+    });
   }
 
   Widget firstStage(double heightKeyBoard) {
@@ -695,7 +701,13 @@ class _CustomerState extends State<Customer> {
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
-              // user.copyWith(docType: value);
+              user.copyWith(
+                docType: value == 'Паспорт РФ'
+                    ? 'Passport'
+                    : value == 'Резидент ID'
+                        ? 'Resident_ID'
+                        : 'International Passport',
+              );
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
@@ -783,158 +795,226 @@ class _CustomerState extends State<Customer> {
       children: [
         SizedBox(height: 16.h),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            if (user.docType != 'Resident_ID')
+              CustomTextField(
+                hintText: 'Серия',
+                hintStyle: CustomTextStyle.grey_13_w400,
+                height: 50.h,
+                focusNode: focusNodeSerial,
+                onFieldSubmitted: (value) {
+                  requestNextEmptyFocusStage2();
+                },
+                onTap: () {
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    scrollController2.animateTo(200.h,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
+                  });
+                },
+                formatters: [
+                  LengthLimitingTextInputFormatter(15),
+                ],
+                textInputType: TextInputType.number,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
+                textEditingController: serialDocController,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                onChanged: (value) => documentEdit(),
+              ),
+            if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: 'Серия',
+              hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
+              focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_13_w400,
-              height: 50.h,
-              textInputType: TextInputType.number,
-              focusNode: focusNodeSerial,
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-              textEditingController: serialDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-              onChanged: (value) => documentEdit(),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
+              height: 50.h,
+              textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(350.h,
+                  scrollController2.animateTo(200.h,
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear);
                 });
               },
-            ),
-            SizedBox(width: 12.w),
-            CustomTextField(
-              hintText: 'Номер',
-              hintStyle: CustomTextStyle.grey_13_w400,
-              height: 50.h,
-              textInputType: TextInputType.number,
-              focusNode: focusNodeNumber,
-              width:
-                  ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+              formatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
+              width: user.docType == 'Resident_ID'
+                  ? MediaQuery.of(context).size.width - 30.w - 18.w
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w,
               textEditingController: numberDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
-              onFieldSubmitted: (value) {
-                requestNextEmptyFocusStage2();
-              },
-              onTap: () {
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(350.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
-                });
-              },
             ),
           ],
         ),
-        SizedBox(height: 16.h),
-        CustomTextField(
-          hintText: 'Кем выдан',
-          hintStyle: CustomTextStyle.grey_13_w400,
-          height: 50.h,
-          focusNode: focusNodeWhoTake,
-          textEditingController: whoGiveDocController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-          onChanged: (value) => documentEdit(),
-          onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage2();
-          },
-          onTap: () {
-            Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(350.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
-            });
-          },
-        ),
-        SizedBox(height: 16.h),
-        GestureDetector(
-          onTap: () async {
-            _showDatePicker(context);
-          },
-          child: CustomTextField(
-            hintText: 'Дата выдачи',
+        if (user.docType == 'Passport') SizedBox(height: 16.h),
+        if (user.docType == 'Passport')
+          CustomTextField(
+            hintText: 'Кем выдан',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
-            enabled: false,
-            textEditingController: dateDocController,
+            textEditingController: whoGiveDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
-        ),
+        if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
+        if (user.docType != 'Resident_ID')
+          GestureDetector(
+            onTap: () async {
+              _showDatePicker(context, true);
+            },
+            child: CustomTextField(
+              hintText: 'Дата выдачи',
+              enabled: false,
+              hintStyle: CustomTextStyle.grey_13_w400,
+              height: 50.h,
+              textEditingController: dateDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
+            ),
+          ),
+        if (user.docType != 'Passport') SizedBox(height: 16.h),
+        if (user.docType != 'Passport')
+          GestureDetector(
+            onTap: () async {
+              _showDatePicker(context, false, title: 'Срок действия');
+            },
+            child: CustomTextField(
+              hintText: 'Срок действия',
+              enabled: false,
+              hintStyle: CustomTextStyle.grey_13_w400,
+              height: 50.h,
+              textEditingController: whoGiveDocController,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              onChanged: (value) => documentEdit(),
+            ),
+          ),
+        if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
+        if (user.docType == 'Resident_ID')
+          CustomTextField(
+            hintText: 'Место выдачи',
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
+              });
+            },
+            focusNode: focusNodeWhoTake,
+            hintStyle: CustomTextStyle.grey_13_w400,
+            height: 50.h,
+            textEditingController: dateDocController,
+            onFieldSubmitted: (value) {
+              requestNextEmptyFocusStage2();
+            },
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            onChanged: (value) => documentEdit(),
+          ),
       ],
     );
   }
 
-  void _showDatePicker(ctx) {
+  void _showDatePicker(ctx, bool isPassport, {String? title}) {
     dateTime = null;
     showCupertinoModalPopup(
-        context: ctx,
-        builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 40.h,
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              CupertinoButton(
-                                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                                borderRadius: BorderRadius.zero,
-                                child: Text(
-                                  'Готово',
-                                  style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.black),
-                                ),
-                                onPressed: () {
-                                  if (dateTime == null) {
-                                    dateDocController.text =
-                                        DateFormat('dd.MM.yyyy')
-                                            .format(DateTime.now());
-                                  }
-
-                                  Navigator.of(ctx).pop();
-                                },
-                              ),
-                              SizedBox(width: 5.w),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 200.h,
+      context: ctx,
+      builder: (_) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: Column(
+          children: [
+            const Spacer(),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 40.h,
                     color: Colors.white,
-                    child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        minimumDate: DateTime(2000, 1, 1, 1),
-                        maximumDate: DateTime.now(),
-                        initialDateTime: DateTime.now(),
-                        onDateTimeChanged: (val) {
-                          dateTime = val;
-                          dateDocController.text =
-                              DateFormat('dd.MM.yyyy').format(val);
-                        }),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        CupertinoButton(
+                          padding: EdgeInsets.symmetric(horizontal: 15.w),
+                          borderRadius: BorderRadius.zero,
+                          child: Text(
+                            'Готово',
+                            style:
+                                TextStyle(fontSize: 14.sp, color: Colors.black),
+                          ),
+                          onPressed: () {
+                            if (dateTime == null) {
+                              if (isPassport) {
+                                dateDocController.text =
+                                    DateFormat('dd.MM.yyyy')
+                                        .format(DateTime.now());
+                                documentEdit();
+                              } else {
+                                whoGiveDocController.text =
+                                    DateFormat('dd.MM.yyyy')
+                                        .format(DateTime.now());
+                                documentEdit();
+                              }
+                            }
+
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                        SizedBox(width: 5.w),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ));
+                ),
+              ],
+            ),
+            Container(
+              height: 200.h,
+              color: Colors.white,
+              child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: DateTime.now(),
+                  maximumDate: title != null
+                      ? title == 'Срок действия'
+                          ? DateTime(DateTime.now().year + 10,
+                              DateTime.now().month, DateTime.now().day)
+                          : DateTime.now()
+                      : DateTime.now(),
+                  minimumDate: DateTime(2000, 1, 1, 1),
+                  onDateTimeChanged: (val) {
+                    dateTime = val;
+                    if (isPassport) {
+                      dateDocController.text =
+                          DateFormat('dd.MM.yyyy').format(val);
+                    } else {
+                      whoGiveDocController.text =
+                          DateFormat('dd.MM.yyyy').format(val);
+                    }
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void documentEdit() {
