@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,8 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
-  const ContractorProfile({super.key});
+  double padding;
+  ContractorProfile({super.key, required this.padding});
 
   @override
   State<ContractorProfile> createState() => _ContractorProfileState();
@@ -78,7 +78,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    print(MediaQuery.of(context).viewInsets.bottom);
+    print(widget.padding);
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       if (current is UpdateProfileSuccessState) {
@@ -799,9 +799,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
               //     ),
               //   ),
               // ),
-              SizedBox(
-                height: 163.h + MediaQuery.of(context).viewInsets.bottom,
-              ),
+              SizedBox(height: widget.padding + 30.h),
             ],
           ),
         ),

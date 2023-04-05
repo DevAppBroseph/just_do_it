@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
-    print(MediaQuery.of(context).viewInsets.bottom);
+    double insetsBottom = MediaQuery.of(context).viewInsets.bottom;
     return Stack(
       children: [
         MediaQuery(
@@ -191,8 +191,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: PageView(
                         controller: pageController,
                         physics: const NeverScrollableScrollPhysics(),
-                        children: const [
-                          ContractorProfile(),
+                        children: [
+                          ContractorProfile(padding: insetsBottom),
                           CustomerProfile(),
                         ],
                       ),
@@ -205,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         if (MediaQuery.of(context).viewInsets.bottom > 0)
           Positioned(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
+            bottom: insetsBottom,
             child: Container(
               height: 50.h,
               width: MediaQuery.of(context).size.width,
