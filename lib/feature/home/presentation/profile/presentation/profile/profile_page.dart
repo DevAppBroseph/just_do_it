@@ -26,176 +26,206 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
-    return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
-        body: BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, snapshot) {
-          // if (snapshot is LoadProfileState) {
-          //   return const CupertinoActivityIndicator();
-          // }
-          return SafeArea(
-            child: Column(
-              children: [
-                SizedBox(height: 60.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Профиль',
-                          style: CustomTextStyle.black_21_w700,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Transform.rotate(
-                            angle: pi,
-                            child: SvgPicture.asset(
-                              'assets/icons/arrow_right.svg',
+    print(MediaQuery.of(context).viewInsets.bottom);
+    return Stack(
+      children: [
+        MediaQuery(
+          data: const MediaQueryData(textScaleFactor: 1.0),
+          child: Scaffold(
+            backgroundColor: ColorStyles.whiteFFFFFF,
+            body: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, snapshot) {
+              // if (snapshot is LoadProfileState) {
+              //   return const CupertinoActivityIndicator();
+              // }
+              return SafeArea(
+                child: Column(
+                  children: [
+                    SizedBox(height: 60.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Профиль',
+                              style: CustomTextStyle.black_21_w700,
                             ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Transform.rotate(
+                                angle: pi,
+                                child: SvgPicture.asset(
+                                  'assets/icons/arrow_right.svg',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyE0E6EE,
-                      borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Stack(
-                      children: [
-                        AnimatedAlign(
-                          duration: const Duration(milliseconds: 100),
-                          alignment: type == 1
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Container(
-                            height: 40.h,
-                            width: widthTabBarItem,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.only(
-                                topLeft: !state
-                                    ? Radius.circular(20.r)
-                                    : Radius.zero,
-                                bottomLeft: !state
-                                    ? Radius.circular(20.r)
-                                    : Radius.zero,
-                                topRight:
-                                    state ? Radius.circular(20.r) : Radius.zero,
-                                bottomRight:
-                                    state ? Radius.circular(20.r) : Radius.zero,
-                              ),
-                            ),
-                          ),
+                    SizedBox(height: 24.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyE0E6EE,
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
-                        Row(
+                        child: Stack(
                           children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (type != 1) {
-                                      Future.delayed(
-                                        const Duration(milliseconds: 50),
-                                        (() {
-                                          setState(() {
-                                            stageRegistration = 1;
-                                            state = !state;
-                                          });
-                                          pageController.animateToPage(0,
-                                              duration: const Duration(
-                                                  milliseconds: 100),
-                                              curve: Curves.linear);
-                                        }),
-                                      );
-                                    }
-                                    type = 1;
-                                  });
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Text(
-                                      'Как исполнитель',
-                                      style: state
-                                          ? CustomTextStyle.black_13_w400_171716
-                                          : CustomTextStyle.white_13_w400,
-                                    ),
+                            AnimatedAlign(
+                              duration: const Duration(milliseconds: 100),
+                              alignment: type == 1
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                              child: Container(
+                                height: 40.h,
+                                width: widthTabBarItem,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: !state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    bottomLeft: !state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    topRight: state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    bottomRight: state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
                                   ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (type != 2) {
-                                      Future.delayed(
-                                        const Duration(milliseconds: 50),
-                                        (() {
-                                          setState(() {
-                                            stageRegistration = 1;
-                                            state = !state;
-                                          });
-                                          pageController.animateToPage(1,
-                                              duration: const Duration(
-                                                  milliseconds: 100),
-                                              curve: Curves.linear);
-                                        }),
-                                      );
-                                    }
-                                    type = 2;
-                                  });
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Text(
-                                      'Как заказчик',
-                                      style: state
-                                          ? CustomTextStyle.white_13_w400
-                                          : CustomTextStyle
-                                              .black_13_w400_171716,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (type != 1) {
+                                          Future.delayed(
+                                            const Duration(milliseconds: 50),
+                                            (() {
+                                              setState(() {
+                                                stageRegistration = 1;
+                                                state = !state;
+                                              });
+                                              pageController.animateToPage(0,
+                                                  duration: const Duration(
+                                                      milliseconds: 100),
+                                                  curve: Curves.linear);
+                                            }),
+                                          );
+                                        }
+                                        type = 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: Center(
+                                        child: Text(
+                                          'Как исполнитель',
+                                          style: state
+                                              ? CustomTextStyle
+                                                  .black_13_w400_171716
+                                              : CustomTextStyle.white_13_w400,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (type != 2) {
+                                          Future.delayed(
+                                            const Duration(milliseconds: 50),
+                                            (() {
+                                              setState(() {
+                                                stageRegistration = 1;
+                                                state = !state;
+                                              });
+                                              pageController.animateToPage(1,
+                                                  duration: const Duration(
+                                                      milliseconds: 100),
+                                                  curve: Curves.linear);
+                                            }),
+                                          );
+                                        }
+                                        type = 2;
+                                      });
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: Center(
+                                        child: Text(
+                                          'Как заказчик',
+                                          style: state
+                                              ? CustomTextStyle.white_13_w400
+                                              : CustomTextStyle
+                                                  .black_13_w400_171716,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 50.h),
+                    Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: const [
+                          ContractorProfile(),
+                          CustomerProfile(),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                SizedBox(height: 50.h),
-                Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      ContractorProfile(),
-                      CustomerProfile(),
-                    ],
-                  ),
-                )
-              ],
+              );
+            }),
+          ),
+        ),
+        if (MediaQuery.of(context).viewInsets.bottom > 0)
+          Positioned(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            child: Container(
+              height: 50.h,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey[200],
+              child: Row(
+                children: [
+                  Spacer(),
+                  CupertinoButton(
+                      child: Text(
+                        'Готово',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                      })
+                ],
+              ),
             ),
-          );
-        }),
-      ),
+          ),
+      ],
     );
   }
 }

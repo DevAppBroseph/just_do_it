@@ -15,7 +15,6 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/rating
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
@@ -79,7 +78,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    print(userReg?.activities);
+    print(MediaQuery.of(context).viewInsets.bottom);
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       if (current is UpdateProfileSuccessState) {
@@ -623,55 +622,32 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           //   style: CustomTextStyle.black_12_w400_515150,
                           //   maxLines: null,
                           // ),
-                          child: KeyboardActions(
-                            disableScroll: true,
-                            tapOutsideToDismiss: true,
-                            config: KeyboardActionsConfig(
-                              defaultDoneWidget: GestureDetector(
-                                onTap: () {
-                                  FocusScope.of(context).unfocus();
-                                },
-                                child: MediaQuery(
-                                  data: MediaQuery.of(context)
-                                      .copyWith(textScaleFactor: 1.0),
-                                  child: const Text('Готово'),
-                                ),
-                              ),
-                              actions: [
-                                KeyboardActionsItem(
-                                  focusNode: focusNode,
-                                  onTapAction: () => focusNode,
-                                ),
-                              ],
+                          child: TextFormField(
+                            onTap: () {
+                              if (user!.activity != experienceController.text) {
+                                user!.copyWith(
+                                    activity: experienceController.text);
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateProfileWithoutLoadingEvent(user),
+                                );
+                              }
+                            },
+                            focusNode: focusNode,
+                            decoration: InputDecoration.collapsed(
+                              hintText:
+                                  "Опишите свой опыт работы и прикрепите изображения",
+                              border: InputBorder.none,
+                              hintStyle: CustomTextStyle.black_13_w400_515150,
                             ),
-                            child: TextFormField(
-                              onTap: () {
-                                if (user!.activity !=
-                                    experienceController.text) {
-                                  user!.copyWith(
-                                      activity: experienceController.text);
-                                  BlocProvider.of<ProfileBloc>(context).add(
-                                    UpdateProfileWithoutLoadingEvent(user),
-                                  );
-                                }
-                              },
-                              focusNode: focusNode,
-                              decoration: InputDecoration.collapsed(
-                                hintText:
-                                    "Опишите свой опыт работы и прикрепите изображения",
-                                border: InputBorder.none,
-                                hintStyle: CustomTextStyle.black_13_w400_515150,
-                              ),
-                              controller: experienceController,
-                              style: CustomTextStyle.black_13_w400_515150,
-                              maxLines: null,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(500),
-                              ],
-                              onChanged: (String value) {
-                                setState(() {});
-                              },
-                            ),
+                            controller: experienceController,
+                            style: CustomTextStyle.black_13_w400_515150,
+                            maxLines: null,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(500),
+                            ],
+                            onChanged: (String value) {
+                              setState(() {});
+                            },
                           ),
                         ),
                         if (photos.isEmpty) const Spacer(),
