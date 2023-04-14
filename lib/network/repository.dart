@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -11,6 +13,8 @@ import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Repository {
   var dio = Dio();
@@ -379,7 +383,7 @@ class Repository {
     return false;
   }
 
-  Future<List<Question>> getQuestions() async {
+  Future<About?> aboutList() async {
     final response = await dio.get(
       '$server/questions/',
       options: Options(
@@ -387,14 +391,64 @@ class Repository {
       ),
     );
 
-    List<Question> listQuestion = [];
-
     if (response.statusCode == 200) {
-      for (var element in response.data['questions']) {
-        listQuestion.add(Question.fromJson(element));
-      }
-      return listQuestion;
+      return About.fromJson(response.data);
     }
-    return [];
+    return null;
+  }
+
+  Future<String?> getFile(String file) async {
+    try {
+      String savePath = await getFilePath('${DateTime.now()}.doc');
+      final response = await dio.get(
+        '$server$file',
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+        ),
+      );
+      log('message 1');
+
+      if (response.statusCode == 200) {
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.storage,
+        ].request();log('message 2');
+
+        if (statuses[Permission.storage]!.isGranted) {
+          log('message 3');
+          File file = File(savePath);
+          log('message 3.0');
+          var raf = file.openSync(mode: FileMode.write);
+          log('message 3.1');
+          raf.writeFromSync(response.data);
+          log('message 3.2');
+          await raf.close();
+          log('message 4');
+        }
+        log('message 5');
+        return savePath;
+      }
+    } catch (e) {
+      log('message error ${e}');
+    }
+
+    return null;
+  }
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+
+    Directory? dir;
+    if (Platform.isAndroid) {
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
+    path = '${dir!.path}/$uniqueFileName';
+
+    return path;
   }
 }

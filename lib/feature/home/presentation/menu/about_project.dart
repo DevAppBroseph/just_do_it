@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:open_file/open_file.dart';
 
 class AboutProject extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class AboutProject extends StatefulWidget {
 }
 
 class _AboutProjectState extends State<AboutProject> {
-  List<Question> question = [];
+  About? about;
   int? selectIndex;
 
   @override
@@ -24,7 +25,7 @@ class _AboutProjectState extends State<AboutProject> {
   }
 
   void getQuestions() async {
-    question = await Repository().getQuestions();
+    about = await Repository().aboutList();
     setState(() {});
   }
 
@@ -92,17 +93,17 @@ class _AboutProjectState extends State<AboutProject> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
-                          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.\n\n',
+                          about?.about ?? '',
                           style: CustomTextStyle.black_13_w400_515150,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud ametAmet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                          style: CustomTextStyle.black_13_w400_515150,
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 40.w),
+                      //   child: Text(
+                      //     'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud ametAmet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+                      //     style: CustomTextStyle.black_13_w400_515150,
+                      //   ),
+                      // ),
                       SizedBox(height: 40.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
@@ -120,37 +121,54 @@ class _AboutProjectState extends State<AboutProject> {
                         ),
                       ),
                       SizedBox(height: 30.h),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: question.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: itemQuestion(
-                              index,
-                              question[index].question,
-                              question[index].answer,
-                            ),
-                          );
-                        },
-                      ),
+                      if (about != null)
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: about!.question.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: itemQuestion(
+                                index,
+                                about!.question[index].question,
+                                about!.question[index].answer,
+                              ),
+                            );
+                          },
+                        ),
                       SizedBox(height: 20.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          "Пользовательское соглашение",
-                          style: CustomTextStyle.blue_15_w400_336FEE
-                              .copyWith(decoration: TextDecoration.underline),
+                        child: GestureDetector(
+                          onTap: () async {
+                            final res = await Repository()
+                                .getFile(about?.confidence ?? '');
+                            log('message $res');
+                            if (res != null) await OpenFile.open(res);
+                          },
+                          child: Text(
+                            "Пользовательское соглашение",
+                            style: CustomTextStyle.blue_15_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                       SizedBox(height: 30.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          "Согласие на обработку персональных данных",
-                          style: CustomTextStyle.blue_15_w400_336FEE
-                              .copyWith(decoration: TextDecoration.underline),
+                        child: GestureDetector(
+                          onTap: () async {
+                            final res = await Repository()
+                                .getFile(about?.agreement ?? '');
+                            log('message $res');
+                            if (res != null) await OpenFile.open(res);
+                          },
+                          child: Text(
+                            "Согласие на обработку персональных данных",
+                            style: CustomTextStyle.blue_15_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                       SizedBox(height: 175.h),

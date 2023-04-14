@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  open_file: ^3.2.1
   auto_size_text: ^3.0.0
   dash_chat_2: ^0.0.15
   flutter_overlay_loader: ^2.0.0
@@ -37,7 +38,7 @@ dependencies:
   keyboard_actions: ^4.0.1
   lottie: ^2.0.0
   image_picker: ^0.8.5+3
-  file_picker: ^5.2.5
+  file_picker: ^4.0.0
   fluttertoast: ^8.0.9
   web_socket_channel: ^2.3.0
   cupertino_icons: ^1.0.2
