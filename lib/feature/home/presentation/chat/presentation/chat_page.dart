@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +15,9 @@ import 'package:scale_button/scale_button.dart';
 
 class ChatPage extends StatefulWidget {
   final Function()? onBackPressed;
+  final Function(int) onSelect;
 
-  ChatPage(this.onBackPressed);
+  ChatPage(this.onBackPressed, this.onSelect);
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -71,8 +73,20 @@ class _ChatPageState extends State<ChatPage> {
                   SizedBox(width: 23.w),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(AppRoute.menu, arguments: [(page) {}]);
+                      Navigator.of(context).pushNamed(AppRoute.menu,
+                          arguments: [(page) {}]).then((value) {
+                        if (value != null) {
+                          if (value == 'create') {
+                            widget.onSelect(0);
+                          }
+                          if (value == 'search') {
+                            widget.onSelect(1);
+                          }
+                          if (value == 'chat') {
+                            widget.onSelect(3);
+                          }
+                        }
+                      });
                     },
                     child: SvgPicture.asset('assets/icons/category.svg'),
                   ),
@@ -136,7 +150,7 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(height: 20.h),
               Row(
                 children: [
-                  chat.chatWith != null
+                  chat.chatWith?.photo != null
                       ? SizedBox(
                           height: 50.h,
                           width: 50.h,
@@ -168,42 +182,50 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                         ),
                   SizedBox(width: 12.h),
-                  SizedBox(
-                    width: 255.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
-                              style: CustomTextStyle.black_13_w400_000000,
-                            ),
-                            const Spacer(),
-                            Text(
-                              chat.lastMsg?.time
-                                      ?.toUtc()
-                                      .toString()
-                                      .substring(0, 10) ??
-                                  '-',
-                              style: CustomTextStyle.grey_11_w400,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          chat.lastMsg?.text ?? '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: CustomTextStyle.black_13_w400_171716,
-                        ),
-                        SizedBox(height: 8.h),
-                        // Text(
-                        //   chat.typeWork,
-                        //   style: CustomTextStyle.grey_13_w400,
-                        // ),
-                      ],
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 255.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 180.w,
+                                child: AutoSizeText(
+                                  '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
+                                  style: CustomTextStyle.black_13_w400_000000,
+                                  maxLines: 1,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                chat.lastMsg?.time
+                                        ?.toUtc()
+                                        .toString()
+                                        .substring(0, 10) ??
+                                    '-',
+                                style: CustomTextStyle.grey_11_w400,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            chat.lastMsg?.text ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: CustomTextStyle.black_13_w400_171716,
+                          ),
+                          SizedBox(height: 8.h),
+                          // Text(
+                          //   chat.typeWork,
+                          //   style: CustomTextStyle.grey_13_w400,
+                          // ),
+                        ],
+                      ),
                     ),
                   )
                 ],

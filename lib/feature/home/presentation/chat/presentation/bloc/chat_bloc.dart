@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -53,6 +54,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
+    print(idChat);
     messages.clear();
     for (var element in res) {
       messages.add(
@@ -75,7 +77,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(UpdateListMessageState(idChat));
   }
 
-  void _startSocket(StartSocket event, Emitter<ChatState> emit) async {
+  void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     log('message connect');
@@ -89,9 +91,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             idChat = jsonDecode(event)['chat_id'];
           } else {
             var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
+            print(newMessage.from);
             if (showPersonChat) {
-              MessageDialogs()
-                  .showMessage(newMessage.fromName, newMessage.message);
+              MessageDialogs().showMessage(
+                newMessage.fromName,
+                newMessage.message,
+                eventBloc.context,
+                id: newMessage.id,
+                name: newMessage.fromName,
+                idWithChat: newMessage.from,
+                image: newMessage.image,
+              );
+              // editShowPersonChat(false);
+              editChatId(int.parse(newMessage.id!));
             }
             messages.add(
               ChatMessage(

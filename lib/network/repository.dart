@@ -19,8 +19,9 @@ class Repository {
   Future<Map<String, dynamic>?> confirmRegister(
       UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
+    print(map);
     FormData data = FormData.fromMap(map);
-    
+
     final response = await dio.post(
       '$server/auth/',
       data: data,
@@ -65,7 +66,8 @@ class Repository {
     // return response.data;
   }
 
-  Future<bool> updateUser(String? access, UserRegModel userRegModel) async {
+  Future<UserRegModel?> updateUser(
+      String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -79,7 +81,11 @@ class Repository {
 
     print('updating user data ${response.data}');
     print('updating user data ${response.statusCode}');
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
+    }
     // return response.data;
   }
 

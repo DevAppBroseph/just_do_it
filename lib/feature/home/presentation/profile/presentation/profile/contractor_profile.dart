@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +59,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
         File? file = File(pickedFile.path);
         files.add(file);
       }
-      photos.clear();
+      // photos.clear();
+      files.forEach((element) {
+        if (photos.length < 10) {
+          photos.add(element);
+        }
+      });
       setState(() {
-        photos.addAll(files);
+        // photos.addAll(files);
         // user?.copyWith(images: photos);
       });
       // BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
@@ -91,6 +97,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       }
       return true;
     }, builder: (context, data) {
+      // print('activities is: ' + (user?.activitiesInfo?.first.id).toString());
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -105,7 +112,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
           child: ListView(
             shrinkWrap: true,
             padding: MediaQuery.of(context).viewInsets,
-            physics: const ClampingScrollPhysics(),
+            // physics: const ClampingScrollPhysics(),
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -160,15 +167,21 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       SizedBox(height: 8.h),
                       Container(
+                        // width: 327.w,
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 32.sp, fontWeight: FontWeight.w800),
+                            SizedBox(
+                              width: 240.w,
+                              child: AutoSizeText(
+                                '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 32.sp,
+                                    fontWeight: FontWeight.w800),
+                                maxLines: 2,
+                              ),
                             ),
                           ],
                         ),
@@ -457,6 +470,21 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               }
                             }
 
+                            List<int> activityIndexes = [];
+
+                            typeCategories.forEach((element) {
+                              activityIndexes.add(listCategories
+                                  .firstWhere((element2) =>
+                                      element2.description == element)
+                                  .id);
+                            });
+                            user?.copyWith(
+                              activitiesDocument: activityIndexes,
+                              groups: [4],
+                            );
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(UpdateProfileEvent(user));
+
                             // categoryController.text = str;
 
                             setState(() {});
@@ -476,125 +504,31 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 ),
               ),
               SizedBox(height: 12.h),
-              // if (user.activities)
-              // Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 24.w),
-              //   child: Text(
-              //     'Вы не выбрали ни одной категории',
-              //     style: CustomTextStyle.black_13_w400_515150,
-              //   ),
-              // ),
-
-              Container(
-                height: 74.h,
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    SizedBox(width: 24.w),
-                    Container(
-                      height: 74.h,
-                      width: 105.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: Color.fromRGBO(255, 234, 203, 1),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 8.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/HammerAndWrench.png',
-                              width: 24.w,
-                              height: 24.h,
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              'Красота и здоровье',
-                              style:
-                                  CustomTextStyle.black_15_w400_515150.copyWith(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 6.w),
-                    Container(
-                      height: 74.h,
-                      width: 105.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: Color.fromRGBO(255, 224, 237, 1),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 8.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/soap.png',
-                              width: 24.w,
-                              height: 24.h,
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              'Красота и здоровье',
-                              style:
-                                  CustomTextStyle.black_15_w400_515150.copyWith(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // color: Colors.red,
-                    ),
-                    SizedBox(width: 6.w),
-                    Container(
-                      height: 74.h,
-                      width: 105.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: Color.fromRGBO(213, 247, 254, 1),
-                      ),
-                      // color: Colors.red,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 8.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/book.png',
-                              width: 24.w,
-                              height: 24.h,
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              'Репетиторы и обучение',
-                              style:
-                                  CustomTextStyle.black_15_w400_515150.copyWith(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 6.w),
-                  ],
+              if (user != null && typeCategories.isEmpty)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Text(
+                    'Вы не выбрали ни одной категории',
+                    style: CustomTextStyle.black_13_w400_515150,
+                  ),
                 ),
-              ),
+              if (user != null && typeCategories.isNotEmpty)
+                Container(
+                  height: 74.h,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(left: 24.w, right: 18.w),
+                    itemCount: typeCategories.length,
+                    itemBuilder: (context, index) {
+                      var category = listCategories.firstWhere((element) =>
+                          element.description == typeCategories[index]);
+
+                      return _categoryItem(category, index);
+                    },
+                  ),
+                ),
               SizedBox(height: 50.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -656,10 +590,27 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             controller: experienceController,
                             style: CustomTextStyle.black_13_w400_515150,
                             maxLines: null,
+                            onFieldSubmitted: (value) {
+                              if (user!.activity != experienceController.text) {
+                                user!.copyWith(
+                                    activity: experienceController.text);
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateProfileWithoutLoadingEvent(user),
+                                );
+                              }
+                            },
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(500),
                             ],
                             onChanged: (String value) {
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .user!
+                                  .copyWith(
+                                      activity: experienceController.text);
+
+                              print(BlocProvider.of<ProfileBloc>(context)
+                                  .user
+                                  ?.activity);
                               setState(() {});
                             },
                           ),
@@ -673,27 +624,60 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          right: 5.w, left: 5.w),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
-                                        child: SizedBox(
-                                          width: 65.h,
-                                          height: 65.h,
-                                          child: Image.file(
+                                return SizedBox(
+                                  width: 80.h,
+                                  height: 65.h,
+                                  child: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            right: 5.w, left: 5.w),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                          child: SizedBox(
                                             width: 65.h,
                                             height: 65.h,
-                                            photos[index],
-                                            fit: BoxFit.cover,
+                                            child: Image.file(
+                                              width: 65.h,
+                                              height: 65.h,
+                                              photos[index],
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      GestureDetector(
+                                        onTap: () {
+                                          photos.removeAt(index);
+                                          setState(() {});
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            width: 20.w,
+                                            height: 20.h,
+                                            margin:
+                                                EdgeInsets.only(right: 10.w),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              // border: Border.all(
+                                              //   width: 1,
+                                              //   color: Colors.black,
+                                              // ),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.black,
+                                              size: 10.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               },
                               itemCount: photos.length,
@@ -813,11 +797,60 @@ class _ContractorProfileState extends State<ContractorProfile> {
               //     ),
               //   ),
               // ),
-              SizedBox(height: widget.padding + 30.h),
+              SizedBox(height: widget.padding + 50.h),
             ],
           ),
         ),
       );
     });
+  }
+
+  Widget _categoryItem(Activities activitiy, int index) {
+    return Container(
+      height: 74.h,
+      width: 115.w,
+      margin: const EdgeInsets.only(right: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.r),
+        boxShadow: [
+          // BoxShadow(
+          //   color: Color.fromRGBO(26, 42, 97, 0.06),
+          //   offset: Offset(0, 4),
+          //   blurRadius: .h,
+          // )
+        ],
+        color: index == 0
+            ? Color.fromRGBO(255, 234, 203, 1)
+            : index == 1
+                ? Color.fromRGBO(255, 224, 237, 1)
+                : Color.fromRGBO(213, 247, 254, 1),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (activitiy.photo != null)
+              Image.network(
+                server + activitiy.photo!,
+                width: 24.w,
+                height: 24.h,
+              )
+            else
+              SizedBox(height: 24.h),
+            SizedBox(height: 8.h),
+            Text(
+              activitiy.description ?? '',
+              style: CustomTextStyle.black_15_w400_515150.copyWith(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+      // color: Colors.red,
+    );
   }
 }

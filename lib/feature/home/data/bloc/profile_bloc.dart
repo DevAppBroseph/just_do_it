@@ -11,6 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitState()) {
     on<GetProfileEvent>(_getProfile);
     on<UpdateProfileEvent>(_updateProfile);
+    on<UpdateProfileWithoutUserEvent>(_updateProfileWithoutUser);
     on<UpdateProfilePhotoEvent>(_updateProfilePhoto);
     on<UpdateProfileWithoutLoadingEvent>(_updateWithoutLoadingProfile);
     on<GetCategorieProfileEvent>(_getCategories);
@@ -36,8 +37,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     access = accessToken;
     user = event.newUser;
     if (access != null) {
-      bool res = await Repository().updateUser(access!, user!);
-      if (res) {
+      UserRegModel? res = await Repository().updateUser(access!, user!);
+      if (res != null) {
+        user = res;
+        emit(UpdateProfileSuccessState());
+      }
+    }
+    // emit(ProfileInitState());
+  }
+
+  void _updateProfileWithoutUser(
+    UpdateProfileWithoutUserEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(LoadProfileState());
+    String? accessToken = await Storage().getAccessToken();
+    access = accessToken;
+    if (access != null) {
+      UserRegModel? res = await Repository().updateUser(access!, user!);
+      if (res != null) {
+        user = res;
         emit(UpdateProfileSuccessState());
       }
     }
@@ -82,8 +101,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     access = accessToken;
     user = event.newUser;
     if (access != null) {
-      bool res = await Repository().updateUser(access!, user!);
-      if (res) {
+      UserRegModel? res = await Repository().updateUser(access!, user!);
+      if (res != null) {
+        user = res;
         emit(UpdateProfileSuccessState());
       }
     }

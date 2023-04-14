@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -407,13 +408,13 @@ class _RatingPageState extends State<RatingPage> {
               SizedBox(width: 24.w),
               SizedBox(
                 width: 188.w,
-                child: Text(
+                child: AutoSizeText(
                   '${bloc.user?.firstname}\n${bloc.user?.lastname}',
                   // style: CustomTextStyle.black_32_w800_171716,
                   style:
                       TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
                   overflow: TextOverflow.ellipsis,
-                  maxLines: null,
+                  maxLines: 2,
                 ),
               ),
               const Spacer(),

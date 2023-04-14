@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,15 +81,20 @@ class CustomerProfile extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     Container(
+                      // width: 327.w,
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            '${user.firstname ?? ''}\n${user.lastname ?? ''}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 32.sp, fontWeight: FontWeight.w800),
+                          SizedBox(
+                            width: 240.w,
+                            child: AutoSizeText(
+                              '${user.firstname ?? ''}\n${user.lastname ?? ''}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 32.sp, fontWeight: FontWeight.w800),
+                              maxLines: 2,
+                            ),
                           ),
                         ],
                       ),
@@ -100,26 +106,6 @@ class CustomerProfile extends StatelessWidget {
                   height: 25.h,
                 ),
               ],
-            ),
-            SizedBox(height: 8.h),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 297.w,
-                    child: Text(
-                      '${user.firstname ?? ''} ${user.lastname ?? ''}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 32.sp, fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                  SizedBox(width: 5.w),
-                  SvgPicture.asset('assets/icons/share.svg'),
-                ],
-              ),
             ),
             SizedBox(height: 18.h),
             Padding(
@@ -359,6 +345,7 @@ class CustomerProfile extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 40.h),
           ],
         ),
       );

@@ -13,8 +13,9 @@ import 'package:scale_button/scale_button.dart';
 
 class SearchPage extends StatelessWidget {
   final Function() onBackPressed;
+  final Function(int) onSelect;
 
-  SearchPage({required this.onBackPressed});
+  SearchPage({required this.onBackPressed, required this.onSelect});
   List<Task> taskList = [
     Task(
       icon: 'assets/images/pen.png',
@@ -109,7 +110,19 @@ class SearchPage extends StatelessWidget {
                         GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]);
+                                  arguments: [(page) {}]).then((value) {
+                                if (value != null) {
+                                  if (value == 'create') {
+                                    onSelect(0);
+                                  }
+                                  if (value == 'search') {
+                                    onSelect(1);
+                                  }
+                                  if (value == 'chat') {
+                                    onSelect(3);
+                                  }
+                                }
+                              });
                             },
                             child:
                                 SvgPicture.asset('assets/icons/category.svg')),

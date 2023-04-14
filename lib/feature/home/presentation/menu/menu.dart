@@ -50,39 +50,27 @@ class MenuPage extends StatelessWidget {
                 children: [
                   itemMenu('assets/icons/add_circle.svg', 'Создать задание',
                       () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreatePage(onBackPressed: () {
-                          Navigator.pop(context);
-                        }),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => CreatePage(
+                    //       onBackPressed: () {
+                    //         Navigator.pop(context);
+                    //       },
+                    //       whichPage: WhichPage.menu,
+                    //     ),
+                    //   ),
+                    // );
+                    Navigator.pop(context, 'create');
                   }),
                   itemMenu('assets/icons/search2.svg', 'Найти задания', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchPage(onBackPressed: () {
-                          Navigator.pop(context);
-                        }),
-                      ),
-                    );
+                    Navigator.pop(context, 'search');
                   }),
                   itemMenu('assets/icons/note.svg', 'Мои задания', () {
                     Navigator.of(context).pushNamed(AppRoute.tasks);
                   }),
                   itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatPage(
-                          () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    );
+                    Navigator.pop(context, 'chat');
                   }),
                   itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет',
                       () {
@@ -102,36 +90,41 @@ class MenuPage extends StatelessWidget {
                     Navigator.of(context).pushNamed(AppRoute.contactus);
                   }),
                   itemMenu('assets/icons/moon.svg', 'Темный режим', () {}),
+                  SizedBox(height: 15.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 36.h,
+                        width: 102.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyF7F7F8,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset('assets/icons/russia.svg'),
+                            Spacer(),
+                            Text(
+                              'Ru',
+                              style: CustomTextStyle.black_15_w500_171716,
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: ColorStyles.greyBDBDBD,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 164.h),
                 ],
               ),
             ),
-            SizedBox(height: 15.h),
-            Container(
-              height: 36.h,
-              width: 102.h,
-              margin: EdgeInsets.symmetric(horizontal: 24.w),
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: ColorStyles.greyF7F7F8,
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/russia.svg'),
-                  Spacer(),
-                  Text(
-                    'Ru',
-                    style: CustomTextStyle.black_15_w500_171716,
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: ColorStyles.greyBDBDBD,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 164.h),
           ],
         ),
       ),

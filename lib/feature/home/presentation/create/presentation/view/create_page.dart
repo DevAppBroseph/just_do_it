@@ -13,9 +13,22 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
+enum WhichPage {
+  menu,
+  main,
+}
+
 class CreatePage extends StatefulWidget {
   final Function() onBackPressed;
-  const CreatePage({super.key, required this.onBackPressed});
+  final Function(int) onSelect;
+  final WhichPage whichPage;
+
+  const CreatePage({
+    super.key,
+    required this.onBackPressed,
+    required this.onSelect,
+    required this.whichPage,
+  });
 
   @override
   State<CreatePage> createState() => _CreatePageState();
@@ -109,7 +122,19 @@ class _CreatePageState extends State<CreatePage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]);
+                                  arguments: [(page) {}]).then((value) {
+                                if (value != null) {
+                                  if (value == 'create') {
+                                    widget.onSelect(0);
+                                  }
+                                  if (value == 'search') {
+                                    widget.onSelect(1);
+                                  }
+                                  if (value == 'chat') {
+                                    widget.onSelect(3);
+                                  }
+                                }
+                              });
                             },
                             child:
                                 SvgPicture.asset('assets/icons/category.svg'),
@@ -178,7 +203,9 @@ class _CreatePageState extends State<CreatePage> {
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height / 1.8,
+          height: widget.whichPage == WhichPage.main
+              ? MediaQuery.of(context).size.height / 1.8
+              : MediaQuery.of(context).size.height / 1.5,
           child: ListView.builder(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),

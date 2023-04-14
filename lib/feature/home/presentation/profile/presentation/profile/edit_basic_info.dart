@@ -131,7 +131,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
-                            'Изменить E-mail или Телефон',
+                            'Изменить E-mail',
                             style: CustomTextStyle.grey_12_w400,
                           ),
                         ),
@@ -152,7 +152,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                                 mask: '+############',
                                 filter: {"#": RegExp(r'[0-9]')},
                               ),
-                              LengthLimitingTextInputFormatter(13),
+                              LengthLimitingTextInputFormatter(12),
                             ],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),

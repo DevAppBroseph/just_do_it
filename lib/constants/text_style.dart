@@ -137,6 +137,13 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
+  static TextStyle black_12_w400_292D32 = TextStyle(
+    fontSize: 12.h,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.black292D32,
+    fontFamily: 'SFPro',
+  );
+
   static TextStyle black_13_w400_292D32 = TextStyle(
     fontSize: 13.sp,
     fontWeight: FontWeight.w400,
@@ -212,6 +219,13 @@ class CustomTextStyle {
     fontWeight: FontWeight.w600,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
+  );
+
+  static TextStyle black_32_w900_171716 = TextStyle(
+    fontSize: 38.sp,
+    fontWeight: FontWeight.w900,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFBold',
   );
 
   static TextStyle black_33_w800_171716 = TextStyle(

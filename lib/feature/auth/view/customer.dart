@@ -196,26 +196,43 @@ class _CustomerState extends State<Customer> {
               SizedBox(height: 10.h),
               CustomButton(
                 onTap: () {
+                  print(emailController.text
+                          .split('@')
+                          .last
+                          .split('.')
+                          .last
+                          .length <
+                      2);
                   if (page == 0) {
                     requestNextEmptyFocusStage1();
                     String error = 'Укажите:';
                     bool errorsFlag = false;
                     if (firstnameController.text.isEmpty) {
-                      error += '\n - имя';
+                      error += '\n- имя';
                       errorsFlag = true;
                     }
                     if (lastnameController.text.isEmpty) {
-                      error += '\n - фамилию';
+                      error += '\n- фамилию';
                       errorsFlag = true;
                     }
                     if (phoneController.text.isEmpty) {
-                      error += '\n - мобильный номер';
+                      error += '\n- мобильный номер';
                       errorsFlag = true;
                     }
                     if (emailController.text.isEmpty) {
-                      error += '\n - почту';
+                      error += '\n- почту';
                       errorsFlag = true;
                     }
+
+                    // if (emailController.text
+                    //         .split('@')
+                    //         .last
+                    //         .split('.')
+                    //         .last
+                    //         .length <
+                    //     2) {
+                    //   errorsFlag = true;
+                    // }
 
                     String email = emailController.text;
 
@@ -227,6 +244,16 @@ class _CustomerState extends State<Customer> {
                       showAlertToast(error);
                     } else if (!emailValid) {
                       showAlertToast('Введите корректный адрес почты');
+                    } else if (emailController.text
+                            .split('@')
+                            .last
+                            .split('.')
+                            .last
+                            .length <
+                        2) {
+                      showAlertToast('- Введите корректный адрес почты');
+                    } else if (phoneController.text.length < 12) {
+                      showAlertToast('- Некорректный номер телефона.');
                     } else if (!confirmTermsPolicy) {
                       showAlertToast(
                           'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
@@ -249,30 +276,30 @@ class _CustomerState extends State<Customer> {
                     }
 
                     if (countryController.text.isEmpty) {
-                      error += '\n - страну';
+                      error += '\n- страну';
                       errorsFlag = true;
                     }
                     if (regionController.text.isEmpty) {
-                      error += '\n - регион';
+                      error += '\n- регион';
                       errorsFlag = true;
                     }
 
                     if (additionalInfo) {
                       if (serialDocController.text.isEmpty &&
                           user.docType != 'Resident_ID') {
-                        error += '\n - серию докемента';
+                        error += '\n- серию докемента';
                         errorsFlag = true;
                       }
                       if (numberDocController.text.isEmpty) {
-                        error += '\n - номер документа';
+                        error += '\n- номер документа';
                         errorsFlag = true;
                       }
                       if (whoGiveDocController.text.isEmpty) {
-                        error += '\n - кем был выдан документ';
+                        error += '\n- кем был выдан документ';
                         errorsFlag = true;
                       }
                       if (dateDocController.text.isEmpty) {
-                        error += '\n - дату выдачи документа';
+                        error += '\n- дату выдачи документа';
                         errorsFlag = true;
                       }
                     }
@@ -282,7 +309,7 @@ class _CustomerState extends State<Customer> {
                               repeatPasswordController.text.isNotEmpty) &&
                           (passwordController.text !=
                               repeatPasswordController.text)) {
-                        error += '\n\n Пароли не совпадают';
+                        error += '\n\nПароли не совпадают';
                       }
                       showAlertToast(error);
                     } else if (passwordController.text.length < 6) {
@@ -349,7 +376,7 @@ class _CustomerState extends State<Customer> {
           textEditingController: firstnameController,
           formatters: [
             UpperTextInputFormatter(),
-            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -369,7 +396,7 @@ class _CustomerState extends State<Customer> {
           textEditingController: lastnameController,
           formatters: [
             UpperTextInputFormatter(),
-            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -425,18 +452,33 @@ class _CustomerState extends State<Customer> {
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePhone,
+          textInputType: TextInputType.phone,
           textEditingController: phoneController,
           formatters: [
-            MaskTextInputFormatter(
-              // initialText: '+ ',
-              mask: '+############',
-              filter: {"#": RegExp(r'[0-9]')},
-            ),
-            LengthLimitingTextInputFormatter(13)
+            // MaskTextInputFormatter(
+            //   // initialText: '+ ',
+            //   mask: '+############',
+            //   filter: {"#": RegExp(r'[0-9]')},
+            // ),
+            // if (phoneController.text.contains('+7'))
+            //   LengthLimitingTextInputFormatter(12),
+            // if (phoneController.text.contains('+9'))
+            //   LengthLimitingTextInputFormatter(13),
+            // if (!phoneController.text.contains('+7') &&
+            //     !phoneController.text.contains('+9'))
+            //   LengthLimitingTextInputFormatter(12),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
+            // setState(() {});
+            // print(value);
+            if (value.length == 1 && !value.contains('+')) {
+              phoneController.text = '+$value';
+              phoneController.selection =
+                  TextSelection.collapsed(offset: phoneController.text.length);
+            }
+            print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -515,6 +557,12 @@ class _CustomerState extends State<Customer> {
             textEditingController: TextEditingController(),
           ),
         ),
+        SizedBox(height: 10.h),
+        Text(
+          '* - обязательные поля для заполнения',
+          textAlign: TextAlign.start,
+          style: CustomTextStyle.black_13_w400_515150,
+        ),
         SizedBox(height: 16.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -560,7 +608,7 @@ class _CustomerState extends State<Customer> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: 'Пароль',
+          hintText: 'Пароль*',
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePassword1,
@@ -601,7 +649,7 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: 'Повторите пароль',
+          hintText: 'Повторите пароль*',
           hintStyle: CustomTextStyle.grey_13_w400,
           height: 50.h,
           focusNode: focusNodePassword2,
@@ -646,13 +694,14 @@ class _CustomerState extends State<Customer> {
             (value) {
               countryController.text = value;
               regionController.text = '';
+              user.copyWith(country: value);
               setState(() {});
             },
             country,
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страну',
+            hintText: 'Страна*',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -683,7 +732,7 @@ class _CustomerState extends State<Customer> {
             }
           },
           child: CustomTextField(
-            hintText: 'Регион',
+            hintText: 'Регион*',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -757,7 +806,14 @@ class _CustomerState extends State<Customer> {
             ],
           ),
         ),
+        // SizedBox(height: 16.h),
         if (additionalInfo) additionalInfoWidget(),
+        SizedBox(height: 10.h),
+        Text(
+          '* - обязательные поля для заполнения',
+          textAlign: TextAlign.start,
+          style: CustomTextStyle.black_13_w400_515150,
+        ),
         SizedBox(height: 16.h),
         Row(
           children: [
@@ -767,6 +823,7 @@ class _CustomerState extends State<Customer> {
               value: physics,
               onChanged: (value) {
                 setState(() {
+                  user.copyWith(isEntity: value);
                   physics = !physics;
                 });
               },
@@ -872,6 +929,9 @@ class _CustomerState extends State<Customer> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
@@ -924,6 +984,9 @@ class _CustomerState extends State<Customer> {
             focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
             textEditingController: dateDocController,
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
@@ -999,7 +1062,12 @@ class _CustomerState extends State<Customer> {
                               DateTime.now().month, DateTime.now().day)
                           : DateTime.now()
                       : DateTime.now(),
-                  minimumDate: DateTime(2000, 1, 1, 1),
+                  minimumDate: title != null
+                      ? title == 'Срок действия'
+                          ? DateTime(DateTime.now().year, DateTime.now().month,
+                              DateTime.now().day)
+                          : DateTime(2000, 1, 1, 1)
+                      : DateTime(2000, 1, 1, 1),
                   onDateTimeChanged: (val) {
                     dateTime = val;
                     if (isPassport) {

@@ -352,6 +352,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   Widget additionalInfoWidget() {
+    print(user?.docInfo);
     return ListView(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
@@ -376,6 +377,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                         curve: Curves.linear);
                   });
                 },
+                formatters: [
+                  LengthLimitingTextInputFormatter(15),
+                ],
                 textInputType: TextInputType.number,
                 width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
                     6.w,
@@ -583,7 +587,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                     DateTime.now().month, DateTime.now().day)
                                 : DateTime.now()
                             : DateTime.now(),
-                        minimumDate: DateTime(2000, 1, 1, 1),
+                        minimumDate: title != null
+                            ? title == 'Срок действия'
+                                ? DateTime(DateTime.now().year,
+                                    DateTime.now().month, DateTime.now().day)
+                                : DateTime(2000, 1, 1, 1)
+                            : DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
                           if (isInternational) {
@@ -620,7 +629,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;
     }
-    print(countryController.text);
+    print(userRegModel.country);
     if (userRegModel.country != null) {
       countryController.text = userRegModel.country!;
     }

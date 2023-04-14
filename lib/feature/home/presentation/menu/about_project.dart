@@ -63,11 +63,13 @@ class _AboutProjectState extends State<AboutProject> {
                     children: [
                       SizedBox(height: 50.h),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 80.w),
-                        child: SvgPicture.asset(
-                          SvgImg.justDoIt,
-                          height: 38.h,
-                          color: ColorStyles.yellowFFD70B,
+                        padding: EdgeInsets.symmetric(horizontal: 50.w),
+                        child: Center(
+                          child: Text(
+                            'jobyfine'.toUpperCase(),
+                            style: CustomTextStyle.black_32_w900_171716
+                                .copyWith(color: ColorStyles.yellowFFD70B),
+                          ),
                         ),
                       ),
                       SizedBox(height: 40.h),

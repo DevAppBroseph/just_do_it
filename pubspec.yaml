@@ -57,5 +57,8 @@ flutter:
   fonts:
     - family: SFPro
       fonts:
-        - asset: assets/fonts/SFProDisplay-Regular.ttf  
+        - asset: assets/fonts/SFProDisplay-Regular.ttf
+    # - family: SFBold
+    #   fonts:
+    #     - asset: assets/fonts/SFPDisplay-Black.ttf  
 

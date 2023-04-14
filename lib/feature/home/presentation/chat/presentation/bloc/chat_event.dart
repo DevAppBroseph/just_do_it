@@ -6,7 +6,11 @@ class OpenSlidingPanelEvent extends ChatEvent {}
 
 class CloseSlidingPanelEvent extends ChatEvent {}
 
-class StartSocket extends ChatEvent {}
+class StartSocket extends ChatEvent {
+  BuildContext context;
+
+  StartSocket(this.context);
+}
 
 class SendMessageEvent extends ChatEvent {
   String message;

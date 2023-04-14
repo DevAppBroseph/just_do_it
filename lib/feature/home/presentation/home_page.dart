@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     // GetCategorieProfileEvent
     Future.delayed(Duration(seconds: 3), () {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
-        BlocProvider.of<ChatBloc>(context).add(StartSocket());
+        BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
     });
   }
@@ -80,6 +80,8 @@ class _HomePageState extends State<HomePage> {
                       page = 5;
                       streamController.add(4);
                     },
+                    onSelect: selectUser,
+                    whichPage: WhichPage.main,
                   ),
                   SearchPage(
                     onBackPressed: () {
@@ -87,9 +89,14 @@ class _HomePageState extends State<HomePage> {
                       page = 5;
                       streamController.add(4);
                     },
+                    onSelect: selectUser,
                   ),
                   const TasksPage(),
-                  ChatPage(null),
+                  ChatPage(() {
+                    pageController.jumpToPage(4);
+                    page = 5;
+                    streamController.add(4);
+                  }, selectUser),
                   // PersonalAccountPage(),
                   WelcomPage(selectUser)
                 ],
@@ -187,8 +194,8 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(
-          width: 50.h,
-          height: 46.h,
+          width: 50.w,
+          height: 46.w,
           color: Colors.transparent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +207,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 4.h),
               Text(
                 label,
-                style: CustomTextStyle.black_13_w400_292D32,
+                style: CustomTextStyle.black_12_w400_292D32,
               ),
             ],
           ),

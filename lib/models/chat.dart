@@ -53,7 +53,7 @@ class LastMsg {
   factory LastMsg.fromJson(Map<String, dynamic> json) => LastMsg(
         time: DateTime.parse(json['time']),
         text: json['text'],
-        sender: Sender.fromJson(json['sender']),
+        sender: json['sender'] != null ? Sender.fromJson(json['sender']) : null,
       );
 }
 

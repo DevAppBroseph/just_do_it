@@ -94,7 +94,17 @@ class _WelcomPageState extends State<WelcomPage> {
                                 .pushNamed(AppRoute.menu, arguments: [
                               (page) {},
                             ]).then((value) {
-                              if (value == 'create') {}
+                              if (value != null) {
+                                if (value == 'create') {
+                                  widget.onSelect(0);
+                                }
+                                if (value == 'search') {
+                                  widget.onSelect(1);
+                                }
+                                if (value == 'chat') {
+                                  widget.onSelect(3);
+                                }
+                              }
                             });
                           },
                           child: SvgPicture.asset('assets/icons/category.svg'),
@@ -119,9 +129,11 @@ class _WelcomPageState extends State<WelcomPage> {
                           padding: EdgeInsets.symmetric(horizontal: 80.w),
                           child: Padding(
                             padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
-                            child: SvgPicture.asset(
-                              SvgImg.justDoIt,
-                              height: 38.h,
+                            child: Center(
+                              child: Text(
+                                'jobyfine'.toUpperCase(),
+                                style: CustomTextStyle.black_32_w900_171716,
+                              ),
                             ),
                           ),
                         );

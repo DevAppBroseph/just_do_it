@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -20,6 +21,11 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+enum CountryCode {
+  ru,
+  oae,
+}
 
 class Contractor extends StatefulWidget {
   Function(int) stage;
@@ -49,6 +55,7 @@ class _ContractorState extends State<Contractor> {
   TextEditingController dateDocController = TextEditingController();
   TextEditingController documentTypeController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+
   String? gender;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _categoryButtonKey = GlobalKey();
@@ -65,6 +72,8 @@ class _ContractorState extends State<Contractor> {
   List<Activities> listCategories = [];
   bool physics = false;
 
+  CountryCode countryCode = CountryCode.ru;
+
   DateTime? dateTime;
 
   FocusNode focusNodeAbout = FocusNode();
@@ -80,6 +89,7 @@ class _ContractorState extends State<Contractor> {
 
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
+  bool isRussia = true;
 
   @override
   void initState() {
@@ -238,28 +248,28 @@ class _ContractorState extends State<Contractor> {
                   bool errorsFlag = false;
 
                   if (firstnameController.text.isEmpty) {
-                    error += '\n - имя';
+                    error += '\n- имя';
                     errorsFlag = true;
                   }
 
                   if (lastnameController.text.isEmpty) {
-                    error += '\n - фамилию';
+                    error += '\n- фамилию';
                     errorsFlag = true;
                   }
 
                   if (phoneController.text.isEmpty) {
-                    error += '\n - мобильный номер';
+                    error += '\n- мобильный номер';
                     errorsFlag = true;
                   }
 
                   if (emailController.text.isEmpty) {
-                    error += '\n - почту';
+                    error += '\n- почту';
                     errorsFlag = true;
                   }
 
                   if (passwordController.text.isEmpty ||
                       repeatPasswordController.text.isEmpty) {
-                    error += '\n - пароль';
+                    error += '\n- пароль';
                     errorsFlag = true;
                   }
 
@@ -274,12 +284,19 @@ class _ContractorState extends State<Contractor> {
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      error += '\n\n Пароли не совпадают';
+                      error += '\n\nПароли не совпадают';
                     }
                     showAlertToast(error);
-                  } else if (phoneController.text.length < 12 ||
-                      phoneController.text.length > 13) {
-                    showAlertToast('- телефон указан неверно');
+                  } else if (phoneController.text.length < 12) {
+                    showAlertToast('- Некорректный номер телефона.');
+                  } else if (emailController.text
+                          .split('@')
+                          .last
+                          .split('.')
+                          .last
+                          .length <
+                      2) {
+                    showAlertToast('- Введите корректный адрес почты');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
@@ -309,38 +326,39 @@ class _ContractorState extends State<Contractor> {
                   }
                   log('message ${user.cv}');
                   requestNextEmptyFocusStage2();
-                  user.copyWith(activitiesDocument: categorySelect, groups: [4]);
+                  user.copyWith(
+                      activitiesDocument: categorySelect, groups: [4]);
                   String error = 'Укажите:';
                   bool errorsFlag = false;
 
                   if (countryController.text.isEmpty) {
-                    error += '\n - страну';
+                    error += '\n- страну';
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
-                    error += '\n - регион';
+                    error += '\n- регион';
                     errorsFlag = true;
                   }
                   if (typeCategories.isEmpty) {
-                    error += '\n - до 3-ёх категорий';
+                    error += '\n- до 3х категорий';
                     errorsFlag = true;
                   }
                   if (additionalInfo) {
                     if (serialDocController.text.isEmpty &&
                         user.docType != 'Resident_ID') {
-                      error += '\n - серию докемента';
+                      error += '\n- серию докемента';
                       errorsFlag = true;
                     }
                     if (numberDocController.text.isEmpty) {
-                      error += '\n - номер документа';
+                      error += '\n- номер документа';
                       errorsFlag = true;
                     }
                     if (whoGiveDocController.text.isEmpty) {
-                      error += '\n - кем был вадан документ';
+                      error += '\n- кем был вадан документ';
                       errorsFlag = true;
                     }
                     if (dateDocController.text.isEmpty) {
-                      error += '\n - дату выдачи документа';
+                      error += '\n- дату выдачи документа';
                       errorsFlag = true;
                     }
                   }
@@ -402,7 +420,7 @@ class _ContractorState extends State<Contractor> {
           hintStyle: CustomTextStyle.grey_13_w400,
           formatters: [
             UpperTextInputFormatter(),
-            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -422,7 +440,7 @@ class _ContractorState extends State<Contractor> {
           hintStyle: CustomTextStyle.grey_13_w400,
           formatters: [
             UpperTextInputFormatter(),
-            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z]")),
+            FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -481,16 +499,38 @@ class _ContractorState extends State<Contractor> {
           textEditingController: phoneController,
           hintStyle: CustomTextStyle.grey_13_w400,
           formatters: [
-            MaskTextInputFormatter(
-              // initialText: '',
-              mask: '+############',
-              filter: {"#": RegExp(r'[0-9]')},
-            ),
-            LengthLimitingTextInputFormatter(13),
+            // MaskTextInputFormatter(
+            //   // initialText: '',
+            //   mask: '+#############',
+            //   filter: {"#": RegExp(r'[0-9]')},
+            //   type: MaskAutoCompletionType.eager,
+            // ),
+            // if (phoneController.text.contains('+7'))
+            //   LengthLimitingTextInputFormatter(12),
+            // if (phoneController.text.contains('+9'))
+            //   LengthLimitingTextInputFormatter(13),
+            // if (!phoneController.text.contains('+7') &&
+            //     !phoneController.text.contains('+9'))
+            //   LengthLimitingTextInputFormatter(12),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
+            setState(() {});
+            print(value);
+            if (value.length == 1 && !value.contains('+')) {
+              print('12312312');
+              phoneController.text = '+$value';
+              phoneController.selection =
+                  TextSelection.collapsed(offset: phoneController.text.length);
+            }
+            print(value);
+            if (value.contains('+7')) {
+              countryCode = CountryCode.ru;
+            } else if (value.contains('+9')) {
+              countryCode = CountryCode.oae;
+            }
+
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -602,6 +642,12 @@ class _ContractorState extends State<Contractor> {
             });
           },
         ),
+        SizedBox(height: 10.h),
+        Text(
+          '* - обязательные поля для заполнения',
+          textAlign: TextAlign.start,
+          style: CustomTextStyle.black_13_w400_515150,
+        ),
         SizedBox(height: 16.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -704,7 +750,7 @@ class _ContractorState extends State<Contractor> {
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страну*',
+            hintText: 'Страна*',
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
             enabled: false,
@@ -898,7 +944,7 @@ class _ContractorState extends State<Contractor> {
                       user.copyWith(activity: value);
                       setState(() {});
                     },
-                    formatters: [LengthLimitingTextInputFormatter(250)],
+                    formatters: [LengthLimitingTextInputFormatter(500)],
                     contentPadding: EdgeInsets.only(
                         left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),
@@ -909,7 +955,7 @@ class _ContractorState extends State<Contractor> {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    '${aboutMeController.text.length}/250',
+                    '${aboutMeController.text.length}/500',
                     style: CustomTextStyle.grey_11_w400,
                   ),
                 ),
@@ -1033,6 +1079,13 @@ class _ContractorState extends State<Contractor> {
             ),
           ],
         ),
+        SizedBox(height: 10.h),
+        Text(
+          '* - обязательные поля для заполнения',
+          textAlign: TextAlign.start,
+          style: CustomTextStyle.black_13_w400_515150,
+        ),
+        SizedBox(height: 16.h),
         SizedBox(height: 2.h),
         Row(
           children: [
@@ -1041,6 +1094,7 @@ class _ContractorState extends State<Contractor> {
                   borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
+                user.copyWith(isEntity: value);
                 setState(() {
                   physics = !physics;
                 });
@@ -1147,6 +1201,9 @@ class _ContractorState extends State<Contractor> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
@@ -1199,6 +1256,9 @@ class _ContractorState extends State<Contractor> {
             focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_13_w400,
             height: 50.h,
+            formatters: [
+              LengthLimitingTextInputFormatter(35),
+            ],
             textEditingController: dateDocController,
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
@@ -1274,7 +1334,12 @@ class _ContractorState extends State<Contractor> {
                                     DateTime.now().month, DateTime.now().day)
                                 : DateTime.now()
                             : DateTime.now(),
-                        minimumDate: DateTime(2000, 1, 1, 1),
+                        minimumDate: title != null
+                            ? title == 'Срок действия'
+                                ? DateTime(DateTime.now().year,
+                                    DateTime.now().month, DateTime.now().day)
+                                : DateTime(2000, 1, 1, 1)
+                            : DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {
                           dateTime = val;
                           if (isPassport) {
@@ -1284,6 +1349,8 @@ class _ContractorState extends State<Contractor> {
                             whoGiveDocController.text =
                                 DateFormat('dd.MM.yyyy').format(val);
                           }
+                          documentEdit();
+                          print(isPassport);
                         }),
                   ),
                 ],
@@ -1292,6 +1359,8 @@ class _ContractorState extends State<Contractor> {
   }
 
   void documentEdit() {
+    print(
+        'Серия: ${serialDocController.text} Номер: ${numberDocController.text} Кем выдан: ${whoGiveDocController.text} Дата выдачи: ${dateDocController.text}');
     user.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',

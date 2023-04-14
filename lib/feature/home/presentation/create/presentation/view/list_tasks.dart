@@ -40,7 +40,9 @@ class _ListTasksState extends State<ListTasks> {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorStyles.yellowFFCA0D,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
         title: const Text('Заказы'),
       ),
       body: Column(
@@ -115,8 +117,11 @@ class _ListTasksState extends State<ListTasks> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                '${orderTask[index].owner?.firstname ?? '-'} ${orderTask[index].owner?.lastname ?? '-'}'),
+                            SizedBox(
+                              width: 220.w,
+                              child: Text(
+                                  '${orderTask[index].owner?.firstname ?? '-'} ${orderTask[index].owner?.lastname ?? '-'}'),
+                            ),
                             SizedBox(height: 10.h),
                             Text(orderTask[index].name ?? '-'),
                             Text(orderTask[index].description ?? '-'),

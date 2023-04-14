@@ -219,7 +219,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
+                        var bloc = BlocProvider.of<ProfileBloc>(context);
                         FocusScope.of(context).unfocus();
+                        bloc.add(
+                          UpdateProfileWithoutUserEvent(),
+                        );
                       })
                 ],
               ),

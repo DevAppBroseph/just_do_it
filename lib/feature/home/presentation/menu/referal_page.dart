@@ -77,7 +77,7 @@ class ReferalPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Установите приложение JUSTDOIT и получите\nдополнительно 200 баллов на свой счет!',
+                    'Установите приложение JOBYFINE и получите\nдополнительно 200 баллов на свой счет!',
                     style: CustomTextStyle.black_13_w400_515150,
                   ),
                 ],
