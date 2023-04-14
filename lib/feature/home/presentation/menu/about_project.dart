@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'dart:math' as math;
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/models/question.dart';
+import 'package:just_do_it/network/repository.dart';
 
 class AboutProject extends StatefulWidget {
   @override
@@ -11,7 +14,20 @@ class AboutProject extends StatefulWidget {
 }
 
 class _AboutProjectState extends State<AboutProject> {
+  List<Question> question = [];
   int? selectIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    getQuestions();
+  }
+
+  void getQuestions() async {
+    question = await Repository().getQuestions();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -38,7 +54,7 @@ class _AboutProjectState extends State<AboutProject> {
                             Navigator.of(context).pop();
                           },
                           child: Transform.rotate(
-                              angle: pi,
+                              angle: math.pi,
                               child: SvgPicture.asset(
                                   'assets/icons/arrow_right.svg')),
                         ),
@@ -104,14 +120,22 @@ class _AboutProjectState extends State<AboutProject> {
                         ),
                       ),
                       SizedBox(height: 30.h),
-                      Column(children: itemQuestion(0)),
-                      SizedBox(height: 30.h),
-                      Column(children: itemQuestion(1)),
-                      SizedBox(height: 30.h),
-                      Column(children: itemQuestion(2)),
-                      SizedBox(height: 30.h),
-                      Column(children: itemQuestion(3)),
-                      SizedBox(height: 30.h),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: question.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: itemQuestion(
+                              index,
+                              question[index].question,
+                              question[index].answer,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 20.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
@@ -141,7 +165,7 @@ class _AboutProjectState extends State<AboutProject> {
     );
   }
 
-  List<Widget> itemQuestion(int index) {
+  List<Widget> itemQuestion(int index, String question, String answer) {
     return [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.w),
@@ -155,20 +179,22 @@ class _AboutProjectState extends State<AboutProject> {
             setState(() {});
           },
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Text(
-                  'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
+                  question,
+                  textAlign: TextAlign.start,
                   style: CustomTextStyle.black_15_w600_171716,
                 ),
               ),
               selectIndex == index
-                  ? Icon(
+                  ? const Icon(
                       Icons.keyboard_arrow_up,
                       color: ColorStyles.blue336FEE,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.keyboard_arrow_down,
                       color: ColorStyles.greyD9D9D9,
                     ),
@@ -185,13 +211,12 @@ class _AboutProjectState extends State<AboutProject> {
             : 0,
         padding: EdgeInsets.symmetric(horizontal: 40.w),
         duration: const Duration(milliseconds: 300),
-        child: Container(
-          child: Text(
-            'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-            style: CustomTextStyle.black_13_w400_515150,
-          ),
+        child: Text(
+          answer,
+          style: CustomTextStyle.black_13_w400_515150,
         ),
       ),
+      SizedBox(height: 10.h),
     ];
   }
 }

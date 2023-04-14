@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -376,5 +377,24 @@ class Repository {
       return true;
     }
     return false;
+  }
+
+  Future<List<Question>> getQuestions() async {
+    final response = await dio.get(
+      '$server/questions/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+      ),
+    );
+
+    List<Question> listQuestion = [];
+
+    if (response.statusCode == 200) {
+      for (var element in response.data['questions']) {
+        listQuestion.add(Question.fromJson(element));
+      }
+      return listQuestion;
+    }
+    return [];
   }
 }
