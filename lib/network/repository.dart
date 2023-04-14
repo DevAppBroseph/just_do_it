@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -407,30 +405,21 @@ class Repository {
           followRedirects: false,
         ),
       );
-      log('message 1');
 
       if (response.statusCode == 200) {
         Map<Permission, PermissionStatus> statuses = await [
           Permission.storage,
-        ].request();log('message 2');
+        ].request();
 
         if (statuses[Permission.storage]!.isGranted) {
-          log('message 3');
           File file = File(savePath);
-          log('message 3.0');
           var raf = file.openSync(mode: FileMode.write);
-          log('message 3.1');
           raf.writeFromSync(response.data);
-          log('message 3.2');
           await raf.close();
-          log('message 4');
         }
-        log('message 5');
         return savePath;
       }
-    } catch (e) {
-      log('message error ${e}');
-    }
+    } catch (e) {}
 
     return null;
   }
