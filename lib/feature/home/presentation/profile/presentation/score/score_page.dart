@@ -142,42 +142,45 @@ class ScorePage extends StatelessWidget {
                 // pageSnapping: false,
                 physics: const BouncingScrollPhysics(),
                 children: <Widget>[
-                  Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/group.png',
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          firstPageItemScore('assets/images/spiderman.png', 'Человек-паук'),
-                          firstPageItemScore('assets/images/rassomaha.png', 'Росомаха'),
-                          firstPageItemScore(false ?'assets/images/hulk.png':'assets/images/hulk_grey.png', 'Халк'),
-                        ],
-                      ),
-                      SizedBox(height: 70.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          firstPageItemScore(false ?'assets/images/batman.png': 'assets/images/batman_grey.png', 'Бэтмен'),
-                          firstPageItemScore(false ?'assets/images/america.png':'assets/images/america_grey.png', 'Супермен'),
-                          firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/thor_superhero_grey.png', 'Человек-паук'),
-                        ],
-                      ),
-                      SizedBox(height: 70.h),
-                      Center(
-                        child: firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/ironman_grey.png',  'Человек-паук'),
-                      )
-                    ],
+                  SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                    'assets/images/group.png',
+                                  ),
+                                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 50.h),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            firstPageItemScore('assets/images/spiderman.png', 'Человек-паук'),
+                            firstPageItemScore('assets/images/rassomaha.png', 'Росомаха'),
+                            firstPageItemScore(false ?'assets/images/hulk.png':'assets/images/hulk_grey.png', 'Халк'),
+                          ],
+                        ),
+                        SizedBox(height: 70.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            firstPageItemScore(false ?'assets/images/batman.png': 'assets/images/batman_grey.png', 'Бэтмен'),
+                            firstPageItemScore(false ?'assets/images/america.png':'assets/images/america_grey.png', 'Супермен'),
+                            firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/thor_superhero_grey.png', 'Человек-паук'),
+                          ],
+                        ),
+                        SizedBox(height: 70.h),
+                        Center(
+                          child: firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/ironman_grey.png',  'Человек-паук'),
+                        )
+                      ],
+                    ),
+                                  ),
+                                ],
+                              ),
                   ),
-                ),
-              ],
-            ),
                   ListView(
                     physics: const ClampingScrollPhysics(),
                     shrinkWrap: true,
