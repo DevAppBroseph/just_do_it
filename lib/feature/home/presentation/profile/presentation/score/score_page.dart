@@ -135,7 +135,14 @@ class ScorePage extends StatelessWidget {
                 ],
               ),
             ),
-            Stack(
+            
+            Expanded(
+              child: PageView(
+                scrollDirection: Axis.horizontal,
+                // pageSnapping: false,
+                physics: const BouncingScrollPhysics(),
+                children: <Widget>[
+                  Stack(
               alignment: Alignment.center,
               children: [
                 Image.asset(
@@ -171,12 +178,6 @@ class ScorePage extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
-              child: PageView(
-                scrollDirection: Axis.horizontal,
-                // pageSnapping: false,
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
                   ListView(
                     physics: const ClampingScrollPhysics(),
                     shrinkWrap: true,
