@@ -812,11 +812,11 @@ class _ContractorState extends State<Contractor> {
             'Тип документа',
           ),
           child: Stack(
-            key: GlobalKeys.keyIconBtn1,
+            // key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                key: GlobalKeys.keyIconBtn1,
+                // key: GlobalKeys.keyIconBtn1,
                 hintText: 'Тип документа',
                 height: 50.h,
                 enabled: false,
@@ -887,7 +887,7 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                key: _categoryButtonKey,
+                // key: _categoryButtonKey,
                 hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,

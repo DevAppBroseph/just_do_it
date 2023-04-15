@@ -5,8 +5,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
+enum SocialMedia{facebook, instagram, tiktok, email}
 
 class ReferalPage extends StatelessWidget {
+  const ReferalPage({super.key});
+
+ Future share(SocialMedia socialplatform) async{
+  const text = 'Ваша реферальная ссылка';
+  final urls = {
+    SocialMedia.facebook: 'https://www.facebook.com/sharer/sharer.php?t=$text',
+    SocialMedia.instagram:'https://www.instagram.com/sharer.php?t=$text',
+    SocialMedia.tiktok:'https://www.tiktok.com/sharer.php?t=$text',
+    SocialMedia.email:'mailto:?body=$text',
+  };
+  final url = urls[socialplatform]!;
+  final uri = Uri.parse(url);
+  if(await canLaunchUrl(uri)){
+    await launchUrl(uri);
+  }
+ }
+
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -144,48 +166,68 @@ class ReferalPage extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: [
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
+                        GestureDetector(
+                          onTap: (){
+                            share(SocialMedia.email);
+                          },
+                          child: Container(
+                            height: 54.h,
+                            width: 54.h,
+                            padding: EdgeInsets.all(15.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: ColorStyles.greyF9F9F9,
+                            ),
+                            child: SvgPicture.asset('assets/icons/russia.svg'),
                           ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
                         ),
                         SizedBox(width: 8.h),
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
+                        GestureDetector(
+                          onTap: (){
+                            share(SocialMedia.instagram);
+                          },
+                          child: Container(
+                            height: 54.h,
+                            width: 54.h,
+                            padding: EdgeInsets.all(15.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: ColorStyles.greyF9F9F9,
+                            ),
+                            child: SvgPicture.asset('assets/icons/russia.svg'),
                           ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
                         ),
                         SizedBox(width: 8.h),
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
+                        GestureDetector(
+                          onTap: (){
+                            share(SocialMedia.facebook);
+                          },
+                          child: Container(
+                            height: 54.h,
+                            width: 54.h,
+                            padding: EdgeInsets.all(15.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: ColorStyles.greyF9F9F9,
+                            ),
+                            child: SvgPicture.asset('assets/icons/russia.svg'),
                           ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
                         ),
                         SizedBox(width: 8.h),
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
+                        GestureDetector(
+                          onTap: (){
+                            share(SocialMedia.tiktok);
+                          },
+                          child: Container(
+                            height: 54.h,
+                            width: 54.h,
+                            padding: EdgeInsets.all(15.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: ColorStyles.greyF9F9F9,
+                            ),
+                            child: SvgPicture.asset('assets/icons/russia.svg'),
                           ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
                         ),
                         SizedBox(width: 8.h),
                         Container(

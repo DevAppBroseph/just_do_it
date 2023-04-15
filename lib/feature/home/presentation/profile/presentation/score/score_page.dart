@@ -78,10 +78,9 @@ class ScorePage extends StatelessWidget {
                             ),
                             SizedBox(width: 23.h),
                             SizedBox(
-                              height: 150.h,
+                              height: 160.h,
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -94,10 +93,7 @@ class ScorePage extends StatelessWidget {
                                   // ),
                                   Text(
                                     "Сколько уровней я могу\nдостичь",
-                                    style: CustomTextStyle.white_13_w400
-                                        .copyWith(
-                                            decoration:
-                                                TextDecoration.underline),
+                                    style: CustomTextStyle.white_13_w400.copyWith(decoration: TextDecoration.underline),
                                   ),
                                   SizedBox(height: 12.h),
                                   Container(
@@ -112,13 +108,11 @@ class ScorePage extends StatelessWidget {
                                       color: ColorStyles.whiteFFFFFF,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Поделиться статусом',
-                                          style: CustomTextStyle
-                                              .black_11_w500_171716,
+                                          style: CustomTextStyle.black_11_w500_171716,
                                         ),
                                         const SizedBox(
                                           width: 9,
@@ -141,36 +135,126 @@ class ScorePage extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
-                    child: Text(
-                      'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                      style: CustomTextStyle.black_13_w400_171716,
-                    ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/group.png',
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          firstPageItemScore('assets/images/spiderman.png', 'Человек-паук'),
+                          firstPageItemScore('assets/images/rassomaha.png', 'Росомаха'),
+                          firstPageItemScore(false ?'assets/images/hulk.png':'assets/images/hulk_grey.png', 'Халк'),
+                        ],
+                      ),
+                      SizedBox(height: 70.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          firstPageItemScore(false ?'assets/images/batman.png': 'assets/images/batman_grey.png', 'Бэтмен'),
+                          firstPageItemScore(false ?'assets/images/america.png':'assets/images/america_grey.png', 'Супермен'),
+                          firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/thor_superhero_grey.png', 'Человек-паук'),
+                        ],
+                      ),
+                      SizedBox(height: 70.h),
+                      Center(
+                        child: firstPageItemScore(false ?'assets/images/spiderman.png':'assets/images/ironman_grey.png',  'Человек-паук'),
+                      )
+                    ],
                   ),
-                  itemScore('assets/images/spiderman.png', 'Человек-паук'),
-                  SizedBox(height: 18.h),
-                  itemScore('assets/images/rassomaha.png', 'Росомаха'),
-                  SizedBox(height: 18.h),
-                  itemScore('assets/images/hulk.png', 'Халк'),
-                  SizedBox(height: 18.h),
-                  itemScore('assets/images/batman.png', 'Бэтмен'),
-                  SizedBox(height: 18.h),
-                  itemScore('assets/images/america.png', 'Супермен'),
-                  SizedBox(height: 40.h),
+                ),
+              ],
+            ),
+            Expanded(
+              child: PageView(
+                scrollDirection: Axis.horizontal,
+                // pageSnapping: false,
+                physics: const BouncingScrollPhysics(),
+                children: <Widget>[
+                  ListView(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
+                        child: Text(
+                          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+                          style: CustomTextStyle.black_13_w400_171716,
+                        ),
+                      ),
+                      itemScore('assets/images/spiderman.png', 'Человек-паук'),
+                      SizedBox(height: 18.h),
+                      itemScore('assets/images/rassomaha.png', 'Росомаха'),
+                      SizedBox(height: 18.h),
+                      itemScore('assets/images/hulk.png', 'Халк'),
+                      SizedBox(height: 18.h),
+                      itemScore('assets/images/batman.png', 'Бэтмен'),
+                      SizedBox(height: 18.h),
+                      itemScore('assets/images/america.png', 'Супермен'),
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget firstPageItemScore(String icon, String title) {
+    return Column(
+      children: [
+        Container(
+          height: 70,
+          padding: EdgeInsets.symmetric(horizontal: 12.5.w),
+          margin: EdgeInsets.symmetric(horizontal: 19.w),
+          child: Stack(alignment: Alignment.center, children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: ColorStyles.greyBDBDBD,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: 60,
+                width: 60,
+                child: Image.asset(
+                  icon,
+                ),
+              ),
+            ),
+          ]),
+        ),
+        SizedBox(width: 80.w),
+        Text(
+          title,
+          style: CustomTextStyle.purple_13_w600,
+        ),
+        SizedBox(height: 4.h),
+        SizedBox(
+          width: 20.w,
+          child: Text(
+            '100',
+            style: CustomTextStyle.black_11_w400_515150,
+          ),
+        ),
+      ],
     );
   }
 
