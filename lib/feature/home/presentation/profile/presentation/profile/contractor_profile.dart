@@ -1,20 +1,24 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/auth/widget/drop_down.dart';
+import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
@@ -32,7 +36,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
   final GlobalKey _categoryButtonKey = GlobalKey();
   List<String> typeCategories = [];
   List<Activities> listCategories = [];
-  List<File> photos = [];
+  List<ArrayImages> photos = [];
+
   @override
   void initState() {
     user = BlocProvider.of<ProfileBloc>(context).user;
@@ -54,22 +59,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
   _selectImages() async {
     final getMedia = await ImagePicker().getMultiImage(imageQuality: 70);
     if (getMedia != null) {
-      List<File> files = [];
+      List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(file);
+        files.add(ArrayImages(null, file.readAsBytesSync()));
       }
-      // photos.clear();
       files.forEach((element) {
         if (photos.length < 10) {
           photos.add(element);
         }
       });
-      setState(() {
-        // photos.addAll(files);
-        // user?.copyWith(images: photos);
-      });
-      // BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+      user?.copyWith(images: photos);
+      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
   }
 
@@ -80,7 +81,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
-      user!.copyWith(cv: cv);
+      user!.copyWith(cv: cv.readAsBytesSync());
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
       setState(() {});
     }
@@ -88,16 +89,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   @override
   Widget build(BuildContext context) {
-    // UserRegModel? userReg = BlocProvider.of<ProfileBloc>(context).user;
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
+    // log('message ${user?.toJson()}');
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
+      Loader.hide();
       if (current is UpdateProfileSuccessState) {
-        return true;
+        user = BlocProvider.of<ProfileBloc>(context).user;
       }
       return true;
     }, builder: (context, data) {
-      // print('activities is: ' + (user?.activitiesInfo?.first.id).toString());
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -213,8 +214,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Ваш рейтинг',
-                                  style: CustomTextStyle.black_11_w500_515150),
+                              Text(
+                                'Ваш рейтинг',
+                                style: CustomTextStyle.black_11_w500_515150,
+                              ),
                               SizedBox(height: 8.h),
                               Row(
                                 children: [
@@ -541,7 +544,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: AnimatedContainer(
-                  height: photos.isEmpty ? 170.h : 220.h,
+                  height: user?.images?.isEmpty ?? true ? 170.h : 220.h,
                   width: 327.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
@@ -560,16 +563,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 99.h,
-                          // child: CustomTextField(
-                          //   textEditingController: experienceController,
-                          //   hintText:
-                          //       "Опишите свой опыт работы и прикрерите изображения",
-                          //   focusNode: focusNode,
-                          //   hintStyle: CustomTextStyle.black_12_w400_515150,
-                          //   style: CustomTextStyle.black_12_w400_515150,
-                          //   maxLines: null,
-                          // ),
+                          height: 90.h,
                           child: TextFormField(
                             onTap: () {
                               if (user!.activity != experienceController.text) {
@@ -600,7 +594,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               }
                             },
                             inputFormatters: [
-                              LengthLimitingTextInputFormatter(500),
+                              LengthLimitingTextInputFormatter(500)
                             ],
                             onChanged: (String value) {
                               BlocProvider.of<ProfileBloc>(context)
@@ -615,15 +609,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                           ),
                         ),
-                        if (photos.isEmpty) const Spacer(),
-                        // if (user.activities)
-                        if (photos.isNotEmpty)
+                        if (user!.images!.isNotEmpty) const Spacer(),
+                        if (user!.images!.isNotEmpty)
                           SizedBox(
-                            height: photos.isEmpty ? 0 : 75.h,
+                            height: user!.images!.isEmpty ? 0 : 75.h,
                             width: double.infinity,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
+                                log('message ${index}');
                                 return SizedBox(
                                   width: 80.h,
                                   height: 65.h,
@@ -638,19 +632,74 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           child: SizedBox(
                                             width: 65.h,
                                             height: 65.h,
-                                            child: Image.file(
-                                              width: 65.h,
-                                              height: 65.h,
-                                              photos[index],
-                                              fit: BoxFit.cover,
-                                            ),
+                                            child: user!.images![index].byte !=
+                                                    null
+                                                ? Image.memory(
+                                                    user!.images![index].byte!,
+                                                    width: 65.h,
+                                                    height: 65.h,
+                                                    fit: BoxFit.cover,
+                                                    frameBuilder: (context,
+                                                        child,
+                                                        frame,
+                                                        wasSynchronouslyLoaded) {
+                                                      return const CupertinoActivityIndicator();
+                                                    },
+                                                  )
+                                                : CachedNetworkImage(
+                                                    imageUrl: user!
+                                                            .images![index]
+                                                            .linkUrl!
+                                                            .contains(server)
+                                                        ? user!.images![index]
+                                                            .linkUrl!
+                                                        : '$server${user!.images![index].linkUrl}',
+                                                    progressIndicatorBuilder:
+                                                        (context, url,
+                                                            progress) {
+                                                      return const CupertinoActivityIndicator();
+                                                    },
+                                                    width: 65.h,
+                                                    height: 65.h,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                           ),
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () {
-                                          photos.removeAt(index);
-                                          setState(() {});
+                                        onTap: () async {
+                                          showDialog(
+                                            context: context,
+                                            barrierColor: ColorStyles.black
+                                                .withOpacity(0.4),
+                                            barrierDismissible: false,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                elevation: 0,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                content: SizedBox(
+                                                  height: 100.h,
+                                                  child:
+                                                      const CupertinoActivityIndicator(),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                          user!.images!.removeAt(index);
+                                          for (var element in user!.images!) {
+                                            element.byte ??=
+                                                await Repository().downloadFile(
+                                              element.linkUrl!.contains(server)
+                                                  ? element.linkUrl!
+                                                  : '$server${element.linkUrl}',
+                                            );
+                                          }
+
+                                          Navigator.of(context).pop();
+
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(UpdateProfileEvent(user));
                                         },
                                         child: Align(
                                           alignment: Alignment.topRight,
@@ -659,7 +708,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             height: 20.h,
                                             margin:
                                                 EdgeInsets.only(right: 10.w),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color: Colors.white,
                                               // border: Border.all(
                                               //   width: 1,
@@ -680,7 +729,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   ),
                                 );
                               },
-                              itemCount: photos.length,
+                              itemCount: user!.images!.length,
                             ),
                           ),
                         Row(
@@ -731,6 +780,30 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         ),
                       ),
                     ),
+                    if (user?.images?.isNotEmpty ?? false)
+                      SizedBox(
+                        width: 111.w,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            height: 13.h,
+                            width: 13.h,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Center(
+                              child: Text(
+                                user?.images?.length.toString() ?? '',
+                                style: TextStyle(
+                                  color: ColorStyles.whiteFFFFFF,
+                                  fontSize: 10.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -820,10 +893,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
           // )
         ],
         color: index == 0
-            ? Color.fromRGBO(255, 234, 203, 1)
+            ? const Color.fromRGBO(255, 234, 203, 1)
             : index == 1
-                ? Color.fromRGBO(255, 224, 237, 1)
-                : Color.fromRGBO(213, 247, 254, 1),
+                ? const Color.fromRGBO(255, 224, 237, 1)
+                : const Color.fromRGBO(213, 247, 254, 1),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),

@@ -1,7 +1,12 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+
+class ArrayImages {
+  String? linkUrl;
+  Uint8List? byte;
+
+  ArrayImages(this.linkUrl, this.byte);
+}
 
 class UserRegModel {
   String? phoneNumber;
@@ -16,11 +21,11 @@ class UserRegModel {
   String? photoLink;
   String? cvLink;
   String? docInfo;
-  File? photo;
+  Uint8List? photo;
   bool? sex;
   bool? isEntity;
-  List<File>? images;
-  File? cv;
+  List<ArrayImages>? images;
+  Uint8List? cv;
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
@@ -52,29 +57,30 @@ class UserRegModel {
     this.activitiesInfo,
   });
 
-  void copyWith(
-      {String? phoneNumber,
-      String? email,
-      String? firstname,
-      String? lastname,
-      String? password,
-      File? photo,
-      bool? sex,
-      String? docType,
-      String? docInfo,
-      bool? isEntity,
-      String? activity,
-      List<File>? images,
-      File? cv,
-      List<dynamic>? groups,
-      List<Activities>? activities,
-      List<int>? activitiesDocument,
-      String? region,
-      String? country,
-      String? photoLink,
-      String? cvLink,
-      int? id,
-      List<ActivitiesInfo>? activitiesInfo}) {
+  void copyWith({
+    String? phoneNumber,
+    String? email,
+    String? firstname,
+    String? lastname,
+    String? password,
+    Uint8List? photo,
+    bool? sex,
+    String? docType,
+    String? docInfo,
+    bool? isEntity,
+    String? activity,
+    List<ArrayImages>? images,
+    Uint8List? cv,
+    List<dynamic>? groups,
+    List<Activities>? activities,
+    List<int>? activitiesDocument,
+    String? region,
+    String? country,
+    String? photoLink,
+    String? cvLink,
+    int? id,
+    List<ActivitiesInfo>? activitiesInfo,
+  }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.email = email ?? this.email;
     this.firstname = firstname ?? this.firstname;
@@ -82,7 +88,7 @@ class UserRegModel {
     this.password = password ?? this.password;
     this.photo = photo ?? this.photo;
     this.sex = sex ?? this.sex;
-    this.docType = docType ?? this.docType; //
+    this.docType = docType ?? this.docType;
     this.docInfo = docInfo ?? this.docInfo;
     this.isEntity = isEntity ?? this.isEntity;
     this.activity = activity ?? this.activity;
@@ -121,6 +127,12 @@ class UserRegModel {
         list.add(ActivitiesInfo.fromJson(element));
       }
     }
+    List<ArrayImages> listImages = [];
+    if (data['images'] != null) {
+      for (var element in data['images']) {
+        listImages.add(ArrayImages(element['image'], null));
+      }
+    }
     return UserRegModel(
       email: email,
       phoneNumber: phoneNumber,
@@ -138,6 +150,7 @@ class UserRegModel {
       cvLink: cvLink,
       id: id,
       activitiesInfo: list,
+      images: listImages,
     );
   }
 
@@ -149,9 +162,9 @@ class UserRegModel {
     data['lastname'] = lastname;
     data['password'] = password;
     if (photo != null) {
-      data['photo'] = MultipartFile.fromFileSync(
-        photo!.path,
-        filename: photo!.path.split('/').last,
+      data['photo'] = MultipartFile.fromBytes(
+        photo!,
+        filename: '${DateTime.now()}.jpg',
       );
     }
     data['sex'] = sex;
@@ -161,30 +174,25 @@ class UserRegModel {
     data['country'] = country;
     data['is_entity'] = isEntity;
     data['activity'] = activity;
-    //TODO Это для будущей логики отправки списка изображений
 
-    // if (images != null) {
-    //   List<MultipartFile> files = [];
-    //   images!.forEach((element) {
-    //     files.add(MultipartFile.fromFileSync(
-    //       element.path,
-    //       filename: element.path.split('/').last,
-    //     ));
-    //   });
-    //   data['image'] = files;
-    // }
     if (images != null) {
-      if (images?.first != null) {
-        data['image'] = MultipartFile.fromFileSync(
-          images!.first.path,
-          filename: images!.first.path.split('/').last,
+      List<MultipartFile> files = [];
+      for (var element in images!) {
+        files.add(
+          MultipartFile.fromBytes(
+            element.byte!,
+            filename: '${DateTime.now()}.jpg',
+          ),
         );
       }
+
+      data['images'] = files;
     }
+
     if (cv != null) {
-      data['CV'] = MultipartFile.fromFileSync(
-        cv!.path,
-        filename: cv!.path.split('/').last,
+      data['CV'] = MultipartFile.fromBytes(
+        cv!,
+        filename: DateTime.now().toString(),
       );
     }
     data['groups'] = groups;
