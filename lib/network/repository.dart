@@ -11,12 +11,72 @@ import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
+import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Repository {
   var dio = Dio();
+
+  Future<List<Task>> getMyTaskList(String access) async {
+    final response = await dio.get(
+      '$server/orders/my_orders',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    List<Task> tasks = [];
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      for (var element in response.data) {
+        tasks.add(Task.fromJson(element));
+      }
+      return tasks;
+    }
+    return tasks;
+  }
+
+  Future<List<Task>> getTaskList(String access) async {
+    final response = await dio.get(
+      '$server/orders/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    List<Task> tasks = [];
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      for (var element in response.data) {
+        tasks.add(Task.fromJson(element));
+      }
+      return tasks;
+    }
+    return tasks;
+  }
+
+  Future<bool> createTask(String access, Task task) async {
+    Map<String, dynamic> map = task.toJson();
+    FormData data = FormData.fromMap(map);
+
+    final response = await dio.post(
+      '$server/orders/',
+      data: data,
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
 
   Future<Uint8List?> downloadFile(String url) async {
     try {
@@ -74,12 +134,6 @@ class Repository {
     } else {
       return null;
     }
-
-    // print('updating user data ${response.data}');
-    // print('updating user data ${response.statusCode}');
-
-    // return response.statusCode == 200;
-    // return response.data;
   }
 
   Future<UserRegModel?> updateUser(
@@ -372,27 +426,6 @@ class Repository {
       return orderTask;
     }
     return [];
-  }
-
-  Future<bool> createTask(
-      String access, String name, String description) async {
-    Map<String, String> data = {
-      "name": name,
-      "description": description,
-    };
-    final response = await dio.post(
-      '$server/orders/',
-      options: Options(
-        validateStatus: ((status) => status! >= 200),
-        headers: {'Authorization': 'Bearer $access'},
-      ),
-      data: data,
-    );
-
-    if (response.statusCode == 201) {
-      return true;
-    }
-    return false;
   }
 
   Future<About?> aboutList() async {
