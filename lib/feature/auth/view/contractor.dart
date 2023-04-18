@@ -18,14 +18,9 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:scale_button/scale_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-enum CountryCode {
-  ru,
-  oae,
-}
+enum CountryCode { ru, oae }
 
 class Contractor extends StatefulWidget {
   Function(int) stage;
@@ -64,8 +59,8 @@ class _ContractorState extends State<Contractor> {
   TextEditingController regionController = TextEditingController();
   List<String> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
-  File? image;
-  List<File> photos = [];
+  Uint8List? image;
+  List<ArrayImages> photos = [];
   File? cv;
   bool confirmTermsPolicy = false;
   UserRegModel user = UserRegModel(isEntity: false);
@@ -101,7 +96,7 @@ class _ContractorState extends State<Contractor> {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file;
+      image = file.readAsBytesSync();
       user.copyWith(photo: image);
     }
     setState(() {});
@@ -110,10 +105,10 @@ class _ContractorState extends State<Contractor> {
   _selectImages() async {
     final getMedia = await ImagePicker().getMultiImage(imageQuality: 70);
     if (getMedia != null) {
-      List<File> files = [];
+      List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(file);
+        files.add(ArrayImages(null, file.readAsBytesSync()));
       }
       photos.clear();
       setState(() {
@@ -130,7 +125,7 @@ class _ContractorState extends State<Contractor> {
     );
     if (result != null) {
       cv = File(result.files.first.path!);
-      user.copyWith(cv: cv);
+      user.copyWith(cv: cv?.readAsBytesSync());
       setState(() {});
     }
   }
