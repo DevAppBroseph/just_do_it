@@ -159,6 +159,8 @@ class UserRegModel {
       id: id,
       activitiesInfo: list,
       images: listImages,
+      balance: balance,
+      link: link,
     );
   }
 

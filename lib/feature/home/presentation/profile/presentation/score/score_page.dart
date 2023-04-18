@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,21 +19,17 @@ class ScorePage extends StatefulWidget {
   State<ScorePage> createState() => _ScorePageState();
 }
 
-
-
-
 class _ScorePageState extends State<ScorePage> {
-  
-   late UserRegModel? user;
-   
-   @override
+  late UserRegModel? user;
+
+  @override
   void initState() {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     user = BlocProvider.of<ProfileBloc>(context).user;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
     super.initState();
   }
-   
+
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
@@ -41,305 +37,397 @@ class _ScorePageState extends State<ScorePage> {
       if (state is ScoreLoaded) {
         final levels = state.levels;
 
+        print(user?.balance != null);
+
         final balance = 700;
         return user?.balance != null && levels != null
-         ? MediaQuery(
-          data: const MediaQueryData(textScaleFactor: 1.0),
-          child: Scaffold(
-            backgroundColor: ColorStyles.whiteFFFFFF,
-            resizeToAvoidBottomInset: false,
-            body: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 284.h,
-                  color: ColorStyles.purpleA401C4,
-                  child: Stack(
+            ? MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 1.0),
+                child: Scaffold(
+                  backgroundColor: ColorStyles.whiteFFFFFF,
+                  resizeToAvoidBottomInset: false,
+                  body: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          SizedBox(height: 60.h),
-                          Padding(
-                            padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                            child: SizedBox(
-                              height: 24.h,
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Transform.rotate(
-                                        angle: 3,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/arrow_right.svg',
-                                          color: ColorStyles.greyDADADA,
-                                        )),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Баллы',
-                                        style: CustomTextStyle.white_21_w700,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 30.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      Container(
+                        height: 284.h,
+                        color: ColorStyles.purpleA401C4,
+                        child: Stack(
+                          children: [
+                            Column(
                               children: [
-                                
-                            Column(    
-                                  children: [
-                                    if(balance >= levels[0].mustCoins! && balance < levels[1].mustCoins!)
-                                    Image.network(
-                                      levels[0].image != null ? '${levels[0].image}' : '',
-                                      height: 113,
-                                      width: 113,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    if(balance >= levels[1].mustCoins! && balance < levels[2].mustCoins!)
-                                    Image.network(
-                                      levels[1].image != null ? '${levels[1].image}' : '',
-                                      height: 113,
-                                      width: 113,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    if(balance>= levels[2].mustCoins! && balance < levels[3].mustCoins!)
-                                    Image.network(
-                                      levels[2].image != null ? '${levels[2].image}' : '',
-                                      height: 113,
-                                      width: 113,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    if(balance>= levels[3].mustCoins! && balance < levels[4].mustCoins!)
-                                    Image.network(
-                                      levels[3].image != null ? '${levels[3].image}' : '',
-                                      height: 113,
-                                      width: 113,
-                                      fit: BoxFit.fill,
-                                    ),
-                                      if(balance >= levels[4].mustCoins!)
-                                    Image.network(
-                                      levels[4].image != null ? '${levels[4].image}' : '',
-                                      height: 113,
-                                      width: 113,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SizedBox(height: 12.h),
-
-                                    if(balance >= levels[0].mustCoins! && balance < levels[1].mustCoins!)
-                                    Text(
-                                      levels[0].name?.toUpperCase() ?? '',
-                                      style: CustomTextStyle.white_11_w900,
-                                    ),
-                                    if(balance >= levels[1].mustCoins! && balance < levels[2].mustCoins!)
-                                    
-                                    Text(
-                                      levels[1].name?.toUpperCase() ?? '',
-                                      style: CustomTextStyle.white_11_w900,
-                                    ),
-                                    if(balance >= levels[2].mustCoins! && balance < levels[3].mustCoins!)
-                                    Text(
-                                      levels[2].name?.toUpperCase() ?? '',
-                                      style: CustomTextStyle.white_11_w900,
-                                    ),
-                                    if(balance >= levels[3].mustCoins! && balance < levels[4].mustCoins!)
-                                    Text(
-                                      levels[3].name?.toUpperCase() ?? '',
-                                      style: CustomTextStyle.white_11_w900,
-                                    ),
-                                    if(balance >= levels[4].mustCoins!)
-                                    Text(
-                                      levels[4].name?.toUpperCase() ?? '',
-                                      style: CustomTextStyle.white_11_w900,
-                                    )
-
-                                  ],
-                                ),
-                        
-                                SizedBox(width: 23.h),
-                                SizedBox(
-                                  height: 160.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        balance.toString(),
-                                        style: CustomTextStyle.white_33_w800,
-                                      ),
-                                      // Text(
-                                      //   'Баллов',
-                                      //   style: CustomTextStyle.white_32_w800,
-                                      // ),
-                                      Text(
-                                        "Сколько уровней я могу\nдостичь",
-                                        style: CustomTextStyle.white_13_w400
-                                            .copyWith(decoration: TextDecoration.underline),
-                                      ),
-                                      SizedBox(height: 12.h),
-                                      Container(
-                                        height: 29.h,
-                                        // width: 160.w,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 12.w,
-                                          vertical: 8.h,
+                                SizedBox(height: 60.h),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 25.w, right: 28.w),
+                                  child: SizedBox(
+                                    height: 24.h,
+                                    child: Stack(
+                                      alignment: Alignment.centerLeft,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Transform.rotate(
+                                              angle: pi,
+                                              child: SvgPicture.asset(
+                                                'assets/icons/arrow_right.svg',
+                                                color: ColorStyles.greyDADADA,
+                                              )),
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.r),
-                                          color: ColorStyles.whiteFFFFFF,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'Поделиться статусом',
-                                              style: CustomTextStyle.black_11_w500_171716,
+                                              'Баллы',
+                                              style:
+                                                  CustomTextStyle.white_21_w700,
                                             ),
-                                            const SizedBox(
-                                              width: 9,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/icons/share.svg',
-                                              color: ColorStyles.black,
-                                            )
                                           ],
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 30.h),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 24.w),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          if (balance >= levels[0].mustCoins! &&
+                                              balance < levels[1].mustCoins!)
+                                            Image.network(
+                                              levels[0].image != null
+                                                  ? '${levels[0].image}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          if (balance >= levels[1].mustCoins! &&
+                                              balance < levels[2].mustCoins!)
+                                            Image.network(
+                                              levels[1].image != null
+                                                  ? '${levels[1].image}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          if (balance >= levels[2].mustCoins! &&
+                                              balance < levels[3].mustCoins!)
+                                            Image.network(
+                                              levels[2].image != null
+                                                  ? '${levels[2].image}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          if (balance >= levels[3].mustCoins! &&
+                                              balance < levels[4].mustCoins!)
+                                            Image.network(
+                                              levels[3].image != null
+                                                  ? '${levels[3].image}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          if (balance >= levels[4].mustCoins!)
+                                            Image.network(
+                                              levels[4].image != null
+                                                  ? '${levels[4].image}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          SizedBox(height: 12.h),
+                                          if (balance >= levels[0].mustCoins! &&
+                                              balance < levels[1].mustCoins!)
+                                            Text(
+                                              levels[0].name?.toUpperCase() ??
+                                                  '',
+                                              style:
+                                                  CustomTextStyle.white_11_w900,
+                                            ),
+                                          if (balance >= levels[1].mustCoins! &&
+                                              balance < levels[2].mustCoins!)
+                                            Text(
+                                              levels[1].name?.toUpperCase() ??
+                                                  '',
+                                              style:
+                                                  CustomTextStyle.white_11_w900,
+                                            ),
+                                          if (balance >= levels[2].mustCoins! &&
+                                              balance < levels[3].mustCoins!)
+                                            Text(
+                                              levels[2].name?.toUpperCase() ??
+                                                  '',
+                                              style:
+                                                  CustomTextStyle.white_11_w900,
+                                            ),
+                                          if (balance >= levels[3].mustCoins! &&
+                                              balance < levels[4].mustCoins!)
+                                            Text(
+                                              levels[3].name?.toUpperCase() ??
+                                                  '',
+                                              style:
+                                                  CustomTextStyle.white_11_w900,
+                                            ),
+                                          if (balance >= levels[4].mustCoins!)
+                                            Text(
+                                              levels[4].name?.toUpperCase() ??
+                                                  '',
+                                              style:
+                                                  CustomTextStyle.white_11_w900,
+                                            )
+                                        ],
                                       ),
+                                      SizedBox(width: 23.h),
+                                      SizedBox(
+                                        height: 160.h,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              balance.toString(),
+                                              style:
+                                                  CustomTextStyle.white_33_w800,
+                                            ),
+                                            // Text(
+                                            //   'Баллов',
+                                            //   style: CustomTextStyle.white_32_w800,
+                                            // ),
+                                            Text(
+                                              "Сколько уровней я могу\nдостичь",
+                                              style: CustomTextStyle
+                                                  .white_13_w400
+                                                  .copyWith(
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                            ),
+                                            SizedBox(height: 12.h),
+                                            Container(
+                                              height: 29.h,
+                                              // width: 160.w,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 12.w,
+                                                vertical: 8.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                color: ColorStyles.whiteFFFFFF,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Поделиться статусом',
+                                                    style: CustomTextStyle
+                                                        .black_11_w500_171716,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 9,
+                                                  ),
+                                                  SvgPicture.asset(
+                                                    'assets/icons/share.svg',
+                                                    color: ColorStyles.black,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
                                 )
                               ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: PageView(
-                    scrollDirection: Axis.horizontal,
-                    // pageSnapping: false,
-                    physics: const BouncingScrollPhysics(),
-                    children: <Widget>[
-                      SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Image.asset(
-                                  'assets/images/group.png',
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        firstPageItemScore(balance >= levels[0].mustCoins!  ? '${levels[0].image}':'${levels[2].image}' , levels[0].name ?? '',balance, levels[1].mustCoins!),
-                                        firstPageItemScore(balance >= levels[1].mustCoins!  ? '${levels[1].image}': '${levels[2].image}' , levels[1].name ?? '',balance, levels[1].mustCoins!),
-                                        firstPageItemScore(
-                                             balance >= levels[2].mustCoins!  ? '$server${levels[2].image}':'${levels[2].image}' , levels[2].name ?? '',balance, levels[2].mustCoins!),
-                                      ],
-                                    ),
-                                    SizedBox(height: 50.h),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        firstPageItemScore(
-                                             balance >= levels[3].mustCoins!  ? '${levels[4].image}': '${levels[4].image}', levels[4].name ?? '',balance, levels[3].mustCoins!
-                                            ),
-                                        firstPageItemScore(
-                                            balance >= levels[3].mustCoins! ? '${levels[4].image}': '${levels[4].image}', levels[4].name ?? '',balance, levels[3].mustCoins!),
-                                        firstPageItemScore(
-                                            balance >= levels[3].mustCoins!  ? '${levels[4].image}': '${levels[4].image}', levels[3].name ?? '',balance, levels[3].mustCoins!),
-                                      ],
-                                    ),
-                                    SizedBox(height: 55.h),
-                                    Center(
-                                      child: firstPageItemScore(
-                                          levels[4].image != null ? '${levels[4].image}' : '', levels[4].name ?? '', balance, levels[4].mustCoins!),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
-                              child: Text(
-                                'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                                style: CustomTextStyle.black_13_w400_171716,
+                      Expanded(
+                        child: PageView(
+                          scrollDirection: Axis.horizontal,
+                          // pageSnapping: false,
+                          physics: const BouncingScrollPhysics(),
+                          children: <Widget>[
+                            SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10.w, vertical: 60.h),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Image.asset(
+                                        'assets/images/group.png',
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w, vertical: 20.h),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[0].mustCoins!
+                                                      ? '${levels[0].image}'
+                                                      : '${levels[2].image}',
+                                                  levels[0].name ?? '',
+                                                  balance,
+                                                  levels[1].mustCoins!),
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[1].mustCoins!
+                                                      ? '${levels[1].image}'
+                                                      : '${levels[2].image}',
+                                                  levels[1].name ?? '',
+                                                  balance,
+                                                  levels[1].mustCoins!),
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[2].mustCoins!
+                                                      ? '$server${levels[2].image}'
+                                                      : '${levels[2].image}',
+                                                  levels[2].name ?? '',
+                                                  balance,
+                                                  levels[2].mustCoins!),
+                                            ],
+                                          ),
+                                          SizedBox(height: 50.h),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[3].mustCoins!
+                                                      ? '${levels[4].image}'
+                                                      : '${levels[4].image}',
+                                                  levels[4].name ?? '',
+                                                  balance,
+                                                  levels[3].mustCoins!),
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[3].mustCoins!
+                                                      ? '${levels[4].image}'
+                                                      : '${levels[4].image}',
+                                                  levels[4].name ?? '',
+                                                  balance,
+                                                  levels[3].mustCoins!),
+                                              firstPageItemScore(
+                                                  balance >=
+                                                          levels[3].mustCoins!
+                                                      ? '${levels[4].image}'
+                                                      : '${levels[4].image}',
+                                                  levels[3].name ?? '',
+                                                  balance,
+                                                  levels[3].mustCoins!),
+                                            ],
+                                          ),
+                                          SizedBox(height: 55.h),
+                                          Center(
+                                            child: firstPageItemScore(
+                                                levels[4].image != null
+                                                    ? '${levels[4].image}'
+                                                    : '',
+                                                levels[4].name ?? '',
+                                                balance,
+                                                levels[4].mustCoins!),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            ListView.separated(
-                                physics: const ClampingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: levels.length,
-                                separatorBuilder: (_, __) => const Divider(),
-                                padding: EdgeInsets.zero,
-                                itemBuilder: (context, index) {
-                                  if(levels[index].isAvailable == false){
-                                  return itemScore(
-                                    levels[index].image != null ? '${levels[index].image}' : '',
-                                    levels[index].name ?? '',
-                                  );
-                                  }
-                                  return null;
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 24.w, vertical: 30.h),
+                                    child: Text(
+                                      'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+                                      style:
+                                          CustomTextStyle.black_13_w400_171716,
+                                    ),
+                                  ),
+                                  ListView.separated(
+                                      physics: const ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: levels.length,
+                                      separatorBuilder: (_, __) =>
+                                          const Divider(),
+                                      padding: EdgeInsets.zero,
+                                      itemBuilder: (context, index) {
+                                        if (levels[index].isAvailable ==
+                                            false) {
+                                          return itemScore(
+                                            levels[index].image != null
+                                                ? '${levels[index].image}'
+                                                : '',
+                                            levels[index].name ?? '',
+                                          );
+                                        }
+                                        return Container();
 
-                                  // itemScore('assets/images/rassomaha.png', 'Росомаха'),
-                                  // SizedBox(height: 18.h),
-                                  // itemScore('assets/images/hulk.png', 'Халк'),
-                                  // SizedBox(height: 18.h),
-                                  // itemScore('assets/images/batman.png', 'Бэтмен'),
-                                  // SizedBox(height: 18.h),
-                                  // itemScore('assets/images/america.png', 'Супермен'),
-                                  // SizedBox(height: 40.h)
-                                }),
-                            SizedBox(height: 18.h),
+                                        // itemScore('assets/images/rassomaha.png', 'Росомаха'),
+                                        // SizedBox(height: 18.h),
+                                        // itemScore('assets/images/hulk.png', 'Халк'),
+                                        // SizedBox(height: 18.h),
+                                        // itemScore('assets/images/batman.png', 'Бэтмен'),
+                                        // SizedBox(height: 18.h),
+                                        // itemScore('assets/images/america.png', 'Супермен'),
+                                        // SizedBox(height: 40.h)
+                                      }),
+                                  SizedBox(height: 18.h),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        )
-        : _loadingindicator();
+              )
+            : _loadingindicator();
       }
       return _loadingindicator();
     });
   }
 
   Widget _loadingindicator() {
-    return const Padding(
+    return Container(
+      color: Colors.white,
       padding: EdgeInsets.all(8),
       child: Center(
         child: CircularProgressIndicator(),
@@ -347,9 +435,10 @@ class _ScorePageState extends State<ScorePage> {
     );
   }
 
-  Widget firstPageItemScore(String icon, String title, int score, int mustCoins) {
-    double value = score/mustCoins;
-    if (value >= 1 && value < 0){
+  Widget firstPageItemScore(
+      String icon, String title, int score, int mustCoins) {
+    double value = score / mustCoins;
+    if (value >= 1 && value < 0) {
       value = 1;
     }
     return Column(
@@ -382,17 +471,18 @@ class _ScorePageState extends State<ScorePage> {
             ),
           ]),
         ),
-        
         SizedBox(width: 80.w, height: 10.h),
         SizedBox(
           height: 5,
           width: 60,
-          child: ClipRRect(borderRadius: BorderRadius.circular(3),
-          child:   LinearProgressIndicator(
-            value: value,
-            backgroundColor: ColorStyles.greyBDBDBD,
-            valueColor: const AlwaysStoppedAnimation<Color>(ColorStyles.purpleA401C4),
-          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: value,
+              backgroundColor: ColorStyles.greyBDBDBD,
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(ColorStyles.purpleA401C4),
+            ),
           ),
         ),
         SizedBox(height: 4.h),
