@@ -6,6 +6,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+            BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
             BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),

@@ -101,7 +101,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: ListView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: [
                       GestureDetector(

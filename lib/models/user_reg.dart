@@ -31,6 +31,8 @@ class UserRegModel {
   List<int>? activitiesDocument;
   int? id;
   List<ActivitiesInfo>? activitiesInfo;
+  int? balance;
+  String? link;
 
   UserRegModel({
     this.phoneNumber,
@@ -55,6 +57,8 @@ class UserRegModel {
     this.activitiesDocument,
     this.id,
     this.activitiesInfo,
+    this.balance,
+    this.link,
   });
 
   void copyWith({
@@ -103,6 +107,8 @@ class UserRegModel {
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
     this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
+    this.balance = balance ?? this.balance;
+    this.link = link ?? this.link;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -122,6 +128,8 @@ class UserRegModel {
     String? cvLink = data['CV'];
     int? id = data['id'];
     List<ActivitiesInfo> list = [];
+    int? balance = data['balance'];
+    String? link = data['link'];
     if (data['activities_info'] != null) {
       for (var element in data['activities_info']) {
         list.add(ActivitiesInfo.fromJson(element));

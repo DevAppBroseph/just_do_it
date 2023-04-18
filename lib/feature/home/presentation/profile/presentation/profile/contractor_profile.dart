@@ -15,6 +15,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -41,12 +42,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   void initState() {
     user = BlocProvider.of<ProfileBloc>(context).user;
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
 
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description ==
-            user!.activitiesInfo?[j].description) {
+        if (listCategories[i].description == user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
         }
       }
@@ -106,8 +108,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
             if (focusNode.hasFocus) {
               focusNode.unfocus();
               user!.copyWith(activity: experienceController.text);
-              BlocProvider.of<ProfileBloc>(context)
-                  .add(UpdateProfileEvent(user));
+              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
             }
           },
           child: ListView(
@@ -126,8 +127,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              var image = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
+                              var image = await ImagePicker().pickImage(source: ImageSource.gallery);
                               if (image != null) {
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfilePhotoEvent(photo: image),
@@ -145,14 +145,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           decoration: const BoxDecoration(
                                             color: ColorStyles.shadowFC6554,
                                           ),
-                                          child: Image.asset(
-                                              'assets/images/camera.png'),
+                                          child: Image.asset('assets/images/camera.png'),
                                         )
                                       : CachedNetworkImage(
-                                          imageUrl:
-                                              user!.photoLink!.contains(server)
-                                                  ? user!.photoLink!
-                                                  : server + user!.photoLink!,
+                                          imageUrl: user!.photoLink!.contains(server)
+                                              ? user!.photoLink!
+                                              : server + user!.photoLink!,
                                           fit: BoxFit.cover,
                                         )
                                   // : Image.network(
@@ -178,9 +176,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               child: AutoSizeText(
                                 '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 32.sp,
-                                    fontWeight: FontWeight.w800),
+                                style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w800),
                                 maxLines: 2,
                               ),
                             ),
@@ -224,9 +220,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   SvgPicture.asset('assets/icons/star.svg'),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    reviews?.ranking == null
-                                        ? '-'
-                                        : (reviews!.ranking!).toString(),
+                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
                                     style: CustomTextStyle.black_19_w700_171716,
                                   ),
                                 ],
@@ -261,7 +255,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   Row(
                                     children: [
                                       Text(
-                                        '900',
+                                        user?.balance.toString() ?? 'Балы не загрузились',
                                         style: CustomTextStyle.purple_19_w700,
                                       ),
                                     ],
@@ -269,10 +263,53 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 ],
                               ),
                               const Spacer(),
-                              Image.asset(
-                                'assets/images/america.png',
-                                height: 42.h,
-                              ),
+                              BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                if (state is ScoreLoaded) {
+                                  final levels = state.levels;
+
+                                  if (user!.balance! < levels![0].mustCoins!) {
+                                    log(levels[0].image.toString());
+                                    return Image.network(
+                                      '${levels[0].image}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[1].mustCoins! && user!.balance! < levels[2].mustCoins!) {
+                                    return Image.network(
+                                      levels[1].image != null ? '${levels[1].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[2].mustCoins! && user!.balance! < levels[3].mustCoins!) {
+                                    return Image.network(
+                                      levels[2].image != null ? '${levels[2].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[3].mustCoins! && user!.balance! < levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[3].image != null ? '${levels[3].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[4].image != null ? '${levels[4].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                }
+                                return Container();
+                              }),
                               SizedBox(width: 16.w),
                             ],
                           ),
@@ -401,8 +438,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             onTap: _selectCV,
                             child: Container(
                               height: 40.h,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.h, vertical: 11.h),
+                              padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
                               decoration: BoxDecoration(
                                 color: ColorStyles.greyF9F9F9,
                                 borderRadius: BorderRadius.circular(10.r),
@@ -413,8 +449,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   SizedBox(
                                     height: 14.h,
                                     width: 14.h,
-                                    child:
-                                        SvgPicture.asset(SvgImg.documentText),
+                                    child: SvgPicture.asset(SvgImg.documentText),
                                   ),
                                   SizedBox(width: 9.17.w),
                                   Text(
@@ -476,17 +511,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             List<int> activityIndexes = [];
 
                             typeCategories.forEach((element) {
-                              activityIndexes.add(listCategories
-                                  .firstWhere((element2) =>
-                                      element2.description == element)
-                                  .id);
+                              activityIndexes
+                                  .add(listCategories.firstWhere((element2) => element2.description == element).id);
                             });
                             user?.copyWith(
                               activitiesDocument: activityIndexes,
                               groups: [4],
                             );
-                            BlocProvider.of<ProfileBloc>(context)
-                                .add(UpdateProfileEvent(user));
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
                             // categoryController.text = str;
 
@@ -525,8 +557,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     padding: EdgeInsets.only(left: 24.w, right: 18.w),
                     itemCount: typeCategories.length,
                     itemBuilder: (context, index) {
-                      var category = listCategories.firstWhere((element) =>
-                          element.description == typeCategories[index]);
+                      var category =
+                          listCategories.firstWhere((element) => element.description == typeCategories[index]);
 
                       return _categoryItem(category, index);
                     },
@@ -567,8 +599,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: TextFormField(
                             onTap: () {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(
-                                    activity: experienceController.text);
+                                user!.copyWith(activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -576,8 +607,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText:
-                                  "Опишите свой опыт работы и прикрепите изображения",
+                              hintText: "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
                               hintStyle: CustomTextStyle.black_13_w400_515150,
                             ),
@@ -586,8 +616,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             maxLines: null,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(
-                                    activity: experienceController.text);
+                                user!.copyWith(activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -597,14 +626,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               LengthLimitingTextInputFormatter(500)
                             ],
                             onChanged: (String value) {
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .user!
-                                  .copyWith(
-                                      activity: experienceController.text);
+                              BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
 
-                              print(BlocProvider.of<ProfileBloc>(context)
-                                  .user
-                                  ?.activity);
+                              print(BlocProvider.of<ProfileBloc>(context).user?.activity);
                               setState(() {});
                             },
                           ),
@@ -624,11 +648,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   child: Stack(
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 5.w, left: 5.w),
+                                        padding: EdgeInsets.only(right: 5.w, left: 5.w),
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                           child: SizedBox(
                                             width: 65.h,
                                             height: 65.h,
@@ -813,8 +835,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -846,8 +867,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Center(
                   child: Text(
