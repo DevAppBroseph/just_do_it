@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
@@ -96,7 +97,7 @@ class Repository {
   Future<String?> confirmCodeRegistration(String phone, String code) async {
     final response = await dio.put(
       '$server/auth/',
-      data: {"phone_number": phone, "code": code},
+      data: {"phone_number": phone, "code": code,},
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -223,6 +224,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      log(response.data.toString());
       // print(response.data['activities_info']);
       final user = UserRegModel.fromJson(response.data);
       return user;
@@ -250,7 +252,7 @@ class Repository {
   }
 
   // подтвердить код изменения пароля
-  Future<String?> confirmCodeReset(String phone, String code) async {
+  Future<String?> confirmCodeReset(String phone, String code, ) async {
     final response = await dio.put(
       '$server/auth/',
       options: Options(
@@ -393,6 +395,22 @@ class Repository {
       return About.fromJson(response.data);
     }
     return null;
+  }
+
+    Future<List<Levels>> levels(String? access) async {
+    final response = await dio.get(
+      '$server/levels/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'}
+      ),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      log("fsafas${response.data}");
+      return response.data.map<Levels>((article) => Levels.fromJson(article)).toList();
+    }
+    return [];
   }
 
   Future<String?> getFile(String file) async {

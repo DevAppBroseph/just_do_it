@@ -176,7 +176,7 @@ class Customer extends StatelessWidget {
                           'Выполняются',
                           style: CustomTextStyle.black_13_w400_000000,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 7.h),
                         Text(
                           '1 задания',
                           style: CustomTextStyle.grey_13_w400,
@@ -232,7 +232,7 @@ class Customer extends StatelessWidget {
                           'Выполнены',
                           style: CustomTextStyle.black_13_w400_000000,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 7.h),
                         Text(
                           '1 задания',
                           style: CustomTextStyle.grey_13_w400,
@@ -287,7 +287,7 @@ class Customer extends StatelessWidget {
                           'Ждут подтверждения',
                           style: CustomTextStyle.black_13_w400_000000,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 7.h),
                         Text(
                           '1 задания',
                           style: CustomTextStyle.grey_13_w400,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class ConfirmCodeRegisterPage extends StatefulWidget {
 
 class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   TextEditingController codeController = TextEditingController();
+
   FocusNode focusNode = FocusNode();
   Timer? timer;
   int currentSecond = 59;
@@ -58,12 +60,15 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    late final int refCode;
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
           if (current is ConfirmCodeRegistrSuccessState) {
+          
+           
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
@@ -169,6 +174,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: () {
+                              
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
                                 BlocProvider.of<AuthBloc>(context).add(

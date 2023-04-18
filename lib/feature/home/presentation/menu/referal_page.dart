@@ -1,36 +1,55 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
 enum SocialMedia{facebook, instagram, tiktok, email}
 
-class ReferalPage extends StatelessWidget {
+class ReferalPage extends StatefulWidget {
   const ReferalPage({super.key});
 
+  @override
+  State<ReferalPage> createState() => _ReferalPageState();
+}
+
+class _ReferalPageState extends State<ReferalPage> {
  Future share(SocialMedia socialplatform) async{
   const text = 'Ваша реферальная ссылка';
+  final urlShare = Uri.encodeComponent('${user?.link}');
   final urls = {
-    SocialMedia.facebook: 'https://www.facebook.com/sharer/sharer.php?t=$text',
-    SocialMedia.instagram:'https://www.instagram.com/sharer.php?t=$text',
-    SocialMedia.tiktok:'https://www.tiktok.com/sharer.php?t=$text',
-    SocialMedia.email:'mailto:?body=$text',
+    SocialMedia.facebook: 'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
+    SocialMedia.instagram:'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
+    SocialMedia.tiktok:'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
+    SocialMedia.email:'mailto:?body=$text\n$urlShare',
   };
   final url = urls[socialplatform]!;
   final uri = Uri.parse(url);
   if(await canLaunchUrl(uri)){
     await launchUrl(uri);
   }
+
  }
+    late UserRegModel? user;
+   
+   @override
+   void initState() {
+    user = BlocProvider.of<ProfileBloc>(context).user;
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(

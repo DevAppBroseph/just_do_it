@@ -19,6 +19,7 @@ class ConfirmCodeEvent extends AuthEvent {
   String phone;
   String code;
 
+
   ConfirmCodeEvent(this.phone, this.code);
 }
 

@@ -52,7 +52,7 @@ class AppRoute {
       case contactus:
         return MaterialPageRoute(builder: (_) => ContactUs());
       case score:
-        return MaterialPageRoute(builder: (_) => ScorePage());
+        return MaterialPageRoute(builder: (_) => const ScorePage());
       case about:
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
@@ -63,7 +63,7 @@ class AppRoute {
           ),
         );
       case referal:
-        return MaterialPageRoute(builder: (_) => ReferalPage());
+        return MaterialPageRoute(builder: (_) => const ReferalPage());
       case notification:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:

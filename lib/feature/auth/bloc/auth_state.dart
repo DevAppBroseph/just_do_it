@@ -14,6 +14,7 @@ class SendProfileErrorState extends AuthState {
 
 class ConfirmCodeRegistrSuccessState extends AuthState {
   String access;
+
   ConfirmCodeRegistrSuccessState(this.access);
 }
 
