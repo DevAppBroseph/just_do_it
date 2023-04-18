@@ -241,8 +241,10 @@ class Activities {
     String? description = data['description'];
     String? photo = data['photo'];
     List<Subcategory> subcategory = [];
-    for (var element in data['subcategories']) {
-      subcategory.add(Subcategory.fromJson(element));
+    if (data['subcategories'] != null) {
+      for (var element in data['subcategories']) {
+        subcategory.add(Subcategory.fromJson(element));
+      }
     }
     return Activities(id, description, photo, subcategory);
   }

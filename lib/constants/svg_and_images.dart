@@ -1,4 +1,6 @@
 class SvgImg {
+  static const String earth = 'assets/icons/earth.svg';
+  static const String help = 'assets/icons/help.svg';
   static const String addCircle = 'assets/icons/add_circle.svg';
   static const String arrowBottom = 'assets/icons/arrow_bottom.svg';
   static const String arrowRight = 'assets/icons/arrow_right.svg';

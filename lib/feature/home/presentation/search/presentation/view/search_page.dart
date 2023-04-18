@@ -1,44 +1,46 @@
+import 'dart:developer' as dev;
 import 'dart:math';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   final Function() onBackPressed;
   final Function(int) onSelect;
 
   SearchPage({required this.onBackPressed, required this.onSelect});
-  List<Task> taskList = [
-    Task(
-      icon: 'assets/images/pen.png',
-      task: 'Сделать инфографику',
-      typeLocation: 'Можно выполнить удаленно',
-      whenStart: 'Начать сегодня',
-      coast: '1 000',
-    ),
-    Task(
-      icon: 'assets/images/laptop.png',
-      task: 'На сайте у товаров поменять цены по прайсу',
-      typeLocation: 'Можно выполнить удаленно',
-      whenStart: 'Начать завтра, с 15:00',
-      coast: '1 500',
-    ),
-    Task(
-      icon: 'assets/images/bag.png',
-      task: 'Оформить доверенность',
-      typeLocation: 'Москва',
-      whenStart: 'Начать 22.12.2023, с 15:00',
-      coast: '2 000',
-    ),
-  ];
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  List<Task> taskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getListTask();
+  }
+
+  void getListTask() async {
+    List<Task> res = await Repository()
+        .getTaskList(BlocProvider.of<ProfileBloc>(context).access!);
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -71,7 +73,7 @@ class SearchPage extends StatelessWidget {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: onBackPressed,
+                          onTap: widget.onBackPressed,
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Transform.rotate(
@@ -113,13 +115,13 @@ class SearchPage extends StatelessWidget {
                                   arguments: [(page) {}]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
-                                    onSelect(0);
+                                    widget.onSelect(0);
                                   }
                                   if (value == 'search') {
-                                    onSelect(1);
+                                    widget.onSelect(1);
                                   }
                                   if (value == 'chat') {
-                                    onSelect(3);
+                                    widget.onSelect(3);
                                   }
                                 }
                               });
@@ -210,7 +212,7 @@ class SearchPage extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 children: taskList.map((e) => itemTask(e)).toList(),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -223,6 +225,7 @@ class SearchPage extends StatelessWidget {
       child: ScaleButton(
         bound: 0.01,
         child: Container(
+          height: 100.h,
           decoration: BoxDecoration(
             color: ColorStyles.whiteFFFFFF,
             borderRadius: BorderRadius.circular(10.r),
@@ -238,70 +241,61 @@ class SearchPage extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: 50.h,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            task.icon,
-                            height: 34.h,
-                            width: 34.h,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: server + task.activities!.photo!,
+                      height: 34.h,
+                      width: 34.h,
+                    ),
+                    const Spacer(),
+                  ],
                 ),
                 SizedBox(width: 16.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 160.w,
+                      width: 235.w,
+                      child: Text(
+                        task.description,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: CustomTextStyle.black_13_w500_171716,
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: 235.w,
                       child: Row(
                         children: [
-                          Flexible(
-                            child: Text(
-                              task.task,
-                              style: CustomTextStyle.black_13_w500_171716,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                task.region,
+                                style: CustomTextStyle.black_11_w400,
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                task.dateEnd,
+                                style: CustomTextStyle.grey_11_w400,
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            'до ${task.priceTo} ₽',
+                            style: CustomTextStyle.black_13_w500_171716,
+                          ),
+                          SizedBox(width: 5.w),
+                          SvgPicture.asset(
+                            'assets/icons/card.svg',
+                            height: 16.h,
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.typeLocation,
-                      style: CustomTextStyle.black_11_w500_515150,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.whenStart,
-                      style: CustomTextStyle.grey_11_w400,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'до ${task.coast} ₽',
-                      style: CustomTextStyle.black_13_w500_171716,
-                    ),
-                  ],
-                ),
-                SizedBox(width: 5.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/card.svg',
-                      height: 16.h,
                     ),
                   ],
                 ),
