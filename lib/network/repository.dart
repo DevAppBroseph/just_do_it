@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
@@ -17,12 +18,25 @@ import 'package:permission_handler/permission_handler.dart';
 class Repository {
   var dio = Dio();
 
+  Future<Uint8List?> downloadFile(String url) async {
+    try {
+      final response = await dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+        ),
+      );
+      return response.data;
+    } catch (e) {}
+    return null;
+  }
+
   // регистрация профиля
   // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(
       UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
-    print(map);
     FormData data = FormData.fromMap(map);
 
     final response = await dio.post(
@@ -41,7 +55,6 @@ class Repository {
 
   // auth/ put
   Future<UserRegModel?> updateUserPhoto(String? access, XFile photo) async {
-    // print(photo.path);
     FormData data = FormData.fromMap({
       'photo': MultipartFile.fromFileSync(
         photo.path,
@@ -82,21 +95,21 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
     );
 
-    print('updating user data ${response.data}');
-    print('updating user data ${response.statusCode}');
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {
       return null;
     }
-    // return response.data;
   }
 
   // подтвердить регистраци
   Future<String?> confirmCodeRegistration(String phone, String code) async {
     final response = await dio.put(
       '$server/auth/',
-      data: {"phone_number": phone, "code": code},
+      data: {
+        "phone_number": phone,
+        "code": code,
+      },
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -223,6 +236,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      log(response.data.toString());
       // print(response.data['activities_info']);
       final user = UserRegModel.fromJson(response.data);
       return user;
@@ -250,7 +264,10 @@ class Repository {
   }
 
   // подтвердить код изменения пароля
-  Future<String?> confirmCodeReset(String phone, String code) async {
+  Future<String?> confirmCodeReset(
+    String phone,
+    String code,
+  ) async {
     final response = await dio.put(
       '$server/auth/',
       options: Options(
@@ -322,7 +339,6 @@ class Repository {
     if (response.statusCode == 200) {
       List<ChatMessage> chatList = [];
       for (var element in response.data['messages_list']) {
-        log('message list ${element}');
         chatList.add(
           ChatMessage(
             user:
@@ -346,8 +362,6 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
-    log('message ${response.data}');
 
     if (response.statusCode == 200) {
       List<OrderTask> orderTask = [];
@@ -393,6 +407,23 @@ class Repository {
       return About.fromJson(response.data);
     }
     return null;
+  }
+
+  Future<List<Levels>> levels(String? access) async {
+    final response = await dio.get(
+      '$server/levels/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      log("fsafas${response.data}");
+      return response.data
+          .map<Levels>((article) => Levels.fromJson(article))
+          .toList();
+    }
+    return [];
   }
 
   Future<String?> getFile(String file) async {

@@ -17,6 +17,8 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/profil
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/profile_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/rating_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/score_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/all_tasks/view/all_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/archive_tasks/view/archive_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 
 class AppRoute {
@@ -39,12 +41,18 @@ class AppRoute {
   static const about = '/about';
   static const score = '/score';
   static const tasks = '/tasks';
+  static const allTasks = '/all_tasks';
+  static const archiveTasks = '/archive_tasks';
   static const createTasks = '/createTasks';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
+      case allTasks:
+        return MaterialPageRoute(builder: (_) => const AllTasksView());
+      case archiveTasks:
+        return MaterialPageRoute(builder: (_) => const ArchiveTasksView());
       case tasks:
         return MaterialPageRoute(builder: (_) => const TasksPage());
       case createTasks:
@@ -52,7 +60,7 @@ class AppRoute {
       case contactus:
         return MaterialPageRoute(builder: (_) => ContactUs());
       case score:
-        return MaterialPageRoute(builder: (_) => ScorePage());
+        return MaterialPageRoute(builder: (_) => const ScorePage());
       case about:
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
@@ -63,7 +71,7 @@ class AppRoute {
           ),
         );
       case referal:
-        return MaterialPageRoute(builder: (_) => ReferalPage());
+        return MaterialPageRoute(builder: (_) => const ReferalPage());
       case notification:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:

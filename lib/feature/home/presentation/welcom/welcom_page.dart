@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -22,6 +25,7 @@ class WelcomPage extends StatefulWidget {
 }
 
 class _WelcomPageState extends State<WelcomPage> {
+  late UserRegModel? user;
   bool state = true;
   int indexLanguage = 0;
   int index = 0;
@@ -29,7 +33,9 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   void initState() {
-    // String? access = BlocProvider.of<ProfileBloc>(context).access;
+    
+   
+    // String? access = BlocProvider.of<PofileBloc>(context).access;
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     super.initState();
@@ -37,6 +43,8 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -235,7 +243,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                               ),
                                               SizedBox(height: 4.h),
                                               Text(
-                                                '850',
+                                                 user?.balance.toString() ?? '0',
                                                 style: CustomTextStyle
                                                     .black_15_w500_171716,
                                               ),

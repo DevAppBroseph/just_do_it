@@ -155,7 +155,7 @@ class SearchPage extends StatelessWidget {
                         children: [
                           Container(
                             height: 36.h,
-                            width: 90.h,
+                            width: 100.h,
                             decoration: BoxDecoration(
                               color: ColorStyles.greyF7F7F8,
                               borderRadius: BorderRadius.circular(10.r),
@@ -169,7 +169,7 @@ class SearchPage extends StatelessWidget {
                                     height: 16.h,
                                     color: ColorStyles.yellowFFD70B,
                                   ),
-                                  SizedBox(width: 10.w),
+                                  SizedBox(width: 5.w),
                                   Text(
                                     'Фильтр',
                                     style: CustomTextStyle.black_13_w400_171716,
