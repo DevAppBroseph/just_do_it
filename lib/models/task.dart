@@ -15,6 +15,7 @@ class Task {
   int priceFrom;
   int priceTo;
   String region;
+  String? search;
   Uint8List? file;
 
   String? icon;
@@ -39,6 +40,7 @@ class Task {
     this.file,
     this.icon,
     this.task,
+    this.search,
     this.typeLocation,
     this.whenStart,
     this.coast,
@@ -57,6 +59,7 @@ class Task {
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
         region: json["region"],
+        search: json['search']
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,5 +71,6 @@ class Task {
         "price_from": priceFrom,
         "price_to": priceTo,
         "region": region,
+        'search': search,
       };
 }

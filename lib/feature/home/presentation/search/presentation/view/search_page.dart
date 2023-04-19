@@ -1,5 +1,7 @@
 import 'dart:developer' as dev;
+import 'dart:developer';
 import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -30,19 +33,20 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    getListTask();
+    // getListTask();
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getTaskList(BlocProvider.of<ProfileBloc>(context).access!);
-    taskList.clear();
-    taskList.addAll(res.reversed);
-    setState(() {});
+    // taskList.clear();
+    // taskList.addAll();
+    // setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<TasksBloc>().add(GetTasksEvent(access, ''));
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -103,16 +107,17 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 11.w, vertical: 11.h),
+                            onChanged: (value) async {
+                              context.read<TasksBloc>().add(GetTasksEvent(access, value));
+                            },
+                            contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]).then((value) {
+                              Navigator.of(context).pushNamed(AppRoute.menu, arguments: [(page) {}]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -126,8 +131,7 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               });
                             },
-                            child:
-                                SvgPicture.asset('assets/icons/category.svg')),
+                            child: SvgPicture.asset('assets/icons/category.svg')),
                       ],
                     ),
                   ),
@@ -147,8 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                   const Spacer(),
                   ScaleButton(
                     bound: 0.01,
-                    onTap: () => BlocProvider.of<SearchBloc>(context)
-                        .add(OpenSlidingPanelEvent()),
+                    onTap: () => BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent()),
                     child: SizedBox(
                       height: 40.h,
                       width: 90.h,
@@ -206,12 +209,18 @@ class _SearchPageState extends State<SearchPage> {
             ),
             SizedBox(height: 30.h),
             Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                padding: EdgeInsets.zero,
-                children: taskList.map((e) => itemTask(e)).toList(),
-              ),
+              child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
+                if (state is TasksLoaded) {
+                  final tasks = state.tasks;
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    children: tasks!.map((e) => itemTask(e)).toList(),
+                  );
+                }
+                return Container();
+              }),
             ),
           ],
         ),

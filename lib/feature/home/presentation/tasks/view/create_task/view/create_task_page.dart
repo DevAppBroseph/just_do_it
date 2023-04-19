@@ -272,7 +272,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             task: '',
                             typeLocation: '',
                             whenStart: '',
-                            coast: '',
+                            coast: '', search: '',
                           );
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);

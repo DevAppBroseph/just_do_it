@@ -72,7 +72,7 @@ class ArchiveTasksView extends StatelessWidget {
                           priceTo: 0,
                           region: '',
                           subcategory:
-                              Subcategory(id: 1, description: 'description'),
+                              Subcategory(id: 1, description: 'description'), search: '',
                         ),
                       );
                     },
