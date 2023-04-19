@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/firebase_options.dart';
 import 'package:just_do_it/services/notification_service/i_notifications_service.dart';
 
@@ -25,7 +26,7 @@ class NotificationService implements INotificationService {
 
       await plugin.initialize(
         const InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/launcher_icon'),
+          android: AndroidInitializationSettings(SvgImg.justDoIt),
           iOS: DarwinInitializationSettings(),
         ),
       );
@@ -53,7 +54,7 @@ class NotificationService implements INotificationService {
       provisional: false,
       sound: true,
     );
-    log('ggcytcy: ${result.authorizationStatus}');
+    log('AuthorizationStatus: ${result.authorizationStatus}');
   }
 
   @override
@@ -79,7 +80,7 @@ class NotificationService implements INotificationService {
               'default_notification_channel',
               'Notifications',
               channelDescription: 'This channel is used for notifications.',
-              icon: '@mipmap/launcher_icon',
+              icon: SvgImg.justDoIt,
             ),
           ),
         );

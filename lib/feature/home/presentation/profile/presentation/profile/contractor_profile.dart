@@ -277,8 +277,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   builder: (context, state) {
                                 if (state is ScoreLoaded) {
                                   final levels = state.levels;
+                                   if (user!.balance! < levels![0].mustCoins!) {
+                                   
+                                    return Image.network(
+                                      '${levels[0].bwImage}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
 
-                                  if (user!.balance! < levels![0].mustCoins!) {
+                                  if (user!.balance! > levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
                                     log(levels[0].image.toString());
                                     return Image.network(
                                       '${levels[0].image}',
