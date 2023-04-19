@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,11 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/score/
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 
-void main() => runApp(const MyApp());
+void main() { 
+  runApp(const MyApp());
+  Firebase.initializeApp();
+  
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

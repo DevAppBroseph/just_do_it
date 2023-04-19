@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -130,7 +131,9 @@ class _ReferalPageState extends State<ReferalPage> {
               child: ScaleButton(
                 duration: const Duration(milliseconds: 50),
                 bound: 0.01,
-                onTap: () {},
+                onTap: () {
+                  FirebaseDynamicLinksService().share(user?.link);
+                },
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
@@ -142,7 +145,7 @@ class _ReferalPageState extends State<ReferalPage> {
                     child: Row(
                       children: [
                         Text(
-                          'www.link//32xs2cw',
+                          user?.link ?? 'Сломалось)',
                           style: CustomTextStyle.white_15_w600,
                         ),
                         const Spacer(),

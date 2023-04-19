@@ -18,9 +18,10 @@ class ConfirmCodeResetEvent extends AuthEvent {
 class ConfirmCodeEvent extends AuthEvent {
   String phone;
   String code;
+  int? refCode;
 
 
-  ConfirmCodeEvent(this.phone, this.code);
+  ConfirmCodeEvent(this.phone, this.code,);
 }
 
 class EditPasswordEvent extends AuthEvent {
