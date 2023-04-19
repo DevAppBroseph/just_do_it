@@ -157,12 +157,13 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code) async {
+  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
     final response = await dio.put(
       '$server/auth/',
       data: {
         "phone_number": phone,
         "code": code,
+        "ref_code": refCode,
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),

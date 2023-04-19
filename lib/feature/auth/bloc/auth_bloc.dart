@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_do_it/models/category.dart';
+
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
     String? res =
-        await Repository().confirmCodeRegistration(event.phone, event.code);
+        await Repository().confirmCodeRegistration(event.phone, event.code, event.refCode);
     if (res != null) {
       emit(ConfirmCodeRegistrSuccessState(res));
     } else {
