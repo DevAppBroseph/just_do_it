@@ -13,6 +13,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -39,6 +40,13 @@ class _WelcomPageState extends State<WelcomPage> {
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     super.initState();
+     notificationInit();
+  }
+
+  
+  
+  Future <void> notificationInit() async{
+    await NotificationService().inject();
   }
 
   @override

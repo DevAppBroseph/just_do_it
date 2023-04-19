@@ -1,13 +1,38 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
-class AllTasksView extends StatelessWidget {
+class AllTasksView extends StatefulWidget {
   const AllTasksView({super.key});
+
+  @override
+  State<AllTasksView> createState() => _AllTasksViewState();
+}
+
+class _AllTasksViewState extends State<AllTasksView> {
+  List<Task> taskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getListTask();
+  }
+
+  void getListTask() async {
+    List<Task> res = await Repository()
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!);
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +76,11 @@ class AllTasksView extends StatelessWidget {
                   height:
                       MediaQuery.of(context).size.height - 20.h - 10.h - 77.h,
                   child: ListView.builder(
-                    itemCount: 7,
+                    itemCount: taskList.length,
                     padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return itemTask(
-                        Task(
-                          icon: 'assets/images/pen.png',
-                          task: 'Сделать инфографику',
-                          typeLocation: 'Можно выполнить удаленно',
-                          whenStart: 'Начать сегодня',
-                          coast: '1 000',
-                        ),
-                      );
+                      return itemTask(taskList[index]);
                     },
                   ),
                 )
@@ -95,6 +112,7 @@ class AllTasksView extends StatelessWidget {
       child: ScaleButton(
         bound: 0.01,
         child: Container(
+          height: 100.h,
           decoration: BoxDecoration(
             color: ColorStyles.whiteFFFFFF,
             borderRadius: BorderRadius.circular(10.r),
@@ -110,70 +128,61 @@ class AllTasksView extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: 50.h,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            task.icon,
-                            height: 34.h,
-                            width: 34.h,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: server + task.activities!.photo!,
+                      height: 34.h,
+                      width: 34.h,
+                    ),
+                    const Spacer(),
+                  ],
                 ),
                 SizedBox(width: 16.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 160.w,
+                      width: 235.w,
+                      child: Text(
+                        task.description,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: CustomTextStyle.black_13_w500_171716,
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: 235.w,
                       child: Row(
                         children: [
-                          Flexible(
-                            child: Text(
-                              task.task,
-                              style: CustomTextStyle.black_13_w500_171716,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                task.region,
+                                style: CustomTextStyle.black_11_w400,
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                task.dateEnd,
+                                style: CustomTextStyle.grey_11_w400,
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            'до ${task.priceTo} ₽',
+                            style: CustomTextStyle.black_13_w500_171716,
+                          ),
+                          SizedBox(width: 5.w),
+                          SvgPicture.asset(
+                            'assets/icons/card.svg',
+                            height: 16.h,
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.typeLocation,
-                      style: CustomTextStyle.black_11_w500_515150,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.whenStart,
-                      style: CustomTextStyle.grey_11_w400,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'до ${task.coast} ₽',
-                      style: CustomTextStyle.black_13_w500_171716,
-                    ),
-                  ],
-                ),
-                SizedBox(width: 5.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/card.svg',
-                      height: 16.h,
                     ),
                   ],
                 ),

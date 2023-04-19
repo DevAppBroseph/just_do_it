@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/all_tasks/view/all_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 
 class Customer extends StatelessWidget {
@@ -23,49 +23,6 @@ class Customer extends StatelessWidget {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
-          // GestureDetector(
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => const AllTasks()));
-          //   },
-          //   child: Container(
-          //     height: 70.h,
-          //     width: size.width,
-          //     margin: EdgeInsets.symmetric(horizontal: 24.w),
-          //     padding: EdgeInsets.symmetric(horizontal: 10.w),
-          //     decoration: BoxDecoration(
-          //       color: Colors.grey[200],
-          //       borderRadius: BorderRadius.circular(15),
-          //     ),
-          //     child: Row(
-          //       children: [
-          //         const Icon(
-          //           Icons.book,
-          //           color: ColorStyles.yellowFFD70A,
-          //         ),
-          //         const SizedBox(
-          //           width: 10,
-          //         ),
-          //         Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: const [
-          //             Text(
-          //               '322 задания',
-          //               style: TextStyle(
-          //                 color: Colors.grey,
-          //               ),
-          //             ),
-          //             Text('Все задания')
-          //           ],
-          //         ),
-          //         const Spacer(),
-          //         const Icon(Icons.keyboard_arrow_right_rounded),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(height: 16.h),
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(AppRoute.allTasks);
@@ -392,7 +349,15 @@ class Customer extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
-              onTap: () {},
+              onTap: () async {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return CeateTasks();
+                    },
+                  ),
+                );
+              },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 'Создать новое',

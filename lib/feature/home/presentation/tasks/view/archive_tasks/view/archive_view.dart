@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ArchiveTasksView extends StatelessWidget {
@@ -62,6 +63,16 @@ class ArchiveTasksView extends StatelessWidget {
                           typeLocation: 'Можно выполнить удаленно',
                           whenStart: 'Начать сегодня',
                           coast: '1 000',
+                          dateEnd: '',
+                          dateStart: '',
+                          description: '',
+                          file: null,
+                          name: '',
+                          priceFrom: 0,
+                          priceTo: 0,
+                          region: '',
+                          subcategory:
+                              Subcategory(id: 1, description: 'description'),
                         ),
                       );
                     },
@@ -119,7 +130,7 @@ class ArchiveTasksView extends StatelessWidget {
                       Row(
                         children: [
                           Image.asset(
-                            task.icon,
+                            task.icon!,
                             height: 34.h,
                             width: 34.h,
                           ),
@@ -138,7 +149,7 @@ class ArchiveTasksView extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              task.task,
+                              task.task!,
                               style: CustomTextStyle.black_13_w500_171716,
                             ),
                           ),
@@ -147,12 +158,12 @@ class ArchiveTasksView extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      task.typeLocation,
+                      task.typeLocation!,
                       style: CustomTextStyle.black_11_w500_515150,
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      task.whenStart,
+                      task.whenStart!,
                       style: CustomTextStyle.grey_11_w400,
                     ),
                   ],

@@ -44,7 +44,6 @@ class _HomePageState extends State<HomePage> {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
-    // GetCategorieProfileEvent
     Future.delayed(Duration(seconds: 3), () {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
@@ -81,7 +80,6 @@ class _HomePageState extends State<HomePage> {
                       streamController.add(4);
                     },
                     onSelect: selectUser,
-                    whichPage: WhichPage.main,
                   ),
                   SearchPage(
                     onBackPressed: () {
