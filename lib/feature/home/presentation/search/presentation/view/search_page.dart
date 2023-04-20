@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -28,6 +29,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+   Subcategory? selectSubCategory;
   List<Task> taskList = [];
 
   @override
@@ -45,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(GetTasksEvent(access, ''));
+    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], selectSubCategory));
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -108,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(access, value));
+                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], selectSubCategory));
                             },
                             contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
