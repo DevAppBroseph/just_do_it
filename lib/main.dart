@@ -12,10 +12,9 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 
-void main() { 
+void main() {
   runApp(const MyApp());
   Firebase.initializeApp();
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
             BlocProvider<ChatBloc>(create: (context) => ChatBloc())
           ],
-          child:  MaterialApp(
+          child: MaterialApp(
             builder: FlutterSmartDialog.init(),
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.home,

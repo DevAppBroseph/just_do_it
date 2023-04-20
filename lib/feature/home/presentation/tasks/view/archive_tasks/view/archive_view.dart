@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
@@ -74,6 +75,7 @@ class ArchiveTasksView extends StatelessWidget {
                           subcategory:
                               Subcategory(id: 1, description: 'description'), search: '',
                         ),
+                        (task) {},
                       );
                     },
                   ),
@@ -96,102 +98,6 @@ class ArchiveTasksView extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget itemTask(Task task) {
-    return Padding(
-      padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
-      child: ScaleButton(
-        bound: 0.01,
-        child: Container(
-          decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
-            borderRadius: BorderRadius.circular(10.r),
-            boxShadow: [
-              BoxShadow(
-                color: ColorStyles.shadowFC6554,
-                offset: const Offset(0, -4),
-                blurRadius: 55.r,
-              )
-            ],
-          ),
-          width: 327.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 50.h,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            task.icon!,
-                            height: 34.h,
-                            width: 34.h,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 16.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 160.w,
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              task.task!,
-                              style: CustomTextStyle.black_13_w500_171716,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.typeLocation!,
-                      style: CustomTextStyle.black_11_w500_515150,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      task.whenStart!,
-                      style: CustomTextStyle.grey_11_w400,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'до ${task.coast} ₽',
-                      style: CustomTextStyle.black_13_w500_171716,
-                    ),
-                  ],
-                ),
-                SizedBox(width: 5.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/card.svg',
-                      height: 16.h,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

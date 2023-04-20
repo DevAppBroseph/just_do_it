@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 
-class AllTasksView extends StatefulWidget {
-  const AllTasksView({super.key});
+class TaskAdditional extends StatefulWidget {
+  String title;
+  TaskAdditional({super.key, required this.title});
 
   @override
-  State<AllTasksView> createState() => _AllTasksViewState();
+  State<TaskAdditional> createState() => _TaskAdditionalState();
 }
 
-class _AllTasksViewState extends State<AllTasksView> {
+class _TaskAdditionalState extends State<TaskAdditional> {
   List<Task> taskList = [];
 
   @override
@@ -62,7 +62,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Все задания',
+                          widget.title,
                           style: CustomTextStyle.black_21_w700_171716,
                         ),
                       )
@@ -70,36 +70,16 @@ class _AllTasksViewState extends State<AllTasksView> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height - 20.h - 10.h - 77.h,
-                  child: ListView.builder(
-                    itemCount: taskList.length,
-                    padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                Expanded(
+                  child: ListView(
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return itemTask(
-                        taskList[index],
-                        (task) {},
-                      );
-                    },
+                    physics: const ClampingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    children:
+                        taskList.map((e) => itemTask(e, (tas) {})).toList(),
                   ),
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 34.h),
-              child: CustomButton(
-                onTap: () {},
-                btnColor: ColorStyles.yellowFFD70A,
-                textLabel: Text(
-                  'Создать новое',
-                  style: CustomTextStyle.black_15_w600_171716,
                 ),
-              ),
+              ],
             ),
           )
         ],

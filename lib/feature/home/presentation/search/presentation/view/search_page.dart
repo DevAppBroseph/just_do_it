@@ -31,6 +31,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
    Subcategory? selectSubCategory;
   List<Task> taskList = [];
+  Task? selectTask;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 130.h,
@@ -79,7 +81,16 @@ class _SearchPageState extends State<SearchPage> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: widget.onBackPressed,
+                          onTap: () {
+                            if (selectTask != null) {
+                              setState(() {
+                                selectTask = null;
+                              });
+                            } else {
+                              widget.onBackPressed();
+                            }
+                            ;
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Transform.rotate(
@@ -160,48 +171,70 @@ class _SearchPageState extends State<SearchPage> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Container(
-                            height: 36.h,
-                            width: 100.h,
-                            decoration: BoxDecoration(
-                              color: ColorStyles.greyF7F7F8,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.h),
-                              child: Row(
+                          Text(
+                            'Все задачи',
+                            style: CustomTextStyle.black_17_w800,
+                          ),
+                          const Spacer(),
+                          ScaleButton(
+                            bound: 0.01,
+                            onTap: () => BlocProvider.of<SearchBloc>(context)
+                                .add(OpenSlidingPanelEvent()),
+                            child: SizedBox(
+                              height: 40.h,
+                              width: 90.h,
+                              child: Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/candle.svg',
-                                    height: 16.h,
-                                    color: ColorStyles.yellowFFD70B,
+                                  Container(
+                                    height: 36.h,
+                                    width: 100.h,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.greyF7F7F8,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.h),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/candle.svg',
+                                            height: 16.h,
+                                            color: ColorStyles.yellowFFD70B,
+                                          ),
+                                          SizedBox(width: 5.w),
+                                          Text(
+                                            'Фильтр',
+                                            style: CustomTextStyle
+                                                .black_13_w400_171716,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  SizedBox(width: 5.w),
-                                  Text(
-                                    'Фильтр',
-                                    style: CustomTextStyle.black_13_w400_171716,
-                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 15.h,
+                                      width: 15.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(369.r),
+                                        color: ColorStyles.black171716,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '2',
+                                          style: CustomTextStyle.white_9_w700,
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              height: 15.h,
-                              width: 15.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(369.r),
-                                color: ColorStyles.black171716,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '2',
-                                  style: CustomTextStyle.white_9_w700,
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
@@ -288,31 +321,15 @@ class _SearchPageState extends State<SearchPage> {
                                 task.region,
                                 style: CustomTextStyle.black_11_w400,
                               ),
-                              SizedBox(height: 2.h),
-                              Text(
-                                task.dateEnd,
-                                style: CustomTextStyle.grey_11_w400,
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Text(
-                            'до ${task.priceTo} ₽',
-                            style: CustomTextStyle.black_13_w500_171716,
-                          ),
-                          SizedBox(width: 5.w),
-                          SvgPicture.asset(
-                            'assets/icons/card.svg',
-                            height: 16.h,
-                          ),
-                        ],
+                            )
+                            .toList(),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            if (selectTask != null) TaskView(selectTask: selectTask!)
+          ],
         ),
       ),
     );
