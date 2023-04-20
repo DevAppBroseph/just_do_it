@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -171,7 +172,7 @@ class CustomerProfile extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      '900',
+                                       user.balance.toString() ,
                                       style: CustomTextStyle.purple_19_w700,
                                     ),
                                   ],
@@ -179,11 +180,73 @@ class CustomerProfile extends StatelessWidget {
                               ],
                             ),
                             const Spacer(),
-                            Image.asset(
-                              'assets/images/america.png',
-                              height: 42.h,
-                            ),
-                            SizedBox(width: 16.w),
+                            BlocBuilder<ScoreBloc, ScoreState>(
+                                  builder: (context, state) {
+                                if (state is ScoreLoaded) {
+                                  final levels = state.levels;
+                                   if (user.balance! < levels![0].mustCoins!) {
+                                   
+                                    return Image.network(
+                                      '${levels[0].bwImage}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+
+                                  if (user.balance! > levels[0].mustCoins! && user.balance! < levels[1].mustCoins!) {
+                                   
+                                    return Image.network(
+                                      '${levels[0].image}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+                                  if (user.balance! >= levels[1].mustCoins! &&
+                                      user.balance! < levels[2].mustCoins!) {
+                                    return Image.network(
+                                      levels[1].image != null
+                                          ? '${levels[1].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user.balance! >= levels[2].mustCoins! &&
+                                      user.balance! < levels[3].mustCoins!) {
+                                    return Image.network(
+                                      levels[2].image != null
+                                          ? '${levels[2].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user.balance! >= levels[3].mustCoins! &&
+                                      user.balance! < levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[3].image != null
+                                          ? '${levels[3].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user.balance! >= levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[4].image != null
+                                          ? '${levels[4].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                }
+                                return Container();
+                              }),
                           ],
                         ),
                       ),

@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -35,14 +38,20 @@ class _WelcomPageState extends State<WelcomPage> {
   @override
   void initState() {
     
-   
     // String? access = BlocProvider.of<PofileBloc>(context).access;
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
+    
+    if(Platform.isAndroid){
+      FirebaseDynamicLinks.instance.getInitialLink().then((value){ if(value != null) parseTripRefCode(value); });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) { parseTripRefCode(event);});
     super.initState();
      notificationInit();
   }
-
+  void parseTripRefCode(PendingDynamicLinkData event) async {
+    String? refCode = event.link.queryParameters['ref_code'];
+}
   
   
   Future <void> notificationInit() async{
@@ -51,6 +60,7 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     user = BlocProvider.of<ProfileBloc>(context).user;
 
     return MediaQuery(

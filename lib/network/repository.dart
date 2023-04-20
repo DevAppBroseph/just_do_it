@@ -22,6 +22,7 @@ class Repository {
   Future<List<Task>> getMyTaskList(String access) async {
     final response = await dio.get(
       '$server/orders/my_orders',
+
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},
@@ -39,11 +40,23 @@ class Repository {
     return tasks;
   }
 
-  Future<List<Task>> getTaskList(String access) async {
+  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String dateStart, String dateEnd, Subcategory? subcategory ) async {
+    log(priceTo.toString());
+    log(dateStart);
     final response = await dio.get(
       '$server/orders/',
+      queryParameters: {
+        "search": query,
+        "region": region,
+        "price_to": priceTo,
+        "price_from": priceFrom,
+        "date_end": dateEnd,
+        "date_start": dateStart,
+        "subcategory": subcategory?.id,
+      },
       options: Options(
         validateStatus: ((status) => status! >= 200),
+
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
@@ -51,6 +64,7 @@ class Repository {
     List<Task> tasks = [];
 
     if (response.statusCode == 201 || response.statusCode == 200) {
+      
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
@@ -77,6 +91,7 @@ class Repository {
     }
     return false;
   }
+   
 
   Future<Uint8List?> downloadFile(String url) async {
     try {
@@ -157,12 +172,13 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code) async {
+  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
     final response = await dio.put(
       '$server/auth/',
       data: {
         "phone_number": phone,
         "code": code,
+        "ref_code": refCode,
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),
