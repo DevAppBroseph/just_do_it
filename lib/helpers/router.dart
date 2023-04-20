@@ -52,7 +52,7 @@ class AppRoute {
       case allTasks:
         return MaterialPageRoute(builder: (_) => const AllTasksView());
       case archiveTasks:
-        return MaterialPageRoute(builder: (_) => const ArchiveTasksView());
+        return MaterialPageRoute(builder: (_) => ArchiveTasksView());
       case tasks:
         return MaterialPageRoute(builder: (_) => const TasksPage());
       case createTasks:

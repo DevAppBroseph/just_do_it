@@ -19,10 +19,24 @@ import 'package:permission_handler/permission_handler.dart';
 class Repository {
   var dio = Dio();
 
+  Future<Owner?> getRanking(String access, Owner owner) async {
+    final response = await dio.get(
+      '$server/ranking/${owner.id}',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return Owner.fromJson(response.data);
+    }
+    return null;
+  }
+
   Future<List<Task>> getMyTaskList(String access) async {
     final response = await dio.get(
       '$server/orders/my_orders',
-
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},
@@ -40,9 +54,16 @@ class Repository {
     return tasks;
   }
 
-  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String dateStart, String dateEnd, Subcategory? subcategory ) async {
-    log(priceTo.toString());
-    log(dateStart);
+  Future<List<Task>> getTaskList(
+    String? access,
+    String? query,
+    List<String?> region,
+    int? priceFrom,
+    int? priceTo,
+    String? dateStart,
+    String? dateEnd,
+    Subcategory? subcategory,
+  ) async {
     final response = await dio.get(
       '$server/orders/',
       queryParameters: {
@@ -56,7 +77,6 @@ class Repository {
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),
-
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
@@ -64,7 +84,6 @@ class Repository {
     List<Task> tasks = [];
 
     if (response.statusCode == 201 || response.statusCode == 200) {
-      
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
@@ -91,7 +110,6 @@ class Repository {
     }
     return false;
   }
-   
 
   Future<Uint8List?> downloadFile(String url) async {
     try {
@@ -172,7 +190,8 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
+  Future<String?> confirmCodeRegistration(
+      String phone, String code, int? refCode) async {
     final response = await dio.put(
       '$server/auth/',
       data: {

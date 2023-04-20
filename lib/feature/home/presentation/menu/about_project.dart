@@ -144,7 +144,6 @@ class _AboutProjectState extends State<AboutProject> {
                           onTap: () async {
                             final res = await Repository()
                                 .getFile(about?.confidence ?? '');
-                            log('message $res');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(
@@ -161,7 +160,6 @@ class _AboutProjectState extends State<AboutProject> {
                           onTap: () async {
                             final res = await Repository()
                                 .getFile(about?.agreement ?? '');
-                            log('message $res');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(

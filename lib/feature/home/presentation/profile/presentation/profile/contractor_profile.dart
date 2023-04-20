@@ -93,7 +93,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    log('message ${user?.firstname}');
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       Loader.hide();
@@ -277,8 +276,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   builder: (context, state) {
                                 if (state is ScoreLoaded) {
                                   final levels = state.levels;
-                                   if (user!.balance! < levels![0].mustCoins!) {
-                                   
+                                  if (user!.balance! < levels![0].mustCoins!) {
                                     return Image.network(
                                       '${levels[0].bwImage}',
                                       height: 42,
@@ -286,8 +284,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     );
                                   }
 
-                                  if (user!.balance! > levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
-                                    log(levels[0].image.toString());
+                                  if (user!.balance! > levels[0].mustCoins! &&
+                                      user!.balance! < levels[1].mustCoins!) {
                                     return Image.network(
                                       '${levels[0].image}',
                                       height: 42,
@@ -684,7 +682,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                log('message ${index}');
                                 return SizedBox(
                                   width: 80.h,
                                   height: 65.h,

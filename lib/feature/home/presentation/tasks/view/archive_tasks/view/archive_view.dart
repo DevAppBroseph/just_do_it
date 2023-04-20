@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
-import 'package:just_do_it/models/user_reg.dart';
-import 'package:scale_button/scale_button.dart';
+import 'package:just_do_it/network/repository.dart';
 
-class ArchiveTasksView extends StatelessWidget {
-  const ArchiveTasksView({super.key});
+class ArchiveTasksView extends StatefulWidget {
+  ArchiveTasksView({super.key});
+
+  @override
+  State<ArchiveTasksView> createState() => _ArchiveTasksViewState();
+}
+
+class _ArchiveTasksViewState extends State<ArchiveTasksView> {
+  List<Task> taskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getListTask();
+  }
+
+  void getListTask() async {
+    List<Task> res = await Repository()
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!);
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,28 +74,12 @@ class ArchiveTasksView extends StatelessWidget {
                   height:
                       MediaQuery.of(context).size.height - 20.h - 10.h - 77.h,
                   child: ListView.builder(
-                    itemCount: 7,
+                    itemCount: taskList.length,
                     padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return itemTask(
-                        Task(
-                          icon: 'assets/images/pen.png',
-                          task: 'Сделать инфографику',
-                          typeLocation: 'Можно выполнить удаленно',
-                          whenStart: 'Начать сегодня',
-                          coast: '1 000',
-                          dateEnd: '',
-                          dateStart: '',
-                          description: '',
-                          file: null,
-                          name: '',
-                          priceFrom: 0,
-                          priceTo: 0,
-                          region: '',
-                          subcategory:
-                              Subcategory(id: 1, description: 'description'), search: '',
-                        ),
+                        taskList[index],
                         (task) {},
                       );
                     },

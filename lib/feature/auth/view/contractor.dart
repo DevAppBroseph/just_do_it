@@ -319,7 +319,6 @@ class _ContractorState extends State<Contractor> {
                       }
                     }
                   }
-                  log('message ${user.cv}');
                   requestNextEmptyFocusStage2();
                   user.copyWith(
                       activitiesDocument: categorySelect, groups: [4]);

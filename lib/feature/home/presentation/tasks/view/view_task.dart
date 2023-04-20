@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:scale_button/scale_button.dart';
 
 class TaskView extends StatelessWidget {
   Task selectTask;
-  TaskView({super.key, required this.selectTask});
+  Function(Owner?) openOwner;
+  TaskView({super.key, required this.selectTask, required this.openOwner});
 
   @override
   Widget build(BuildContext context) {
@@ -119,58 +124,64 @@ class TaskView extends StatelessWidget {
             style: CustomTextStyle.grey_12_w400,
           ),
           SizedBox(height: 6.h),
-          Container(
-            decoration: BoxDecoration(
-              color: ColorStyles.whiteFFFFFF,
-              borderRadius: BorderRadius.circular(10.r),
-              boxShadow: [
-                BoxShadow(
-                  color: ColorStyles.shadowFC6554,
-                  offset: const Offset(0, 4),
-                  blurRadius: 45.r,
-                )
-              ],
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-            child: Row(
-              children: [
-                if (selectTask.owner?.photo != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(1000.r),
-                    child: Image.network(
-                      selectTask.owner!.photo!,
-                      height: 48.h,
-                      width: 48.w,
-                      fit: BoxFit.cover,
+          ScaleButton(
+            bound: 0.02,
+            onTap: () {
+              openOwner(selectTask.owner);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorStyles.whiteFFFFFF,
+                borderRadius: BorderRadius.circular(10.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorStyles.shadowFC6554,
+                    offset: const Offset(0, 4),
+                    blurRadius: 45.r,
+                  )
+                ],
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+              child: Row(
+                children: [
+                  if (selectTask.owner?.photo != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(1000.r),
+                      child: Image.network(
+                        selectTask.owner!.photo!,
+                        height: 48.h,
+                        width: 48.w,
+                        fit: BoxFit.cover,
+                      ),
                     ),
+                  SizedBox(width: 10.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${selectTask.owner?.firstname ?? '-'} ${selectTask.owner?.lastname ?? '-'}',
+                        style: CustomTextStyle.black_16_w600_171716,
+                      ),
+                      SizedBox(height: 6.h),
+                      Row(
+                        children: [
+                          Text(
+                            'Рейтинг',
+                            style: CustomTextStyle.grey_12_w400,
+                          ),
+                          SizedBox(width: 8.w),
+                          SvgPicture.asset('assets/icons/star.svg'),
+                          SizedBox(width: 4.w),
+                          Text(
+                            '-',
+                            style: CustomTextStyle.black_12_w500_171716,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${selectTask.owner?.firstname ?? '-'} ${selectTask.owner?.lastname ?? '-'}',
-                      style: CustomTextStyle.black_16_w600_171716,
-                    ),
-                    SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        Text(
-                          'Рейтинг',
-                          style: CustomTextStyle.grey_12_w400,
-                        ),
-                        SizedBox(width: 8.w),
-                        SvgPicture.asset('assets/icons/star.svg'),
-                        SizedBox(width: 4.w),
-                        Text(
-                          '-',
-                          style: CustomTextStyle.black_12_w500_171716,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SizedBox(height: 38.h),

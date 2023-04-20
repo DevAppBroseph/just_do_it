@@ -44,7 +44,6 @@ class _PersonalChatState extends State<PersonalChat> {
   }
 
   void getInitMessage() async {
-    log('${widget.id} --- ${widget.idWithChat}');
     final access = BlocProvider.of<ProfileBloc>(context).access;
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));

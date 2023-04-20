@@ -12,7 +12,11 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -29,27 +33,38 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-   Subcategory? selectSubCategory;
+  Subcategory? selectSubCategory;
   List<Task> taskList = [];
   Task? selectTask;
+  Owner? owner;
 
   @override
   void initState() {
     super.initState();
-    // getListTask();
+    getListTask();
   }
 
   void getListTask() async {
-    // taskList.clear();
-    // taskList.addAll();
-    // setState(() {});
+    List<Task> res = await Repository().getTaskList(
+      BlocProvider.of<ProfileBloc>(context).access!,
+      null,
+      [],
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], selectSubCategory));
-
+    context.read<TasksBloc>().add(
+        GetTasksEvent(access, '', '', '', 0, 500000, [], selectSubCategory));
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -82,14 +97,17 @@ class _SearchPageState extends State<SearchPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (selectTask != null) {
+                            if (owner != null) {
+                              setState(() {
+                                owner = null;
+                              });
+                            } else if (selectTask != null) {
                               setState(() {
                                 selectTask = null;
                               });
                             } else {
                               widget.onBackPressed();
                             }
-                            ;
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -120,17 +138,16 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
-                            onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], selectSubCategory));
-                            },
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 11.w, vertical: 11.h),
                           ),
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.menu, arguments: [(page) {}]).then((value) {
+                              Navigator.of(context).pushNamed(AppRoute.menu,
+                                  arguments: [(page) {}]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -144,7 +161,8 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               });
                             },
-                            child: SvgPicture.asset('assets/icons/category.svg')),
+                            child:
+                                SvgPicture.asset('assets/icons/category.svg')),
                       ],
                     ),
                   ),
@@ -153,23 +171,13 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             SizedBox(height: 16.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                children: [
-                  Text(
-                    'Все задачи',
-                    style: CustomTextStyle.black_17_w800,
-                  ),
-                  const Spacer(),
-                  ScaleButton(
-                    bound: 0.01,
-                    onTap: () => BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent()),
-                    child: SizedBox(
-                      height: 40.h,
-                      width: 90.h,
-                      child: Stack(
-                        alignment: Alignment.center,
+            if (selectTask == null)
+              Expanded(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Row(
                         children: [
                           Text(
                             'Все задачи',
@@ -238,88 +246,21 @@ class _SearchPageState extends State<SearchPage> {
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 30.h),
-            Expanded(
-              child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
-                if (state is TasksLoaded) {
-                  final tasks = state.tasks;
-                  return ListView(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    children: tasks!.map((e) => itemTask(e)).toList(),
-                  );
-                }
-                return Container();
-              }),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget itemTask(Task task) {
-    return Padding(
-      padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
-      child: ScaleButton(
-        bound: 0.01,
-        child: Container(
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
-            borderRadius: BorderRadius.circular(10.r),
-            boxShadow: [
-              BoxShadow(
-                color: ColorStyles.shadowFC6554,
-                offset: const Offset(0, -4),
-                blurRadius: 55.r,
-              )
-            ],
-          ),
-          width: 327.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: server + task.activities!.photo!,
-                      height: 34.h,
-                      width: 34.h,
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-                SizedBox(width: 16.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 235.w,
-                      child: Text(
-                        task.description,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: CustomTextStyle.black_13_w500_171716,
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 235.w,
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                task.region,
-                                style: CustomTextStyle.black_11_w400,
+                    SizedBox(height: 30.h),
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        children: taskList
+                            .map(
+                              (e) => itemTask(
+                                e,
+                                (task) {
+                                  setState(() {
+                                    selectTask = task;
+                                  });
+                                },
                               ),
                             )
                             .toList(),
@@ -328,10 +269,26 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
-            if (selectTask != null) TaskView(selectTask: selectTask!)
+            view(),
           ],
         ),
       ),
     );
+  }
+
+  Widget view() {
+    if (owner != null) {
+      return ProfileView(owner: owner!);
+    }
+    if (selectTask != null) {
+      return TaskView(
+        selectTask: selectTask!,
+        openOwner: (owner) {
+          this.owner = owner;
+          setState(() {});
+        },
+      );
+    }
+    return Container();
   }
 }
