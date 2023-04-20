@@ -40,7 +40,7 @@ class Repository {
     return tasks;
   }
 
-  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String dateStart, String dateEnd, Subcategory? subcategory ) async {
+  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String dateStart, String dateEnd, List<int?> subcategory ) async {
     log(priceTo.toString());
     log(dateStart);
     final response = await dio.get(
@@ -52,7 +52,7 @@ class Repository {
         "price_from": priceFrom,
         "date_end": dateEnd,
         "date_start": dateStart,
-        "subcategory": subcategory?.id,
+        "subcategory": subcategory,
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),

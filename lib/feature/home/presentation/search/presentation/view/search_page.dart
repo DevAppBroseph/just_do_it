@@ -47,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], selectSubCategory));
+    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], []));
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -110,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], selectSubCategory));
+                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], []));
                             },
                             contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
