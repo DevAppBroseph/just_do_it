@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
 
 class Contractor extends StatelessWidget {
   final Size size;
@@ -106,103 +108,17 @@ class Contractor extends StatelessWidget {
           SizedBox(height: 30.h),
           Column(
             children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.w),
-                height: 40.h,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          SvgImg.inProgress,
-                          height: 18.h,
-                          width: 18.h,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 12.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Выполняются',
-                          style: CustomTextStyle.black_13_w400_000000,
-                        ),
-                        SizedBox(height: 7.h),
-                        Text(
-                          '1 задания',
-                          style: CustomTextStyle.grey_13_w400,
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: const Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        color: ColorStyles.greyBDBDBD,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 18.h),
-                child: const Divider(
-                  height: 1,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-              ),
-            ],
-          ),
-
-          Column(
-            children: [
-              SizedBox(height: 18.h),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.w),
-                height: 40.h,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          SvgImg.complete,
-                          height: 18.h,
-                          width: 18.h,
-                        )
-                      ],
-                    ),
-                    SizedBox(width: 12.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Выполнены',
-                          style: CustomTextStyle.black_13_w400_000000,
-                        ),
-                        SizedBox(height: 7.h),
-                        Text(
-                          '1 задания',
-                          style: CustomTextStyle.grey_13_w400,
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: const Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        color: ColorStyles.greyBDBDBD,
-                      ),
-                    ),
-                  ],
-                ),
+              itemButton(
+                'Выполняются',
+                '1 задания',
+                SvgImg.inProgress,
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return TaskAdditional(title: 'Выполняются');
+                    }),
+                  );
+                },
               ),
               Padding(
                 padding: EdgeInsets.only(top: 18.h),
@@ -217,47 +133,42 @@ class Contractor extends StatelessWidget {
           Column(
             children: [
               SizedBox(height: 18.h),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.w),
-                height: 40.h,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          SvgImg.needSuccess,
-                          height: 18.h,
-                          width: 18.w,
-                        )
-                      ],
-                    ),
-                    SizedBox(width: 12.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Ждут подтверждения',
-                          style: CustomTextStyle.black_13_w400_000000,
-                        ),
-                        SizedBox(height: 7.h),
-                        Text(
-                          '1 задания',
-                          style: CustomTextStyle.grey_13_w400,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: const Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        color: ColorStyles.greyBDBDBD,
-                      ),
-                    ),
-                  ],
+              itemButton(
+                'Выполнены',
+                '1 задания',
+                SvgImg.complete,
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return TaskAdditional(title: 'Выполнены');
+                    }),
+                  );
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 18.h),
+                child: const Divider(
+                  height: 1,
+                  indent: 20,
+                  endIndent: 20,
                 ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(height: 18.h),
+              itemButton(
+                'Ждут подтверждения',
+                '1 задания',
+                SvgImg.needSuccess,
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return TaskAdditional(title: 'Ждут подтверждения');
+                    }),
+                  );
+                },
               ),
               Padding(
                 padding: EdgeInsets.only(top: 18.h),
@@ -270,67 +181,6 @@ class Contractor extends StatelessWidget {
             ],
           ),
           SizedBox(height: 102.h),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(vertical: 15.h),
-          //   child: const Divider(
-          //     height: 1,
-          //     indent: 20,
-          //     endIndent: 20,
-          //   ),
-          // ),
-          // Container(
-          //   margin: EdgeInsets.symmetric(horizontal: 20.w),
-          //   height: 55.h,
-          //   child: Row(
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       Column(
-          //         mainAxisAlignment: MainAxisAlignment.start,
-          //         children: const [
-          //           Icon(
-          //             Icons.archive_sharp,
-          //             color: Colors.amber,
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(
-          //         width: 10,
-          //       ),
-          //       Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: const [
-          //           Text(
-          //             'Ждут подтверждения',
-          //             style: TextStyle(
-          //               color: Colors.black,
-          //             ),
-          //           ),
-          //           SizedBox(
-          //             height: 20,
-          //           ),
-          //           Text(
-          //             '1 задания',
-          //             style: TextStyle(
-          //               color: Colors.grey,
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //       const Spacer(),
-          //       const Icon(
-          //         Icons.keyboard_arrow_right_rounded,
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(vertical: 15.h),
-          //   child: const Divider(
-          //     height: 1,
-          //     indent: 20,
-          //     endIndent: 20,
-          //   ),
-          // ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
