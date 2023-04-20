@@ -278,15 +278,17 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget view() {
     if (owner != null) {
-      return ProfileView(owner: owner!);
+      return Expanded(child: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
-      return TaskView(
-        selectTask: selectTask!,
-        openOwner: (owner) {
-          this.owner = owner;
-          setState(() {});
-        },
+      return Expanded(
+        child: TaskView(
+          selectTask: selectTask!,
+          openOwner: (owner) {
+            this.owner = owner;
+            setState(() {});
+          },
+        ),
       );
     }
     return Container();
