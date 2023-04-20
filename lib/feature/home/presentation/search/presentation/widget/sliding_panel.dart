@@ -8,11 +8,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/models/category.dart';
 import 'package:just_do_it/models/category_select.dart';
 import 'package:just_do_it/models/city.dart';
 import 'package:just_do_it/models/type_filter.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -33,9 +36,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool allCountry = false;
   int groupValueCity = 0;
   int? groupValueCountry;
-
+  Subcategory? selectSubCategory;
   bool slide = false;
-
+  List<String> isregion = [];
+  
   TypeFilter typeFilter = TypeFilter.main;
 
   TextEditingController coastMinController = TextEditingController();
@@ -53,6 +57,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   @override
   Widget build(BuildContext context) {
+    
     return BlocBuilder<SearchBloc, SearchState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
@@ -88,6 +93,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget panel(BuildContext context) {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -128,6 +134,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     child: CustomButton(
                       onTap: () {
                         widget.panelController.animatePanelToPosition(0);
+                        if(coastMinController.text == ''){
+                          coastMinController.text = '0';
+                        }
+                         if(coastMaxController.text == ''){
+                          coastMaxController.text = '0';
+                        }
+                        var format1 = "${endDate?.year}-${endDate?.month}-${endDate?.day}";
+                        var format2 = "${startDate?.year}-${startDate?.month}-${startDate?.day}";
+        
+                          context.read<TasksBloc>().add(GetTasksEvent(access, keyWordController.text, format1, format2, int.parse(coastMinController.text), int.parse(coastMaxController.text), [], selectSubCategory));
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(

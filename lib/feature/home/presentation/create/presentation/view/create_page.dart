@@ -9,25 +9,19 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
-enum WhichPage {
-  menu,
-  main,
-}
-
 class CreatePage extends StatefulWidget {
   final Function() onBackPressed;
   final Function(int) onSelect;
-  final WhichPage whichPage;
 
   const CreatePage({
     super.key,
     required this.onBackPressed,
     required this.onSelect,
-    required this.whichPage,
   });
 
   @override
@@ -37,6 +31,7 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   int openCategory = -1;
   List<Activities> activities = [];
+  Activities? selectCategory;
 
   @override
   void initState() {
@@ -167,9 +162,14 @@ class _CreatePageState extends State<CreatePage> {
                             if (bloc.user == null) {
                               Navigator.of(context).pushNamed(AppRoute.auth);
                             } else {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoute.createTasks)
-                                  .then((value) => print(value));
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return CeateTasks(
+                                        selectCategory: selectCategory);
+                                  },
+                                ),
+                              );
                             }
                           },
                           btnColor: ColorStyles.yellowFFD70A,
@@ -203,9 +203,7 @@ class _CreatePageState extends State<CreatePage> {
           ),
         ),
         SizedBox(
-          height: widget.whichPage == WhichPage.main
-              ? MediaQuery.of(context).size.height / 1.8
-              : MediaQuery.of(context).size.height / 1.5,
+          height: MediaQuery.of(context).size.height / 1.8,
           child: ListView.builder(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
@@ -347,11 +345,12 @@ class _CreatePageState extends State<CreatePage> {
   Widget item(String label, int index) {
     return GestureDetector(
       onTap: () {
-        dev.log('message ${label}');
         if (activities[index].selectSubcategory.contains(label)) {
           activities[index].selectSubcategory.remove(label);
+          selectCategory = null;
         } else {
           activities[index].selectSubcategory.clear();
+          selectCategory = activities[index];
           activities[index].selectSubcategory.add(label);
         }
         for (int i = 0; i < activities.length; i++) {
