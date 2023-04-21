@@ -66,7 +66,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      const Spacer(),
                       Text(
                         'Личный кабинет',
                         style: CustomTextStyle.black_21_w700,

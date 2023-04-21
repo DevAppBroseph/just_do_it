@@ -263,8 +263,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   Row(
                                     children: [
                                       Text(
-                                        user?.balance.toString() ??
-                                            'Балы не загрузились',
+                                        user?.balance.toString() ?? '0',
                                         style: CustomTextStyle.purple_19_w700,
                                       ),
                                     ],

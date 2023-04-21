@@ -11,9 +11,9 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(String?, DateTime, DateTime) onEdit;
-  DateTime startDate;
-  DateTime endDate;
+  Function(String?, DateTime?, DateTime?) onEdit;
+  DateTime? startDate;
+  DateTime? endDate;
   String? selectRegion;
   DatePicker({
     super.key,
@@ -68,8 +68,8 @@ class _DatePickerState extends State<DatePicker> {
                             Navigator.of(ctx).pop();
                             widget.onEdit(
                               widget.selectRegion,
-                              widget.startDate,
-                              widget.endDate,
+                              widget.startDate!,
+                              widget.endDate!,
                             );
                           },
                         ),
@@ -85,10 +85,40 @@ class _DatePickerState extends State<DatePicker> {
               color: Colors.white,
               child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.date,
-                  initialDateTime:
-                      index == 0 ? widget.startDate : widget.endDate,
-                  // minimumDate: index == 1 ? startDate : null,
-                  // maximumDate: index == 0 ? endDate : null,
+                  initialDateTime: index == 0
+                      ? widget.startDate ??
+                          DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          )
+                      : widget.endDate ??
+                          widget.startDate ??
+                          DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          ),
+                  minimumDate: index == 0
+                      ? DateTime(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day,
+                        )
+                      : widget.startDate ??
+                          DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          ),
+                  maximumDate: index == 0
+                      ? widget.endDate ??
+                          DateTime(
+                            DateTime.now().year + 5,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          )
+                      : null,
                   onDateTimeChanged: (val) {
                     if (index == 0) {
                       widget.startDate = val;
@@ -140,11 +170,12 @@ class _DatePickerState extends State<DatePicker> {
                         style: CustomTextStyle.grey_13_w400,
                       ),
                       SizedBox(height: 3.h),
-                      Text(
-                        DateFormat('dd.MM.yyyy').format(widget.startDate),
-                        // : 'Выберите дату начала выполнения',
-                        style: CustomTextStyle.black_13_w400_171716,
-                      ),
+                      if (widget.startDate != null)
+                        Text(
+                          DateFormat('dd.MM.yyyy').format(widget.startDate!),
+                          // : 'Выберите дату начала выполнения',
+                          style: CustomTextStyle.black_13_w400_171716,
+                        ),
                     ],
                   ),
                   const Spacer(),
@@ -181,11 +212,12 @@ class _DatePickerState extends State<DatePicker> {
                         style: CustomTextStyle.grey_13_w400,
                       ),
                       SizedBox(height: 3.h),
-                      Text(
-                        DateFormat('dd.MM.yyyy').format(widget.endDate),
-                        // : 'Выберите дату завершения задачи',
-                        style: CustomTextStyle.black_13_w400_171716,
-                      ),
+                      if (widget.endDate != null)
+                        Text(
+                          DateFormat('dd.MM.yyyy').format(widget.endDate!),
+                          // : 'Выберите дату завершения задачи',
+                          style: CustomTextStyle.black_13_w400_171716,
+                        ),
                     ],
                   ),
                   const Spacer(),
@@ -426,7 +458,7 @@ class _DatePickerState extends State<DatePicker> {
             onTap: () {},
             btnColor: ColorStyles.purpleA401C4,
             textLabel: const Text(
-              'Поднять объявление на верх',
+              'Поднять объявление наверх',
               style: TextStyle(
                 color: Colors.white,
               ),

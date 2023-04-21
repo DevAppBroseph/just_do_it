@@ -806,11 +806,10 @@ class _ContractorState extends State<Contractor> {
             'Тип документа',
           ),
           child: Stack(
-            // key: GlobalKeys.keyIconBtn1,
+            key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                // key: GlobalKeys.keyIconBtn1,
                 hintText: 'Тип документа',
                 height: 50.h,
                 enabled: false,

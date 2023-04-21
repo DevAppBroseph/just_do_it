@@ -134,85 +134,138 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       controller: scrollController2,
       shrinkWrap: true,
       children: [
-        // CustomTextField(
-        //   hintText: 'Пароль',
-        //   hintStyle: CustomTextStyle.grey_13_w400,
-        //   height: 50.h,
-        //   focusNode: focusNodePassword1,
-        //   obscureText: !visiblePassword,
-        //   suffixIcon: GestureDetector(
-        //     onTap: () {
-        //       visiblePassword = !visiblePassword;
-        //       setState(() {});
-        //     },
-        //     child: visiblePassword
-        //         ? const Icon(Icons.remove_red_eye_outlined)
-        //         : Stack(
-        //             alignment: Alignment.center,
-        //             children: [
-        //               SvgPicture.asset(
-        //                 'assets/icons/eye_close.svg',
-        //                 height: 18.h,
-        //               ),
-        //             ],
-        //           ),
-        //   ),
-        //   textEditingController: passwordController,
-        //   contentPadding:
-        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-        //   onChanged: (value) {
-        //     user!.copyWith(password: value);
-        //   },
-        //   onFieldSubmitted: (value) {
-        //     requestNextEmptyFocusStage2();
-        //   },
-        //   onTap: () {
-        //     Future.delayed(const Duration(milliseconds: 300), () {
-        //       scrollController2.animateTo(0.h,
-        //           duration: const Duration(milliseconds: 100),
-        //           curve: Curves.linear);
-        //     });
-        //   },
-        // ),
-        // SizedBox(height: 16.h),
-        // CustomTextField(
-        //   hintText: 'Повторите пароль',
-        //   hintStyle: CustomTextStyle.grey_13_w400,
-        //   height: 50.h,
-        //   focusNode: focusNodePassword2,
-        //   obscureText: !visiblePasswordRepeat,
-        //   suffixIcon: GestureDetector(
-        //     onTap: () {
-        //       visiblePasswordRepeat = !visiblePasswordRepeat;
-        //       setState(() {});
-        //     },
-        //     child: visiblePasswordRepeat
-        //         ? const Icon(Icons.remove_red_eye_outlined)
-        //         : Stack(
-        //             alignment: Alignment.center,
-        //             children: [
-        //               SvgPicture.asset(
-        //                 'assets/icons/eye_close.svg',
-        //                 height: 18.h,
-        //               ),
-        //             ],
-        //           ),
-        //   ),
-        //   onFieldSubmitted: (value) {
-        //     requestNextEmptyFocusStage2();
-        //   },
-        //   textEditingController: repeatPasswordController,
-        //   contentPadding:
-        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-        //   onTap: () {
-        //     Future.delayed(const Duration(milliseconds: 300), () {
-        //       scrollController2.animateTo(50.h,
-        //           duration: const Duration(milliseconds: 100),
-        //           curve: Curves.linear);
-        //     });
-        //   },
-        // ),
-        // SizedBox(height: 16.h),
+        Container(
+          height: 50.h,
+          decoration: BoxDecoration(
+            color: ColorStyles.greyEAECEE,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const Spacer(),
+                  CustomTextField(
+                    hintText: '',
+                    hintStyle: CustomTextStyle.grey_13_w400,
+                    height: 30.h,
+                    focusNode: focusNodePassword1,
+                    obscureText: !visiblePassword,
+                    onFieldSubmitted: (value) {
+                      requestNextEmptyFocusStage2();
+                    },
+                    textEditingController: passwordController,
+                    contentPadding: EdgeInsets.only(left: 18.w, right: 50.w),
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        scrollController2.animateTo(50.h,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.linear);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, left: 18.h),
+                child: Text(
+                  'Новый пароль',
+                  style: CustomTextStyle.grey_11_w400,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      visiblePassword = !visiblePassword;
+                      setState(() {});
+                    },
+                    child: visiblePassword
+                        ? const Icon(Icons.remove_red_eye_outlined)
+                        : Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/eye_close.svg',
+                                height: 18.h,
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
+        Container(
+          height: 50.h,
+          decoration: BoxDecoration(
+            color: ColorStyles.greyEAECEE,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const Spacer(),
+                  CustomTextField(
+                    hintText: '',
+                    hintStyle: CustomTextStyle.grey_13_w400,
+                    height: 30.h,
+                    focusNode: focusNodePassword2,
+                    obscureText: !visiblePasswordRepeat,
+                    onFieldSubmitted: (value) {
+                      requestNextEmptyFocusStage2();
+                    },
+                    textEditingController: repeatPasswordController,
+                    contentPadding: EdgeInsets.only(left: 18.w, right: 50.w),
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        scrollController2.animateTo(50.h,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.linear);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, left: 18.h),
+                child: Text(
+                  'Повторите пароль',
+                  style: CustomTextStyle.grey_11_w400,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      visiblePasswordRepeat = !visiblePasswordRepeat;
+                      setState(() {});
+                    },
+                    child: visiblePasswordRepeat
+                        ? const Icon(Icons.remove_red_eye_outlined)
+                        : Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/eye_close.svg',
+                                height: 18.h,
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
         GestureDetector(
           key: _countryKey,
           onTap: () => showCountry(
@@ -580,7 +633,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: title != null
+                            ? title == 'Срок действия'
+                                ? DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day + 1)
+                                : DateTime(2000, 1, 1, 1)
+                            : DateTime(2000, 1, 1, 1),
                         maximumDate: title != null
                             ? title == 'Срок действия'
                                 ? DateTime(DateTime.now().year + 10,
@@ -589,8 +649,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                             : DateTime.now(),
                         minimumDate: title != null
                             ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year,
-                                    DateTime.now().month, DateTime.now().day)
+                                ? DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day + 1)
                                 : DateTime(2000, 1, 1, 1)
                             : DateTime(2000, 1, 1, 1),
                         onDateTimeChanged: (val) {

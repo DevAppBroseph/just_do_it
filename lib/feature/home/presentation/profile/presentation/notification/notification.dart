@@ -39,11 +39,13 @@ class NotificationPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 12.w),
+                    Spacer(),
                     Text(
                       'Уведомления',
                       style: CustomTextStyle.black_21_w700,
                     ),
+                    Spacer(),
+                    SizedBox(width: 12.w)
                   ],
                 ),
               ),

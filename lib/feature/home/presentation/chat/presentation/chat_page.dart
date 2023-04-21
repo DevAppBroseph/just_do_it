@@ -65,6 +65,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                     ),
                   if (widget.onBackPressed != null) SizedBox(width: 15.w),
+                  const Spacer(),
                   Text(
                     'Сообщения',
                     style: CustomTextStyle.black_21_w700,

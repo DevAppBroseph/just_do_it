@@ -102,7 +102,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'За каждого нового пользователя, кто установит приложение\nпо вашей ссылке, Вы получите от 100 баллов.',
+                'За каждого нового пользователя, кто установит приложение\nпо Вашей ссылке, Вы получите от 100 баллов.',
                 style: CustomTextStyle.black_13_w400_515150,
               ),
             ),

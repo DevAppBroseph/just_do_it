@@ -116,7 +116,7 @@ class Customer extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вас выбрали в 3 заданиях',
+              'Вы создали 3 задания',
               style: CustomTextStyle.black_17_w500_171716,
             ),
           ),
@@ -124,7 +124,7 @@ class Customer extends StatelessWidget {
           Column(
             children: [
               itemButton(
-                'Выполняются',
+                'Открыты',
                 '1 задания',
                 SvgImg.inProgress,
                 () {
@@ -149,38 +149,13 @@ class Customer extends StatelessWidget {
             children: [
               SizedBox(height: 18.h),
               itemButton(
-                'Выполнены',
+                'Не выполненые',
                 '1 задания',
-                SvgImg.complete,
+                SvgImg.close,
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(title: 'Выполнены');
-                    }),
-                  );
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 18.h),
-                child: const Divider(
-                  height: 1,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              SizedBox(height: 18.h),
-              itemButton(
-                'Ждут подтверждения',
-                '1 задания',
-                SvgImg.needSuccess,
-                () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Ждут подтверждения');
                     }),
                   );
                 },

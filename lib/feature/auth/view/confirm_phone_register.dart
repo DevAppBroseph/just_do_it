@@ -67,8 +67,6 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
         buildWhen: (previous, current) {
           Loader.hide();
           if (current is ConfirmCodeRegistrSuccessState) {
-          
-           
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
@@ -94,6 +92,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Подтверждение телефона ',
@@ -174,7 +173,6 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: () {
-                              
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
                                 BlocProvider.of<AuthBloc>(context).add(

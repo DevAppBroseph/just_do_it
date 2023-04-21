@@ -219,6 +219,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Подтверждение телефона ',
@@ -301,6 +302,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Изменение пароля ',

@@ -79,7 +79,7 @@ class _RatingPageState extends State<RatingPage> {
                       children: [
                         SizedBox(height: 30.h),
                         Text(
-                          'Отзывы о вашей работе',
+                          'Отзывы о Вашей работе',
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.w800),
                         ),

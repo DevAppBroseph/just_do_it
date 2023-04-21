@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -15,10 +14,17 @@ import 'package:scale_button/scale_button.dart';
 class TaskView extends StatelessWidget {
   Task selectTask;
   Function(Owner?) openOwner;
-  TaskView({super.key, required this.selectTask, required this.openOwner});
+  bool canSelect;
+  TaskView({
+    super.key,
+    required this.selectTask,
+    required this.openOwner,
+    this.canSelect = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final user = BlocProvider.of<ProfileBloc>(context).user;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: ListView(
@@ -188,39 +194,41 @@ class TaskView extends StatelessWidget {
             ),
           ),
           SizedBox(height: 38.h),
-          CustomButton(
-            onTap: () async {
-              final chatBloc = BlocProvider.of<ChatBloc>(context);
-              chatBloc.editShowPersonChat(false);
-              chatBloc.editChatId(selectTask.chatId);
-              chatBloc.messages = [];
-              await Navigator.of(context).pushNamed(
-                AppRoute.personalChat,
-                arguments: [
-                  '${selectTask.chatId}',
-                  'asdasd',
-                  '${selectTask.owner?.id}',
-                  '${selectTask.owner?.photo}',
-                ],
-              );
-              chatBloc.editShowPersonChat(true);
-              chatBloc.editChatId(null);
-            },
-            btnColor: ColorStyles.yellowFFD70A,
-            textLabel: Text(
-              'Написать',
-              style: CustomTextStyle.black_14_w600_171716,
+          if (canSelect && user?.id != selectTask.owner?.id)
+            CustomButton(
+              onTap: () async {
+                final chatBloc = BlocProvider.of<ChatBloc>(context);
+                chatBloc.editShowPersonChat(false);
+                chatBloc.editChatId(selectTask.chatId);
+                chatBloc.messages = [];
+                await Navigator.of(context).pushNamed(
+                  AppRoute.personalChat,
+                  arguments: [
+                    '${selectTask.chatId}',
+                    '${selectTask.owner?.firstname ?? ''} ${selectTask.owner?.lastname ?? ''}',
+                    '${selectTask.owner?.id}',
+                    '${selectTask.owner?.photo}',
+                  ],
+                );
+                chatBloc.editShowPersonChat(true);
+                chatBloc.editChatId(null);
+              },
+              btnColor: ColorStyles.yellowFFD70A,
+              textLabel: Text(
+                'Написать',
+                style: CustomTextStyle.black_14_w600_171716,
+              ),
             ),
-          ),
           SizedBox(height: 18.h),
-          CustomButton(
-            onTap: () {},
-            btnColor: ColorStyles.yellowFFD70A,
-            textLabel: Text(
-              'Откликнуться',
-              style: CustomTextStyle.black_14_w600_171716,
-            ),
-          )
+          if (canSelect && user?.id != selectTask.owner?.id)
+            CustomButton(
+              onTap: () {},
+              btnColor: ColorStyles.yellowFFD70A,
+              textLabel: Text(
+                'Откликнуться',
+                style: CustomTextStyle.black_14_w600_171716,
+              ),
+            )
         ],
       ),
     );

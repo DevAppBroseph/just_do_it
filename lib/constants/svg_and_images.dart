@@ -16,6 +16,7 @@ class SvgImg {
   static const String archive = 'assets/icons/archive.svg';
   static const String inProgress = 'assets/icons/inProgres.svg';
   static const String complete = 'assets/icons/complete.svg';
+  static const String close = 'assets/icons/close_circle.svg';
   static const String needSuccess = 'assets/icons/needSucces.svg';
   static const String task = 'assets/icons/task.svg';
 }

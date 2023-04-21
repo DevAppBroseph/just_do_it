@@ -16,6 +16,7 @@ class Category extends StatefulWidget {
   Subcategory? selectSubCategory;
   double bottomInsets;
   Function onAttach;
+  Uint8List? attach;
   Function(Activities?, Subcategory?, String?, String?) onEdit;
   Category({
     super.key,
@@ -26,6 +27,7 @@ class Category extends StatefulWidget {
     required this.selectSubCategory,
     required this.bottomInsets,
     required this.onAttach,
+    required this.attach,
   });
 
   @override
@@ -33,8 +35,6 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  Uint8List? attach;
-
   List<Activities> activities = [];
 
   bool openCategory = false;
@@ -292,7 +292,7 @@ class _CategoryState extends State<Category> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
-                hintText: 'Название вашей задачи',
+                hintText: 'Название Вашей задачи',
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
@@ -338,7 +338,7 @@ class _CategoryState extends State<Category> {
             onTap: () => widget.onAttach(),
             child: CustomTextField(
               fillColor: ColorStyles.greyF9F9F9,
-              hintText: 'Прикрепить фото или документ',
+              hintText: 'Прикрепите фото или документ',
               hintStyle: CustomTextStyle.grey_13_w400,
               height: 50.h,
               enabled: false,
@@ -355,7 +355,7 @@ class _CategoryState extends State<Category> {
                           height: 15.h,
                           width: 15.h,
                         ),
-                        if (attach != null)
+                        if (widget.attach != null)
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -17,6 +19,7 @@ class ArchiveTasksView extends StatefulWidget {
 
 class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   List<Task> taskList = [];
+  Task? selectTask;
 
   @override
   void initState() {
@@ -51,7 +54,12 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pop();
+                            if (selectTask != null) {
+                              selectTask = null;
+                              setState(() {});
+                            } else {
+                              Navigator.of(context).pop();
+                            }
                           },
                           child: const Icon(
                             Icons.keyboard_backspace_rounded,
@@ -70,21 +78,32 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height - 20.h - 10.h - 77.h,
-                  child: ListView.builder(
-                    itemCount: taskList.length,
-                    padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return itemTask(
-                        taskList[index],
-                        (task) {},
-                      );
-                    },
-                  ),
-                )
+                selectTask == null
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            20.h -
+                            10.h -
+                            77.h,
+                        child: ListView.builder(
+                          itemCount: taskList.length,
+                          padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return itemTask(
+                              taskList[index],
+                              (task) {
+                                setState(() {
+                                  selectTask = task;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    : TaskView(
+                        selectTask: selectTask!,
+                        openOwner: (owner) {},
+                      ),
               ],
             ),
           ),
@@ -93,7 +112,15 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
             child: Padding(
               padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 34.h),
               child: CustomButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CeateTasks();
+                      },
+                    ),
+                  );
+                },
                 btnColor: ColorStyles.yellowFFD70A,
                 textLabel: Text(
                   'Создать новое',

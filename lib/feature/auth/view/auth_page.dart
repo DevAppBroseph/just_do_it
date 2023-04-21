@@ -232,9 +232,14 @@ class _MainAuthPageState extends State<AuthPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Восстановление доступа',
-          style: CustomTextStyle.black_21_w700,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Восстановление доступа',
+              style: CustomTextStyle.black_21_w700,
+            ),
+          ],
         ),
         SizedBox(height: 18.h),
         CustomTextField(

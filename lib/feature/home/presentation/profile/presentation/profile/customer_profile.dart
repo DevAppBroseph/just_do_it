@@ -172,7 +172,7 @@ class CustomerProfile extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                       user.balance.toString() ,
+                                      user.balance.toString(),
                                       style: CustomTextStyle.purple_19_w700,
                                     ),
                                   ],
@@ -181,72 +181,71 @@ class CustomerProfile extends StatelessWidget {
                             ),
                             const Spacer(),
                             BlocBuilder<ScoreBloc, ScoreState>(
-                                  builder: (context, state) {
-                                if (state is ScoreLoaded) {
-                                  final levels = state.levels;
-                                   if (user.balance! < levels![0].mustCoins!) {
-                                   
-                                    return Image.network(
-                                      '${levels[0].bwImage}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-
-                                  if (user.balance! > levels[0].mustCoins! && user.balance! < levels[1].mustCoins!) {
-                                   
-                                    return Image.network(
-                                      '${levels[0].image}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-                                  if (user.balance! >= levels[1].mustCoins! &&
-                                      user.balance! < levels[2].mustCoins!) {
-                                    return Image.network(
-                                      levels[1].image != null
-                                          ? '${levels[1].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user.balance! >= levels[2].mustCoins! &&
-                                      user.balance! < levels[3].mustCoins!) {
-                                    return Image.network(
-                                      levels[2].image != null
-                                          ? '${levels[2].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user.balance! >= levels[3].mustCoins! &&
-                                      user.balance! < levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[3].image != null
-                                          ? '${levels[3].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user.balance! >= levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[4].image != null
-                                          ? '${levels[4].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
+                                builder: (context, state) {
+                              if (state is ScoreLoaded) {
+                                final levels = state.levels;
+                                if (user.balance! < levels![0].mustCoins!) {
+                                  return Image.network(
+                                    '${levels[0].bwImage}',
+                                    height: 42,
+                                    width: 42,
+                                  );
                                 }
-                                return Container();
-                              }),
+
+                                if (user.balance! > levels[0].mustCoins! &&
+                                    user.balance! < levels[1].mustCoins!) {
+                                  return Image.network(
+                                    '${levels[0].image}',
+                                    height: 42,
+                                    width: 42,
+                                  );
+                                }
+                                if (user.balance! >= levels[1].mustCoins! &&
+                                    user.balance! < levels[2].mustCoins!) {
+                                  return Image.network(
+                                    levels[1].image != null
+                                        ? '${levels[1].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[2].mustCoins! &&
+                                    user.balance! < levels[3].mustCoins!) {
+                                  return Image.network(
+                                    levels[2].image != null
+                                        ? '${levels[2].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[3].mustCoins! &&
+                                    user.balance! < levels[4].mustCoins!) {
+                                  return Image.network(
+                                    levels[3].image != null
+                                        ? '${levels[3].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[4].mustCoins!) {
+                                  return Image.network(
+                                    levels[4].image != null
+                                        ? '${levels[4].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                              }
+                              return Container();
+                            }),
                           ],
                         ),
                       ),

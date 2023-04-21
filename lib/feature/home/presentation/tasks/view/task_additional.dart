@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -17,6 +18,7 @@ class TaskAdditional extends StatefulWidget {
 
 class _TaskAdditionalState extends State<TaskAdditional> {
   List<Task> taskList = [];
+  Task? selectTask;
 
   @override
   void initState() {
@@ -51,7 +53,12 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pop();
+                            if (selectTask != null) {
+                              selectTask = null;
+                              setState(() {});
+                            } else {
+                              Navigator.of(context).pop();
+                            }
                           },
                           child: const Icon(
                             Icons.keyboard_backspace_rounded,
@@ -70,15 +77,30 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    children:
-                        taskList.map((e) => itemTask(e, (tas) {})).toList(),
-                  ),
-                ),
+                selectTask == null
+                    ? Expanded(
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          children: taskList
+                              .map(
+                                (e) => itemTask(
+                                  e,
+                                  (task) {
+                                    setState(() {
+                                      selectTask = task;
+                                    });
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      )
+                    : TaskView(
+                        selectTask: selectTask!,
+                        openOwner: (owner) {},
+                      ),
               ],
             ),
           )

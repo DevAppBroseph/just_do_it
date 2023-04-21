@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';

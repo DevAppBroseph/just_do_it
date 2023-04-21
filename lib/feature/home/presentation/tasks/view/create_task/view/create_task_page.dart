@@ -45,8 +45,8 @@ class _CeateTasksState extends State<CeateTasks> {
   Activities? selectCategory;
   Subcategory? selectSubCategory;
 
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
+  DateTime? startDate;
+  DateTime? endDate;
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -190,6 +190,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       Category(
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
+                        attach: attach,
                         selectCategory: selectCategory ?? widget.selectCategory,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
@@ -239,10 +240,21 @@ class _CeateTasksState extends State<CeateTasks> {
                         if (coastMaxController.text.isEmpty) {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
-                        } if (region == null || region!.isEmpty) {
+                        }
+                        if (region == null || region!.isEmpty) {
                           error += '\n- регион';
                           errorsFlag = true;
-                        } 
+                        }
+
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) >
+                              int.parse(coastMaxController.text)) {
+                            error +=
+                                '\n- минимальный бюджет должен быть меньше максимального';
+                            errorsFlag = true;
+                          }
+                        }
 
                         if (errorsFlag) {
                           showAlertToast(error);
@@ -254,8 +266,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
                             dateStart:
-                                DateFormat('yyyy-MM-dd').format(startDate),
-                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate),
+                                DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
                               coastMinController.text.isEmpty
                                   ? '0'
@@ -272,7 +284,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             task: '',
                             typeLocation: '',
                             whenStart: '',
-                            coast: '', search: '',
+                            coast: '',
+                            search: '',
                           );
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);

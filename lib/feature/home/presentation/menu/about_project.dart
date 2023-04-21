@@ -116,7 +116,7 @@ class _AboutProjectState extends State<AboutProject> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
-                          'Вопрос ответ',
+                          'Вопрос-ответ',
                           style: CustomTextStyle.black_21_w700_171716,
                         ),
                       ),

@@ -103,6 +103,13 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
+  static TextStyle black_20_w700 = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+
   static TextStyle black_15_w500_171716 = TextStyle(
     fontSize: 15.sp,
     fontWeight: FontWeight.w500,

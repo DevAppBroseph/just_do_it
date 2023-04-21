@@ -288,6 +288,7 @@ class _SearchPageState extends State<SearchPage> {
             this.owner = owner;
             setState(() {});
           },
+          canSelect: true,
         ),
       );
     }
