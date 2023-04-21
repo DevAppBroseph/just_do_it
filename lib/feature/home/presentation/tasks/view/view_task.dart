@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,12 +8,13 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:scale_button/scale_button.dart';
 
-class TaskView extends StatelessWidget {
+class TaskView extends StatefulWidget {
   Task selectTask;
   Function(Owner?) openOwner;
   bool canSelect;
@@ -21,6 +24,14 @@ class TaskView extends StatelessWidget {
     required this.openOwner,
     this.canSelect = false,
   });
+
+  @override
+  State<TaskView> createState() => _TaskViewState();
+}
+
+class _TaskViewState extends State<TaskView> {
+  GlobalKey globalKey = GlobalKey();
+  bool showMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +49,44 @@ class TaskView extends StatelessWidget {
                 'Открыто',
                 style: CustomTextStyle.grey_11_w400,
               ),
+              Spacer(),
+              GestureDetector(
+                onTap: () => taskMoreDialog(
+                  context,
+                  getWidgetPosition(globalKey),
+                  (index) {
+                    // Navigator.pop(context);
+                  },
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/more-circle.svg',
+                  key: globalKey,
+                  height: 20.h,
+                  color: ColorStyles.black515150,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 22.h),
           Text(
-            'до ${selectTask.priceTo} ₽',
+            'до ${widget.selectTask.priceTo} ₽',
             style: CustomTextStyle.black_16_w500_171716,
           ),
           SizedBox(height: 12.h),
           Text(
-            selectTask.name,
+            widget.selectTask.name,
             style: CustomTextStyle.black_16_w800_171716,
           ),
           SizedBox(height: 18.h),
           Row(
             children: [
               Image.network(
-                '$server ${selectTask.activities?.photo ?? ''}',
+                '$server ${widget.selectTask.activities?.photo ?? ''}',
                 height: 24.h,
               ),
               SizedBox(width: 8.h),
               Text(
-                '${selectTask.activities?.description ?? '-'}, ${selectTask.subcategory?.description ?? '-'}',
+                '${widget.selectTask.activities?.description ?? '-'}, ${widget.selectTask.subcategory?.description ?? '-'}',
                 style: CustomTextStyle.black_12_w400_292D32,
               ),
             ],
@@ -83,9 +110,30 @@ class TaskView extends StatelessWidget {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            child: Text(
-              selectTask.description,
-              style: CustomTextStyle.black_12_w400_292D32,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.selectTask.description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: showMore ? 10000000 : 3,
+                  style: CustomTextStyle.black_12_w400_292D32,
+                ),
+                if (!showMore) SizedBox(height: 8.h),
+                if (!showMore && widget.selectTask.description.length > 150)
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showMore = true;
+                      });
+                    },
+                    child: Text(
+                      'Показать больше',
+                      style: CustomTextStyle.blue_13_w400_336FEE
+                          .copyWith(fontSize: 10.sp),
+                    ),
+                  )
+              ],
             ),
           ),
           SizedBox(height: 30.h),
@@ -102,7 +150,7 @@ class TaskView extends StatelessWidget {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      selectTask.region,
+                      widget.selectTask.region,
                       style: CustomTextStyle.black_12_w400_292D32,
                     ),
                   ],
@@ -119,7 +167,7 @@ class TaskView extends StatelessWidget {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      selectTask.dateEnd,
+                      widget.selectTask.dateEnd,
                       style: CustomTextStyle.black_12_w400_292D32,
                     ),
                   ],
@@ -136,7 +184,7 @@ class TaskView extends StatelessWidget {
           ScaleButton(
             bound: 0.02,
             onTap: () {
-              openOwner(selectTask.owner);
+              widget.openOwner(widget.selectTask.owner);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -153,11 +201,11 @@ class TaskView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
               child: Row(
                 children: [
-                  if (selectTask.owner?.photo != null)
+                  if (widget.selectTask.owner?.photo != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(1000.r),
                       child: Image.network(
-                        selectTask.owner!.photo!,
+                        widget.selectTask.owner!.photo!,
                         height: 48.h,
                         width: 48.w,
                         fit: BoxFit.cover,
@@ -168,7 +216,7 @@ class TaskView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${selectTask.owner?.firstname ?? '-'} ${selectTask.owner?.lastname ?? '-'}',
+                        '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
                         style: CustomTextStyle.black_16_w600_171716,
                       ),
                       SizedBox(height: 6.h),
@@ -194,20 +242,20 @@ class TaskView extends StatelessWidget {
             ),
           ),
           SizedBox(height: 38.h),
-          if (canSelect && user?.id != selectTask.owner?.id)
+          if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () async {
                 final chatBloc = BlocProvider.of<ChatBloc>(context);
                 chatBloc.editShowPersonChat(false);
-                chatBloc.editChatId(selectTask.chatId);
+                chatBloc.editChatId(widget.selectTask.chatId);
                 chatBloc.messages = [];
                 await Navigator.of(context).pushNamed(
                   AppRoute.personalChat,
                   arguments: [
-                    '${selectTask.chatId}',
-                    '${selectTask.owner?.firstname ?? ''} ${selectTask.owner?.lastname ?? ''}',
-                    '${selectTask.owner?.id}',
-                    '${selectTask.owner?.photo}',
+                    '${widget.selectTask.chatId}',
+                    '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
+                    '${widget.selectTask.owner?.id}',
+                    '${widget.selectTask.owner?.photo}',
                   ],
                 );
                 chatBloc.editShowPersonChat(true);
@@ -220,7 +268,7 @@ class TaskView extends StatelessWidget {
               ),
             ),
           SizedBox(height: 18.h),
-          if (canSelect && user?.id != selectTask.owner?.id)
+          if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () {},
               btnColor: ColorStyles.yellowFFD70A,

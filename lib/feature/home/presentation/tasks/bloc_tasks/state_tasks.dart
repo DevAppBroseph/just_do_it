@@ -6,13 +6,6 @@ class TasksEmpty extends TasksState {}
 
 class TasksLoading extends TasksState {}
 
-class TasksLoaded extends TasksState {
-  final List<Task>? tasks;
- 
-  TasksLoaded({required this.tasks});
-
-}
+class TasksLoaded extends TasksState {}
 
 class TasksError extends TasksState {}
-
-

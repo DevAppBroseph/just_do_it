@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:open_file/open_file.dart';
 
 class AboutProject extends StatefulWidget {
@@ -50,14 +51,11 @@ class _AboutProjectState extends State<AboutProject> {
                     child: Stack(
                       alignment: Alignment.centerLeft,
                       children: [
-                        GestureDetector(
-                          onTap: () {
+                        CustomIconButton(
+                          onBackPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Transform.rotate(
-                              angle: math.pi,
-                              child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg')),
+                          icon: SvgImg.arrowRight,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

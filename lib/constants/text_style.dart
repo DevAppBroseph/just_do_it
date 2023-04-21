@@ -327,6 +327,13 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
+  static TextStyle red_10_w400_171716 = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.redFF5151,
+    fontFamily: 'SFPro',
+  );
+
   // purple
   static TextStyle purple_19_w700 = TextStyle(
     fontSize: 19.sp,

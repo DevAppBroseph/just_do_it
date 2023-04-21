@@ -125,6 +125,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             Navigator.of(context)
                                 .pushNamed(AppRoute.menu, arguments: [
                               (page) {},
+                              false,
                             ]).then((value) {
                               if (value != null) {
                                 if (value == 'create') {
@@ -346,7 +347,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                             .black_13_w400_171716,
                                       ),
                                       Text(
-                                        'Размести задание',
+                                        'Размещай задания',
                                         style: CustomTextStyle.grey_11_w400,
                                       ),
                                     ],

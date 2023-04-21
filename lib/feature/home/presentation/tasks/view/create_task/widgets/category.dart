@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
 
 class Category extends StatefulWidget {
@@ -16,7 +18,9 @@ class Category extends StatefulWidget {
   Subcategory? selectSubCategory;
   double bottomInsets;
   Function onAttach;
-  Uint8List? attach;
+  File? document;
+  File? photo;
+  Function(File?, File?) removefiles;
   Function(Activities?, Subcategory?, String?, String?) onEdit;
   Category({
     super.key,
@@ -27,7 +31,9 @@ class Category extends StatefulWidget {
     required this.selectSubCategory,
     required this.bottomInsets,
     required this.onAttach,
-    required this.attach,
+    required this.document,
+    required this.photo,
+    required this.removefiles,
   });
 
   @override
@@ -355,7 +361,7 @@ class _CategoryState extends State<Category> {
                           height: 15.h,
                           width: 15.h,
                         ),
-                        if (widget.attach != null)
+                        if (widget.photo != null || widget.document != null)
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -374,6 +380,123 @@ class _CategoryState extends State<Category> {
               textEditingController: TextEditingController(),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            ),
+          ),
+          SizedBox(height: 15.h),
+          SizedBox(
+            height: 60.h,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                if (widget.photo != null)
+                  GestureDetector(
+                    onTap: () {
+                      log('message ${widget.photo!.path}');
+                      OpenFile.open(widget.photo!.path);
+                    },
+                    child: SizedBox(
+                      height: 60.h,
+                      width: 60.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
+                            height: 50.h,
+                            width: 50.h,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Image.memory(
+                                widget.photo!.readAsBytesSync(),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.removefiles(null, widget.document);
+                              },
+                              child: Container(
+                                height: 15.h,
+                                width: 15.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      const BoxShadow(color: Colors.black)
+                                    ],
+                                    borderRadius: BorderRadius.circular(40.r)),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 10.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (widget.document != null)
+                  SizedBox(
+                    height: 60.h,
+                    width: 60.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            log('message ${widget.document!.path}');
+                            OpenFile.open(widget.document!.path);
+                          },
+                          child: Container(
+                            height: 50.h,
+                            width: 50.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                SvgImg.documentText,
+                                height: 25.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.removefiles(widget.photo, null);
+                            },
+                            child: Container(
+                              height: 15.h,
+                              width: 15.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
+                                  borderRadius: BorderRadius.circular(40.r)),
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  size: 10.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
           ),
           SizedBox(height: widget.bottomInsets)

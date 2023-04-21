@@ -17,6 +17,7 @@ import 'package:just_do_it/models/category_select.dart';
 import 'package:just_do_it/models/city.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -33,7 +34,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   double heightPanel = 686.h;
   bool passportAndCV = false;
   bool allCategory = false;
-   bool allSubCategory = false;
+  bool allSubCategory = false;
   bool allCity = false;
   bool allCountry = false;
   int groupValueCity = 0;
@@ -124,7 +125,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             : typeFilter == TypeFilter.category
                                 ? categoryFirst()
                                 : typeFilter == TypeFilter.category1
-                                    ? categorySecond(selectActivities) //так не надо
+                                    ? categorySecond(
+                                        selectActivities) //так не надо
                                     : typeFilter == TypeFilter.date
                                         ? dateFilter()
                                         : typeFilter == TypeFilter.country
@@ -144,8 +146,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (coastMaxController.text == '') {
                           coastMaxController.text = '50000000';
                         }
-                        var format1 = "${endDate?.year}-${endDate?.month}-${endDate?.day}";
-                        var format2 = "${startDate?.year}-${startDate?.month}-${startDate?.day}";
+                        var format1 =
+                            "${endDate?.year}-${endDate?.month}-${endDate?.day}";
+                        var format2 =
+                            "${startDate?.year}-${startDate?.month}-${startDate?.day}";
 
                         context.read<TasksBloc>().add(GetTasksEvent(
                             access,
@@ -168,20 +172,24 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ],
               ),
               if (MediaQuery.of(context).viewInsets.bottom > 0 &&
-                  (focusCoastMin.hasFocus || focusCoastMax.hasFocus || focusCoastKeyWord.hasFocus))
+                  (focusCoastMin.hasFocus ||
+                      focusCoastMax.hasFocus ||
+                      focusCoastKeyWord.hasFocus))
                 Column(
                   children: [
                     Spacer(),
                     AnimatedPadding(
                       duration: const Duration(milliseconds: 0),
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
                               color: Colors.grey[200],
                               child: MediaQuery(
-                                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                                data: MediaQuery.of(context)
+                                    .copyWith(textScaleFactor: 1.0),
                                 child: Align(
                                   alignment: Alignment.centerRight,
                                   child: Padding(
@@ -219,10 +227,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   Widget mainFilter() {
     String date = '';
     if (startDate == null && endDate == null) {
-      date = '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
+      date =
+          '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
     } else {
-      date = startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
-      date += ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+      date =
+          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+      date +=
+          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
     }
     return ListView(
       shrinkWrap: true,
@@ -287,7 +298,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             children: [
               ScaleButton(
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.category;
                 },
                 bound: 0.02,
@@ -331,7 +343,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.country;
                 },
                 child: Container(
@@ -357,7 +370,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              country != null && country!.isNotEmpty ? country! : 'Все регионы',
+                              country != null && country!.isNotEmpty
+                                  ? country!
+                                  : 'Все регионы',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_13_w400_171716,
@@ -434,7 +449,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(414.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(414.h));
                   typeFilter = TypeFilter.date;
                 },
                 child: Container(
@@ -510,7 +526,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1), curve: Curves.linear);
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
                                     setState(() {});
                                   },
                                   onChanged: (value) {},
@@ -567,7 +584,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1), curve: Curves.linear);
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
                                     setState(() {});
                                   },
                                   onChanged: (value) {},
@@ -603,7 +621,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     Expanded(
                       child: Container(
                         height: 99.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF9F9F9,
                           borderRadius: BorderRadius.circular(10.r),
@@ -613,7 +632,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset('assets/icons/quote-up-square.svg'),
+                                SvgPicture.asset(
+                                    'assets/icons/quote-up-square.svg'),
                                 SizedBox(width: 10.w),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -632,9 +652,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           focusNode: focusCoastKeyWord,
                                           onTap: () {
                                             slide = true;
-                                            Future.delayed(const Duration(milliseconds: 200), () {
-                                              mainScrollController.animateTo(heightPanel,
-                                                  duration: const Duration(seconds: 1), curve: Curves.linear);
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 200), () {
+                                              mainScrollController.animateTo(
+                                                  heightPanel,
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  curve: Curves.linear);
                                             });
                                             setState(() {});
                                           },
@@ -644,11 +669,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                             setState(() {});
                                           },
                                           contentPadding: EdgeInsets.zero,
-                                          hintText: 'Например, покупка апельсинов..',
+                                          hintText:
+                                              'Например, покупка апельсинов..',
                                           fillColor: ColorStyles.greyF9F9F9,
                                           maxLines: 4,
-                                          style: CustomTextStyle.black_13_w400_171716,
-                                          textEditingController: keyWordController,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
+                                          textEditingController:
+                                              keyWordController,
                                         ),
                                       ],
                                     ),
@@ -672,6 +700,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   const Spacer(),
                   Switch.adaptive(
+                    activeColor: ColorStyles.yellowFFD70B,
                     value: passportAndCV,
                     onChanged: (value) {
                       passportAndCV = !passportAndCV;
@@ -690,7 +719,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   void openKeyboard() {
     slide = true;
-    mainScrollController.animateTo(heightPanel, duration: const Duration(seconds: 1), curve: Curves.linear);
+    mainScrollController.animateTo(heightPanel,
+        duration: const Duration(seconds: 1), curve: Curves.linear);
     setState(() {});
   }
 
@@ -718,19 +748,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 27.h),
         Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            CustomIconButton(
+              onBackPressed: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.main;
               },
-              child: Transform.rotate(
-                angle: pi,
-                child: SvgPicture.asset(
-                  'assets/icons/arrow_right.svg',
-                  height: 16.h,
-                  width: 16.h,
-                ),
-              ),
+              icon: SvgImg.arrowRight,
             ),
             SizedBox(width: 12.h),
             Text(
@@ -757,11 +781,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ),
                 const Spacer(),
                 Switch.adaptive(
+                  activeColor: ColorStyles.yellowFFD70B,
                   value: allCategory,
                   onChanged: (value) {
                     allCategory = !allCategory;
                     setState(() {});
-                   
                   },
                 ),
               ],
@@ -790,7 +814,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex,
+      {List<String> choice = const []}) {
     String selectWork = '';
     if (choice.isNotEmpty) {
       selectWork = '- ${choice.first}';
@@ -805,7 +830,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       child: GestureDetector(
         onTap: () {
           selectActivities = activities[currentIndex];
-          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+          BlocProvider.of<SearchBloc>(context)
+              .add(OpenSlidingPanelToEvent(686.h));
           typeFilter = TypeFilter.category1;
         },
         child: Container(
@@ -915,19 +941,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 27.h),
         Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            CustomIconButton(
+              onBackPressed: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.category;
               },
-              child: Transform.rotate(
-                angle: pi,
-                child: SvgPicture.asset(
-                  'assets/icons/arrow_right.svg',
-                  height: 16.h,
-                  width: 16.h,
-                ),
-              ),
+              icon: SvgImg.arrowRight,
             ),
             SizedBox(width: 12.h),
             Text(
@@ -954,6 +974,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ),
                 const Spacer(),
                 Switch.adaptive(
+                  activeColor: ColorStyles.yellowFFD70B,
                   value: selectActivity!.isSelect,
                   onChanged: (value) {
                     selectActivity.isSelect = !selectActivity.isSelect;
@@ -967,7 +988,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       if (element.isSelect == false) {
                         selectSubCategory.remove(element.id);
                       }
-                      
                     }
 
                     setState(() {});
@@ -978,38 +998,28 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           ),
         ),
         SizedBox(height: 20.h),
-        Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-               itemCount: selectActivities!.subcategory.length,
-              physics: const ClampingScrollPhysics(),
-              itemBuilder: ((context, index){
-                return item(
-                  
-                  index
-                );
-             }
-            ),
-            ),
-          ]
-        ),
+        Column(children: [
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: selectActivities!.subcategory.length,
+            physics: const ClampingScrollPhysics(),
+            itemBuilder: ((context, index) {
+              return item(index);
+            }),
+          ),
+        ]),
       ],
     );
   }
 
-
-  Widget item(
-
-    int index
-  ) {
+  Widget item(int index) {
     return GestureDetector(
       onTap: () {
-        selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;
+        selectActivities!.subcategory[index].isSelect =
+            !selectActivities!.subcategory[index].isSelect;
         setState(() {});
         if (selectActivities!.subcategory[index].isSelect == true) {
           selectSubCategory.add(selectActivities!.subcategory[index].id);
-          
         }
         if (selectActivities!.subcategory[index].isSelect == false) {
           selectSubCategory.remove(selectActivities!.subcategory[index].id);
@@ -1029,12 +1039,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(
                     width: 250.w,
                     child: Text(
-                     selectActivities!.subcategory[index].description ?? '',
+                      selectActivities!.subcategory[index].description ?? '',
                       style: CustomTextStyle.black_13_w400_515150,
                     ),
                   ),
                   const Spacer(),
-                  if (selectActivities!.subcategory[index].isSelect && selectSubCategory != []) const Icon(Icons.check)
+                  if (selectActivities!.subcategory[index].isSelect &&
+                      selectSubCategory != [])
+                    const Icon(Icons.check)
                 ],
               ),
             ],
@@ -1065,6 +1077,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ),
                 const Spacer(),
                 Switch.adaptive(
+                  activeColor: ColorStyles.yellowFFD70B,
                   value: category.select,
                   onChanged: (value) {
                     category.select = !category.select;
@@ -1104,19 +1117,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 27.h),
         Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            CustomIconButton(
+              onBackPressed: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.main;
               },
-              child: Transform.rotate(
-                angle: pi,
-                child: SvgPicture.asset(
-                  'assets/icons/arrow_right.svg',
-                  height: 16.h,
-                  width: 16.h,
-                ),
-              ),
+              icon: SvgImg.arrowRight,
             ),
             SizedBox(width: 12.h),
             Text(
@@ -1143,6 +1150,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ),
                 const Spacer(),
                 Switch.adaptive(
+                  activeColor: ColorStyles.yellowFFD70B,
                   value: allCountry,
                   onChanged: (value) {
                     allCountry = !allCountry;
@@ -1231,7 +1239,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           width: 10.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: country.select ? Colors.black : Colors.transparent,
+                            color: country.select
+                                ? Colors.black
+                                : Colors.transparent,
                           ),
                         ),
                       ],
@@ -1281,19 +1291,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           SizedBox(height: 27.h),
           Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+              CustomIconButton(
+                onBackPressed: () {
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.main;
                 },
-                child: Transform.rotate(
-                  angle: pi,
-                  child: SvgPicture.asset(
-                    'assets/icons/arrow_right.svg',
-                    height: 16.h,
-                    width: 16.h,
-                  ),
-                ),
+                icon: SvgImg.arrowRight,
               ),
               SizedBox(width: 12.h),
               Text(
@@ -1320,6 +1324,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   const Spacer(),
                   Switch.adaptive(
+                    activeColor: ColorStyles.yellowFFD70B,
                     value: allCountry,
                     onChanged: (value) {
                       allCountry = !allCountry;
@@ -1572,19 +1577,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 27.h),
         Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            CustomIconButton(
+              onBackPressed: () {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.main;
               },
-              child: Transform.rotate(
-                angle: pi,
-                child: SvgPicture.asset(
-                  'assets/icons/arrow_right.svg',
-                  height: 16.h,
-                  width: 16.h,
-                ),
-              ),
+              icon: SvgImg.arrowRight,
             ),
             SizedBox(width: 12.h),
             Text(
@@ -1658,7 +1657,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : 'Выберите дату завершения задачи',
+                      endDate != null
+                          ? DateFormat('dd.MM.yyyy').format(endDate!)
+                          : 'Выберите дату завершения задачи',
                       style: CustomTextStyle.black_13_w400_171716,
                     ),
                   ],
@@ -1694,7 +1695,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'Готово',
-                                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
                                   if (index == 0 && startDate == null) {
@@ -1719,8 +1721,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: index == 0 ? startDate : endDate,
-                        minimumDate: index == 1 && startDate != null ? startDate : null,
-                        maximumDate: index == 0 && endDate != null ? endDate : null,
+                        minimumDate:
+                            index == 1 && startDate != null ? startDate : null,
+                        maximumDate:
+                            index == 0 && endDate != null ? endDate : null,
                         onDateTimeChanged: (val) {
                           if (index == 0) {
                             startDate = val;
@@ -1745,7 +1749,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     Category(icon: 'assets/images/broom.png', title: 'Уборка помещений'),
     Category(icon: 'assets/images/laptop1.png', title: 'Компьютерная помощь'),
     Category(icon: 'assets/images/money_bag.png', title: 'Финансовый советник'),
-    Category(icon: 'assets/images/party_popper.png', title: 'Мероприятия и промоакции'),
+    Category(
+        icon: 'assets/images/party_popper.png',
+        title: 'Мероприятия и промоакции'),
     Category(icon: 'assets/images/computer_disk.png', title: 'Разработка ПО'),
   ];
 

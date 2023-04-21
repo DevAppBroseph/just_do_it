@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widg
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CeateTasks extends StatefulWidget {
@@ -38,7 +38,8 @@ class _CeateTasksState extends State<CeateTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  Uint8List? attach;
+  File? document;
+  File? photo;
 
   String? region;
 
@@ -51,8 +52,7 @@ class _CeateTasksState extends State<CeateTasks> {
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
-      File? file = File(getMedia.path);
-      attach = file.readAsBytesSync();
+      photo = File(getMedia.path);
     }
     setState(() {});
   }
@@ -63,8 +63,7 @@ class _CeateTasksState extends State<CeateTasks> {
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result != null) {
-      File? file = File(result.files.first.path!);
-      attach = file.readAsBytesSync();
+      document = File(result.files.first.path!);
       setState(() {});
     }
   }
@@ -150,8 +149,8 @@ class _CeateTasksState extends State<CeateTasks> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      CustomIconButton(
+                        onBackPressed: () {
                           if (page == 0) {
                             Navigator.of(context).pop();
                           } else {
@@ -160,10 +159,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                 curve: Curves.easeInOut);
                           }
                         },
-                        child: const Icon(
-                          Icons.keyboard_backspace_rounded,
-                          color: Colors.grey,
-                        ),
+                        icon: SvgImg.arrowRight,
                       ),
                       SizedBox(width: 12.w),
                       Text(
@@ -190,7 +186,8 @@ class _CeateTasksState extends State<CeateTasks> {
                       Category(
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
-                        attach: attach,
+                        document: document,
+                        photo: photo,
                         selectCategory: selectCategory ?? widget.selectCategory,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
@@ -198,6 +195,11 @@ class _CeateTasksState extends State<CeateTasks> {
                         onEdit: (cat, subCat, title, about) {
                           selectCategory = cat;
                           selectSubCategory = subCat;
+                        },
+                        removefiles: (photo, document) {
+                          this.photo = photo;
+                          this.document = document;
+                          setState(() {});
                         },
                       ),
                       DatePicker(

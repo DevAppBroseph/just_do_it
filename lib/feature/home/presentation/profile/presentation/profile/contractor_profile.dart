@@ -524,18 +524,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           context,
                           _categoryButtonKey,
                           (value) {
-                            // categoryController.text = '';
+                            // String str = '';
+                            // if (value.isNotEmpty) {
+                            //   str = value.first;
+                            // }
 
-                            String str = '';
-                            if (value.isNotEmpty) {
-                              str = value.first;
-                            }
-
-                            if (value.length > 1) {
-                              for (int i = 1; i < typeCategories.length; i++) {
-                                str += ', ${typeCategories[i]}';
-                              }
-                            }
+                            // if (value.length > 1) {
+                            //   for (int i = 1; i < typeCategories.length; i++) {
+                            //     str += ', ${typeCategories[i]}';
+                            //   }
+                            // }
 
                             List<int> activityIndexes = [];
 
@@ -731,25 +729,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       ),
                                       GestureDetector(
                                         onTap: () async {
-                                          showDialog(
-                                            context: context,
-                                            barrierColor: ColorStyles.black
-                                                .withOpacity(0.4),
-                                            barrierDismissible: false,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                elevation: 0,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                content: SizedBox(
-                                                  height: 100.h,
-                                                  child:
-                                                      const CupertinoActivityIndicator(),
-                                                ),
-                                              );
-                                            },
-                                          );
                                           user!.images!.removeAt(index);
+                                          setState(() {});
                                           for (var element in user!.images!) {
                                             element.byte ??=
                                                 await Repository().downloadFile(
@@ -759,10 +740,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             );
                                           }
 
-                                          Navigator.of(context).pop();
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
 
                                           BlocProvider.of<ProfileBloc>(context)
                                               .add(UpdateProfileEvent(user));
+                                          setState(() {});
                                         },
                                         child: Align(
                                           alignment: Alignment.topRight,

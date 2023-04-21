@@ -89,7 +89,14 @@ class _HomePageState extends State<HomePage> {
                     },
                     onSelect: selectUser,
                   ),
-                  const TasksPage(),
+                  TasksPage(
+                    onSelect: (page) {
+                      setState(() {
+                        this.page = page;
+                        pageController.jumpToPage(this.page);
+                      });
+                    },
+                  ),
                   ChatPage(() {
                     pageController.jumpToPage(4);
                     page = 5;
@@ -181,7 +188,14 @@ class _HomePageState extends State<HomePage> {
           if (index == 4) {
             Navigator.of(context).pushNamed(AppRoute.personalAccount);
           } else if (index == 2) {
-            Navigator.of(context).pushNamed(AppRoute.tasks);
+            Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
+              (page) {
+                setState(() {
+                  this.page = page;
+                  pageController.jumpToPage(this.page);
+                });
+              },
+            ]);
           } else {
             pageController.jumpToPage(index);
             page = index;

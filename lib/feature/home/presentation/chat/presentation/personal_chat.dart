@@ -10,7 +10,10 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalChat extends StatefulWidget {
   String? id;
@@ -72,21 +75,61 @@ class _PersonalChatState extends State<PersonalChat> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Transform.rotate(
-                    angle: math.pi,
-                    child: SvgPicture.asset('assets/icons/arrow_right.svg'),
-                  ),
+                CustomIconButton(
+                  onBackPressed: () => Navigator.of(context).pop(),
+                  icon: SvgImg.arrowRight,
                 ),
                 SizedBox(width: 8.w),
-                SizedBox(
-                  width: 260.w,
-                  child: AutoSizeText(
-                    // 'Яковлев Максим Алексеевич',
-                    widget.name,
-                    style: CustomTextStyle.black_21_w700,
-                    maxLines: 1,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return Scaffold(
+                          body: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 66.h),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 25.w, right: 28.w),
+                                child: Row(
+                                  children: [
+                                    CustomIconButton(
+                                      onBackPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: SvgImg.arrowRight,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      'Профиль',
+                                      style: CustomTextStyle.black_21_w700,
+                                    ),
+                                    const Spacer(),
+                                    SizedBox(width: 30.w),
+                                  ],
+                                ),
+                              ),
+                              ProfileView(
+                                  owner: Owner(
+                                      id: int.parse(widget.idWithChat),
+                                      firstname: null,
+                                      lastname: null,
+                                      photo: null)),
+                            ],
+                          ),
+                        );
+                      },
+                    ));
+                  },
+                  child: SizedBox(
+                    width: 240.w,
+                    child: AutoSizeText(
+                      // 'Яковлев Максим Алексеевич',
+                      widget.name,
+                      style: CustomTextStyle.black_21_w700,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
                 const Spacer(),

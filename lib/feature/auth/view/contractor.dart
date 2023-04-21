@@ -340,7 +340,7 @@ class _ContractorState extends State<Contractor> {
                   if (additionalInfo) {
                     if (serialDocController.text.isEmpty &&
                         user.docType != 'Resident_ID') {
-                      error += '\n- серию докемента';
+                      error += '\n- серию документа';
                       errorsFlag = true;
                     }
                     if (numberDocController.text.isEmpty) {
@@ -367,9 +367,15 @@ class _ContractorState extends State<Contractor> {
                   }
                 }
               },
-              btnColor: confirmTermsPolicy
-                  ? ColorStyles.yellowFFD70A
-                  : ColorStyles.greyE0E6EE,
+              btnColor: page == 0
+                  ? confirmTermsPolicy
+                      ? ColorStyles.yellowFFD70A
+                      : ColorStyles.greyE0E6EE
+                  : countryController.text.isNotEmpty &&
+                          regionController.text.isNotEmpty &&
+                          typeCategories.isNotEmpty
+                      ? ColorStyles.yellowFFD70A
+                      : ColorStyles.greyE0E6EE,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
                 style: CustomTextStyle.black_15_w600_171716,
@@ -803,14 +809,14 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документа',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Тип документа',
+                hintText: 'Документа',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -1097,7 +1103,7 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: Text(
-                'Юридическое лицо',
+                'Представитель юридического лица',
                 textAlign: TextAlign.justify,
                 style: CustomTextStyle.black_13_w400_515150,
               ),

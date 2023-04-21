@@ -28,6 +28,8 @@ class Repository {
       ),
     );
 
+    log('message ${response.data}');
+
     if (response.statusCode == 201 || response.statusCode == 200) {
       return Owner.fromJson(response.data);
     }
@@ -77,7 +79,7 @@ class Repository {
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        headers: {'Authorization': 'Bearer $access'},
+        // headers: {'Authorization': 'Bearer $access'},
       ),
     );
 

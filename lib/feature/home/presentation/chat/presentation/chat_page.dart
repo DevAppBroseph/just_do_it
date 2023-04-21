@@ -11,6 +11,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ChatPage extends StatefulWidget {
@@ -50,19 +51,9 @@ class _ChatPageState extends State<ChatPage> {
               child: Row(
                 children: [
                   if (widget.onBackPressed != null)
-                    GestureDetector(
-                      onTap: widget.onBackPressed,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Transform.rotate(
-                          angle: pi,
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow_right.svg',
-                            height: 20.h,
-                            width: 20.w,
-                          ),
-                        ),
-                      ),
+                    CustomIconButton(
+                      onBackPressed: widget.onBackPressed!,
+                      icon: SvgImg.arrowRight,
                     ),
                   if (widget.onBackPressed != null) SizedBox(width: 15.w),
                   const Spacer(),
@@ -75,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(AppRoute.menu,
-                          arguments: [(page) {}]).then((value) {
+                          arguments: [(page) {}, false]).then((value) {
                         if (value != null) {
                           if (value == 'create') {
                             widget.onSelect(0);

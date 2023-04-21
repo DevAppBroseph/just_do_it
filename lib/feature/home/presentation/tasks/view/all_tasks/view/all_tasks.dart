@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -9,6 +12,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class AllTasksView extends StatefulWidget {
   const AllTasksView({super.key});
@@ -52,8 +56,8 @@ class _AllTasksViewState extends State<AllTasksView> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: GestureDetector(
-                          onTap: () {
+                        child: CustomIconButton(
+                          onBackPressed: () {
                             if (selectTask != null) {
                               selectTask = null;
                               setState(() {});
@@ -61,10 +65,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                               Navigator.of(context).pop();
                             }
                           },
-                          child: const Icon(
-                            Icons.keyboard_backspace_rounded,
-                            color: Colors.grey,
-                          ),
+                          icon: SvgImg.arrowRight,
                         ),
                       ),
                       Align(

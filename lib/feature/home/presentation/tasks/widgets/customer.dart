@@ -130,7 +130,7 @@ class Customer extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Выполняются');
+                      return TaskAdditional(title: 'Открыты');
                     }),
                   );
                 },
@@ -149,13 +149,13 @@ class Customer extends StatelessWidget {
             children: [
               SizedBox(height: 18.h),
               itemButton(
-                'Не выполненые',
+                'Невыполненные',
                 '1 задания',
                 SvgImg.close,
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Выполнены');
+                      return TaskAdditional(title: 'Невыполненные');
                     }),
                   );
                 },

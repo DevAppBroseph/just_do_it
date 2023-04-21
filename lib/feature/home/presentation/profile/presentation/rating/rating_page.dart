@@ -11,6 +11,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/models/review.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class RatingPage extends StatefulWidget {
   const RatingPage({super.key});
@@ -387,17 +388,11 @@ class _RatingPageState extends State<RatingPage> {
                     style: CustomTextStyle.black_21_w700,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Transform.rotate(
-                      angle: pi,
-                      child: SvgPicture.asset(
-                        'assets/icons/arrow_right.svg',
-                      ),
-                    ),
-                  ),
+                CustomIconButton(
+                  onBackPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: SvgImg.arrowRight,
                 ),
               ],
             ),

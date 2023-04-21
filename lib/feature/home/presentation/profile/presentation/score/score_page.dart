@@ -11,6 +11,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/score/
 import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ScorePage extends StatefulWidget {
   const ScorePage({super.key});
@@ -65,16 +66,11 @@ class _ScorePageState extends State<ScorePage> {
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
+                                        CustomIconButton(
+                                          onBackPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Transform.rotate(
-                                              angle: pi,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/arrow_right.svg',
-                                                color: ColorStyles.greyDADADA,
-                                              )),
+                                          icon: SvgImg.arrowRight,
                                         ),
                                         Row(
                                           mainAxisAlignment:
@@ -257,8 +253,8 @@ class _ScorePageState extends State<ScorePage> {
                                               },
                                               child: Text(
                                                 page == 1
-                                                    ? 'Сколько уровней я могу\nдостичь'
-                                                    : 'Узнайте, Куда можно потратить\nбаллы и как их заработать?',
+                                                    ? 'Сколько уровней я могу\nдостичь?'
+                                                    : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
                                                 style: CustomTextStyle
                                                     .white_13_w400
                                                     .copyWith(

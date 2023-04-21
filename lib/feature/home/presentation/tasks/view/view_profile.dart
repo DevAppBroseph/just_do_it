@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/auth/widget/widget_position.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
-import 'package:scale_button/scale_button.dart';
 
 class ProfileView extends StatefulWidget {
   Owner owner;
@@ -22,6 +19,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   Owner? owner;
+  GlobalKey globalKey = GlobalKey();
 
   @override
   void initState() {
@@ -47,6 +45,7 @@ class _ProfileViewState extends State<ProfileView> {
           SizedBox(
             height: 76.h,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (owner?.photo != null)
                   ClipRRect(
@@ -83,7 +82,21 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                   ],
-                )
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () => taskMoreDialog(
+                    context,
+                    getWidgetPosition(globalKey),
+                    (index) {
+                      // Navigator.pop(context);
+                    },
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/more-circle.svg',
+                    key: globalKey,
+                  ),
+                ),
               ],
             ),
           ),
@@ -348,7 +361,39 @@ class _ProfileViewState extends State<ProfileView> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                SizedBox(height: 18.h),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    width: 229.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            color: ColorStyles.whiteF5F5F5,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/icons/translate.svg'),
+                                SizedBox(width: 8.h),
+                                Text(
+                                  'Перевод',
+                                  style: CustomTextStyle.blue_13_w400_336FEE,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

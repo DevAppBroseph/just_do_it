@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/notification.dart' as notifModel;
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -30,14 +31,11 @@ class NotificationPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Transform.rotate(
-                        angle: pi,
-                        child: SvgPicture.asset(
-                          'assets/icons/arrow_right.svg',
-                        ),
-                      ),
+                    CustomIconButton(
+                      onBackPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgImg.arrowRight,
                     ),
                     Spacer(),
                     Text(

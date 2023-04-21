@@ -10,6 +10,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditBasicInfo extends StatefulWidget {
@@ -63,14 +64,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Transform.rotate(
-                              angle: pi,
-                              child: SvgPicture.asset(
-                                'assets/icons/arrow_right.svg',
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
                           ),
                           SizedBox(width: 12.w),
                           Text(
@@ -210,7 +208,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               ),
                               Flexible(
                                 child: Text(
-                                  'Юридическое лицо',
+                                  'Представитель юридического лица',
                                   textAlign: TextAlign.justify,
                                   style: CustomTextStyle.black_13_w400_515150,
                                 ),

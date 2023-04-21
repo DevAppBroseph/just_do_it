@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -266,23 +268,33 @@ void iconSelectModalCategories(
                               itemBuilder: (context, index) {
                                 return ElevatedButton(
                                   onPressed: () {
-                                    if (selectCategories.length < 3) {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories.remove(
-                                            list[index].description ?? '');
+                                    log('message ${selectCategories.length}');
+                                    if (selectCategories.length > 1) {
+                                      if (selectCategories.length < 3) {
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories.remove(
+                                              list[index].description ?? '');
+                                        } else {
+                                          selectCategories.add(
+                                              list[index].description ?? '');
+                                        }
                                       } else {
-                                        selectCategories
-                                            .add(list[index].description ?? '');
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories
+                                              .remove(list[index].description);
+                                        }
                                       }
-                                    } else {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories
-                                            .remove(list[index].description);
-                                      }
+                                      onTap(selectCategories);
+                                    } else if (selectCategories.isEmpty ||
+                                        selectCategories.length == 1 &&
+                                            !selectCategories.contains(
+                                                list[index].description)) {
+                                      selectCategories
+                                          .add(list[index].description ?? '');
+                                      onTap(selectCategories);
                                     }
-                                    onTap(selectCategories);
 
                                     setState((() {}));
                                   },

@@ -113,13 +113,18 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                   );
                                 }
                               } else {
-                                if (passwordController.text.isEmpty) {
-                                  showAlertToast('Введите пароль');
-                                } else if (passwordRepeatController
-                                    .text.isEmpty) {
-                                  showAlertToast('Введите пароль повторно');
-                                } else if (passwordController.text !=
-                                    passwordRepeatController.text) {
+                                if (passwordController.text.isEmpty ||
+                                    passwordRepeatController.text.isEmpty) {
+                                  showAlertToast('Укажите пароль');
+                                } else if (passwordController.text.length < 6) {
+                                  showAlertToast(
+                                      'Минимальная длина пароля 6 символов');
+                                } else if ((passwordController
+                                            .text.isNotEmpty &&
+                                        passwordRepeatController
+                                            .text.isNotEmpty) &&
+                                    (passwordController.text !=
+                                        passwordRepeatController.text)) {
                                   showAlertToast('Пароли не совпадают');
                                 } else {
                                   showLoaderWrapper(context);

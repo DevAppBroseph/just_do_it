@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class EditIdentityInfo extends StatefulWidget {
   const EditIdentityInfo({Key? key}) : super(key: key);
@@ -82,14 +83,11 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Transform.rotate(
-                      angle: pi,
-                      child: SvgPicture.asset(
-                        'assets/icons/arrow_right.svg',
-                      ),
-                    ),
+                  CustomIconButton(
+                    onBackPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: SvgImg.arrowRight,
                   ),
                   SizedBox(width: 12.w),
                   Text(
@@ -106,11 +104,25 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(
                 onTap: () {
-                  user!.copyWith(isEntity: physics);
-                  BlocProvider.of<ProfileBloc>(context).setUser(user);
-                  Repository().updateUser(
-                      BlocProvider.of<ProfileBloc>(context).access, user!);
-                  Navigator.of(context).pop();
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
+                    showAlertToast('Укажите пароль');
+                  } else if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    showAlertToast('Пароли не совпадают');
+                  } else if (passwordController.text.length < 6) {
+                    showAlertToast('минимальная длина пароля 6 символов');
+                  } else if (checkExpireDate(dateTime) != null) {
+                    showAlertToast(checkExpireDate(dateTime)!);
+                  } else {
+                    user!.copyWith(isEntity: physics);
+                    BlocProvider.of<ProfileBloc>(context).setUser(user);
+                    Repository().updateUser(
+                        BlocProvider.of<ProfileBloc>(context).access, user!);
+                    Navigator.of(context).pop();
+                  }
                 },
                 btnColor: ColorStyles.yellowFFD70B,
                 textLabel: Text(
@@ -334,14 +346,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документа',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Тип документа',
+                hintText: 'Документа',
                 hintStyle: CustomTextStyle.grey_13_w400,
                 height: 50.h,
                 enabled: false,
@@ -549,6 +561,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onChanged: (value) => documentEdit(),
           ),
         ),
+        Text(
+          checkExpireDate(dateTime) ?? '',
+          style: CustomTextStyle.red_10_w400_171716,
+        ),
         if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user?.docType == 'Resident_ID')
           CustomTextField(
@@ -578,8 +594,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     );
   }
 
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
+  }
+
   void _showDatePicker(ctx, bool isInternational, {String? title}) {
-    print('title is: $title');
     dateTime = null;
     showCupertinoModalPopup(
         context: ctx,
@@ -607,6 +631,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 ),
                                 onPressed: () {
                                   if (dateTime == null) {
+                                    dateTime = DateTime.now();
                                     if (isInternational) {
                                       dateDocController.text =
                                           DateFormat('dd.MM.yyyy')
@@ -619,6 +644,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                   }
 
                                   Navigator.of(ctx).pop();
+                                  setState(() {});
                                 },
                               ),
                               SizedBox(width: 5.w),

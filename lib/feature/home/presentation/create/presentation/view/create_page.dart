@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
@@ -46,7 +47,6 @@ class _CreatePageState extends State<CreatePage> {
       if (current is GetCategoriesState) {
         activities.clear();
         activities.addAll(current.res);
-        
       }
       return false;
     }, builder: (context, snapshot) {
@@ -74,26 +74,14 @@ class _CreatePageState extends State<CreatePage> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.only(top: 60.h, left: 25.w, right: 28.w),
+                          EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: widget.onBackPressed,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Transform.rotate(
-                                angle: pi,
-                                child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg',
-                                  height: 20.h,
-                                  width: 20.w,
-                                ),
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: widget.onBackPressed,
+                            icon: SvgImg.arrowRight,
                           ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
+                          const Spacer(),
                           SizedBox(
                             width: 240.w,
                             height: 36.h,
@@ -109,6 +97,9 @@ class _CreatePageState extends State<CreatePage> {
                                 ],
                               ),
                               hintText: 'Поиск',
+                              hintStyle: CustomTextStyle.grey_13_w400.copyWith(
+                                  fontSize: 14.sp,
+                                  overflow: TextOverflow.ellipsis),
                               textEditingController: TextEditingController(),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 11.w, vertical: 11.h),
@@ -119,7 +110,7 @@ class _CreatePageState extends State<CreatePage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]).then((value) {
+                                  arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -177,7 +168,8 @@ class _CreatePageState extends State<CreatePage> {
                           btnColor: ColorStyles.yellowFFD70A,
                           textLabel: Text(
                             'Создать',
-                            style: CustomTextStyle.black_15_w600_171716,
+                            style: CustomTextStyle.black_15_w600_171716
+                                .copyWith(fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -201,7 +193,7 @@ class _CreatePageState extends State<CreatePage> {
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text(
             'Что необходимо сделать?',
-            style: CustomTextStyle.black_17_w800,
+            style: CustomTextStyle.black_17_w800.copyWith(fontSize: 18.sp),
           ),
         ),
         SizedBox(
@@ -279,7 +271,8 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_13_w400_171716,
+                style: CustomTextStyle.black_13_w400_171716
+                    .copyWith(fontSize: 14.sp),
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -376,7 +369,8 @@ class _CreatePageState extends State<CreatePage> {
                     width: 250.w,
                     child: Text(
                       label,
-                      style: CustomTextStyle.black_13_w400_515150,
+                      style: CustomTextStyle.black_13_w400_515150
+                          .copyWith(fontSize: 14.sp),
                     ),
                   ),
                   const Spacer(),

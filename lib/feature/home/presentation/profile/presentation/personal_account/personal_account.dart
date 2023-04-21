@@ -10,6 +10,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalAccountPage extends StatefulWidget {
   const PersonalAccountPage({super.key});
@@ -57,14 +58,11 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Transform.rotate(
-                          angle: pi,
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow_right.svg',
-                          ),
-                        ),
+                      CustomIconButton(
+                        onBackPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: SvgImg.arrowRight,
                       ),
                       const Spacer(),
                       Text(

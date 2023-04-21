@@ -1,8 +1,6 @@
-import 'dart:developer' as dev;
-import 'dart:developer';
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +16,7 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class SearchPage extends StatefulWidget {
@@ -38,25 +36,24 @@ class _SearchPageState extends State<SearchPage> {
   Task? selectTask;
   Owner? owner;
 
+  String? access;
+
   @override
   void initState() {
     super.initState();
-    // getListTask();
+    getTaskList();
   }
 
-  void getListTask() async {
-    // taskList.clear();
-    // taskList.addAll();
-    // setState(() {});
+  void getTaskList() {
+    BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
+    access = BlocProvider.of<ProfileBloc>(context).access;
+    context
+        .read<TasksBloc>()
+        .add(GetTasksEvent(access, '', '', '', 0, 500000, [], []));
   }
 
   @override
   Widget build(BuildContext context) {
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context
-        .read<TasksBloc>()
-        .add(GetTasksEvent(access, '', '', '', 0, 500000, [], []));
-
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -83,24 +80,26 @@ class _SearchPageState extends State<SearchPage> {
                     color: ColorStyles.whiteFFFFFF,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    padding: EdgeInsets.only(left: 15.w, right: 28.w),
                     child: Row(
                       children: [
-                        GestureDetector(
-                          onTap: widget.onBackPressed,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Transform.rotate(
-                              angle: pi,
-                              child: SvgPicture.asset(
-                                'assets/icons/arrow_right.svg',
-                                height: 20.h,
-                                width: 20.w,
-                              ),
-                            ),
-                          ),
+                        CustomIconButton(
+                          onBackPressed: () {
+                            if (owner != null) {
+                              setState(() {
+                                owner = null;
+                              });
+                            } else if (selectTask != null) {
+                              setState(() {
+                                selectTask = null;
+                              });
+                            } else {
+                              widget.onBackPressed();
+                            }
+                          },
+                          icon: SvgImg.arrowRight,
                         ),
-                        SizedBox(width: 15.w),
+                        Spacer(),
                         SizedBox(
                           width: 240.w,
                           height: 36.h,
@@ -130,7 +129,7 @@ class _SearchPageState extends State<SearchPage> {
                         GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]).then((value) {
+                                  arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -229,16 +228,20 @@ class _SearchPageState extends State<SearchPage> {
               Expanded(
                 child: BlocBuilder<TasksBloc, TasksState>(
                     builder: (context, state) {
-                  if (state is TasksLoaded) {
-                    final tasks = state.tasks;
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      children: tasks!.map((e) => itemTask(e)).toList(),
+                  taskList = BlocProvider.of<TasksBloc>(context).tasks;
+                  if (state is TasksLoading) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
                     );
                   }
-                  return Container();
+                  if (taskList.isEmpty) return Container();
+
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    children: taskList.map((e) => itemTask(e)).toList(),
+                  );
                 }),
               ),
             view(),

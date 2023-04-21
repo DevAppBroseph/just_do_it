@@ -9,6 +9,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -53,17 +54,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: CustomTextStyle.black_21_w700,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Transform.rotate(
-                                angle: pi,
-                                child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg',
-                                ),
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
                           ),
                         ],
                       ),

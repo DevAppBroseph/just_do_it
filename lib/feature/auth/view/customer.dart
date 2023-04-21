@@ -757,14 +757,14 @@ class _CustomerState extends State<Customer> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документа',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Тип документа',
+                hintText: 'Документа',
                 hintStyle: CustomTextStyle.grey_13_w400,
                 height: 50.h,
                 enabled: false,
@@ -829,7 +829,7 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: Text(
-                'Юридическое лицо',
+                'Представитель юридического лица',
                 textAlign: TextAlign.justify,
                 style: CustomTextStyle.black_13_w400_515150,
               ),

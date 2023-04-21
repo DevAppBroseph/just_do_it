@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -33,10 +33,7 @@ class _ReferalPageState extends State<ReferalPage> {
       SocialMedia.email: 'mailto:?body=$text\n$urlShare',
     };
     final url = urls[socialplatform]!;
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
+    await launch(url);
   }
 
   late UserRegModel? user;
@@ -66,14 +63,11 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
-                    GestureDetector(
-                      onTap: () {
+                    CustomIconButton(
+                      onBackPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Transform.rotate(
-                          angle: pi,
-                          child:
-                              SvgPicture.asset('assets/icons/arrow_right.svg')),
+                      icon: SvgImg.arrowRight,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,8 +130,13 @@ class _ReferalPageState extends State<ReferalPage> {
                       code += user!.link![i];
                     }
                   }
-
                   FirebaseDynamicLinksService().share(int.parse(code));
+                  const snackBar = SnackBar(
+                    backgroundColor: ColorStyles.yellowFFCA0D,
+                    content: Text('Скопировано'),
+                    duration: Duration(seconds: 1),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: Container(
                   height: 55.h,
@@ -150,7 +149,7 @@ class _ReferalPageState extends State<ReferalPage> {
                     child: Row(
                       children: [
                         Text(
-                          user?.link ?? 'Сломалось)',
+                          user?.link ?? '-',
                           style: CustomTextStyle.white_15_w600,
                         ),
                         const Spacer(),
