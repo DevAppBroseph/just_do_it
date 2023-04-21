@@ -62,7 +62,7 @@ class Repository {
     int? priceTo,
     String? dateStart,
     String? dateEnd,
-    Subcategory? subcategory,
+    List<int?>? subcategory,
   ) async {
     final response = await dio.get(
       '$server/orders/',

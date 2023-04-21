@@ -20,7 +20,16 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     emit(TasksLoading());
     log(event.priceFrom.toString());
     if (event.access != null) {
-      tasks = await Repository().getTaskList(event.access, event.query, event.region, event.priceFrom, event.priceTo, event.dateStart, event.dateEnd, event.subcategory);
+      tasks = await Repository().getTaskList(
+        event.access,
+        event.query,
+        event.region,
+        event.priceFrom,
+        event.priceTo,
+        event.dateStart,
+        event.dateEnd,
+        event.subcategory,
+      );
 
       emit(TasksLoaded(tasks: tasks));
       log(event.query);
@@ -40,25 +49,25 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   //     emit(TasksError());
   //   }
 
-    //   final foundTasks = prevState.tasks?.where((task) {
-    //     final nameSplits = task.name.toLowerCase().split(' ');
-    //     final searchSplits = event.tasksName?.toLowerCase().split(' ')
-    //       ?..removeWhere((searchSplit) => searchSplit.isEmpty);
-    //     final checks = <bool>[];
-    //     for (final nameSplit in nameSplits) {
-    //       bool passed = false;
-    //       for (final searchSplit in searchSplits!) {
-    //         if (nameSplit.contains(searchSplit)) {
-    //           passed = true;
-    //         }
-    //       }
-    //       checks.add(passed);
-    //     }
-    //     List<bool> isFounds = [];
-    //     isFounds = checks.where((check) => check).toList();
-    //     return isFounds.length >= searchSplits!.length;
-    //   }).toList();
-    //  log(event.tasksName.toString());
-    //   emit(prevState.copyWith(tasks: foundTasks, search: event.tasksName));
+  //   final foundTasks = prevState.tasks?.where((task) {
+  //     final nameSplits = task.name.toLowerCase().split(' ');
+  //     final searchSplits = event.tasksName?.toLowerCase().split(' ')
+  //       ?..removeWhere((searchSplit) => searchSplit.isEmpty);
+  //     final checks = <bool>[];
+  //     for (final nameSplit in nameSplits) {
+  //       bool passed = false;
+  //       for (final searchSplit in searchSplits!) {
+  //         if (nameSplit.contains(searchSplit)) {
+  //           passed = true;
+  //         }
+  //       }
+  //       checks.add(passed);
+  //     }
+  //     List<bool> isFounds = [];
+  //     isFounds = checks.where((check) => check).toList();
+  //     return isFounds.length >= searchSplits!.length;
+  //   }).toList();
+  //  log(event.tasksName.toString());
+  //   emit(prevState.copyWith(tasks: foundTasks, search: event.tasksName));
   // }
 }
