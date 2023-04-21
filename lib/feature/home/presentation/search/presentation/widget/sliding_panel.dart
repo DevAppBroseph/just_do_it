@@ -771,6 +771,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           activities[i].subcategory[y].isSelect = true;
                           selectSubCategory.add(activities[i].subcategory[y].id);
                         }
+                        activities[i].isSelect = true;
                       }
                     }
                     if (allCategory == false) {
@@ -779,6 +780,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           activities[i].subcategory[y].isSelect = false;
                           selectSubCategory = [];
                         }
+                        activities[i].isSelect = false;
                       }
                     }
                   },
