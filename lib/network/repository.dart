@@ -73,7 +73,7 @@ class Repository {
         "price_from": priceFrom,
         "date_end": dateEnd,
         "date_start": dateStart,
-        "subcategory": subcategory?.id,
+        "subcategory": subcategory,
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),

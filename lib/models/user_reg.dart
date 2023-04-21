@@ -228,13 +228,14 @@ class ActivitiesInfo {
 }
 
 class Activities {
+  bool isSelect;
   int id;
   String? description;
   String? photo;
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(this.id, this.description, this.photo, this.subcategory);
+  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
@@ -246,20 +247,21 @@ class Activities {
         subcategory.add(Subcategory.fromJson(element));
       }
     }
-    return Activities(id, description, photo, subcategory);
+    return Activities(false, id, description, photo, subcategory);
   }
 }
 
 class Subcategory {
+  bool isSelect;
   int id;
   String? description;
 
-  Subcategory({required this.id, required this.description});
+  Subcategory( this.isSelect, {required this.id, required this.description});
 
   factory Subcategory.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
-    return Subcategory(id: id, description: description);
+    return Subcategory(false, id: id, description: description);
   }
 }
 

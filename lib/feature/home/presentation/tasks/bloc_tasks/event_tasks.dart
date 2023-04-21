@@ -5,7 +5,7 @@ class TasksEvent {}
 class GetTasksEvent extends TasksEvent {
   String query;
   String? access;
-  Subcategory? subcategory;
+  List<int?> subcategory;
   String dateStart;
   String dateEnd;
   int? priceFrom;
