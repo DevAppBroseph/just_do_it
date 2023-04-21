@@ -37,6 +37,7 @@ class _CreatePageState extends State<CreatePage> {
   void initState() {
     super.initState();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    print(activities.length);
   }
 
   @override
@@ -45,10 +46,11 @@ class _CreatePageState extends State<CreatePage> {
       if (current is GetCategoriesState) {
         activities.clear();
         activities.addAll(current.res);
+        
       }
       return false;
     }, builder: (context, snapshot) {
-      var bloc = BlocProvider.of<AuthBloc>(context);
+      print(activities.length);
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: Scaffold(

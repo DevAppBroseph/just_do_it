@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
@@ -32,11 +33,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   double heightPanel = 686.h;
   bool passportAndCV = false;
   bool allCategory = false;
+   bool allSubCategory = false;
   bool allCity = false;
   bool allCountry = false;
   int groupValueCity = 0;
   int? groupValueCountry;
+  Activities? selectActivities;
   List<int?> selectSubCategory = [];
+  List<Activities> activities = [];
+  Activities? selectCategory;
   bool slide = false;
   List<String> isRegion = [];
 
@@ -52,7 +57,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   FocusNode focusCoastMin = FocusNode();
   FocusNode focusCoastMax = FocusNode();
   FocusNode focusCoastKeyWord = FocusNode();
-
+  int openCategory = -1;
   ScrollController mainScrollController = ScrollController();
 
   @override
@@ -119,7 +124,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             : typeFilter == TypeFilter.category
                                 ? categoryFirst()
                                 : typeFilter == TypeFilter.category1
-                                    ? categorySecond('Курьерские услуги')
+                                    ? categorySecond(selectActivities) //так не надо
                                     : typeFilter == TypeFilter.date
                                         ? dateFilter()
                                         : typeFilter == TypeFilter.country
@@ -137,7 +142,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           coastMinController.text = '0';
                         }
                         if (coastMaxController.text == '') {
-                          coastMaxController.text = '0';
+                          coastMaxController.text = '50000000';
                         }
                         var format1 = "${endDate?.year}-${endDate?.month}-${endDate?.day}";
                         var format2 = "${startDate?.year}-${startDate?.month}-${startDate?.day}";
@@ -250,9 +255,21 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     style: CustomTextStyle.black_21_w700,
                   ),
                   const Spacer(),
-                  Text(
-                    'Очистить',
-                    style: CustomTextStyle.red_15_w400,
+                  GestureDetector(
+                    onTap: () {
+                      endDate = DateTime.now();
+                      startDate = DateTime.now();
+                      coastMinController.text = '';
+                      coastMaxController.text = '';
+                      keyWordController.text = '';
+                      isRegion = [];
+                      selectSubCategory = [];
+                      print(selectSubCategory);
+                    },
+                    child: Text(
+                      'Очистить',
+                      style: CustomTextStyle.red_15_w400,
+                    ),
                   ),
                 ],
               ),
@@ -678,10 +695,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget categoryFirst() {
+    activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
     return ListView(
       shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
       physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
       children: [
         SizedBox(height: 8.h),
         Stack(
@@ -743,6 +761,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   onChanged: (value) {
                     allCategory = !allCategory;
                     setState(() {});
+                   
                   },
                 ),
               ],
@@ -750,59 +769,130 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           ),
         ),
         SizedBox(height: 20.h),
-        Column(
-          children: [
-            ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 50.h),
-              children: category.map((e) => itemCategory(e)).toList(),
-            ),
-          ],
-        ),
+        ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: activities.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  elementCategory(
+                    activities[index].photo ?? '',
+                    activities[index].description ?? '',
+                    index,
+                    choice: activities[index].selectSubcategory,
+                  ),
+                ],
+              );
+            }),
       ],
     );
   }
 
-  Widget itemCategory(Category category) {
-    return GestureDetector(
-      onTap: () {
-        typeFilter = TypeFilter.category1;
-        BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
-      },
-      child: Container(
-        color: Colors.transparent,
-        height: 50.h,
-        child: Column(
-          children: [
-            const Spacer(),
-            Row(
-              children: [
-                Image.asset(
-                  category.icon,
-                  height: 24.h,
+  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+    String selectWork = '';
+    if (choice.isNotEmpty) {
+      selectWork = '- ${choice.first}';
+      if (choice.length > 1) {
+        for (int i = 1; i < choice.length; i++) {
+          selectWork += ', ${choice[i]}';
+        }
+      }
+    }
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0.w),
+      child: GestureDetector(
+        onTap: () {
+          selectActivities = activities[currentIndex];
+          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+          typeFilter = TypeFilter.category1;
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: ColorStyles.whiteFFFFFF,
+            borderRadius: BorderRadius.circular(10.r),
+            boxShadow: [
+              BoxShadow(
+                color: ColorStyles.shadowFC6554,
+                offset: const Offset(0, -4),
+                blurRadius: 55.r,
+              )
+            ],
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
+          child: Row(
+            children: [
+              if (icon != '')
+                Image.network(
+                  server + icon,
+                  height: 20.h,
                 ),
-                SizedBox(width: 12.w),
-                Text(
-                  category.title,
-                  style: CustomTextStyle.black_13_w500_171716,
+              SizedBox(width: 9.w),
+              Text(
+                title,
+                style: CustomTextStyle.black_13_w400_171716,
+              ),
+              if (choice.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: SizedBox(
+                    width: 70.w,
+                    child: Text(
+                      selectWork,
+                      style: CustomTextStyle.grey_13_w400,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
                 ),
-                const Spacer(),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16.h,
-                  color: const Color(0xFFBDBDBD),
-                )
-              ],
-            ),
-            const Spacer(),
-            const Divider()
-          ],
+              const Spacer(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget categorySecond(String title) {
+  // Widget itemCategory(Category category) {
+  //   return GestureDetector(
+  //     onTap: () {
+
+  //     },
+  //     child: Container(
+  //       color: Colors.transparent,
+  //       height: 50.h,
+  //       child: Column(
+  //         children: [
+  //           const Spacer(),
+  //           Row(
+  //             children: [
+  //               Image.asset(
+  //                 category.icon,
+  //                 height: 24.h,
+  //               ),
+  //               SizedBox(width: 12.w),
+  //               Text(
+  //                 category.title,
+  //                 style: CustomTextStyle.black_13_w500_171716,
+  //               ),
+  //               const Spacer(),
+  //               Icon(
+  //                 Icons.arrow_forward_ios,
+  //                 size: 16.h,
+  //                 color: const Color(0xFFBDBDBD),
+  //               )
+  //             ],
+  //           ),
+  //           const Spacer(),
+  //           const Divider()
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget categorySecond(Activities? selectActivity) {
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -841,7 +931,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(width: 12.h),
             Text(
-              title,
+              selectActivity?.description ?? '',
               style: CustomTextStyle.black_21_w700,
             ),
           ],
@@ -859,14 +949,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             child: Row(
               children: [
                 Text(
-                  'Все категории',
+                  'Все подкатегории',
                   style: CustomTextStyle.black_13_w400_171716,
                 ),
                 const Spacer(),
                 Switch.adaptive(
-                  value: allCategory,
+                  value: selectActivity!.isSelect,
                   onChanged: (value) {
-                    allCategory = !allCategory;
+                    selectActivity.isSelect = !selectActivity.isSelect;
+                    String str = '';
+                    for (var element in selectActivity.subcategory) {
+                      element.isSelect = value;
+                      str += '${element.id}, ';
+                      if (element.isSelect == true) {
+                        selectSubCategory.add(element.id);
+                      }
+                      if (element.isSelect == false) {
+                        selectSubCategory.remove(element.id);
+                      }
+                      
+                    }
+
                     setState(() {});
                   },
                 ),
@@ -877,14 +980,67 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         SizedBox(height: 20.h),
         Column(
           children: [
-            ListView(
+            ListView.builder(
               shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 50.h),
-              children: listCategory2.map((e) => itemCategory2(e)).toList(),
+               itemCount: selectActivities!.subcategory.length,
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: ((context, index){
+                return item(
+                  
+                  index
+                );
+             }
             ),
-          ],
+            ),
+          ]
         ),
       ],
+    );
+  }
+
+
+  Widget item(
+
+    int index
+  ) {
+    return GestureDetector(
+      onTap: () {
+        selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;
+        setState(() {});
+        if (selectActivities!.subcategory[index].isSelect == true) {
+          selectSubCategory.add(selectActivities!.subcategory[index].id);
+          
+        }
+        if (selectActivities!.subcategory[index].isSelect == false) {
+          selectSubCategory.remove(selectActivities!.subcategory[index].id);
+        }
+        print(selectSubCategory);
+      },
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+        child: Container(
+          color: Colors.transparent,
+          height: 40.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                    width: 250.w,
+                    child: Text(
+                     selectActivities!.subcategory[index].description ?? '',
+                      style: CustomTextStyle.black_13_w400_515150,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (selectActivities!.subcategory[index].isSelect && selectSubCategory != []) const Icon(Icons.check)
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -1103,123 +1259,127 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget listRegion(List<City> region) {
-    return ListView(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: EdgeInsets.symmetric(horizontal: 24.w), children: [
-      SizedBox(height: 8.h),
-      Stack(
-        alignment: Alignment.center,
+    return ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         children: [
-          Container(
-            height: 5.h,
-            width: 81.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.r),
-              color: ColorStyles.blueFC6554,
-            ),
-          ),
-        ],
-      ),
-      SizedBox(height: 27.h),
-      Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
-              typeFilter = TypeFilter.main;
-            },
-            child: Transform.rotate(
-              angle: pi,
-              child: SvgPicture.asset(
-                'assets/icons/arrow_right.svg',
-                height: 16.h,
-                width: 16.h,
-              ),
-            ),
-          ),
-          SizedBox(width: 12.h),
-          Text(
-            'Регионы',
-            style: CustomTextStyle.black_21_w700,
-          ),
-        ],
-      ),
-      SizedBox(height: 20.h),
-      ScaleButton(
-        bound: 0.02,
-        child: Container(
-          height: 55.h,
-          padding: EdgeInsets.only(left: 16.w, right: 16.w),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Row(
+          SizedBox(height: 8.h),
+          Stack(
+            alignment: Alignment.center,
             children: [
-              Text(
-                'Все регионы',
-                style: CustomTextStyle.black_13_w400_171716,
-              ),
-              const Spacer(),
-              Switch.adaptive(
-                value: allCountry,
-                onChanged: (value) {
-                  allCountry = !allCountry;
-                  String str = '';
-                  for (var element in allRegoins) {
-                    element.select = value;
-                    str += '${element.name}, ';
-                    if (element.select == true) {
-                      isRegion.add(element.name);
-                    }
-                    if (element.select == false) {
-                      isRegion.remove(element.name);
-                    }
-                    print(isRegion);
-                  }
-                  country = str;
-                  setState(() {});
-                },
+              Container(
+                height: 5.h,
+                width: 81.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.r),
+                  color: ColorStyles.blueFC6554,
+                ),
               ),
             ],
           ),
-        ),
-      ),
-      SizedBox(height: 20.h),
-      SizedBox(
-        height: 700.h,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: region.length,
-            padding: EdgeInsets.only(left: 10.w),
-            itemBuilder: ((context, index) {
-              return GestureDetector(
+          SizedBox(height: 27.h),
+          Row(
+            children: [
+              GestureDetector(
                 onTap: () {
-                  region[index].select = !region[index].select;
-                  setState(() {});
-                  if (region[index].select == true) {
-                    isRegion.add(region[index].name);
-                  }
-                  if (region[index].select == false) {
-                    isRegion.remove(region[index].name);
-                  }
+                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  typeFilter = TypeFilter.main;
                 },
-                child: Container(
-                  height: 40.h,
-                  color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Text(
-                        region[index].name,
-                        style: CustomTextStyle.black_13_w500_171716,
-                      ),
-                      const Spacer(),
-                      if (region[index].select) const Icon(Icons.check)
-                    ],
+                child: Transform.rotate(
+                  angle: pi,
+                  child: SvgPicture.asset(
+                    'assets/icons/arrow_right.svg',
+                    height: 16.h,
+                    width: 16.h,
                   ),
                 ),
-              );
-            })),
-      ),
-    ]);
+              ),
+              SizedBox(width: 12.h),
+              Text(
+                'Регионы',
+                style: CustomTextStyle.black_21_w700,
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          ScaleButton(
+            bound: 0.02,
+            child: Container(
+              height: 55.h,
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'Все регионы',
+                    style: CustomTextStyle.black_13_w400_171716,
+                  ),
+                  const Spacer(),
+                  Switch.adaptive(
+                    value: allCountry,
+                    onChanged: (value) {
+                      allCountry = !allCountry;
+                      String str = '';
+                      for (var element in allRegoins) {
+                        element.select = value;
+                        str += '${element.name}, ';
+                        if (element.select == true) {
+                          isRegion.add(element.name);
+                        }
+                        if (element.select == false) {
+                          isRegion.remove(element.name);
+                        }
+                        print(isRegion);
+                      }
+                      country = str;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          SizedBox(
+            height: 700.h,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: region.length,
+                padding: EdgeInsets.only(left: 10.w),
+                itemBuilder: ((context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      region[index].select = !region[index].select;
+                      setState(() {});
+                      if (region[index].select == true) {
+                        isRegion.add(region[index].name);
+                      }
+                      if (region[index].select == false) {
+                        isRegion.remove(region[index].name);
+                      }
+                    },
+                    child: Container(
+                      height: 40.h,
+                      color: Colors.transparent,
+                      child: Row(
+                        children: [
+                          Text(
+                            region[index].name,
+                            style: CustomTextStyle.black_13_w500_171716,
+                          ),
+                          const Spacer(),
+                          if (region[index].select) const Icon(Icons.check)
+                        ],
+                      ),
+                    ),
+                  );
+                })),
+          ),
+        ]);
   }
 
   List<City> regionList = [];
@@ -1624,24 +1784,31 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   List<CategorySelect> listCategory2 = [
     CategorySelect(
       title: 'Услуги пешего курьера',
+      id: 1,
     ),
     CategorySelect(
       title: 'Услуги курьера на легковом авто',
+      id: 2,
     ),
     CategorySelect(
       title: 'Купить и доставить',
+      id: 3,
     ),
     CategorySelect(
       title: 'Срочная доставка',
+      id: 4,
     ),
     CategorySelect(
       title: 'Доставка продуктов',
+      id: 5,
     ),
     CategorySelect(
       title: 'Услуги пешего курьера',
+      id: 6,
     ),
     CategorySelect(
       title: 'Курьер на день',
+      id: 7,
     ),
   ];
 }
