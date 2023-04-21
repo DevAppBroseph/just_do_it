@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +10,7 @@ import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_link
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-enum SocialMedia{facebook, instagram, tiktok, email}
+enum SocialMedia { facebook, instagram, tiktok, email }
 
 class ReferalPage extends StatefulWidget {
   const ReferalPage({super.key});
@@ -22,35 +20,35 @@ class ReferalPage extends StatefulWidget {
 }
 
 class _ReferalPageState extends State<ReferalPage> {
- Future share(SocialMedia socialplatform) async{
-  const text = 'Ваша реферальная ссылка';
-  final urlShare = Uri.encodeComponent('${user?.link}');
-  final urls = {
-    SocialMedia.facebook: 'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.instagram:'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.tiktok:'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.email:'mailto:?body=$text\n$urlShare',
-  };
-  final url = urls[socialplatform]!;
-  final uri = Uri.parse(url);
-  if(await canLaunchUrl(uri)){
-    await launchUrl(uri);
+  Future share(SocialMedia socialplatform) async {
+    const text = 'Ваша реферальная ссылка';
+    final urlShare = Uri.encodeComponent('${user?.link}');
+    final urls = {
+      SocialMedia.facebook:
+          'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
+      SocialMedia.instagram:
+          'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
+      SocialMedia.tiktok:
+          'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
+      SocialMedia.email: 'mailto:?body=$text\n$urlShare',
+    };
+    final url = urls[socialplatform]!;
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
- }
-    late UserRegModel? user;
-   
-   @override
-   void initState() {
+  late UserRegModel? user;
+
+  @override
+  void initState() {
     user = BlocProvider.of<ProfileBloc>(context).user;
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    
-
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -132,7 +130,14 @@ class _ReferalPageState extends State<ReferalPage> {
                 duration: const Duration(milliseconds: 50),
                 bound: 0.01,
                 onTap: () {
-                  FirebaseDynamicLinksService().share(user?.link);
+                  String code = '';
+                  for (int i = 0; i < user!.link!.length; i++) {
+                    if (RegExp(r'[0-9]').hasMatch(user!.link![i])) {
+                      code += user!.link![i];
+                    }
+                  }
+
+                  FirebaseDynamicLinksService().share(int.parse(code));
                 },
                 child: Container(
                   height: 55.h,
@@ -189,7 +194,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             share(SocialMedia.email);
                           },
                           child: Container(
@@ -205,7 +210,7 @@ class _ReferalPageState extends State<ReferalPage> {
                         ),
                         SizedBox(width: 8.h),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             share(SocialMedia.instagram);
                           },
                           child: Container(
@@ -221,7 +226,7 @@ class _ReferalPageState extends State<ReferalPage> {
                         ),
                         SizedBox(width: 8.h),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             share(SocialMedia.facebook);
                           },
                           child: Container(
@@ -237,7 +242,7 @@ class _ReferalPageState extends State<ReferalPage> {
                         ),
                         SizedBox(width: 8.h),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             share(SocialMedia.tiktok);
                           },
                           child: Container(

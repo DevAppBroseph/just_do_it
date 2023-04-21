@@ -37,30 +37,36 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   void initState() {
-    
     // String? access = BlocProvider.of<PofileBloc>(context).access;
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    
-    if(Platform.isAndroid){
-      FirebaseDynamicLinks.instance.getInitialLink().then((value){ if(value != null) parseTripRefCode(value); });
+
+    if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefCode(value);
+      });
     }
-    FirebaseDynamicLinks.instance.onLink.listen((event) { parseTripRefCode(event);});
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefCode(event);
+    });
     super.initState();
-     notificationInit();
+    notificationInit();
   }
+
   void parseTripRefCode(PendingDynamicLinkData event) async {
     String? refCode = event.link.queryParameters['ref_code'];
-}
-  
-  
-  Future <void> notificationInit() async{
+    log('OPEN WITH REFCODE $refCode');
+    if (refCode != null) {
+      BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
+    }
+  }
+
+  Future<void> notificationInit() async {
     await NotificationService().inject();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     user = BlocProvider.of<ProfileBloc>(context).user;
 
     return MediaQuery(
@@ -261,7 +267,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                               ),
                                               SizedBox(height: 4.h),
                                               Text(
-                                                 user?.balance.toString() ?? '0',
+                                                user?.balance.toString() ?? '0',
                                                 style: CustomTextStyle
                                                     .black_15_w500_171716,
                                               ),

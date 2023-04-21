@@ -21,6 +21,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   List<Activities> activities = [];
 
+  int? refCode;
+
+  void setRef(int? value) => refCode = value;
+
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
     bool res = await Repository().editPassword(event.password, event.token);
     if (res) {
@@ -64,8 +68,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res =
-        await Repository().confirmCodeRegistration(event.phone, event.code, event.refCode);
+    String? res = await Repository()
+        .confirmCodeRegistration(event.phone, event.code, refCode);
     if (res != null) {
       emit(ConfirmCodeRegistrSuccessState(res));
     } else {
