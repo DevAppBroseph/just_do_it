@@ -38,6 +38,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool allCity = false;
   bool allCountry = false;
   int groupValueCity = 0;
+  String str = '';
+  String str2 = '';
   int? groupValueCountry;
   Activities? selectActivities;
   List<int?> selectSubCategory = [];
@@ -275,7 +277,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       keyWordController.text = '';
                       isRegion = [];
                       selectSubCategory = [];
-                      print(selectSubCategory);
+
+                      country = '';
+                      setState(() {});
                     },
                     child: Text(
                       'Очистить',
@@ -786,6 +790,24 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   onChanged: (value) {
                     allCategory = !allCategory;
                     setState(() {});
+                    if (allCategory == true) {
+                      for (int i = 0; i < activities.length; i++) {
+                        for (int y = 0; y < activities[i].subcategory.length; y++) {
+                          activities[i].subcategory[y].isSelect = true;
+                          selectSubCategory.add(activities[i].subcategory[y].id);
+                        }
+                        activities[i].isSelect = true;
+                      }
+                    }
+                    if (allCategory == false) {
+                      for (int i = 0; i < activities.length; i++) {
+                        for (int y = 0; y < activities[i].subcategory.length; y++) {
+                          activities[i].subcategory[y].isSelect = false;
+                          selectSubCategory = [];
+                        }
+                        activities[i].isSelect = false;
+                      }
+                    }
                   },
                 ),
               ],
@@ -1358,14 +1380,26 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 itemBuilder: ((context, index) {
                   return GestureDetector(
                     onTap: () {
+                      String str1 = '';
                       region[index].select = !region[index].select;
-                      setState(() {});
+
                       if (region[index].select == true) {
                         isRegion.add(region[index].name);
+
+                        str += '${region[index].name}, ';
                       }
                       if (region[index].select == false) {
                         isRegion.remove(region[index].name);
+                        str1 = '${region[index].name}, ';
                       }
+
+                      if (isRegion.isEmpty) {
+                        print(1);
+                        str = '';
+                      }
+                      country = str.replaceAll(str1, '');
+
+                      setState(() {});
                     },
                     child: Container(
                       height: 40.h,
