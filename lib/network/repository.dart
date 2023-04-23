@@ -449,6 +449,8 @@ class Repository {
       ),
     );
 
+    log('message connect ${response.data}');
+
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
       for (var element in response.data) {

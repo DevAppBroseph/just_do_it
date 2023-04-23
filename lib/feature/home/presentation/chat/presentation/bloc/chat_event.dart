@@ -19,10 +19,7 @@ class SendMessageEvent extends ChatEvent {
   SendMessageEvent(this.message, this.id, this.myId);
 }
 
-class GetListMessage extends ChatEvent {
-  String access;
-  GetListMessage(this.access);
-}
+class GetListMessage extends ChatEvent {}
 
 class GetListMessageItem extends ChatEvent {
   String access;

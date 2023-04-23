@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
+    BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     Future.delayed(Duration(seconds: 3), () {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
@@ -111,6 +112,10 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
             builder: (context, snapshot) {
+              int undreadMessage = 0;
+              for (var element in BlocProvider.of<ChatBloc>(context).chatList) {
+                undreadMessage += element.countUnreadMessage ?? 0;
+              }
               return MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 1.0),
                 child: Container(
@@ -150,6 +155,8 @@ class _HomePageState extends State<HomePage> {
                           'assets/icons/messages.svg',
                           'Чат',
                           3,
+                          counderMessage:
+                              undreadMessage != 0 ? undreadMessage : null,
                         ),
                         itemBottomNavigatorBar(
                           'assets/icons/profile.svg',
@@ -178,7 +185,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(String icon, String label, int index) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index,
+      {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
         final bloc = BlocProvider.of<ProfileBloc>(context);
@@ -209,18 +217,44 @@ class _HomePageState extends State<HomePage> {
           width: 50.w,
           height: 46.w,
           color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              SvgPicture.asset(
-                icon,
-                color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    icon,
+                    color:
+                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    label,
+                    style: CustomTextStyle.black_12_w400_292D32,
+                  ),
+                ],
               ),
-              SizedBox(height: 4.h),
-              Text(
-                label,
-                style: CustomTextStyle.black_12_w400_292D32,
-              ),
+              if (counderMessage != null)
+                Padding(
+                  padding: EdgeInsets.only(right: 20.h),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      height: 19.h,
+                      width: 19.h,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(100.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$counderMessage',
+                          style: CustomTextStyle.white_10_w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),

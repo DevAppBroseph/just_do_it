@@ -54,7 +54,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
-    print(idChat);
     messages.clear();
     for (var element in res) {
       messages.add(
@@ -72,7 +71,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     chatList.clear();
-    final res = await Repository().getListMessage(event.access);
+    final token = await Storage().getAccessToken();
+    final res = await Repository().getListMessage(token!);
     chatList.addAll(res);
     emit(UpdateListMessageState(idChat));
   }
@@ -114,7 +114,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             );
           }
           add(GetListMessageItem(token ?? ''));
-          add(GetListMessage(token ?? ''));
+          add(GetListMessage());
         } catch (e) {
           log('message catch connection destroyed, for reason: $e');
         }

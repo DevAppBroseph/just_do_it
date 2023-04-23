@@ -31,8 +31,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void getInitMessage() async {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    BlocProvider.of<ChatBloc>(context).add(GetListMessage(access!));
+    BlocProvider.of<ChatBloc>(context).add(GetListMessage());
   }
 
   @override
@@ -117,7 +116,6 @@ class _ChatPageState extends State<ChatPage> {
         bound: 0.02,
         onTap: () async {
           final chatBloc = BlocProvider.of<ChatBloc>(context);
-          final profileBloc = BlocProvider.of<ProfileBloc>(context);
           chatBloc.editShowPersonChat(false);
           chatBloc.editChatId(chat.id);
           chatBloc.messages = [];
@@ -205,11 +203,27 @@ class _ChatPageState extends State<ChatPage> {
                             ],
                           ),
                           SizedBox(height: 8.h),
-                          Text(
-                            chat.lastMsg?.text ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: CustomTextStyle.black_14_w400_171716,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  chat.lastMsg?.text ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: CustomTextStyle.black_14_w400_171716,
+                                ),
+                              ),
+                              if (chat.lastMsg?.unread != null &&
+                                  chat.lastMsg!.unread!)
+                                Container(
+                                  height: 10.h,
+                                  width: 10.h,
+                                  decoration: BoxDecoration(
+                                    color: ColorStyles.yellowFFCA0D,
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                ),
+                            ],
                           ),
                           SizedBox(height: 8.h),
                           // Text(
