@@ -218,6 +218,7 @@ class _HomePageState extends State<HomePage> {
           height: 46.w,
           color: Colors.transparent,
           child: Stack(
+            alignment: Alignment.center,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
