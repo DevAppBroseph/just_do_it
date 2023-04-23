@@ -165,7 +165,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             child: Center(
                               child: Text(
                                 'jobyfine'.toUpperCase(),
-                                style: CustomTextStyle.black_32_w900_171716,
+                                style: CustomTextStyle.black_39_w900_171716,
                               ),
                             ),
                           ),
@@ -195,7 +195,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           Text(
                                             'Добро пожаловать,',
                                             style: CustomTextStyle
-                                                .black_13_w400_515150,
+                                                .black_14_w400_515150,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: null,
                                           ),
@@ -203,7 +203,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           AutoSizeText(
                                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
                                             style: TextStyle(
-                                                fontSize: 32.sp,
+                                                fontSize: 33.sp,
                                                 fontWeight: FontWeight.w800),
                                             maxLines: 2,
                                           ),
@@ -241,7 +241,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                               Text(
                                                 'Рейтинг',
                                                 style: CustomTextStyle
-                                                    .grey_13_w400,
+                                                    .grey_14_w400,
                                               ),
                                               SizedBox(height: 6.h),
                                               Row(
@@ -256,7 +256,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         : reviews!.ranking!
                                                             .toString(),
                                                     style: CustomTextStyle
-                                                        .black_15_w500_171716,
+                                                        .black_16_w600_171716,
                                                   ),
                                                 ],
                                               ),
@@ -264,13 +264,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                               Text(
                                                 'Баллы:',
                                                 style: CustomTextStyle
-                                                    .grey_13_w400,
+                                                    .grey_14_w400,
                                               ),
                                               SizedBox(height: 4.h),
                                               Text(
                                                 user?.balance.toString() ?? '0',
                                                 style: CustomTextStyle
-                                                    .black_15_w500_171716,
+                                                    .black_16_w600_171716,
                                               ),
                                             ],
                                           ),
@@ -294,7 +294,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       children: [
                         Text(
                           'Посмотреть как:',
-                          style: CustomTextStyle.black_17_w800,
+                          style: CustomTextStyle.black_18_w800,
                         ),
                       ],
                     ),
@@ -344,11 +344,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Заказчик',
                                         style: CustomTextStyle
-                                            .black_13_w400_171716,
+                                            .black_14_w400_171716,
                                       ),
                                       Text(
                                         'Размещай задания',
-                                        style: CustomTextStyle.grey_11_w400,
+                                        style: CustomTextStyle.grey_12_w400,
                                       ),
                                     ],
                                   ),
@@ -398,11 +398,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Исполнитель',
                                         style: CustomTextStyle
-                                            .black_13_w400_171716,
+                                            .black_14_w400_171716,
                                       ),
                                       Text(
                                         'Выполняй работу',
-                                        style: CustomTextStyle.grey_11_w400,
+                                        style: CustomTextStyle.grey_12_w400,
                                       ),
                                     ],
                                   ),
@@ -464,7 +464,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Узнай больше о проекте!',
                                         style: CustomTextStyle
-                                            .black_15_w600_171716,
+                                            .black_16_w600_171716,
                                       ),
                                       const Spacer(),
                                       SvgPicture.asset(
@@ -542,7 +542,7 @@ class _WelcomPageState extends State<WelcomPage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -551,7 +551,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     width: 100.w,
                     child: Text(
                       '- $choice',
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey_14_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -614,7 +614,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Text(
                     label,
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                   const Spacer(),
                 ],

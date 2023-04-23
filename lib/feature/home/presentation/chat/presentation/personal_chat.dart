@@ -103,7 +103,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                     const Spacer(),
                                     Text(
                                       'Профиль',
-                                      style: CustomTextStyle.black_21_w700,
+                                      style: CustomTextStyle.black_22_w700,
                                     ),
                                     const Spacer(),
                                     SizedBox(width: 30.w),
@@ -127,7 +127,7 @@ class _PersonalChatState extends State<PersonalChat> {
                     child: AutoSizeText(
                       // 'Яковлев Максим Алексеевич',
                       widget.name,
-                      style: CustomTextStyle.black_21_w700,
+                      style: CustomTextStyle.black_22_w700,
                       maxLines: 1,
                     ),
                   ),

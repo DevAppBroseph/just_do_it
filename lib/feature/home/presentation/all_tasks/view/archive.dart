@@ -42,7 +42,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       child: Text(
                         'В архиве',
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 21.sp,
                           color: Colors.black,
                         ),
                       ),
@@ -103,7 +103,7 @@ class _ArchivePageState extends State<ArchivePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CeateTasks();
+                          return CeateTasks(customer: true);
                         },
                       ),
                     );

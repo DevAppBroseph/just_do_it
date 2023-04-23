@@ -50,7 +50,7 @@ class _TasksPageState extends State<TasksPage> {
                       alignment: Alignment.center,
                       child: Text(
                         'Мои задания',
-                        style: CustomTextStyle.black_21_w700_171716,
+                        style: CustomTextStyle.black_22_w700_171716,
                       ),
                     ),
                     Align(
@@ -110,14 +110,8 @@ class _TasksPageState extends State<TasksPage> {
                       child: Text(
                         'Я исполнитель',
                         style: snapshot.data! == 1
-                            ? CustomTextStyle.black_13_w400_171716
-                            : CustomTextStyle.white_13_w400,
-                        // style: TextStyle(
-                        //   fontFamily: 'SFPro',
-                        //   fontSize: 12.sp,
-                        //   color:
-                        //       snapshot.data! == 1 ? Colors.black : Colors.white,
-                        // ),
+                            ? CustomTextStyle.black_14_w400_171716
+                            : CustomTextStyle.white_14_w400,
                       ),
                     ),
                   ),
@@ -145,8 +139,8 @@ class _TasksPageState extends State<TasksPage> {
                       child: Text(
                         'Я заказчик',
                         style: snapshot.data! == 0
-                            ? CustomTextStyle.black_13_w400_171716
-                            : CustomTextStyle.white_13_w400,
+                            ? CustomTextStyle.black_14_w400_171716
+                            : CustomTextStyle.white_14_w400,
                       ),
                     ),
                   ),

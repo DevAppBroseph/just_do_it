@@ -56,7 +56,7 @@ class _DatePickerState extends State<DatePicker> {
                           child: Text(
                             'Готово',
                             style:
-                                TextStyle(fontSize: 14.sp, color: Colors.black),
+                                TextStyle(fontSize: 15.sp, color: Colors.black),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -68,8 +68,8 @@ class _DatePickerState extends State<DatePicker> {
                             Navigator.of(ctx).pop();
                             widget.onEdit(
                               widget.selectRegion,
-                              widget.startDate!,
-                              widget.endDate!,
+                              widget.startDate,
+                              widget.endDate,
                             );
                           },
                         ),
@@ -167,14 +167,14 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'Дата начала',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.startDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
                           // : 'Выберите дату начала выполнения',
-                          style: CustomTextStyle.black_13_w400_171716,
+                          style: CustomTextStyle.black_14_w400_171716,
                         ),
                     ],
                   ),
@@ -209,14 +209,14 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'Дата завершения',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),
                           // : 'Выберите дату завершения задачи',
-                          style: CustomTextStyle.black_13_w400_171716,
+                          style: CustomTextStyle.black_14_w400_171716,
                         ),
                     ],
                   ),
@@ -246,7 +246,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           'Бюджет от ₽',
-                          style: CustomTextStyle.grey_13_w400,
+                          style: CustomTextStyle.grey_14_w400,
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -273,7 +273,7 @@ class _DatePickerState extends State<DatePicker> {
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
                               maxLines: null,
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                               textEditingController: widget.coastMinController,
                             ),
                           ],
@@ -301,7 +301,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           'Бюджет до ₽',
-                          style: CustomTextStyle.grey_13_w400,
+                          style: CustomTextStyle.grey_14_w400,
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -328,7 +328,7 @@ class _DatePickerState extends State<DatePicker> {
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
                               maxLines: null,
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                               textEditingController: widget.coastMaxController,
                             ),
                           ],
@@ -351,7 +351,7 @@ class _DatePickerState extends State<DatePicker> {
             child: CustomTextField(
               fillColor: ColorStyles.greyF9F9F9,
               hintText: 'Выбрать регион',
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -429,7 +429,7 @@ class _DatePickerState extends State<DatePicker> {
                                     child: Text(
                                       e,
                                       style:
-                                          CustomTextStyle.black_13_w400_515150,
+                                          CustomTextStyle.black_14_w400_515150,
                                     ),
                                   ),
                                   const Spacer(),
@@ -457,10 +457,11 @@ class _DatePickerState extends State<DatePicker> {
           CustomButton(
             onTap: () {},
             btnColor: ColorStyles.purpleA401C4,
-            textLabel: const Text(
+            textLabel: Text(
               'Поднять объявление наверх',
               style: TextStyle(
                 color: Colors.white,
+                fontSize: 14.sp,
               ),
             ),
           ),

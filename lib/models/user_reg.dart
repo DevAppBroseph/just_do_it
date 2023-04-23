@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ArrayImages {
   String? linkUrl;
   Uint8List? byte;
+  File? file;
 
-  ArrayImages(this.linkUrl, this.byte);
+  ArrayImages(this.linkUrl, this.byte, {this.file});
 }
 
 class UserRegModel {
@@ -26,6 +29,7 @@ class UserRegModel {
   bool? isEntity;
   List<ArrayImages>? images;
   Uint8List? cv;
+  String? cvType;
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
@@ -52,6 +56,7 @@ class UserRegModel {
     this.isEntity,
     this.images,
     this.cv,
+    this.cvType,
     this.groups,
     this.activities,
     this.activitiesDocument,
@@ -75,6 +80,7 @@ class UserRegModel {
     String? activity,
     List<ArrayImages>? images,
     Uint8List? cv,
+    String? cvType,
     List<dynamic>? groups,
     List<Activities>? activities,
     List<int>? activitiesDocument,
@@ -98,6 +104,7 @@ class UserRegModel {
     this.activity = activity ?? this.activity;
     this.images = images ?? this.images;
     this.cv = cv ?? this.cv;
+    this.cvType = cvType ?? this.cvType;
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
     this.region = region ?? this.region;
@@ -176,6 +183,8 @@ class UserRegModel {
         photo!,
         filename: '${DateTime.now()}.jpg',
       );
+    } else {
+      data['photo'] = null;
     }
     data['sex'] = sex;
     data['doc_type'] = docType;
@@ -202,7 +211,7 @@ class UserRegModel {
     if (cv != null) {
       data['CV'] = MultipartFile.fromBytes(
         cv!,
-        filename: DateTime.now().toString(),
+        filename: DateTime.now().toString() + '.$cvType!',
       );
     }
     data['groups'] = groups;
@@ -235,7 +244,8 @@ class Activities {
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
+  Activities(
+      this.isSelect, this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
@@ -256,7 +266,7 @@ class Subcategory {
   int id;
   String? description;
 
-  Subcategory( this.isSelect, {required this.id, required this.description});
+  Subcategory(this.isSelect, {required this.id, required this.description});
 
   factory Subcategory.fromJson(Map<String, dynamic> data) {
     int id = data['id'];

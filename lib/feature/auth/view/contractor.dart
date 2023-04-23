@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
 
 enum CountryCode { ru, oae }
@@ -59,7 +60,7 @@ class _ContractorState extends State<Contractor> {
   TextEditingController regionController = TextEditingController();
   List<String> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
+  File? image;
   List<ArrayImages> photos = [];
   File? cv;
   bool confirmTermsPolicy = false;
@@ -96,8 +97,8 @@ class _ContractorState extends State<Contractor> {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file.readAsBytesSync();
-      user.copyWith(photo: image);
+      image = file;
+      user.copyWith(photo: image?.readAsBytesSync());
     }
     setState(() {});
   }
@@ -108,9 +109,9 @@ class _ContractorState extends State<Contractor> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync()));
+        files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
       }
-      photos.clear();
+      // photos.clear();
       setState(() {
         photos.addAll(files);
         user.copyWith(images: photos);
@@ -378,7 +379,7 @@ class _ContractorState extends State<Contractor> {
                       : ColorStyles.greyE0E6EE,
               textLabel: Text(
                 page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_15_w600_171716,
+                style: CustomTextStyle.black_16_w600_171716,
               ),
             ),
             SizedBox(height: 18.h),
@@ -394,7 +395,7 @@ class _ContractorState extends State<Contractor> {
               btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'Назад',
-                style: CustomTextStyle.black_15_w600_515150,
+                style: CustomTextStyle.black_16_w600_515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -417,7 +418,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваше имя*',
           height: 50.h,
           textEditingController: firstnameController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -437,7 +438,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваша фамилия*',
           height: 50.h,
           textEditingController: lastnameController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -456,7 +457,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_13_w400_171716,
+              style: CustomTextStyle.black_14_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -497,7 +498,7 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             // MaskTextInputFormatter(
             //   // initialText: '',
@@ -543,7 +544,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'E-mail*',
           height: 50.h,
           textEditingController: emailController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -584,7 +585,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: passwordController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -625,7 +626,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -646,7 +647,7 @@ class _ContractorState extends State<Contractor> {
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -670,8 +671,8 @@ class _ContractorState extends State<Contractor> {
                   // launch('https://dzen.ru/news?issue_tld=by');
                 },
                 child: Text(
-                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
-                  style: CustomTextStyle.black_13_w400_515150
+                  'Согласен на обработку персональных данных и с пользовательским соглашением',
+                  style: CustomTextStyle.black_14_w400_515150
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -696,7 +697,7 @@ class _ContractorState extends State<Contractor> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -733,6 +734,63 @@ class _ContractorState extends State<Contractor> {
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
+        if (image != null) SizedBox(height: 6.h),
+        if (image != null)
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  OpenFile.open(image?.path);
+                },
+                child: SizedBox(
+                  height: 60.h,
+                  width: 60.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50.h,
+                        width: 50.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Image.memory(
+                            image!.readAsBytesSync(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            image = null;
+                            user.photo = null;
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 15.h,
+                            width: 15.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(40.r)),
+                            child: Center(
+                              child: Icon(
+                                Icons.close,
+                                size: 10.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         SizedBox(height: 16.h),
         GestureDetector(
           key: _countryKey,
@@ -751,7 +809,7 @@ class _ContractorState extends State<Contractor> {
           ),
           child: CustomTextField(
             hintText: 'Страна*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -782,7 +840,7 @@ class _ContractorState extends State<Contractor> {
           },
           child: CustomTextField(
             hintText: 'Регион*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -809,14 +867,14 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Документа',
+            'Документ',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Документа',
+                hintText: 'Документ',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -927,7 +985,7 @@ class _ContractorState extends State<Contractor> {
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
                     hintText: 'Описание своего опыта',
-                    hintStyle: CustomTextStyle.grey_13_w400,
+                    hintStyle: CustomTextStyle.grey_14_w400,
                     maxLines: 6,
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
@@ -955,7 +1013,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/500',
-                    style: CustomTextStyle.grey_11_w400,
+                    style: CustomTextStyle.grey_12_w400,
                   ),
                 ),
               ),
@@ -963,6 +1021,132 @@ class _ContractorState extends State<Contractor> {
           ),
         ),
         SizedBox(height: 16.h),
+        if (photos.isNotEmpty || cv != null)
+          SizedBox(
+            height: 60.h,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                if (photos.isNotEmpty)
+                  Row(
+                    children: photos
+                        .map(
+                          (e) => GestureDetector(
+                            onTap: () {
+                              OpenFile.open(e.file!.path);
+                            },
+                            child: SizedBox(
+                              height: 60.h,
+                              width: 60.h,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 50.h,
+                                    width: 50.h,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.memory(
+                                        e.byte!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        photos.remove(e);
+                                        user.images = photos;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 15.h,
+                                        width: 15.h,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(40.r)),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 10.h,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                if (cv != null)
+                  SizedBox(
+                    height: 60.h,
+                    width: 60.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            OpenFile.open(cv!.path);
+                          },
+                          child: Container(
+                            height: 50.h,
+                            width: 50.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                SvgImg.documentText,
+                                height: 25.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              cv = null;
+                              user.cv = null;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 15.h,
+                              width: 15.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
+                                  borderRadius: BorderRadius.circular(40.r)),
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  size: 10.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
         Row(
           children: [
             ScaleButton(
@@ -970,8 +1154,8 @@ class _ContractorState extends State<Contractor> {
               bound: 0.01,
               onTap: _selectImages,
               child: SizedBox(
-                width: 145.w,
                 height: 40.h,
+                width: 150.w,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -991,10 +1175,10 @@ class _ContractorState extends State<Contractor> {
                                 width: 14.h,
                                 child: SvgPicture.asset(SvgImg.addCircle),
                               ),
-                              SizedBox(width: 9.17.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 'Изображения (10мб)',
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               )
                             ],
                           ),
@@ -1015,7 +1199,7 @@ class _ContractorState extends State<Contractor> {
                               child: Text(
                             photos.length.toString(),
                             style:
-                                TextStyle(color: Colors.white, fontSize: 10.sp),
+                                TextStyle(color: Colors.white, fontSize: 11.sp),
                           )),
                         ),
                       )
@@ -1029,7 +1213,7 @@ class _ContractorState extends State<Contractor> {
               bound: 0.01,
               onTap: _selectCV,
               child: SizedBox(
-                width: 169.w,
+                width: 172.w,
                 height: 40.h,
                 child: Stack(
                   alignment: Alignment.center,
@@ -1050,10 +1234,10 @@ class _ContractorState extends State<Contractor> {
                                 width: 14.h,
                                 child: SvgPicture.asset(SvgImg.documentText),
                               ),
-                              SizedBox(width: 9.17.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 'Загрузить резюме (10мб)',
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               )
                             ],
                           ),
@@ -1082,7 +1266,7 @@ class _ContractorState extends State<Contractor> {
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         SizedBox(height: 2.h),
@@ -1105,7 +1289,7 @@ class _ContractorState extends State<Contractor> {
               child: Text(
                 'Представитель юридического лица',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
           ],
@@ -1127,7 +1311,7 @@ class _ContractorState extends State<Contractor> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1155,7 +1339,7 @@ class _ContractorState extends State<Contractor> {
             CustomTextField(
               hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1194,7 +1378,7 @@ class _ContractorState extends State<Contractor> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1216,7 +1400,7 @@ class _ContractorState extends State<Contractor> {
             child: CustomTextField(
               hintText: 'Дата выдачи',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1233,7 +1417,7 @@ class _ContractorState extends State<Contractor> {
             child: CustomTextField(
               hintText: 'Срок действия',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1253,7 +1437,7 @@ class _ContractorState extends State<Contractor> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),
@@ -1294,7 +1478,7 @@ class _ContractorState extends State<Contractor> {
                                 child: Text(
                                   'Готово',
                                   style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.black),
+                                      fontSize: 15.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
                                   if (dateTime == null) {

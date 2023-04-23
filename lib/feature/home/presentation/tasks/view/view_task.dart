@@ -47,7 +47,7 @@ class _TaskViewState extends State<TaskView> {
             children: [
               Text(
                 'Открыто',
-                style: CustomTextStyle.grey_11_w400,
+                style: CustomTextStyle.grey_12_w400,
               ),
               Spacer(),
               GestureDetector(
@@ -70,12 +70,12 @@ class _TaskViewState extends State<TaskView> {
           SizedBox(height: 22.h),
           Text(
             'до ${widget.selectTask.priceTo} ₽',
-            style: CustomTextStyle.black_16_w500_171716,
+            style: CustomTextStyle.black_17_w500_171716,
           ),
           SizedBox(height: 12.h),
           Text(
             widget.selectTask.name,
-            style: CustomTextStyle.black_16_w800_171716,
+            style: CustomTextStyle.black_17_w800_171716,
           ),
           SizedBox(height: 18.h),
           Row(
@@ -94,7 +94,7 @@ class _TaskViewState extends State<TaskView> {
           SizedBox(height: 18.h),
           Text(
             'Описание',
-            style: CustomTextStyle.grey_12_w400,
+            style: CustomTextStyle.grey_14_w400,
           ),
           SizedBox(height: 8.h),
           Container(
@@ -129,8 +129,7 @@ class _TaskViewState extends State<TaskView> {
                     },
                     child: Text(
                       'Показать больше',
-                      style: CustomTextStyle.blue_13_w400_336FEE
-                          .copyWith(fontSize: 10.sp),
+                      style: CustomTextStyle.blue_11_w400_336FEE,
                     ),
                   )
               ],
@@ -146,7 +145,7 @@ class _TaskViewState extends State<TaskView> {
                   children: [
                     Text(
                       'Регион',
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 6.h),
                     Text(
@@ -163,7 +162,7 @@ class _TaskViewState extends State<TaskView> {
                   children: [
                     Text(
                       'Срок исполнения',
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 6.h),
                     Text(
@@ -177,8 +176,8 @@ class _TaskViewState extends State<TaskView> {
           ),
           SizedBox(height: 50.h),
           Text(
-            'Заказчик',
-            style: CustomTextStyle.grey_12_w400,
+            widget.selectTask.asCustomer ?? false ? 'Заказчик' : 'Исполнитель',
+            style: CustomTextStyle.grey_14_w400,
           ),
           SizedBox(height: 6.h),
           ScaleButton(
@@ -217,21 +216,21 @@ class _TaskViewState extends State<TaskView> {
                     children: [
                       Text(
                         '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
-                        style: CustomTextStyle.black_16_w600_171716,
+                        style: CustomTextStyle.black_17_w600_171716,
                       ),
                       SizedBox(height: 6.h),
                       Row(
                         children: [
                           Text(
                             'Рейтинг',
-                            style: CustomTextStyle.grey_12_w400,
+                            style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(width: 8.w),
                           SvgPicture.asset('assets/icons/star.svg'),
                           SizedBox(width: 4.w),
                           Text(
                             '-',
-                            style: CustomTextStyle.black_12_w500_171716,
+                            style: CustomTextStyle.black_13_w500_171716,
                           ),
                         ],
                       ),
@@ -264,7 +263,7 @@ class _TaskViewState extends State<TaskView> {
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 'Написать',
-                style: CustomTextStyle.black_14_w600_171716,
+                style: CustomTextStyle.black_16_w600_171716,
               ),
             ),
           SizedBox(height: 18.h),
@@ -274,7 +273,7 @@ class _TaskViewState extends State<TaskView> {
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 'Откликнуться',
-                style: CustomTextStyle.black_14_w600_171716,
+                style: CustomTextStyle.black_16_w600_171716,
               ),
             )
         ],

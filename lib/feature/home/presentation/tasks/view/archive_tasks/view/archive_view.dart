@@ -72,7 +72,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                         alignment: Alignment.center,
                         child: Text(
                           'В архиве',
-                          style: CustomTextStyle.black_21_w700_171716,
+                          style: CustomTextStyle.black_22_w700_171716,
                         ),
                       )
                     ],
@@ -117,7 +117,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return CeateTasks();
+                        return CeateTasks(customer: true);
                       },
                     ),
                   );
@@ -125,7 +125,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                 btnColor: ColorStyles.yellowFFD70A,
                 textLabel: Text(
                   'Создать новое',
-                  style: CustomTextStyle.black_15_w600_171716,
+                  style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
             ),

@@ -63,12 +63,12 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Text(
                       '${owner?.firstname ?? '-'} ${owner?.lastname ?? '-'}',
-                      style: CustomTextStyle.black_16_w600_171716,
+                      style: CustomTextStyle.black_17_w600_171716,
                     ),
                     const Spacer(),
                     Text(
                       'Рейтинг',
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 9.h),
                     Row(
@@ -77,7 +77,7 @@ class _ProfileViewState extends State<ProfileView> {
                         SizedBox(width: 4.w),
                         Text(
                           owner?.ranking ?? '-',
-                          style: CustomTextStyle.black_12_w500_171716,
+                          style: CustomTextStyle.black_13_w500_171716,
                         ),
                       ],
                     ),
@@ -119,7 +119,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     Text(
                       'Резюме',
-                      style: CustomTextStyle.black_10_w400_171716.copyWith(
+                      style: CustomTextStyle.black_11_w400_171716.copyWith(
                         color: ColorStyles.blue336FEE,
                       ),
                     )
@@ -140,7 +140,7 @@ class _ProfileViewState extends State<ProfileView> {
                     SvgPicture.asset('assets/icons/clipboard.svg'),
                     Text(
                       'Паспортные данные загружены',
-                      style: CustomTextStyle.black_10_w400_171716,
+                      style: CustomTextStyle.black_11_w400_171716,
                     ),
                   ],
                 ),
@@ -156,7 +156,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               Text(
                 ' 40',
-                style: CustomTextStyle.black_12_w500_171716,
+                style: CustomTextStyle.black_13_w500_171716,
               ),
             ],
           ),
@@ -169,7 +169,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               Text(
                 ' 40',
-                style: CustomTextStyle.black_12_w500_171716,
+                style: CustomTextStyle.black_13_w500_171716,
               ),
             ],
           ),
@@ -210,7 +210,7 @@ class _ProfileViewState extends State<ProfileView> {
                           Spacer(),
                           Text(
                             'Ремонт и строительство',
-                            style: CustomTextStyle.black_10_w400_171716,
+                            style: CustomTextStyle.black_11_w400_171716,
                           )
                         ],
                       ),
@@ -246,7 +246,7 @@ class _ProfileViewState extends State<ProfileView> {
                           Spacer(),
                           Text(
                             'Красота\nи здоровье',
-                            style: CustomTextStyle.black_10_w400_171716,
+                            style: CustomTextStyle.black_11_w400_171716,
                           )
                         ],
                       ),
@@ -282,7 +282,7 @@ class _ProfileViewState extends State<ProfileView> {
                           Spacer(),
                           Text(
                             'Репетиторы\nи обучение',
-                            style: CustomTextStyle.black_10_w400_171716,
+                            style: CustomTextStyle.black_11_w400_171716,
                           )
                         ],
                       ),
@@ -315,7 +315,7 @@ class _ProfileViewState extends State<ProfileView> {
           SizedBox(height: 30.h),
           Text(
             'Опыт работы',
-            style: CustomTextStyle.grey_12_w400,
+            style: CustomTextStyle.grey_14_w400,
           ),
           SizedBox(height: 12.h),
           Container(
@@ -384,7 +384,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(width: 8.h),
                                 Text(
                                   'Перевод',
-                                  style: CustomTextStyle.blue_13_w400_336FEE,
+                                  style: CustomTextStyle.blue_14_w400_336FEE,
                                 )
                               ],
                             ),

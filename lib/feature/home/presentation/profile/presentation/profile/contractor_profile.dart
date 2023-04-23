@@ -20,6 +20,9 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ContractorProfile extends StatefulWidget {
@@ -38,6 +41,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   List<String> typeCategories = [];
   List<Activities> listCategories = [];
   List<ArrayImages> photos = [];
+  File? cv;
 
   @override
   void initState() {
@@ -55,8 +59,44 @@ class _ContractorProfileState extends State<ContractorProfile> {
       }
     }
     experienceController.text = user?.activity == null ? '' : user!.activity!;
+    if (user?.cvLink != null) downloadCV(user!.cvLink!);
 
     super.initState();
+  }
+
+  void downloadCV(String url) async {
+    Uint8List? byte = await Repository()
+        .downloadFile(url.contains(server) ? url : server + url);
+    String savePath = await getFilePath(url.split('/').last);
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    if (statuses[Permission.storage]!.isGranted) {
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(byte!);
+      cv = file;
+      await raf.close();
+      setState(() {});
+    }
+  }
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+
+    Directory? dir;
+    if (Platform.isAndroid) {
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
+    path = '${dir!.path}/$uniqueFileName';
+
+    return path;
   }
 
   _selectImages() async {
@@ -84,7 +124,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
+      log('message ${result.files.first.path!.split('.').last}');
+      this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
+      user!.copyWith(cvType: result.files.first.path!.split('.').last);
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
       setState(() {});
     }
@@ -126,44 +169,89 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              var image = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                              if (image != null) {
-                                BlocProvider.of<ProfileBloc>(context).add(
-                                  UpdateProfilePhotoEvent(photo: image),
-                                );
-                              }
-                            },
-                            child: ClipOval(
-                              child: SizedBox.fromSize(
-                                  size: Size.fromRadius(30.r),
-                                  child: user!.photoLink == null
-                                      ? Container(
-                                          height: 60.h,
-                                          width: 60.h,
-                                          padding: EdgeInsets.all(10.h),
-                                          decoration: const BoxDecoration(
-                                            color: ColorStyles.shadowFC6554,
-                                          ),
-                                          child: Image.asset(
-                                              'assets/images/camera.png'),
-                                        )
-                                      : CachedNetworkImage(
-                                          imageUrl:
-                                              user!.photoLink!.contains(server)
-                                                  ? user!.photoLink!
-                                                  : server + user!.photoLink!,
-                                          fit: BoxFit.cover,
-                                        )
-                                  // : Image.network(
-                                  //     BlocProvider.of<ProfileBloc>(context)
-                                  //         .user!
-                                  //         .photoLink!,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
+                          SizedBox(
+                            height: 70.h,
+                            width: 70.h,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    var image = await ImagePicker()
+                                        .pickImage(source: ImageSource.gallery);
+                                    if (image != null) {
+                                      BlocProvider.of<ProfileBloc>(context).add(
+                                        UpdateProfilePhotoEvent(photo: image),
+                                      );
+                                    }
+                                  },
+                                  child: ClipOval(
+                                    child: SizedBox.fromSize(
+                                        size: Size.fromRadius(30.r),
+                                        child: user!.photoLink == null
+                                            ? Container(
+                                                height: 60.h,
+                                                width: 60.h,
+                                                padding: EdgeInsets.all(10.h),
+                                                decoration: const BoxDecoration(
+                                                  color:
+                                                      ColorStyles.shadowFC6554,
+                                                ),
+                                                child: Image.asset(
+                                                    'assets/images/camera.png'),
+                                              )
+                                            : CachedNetworkImage(
+                                                imageUrl: user!.photoLink!
+                                                        .contains(server)
+                                                    ? user!.photoLink!
+                                                    : server + user!.photoLink!,
+                                                fit: BoxFit.cover,
+                                              )
+                                        // : Image.network(
+                                        //     BlocProvider.of<ProfileBloc>(context)
+                                        //         .user!
+                                        //         .photoLink!,
+                                        //     fit: BoxFit.cover,
+                                        //   ),
+                                        ),
                                   ),
+                                ),
+                                if (user?.photoLink != null)
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        user?.photo = null;
+                                        user?.photoLink = null;
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .setUser(user);
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .add(
+                                          UpdateProfilePhotoEvent(photo: null),
+                                        );
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 20.h,
+                                        width: 20.h,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(color: Colors.black)
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(100.r),
+                                          color: Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 10.h,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                              ],
                             ),
                           )
                         ],
@@ -181,7 +269,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 32.sp,
+                                    fontSize: 33.sp,
                                     fontWeight: FontWeight.w800),
                                 maxLines: 2,
                               ),
@@ -218,7 +306,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'Ваш рейтинг',
-                                style: CustomTextStyle.black_11_w500_515150,
+                                style: CustomTextStyle.black_12_w500_515150,
                               ),
                               SizedBox(height: 8.h),
                               Row(
@@ -229,7 +317,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     reviews?.ranking == null
                                         ? '-'
                                         : (reviews!.ranking!).toString(),
-                                    style: CustomTextStyle.black_19_w700_171716,
+                                    style: CustomTextStyle.black_20_w700_171716,
                                   ),
                                 ],
                               ),
@@ -257,14 +345,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 children: [
                                   Text(
                                     'Ваши баллы',
-                                    style: CustomTextStyle.black_11_w500_515150,
+                                    style: CustomTextStyle.black_12_w500_515150,
                                   ),
                                   SizedBox(height: 8.h),
                                   Row(
                                     children: [
                                       Text(
                                         user?.balance.toString() ?? '0',
-                                        style: CustomTextStyle.purple_19_w700,
+                                        style: CustomTextStyle.purple_20_w700,
                                       ),
                                     ],
                                   ),
@@ -351,7 +439,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Text(
                   'Общие настройки профиля',
-                  style: CustomTextStyle.grey_13_w400,
+                  style: CustomTextStyle.grey_14_w400,
                 ),
               ),
               SizedBox(height: 20.h),
@@ -382,12 +470,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               'Основная информация',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               'Имя, Телефон и E-mail',
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                             ),
                           ],
                         ),
@@ -430,12 +518,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               'Безопасность',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               'Пароль, паспортные данные, регион',
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                             ),
                           ],
                         ),
@@ -453,61 +541,131 @@ class _ContractorProfileState extends State<ContractorProfile> {
               SizedBox(height: 18.h),
               Row(
                 children: [
-                  Expanded(
-                    flex: 11,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: Stack(
-                        children: [
-                          ScaleButton(
-                            duration: const Duration(milliseconds: 50),
-                            bound: 0.01,
-                            onTap: _selectCV,
-                            child: Container(
-                              height: 40.h,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.h, vertical: 11.h),
-                              decoration: BoxDecoration(
-                                color: ColorStyles.greyF9F9F9,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 14.h,
-                                    width: 14.h,
-                                    child:
-                                        SvgPicture.asset(SvgImg.documentText),
-                                  ),
-                                  SizedBox(width: 9.17.w),
-                                  Text(
-                                    'Загрузить резюме (10мб)',
-                                    style: CustomTextStyle.black_11_w400,
-                                  )
-                                ],
-                              ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24.w),
+                    width: 180.w,
+                    child: Stack(
+                      children: [
+                        ScaleButton(
+                          duration: const Duration(milliseconds: 50),
+                          bound: 0.01,
+                          onTap: _selectCV,
+                          child: Container(
+                            height: 40.h,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.h, vertical: 11.h),
+                            decoration: BoxDecoration(
+                              color: ColorStyles.greyF9F9F9,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 14.h,
+                                  width: 14.h,
+                                  child: SvgPicture.asset(SvgImg.documentText),
+                                ),
+                                SizedBox(width: 9.17.w),
+                                Text(
+                                  'Загрузить резюме (10мб)',
+                                  style: CustomTextStyle.black_12_w400,
+                                )
+                              ],
                             ),
                           ),
-                          if (user?.cvLink != null)
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                height: 12.h,
-                                width: 12.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(40.r),
-                                ),
+                        ),
+                        if (cv != null)
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              height: 12.h,
+                              width: 12.h,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(40.r),
                               ),
-                            )
-                        ],
-                      ),
+                            ),
+                          )
+                      ],
                     ),
                   ),
-                  Expanded(flex: 8, child: Container()),
                 ],
               ),
+              if (cv != null) SizedBox(height: 8.h),
+              if (cv != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 60.h,
+                        width: 60.h,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                OpenFile.open(cv!.path);
+                              },
+                              child: Container(
+                                height: 50.h,
+                                width: 50.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    SvgImg.documentText,
+                                    height: 25.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  cv = null;
+
+                                  user?.cv = null;
+                                  user?.cvLink = null;
+                                  user?.cvType = null;
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context).add(
+                                    UpdateProfileCvEvent(file: null),
+                                  );
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  height: 15.h,
+                                  width: 15.h,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: const [
+                                        BoxShadow(color: Colors.black)
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.circular(40.r)),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 10.h,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               SizedBox(height: 50.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -515,7 +673,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   children: [
                     Text(
                       'Ваши категории',
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey_14_w400,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -562,7 +720,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: Text(
                         'Изменить',
                         key: _categoryButtonKey,
-                        style: CustomTextStyle.blue_13_w400_336FEE,
+                        style: CustomTextStyle.blue_14_w400_336FEE,
                       ),
                     ),
                   ],
@@ -574,12 +732,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Text(
                     'Вы не выбрали ни одной категории',
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ),
               if (user != null && typeCategories.isNotEmpty)
                 Container(
-                  height: 74.h,
+                  height: 90.h,
                   width: double.infinity,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -599,7 +757,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Text(
                   'Описание вашего опыта',
-                  style: CustomTextStyle.grey_13_w400,
+                  style: CustomTextStyle.grey_14_w400,
                 ),
               ),
               SizedBox(height: 10.h),
@@ -641,10 +799,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               hintText:
                                   "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
-                              hintStyle: CustomTextStyle.black_13_w400_515150,
+                              hintStyle: CustomTextStyle.black_14_w400_515150,
                             ),
                             controller: experienceController,
-                            style: CustomTextStyle.black_13_w400_515150,
+                            style: CustomTextStyle.black_14_w400_515150,
                             maxLines: null,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
@@ -783,7 +941,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               '${experienceController.text.length}/500',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             )
                           ],
                         )
@@ -820,7 +978,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             SizedBox(width: 9.17.w),
                             Text(
                               'Изображения',
-                              style: CustomTextStyle.black_11_w400,
+                              style: CustomTextStyle.black_12_w400,
                             ),
                           ],
                         ),
@@ -843,7 +1001,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 user?.images?.length.toString() ?? '',
                                 style: TextStyle(
                                   color: ColorStyles.whiteFFFFFF,
-                                  fontSize: 10.sp,
+                                  fontSize: 11.sp,
                                 ),
                               ),
                             ),
@@ -880,7 +1038,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         SizedBox(width: 12.w),
                         Text(
                           'Выйти из аккаунта',
-                          style: CustomTextStyle.black_13_w500_171716,
+                          style: CustomTextStyle.black_14_w500_171716,
                         ),
                       ],
                     ),
@@ -898,7 +1056,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Center(
                   child: Text(
                     'Удалить аккаунт',
-                    style: CustomTextStyle.black_13_w500_171716,
+                    style: CustomTextStyle.black_14_w500_171716,
                   ),
                 ),
               ),
@@ -926,18 +1084,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   Widget _categoryItem(Activities activitiy, int index) {
     return Container(
-      height: 74.h,
+      height: 90.h,
       width: 115.w,
       margin: const EdgeInsets.only(right: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        boxShadow: [
-          // BoxShadow(
-          //   color: Color.fromRGBO(26, 42, 97, 0.06),
-          //   offset: Offset(0, 4),
-          //   blurRadius: .h,
-          // )
-        ],
         color: index == 0
             ? const Color.fromRGBO(255, 234, 203, 1)
             : index == 1
@@ -954,17 +1105,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 server + activitiy.photo!,
                 width: 24.w,
                 height: 24.h,
-              )
-            else
-              SizedBox(height: 24.h),
-            SizedBox(height: 8.h),
+              ),
+            Spacer(),
             Text(
               activitiy.description ?? '',
-              style: CustomTextStyle.black_15_w400_515150.copyWith(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+              style: CustomTextStyle.black_11_w400_171716,
             ),
           ],
         ),

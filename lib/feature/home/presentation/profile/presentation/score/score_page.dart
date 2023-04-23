@@ -79,7 +79,7 @@ class _ScorePageState extends State<ScorePage> {
                                             Text(
                                               'Баллы',
                                               style:
-                                                  CustomTextStyle.white_21_w700,
+                                                  CustomTextStyle.white_22_w700,
                                             ),
                                           ],
                                         ),
@@ -90,7 +90,7 @@ class _ScorePageState extends State<ScorePage> {
                                 SizedBox(height: 30.h),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 24.w),
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -174,7 +174,7 @@ class _ScorePageState extends State<ScorePage> {
                                               levels[0].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
                                           if (user!.balance! >=
                                                   levels[1].mustCoins! &&
@@ -184,7 +184,7 @@ class _ScorePageState extends State<ScorePage> {
                                               levels[1].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
                                           if (user!.balance! >=
                                                   levels[2].mustCoins! &&
@@ -194,7 +194,7 @@ class _ScorePageState extends State<ScorePage> {
                                               levels[2].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
                                           if (user!.balance! >=
                                                   levels[3].mustCoins! &&
@@ -204,7 +204,7 @@ class _ScorePageState extends State<ScorePage> {
                                               levels[3].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
                                           if (user!.balance! >=
                                               levels[4].mustCoins!)
@@ -212,7 +212,7 @@ class _ScorePageState extends State<ScorePage> {
                                               levels[4].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             )
                                         ],
                                       ),
@@ -228,7 +228,7 @@ class _ScorePageState extends State<ScorePage> {
                                             Text(
                                               user!.balance!.toString(),
                                               style:
-                                                  CustomTextStyle.white_33_w800,
+                                                  CustomTextStyle.white_34_w800,
                                             ),
                                             // Text(
                                             //   'Баллов',
@@ -240,14 +240,14 @@ class _ScorePageState extends State<ScorePage> {
                                                   page = 1;
                                                   _pageController.nextPage(
                                                       duration: const Duration(
-                                                          microseconds: 1000),
-                                                      curve: Curves.bounceIn);
+                                                          milliseconds: 300),
+                                                      curve: Curves.linear);
                                                 } else {
                                                   page = 0;
                                                   _pageController.previousPage(
                                                       duration: const Duration(
-                                                          microseconds: 1000),
-                                                      curve: Curves.bounceIn);
+                                                          milliseconds: 300),
+                                                      curve: Curves.linear);
                                                 }
                                                 setState(() {});
                                               },
@@ -256,7 +256,7 @@ class _ScorePageState extends State<ScorePage> {
                                                     ? 'Сколько уровней я могу\nдостичь?'
                                                     : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
                                                 style: CustomTextStyle
-                                                    .white_13_w400
+                                                    .white_14_w400
                                                     .copyWith(
                                                         decoration:
                                                             TextDecoration
@@ -435,7 +435,7 @@ class _ScorePageState extends State<ScorePage> {
                                     child: Text(
                                       'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
                                       style:
-                                          CustomTextStyle.black_13_w400_171716,
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                   ListView.separated(
@@ -499,7 +499,7 @@ class _ScorePageState extends State<ScorePage> {
       children: [
         Container(
           height: 70,
-          padding: EdgeInsets.symmetric(horizontal: 12.5.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           margin: EdgeInsets.symmetric(horizontal: 19.w),
           child: Stack(alignment: Alignment.center, children: [
             Align(
@@ -542,14 +542,14 @@ class _ScorePageState extends State<ScorePage> {
         SizedBox(height: 4.h),
         Text(
           title,
-          style: CustomTextStyle.purple_13_w600,
+          style: CustomTextStyle.purple_14_w600,
         ),
         SizedBox(height: 4.h),
         SizedBox(
           width: 25.w,
           child: Text(
             score.toString(),
-            style: CustomTextStyle.black_11_w400_515150,
+            style: CustomTextStyle.black_12_w400_515150,
           ),
         ),
       ],
@@ -586,14 +586,14 @@ class _ScorePageState extends State<ScorePage> {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.purple_13_w600,
+                style: CustomTextStyle.purple_14_w600,
               ),
               SizedBox(height: 3.h),
               SizedBox(
                 width: 230.w,
                 child: Text(
                   'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-                  style: CustomTextStyle.black_11_w400_515150,
+                  style: CustomTextStyle.black_12_w400_515150,
                 ),
               ),
             ],

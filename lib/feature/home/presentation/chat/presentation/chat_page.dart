@@ -59,7 +59,7 @@ class _ChatPageState extends State<ChatPage> {
                   const Spacer(),
                   Text(
                     'Сообщения',
-                    style: CustomTextStyle.black_21_w700,
+                    style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
@@ -188,7 +188,7 @@ class _ChatPageState extends State<ChatPage> {
                                 width: 180.w,
                                 child: AutoSizeText(
                                   '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
-                                  style: CustomTextStyle.black_13_w400_000000,
+                                  style: CustomTextStyle.black_14_w400_000000,
                                   maxLines: 1,
                                 ),
                               ),
@@ -199,7 +199,7 @@ class _ChatPageState extends State<ChatPage> {
                                         .toString()
                                         .substring(0, 10) ??
                                     '-',
-                                style: CustomTextStyle.grey_11_w400,
+                                style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -209,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
                             chat.lastMsg?.text ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: CustomTextStyle.black_13_w400_171716,
+                            style: CustomTextStyle.black_14_w400_171716,
                           ),
                           SizedBox(height: 8.h),
                           // Text(

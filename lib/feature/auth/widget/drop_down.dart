@@ -81,7 +81,7 @@ void iconSelectModal(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -136,7 +136,7 @@ void iconSelectModal(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -238,7 +238,7 @@ void iconSelectModalCategories(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -324,7 +324,7 @@ void iconSelectModalCategories(
                                             list[index].description!,
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -431,7 +431,7 @@ void showCountryWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -492,7 +492,7 @@ void showCountryWidget(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -593,7 +593,7 @@ void showRegionWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -654,7 +654,7 @@ void showRegionWidget(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),

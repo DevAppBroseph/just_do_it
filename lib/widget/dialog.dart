@@ -77,7 +77,7 @@ class MessageDialogs {
                       SizedBox(width: 8.h),
                       Text(
                         'Показать оригинал',
-                        style: CustomTextStyle.blue_13_w400_336FEE,
+                        style: CustomTextStyle.blue_14_w400_336FEE,
                       )
                     ],
                   ),

@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:open_file/open_file.dart';
 
 class Customer extends StatefulWidget {
   Function(int) stage;
@@ -49,7 +50,7 @@ class _CustomerState extends State<Customer> {
   List<String> typeDocument = [];
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
+  File? image;
   bool confirmTermsPolicy = false;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
@@ -76,8 +77,8 @@ class _CustomerState extends State<Customer> {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file.readAsBytesSync();
-      user.copyWith(photo: image);
+      image = file;
+      user.copyWith(photo: image?.readAsBytesSync());
     }
     setState(() {});
   }
@@ -284,7 +285,7 @@ class _CustomerState extends State<Customer> {
                     if (additionalInfo) {
                       if (serialDocController.text.isEmpty &&
                           user.docType != 'Resident_ID') {
-                        error += '\n- серию докемента';
+                        error += '\n- серию документа';
                         errorsFlag = true;
                       }
                       if (numberDocController.text.isEmpty) {
@@ -325,12 +326,19 @@ class _CustomerState extends State<Customer> {
                     }
                   }
                 },
-                btnColor: confirmTermsPolicy
-                    ? ColorStyles.yellowFFD70A
-                    : ColorStyles.greyE0E6EE,
+                btnColor: page == 0
+                    ? confirmTermsPolicy
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE
+                    : passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty &&
+                            regionController.text.isNotEmpty &&
+                            countryController.text.isNotEmpty
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE,
                 textLabel: Text(
                   page == 0 ? 'Далее' : 'Зарегистрироваться',
-                  style: CustomTextStyle.black_15_w600_171716,
+                  style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
               SizedBox(height: 18.h),
@@ -346,7 +354,7 @@ class _CustomerState extends State<Customer> {
                 btnColor: ColorStyles.greyE0E6EE,
                 textLabel: Text(
                   'Назад',
-                  style: CustomTextStyle.black_15_w600_515150,
+                  style: CustomTextStyle.black_16_w600_515150,
                 ),
               ),
               SizedBox(height: 34.h),
@@ -368,7 +376,7 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваше имя*',
           focusNode: focusNodeName,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           textEditingController: firstnameController,
           formatters: [
@@ -388,7 +396,7 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваша фамилия*',
           focusNode: focusNodeLastName,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           textEditingController: lastnameController,
           formatters: [
@@ -409,7 +417,7 @@ class _CustomerState extends State<Customer> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_13_w400_171716,
+              style: CustomTextStyle.black_14_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -446,7 +454,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 30.h),
         CustomTextField(
           hintText: 'Номер телефона*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePhone,
           textInputType: TextInputType.phone,
@@ -492,7 +500,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'E-mail*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
@@ -517,7 +525,7 @@ class _CustomerState extends State<Customer> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             contentPadding:
@@ -554,11 +562,68 @@ class _CustomerState extends State<Customer> {
             textEditingController: TextEditingController(),
           ),
         ),
+        if (image != null) SizedBox(height: 6.h),
+        if (image != null)
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  OpenFile.open(image?.path);
+                },
+                child: SizedBox(
+                  height: 60.h,
+                  width: 60.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50.h,
+                        width: 50.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Image.memory(
+                            image!.readAsBytesSync(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            image = null;
+                            user.photo = null;
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 15.h,
+                            width: 15.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(40.r)),
+                            child: Center(
+                              child: Icon(
+                                Icons.close,
+                                size: 10.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         SizedBox(height: 10.h),
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -582,8 +647,8 @@ class _CustomerState extends State<Customer> {
                   // launch('https://dzen.ru/news?issue_tld=by');
                 },
                 child: Text(
-                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
-                  style: CustomTextStyle.black_13_w400_515150
+                  'Согласен на обработку персональных данных и с пользовательским соглашением',
+                  style: CustomTextStyle.black_14_w400_515150
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -606,7 +671,7 @@ class _CustomerState extends State<Customer> {
       children: [
         CustomTextField(
           hintText: 'Пароль*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
@@ -647,7 +712,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Повторите пароль*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
@@ -699,7 +764,7 @@ class _CustomerState extends State<Customer> {
           ),
           child: CustomTextField(
             hintText: 'Страна*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -730,7 +795,7 @@ class _CustomerState extends State<Customer> {
           },
           child: CustomTextField(
             hintText: 'Регион*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -757,15 +822,15 @@ class _CustomerState extends State<Customer> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Документа',
+            'Документ',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Документа',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintText: 'Документ',
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -809,7 +874,7 @@ class _CustomerState extends State<Customer> {
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -831,7 +896,7 @@ class _CustomerState extends State<Customer> {
               child: Text(
                 'Представитель юридического лица',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
           ],
@@ -853,7 +918,7 @@ class _CustomerState extends State<Customer> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -881,7 +946,7 @@ class _CustomerState extends State<Customer> {
             CustomTextField(
               hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -920,7 +985,7 @@ class _CustomerState extends State<Customer> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -942,7 +1007,7 @@ class _CustomerState extends State<Customer> {
             child: CustomTextField(
               hintText: 'Дата выдачи',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -959,7 +1024,7 @@ class _CustomerState extends State<Customer> {
             child: CustomTextField(
               hintText: 'Срок действия',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -979,7 +1044,7 @@ class _CustomerState extends State<Customer> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),
@@ -1020,7 +1085,7 @@ class _CustomerState extends State<Customer> {
                           child: Text(
                             'Готово',
                             style:
-                                TextStyle(fontSize: 14.sp, color: Colors.black),
+                                TextStyle(fontSize: 15.sp, color: Colors.black),
                           ),
                           onPressed: () {
                             if (dateTime == null) {

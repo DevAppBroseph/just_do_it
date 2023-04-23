@@ -84,13 +84,13 @@ class _CategoryState extends State<Category> {
                     children: [
                       Text(
                         'Категория',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectCategory != null)
                         Text(
                           widget.selectCategory!.description!,
-                          style: CustomTextStyle.black_13_w400_171716,
+                          style: CustomTextStyle.black_14_w400_171716,
                         ),
                     ],
                   ),
@@ -154,7 +154,7 @@ class _CategoryState extends State<Category> {
                                     child: Text(
                                       e.description ?? '-',
                                       style:
-                                          CustomTextStyle.black_13_w400_515150,
+                                          CustomTextStyle.black_14_w400_515150,
                                     ),
                                   ),
                                   const Spacer(),
@@ -200,13 +200,13 @@ class _CategoryState extends State<Category> {
                     children: [
                       Text(
                         'Подкатегория',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectSubCategory != null)
                         Text(
                           widget.selectSubCategory?.description ?? '-',
-                          style: CustomTextStyle.black_13_w400_171716,
+                          style: CustomTextStyle.black_14_w400_171716,
                         ),
                     ],
                   ),
@@ -268,7 +268,7 @@ class _CategoryState extends State<Category> {
                                         child: Text(
                                           e.description ?? '-',
                                           style: CustomTextStyle
-                                              .black_13_w400_515150,
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
@@ -345,7 +345,7 @@ class _CategoryState extends State<Category> {
             child: CustomTextField(
               fillColor: ColorStyles.greyF9F9F9,
               hintText: 'Прикрепите фото или документ',
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               enabled: false,
               suffixIcon: Stack(

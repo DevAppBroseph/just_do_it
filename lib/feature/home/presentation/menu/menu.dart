@@ -33,7 +33,7 @@ class MenuPage extends StatelessWidget {
                 children: [
                   Text(
                     'Меню',
-                    style: CustomTextStyle.black_21_w700,
+                    style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
@@ -118,7 +118,7 @@ class MenuPage extends StatelessWidget {
                             Spacer(),
                             Text(
                               'Ru',
-                              style: CustomTextStyle.black_15_w500_171716,
+                              style: CustomTextStyle.black_16_w600_171716,
                             ),
                             Spacer(),
                             Icon(
@@ -157,7 +157,7 @@ class MenuPage extends StatelessWidget {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_17_w500_171716,
+                style: CustomTextStyle.black_18_w500_171716,
               ),
             ],
           ),
@@ -183,7 +183,7 @@ class MenuPage extends StatelessWidget {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_17_w500_171716,
+                style: CustomTextStyle.black_18_w500_171716,
               ),
             ],
           ),

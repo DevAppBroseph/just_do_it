@@ -67,7 +67,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       Text(
                         'Личный кабинет',
-                        style: CustomTextStyle.black_21_w700,
+                        style: CustomTextStyle.black_22_w700,
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -117,7 +117,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Профиль',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(
@@ -144,7 +144,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Баллы',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(
@@ -171,7 +171,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Рейтинг и отзывы',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(

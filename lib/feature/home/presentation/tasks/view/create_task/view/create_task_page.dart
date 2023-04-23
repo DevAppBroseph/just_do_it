@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CeateTasks extends StatefulWidget {
   Activities? selectCategory;
-  CeateTasks({super.key, this.selectCategory});
+  bool customer;
+  CeateTasks({
+    super.key,
+    this.selectCategory,
+    required this.customer,
+  });
 
   @override
   State<CeateTasks> createState() => _CeateTasksState();
@@ -87,12 +93,12 @@ class _CeateTasksState extends State<CeateTasks> {
                   SizedBox(height: 10.h),
                   Text(
                     'Выберите что загрузить',
-                    style: CustomTextStyle.black_14_w600_171716,
+                    style: CustomTextStyle.black_16_w600_171716,
                   ),
                   ListTile(
                     title: Text(
                       'Фото',
-                      style: CustomTextStyle.black_13_w400_292D32,
+                      style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -102,7 +108,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   ListTile(
                     title: Text(
                       'Документ',
-                      style: CustomTextStyle.black_13_w400_292D32,
+                      style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -134,6 +140,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
+    log('message ${widget.customer}');
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -164,11 +171,11 @@ class _CeateTasksState extends State<CeateTasks> {
                       SizedBox(width: 12.w),
                       Text(
                         'Создание задания',
-                        style: CustomTextStyle.black_21_w700,
+                        style: CustomTextStyle.black_22_w700,
                       ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey_21_w700,
+                        style: CustomTextStyle.grey_22_w700,
                       )
                     ],
                   ),
@@ -264,6 +271,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showLoaderWrapper(context);
 
                           Task newTask = Task(
+                            asCustomer: widget.customer,
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
@@ -331,7 +339,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
                       page == 0 ? 'Далее' : 'Создать заказ',
-                      style: CustomTextStyle.black_14_w600_171716,
+                      style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
                 ),

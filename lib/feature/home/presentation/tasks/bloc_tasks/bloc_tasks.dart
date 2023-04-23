@@ -16,21 +16,22 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     emit(TasksLoading());
     log(event.priceFrom.toString());
     // if (event.access != null) {
-      tasks = await Repository().getTaskList(
-        event.access,
-        event.query,
-        event.region,
-        event.priceFrom,
-        event.priceTo,
-        event.dateStart,
-        event.dateEnd,
-        event.subcategory,
-      );
-      tasks = tasks;
-      emit(TasksLoaded());
-      log(event.query);
+    tasks = await Repository().getTaskList(
+      event.access,
+      event.query,
+      event.region,
+      event.priceFrom,
+      event.priceTo,
+      event.dateStart,
+      event.dateEnd,
+      event.subcategory,
+      event.customer,
+    );
+    tasks = tasks;
+    emit(TasksLoaded());
+    log(event.query);
     // } else {
-      // emit(TasksError());
+    // emit(TasksError());
     // }
   }
 }

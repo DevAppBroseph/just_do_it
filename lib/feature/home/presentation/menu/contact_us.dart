@@ -49,7 +49,7 @@ class _ContactUsState extends State<ContactUs> {
                           children: [
                             Text(
                               'Связаться с нами',
-                              style: CustomTextStyle.black_21_w700,
+                              style: CustomTextStyle.black_22_w700,
                             ),
                           ],
                         ),
@@ -112,7 +112,7 @@ class _ContactUsState extends State<ContactUs> {
                     btnColor: ColorStyles.yellowFFD70B,
                     textLabel: Text(
                       'Отправить',
-                      style: CustomTextStyle.black_15_w600_171716,
+                      style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
                 ),

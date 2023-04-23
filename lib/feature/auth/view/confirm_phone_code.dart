@@ -141,7 +141,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
                               confirmCode ? 'Изменить пароль' : 'Подтвердить',
-                              style: CustomTextStyle.black_15_w600_171716,
+                              style: CustomTextStyle.black_16_w600_171716,
                             ),
                           ),
                           SizedBox(height: 18.h),
@@ -159,7 +159,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             btnColor: ColorStyles.greyE0E6EE,
                             textLabel: Text(
                               'Назад',
-                              style: CustomTextStyle.black_15_w600_515150,
+                              style: CustomTextStyle.black_16_w600_515150,
                             ),
                           ),
                         ],
@@ -228,7 +228,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             children: [
               Text(
                 'Подтверждение телефона ',
-                style: CustomTextStyle.black_21_w700,
+                style: CustomTextStyle.black_22_w700,
               )
             ],
           ),
@@ -243,11 +243,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   text: TextSpan(children: [
                     TextSpan(
                       text: 'Код подтверждения отправлен на\n',
-                      style: CustomTextStyle.black_15_w400_515150,
+                      style: CustomTextStyle.black_16_w400_515150,
                     ),
                     TextSpan(
                       text: widget.phone,
-                      style: CustomTextStyle.black_15_w400_171716,
+                      style: CustomTextStyle.black_16_w400_171716,
                     ),
                   ])),
               SizedBox(height: 18.h),
@@ -275,7 +275,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                       color: ColorStyles.greyEAECEE,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    textStyle: CustomTextStyle.black_25_w600_171716,
+                    textStyle: CustomTextStyle.black_26_w600_171716,
                   ),
                 ),
               ),
@@ -285,11 +285,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   children: [
                     TextSpan(
                       text: 'Повторно отправить код ',
-                      style: CustomTextStyle.grey_15_w400,
+                      style: CustomTextStyle.grey_16_w400,
                     ),
                     TextSpan(
                       text: '$currentSecond сек.',
-                      style: CustomTextStyle.black_15_w400_171716,
+                      style: CustomTextStyle.black_16_w400_171716,
                     ),
                   ],
                 ),
@@ -311,7 +311,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             children: [
               Text(
                 'Изменение пароля ',
-                style: CustomTextStyle.black_21_w700,
+                style: CustomTextStyle.black_22_w700,
               )
             ],
           ),
@@ -328,7 +328,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     TextSpan(
                       text:
                           'Придумайте новый пароль и никому\nне сообщайте его',
-                      style: CustomTextStyle.black_15_w400_515150,
+                      style: CustomTextStyle.black_16_w400_515150,
                     ),
                   ],
                 ),
@@ -340,7 +340,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePassword,
                 textEditingController: passwordController,
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -351,7 +351,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePasswordRepeat,
                 textEditingController: passwordRepeatController,
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),

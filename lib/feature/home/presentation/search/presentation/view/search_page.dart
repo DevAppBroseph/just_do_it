@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +46,19 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
-    context
-        .read<TasksBloc>()
-        .add(GetTasksEvent(access, '', '', '', 0, 500000, [], []));
+    context.read<TasksBloc>().add(
+          GetTasksEvent(
+            access,
+            '',
+            null,
+            null,
+            null,
+            null,
+            [],
+            [],
+            null,
+          ),
+        );
   }
 
   @override
@@ -117,8 +126,19 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(
-                                  access, value, '', '', 0, 500000, [], []));
+                              context.read<TasksBloc>().add(
+                                    GetTasksEvent(
+                                      access,
+                                      value,
+                                      '',
+                                      '',
+                                      0,
+                                      500000,
+                                      [],
+                                      [],
+                                      null,
+                                    ),
+                                  );
                             },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),
@@ -160,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     Text(
                       'Все задачи',
-                      style: CustomTextStyle.black_17_w800,
+                      style: CustomTextStyle.black_18_w800,
                     ),
                     const Spacer(),
                     ScaleButton(
@@ -193,7 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                                     Text(
                                       'Фильтр',
                                       style:
-                                          CustomTextStyle.black_13_w400_171716,
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ],
                                 ),
@@ -211,7 +231,7 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Center(
                                   child: Text(
                                     '2',
-                                    style: CustomTextStyle.white_9_w700,
+                                    style: CustomTextStyle.white_10_w700,
                                   ),
                                 ),
                               ),
@@ -299,7 +319,7 @@ class _SearchPageState extends State<SearchPage> {
                         task.description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: CustomTextStyle.black_13_w500_171716,
+                        style: CustomTextStyle.black_14_w500_171716,
                       ),
                     ),
                     const Spacer(),
@@ -312,19 +332,19 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               Text(
                                 task.region,
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               ),
                               SizedBox(height: 2.h),
                               Text(
                                 task.dateEnd,
-                                style: CustomTextStyle.grey_11_w400,
+                                style: CustomTextStyle.grey_12_w400,
                               ),
                             ],
                           ),
                           const Spacer(),
                           Text(
                             'до ${task.priceTo} ₽',
-                            style: CustomTextStyle.black_13_w500_171716,
+                            style: CustomTextStyle.black_14_w500_171716,
                           ),
                           SizedBox(width: 5.w),
                           SvgPicture.asset(

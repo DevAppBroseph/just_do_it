@@ -74,7 +74,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           'Реферальная система',
-                          style: CustomTextStyle.black_21_w700,
+                          style: CustomTextStyle.black_22_w700,
                         ),
                       ],
                     ),
@@ -87,7 +87,7 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'Это ваша реферальная ссылка',
-                style: CustomTextStyle.black_15_w500_000000,
+                style: CustomTextStyle.black_16_w500_000000,
               ),
             ),
             SizedBox(height: 8.h),
@@ -95,7 +95,7 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'За каждого нового пользователя, кто установит приложение\nпо Вашей ссылке, Вы получите от 100 баллов.',
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
             SizedBox(height: 50.h),
@@ -112,7 +112,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 children: [
                   Text(
                     'Установите приложение JOBYFINE и получите\nдополнительно 200 баллов на свой счет!',
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ],
               ),
@@ -150,7 +150,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           user?.link ?? '-',
-                          style: CustomTextStyle.white_15_w600,
+                          style: CustomTextStyle.white_16_w600,
                         ),
                         const Spacer(),
                         SvgPicture.asset('assets/icons/copy.svg')
@@ -175,7 +175,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       SizedBox(width: 24.w),
                       Text(
                         'Поделиться',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(width: 24.w),
                       Expanded(

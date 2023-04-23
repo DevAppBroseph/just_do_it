@@ -62,7 +62,7 @@ class _AboutProjectState extends State<AboutProject> {
                           children: [
                             Text(
                               'О проекте',
-                              style: CustomTextStyle.black_21_w700,
+                              style: CustomTextStyle.black_22_w700,
                             ),
                           ],
                         ),
@@ -82,7 +82,7 @@ class _AboutProjectState extends State<AboutProject> {
                         child: Center(
                           child: Text(
                             'jobyfine'.toUpperCase(),
-                            style: CustomTextStyle.black_32_w900_171716
+                            style: CustomTextStyle.black_39_w900_171716
                                 .copyWith(color: ColorStyles.yellowFFD70B),
                           ),
                         ),
@@ -92,7 +92,7 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           about?.about ?? '',
-                          style: CustomTextStyle.black_13_w400_515150,
+                          style: CustomTextStyle.black_14_w400_515150,
                         ),
                       ),
                       // Padding(
@@ -115,7 +115,7 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           'Вопрос-ответ',
-                          style: CustomTextStyle.black_21_w700_171716,
+                          style: CustomTextStyle.black_22_w700_171716,
                         ),
                       ),
                       SizedBox(height: 30.h),
@@ -146,7 +146,7 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "Пользовательское соглашение",
-                            style: CustomTextStyle.blue_15_w400_336FEE
+                            style: CustomTextStyle.blue_16_w400_336FEE
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -162,7 +162,7 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "Согласие на обработку персональных данных",
-                            style: CustomTextStyle.blue_15_w400_336FEE
+                            style: CustomTextStyle.blue_16_w400_336FEE
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -200,7 +200,7 @@ class _AboutProjectState extends State<AboutProject> {
                 child: Text(
                   question,
                   textAlign: TextAlign.start,
-                  style: CustomTextStyle.black_15_w600_171716,
+                  style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
               selectIndex == index
@@ -227,7 +227,7 @@ class _AboutProjectState extends State<AboutProject> {
         duration: const Duration(milliseconds: 300),
         child: Text(
           answer,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
       ),
       SizedBox(height: 10.h),

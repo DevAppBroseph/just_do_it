@@ -47,7 +47,7 @@ void iconSelectTranslate(
                         alignment: Alignment.center,
                         child: Text(
                           'Показать оригинал',
-                          style: CustomTextStyle.black_15_w500_000000,
+                          style: CustomTextStyle.black_16_w500_000000,
                         ),
                       ),
                     ),

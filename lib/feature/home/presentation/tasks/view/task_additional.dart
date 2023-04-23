@@ -69,7 +69,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                         alignment: Alignment.center,
                         child: Text(
                           widget.title,
-                          style: CustomTextStyle.black_21_w700_171716,
+                          style: CustomTextStyle.black_22_w700_171716,
                         ),
                       )
                     ],

@@ -4,6 +4,7 @@ import 'package:just_do_it/models/user_reg.dart';
 
 class Task {
   int? id;
+  bool? asCustomer;
   Owner? owner;
   int? chatId;
   String name;
@@ -27,6 +28,7 @@ class Task {
   Task({
     this.id,
     this.owner,
+    this.asCustomer,
     this.chatId,
     required this.name,
     required this.description,
@@ -59,7 +61,8 @@ class Task {
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
         region: json["region"],
-        search: json['search']
+        search: json['search'],
+        asCustomer: json['as_customer'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,5 +75,6 @@ class Task {
         "price_to": priceTo,
         "region": region,
         'search': search,
+        "as_customer": asCustomer,
       };
 }

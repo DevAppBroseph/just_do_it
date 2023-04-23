@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             alignment: Alignment.center,
                             child: Text(
                               'Профиль',
-                              style: CustomTextStyle.black_21_w700,
+                              style: CustomTextStyle.black_22_w700,
                             ),
                           ),
                           CustomIconButton(
@@ -132,8 +132,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           'Как исполнитель',
                                           style: state
                                               ? CustomTextStyle
-                                                  .black_13_w400_171716
-                                              : CustomTextStyle.white_13_w400,
+                                                  .black_14_w400_171716
+                                              : CustomTextStyle.white_14_w400,
                                         ),
                                       ),
                                     ),
@@ -167,9 +167,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Text(
                                           'Как заказчик',
                                           style: state
-                                              ? CustomTextStyle.white_13_w400
+                                              ? CustomTextStyle.white_14_w400
                                               : CustomTextStyle
-                                                  .black_13_w400_171716,
+                                                  .black_14_w400_171716,
                                         ),
                                       ),
                                     ),
@@ -211,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   CupertinoButton(
                       child: Text(
                         'Готово',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black, fontSize: 13.sp),
                       ),
                       onPressed: () {
                         var bloc = BlocProvider.of<ProfileBloc>(context);

@@ -55,7 +55,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                     width: 245.w,
                     child: Text(
                       task.name,
-                      style: CustomTextStyle.black_13_w500_171716,
+                      style: CustomTextStyle.black_14_w500_171716,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -70,19 +70,19 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           children: [
                             Text(
                               task.region,
-                              style: CustomTextStyle.black_11_w500_515150,
+                              style: CustomTextStyle.black_12_w500_515150,
                             ),
                             SizedBox(height: 5.h),
                             Text(
                               task.dateStart,
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                           ],
                         ),
                         const Spacer(),
                         Text(
                           'до ${task.priceTo} ₽',
-                          style: CustomTextStyle.black_13_w500_171716,
+                          style: CustomTextStyle.black_14_w500_171716,
                         ),
                         SizedBox(width: 5.w),
                         SvgPicture.asset(

@@ -31,12 +31,12 @@ Widget itemButton(String title, String subtitle, String icon, Function onTap) {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.black_13_w400_000000,
+                style: CustomTextStyle.black_14_w400_000000,
               ),
               SizedBox(height: 7.h),
               Text(
                 subtitle,
-                style: CustomTextStyle.grey_13_w400,
+                style: CustomTextStyle.grey_14_w400,
               )
             ],
           ),

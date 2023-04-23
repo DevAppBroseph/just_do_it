@@ -10,7 +10,7 @@ import 'package:just_do_it/helpers/router.dart';
 
 class Contractor extends StatelessWidget {
   final Size size;
-  const Contractor({super.key, required this.size});
+  Contractor({super.key, required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +47,11 @@ class Contractor extends StatelessWidget {
                     children: [
                       Text(
                         '322 задания',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       Text(
                         'Все задания',
-                        style: CustomTextStyle.black_13_w400_171716,
+                        style: CustomTextStyle.black_14_w400_171716,
                       )
                     ],
                   ),
@@ -91,11 +91,11 @@ class Contractor extends StatelessWidget {
                     children: [
                       Text(
                         '322 задания',
-                        style: CustomTextStyle.grey_13_w400,
+                        style: CustomTextStyle.grey_14_w400,
                       ),
                       Text(
                         'В архиве',
-                        style: CustomTextStyle.black_13_w400_171716,
+                        style: CustomTextStyle.black_14_w400_171716,
                       )
                     ],
                   ),
@@ -113,7 +113,7 @@ class Contractor extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
               'Вас выбрали в 3 заданиях',
-              style: CustomTextStyle.black_17_w500_171716,
+              style: CustomTextStyle.black_18_w500_171716,
             ),
           ),
           SizedBox(height: 30.h),
@@ -199,7 +199,7 @@ class Contractor extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return CeateTasks();
+                      return CeateTasks(customer: true);
                     },
                   ),
                 );
@@ -207,7 +207,7 @@ class Contractor extends StatelessWidget {
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 'Создать новое',
-                style: CustomTextStyle.black_15_w600_171716,
+                style: CustomTextStyle.black_16_w600_171716,
               ),
             ),
           ),

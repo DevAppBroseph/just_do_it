@@ -14,9 +14,14 @@ import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
-class CustomerProfile extends StatelessWidget {
+class CustomerProfile extends StatefulWidget {
   const CustomerProfile({super.key});
 
+  @override
+  State<CustomerProfile> createState() => _CustomerProfileState();
+}
+
+class _CustomerProfileState extends State<CustomerProfile> {
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
@@ -38,44 +43,87 @@ class CustomerProfile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () async {
-                            var image = await ImagePicker()
-                                .pickImage(source: ImageSource.gallery);
-                            if (image != null) {
-                              BlocProvider.of<ProfileBloc>(context).add(
-                                UpdateProfilePhotoEvent(photo: image),
-                              );
-                            }
-                          },
-                          child: ClipOval(
-                            child: SizedBox.fromSize(
-                                size: Size.fromRadius(30.r),
-                                child: user!.photoLink == null
-                                    ? Container(
-                                        height: 60.h,
-                                        width: 60.h,
-                                        padding: EdgeInsets.all(10.h),
-                                        decoration: const BoxDecoration(
-                                          color: ColorStyles.shadowFC6554,
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/camera.png'),
-                                      )
-                                    : CachedNetworkImage(
-                                        imageUrl:
-                                            user.photoLink!.contains(server)
-                                                ? user.photoLink!
-                                                : server + user.photoLink!,
-                                        fit: BoxFit.cover,
-                                      )
-                                // : Image.network(
-                                //     BlocProvider.of<ProfileBloc>(context)
-                                //         .user!
-                                //         .photoLink!,
-                                //     fit: BoxFit.cover,
-                                //   ),
+                        SizedBox(
+                          height: 70.h,
+                          width: 70.h,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  var image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    BlocProvider.of<ProfileBloc>(context).add(
+                                      UpdateProfilePhotoEvent(photo: image),
+                                    );
+                                  }
+                                },
+                                child: ClipOval(
+                                  child: SizedBox.fromSize(
+                                      size: Size.fromRadius(30.r),
+                                      child: user!.photoLink == null
+                                          ? Container(
+                                              height: 60.h,
+                                              width: 60.h,
+                                              padding: EdgeInsets.all(10.h),
+                                              decoration: const BoxDecoration(
+                                                color: ColorStyles.shadowFC6554,
+                                              ),
+                                              child: Image.asset(
+                                                  'assets/images/camera.png'),
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl: user.photoLink!
+                                                      .contains(server)
+                                                  ? user.photoLink!
+                                                  : server + user.photoLink!,
+                                              fit: BoxFit.cover,
+                                            )
+                                      // : Image.network(
+                                      //     BlocProvider.of<ProfileBloc>(context)
+                                      //         .user!
+                                      //         .photoLink!,
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      ),
                                 ),
+                              ),
+                              if (user.photoLink != null)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      user.photo = null;
+                                      user.photoLink = null;
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .setUser(user);
+                                      BlocProvider.of<ProfileBloc>(context).add(
+                                        UpdateProfilePhotoEvent(photo: null),
+                                      );
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 20.h,
+                                      width: 20.h,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(color: Colors.black)
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(100.r),
+                                        color: Colors.white,
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.close,
+                                          size: 10.h,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                            ],
                           ),
                         )
                       ],
@@ -93,7 +141,7 @@ class CustomerProfile extends StatelessWidget {
                               '${user.firstname ?? ''}\n${user.lastname ?? ''}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 32.sp, fontWeight: FontWeight.w800),
+                                  fontSize: 33.sp, fontWeight: FontWeight.w800),
                               maxLines: 2,
                             ),
                           ),
@@ -128,7 +176,7 @@ class CustomerProfile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Ваш рейтинг',
-                                style: CustomTextStyle.black_11_w500_515150),
+                                style: CustomTextStyle.black_12_w500_515150),
                             SizedBox(height: 8.h),
                             Row(
                               children: [
@@ -138,7 +186,7 @@ class CustomerProfile extends StatelessWidget {
                                   reviews?.ranking == null
                                       ? '-'
                                       : (reviews?.ranking!).toString(),
-                                  style: CustomTextStyle.black_19_w700_171716,
+                                  style: CustomTextStyle.black_20_w700_171716,
                                 ),
                               ],
                             ),
@@ -166,14 +214,14 @@ class CustomerProfile extends StatelessWidget {
                               children: [
                                 Text(
                                   'Ваши баллы',
-                                  style: CustomTextStyle.black_11_w500_515150,
+                                  style: CustomTextStyle.black_12_w500_515150,
                                 ),
                                 SizedBox(height: 8.h),
                                 Row(
                                   children: [
                                     Text(
                                       user.balance.toString(),
-                                      style: CustomTextStyle.purple_19_w700,
+                                      style: CustomTextStyle.purple_20_w700,
                                     ),
                                   ],
                                 ),
@@ -259,7 +307,7 @@ class CustomerProfile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'Общие настройки профиля',
-                style: CustomTextStyle.grey_13_w400,
+                style: CustomTextStyle.grey_14_w400,
               ),
             ),
             SizedBox(height: 20.h),
@@ -290,12 +338,12 @@ class CustomerProfile extends StatelessWidget {
                         children: [
                           Text(
                             'Основная информация',
-                            style: CustomTextStyle.grey_11_w400,
+                            style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             'Имя, Телефон и E-mail',
-                            style: CustomTextStyle.black_13_w400_171716,
+                            style: CustomTextStyle.black_14_w400_171716,
                           ),
                         ],
                       ),
@@ -338,12 +386,12 @@ class CustomerProfile extends StatelessWidget {
                         children: [
                           Text(
                             'Безопасность',
-                            style: CustomTextStyle.grey_11_w400,
+                            style: CustomTextStyle.grey_12_w400,
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             'Пароль, паспортные данные, регион',
-                            style: CustomTextStyle.black_13_w400_171716,
+                            style: CustomTextStyle.black_14_w400_171716,
                           ),
                         ],
                       ),
@@ -385,7 +433,7 @@ class CustomerProfile extends StatelessWidget {
                       SizedBox(width: 12.w),
                       Text(
                         'Выйти из аккаунта',
-                        style: CustomTextStyle.black_13_w500_171716,
+                        style: CustomTextStyle.black_14_w500_171716,
                       ),
                     ],
                   ),
@@ -403,7 +451,7 @@ class CustomerProfile extends StatelessWidget {
               child: Center(
                 child: Text(
                   'Удалить аккаунт',
-                  style: CustomTextStyle.black_13_w500_171716,
+                  style: CustomTextStyle.black_14_w500_171716,
                 ),
               ),
             ),
