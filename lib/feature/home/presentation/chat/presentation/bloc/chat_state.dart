@@ -11,3 +11,5 @@ class UpdateListMessageState extends ChatState {
 }
 
 class UpdateListMessageItemState extends ChatState {}
+
+class UpdateListPersonState extends ChatState {}

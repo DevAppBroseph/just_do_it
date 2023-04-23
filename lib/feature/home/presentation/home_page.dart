@@ -112,10 +112,6 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: StreamBuilder<int>(
             stream: streamController.stream,
             builder: (context, snapshot) {
-              int undreadMessage = 0;
-              for (var element in BlocProvider.of<ChatBloc>(context).chatList) {
-                undreadMessage += element.countUnreadMessage ?? 0;
-              }
               return MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 1.0),
                 child: Container(
@@ -130,42 +126,50 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   height: 96.h,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.h),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBottomNavigatorBar(
-                          'assets/icons/add.svg',
-                          'Создать',
-                          0,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/search.svg',
-                          'Найти',
-                          1,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/tasks.svg',
-                          'Задания',
-                          2,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/messages.svg',
-                          'Чат',
-                          3,
-                          counderMessage:
-                              undreadMessage != 0 ? undreadMessage : null,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/profile.svg',
-                          'Кабинет',
-                          4,
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: BlocBuilder<ChatBloc, ChatState>(
+                      builder: (context, snapshot) {
+                    int undreadMessage = 0;
+                    for (var element
+                        in BlocProvider.of<ChatBloc>(context).chatList) {
+                      undreadMessage += element.countUnreadMessage ?? 0;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          itemBottomNavigatorBar(
+                            'assets/icons/add.svg',
+                            'Создать',
+                            0,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/search.svg',
+                            'Найти',
+                            1,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/tasks.svg',
+                            'Задания',
+                            2,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/messages.svg',
+                            'Чат',
+                            3,
+                            counderMessage:
+                                undreadMessage != 0 ? undreadMessage : null,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/profile.svg',
+                            'Кабинет',
+                            4,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               );
             },
@@ -237,7 +241,7 @@ class _HomePageState extends State<HomePage> {
               ),
               if (counderMessage != null)
                 Padding(
-                  padding: EdgeInsets.only(right: 20.h),
+                  padding: EdgeInsets.only(right: 0.h),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(

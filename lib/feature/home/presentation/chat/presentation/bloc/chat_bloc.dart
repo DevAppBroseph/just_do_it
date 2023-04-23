@@ -21,6 +21,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<GetListMessageItem>(_getListMessageItem);
     on<SendMessageEvent>(_sendMessage);
     on<RefreshTripEvent>(_refresh);
+    on<RefreshPersonChatEvent>(_refreshPersonChat);
   }
 
   WebSocketChannel? channel;
@@ -113,7 +114,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               ),
             );
           }
-          add(GetListMessageItem(token ?? ''));
+          add(RefreshPersonChatEvent());
           add(GetListMessage());
         } catch (e) {
           log('message catch connection destroyed, for reason: $e');
@@ -129,4 +130,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
       emit(UpdateListMessageItemState());
+
+  void _refreshPersonChat(
+          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListPersonState());
 }

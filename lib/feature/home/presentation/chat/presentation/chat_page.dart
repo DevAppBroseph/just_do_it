@@ -110,6 +110,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget itemChatMessage(ChatList chat) {
+    final user = BlocProvider.of<ProfileBloc>(context).user;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: ScaleButton(
@@ -214,13 +215,21 @@ class _ChatPageState extends State<ChatPage> {
                                 ),
                               ),
                               if (chat.lastMsg?.unread != null &&
-                                  chat.lastMsg!.unread!)
+                                  chat.lastMsg!.unread! &&
+                                  (user != null &&
+                                      user.id != chat.lastMsg?.sender?.id))
                                 Container(
-                                  height: 10.h,
-                                  width: 10.h,
+                                  height: 15.h,
+                                  width: 15.h,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.yellowFFCA0D,
                                     borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      chat.countUnreadMessage?.toString() ?? '',
+                                      style: CustomTextStyle.white_10_w700,
+                                    ),
                                   ),
                                 ),
                             ],

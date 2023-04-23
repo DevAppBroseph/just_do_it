@@ -39,7 +39,7 @@ class Repository {
   Future<List<Task>> getMyTaskList(String access) async {
     final response = await dio.get(
       '$server/orders/my_orders',
-      // queryParameters: {'as_customer':false},
+      queryParameters: {'as_customer': true},
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},

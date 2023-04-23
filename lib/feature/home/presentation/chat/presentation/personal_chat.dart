@@ -54,14 +54,14 @@ class _PersonalChatState extends State<PersonalChat> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    Future.delayed(Duration(milliseconds: 1000), () {
-      BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-    });
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   final access = BlocProvider.of<ProfileBloc>(context).access;
+  //   Future.delayed(Duration(milliseconds: 1000), () {
+  //     BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
+  //   });
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +183,10 @@ class _PersonalChatState extends State<PersonalChat> {
                   widget.id =
                       BlocProvider.of<ChatBloc>(context).idChat.toString();
                   return true;
+                } else if (current is UpdateListPersonState) {
+                  final access = BlocProvider.of<ProfileBloc>(context).access;
+                  BlocProvider.of<ChatBloc>(context)
+                      .add(GetListMessageItem(access!));
                 }
                 return true;
               },
