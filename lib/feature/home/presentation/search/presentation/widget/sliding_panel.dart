@@ -39,6 +39,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   int groupValueCity = 0;
   String str = '';
   String str2 = '';
+  String strcat = '';
+  String strcat2 = '';
   int? groupValueCountry;
   Activities? selectActivities;
   List<int?> selectSubCategory = [];
@@ -54,6 +56,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   TextEditingController keyWordController = TextEditingController();
 
   String? country;
+  String? category;
   String? region;
 
   FocusNode focusCoastMin = FocusNode();
@@ -315,9 +318,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             style: CustomTextStyle.grey_13_w400,
                           ),
                           SizedBox(height: 3.h),
-                          Text(
-                            'Все категории',
-                            style: CustomTextStyle.black_13_w400_171716,
+                          SizedBox(
+                            width: 200.w,
+                          
+                            child: Text(
+                              category != null && category!.isNotEmpty ? category! : 'Все категории',
+                              maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                               
+                              style: CustomTextStyle.black_13_w400_171716,
+                            ),
                           ),
                         ],
                       ),
@@ -770,9 +780,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         for (int y = 0; y < activities[i].subcategory.length; y++) {
                           activities[i].subcategory[y].isSelect = true;
                           selectSubCategory.add(activities[i].subcategory[y].id);
+                          strcat += '${activities[i].subcategory[y].description!}, ';
                         }
                         activities[i].isSelect = true;
                       }
+                      category = strcat;
                     }
                     if (allCategory == false) {
                       for (int i = 0; i < activities.length; i++) {
@@ -782,6 +794,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         }
                         activities[i].isSelect = false;
                       }
+                      category = '';
                     }
                   },
                 ),
@@ -977,17 +990,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Switch.adaptive(
                   value: selectActivity!.isSelect,
                   onChanged: (value) {
+                    strcat = '';
                     selectActivity.isSelect = !selectActivity.isSelect;
-                    String str = '';
                     for (var element in selectActivity.subcategory) {
                       element.isSelect = value;
-                      str += '${element.id}, ';
+                      strcat += '${element.id}, ';
                       if (element.isSelect == true) {
                         selectSubCategory.add(element.id);
                       }
                       if (element.isSelect == false) {
                         selectSubCategory.remove(element.id);
+                      strcat = '';
                       }
+                      category = strcat;
                     }
 
                     setState(() {});
@@ -1015,14 +1030,23 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   Widget item(int index) {
     return GestureDetector(
       onTap: () {
+        strcat2 = '';
         selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;
         setState(() {});
         if (selectActivities!.subcategory[index].isSelect == true) {
           selectSubCategory.add(selectActivities!.subcategory[index].id);
+          strcat += '${selectActivities!.subcategory[index].description!}, ';
         }
         if (selectActivities!.subcategory[index].isSelect == false) {
           selectSubCategory.remove(selectActivities!.subcategory[index].id);
+            allCategory = false;
+            strcat2 = '${selectActivities!.subcategory[index].description!}, ';
         }
+        if(selectSubCategory.isEmpty){
+          strcat = '';
+        }
+        category = strcat.replaceAll(strcat2, '');
+
         print(selectSubCategory);
       },
       child: Padding(
@@ -1759,16 +1783,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   DateTime? startDate = DateTime.now();
   DateTime? endDate = DateTime.now();
 
-  List<Category> category = [
-    Category(icon: 'assets/images/package.png', title: 'Курьерские услуги'),
-    Category(icon: 'assets/images/build.png', title: 'Ремонт и строительство'),
-    Category(icon: 'assets/images/truck.png', title: 'Грузоперевозки'),
-    Category(icon: 'assets/images/broom.png', title: 'Уборка помещений'),
-    Category(icon: 'assets/images/laptop1.png', title: 'Компьютерная помощь'),
-    Category(icon: 'assets/images/money_bag.png', title: 'Финансовый советник'),
-    Category(icon: 'assets/images/party_popper.png', title: 'Мероприятия и промоакции'),
-    Category(icon: 'assets/images/computer_disk.png', title: 'Разработка ПО'),
-  ];
 
   List<City> countryList = [
     City('Россия'),
