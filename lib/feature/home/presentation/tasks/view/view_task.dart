@@ -214,9 +214,13 @@ class _TaskViewState extends State<TaskView> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
-                        style: CustomTextStyle.black_17_w600_171716,
+                      SizedBox(
+                        width: 310,
+                        child: Text(
+                          '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
+                          style: CustomTextStyle.black_17_w600_171716,
+                          softWrap: true,
+                        ),
                       ),
                       SizedBox(height: 6.h),
                       Row(

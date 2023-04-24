@@ -327,13 +327,13 @@ class _WelcomPageState extends State<WelcomPage> {
                             ),
                             child: Stack(
                               children: [
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/contractor.svg',
-                                    height: 105.h,
-                                  ),
-                                ),
+                                // Align(
+                                //   alignment: Alignment.bottomCenter,
+                                //   child: SvgPicture.asset(
+                                //     // 'assets/icons/contractor.svg',
+                                //     height: 105.h,
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 16.w, vertical: 12.h),
