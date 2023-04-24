@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,21 +147,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
                       onTap: () {
-                        int kolvo = 0;
+                        int countField = 0;
                         widget.panelController.animatePanelToPosition(0);
                         if (coastMinController.text != '') {
-                          kolvo++;
+                          countField++;
                         }
                         if (coastMaxController.text != '') {
-                          kolvo++;
+                          countField++;
                         }
 
-                        if (coastMinController.text == '') {
-                          coastMinController.text = '0';
-                        }
-                        if (coastMaxController.text == '') {
-                          coastMaxController.text = '5000000000';
-                        }
                         var format1 = endDate == null
                             ? null
                             : "${endDate?.year}-${endDate?.month}-${endDate?.day}";
@@ -168,19 +164,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             : "${startDate?.year}-${startDate?.month}-${startDate?.day}";
 
                         if (keyWordController.text != '') {
-                          kolvo++;
+                          countField++;
                         }
                         if (isRegion.isNotEmpty) {
-                          kolvo++;
+                          countField++;
                         }
                         if (selectSubCategory.isNotEmpty) {
-                          kolvo++;
+                          countField++;
                         }
-                        if (format1 != '') {
-                          kolvo++;
-                        }
-                        if (format2 != '') {
-                          kolvo++;
+                        if (format1 != '' || format2 != '') {
+                          countField++;
                         }
 
                         context.read<TasksBloc>().add(GetTasksEvent(
@@ -188,11 +181,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             keyWordController.text,
                             format1,
                             format2,
-                            int.parse(coastMinController.text),
-                            int.parse(coastMaxController.text),
+                            int.tryParse(coastMinController.text),
+                            int.tryParse(coastMaxController.text),
                             isRegion,
                             selectSubCategory,
-                            kolvo,
+                            countField,
                             (contractorFlag && contractorFlag) ||
                                     (contractorFlag && contractorFlag)
                                 ? null
@@ -264,14 +257,23 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   Widget mainFilter() {
     String date = '';
     if (startDate == null && endDate == null) {
-      date =
-          '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
+      log('message11333');
+      // date =
+      //     '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
     } else {
       date =
           startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
       date +=
           ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
     }
+
+    log('message11');
+    // else {
+    //   date =
+    //       startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+    //   date +=
+    //       ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+    // }
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
@@ -305,8 +307,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      // endDate = DateTime.now();
-                      // startDate = DateTime.now();
+                      endDate = null;
+                      startDate = null;
+                      date = '';
+                      category = null;
                       coastMinController.text = '';
                       coastMaxController.text = '';
                       keyWordController.text = '';

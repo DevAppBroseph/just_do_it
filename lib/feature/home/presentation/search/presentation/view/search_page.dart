@@ -215,23 +215,23 @@ class _SearchPageState extends State<SearchPage> {
                                 color: ColorStyles.greyF7F7F8,
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
-                              child: Center(
-                                child: BlocBuilder<TasksBloc, TasksState>(
-                                    builder: (context, state) {
-                                  if (state is TasksLoaded) {
-                                    return Text(
-                                      state.countFilter != 0
-                                          ? state.countFilter.toString()
-                                          : '0',
-                                      style: CustomTextStyle.white_10_w700,
-                                    );
-                                  } else {
-                                    return Text(
-                                      '',
-                                      style: CustomTextStyle.white_10_w700,
-                                    );
-                                  }
-                                }),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/candle.svg',
+                                      height: 16.h,
+                                      color: ColorStyles.yellowFFD70B,
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      'Фильтр',
+                                      style:
+                                          CustomTextStyle.black_14_w400_171716,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Align(
@@ -244,10 +244,23 @@ class _SearchPageState extends State<SearchPage> {
                                   color: ColorStyles.black171716,
                                 ),
                                 child: Center(
-                                  child: Text(
-                                    '2',
-                                    style: CustomTextStyle.white_10_w700,
-                                  ),
+                                  child: BlocBuilder<TasksBloc, TasksState>(
+                                      builder: (context, state) {
+                                    if (state is TasksLoaded) {
+                                      return Text(
+                                        state.countFilter != 0 &&
+                                                state.countFilter != null
+                                            ? state.countFilter.toString()
+                                            : '0',
+                                        style: CustomTextStyle.white_10_w700,
+                                      );
+                                    } else {
+                                      return Text(
+                                        '',
+                                        style: CustomTextStyle.white_10_w700,
+                                      );
+                                    }
+                                  }),
                                 ),
                               ),
                             )

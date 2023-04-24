@@ -329,8 +329,8 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/planning.png',
+                                  child: SvgPicture.asset(
+                                    'assets/icons/contractor.svg',
                                     height: 105.h,
                                   ),
                                 ),
@@ -383,9 +383,9 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/workplace.png',
-                                    height: 103.h,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/custo.svg',
+                                    height: 105.h,
                                   ),
                                 ),
                                 Padding(
