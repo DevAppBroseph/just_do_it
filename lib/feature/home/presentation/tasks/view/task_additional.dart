@@ -30,7 +30,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
 
   void getListTask() async {
     List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!);
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});

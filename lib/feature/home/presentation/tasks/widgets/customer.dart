@@ -27,7 +27,8 @@ class Customer extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(AppRoute.allTasks);
+              Navigator.of(context)
+                  .pushNamed(AppRoute.allTasks, arguments: [false]);
             },
             child: Container(
               height: 55.h,

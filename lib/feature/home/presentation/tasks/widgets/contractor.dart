@@ -23,7 +23,8 @@ class Contractor extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(AppRoute.allTasks);
+              Navigator.of(context)
+                  .pushNamed(AppRoute.allTasks, arguments: [true]);
             },
             child: Container(
               height: 55.h,

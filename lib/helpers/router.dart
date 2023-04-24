@@ -52,7 +52,9 @@ class AppRoute {
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case allTasks:
-        return MaterialPageRoute(builder: (_) => const AllTasksView());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => AllTasksView(asCustomer: arg[0]));
       case archiveTasks:
         return MaterialPageRoute(builder: (_) => ArchiveTasksView());
       case tasks:
