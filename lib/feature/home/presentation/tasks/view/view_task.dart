@@ -215,7 +215,7 @@ class _TaskViewState extends State<TaskView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 310,
+                        width: 260,
                         child: Text(
                           '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
                           style: CustomTextStyle.black_17_w600_171716,
