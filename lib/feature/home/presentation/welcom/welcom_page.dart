@@ -384,7 +384,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: SvgPicture.asset(
-                                    'assets/icons/custo.svg',
+                                    'assets/icons/customer.svg',
                                     height: 105.h,
                                   ),
                                 ),
