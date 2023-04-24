@@ -19,9 +19,37 @@ import 'package:permission_handler/permission_handler.dart';
 class Repository {
   var dio = Dio();
 
-  Future<List<Task>> getMyTaskList(String access) async {
+  Future<Owner?> getRanking(String access, Owner owner) async {
+    final response = await dio.get(
+      '$server/ranking/${owner.id}',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    log('message ${response.data}');
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return Owner.fromJson(response.data);
+    }
+    return null;
+  }
+
+  Future<void> deleteProfile(String access) async {
+    await dio.delete(
+      '$server/profile/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+  }
+
+  Future<List<Task>> getMyTaskList(String access, bool asCustomer) async {
     final response = await dio.get(
       '$server/orders/my_orders',
+      queryParameters: {'as_customer': asCustomer},
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},
@@ -39,14 +67,38 @@ class Repository {
     return tasks;
   }
 
-  Future<List<Task>> getTaskList(String access) async {
+  Future<List<Task>> getTaskList(
+    String? access,
+    String? query,
+    List<String?> region,
+    int? priceFrom,
+    int? priceTo,
+    String? dateStart,
+    String? dateEnd,
+    List<int?>? subcategory,
+    bool? customer,
+  ) async {
+    Map<String, dynamic>? queryParameters = {
+      if (query != null && query.isNotEmpty) "search": query,
+      if (region.isNotEmpty) "region": region,
+      if (priceTo != null) "price_to": priceTo,
+      if (priceFrom != null) "price_from": priceFrom,
+      if (dateEnd != null) "date_end": dateEnd,
+      if (dateStart != null) "date_start": dateStart,
+      if (subcategory != null && subcategory.isNotEmpty)
+        "subcategory": subcategory,
+      "as_customer": customer,
+    };
     final response = await dio.get(
       '$server/orders/',
+      queryParameters: queryParameters,
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        headers: {'Authorization': 'Bearer $access'},
+        // headers: {'Authorization': 'Bearer $access'},
       ),
     );
+
+    log('message ${response.data}');
 
     List<Task> tasks = [];
 
@@ -62,6 +114,8 @@ class Repository {
   Future<bool> createTask(String access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
+
+    log('message map ${data.fields}---${map}');
 
     final response = await dio.post(
       '$server/orders/',
@@ -114,16 +168,49 @@ class Repository {
   }
 
   // auth/ put
-  Future<UserRegModel?> updateUserPhoto(String? access, XFile photo) async {
+  Future<UserRegModel?> updateUserPhoto(String? access, XFile? photo) async {
     FormData data = FormData.fromMap({
-      'photo': MultipartFile.fromFileSync(
-        photo.path,
-        filename: photo.path.split('/').last,
-      ),
+      'photo': photo != null
+          ? MultipartFile.fromFileSync(
+              photo.path,
+              filename: photo.path.split('/').last,
+            )
+          : 0,
     });
+
+    final map = {
+      'photo': null,
+    };
     final response = await dio.patch(
       '$server/profile/',
-      data: data,
+      data: photo != null ? data : map,
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+
+    if (response.statusCode == 200) {
+      return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<UserRegModel?> updateUserCv(String? access, File? file) async {
+    FormData data = FormData.fromMap({
+      'CV': file != null
+          ? MultipartFile.fromFileSync(
+              file.path,
+              filename: file.path.split('/').last,
+            )
+          : 0,
+    });
+
+    final map = {'CV': null};
+
+    final response = await dio.patch(
+      '$server/profile/',
+      data: file != null ? data : map,
       options: Options(
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
@@ -157,12 +244,14 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code) async {
+  Future<String?> confirmCodeRegistration(
+      String phone, String code, int? refCode) async {
     final response = await dio.put(
       '$server/auth/',
       data: {
         "phone_number": phone,
         "code": code,
+        "ref_code": refCode,
       },
       options: Options(
         validateStatus: ((status) => status! >= 200),
@@ -369,6 +458,8 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
+
+    log('message connect ${response.data}');
 
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];

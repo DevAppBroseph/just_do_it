@@ -1,16 +1,20 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class MenuPage extends StatelessWidget {
   final Function(String page) onBackPressed;
+  bool inTask;
 
-  MenuPage({required this.onBackPressed});
+  MenuPage({
+    required this.onBackPressed,
+    required this.inTask,
+  });
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -29,15 +33,15 @@ class MenuPage extends StatelessWidget {
                 children: [
                   Text(
                     'Меню',
-                    style: CustomTextStyle.black_21_w700,
+                    style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
-                  GestureDetector(
-                    onTap: () {
+                  CustomIconButton(
+                    onBackPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: SvgPicture.asset('assets/icons/close.svg'),
+                    icon: 'assets/icons/close.svg',
                   ),
                 ],
               ),
@@ -67,7 +71,12 @@ class MenuPage extends StatelessWidget {
                     Navigator.pop(context, 'search');
                   }),
                   itemMenu('assets/icons/note.svg', 'Мои задания', () {
-                    Navigator.of(context).pushNamed(AppRoute.tasks);
+                    if (inTask) {
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.of(context)
+                          .pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                    }
                   }),
                   itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
                     Navigator.pop(context, 'chat');
@@ -109,7 +118,7 @@ class MenuPage extends StatelessWidget {
                             Spacer(),
                             Text(
                               'Ru',
-                              style: CustomTextStyle.black_15_w500_171716,
+                              style: CustomTextStyle.black_16_w600_171716,
                             ),
                             Spacer(),
                             Icon(
@@ -148,7 +157,7 @@ class MenuPage extends StatelessWidget {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_17_w500_171716,
+                style: CustomTextStyle.black_18_w500_171716,
               ),
             ],
           ),
@@ -174,7 +183,7 @@ class MenuPage extends StatelessWidget {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_17_w500_171716,
+                style: CustomTextStyle.black_18_w500_171716,
               ),
             ],
           ),

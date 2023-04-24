@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -79,7 +81,7 @@ void iconSelectModal(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -134,7 +136,7 @@ void iconSelectModal(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -236,7 +238,7 @@ void iconSelectModalCategories(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -266,23 +268,33 @@ void iconSelectModalCategories(
                               itemBuilder: (context, index) {
                                 return ElevatedButton(
                                   onPressed: () {
-                                    if (selectCategories.length < 3) {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories.remove(
-                                            list[index].description ?? '');
+                                    log('message ${selectCategories.length}');
+                                    if (selectCategories.length > 1) {
+                                      if (selectCategories.length < 3) {
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories.remove(
+                                              list[index].description ?? '');
+                                        } else {
+                                          selectCategories.add(
+                                              list[index].description ?? '');
+                                        }
                                       } else {
-                                        selectCategories
-                                            .add(list[index].description ?? '');
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories
+                                              .remove(list[index].description);
+                                        }
                                       }
-                                    } else {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories
-                                            .remove(list[index].description);
-                                      }
+                                      onTap(selectCategories);
+                                    } else if (selectCategories.isEmpty ||
+                                        selectCategories.length == 1 &&
+                                            !selectCategories.contains(
+                                                list[index].description)) {
+                                      selectCategories
+                                          .add(list[index].description ?? '');
+                                      onTap(selectCategories);
                                     }
-                                    onTap(selectCategories);
 
                                     setState((() {}));
                                   },
@@ -312,7 +324,7 @@ void iconSelectModalCategories(
                                             list[index].description!,
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -419,7 +431,7 @@ void showCountryWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -480,7 +492,7 @@ void showCountryWidget(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -581,7 +593,7 @@ void showRegionWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -642,7 +654,7 @@ void showRegionWidget(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),

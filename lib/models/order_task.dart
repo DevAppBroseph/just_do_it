@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class OrderTask {
   int? id;
   int? chatId;
@@ -34,20 +36,46 @@ class Owner {
   String? firstname;
   String? lastname;
   String? photo;
+  String? cv;
+  String? ranking;
+  bool? isPassportExist;
+  int? countOrdersCreate;
+  String? activity;
+  List<String> listPhoto;
 
   Owner({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
+    this.cv,
+    this.ranking,
+    this.isPassportExist,
+    this.countOrdersCreate,
+    this.activity,
+    this.listPhoto = const [],
   });
 
-  factory Owner.fromJson(Map<String, dynamic> json) => Owner(
-        id: json["id"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        photo: json["photo"],
-      );
+  factory Owner.fromJson(Map<String, dynamic> json) {
+    List<String> listPhoto = [];
+    if (json['images'] != null) {
+      for (var element in json['images']) {
+        listPhoto.add(element['image']);
+      }
+    }
+    return Owner(
+      id: json["id"],
+      firstname: json["firstname"],
+      lastname: json["lastname"],
+      photo: json["photo"],
+      cv: json["CV"],
+      ranking: json["ranking"],
+      isPassportExist: json["is_passport_exist"],
+      countOrdersCreate: json["count_orders_create"],
+      activity: json["activity"],
+      listPhoto: listPhoto,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

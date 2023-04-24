@@ -21,6 +21,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<GetListMessageItem>(_getListMessageItem);
     on<SendMessageEvent>(_sendMessage);
     on<RefreshTripEvent>(_refresh);
+    on<RefreshPersonChatEvent>(_refreshPersonChat);
   }
 
   WebSocketChannel? channel;
@@ -54,7 +55,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
-    print(idChat);
     messages.clear();
     for (var element in res) {
       messages.add(
@@ -72,7 +72,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     chatList.clear();
-    final res = await Repository().getListMessage(event.access);
+    final token = await Storage().getAccessToken();
+    final res = await Repository().getListMessage(token!);
     chatList.addAll(res);
     emit(UpdateListMessageState(idChat));
   }
@@ -113,8 +114,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               ),
             );
           }
-          add(GetListMessageItem(token ?? ''));
-          add(GetListMessage(token ?? ''));
+          add(RefreshPersonChatEvent());
+          add(GetListMessage());
         } catch (e) {
           log('message catch connection destroyed, for reason: $e');
         }
@@ -129,4 +130,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
       emit(UpdateListMessageItemState());
+
+  void _refreshPersonChat(
+          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListPersonState());
 }

@@ -1,6 +1,5 @@
-import 'dart:developer' as dev;
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,10 +8,16 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
-import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
 
 class SearchPage extends StatefulWidget {
   final Function() onBackPressed;
@@ -25,24 +30,55 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  Subcategory? selectSubCategory;
   List<Task> taskList = [];
+
+  Task? selectTask;
+  Owner? owner;
+
+  String? access;
 
   @override
   void initState() {
     super.initState();
-    getListTask();
+    getTaskList();
   }
 
-  void getListTask() async {
-    List<Task> res = await Repository()
-        .getTaskList(BlocProvider.of<ProfileBloc>(context).access!);
-    taskList.clear();
-    taskList.addAll(res.reversed);
-    setState(() {});
+  void getTaskList() {
+    BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
+    access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<TasksBloc>().add(
+          GetTasksEvent(
+            access,
+            '',
+            null,
+            null,
+            null,
+            null,
+            [],
+            [],
+            null,
+            null,
+          ),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<TasksBloc>().add(GetTasksEvent(
+          access,
+          '',
+          '',
+          '',
+          0,
+          500000,
+          [],
+          [],
+          null,
+          null,
+        ));
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -69,24 +105,26 @@ class _SearchPageState extends State<SearchPage> {
                     color: ColorStyles.whiteFFFFFF,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    padding: EdgeInsets.only(left: 15.w, right: 28.w),
                     child: Row(
                       children: [
-                        GestureDetector(
-                          onTap: widget.onBackPressed,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Transform.rotate(
-                              angle: pi,
-                              child: SvgPicture.asset(
-                                'assets/icons/arrow_right.svg',
-                                height: 20.h,
-                                width: 20.w,
-                              ),
-                            ),
-                          ),
+                        CustomIconButton(
+                          onBackPressed: () {
+                            if (owner != null) {
+                              setState(() {
+                                owner = null;
+                              });
+                            } else if (selectTask != null) {
+                              setState(() {
+                                selectTask = null;
+                              });
+                            } else {
+                              widget.onBackPressed();
+                            }
+                          },
+                          icon: SvgImg.arrowRight,
                         ),
-                        SizedBox(width: 15.w),
+                        Spacer(),
                         SizedBox(
                           width: 240.w,
                           height: 36.h,
@@ -103,6 +141,20 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
+                            onChanged: (value) async {
+                              context.read<TasksBloc>().add(GetTasksEvent(
+                                    access,
+                                    value,
+                                    '',
+                                    '',
+                                    0,
+                                    500000,
+                                    [],
+                                    [],
+                                    null,
+                                    null,
+                                  ));
+                            },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),
                           ),
@@ -112,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                         GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]).then((value) {
+                                  arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -135,84 +187,130 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                children: [
-                  Text(
-                    'Все задачи',
-                    style: CustomTextStyle.black_17_w800,
-                  ),
-                  const Spacer(),
-                  ScaleButton(
-                    bound: 0.01,
-                    onTap: () => BlocProvider.of<SearchBloc>(context)
-                        .add(OpenSlidingPanelEvent()),
-                    child: SizedBox(
-                      height: 40.h,
-                      width: 90.h,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            height: 36.h,
-                            width: 100.h,
-                            decoration: BoxDecoration(
-                              color: ColorStyles.greyF7F7F8,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.h),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/candle.svg',
-                                    height: 16.h,
-                                    color: ColorStyles.yellowFFD70B,
-                                  ),
-                                  SizedBox(width: 5.w),
-                                  Text(
-                                    'Фильтр',
-                                    style: CustomTextStyle.black_13_w400_171716,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              height: 15.h,
-                              width: 15.h,
+            if (selectTask == null) SizedBox(height: 16.h),
+            if (selectTask == null)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    Text(
+                      'Все задачи',
+                      style: CustomTextStyle.black_18_w800,
+                    ),
+                    const Spacer(),
+                    ScaleButton(
+                      bound: 0.01,
+                      onTap: () => BlocProvider.of<SearchBloc>(context)
+                          .add(OpenSlidingPanelEvent()),
+                      child: SizedBox(
+                        height: 40.h,
+                        width: 90.h,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: 36.h,
+                              width: 100.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(369.r),
-                                color: ColorStyles.black171716,
+                                color: ColorStyles.greyF7F7F8,
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '2',
-                                  style: CustomTextStyle.white_9_w700,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/candle.svg',
+                                      height: 16.h,
+                                      color: ColorStyles.yellowFFD70B,
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      'Фильтр',
+                                      style:
+                                          CustomTextStyle.black_14_w400_171716,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          )
-                        ],
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                height: 15.h,
+                                width: 15.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(369.r),
+                                  color: ColorStyles.black171716,
+                                ),
+                                child: Center(
+                                  child: BlocBuilder<TasksBloc, TasksState>(
+                                      builder: (context, state) {
+                                    if (state is TasksLoaded) {
+                                      return Text(
+                                        state.countFilter != 0 &&
+                                                state.countFilter != null
+                                            ? state.countFilter.toString()
+                                            : '0',
+                                        style: CustomTextStyle.white_10_w700,
+                                      );
+                                    } else {
+                                      return Text(
+                                        '',
+                                        style: CustomTextStyle.white_10_w700,
+                                      );
+                                    }
+                                  }),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 30.h),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                padding: EdgeInsets.zero,
-                children: taskList.map((e) => itemTask(e)).toList(),
+            if (selectTask == null) SizedBox(height: 30.h),
+            if (selectTask == null)
+              Expanded(
+                child: BlocBuilder<TasksBloc, TasksState>(
+                    builder: (context, state) {
+                  taskList = BlocProvider.of<TasksBloc>(context).tasks;
+                  if (state is TasksLoading) {
+                    return SkeletonLoader(
+                      items: 4,
+                      baseColor: ColorStyles.whiteFFFFFF,
+                      highlightColor: ColorStyles.greyF3F3F3,
+                      builder: Container(
+                        margin: EdgeInsets.only(
+                            left: 24.w, right: 24.w, bottom: 24.w),
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: ColorStyles.whiteFFFFFF,
+                          borderRadius: BorderRadius.circular(10.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorStyles.shadowFC6554,
+                              offset: const Offset(0, -4),
+                              blurRadius: 55.r,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  if (taskList.isEmpty) return Container();
+
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    children: taskList.map((e) => itemTask(e)).toList(),
+                  );
+                }),
               ),
-            ),
+            view(),
           ],
         ),
       ),
@@ -224,6 +322,11 @@ class _SearchPageState extends State<SearchPage> {
       padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
       child: ScaleButton(
         bound: 0.01,
+        onTap: () {
+          setState(() {
+            selectTask = task;
+          });
+        },
         child: Container(
           height: 100.h,
           decoration: BoxDecoration(
@@ -262,7 +365,7 @@ class _SearchPageState extends State<SearchPage> {
                         task.description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: CustomTextStyle.black_13_w500_171716,
+                        style: CustomTextStyle.black_14_w500_171716,
                       ),
                     ),
                     const Spacer(),
@@ -275,24 +378,27 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               Text(
                                 task.region,
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               ),
                               SizedBox(height: 2.h),
                               Text(
                                 task.dateEnd,
-                                style: CustomTextStyle.grey_11_w400,
+                                style: CustomTextStyle.grey_12_w400,
                               ),
                             ],
                           ),
                           const Spacer(),
                           Text(
                             'до ${task.priceTo} ₽',
-                            style: CustomTextStyle.black_13_w500_171716,
+                            style: CustomTextStyle.black_14_w500_171716,
                           ),
                           SizedBox(width: 5.w),
-                          SvgPicture.asset(
-                            'assets/icons/card.svg',
-                            height: 16.h,
+                          SizedBox(
+                            width: 16.h,
+                            child: SvgPicture.asset(
+                              'assets/icons/card.svg',
+                              height: 16.h,
+                            ),
                           ),
                         ],
                       ),
@@ -305,5 +411,24 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
+  }
+
+  Widget view() {
+    if (owner != null) {
+      return Expanded(child: ProfileView(owner: owner!));
+    }
+    if (selectTask != null) {
+      return Expanded(
+        child: TaskView(
+          selectTask: selectTask!,
+          openOwner: (owner) {
+            this.owner = owner;
+            setState(() {});
+          },
+          canSelect: true,
+        ),
+      );
+    }
+    return Container();
   }
 }

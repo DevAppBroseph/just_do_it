@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -12,7 +10,10 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalChat extends StatefulWidget {
   String? id;
@@ -44,7 +45,6 @@ class _PersonalChatState extends State<PersonalChat> {
   }
 
   void getInitMessage() async {
-    log('${widget.id} --- ${widget.idWithChat}');
     final access = BlocProvider.of<ProfileBloc>(context).access;
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
@@ -54,14 +54,14 @@ class _PersonalChatState extends State<PersonalChat> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    Future.delayed(Duration(milliseconds: 1000), () {
-      BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-    });
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   final access = BlocProvider.of<ProfileBloc>(context).access;
+  //   Future.delayed(Duration(milliseconds: 1000), () {
+  //     BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
+  //   });
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,21 +75,61 @@ class _PersonalChatState extends State<PersonalChat> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Transform.rotate(
-                    angle: math.pi,
-                    child: SvgPicture.asset('assets/icons/arrow_right.svg'),
-                  ),
+                CustomIconButton(
+                  onBackPressed: () => Navigator.of(context).pop(),
+                  icon: SvgImg.arrowRight,
                 ),
                 SizedBox(width: 8.w),
-                SizedBox(
-                  width: 260.w,
-                  child: AutoSizeText(
-                    // 'Яковлев Максим Алексеевич',
-                    widget.name,
-                    style: CustomTextStyle.black_21_w700,
-                    maxLines: 1,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return Scaffold(
+                          body: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 66.h),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 25.w, right: 28.w),
+                                child: Row(
+                                  children: [
+                                    CustomIconButton(
+                                      onBackPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: SvgImg.arrowRight,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      'Профиль',
+                                      style: CustomTextStyle.black_22_w700,
+                                    ),
+                                    const Spacer(),
+                                    SizedBox(width: 30.w),
+                                  ],
+                                ),
+                              ),
+                              ProfileView(
+                                  owner: Owner(
+                                      id: int.parse(widget.idWithChat),
+                                      firstname: null,
+                                      lastname: null,
+                                      photo: null)),
+                            ],
+                          ),
+                        );
+                      },
+                    ));
+                  },
+                  child: SizedBox(
+                    width: 240.w,
+                    child: AutoSizeText(
+                      // 'Яковлев Максим Алексеевич',
+                      widget.name,
+                      style: CustomTextStyle.black_22_w700,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
                 const Spacer(),
@@ -143,6 +183,10 @@ class _PersonalChatState extends State<PersonalChat> {
                   widget.id =
                       BlocProvider.of<ChatBloc>(context).idChat.toString();
                   return true;
+                } else if (current is UpdateListPersonState) {
+                  final access = BlocProvider.of<ProfileBloc>(context).access;
+                  BlocProvider.of<ChatBloc>(context)
+                      .add(GetListMessageItem(access!));
                 }
                 return true;
               },

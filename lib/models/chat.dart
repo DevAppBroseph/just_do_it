@@ -2,11 +2,13 @@ class ChatList {
   int? id;
   ChatWith? chatWith;
   LastMsg? lastMsg;
+  int? countUnreadMessage;
 
   ChatList({
     required this.id,
     required this.chatWith,
     required this.lastMsg,
+    required this.countUnreadMessage,
   });
 
   factory ChatList.fromJson(Map<String, dynamic> json) {
@@ -14,6 +16,7 @@ class ChatList {
       id: json['id'],
       chatWith: ChatWith.fromJson(json['chat_with']),
       lastMsg: LastMsg.fromJson(json['last_msg']),
+      countUnreadMessage: json['count_unread_messages'],
     );
   }
 }
@@ -43,17 +46,20 @@ class LastMsg {
   DateTime? time;
   String? text;
   Sender? sender;
+  bool? unread;
 
   LastMsg({
     required this.time,
     required this.text,
     required this.sender,
+    required this.unread,
   });
 
   factory LastMsg.fromJson(Map<String, dynamic> json) => LastMsg(
         time: DateTime.parse(json['time']),
         text: json['text'],
         sender: json['sender'] != null ? Sender.fromJson(json['sender']) : null,
+        unread: json['unread'],
       );
 }
 

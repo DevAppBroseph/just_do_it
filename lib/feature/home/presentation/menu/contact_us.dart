@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ContactUs extends StatefulWidget {
   @override
@@ -37,21 +38,18 @@ class _ContactUsState extends State<ContactUs> {
                     child: Stack(
                       alignment: Alignment.centerLeft,
                       children: [
-                        GestureDetector(
-                          onTap: () {
+                        CustomIconButton(
+                          onBackPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Transform.rotate(
-                              angle: pi,
-                              child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg')),
+                          icon: SvgImg.arrowRight,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               'Связаться с нами',
-                              style: CustomTextStyle.black_21_w700,
+                              style: CustomTextStyle.black_22_w700,
                             ),
                           ],
                         ),
@@ -114,7 +112,7 @@ class _ContactUsState extends State<ContactUs> {
                     btnColor: ColorStyles.yellowFFD70B,
                     textLabel: Text(
                       'Отправить',
-                      style: CustomTextStyle.black_15_w600_171716,
+                      style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
                 ),

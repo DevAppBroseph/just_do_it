@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +17,17 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widg
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CeateTasks extends StatefulWidget {
   Activities? selectCategory;
-  CeateTasks({super.key, this.selectCategory});
+  bool customer;
+  CeateTasks({
+    super.key,
+    this.selectCategory,
+    required this.customer,
+  });
 
   @override
   State<CeateTasks> createState() => _CeateTasksState();
@@ -38,21 +44,21 @@ class _CeateTasksState extends State<CeateTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  Uint8List? attach;
+  File? document;
+  File? photo;
 
   String? region;
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
 
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
+  DateTime? startDate;
+  DateTime? endDate;
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
-      File? file = File(getMedia.path);
-      attach = file.readAsBytesSync();
+      photo = File(getMedia.path);
     }
     setState(() {});
   }
@@ -63,8 +69,7 @@ class _CeateTasksState extends State<CeateTasks> {
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result != null) {
-      File? file = File(result.files.first.path!);
-      attach = file.readAsBytesSync();
+      document = File(result.files.first.path!);
       setState(() {});
     }
   }
@@ -88,12 +93,12 @@ class _CeateTasksState extends State<CeateTasks> {
                   SizedBox(height: 10.h),
                   Text(
                     'Выберите что загрузить',
-                    style: CustomTextStyle.black_14_w600_171716,
+                    style: CustomTextStyle.black_16_w600_171716,
                   ),
                   ListTile(
                     title: Text(
                       'Фото',
-                      style: CustomTextStyle.black_13_w400_292D32,
+                      style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -103,7 +108,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   ListTile(
                     title: Text(
                       'Документ',
-                      style: CustomTextStyle.black_13_w400_292D32,
+                      style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -135,6 +140,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
+    log('message ${widget.customer}');
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -150,8 +156,8 @@ class _CeateTasksState extends State<CeateTasks> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      CustomIconButton(
+                        onBackPressed: () {
                           if (page == 0) {
                             Navigator.of(context).pop();
                           } else {
@@ -160,19 +166,16 @@ class _CeateTasksState extends State<CeateTasks> {
                                 curve: Curves.easeInOut);
                           }
                         },
-                        child: const Icon(
-                          Icons.keyboard_backspace_rounded,
-                          color: Colors.grey,
-                        ),
+                        icon: SvgImg.arrowRight,
                       ),
                       SizedBox(width: 12.w),
                       Text(
                         'Создание задания',
-                        style: CustomTextStyle.black_21_w700,
+                        style: CustomTextStyle.black_22_w700,
                       ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey_21_w700,
+                        style: CustomTextStyle.grey_22_w700,
                       )
                     ],
                   ),
@@ -190,6 +193,8 @@ class _CeateTasksState extends State<CeateTasks> {
                       Category(
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
+                        document: document,
+                        photo: photo,
                         selectCategory: selectCategory ?? widget.selectCategory,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
@@ -197,6 +202,11 @@ class _CeateTasksState extends State<CeateTasks> {
                         onEdit: (cat, subCat, title, about) {
                           selectCategory = cat;
                           selectSubCategory = subCat;
+                        },
+                        removefiles: (photo, document) {
+                          this.photo = photo;
+                          this.document = document;
+                          setState(() {});
                         },
                       ),
                       DatePicker(
@@ -239,10 +249,21 @@ class _CeateTasksState extends State<CeateTasks> {
                         if (coastMaxController.text.isEmpty) {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
-                        } if (region == null || region!.isEmpty) {
+                        }
+                        if (region == null || region!.isEmpty) {
                           error += '\n- регион';
                           errorsFlag = true;
-                        } 
+                        }
+
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) >
+                              int.parse(coastMaxController.text)) {
+                            error +=
+                                '\n- минимальный бюджет должен быть меньше максимального';
+                            errorsFlag = true;
+                          }
+                        }
 
                         if (errorsFlag) {
                           showAlertToast(error);
@@ -250,12 +271,13 @@ class _CeateTasksState extends State<CeateTasks> {
                           showLoaderWrapper(context);
 
                           Task newTask = Task(
+                            asCustomer: widget.customer,
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
                             dateStart:
-                                DateFormat('yyyy-MM-dd').format(startDate),
-                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate),
+                                DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
                               coastMinController.text.isEmpty
                                   ? '0'
@@ -273,6 +295,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
+                            search: '',
                           );
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);
@@ -316,7 +339,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
                       page == 0 ? 'Далее' : 'Создать заказ',
-                      style: CustomTextStyle.black_14_w600_171716,
+                      style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
                 ),

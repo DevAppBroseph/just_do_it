@@ -9,6 +9,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -50,20 +51,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             alignment: Alignment.center,
                             child: Text(
                               'Профиль',
-                              style: CustomTextStyle.black_21_w700,
+                              style: CustomTextStyle.black_22_w700,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Transform.rotate(
-                                angle: pi,
-                                child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg',
-                                ),
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
                           ),
                         ],
                       ),
@@ -137,8 +132,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           'Как исполнитель',
                                           style: state
                                               ? CustomTextStyle
-                                                  .black_13_w400_171716
-                                              : CustomTextStyle.white_13_w400,
+                                                  .black_14_w400_171716
+                                              : CustomTextStyle.white_14_w400,
                                         ),
                                       ),
                                     ),
@@ -172,9 +167,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Text(
                                           'Как заказчик',
                                           style: state
-                                              ? CustomTextStyle.white_13_w400
+                                              ? CustomTextStyle.white_14_w400
                                               : CustomTextStyle
-                                                  .black_13_w400_171716,
+                                                  .black_14_w400_171716,
                                         ),
                                       ),
                                     ),
@@ -216,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   CupertinoButton(
                       child: Text(
                         'Готово',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black, fontSize: 13.sp),
                       ),
                       onPressed: () {
                         var bloc = BlocProvider.of<ProfileBloc>(context);

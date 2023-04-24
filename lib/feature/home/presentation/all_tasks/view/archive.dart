@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 
 class ArchivePage extends StatefulWidget {
   const ArchivePage({super.key});
@@ -41,7 +42,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       child: Text(
                         'В архиве',
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 21.sp,
                           color: Colors.black,
                         ),
                       ),
@@ -98,7 +99,15 @@ class _ArchivePageState extends State<ArchivePage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CeateTasks(customer: true);
+                        },
+                      ),
+                    );
+                  },
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: const Text('Создать новое'),
                 ),

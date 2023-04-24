@@ -1,6 +1,7 @@
 import 'dart:developer' as dev;
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CreatePage extends StatefulWidget {
@@ -32,11 +34,13 @@ class _CreatePageState extends State<CreatePage> {
   int openCategory = -1;
   List<Activities> activities = [];
   Activities? selectCategory;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    print(activities.length);
   }
 
   @override
@@ -48,7 +52,7 @@ class _CreatePageState extends State<CreatePage> {
       }
       return false;
     }, builder: (context, snapshot) {
-      var bloc = BlocProvider.of<AuthBloc>(context);
+      print(activities.length);
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: Scaffold(
@@ -72,26 +76,14 @@ class _CreatePageState extends State<CreatePage> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.only(top: 60.h, left: 25.w, right: 28.w),
+                          EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: widget.onBackPressed,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Transform.rotate(
-                                angle: pi,
-                                child: SvgPicture.asset(
-                                  'assets/icons/arrow_right.svg',
-                                  height: 20.h,
-                                  width: 20.w,
-                                ),
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: widget.onBackPressed,
+                            icon: SvgImg.arrowRight,
                           ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
+                          const Spacer(),
                           SizedBox(
                             width: 240.w,
                             height: 36.h,
@@ -107,6 +99,8 @@ class _CreatePageState extends State<CreatePage> {
                                 ],
                               ),
                               hintText: 'Поиск',
+                              hintStyle: CustomTextStyle.grey_14_w400
+                                  .copyWith(overflow: TextOverflow.ellipsis),
                               textEditingController: TextEditingController(),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 11.w, vertical: 11.h),
@@ -117,7 +111,7 @@ class _CreatePageState extends State<CreatePage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}]).then((value) {
+                                  arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -166,6 +160,7 @@ class _CreatePageState extends State<CreatePage> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return CeateTasks(
+                                        customer: true,
                                         selectCategory: selectCategory);
                                   },
                                 ),
@@ -175,7 +170,7 @@ class _CreatePageState extends State<CreatePage> {
                           btnColor: ColorStyles.yellowFFD70A,
                           textLabel: Text(
                             'Создать',
-                            style: CustomTextStyle.black_15_w600_171716,
+                            style: CustomTextStyle.black_16_w600_171716,
                           ),
                         ),
                       ),
@@ -199,12 +194,13 @@ class _CreatePageState extends State<CreatePage> {
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text(
             'Что необходимо сделать?',
-            style: CustomTextStyle.black_17_w800,
+            style: CustomTextStyle.black_18_w800,
           ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.8,
           child: ListView.builder(
+            controller: scrollController,
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemCount: activities.length,
@@ -250,6 +246,13 @@ class _CreatePageState extends State<CreatePage> {
         onTap: () => setState(() {
           if (openCategory != currentIndex) {
             openCategory = currentIndex;
+            Future.delayed(Duration(milliseconds: 300), () {
+              scrollController.animateTo(
+                65.h * currentIndex,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.linear,
+              );
+            });
           } else {
             openCategory = -1;
           }
@@ -270,14 +273,17 @@ class _CreatePageState extends State<CreatePage> {
           child: Row(
             children: [
               if (icon != '')
-                Image.network(
-                  server + icon,
-                  height: 20.h,
+                SizedBox(
+                  width: 20.h,
+                  child: CachedNetworkImage(
+                    imageUrl: server + icon,
+                    height: 20.h,
+                  ),
                 ),
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_13_w400_171716,
+                style: CustomTextStyle.black_14_w400_171716,
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -286,7 +292,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 70.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey_14_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -310,11 +316,25 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   Widget info(List<Subcategory> list, bool open, int index) {
+    double height = 0;
+    if (open) {
+      if (list.length >= 5) {
+        height = 200.h;
+      } else if (list.length == 4) {
+        height = 160.h;
+      } else if (list.length == 3) {
+        height = 120.h;
+      } else if (list.length == 2) {
+        height = 80.h;
+      }
+    } else {
+      height = 0;
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        height: open ? 200.h : 0.h,
+        height: height,
         decoration: BoxDecoration(
           color: ColorStyles.whiteFFFFFF,
           borderRadius: BorderRadius.circular(10.r),
@@ -374,7 +394,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 250.w,
                     child: Text(
                       label,
-                      style: CustomTextStyle.black_13_w400_515150,
+                      style: CustomTextStyle.black_14_w400_515150,
                     ),
                   ),
                   const Spacer(),

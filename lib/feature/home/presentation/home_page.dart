@@ -44,7 +44,9 @@ class _HomePageState extends State<HomePage> {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
+    BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     Future.delayed(Duration(seconds: 3), () {
+      // panelController.close();
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
@@ -89,7 +91,14 @@ class _HomePageState extends State<HomePage> {
                     },
                     onSelect: selectUser,
                   ),
-                  const TasksPage(),
+                  TasksPage(
+                    onSelect: (page) {
+                      setState(() {
+                        this.page = page;
+                        pageController.jumpToPage(this.page);
+                      });
+                    },
+                  ),
                   ChatPage(() {
                     pageController.jumpToPage(4);
                     page = 5;
@@ -118,40 +127,50 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   height: 96.h,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.h),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBottomNavigatorBar(
-                          'assets/icons/add.svg',
-                          'Создать',
-                          0,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/search.svg',
-                          'Найти',
-                          1,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/tasks.svg',
-                          'Задания',
-                          2,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/messages.svg',
-                          'Чат',
-                          3,
-                        ),
-                        itemBottomNavigatorBar(
-                          'assets/icons/profile.svg',
-                          'Кабинет',
-                          4,
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: BlocBuilder<ChatBloc, ChatState>(
+                      builder: (context, snapshot) {
+                    int undreadMessage = 0;
+                    for (var element
+                        in BlocProvider.of<ChatBloc>(context).chatList) {
+                      undreadMessage += element.countUnreadMessage ?? 0;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          itemBottomNavigatorBar(
+                            'assets/icons/add.svg',
+                            'Создать',
+                            0,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/search.svg',
+                            'Найти',
+                            1,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/tasks.svg',
+                            'Задания',
+                            2,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/messages.svg',
+                            'Чат',
+                            3,
+                            counderMessage:
+                                undreadMessage != 0 ? undreadMessage : null,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/profile.svg',
+                            'Кабинет',
+                            4,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               );
             },
@@ -171,7 +190,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(String icon, String label, int index) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index,
+      {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
         final bloc = BlocProvider.of<ProfileBloc>(context);
@@ -181,7 +201,14 @@ class _HomePageState extends State<HomePage> {
           if (index == 4) {
             Navigator.of(context).pushNamed(AppRoute.personalAccount);
           } else if (index == 2) {
-            Navigator.of(context).pushNamed(AppRoute.tasks);
+            Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
+              (page) {
+                setState(() {
+                  this.page = page;
+                  pageController.jumpToPage(this.page);
+                });
+              },
+            ]);
           } else {
             pageController.jumpToPage(index);
             page = index;
@@ -195,18 +222,45 @@ class _HomePageState extends State<HomePage> {
           width: 50.w,
           height: 46.w,
           color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              SvgPicture.asset(
-                icon,
-                color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    icon,
+                    color:
+                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    label,
+                    style: CustomTextStyle.black_12_w400_292D32,
+                  ),
+                ],
               ),
-              SizedBox(height: 4.h),
-              Text(
-                label,
-                style: CustomTextStyle.black_12_w400_292D32,
-              ),
+              if (counderMessage != null)
+                Padding(
+                  padding: EdgeInsets.only(right: 0.h),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      height: 19.h,
+                      width: 19.h,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(100.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$counderMessage',
+                          style: CustomTextStyle.white_10_w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),

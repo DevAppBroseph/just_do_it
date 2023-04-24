@@ -49,11 +49,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: [
                         TextSpan(
                           text: 'Регистрация ',
-                          style: CustomTextStyle.black_21_w700,
+                          style: CustomTextStyle.black_22_w700,
                         ),
                         TextSpan(
                           text: '$stageRegistragion/2',
-                          style: CustomTextStyle.grey_21_w700,
+                          style: CustomTextStyle.grey_22_w700,
                         ),
                       ],
                     ),
@@ -125,8 +125,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Text(
                                   'Исполнитель',
                                   style: state
-                                      ? CustomTextStyle.black_13_w400_171716
-                                      : CustomTextStyle.white_13_w400,
+                                      ? CustomTextStyle.black_14_w400_171716
+                                      : CustomTextStyle.white_14_w400,
                                 ),
                               ),
                             ),
@@ -160,8 +160,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Text(
                                   'Заказчик',
                                   style: state
-                                      ? CustomTextStyle.white_13_w400
-                                      : CustomTextStyle.black_13_w400_171716,
+                                      ? CustomTextStyle.white_14_w400
+                                      : CustomTextStyle.black_14_w400_171716,
                                 ),
                               ),
                             ),

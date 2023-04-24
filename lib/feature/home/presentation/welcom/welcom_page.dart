@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -34,18 +37,31 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   void initState() {
-    
-   
     // String? access = BlocProvider.of<PofileBloc>(context).access;
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
+
+    if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefCode(value);
+      });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefCode(event);
+    });
     super.initState();
-     notificationInit();
+    notificationInit();
   }
 
-  
-  
-  Future <void> notificationInit() async{
+  void parseTripRefCode(PendingDynamicLinkData event) async {
+    String? refCode = event.link.queryParameters['ref_code'];
+    log('OPEN WITH REFCODE $refCode');
+    if (refCode != null) {
+      BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
+    }
+  }
+
+  Future<void> notificationInit() async {
     await NotificationService().inject();
   }
 
@@ -109,6 +125,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             Navigator.of(context)
                                 .pushNamed(AppRoute.menu, arguments: [
                               (page) {},
+                              false,
                             ]).then((value) {
                               if (value != null) {
                                 if (value == 'create') {
@@ -148,7 +165,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             child: Center(
                               child: Text(
                                 'jobyfine'.toUpperCase(),
-                                style: CustomTextStyle.black_32_w900_171716,
+                                style: CustomTextStyle.black_39_w900_171716,
                               ),
                             ),
                           ),
@@ -178,7 +195,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           Text(
                                             'Добро пожаловать,',
                                             style: CustomTextStyle
-                                                .black_13_w400_515150,
+                                                .black_14_w400_515150,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: null,
                                           ),
@@ -186,7 +203,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                           AutoSizeText(
                                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
                                             style: TextStyle(
-                                                fontSize: 32.sp,
+                                                fontSize: 33.sp,
                                                 fontWeight: FontWeight.w800),
                                             maxLines: 2,
                                           ),
@@ -224,7 +241,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                               Text(
                                                 'Рейтинг',
                                                 style: CustomTextStyle
-                                                    .grey_13_w400,
+                                                    .grey_14_w400,
                                               ),
                                               SizedBox(height: 6.h),
                                               Row(
@@ -239,7 +256,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         : reviews!.ranking!
                                                             .toString(),
                                                     style: CustomTextStyle
-                                                        .black_15_w500_171716,
+                                                        .black_16_w600_171716,
                                                   ),
                                                 ],
                                               ),
@@ -247,13 +264,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                               Text(
                                                 'Баллы:',
                                                 style: CustomTextStyle
-                                                    .grey_13_w400,
+                                                    .grey_14_w400,
                                               ),
                                               SizedBox(height: 4.h),
                                               Text(
-                                                 user?.balance.toString() ?? '0',
+                                                user?.balance.toString() ?? '0',
                                                 style: CustomTextStyle
-                                                    .black_15_w500_171716,
+                                                    .black_16_w600_171716,
                                               ),
                                             ],
                                           ),
@@ -277,7 +294,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       children: [
                         Text(
                           'Посмотреть как:',
-                          style: CustomTextStyle.black_17_w800,
+                          style: CustomTextStyle.black_18_w800,
                         ),
                       ],
                     ),
@@ -312,8 +329,8 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/planning.png',
+                                  child: SvgPicture.asset(
+                                    'assets/icons/contractor.svg',
                                     height: 105.h,
                                   ),
                                 ),
@@ -327,11 +344,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Заказчик',
                                         style: CustomTextStyle
-                                            .black_13_w400_171716,
+                                            .black_14_w400_171716,
                                       ),
                                       Text(
-                                        'Размести задание',
-                                        style: CustomTextStyle.grey_11_w400,
+                                        'Размещай задания',
+                                        style: CustomTextStyle.grey_12_w400,
                                       ),
                                     ],
                                   ),
@@ -366,9 +383,9 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/workplace.png',
-                                    height: 103.h,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/customer.svg',
+                                    height: 105.h,
                                   ),
                                 ),
                                 Padding(
@@ -381,11 +398,11 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Исполнитель',
                                         style: CustomTextStyle
-                                            .black_13_w400_171716,
+                                            .black_14_w400_171716,
                                       ),
                                       Text(
                                         'Выполняй работу',
-                                        style: CustomTextStyle.grey_11_w400,
+                                        style: CustomTextStyle.grey_12_w400,
                                       ),
                                     ],
                                   ),
@@ -447,7 +464,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                       Text(
                                         'Узнай больше о проекте!',
                                         style: CustomTextStyle
-                                            .black_15_w600_171716,
+                                            .black_16_w600_171716,
                                       ),
                                       const Spacer(),
                                       SvgPicture.asset(
@@ -457,17 +474,17 @@ class _WelcomPageState extends State<WelcomPage> {
                                 ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    EdgeInsets.only(left: 16.w, bottom: 31.h),
-                                child: Image.asset(
-                                  'assets/images/thor4.png',
-                                  height: 56.h,
-                                ),
-                              ),
-                            ),
+                            // Align(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Padding(
+                            //     padding:
+                            //         EdgeInsets.only(left: 16.w, bottom: 31.h),
+                            //     child: Image.asset(
+                            //       'assets/images/thor4.png',
+                            //       height: 56.h,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -525,7 +542,7 @@ class _WelcomPageState extends State<WelcomPage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
               if (choice.isNotEmpty)
                 Padding(
@@ -534,7 +551,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     width: 100.w,
                     child: Text(
                       '- $choice',
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey_14_w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -597,7 +614,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Text(
                     label,
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                   const Spacer(),
                 ],

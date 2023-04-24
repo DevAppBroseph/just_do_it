@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone_code.dart';
@@ -50,11 +52,18 @@ class AppRoute {
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case allTasks:
-        return MaterialPageRoute(builder: (_) => const AllTasksView());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => AllTasksView(asCustomer: arg[0]));
       case archiveTasks:
-        return MaterialPageRoute(builder: (_) => const ArchiveTasksView());
+        return MaterialPageRoute(builder: (_) => ArchiveTasksView());
       case tasks:
-        return MaterialPageRoute(builder: (_) => const TasksPage());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => TasksPage(
+            onSelect: arg[0],
+          ),
+        );
       case createTasks:
         return MaterialPageRoute(builder: (_) => ListTasks());
       case contactus:
@@ -64,10 +73,13 @@ class AppRoute {
       case about:
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
+        log('message ${route.arguments}');
         List<dynamic> arg = route.arguments as List<dynamic>;
+
         return MaterialPageRoute(
           builder: (_) => MenuPage(
             onBackPressed: arg[0],
+            inTask: arg[1],
           ),
         );
       case referal:
