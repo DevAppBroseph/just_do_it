@@ -1047,7 +1047,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
               ),
               SizedBox(height: 60.h),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  await Repository().deleteProfile(
+                      BlocProvider.of<ProfileBloc>(context).access!);
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
                   Navigator.of(context)

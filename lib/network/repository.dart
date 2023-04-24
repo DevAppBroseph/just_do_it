@@ -36,6 +36,16 @@ class Repository {
     return null;
   }
 
+  Future<void> deleteProfile(String access) async {
+    await dio.delete(
+      '$server/profile/',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+  }
+
   Future<List<Task>> getMyTaskList(String access, bool asCustomer) async {
     final response = await dio.get(
       '$server/orders/my_orders',

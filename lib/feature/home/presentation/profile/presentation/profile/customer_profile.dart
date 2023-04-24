@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/score/
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CustomerProfile extends StatefulWidget {
@@ -443,7 +444,9 @@ class _CustomerProfileState extends State<CustomerProfile> {
             ),
             SizedBox(height: 40.h),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
+                await Repository().deleteProfile(
+                    BlocProvider.of<ProfileBloc>(context).access!);
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
                 Navigator.of(context)
