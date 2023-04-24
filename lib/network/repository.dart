@@ -40,9 +40,8 @@ class Repository {
     return tasks;
   }
 
-  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String dateStart, String dateEnd, List<int?> subcategory ) async {
+  Future<List<Task>> getTaskList(String? access, String query, List<String?> region, int? priceFrom, int? priceTo, String? dateStart, String? dateEnd, List<int?> subcategory ) async {
     log(priceTo.toString());
-    log(dateStart);
     final response = await dio.get(
       '$server/orders/',
       queryParameters: {

@@ -47,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], []));
+    context.read<TasksBloc>().add(GetTasksEvent(access, '', '', '', 0, 500000, [], [], 0));
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -110,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], []));
+                              context.read<TasksBloc>().add(GetTasksEvent(access, value, '', '', 0, 500000, [], [], 0));
                             },
                             contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
@@ -195,9 +195,20 @@ class _SearchPageState extends State<SearchPage> {
                                 color: ColorStyles.black171716,
                               ),
                               child: Center(
-                                child: Text(
-                                  '2',
-                                  style: CustomTextStyle.white_9_w700,
+                                child: BlocBuilder<TasksBloc, TasksState>(
+                                  builder: (context, state) {
+                                    if(state is TasksLoaded){
+                                    return Text(
+                                      state.kolvo != 0 ?state.kolvo.toString(): '0',
+                                      style: CustomTextStyle.white_9_w700,
+                                    );
+                                    }
+                                    else{
+                                       return Text(
+                                      '',
+                                      style: CustomTextStyle.white_9_w700,);
+                                    }
+                                  }
                                 ),
                               ),
                             ),

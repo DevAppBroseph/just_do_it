@@ -8,8 +8,9 @@ class TasksLoading extends TasksState {}
 
 class TasksLoaded extends TasksState {
   final List<Task>? tasks;
+  final int kolvo;
  
-  TasksLoaded({required this.tasks});
+  TasksLoaded(this.kolvo, {required this.tasks});
 
 }
 

@@ -142,15 +142,39 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
                       onTap: () {
+                        int kolvo = 0;
                         widget.panelController.animatePanelToPosition(0);
+                        if (coastMinController.text != '') {
+                          kolvo++;
+                        }
+                        if (coastMaxController.text != '') {
+                          kolvo++;
+                        }
+
                         if (coastMinController.text == '') {
                           coastMinController.text = '0';
                         }
                         if (coastMaxController.text == '') {
-                          coastMaxController.text = '50000000';
+                          coastMaxController.text = '5000000000';
                         }
                         var format1 = "${endDate?.year}-${endDate?.month}-${endDate?.day}";
                         var format2 = "${startDate?.year}-${startDate?.month}-${startDate?.day}";
+
+                        if (keyWordController.text != '') {
+                          kolvo++;
+                        }
+                        if (isRegion.isNotEmpty) {
+                          kolvo++;
+                        }
+                        if (selectSubCategory.isNotEmpty) {
+                          kolvo++;
+                        }
+                        if (format1 != '') {
+                          kolvo++;
+                        }
+                        if (format2 != '') {
+                          kolvo++;
+                        }
 
                         context.read<TasksBloc>().add(GetTasksEvent(
                             access,
@@ -160,7 +184,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             int.parse(coastMinController.text),
                             int.parse(coastMaxController.text),
                             isRegion,
-                            selectSubCategory));
+                            selectSubCategory,
+                            kolvo));
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
@@ -320,12 +345,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(height: 3.h),
                           SizedBox(
                             width: 200.w,
-                          
                             child: Text(
                               category != null && category!.isNotEmpty ? category! : 'Все категории',
                               maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                               
+                              overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_13_w400_171716,
                             ),
                           ),
@@ -1000,7 +1023,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       }
                       if (element.isSelect == false) {
                         selectSubCategory.remove(element.id);
-                      strcat = '';
+                        strcat = '';
                       }
                       category = strcat;
                     }
@@ -1039,10 +1062,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         }
         if (selectActivities!.subcategory[index].isSelect == false) {
           selectSubCategory.remove(selectActivities!.subcategory[index].id);
-            allCategory = false;
-            strcat2 = '${selectActivities!.subcategory[index].description!}, ';
+          allCategory = false;
+          strcat2 = '${selectActivities!.subcategory[index].description!}, ';
         }
-        if(selectSubCategory.isEmpty){
+        if (selectSubCategory.isEmpty) {
           strcat = '';
         }
         category = strcat.replaceAll(strcat2, '');
@@ -1782,7 +1805,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   DateTime? startDate = DateTime.now();
   DateTime? endDate = DateTime.now();
-
 
   List<City> countryList = [
     City('Россия'),

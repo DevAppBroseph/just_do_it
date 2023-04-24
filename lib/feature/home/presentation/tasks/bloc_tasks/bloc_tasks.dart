@@ -22,7 +22,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     if (event.access != null) {
       tasks = await Repository().getTaskList(event.access, event.query, event.region, event.priceFrom, event.priceTo, event.dateStart, event.dateEnd, event.subcategory);
 
-      emit(TasksLoaded(tasks: tasks));
+      emit(TasksLoaded(tasks: tasks, event.kolvo));
       log(event.query);
     } else {
       emit(TasksError());

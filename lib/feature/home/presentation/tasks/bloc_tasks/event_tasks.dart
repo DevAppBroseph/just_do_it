@@ -6,12 +6,13 @@ class GetTasksEvent extends TasksEvent {
   String query;
   String? access;
   List<int?> subcategory;
-  String dateStart;
-  String dateEnd;
+  String? dateStart;
+  String? dateEnd;
   int? priceFrom;
   int? priceTo;
   List<String?> region;
-  GetTasksEvent(this.access, this.query, this.dateEnd, this.dateStart, this.priceFrom, this.priceTo, this.region, this.subcategory);
+  int kolvo;
+  GetTasksEvent(this.access, this.query, this.dateEnd, this.dateStart, this.priceFrom, this.priceTo, this.region, this.subcategory, this.kolvo);
 
 }
 // class SearchTasksEvent extends TasksEvent {
