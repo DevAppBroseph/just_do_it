@@ -110,7 +110,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       (passwordController.text !=
                           repeatPasswordController.text)) {
                     showAlertToast('Пароли не совпадают');
-                  } else if (passwordController.text.length < 6) {
+                  } else if (passwordController.text.length < 6 &&  passwordController.text.isNotEmpty) {
                     showAlertToast('минимальная длина пароля 6 символов');
                   } 
                   else{
