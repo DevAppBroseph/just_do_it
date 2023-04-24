@@ -12,6 +12,7 @@ class GetTasksEvent extends TasksEvent {
   int? priceTo;
   List<String?> region;
   bool? customer;
+  int? countFilter;
   GetTasksEvent(
     this.access,
     this.query,
@@ -21,6 +22,7 @@ class GetTasksEvent extends TasksEvent {
     this.priceTo,
     this.region,
     this.subcategory,
+    this.countFilter,
     this.customer,
   );
 }

@@ -132,7 +132,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             : typeFilter == TypeFilter.category
                                 ? categoryFirst()
                                 : typeFilter == TypeFilter.category1
-                                    ? categorySecond()
+                                    ? categorySecond(selectActivities)
                                     : typeFilter == TypeFilter.date
                                         ? dateFilter()
                                         : typeFilter == TypeFilter.country
@@ -192,7 +192,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             int.parse(coastMaxController.text),
                             isRegion,
                             selectSubCategory,
-                            kolvo));
+                            kolvo,
+                            (contractorFlag && contractorFlag) ||
+                                    (contractorFlag && contractorFlag)
+                                ? null
+                                : customerFlag));
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
@@ -361,10 +365,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              category != null && category!.isNotEmpty ? category! : 'Все категории',
+                              category != null && category!.isNotEmpty
+                                  ? category!
+                                  : 'Все категории',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                             ),
                           ),
                         ],
@@ -882,8 +888,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             y < activities[i].subcategory.length;
                             y++) {
                           activities[i].subcategory[y].isSelect = true;
-                          selectSubCategory.add(activities[i].subcategory[y].id);
-                          strcat += '${activities[i].subcategory[y].description!}, ';
+                          selectSubCategory
+                              .add(activities[i].subcategory[y].id);
+                          strcat +=
+                              '${activities[i].subcategory[y].description!}, ';
                         }
                         activities[i].isSelect = true;
                       }
@@ -1037,7 +1045,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   //   );
   // }
 
-  Widget categorySecond() {
+  Widget categorySecond(Activities? selectActivity) {
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -1099,8 +1107,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   value: selectActivities!.isSelect,
                   onChanged: (value) {
                     strcat = '';
-                    selectActivity.isSelect = !selectActivity.isSelect;
-                    for (var element in selectActivity.subcategory) {
+                    selectActivity?.isSelect = !selectActivity.isSelect;
+                    for (var element in selectActivity!.subcategory) {
                       element.isSelect = value;
                       strcat += '${element.id}, ';
                       if (element.isSelect == true) {
@@ -1139,7 +1147,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     return GestureDetector(
       onTap: () {
         strcat2 = '';
-        selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;
+        selectActivities!.subcategory[index].isSelect =
+            !selectActivities!.subcategory[index].isSelect;
         setState(() {});
         if (selectActivities!.subcategory[index].isSelect == true) {
           selectSubCategory.add(selectActivities!.subcategory[index].id);

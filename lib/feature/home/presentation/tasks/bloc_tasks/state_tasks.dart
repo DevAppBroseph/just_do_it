@@ -8,9 +8,9 @@ class TasksLoading extends TasksState {}
 
 class TasksLoaded extends TasksState {
   final List<Task>? tasks;
-  final int kolvo;
+  final int? countFilter;
 
-  TasksLoaded(this.kolvo, {required this.tasks});
+  TasksLoaded(this.countFilter, {required this.tasks});
 }
 
 class TasksError extends TasksState {}
