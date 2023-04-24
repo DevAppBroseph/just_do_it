@@ -233,8 +233,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               if (state is ScoreLoaded) {
                                 final levels = state.levels;
                                 if (user.balance! < levels![0].mustCoins!) {
-                                  return Image.network(
-                                    '${levels[0].bwImage}',
+                                  return CachedNetworkImage(
+                                    imageUrl: '${levels[0].bwImage}',
                                     height: 42,
                                     width: 42,
                                   );
@@ -294,6 +294,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               }
                               return Container();
                             }),
+                            SizedBox(width: 16.w),
                           ],
                         ),
                       ),

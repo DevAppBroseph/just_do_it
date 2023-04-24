@@ -364,8 +364,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 if (state is ScoreLoaded) {
                                   final levels = state.levels;
                                   if (user!.balance! < levels![0].mustCoins!) {
-                                    return Image.network(
-                                      '${levels[0].bwImage}',
+                                    return CachedNetworkImage(
+                                      imageUrl: '${levels[0].bwImage}',
                                       height: 42,
                                       width: 42,
                                     );

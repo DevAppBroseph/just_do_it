@@ -17,6 +17,7 @@ import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
 
 class SearchPage extends StatefulWidget {
   final Function() onBackPressed;
@@ -250,8 +251,26 @@ class _SearchPageState extends State<SearchPage> {
                     builder: (context, state) {
                   taskList = BlocProvider.of<TasksBloc>(context).tasks;
                   if (state is TasksLoading) {
-                    return const Center(
-                      child: CupertinoActivityIndicator(),
+                    return SkeletonLoader(
+                      items: 4,
+                      baseColor: ColorStyles.whiteFFFFFF,
+                      highlightColor: ColorStyles.greyF3F3F3,
+                      builder: Container(
+                        margin: EdgeInsets.only(
+                            left: 24.w, right: 24.w, bottom: 24.w),
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: ColorStyles.whiteFFFFFF,
+                          borderRadius: BorderRadius.circular(10.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorStyles.shadowFC6554,
+                              offset: const Offset(0, -4),
+                              blurRadius: 55.r,
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   }
                   if (taskList.isEmpty) return Container();
@@ -347,9 +366,12 @@ class _SearchPageState extends State<SearchPage> {
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
                           SizedBox(width: 5.w),
-                          SvgPicture.asset(
-                            'assets/icons/card.svg',
-                            height: 16.h,
+                          SizedBox(
+                            width: 16.h,
+                            child: SvgPicture.asset(
+                              'assets/icons/card.svg',
+                              height: 16.h,
+                            ),
                           ),
                         ],
                       ),

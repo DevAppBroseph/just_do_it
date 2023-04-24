@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     Future.delayed(Duration(seconds: 3), () {
+      // panelController.close();
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }

@@ -69,6 +69,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     return BlocBuilder<SearchBloc, SearchState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
+        // widget.panelController.open();
         widget.panelController.animatePanelToPosition(1);
         return true;
       } else {
@@ -91,7 +92,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           }
         },
         maxHeight: heightPanel,
-        minHeight: 0,
+        minHeight: 0.h,
         backdropEnabled: true,
         backdropColor: Colors.black,
         backdropOpacity: 0.8,
@@ -935,6 +936,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               )
             ],
           ),
+          margin: EdgeInsets.only(bottom: 10.h),
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
           child: Row(
             children: [
