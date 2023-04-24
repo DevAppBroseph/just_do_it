@@ -467,17 +467,17 @@ class _WelcomPageState extends State<WelcomPage> {
                                 ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    EdgeInsets.only(left: 16.w, bottom: 31.h),
-                                child: Image.asset(
-                                  'assets/images/thor4.png',
-                                  height: 56.h,
-                                ),
-                              ),
-                            ),
+                            // Align(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Padding(
+                            //     padding:
+                            //         EdgeInsets.only(left: 16.w, bottom: 31.h),
+                            //     child: Image.asset(
+                            //       'assets/images/thor4.png',
+                            //       height: 56.h,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
