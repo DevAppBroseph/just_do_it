@@ -59,6 +59,19 @@ class _WelcomPageState extends State<WelcomPage> {
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     }
+     if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefId(value);
+      });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefId(event);
+    });
+  }
+  void parseTripRefId(PendingDynamicLinkData event) async {
+    String? idUser = event.link.queryParameters['user_profile'];
+    log('OPEN WITH USER $idUser');
+  
   }
 
   Future<void> notificationInit() async {
