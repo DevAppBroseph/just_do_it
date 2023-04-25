@@ -317,6 +317,18 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       isRegion = [];
                       selectSubCategory = [];
                       country = '';
+                       for (int i = 0; i < activities.length; i++) {
+                        for (int y = 0;
+                            y < activities[i].subcategory.length;
+                            y++) {
+                          activities[i].subcategory[y].isSelect = false;
+                          selectSubCategory = [];
+                        }
+                        activities[i].isSelect = false;
+                      }
+                      for (var element in allRegoins) {
+                        element.select = false;
+                    }
                       setState(() {});
                     },
                     child: Text(
