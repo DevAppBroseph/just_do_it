@@ -12,7 +12,8 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 
 class TaskAdditional extends StatefulWidget {
   String title;
-  TaskAdditional({super.key, required this.title});
+  bool asCustomer;
+  TaskAdditional({super.key, required this.title, required this.asCustomer});
 
   @override
   State<TaskAdditional> createState() => _TaskAdditionalState();
@@ -29,8 +30,8 @@ class _TaskAdditionalState extends State<TaskAdditional> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
+    List<Task> res = await Repository().getMyTaskList(
+        BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});

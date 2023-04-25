@@ -62,8 +62,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      final reversedTasks = tasks.reversed;
-      return reversedTasks.toList();
+      // final reversedTasks = tasks.reversed;
+      return tasks;
     }
     return tasks;
   }
@@ -90,6 +90,8 @@ class Repository {
         "subcategory": subcategory,
       "as_customer": customer,
     };
+
+    log('message query ${queryParameters}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -107,8 +109,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      final reversedTasks = tasks.reversed;
-      return reversedTasks.toList();
+      // final reversedTasks = tasks.reversed;
+      return tasks;
     }
     return tasks;
   }

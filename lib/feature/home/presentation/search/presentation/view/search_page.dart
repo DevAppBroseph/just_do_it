@@ -47,18 +47,19 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
+
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            access,
-            '',
-            null,
-            null,
-            null,
-            null,
-            [],
-            [],
-            null,
-            null,
+            access: access,
+            query: '',
+            dateEnd: null,
+            dateStart: null,
+            priceFrom: null,
+            priceTo: null,
+            region: [],
+            subcategory: [],
+            countFilter: null,
+            customer: null,
           ),
         );
   }
@@ -66,18 +67,20 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(GetTasksEvent(
-          access,
-          '',
-          '',
-          '',
-          0,
-          500000,
-          [],
-          [],
-          null,
-          null,
-        ));
+    context.read<TasksBloc>().add(
+          GetTasksEvent(
+            access: access,
+            query: '',
+            dateEnd: '',
+            dateStart: '',
+            priceFrom: 0,
+            priceTo: 50000000,
+            region: [],
+            subcategory: [],
+            countFilter: null,
+            customer: null,
+          ),
+        );
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -142,18 +145,20 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(GetTasksEvent(
-                                    access,
-                                    value,
-                                    '',
-                                    '',
-                                    0,
-                                    500000,
-                                    [],
-                                    [],
-                                    null,
-                                    null,
-                                  ));
+                              context.read<TasksBloc>().add(
+                                    GetTasksEvent(
+                                      access: access,
+                                      query: value,
+                                      dateEnd: '',
+                                      dateStart: '',
+                                      priceFrom: 0,
+                                      priceTo: 50000000,
+                                      region: [],
+                                      subcategory: [],
+                                      countFilter: null,
+                                      customer: null,
+                                    ),
+                                  );
                             },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),

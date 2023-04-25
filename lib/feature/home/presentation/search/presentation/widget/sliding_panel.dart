@@ -176,20 +176,24 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           countField++;
                         }
 
-                        context.read<TasksBloc>().add(GetTasksEvent(
-                            access,
-                            keyWordController.text,
-                            format1,
-                            format2,
-                            int.tryParse(coastMinController.text),
-                            int.tryParse(coastMaxController.text),
-                            isRegion,
-                            selectSubCategory,
-                            countField,
-                            (contractorFlag && contractorFlag) ||
-                                    (contractorFlag && contractorFlag)
-                                ? null
-                                : customerFlag));
+                        context.read<TasksBloc>().add(
+                              GetTasksEvent(
+                                access: access,
+                                query: keyWordController.text,
+                                dateEnd: format1,
+                                dateStart: format2,
+                                priceFrom:
+                                    int.tryParse(coastMinController.text),
+                                priceTo: int.tryParse(coastMaxController.text),
+                                region: isRegion,
+                                subcategory: selectSubCategory,
+                                countFilter: countField,
+                                customer: (contractorFlag && contractorFlag) ||
+                                        (contractorFlag && contractorFlag)
+                                    ? null
+                                    : customerFlag,
+                              ),
+                            );
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(

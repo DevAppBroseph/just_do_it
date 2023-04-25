@@ -72,7 +72,8 @@ class Customer extends StatelessWidget {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(AppRoute.archiveTasks);
+              Navigator.of(context)
+                  .pushNamed(AppRoute.archiveTasks, arguments: [false]);
             },
             child: Container(
               height: 55.h,
@@ -131,7 +132,10 @@ class Customer extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Открыты');
+                      return TaskAdditional(
+                        title: 'Открыты',
+                        asCustomer: false,
+                      );
                     }),
                   );
                 },
@@ -156,7 +160,10 @@ class Customer extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Невыполненные');
+                      return TaskAdditional(
+                        title: 'Невыполненные',
+                        asCustomer: false,
+                      );
                     }),
                   );
                 },
@@ -179,7 +186,10 @@ class Customer extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return CeateTasks(customer: false);
+                      return CeateTasks(
+                        customer: false,
+                        doublePop: true,
+                      );
                     },
                   ),
                 );

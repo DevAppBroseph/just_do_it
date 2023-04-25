@@ -15,7 +15,8 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ArchiveTasksView extends StatefulWidget {
-  ArchiveTasksView({super.key});
+  bool asCustomer;
+  ArchiveTasksView({super.key, required this.asCustomer});
 
   @override
   State<ArchiveTasksView> createState() => _ArchiveTasksViewState();
@@ -32,8 +33,8 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
+    List<Task> res = await Repository().getMyTaskList(
+        BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});
@@ -117,7 +118,10 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return CeateTasks(customer: true);
+                        return CeateTasks(
+                          customer: true,
+                          doublePop: true,
+                        );
                       },
                     ),
                   );

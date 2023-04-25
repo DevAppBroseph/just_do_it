@@ -119,7 +119,10 @@ class _AllTasksViewState extends State<AllTasksView> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return CeateTasks(customer: widget.asCustomer);
+                        return CeateTasks(
+                          customer: widget.asCustomer,
+                          doublePop: true,
+                        );
                       },
                     ),
                   );

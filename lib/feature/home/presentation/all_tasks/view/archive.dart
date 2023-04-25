@@ -103,7 +103,10 @@ class _ArchivePageState extends State<ArchivePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CeateTasks(customer: true);
+                          return CeateTasks(
+                            customer: true,
+                            doublePop: true,
+                          );
                         },
                       ),
                     );
