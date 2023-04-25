@@ -98,7 +98,7 @@ void taskMoreDialog(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18.w),
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
