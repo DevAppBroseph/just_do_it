@@ -12,6 +12,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/task.dart';
@@ -301,7 +302,31 @@ class _CeateTasksState extends State<CeateTasks> {
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .createTask(profileBloc.access!, newTask);
-                          if (res) Navigator.of(context).pop();
+                          if (res) {
+                            if (widget.selectCategory == null) {
+                              Navigator.of(context)
+                                ..pop()
+                                ..pop();
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                          }
+                          final access =
+                              BlocProvider.of<ProfileBloc>(context).access;
+                          context.read<TasksBloc>().add(
+                                GetTasksEvent(
+                                  access,
+                                  '',
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  [],
+                                  [],
+                                  null,
+                                  null,
+                                ),
+                              );
                           Loader.hide();
                         }
                       } else {

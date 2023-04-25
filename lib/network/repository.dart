@@ -62,7 +62,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      return tasks;
+      final reversedTasks = tasks.reversed;
+      return reversedTasks.toList();
     }
     return tasks;
   }
@@ -106,7 +107,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      return tasks;
+      final reversedTasks = tasks.reversed;
+      return reversedTasks.toList();
     }
     return tasks;
   }
