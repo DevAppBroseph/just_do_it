@@ -132,6 +132,29 @@ class Repository {
     return false;
   }
 
+  Future<bool> editTask(String access, Task task) async {
+    Map<String, dynamic> map = task.toJson();
+    FormData data = FormData.fromMap(map);
+
+    // log('message map ${data.fields}---${map}');
+
+    final response = await dio.patch(
+      '$server/orders/${task.id}',
+      data: data,
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log('message map ${task.id} ${response.statusCode}');
+    // log('message map ${response.data}');
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
   Future<Uint8List?> downloadFile(String url) async {
     try {
       final response = await dio.get(
