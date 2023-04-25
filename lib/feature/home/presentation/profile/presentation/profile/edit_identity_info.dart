@@ -104,18 +104,23 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(
                 onTap: () {
-                  log('message ${DateTime.now().isAfter(dateTimeEnd!)}');
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
-                    showAlertToast('Укажите пароль');
-                  } else if ((passwordController.text.isNotEmpty &&
+                 
+                 if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
                     showAlertToast('Пароли не совпадают');
-                  } else if (passwordController.text.length < 6) {
+                  } else if (passwordController.text.length < 6 &&  passwordController.text.isNotEmpty) {
                     showAlertToast('минимальная длина пароля 6 символов');
-                  } else if (dateTimeEnd != null &&
+                  } 
+                  else{
+                     user!.copyWith(isEntity: physics);
+                    BlocProvider.of<ProfileBloc>(context).setUser(user);
+                    Repository().updateUser(
+                        BlocProvider.of<ProfileBloc>(context).access, user!);
+                    Navigator.of(context).pop();
+                  }
+                   if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!)) {
                     showAlertToast('Ваш паспорт просрочен');
                   } else if (checkExpireDate(dateTimeEnd) != null) {

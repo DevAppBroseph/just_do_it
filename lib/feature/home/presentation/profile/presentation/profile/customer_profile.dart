@@ -13,7 +13,9 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CustomerProfile extends StatefulWidget {
   const CustomerProfile({super.key});
@@ -151,10 +153,16 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     ),
                   ],
                 ),
-                SvgPicture.asset(
-                  'assets/icons/share.svg',
-                  height: 25.h,
-                ),
+                GestureDetector(
+                    onTap: () async {
+                      final code = await FirebaseDynamicLinksService().shareUserProfile(int.parse(user.id.toString()));
+                      Share.share(code.toString());
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/share.svg',
+                      height: 25.h,
+                    ),
+                  ),
               ],
             ),
             SizedBox(height: 18.h),
