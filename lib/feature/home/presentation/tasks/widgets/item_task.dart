@@ -47,7 +47,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                   ],
                 ),
               ),
-              SizedBox(width: 16.w),
+              SizedBox(width: 15.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

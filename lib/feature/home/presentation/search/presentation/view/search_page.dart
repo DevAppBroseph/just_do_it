@@ -224,7 +224,7 @@ class _SearchPageState extends State<SearchPage> {
                                       height: 16.h,
                                       color: ColorStyles.yellowFFD70B,
                                     ),
-                                    SizedBox(width: 5.w),
+                                    SizedBox(width: 4.w),
                                     Text(
                                       'Фильтр',
                                       style:

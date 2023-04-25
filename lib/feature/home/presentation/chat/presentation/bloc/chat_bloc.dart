@@ -52,8 +52,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     add(RefreshTripEvent());
   }
 
-  void _getListMessageItem(
-      GetListMessageItem event, Emitter<ChatState> emit) async {
+  void _getListMessageItem(GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
     messages.clear();
     for (var element in res) {
@@ -73,8 +72,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     chatList.clear();
     final token = await Storage().getAccessToken();
-    final res = await Repository().getListMessage(token!);
+    if (token != null) {
+      final res = await Repository().getListMessage(token);
+    
     chatList.addAll(res);
+    }
     emit(UpdateListMessageState(idChat));
   }
 
@@ -128,10 +130,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
   }
 
-  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
-      emit(UpdateListMessageItemState());
+  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) => emit(UpdateListMessageItemState());
 
-  void _refreshPersonChat(
-          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
-      emit(UpdateListPersonState());
+  void _refreshPersonChat(RefreshPersonChatEvent event, Emitter<ChatState> emit) => emit(UpdateListPersonState());
 }

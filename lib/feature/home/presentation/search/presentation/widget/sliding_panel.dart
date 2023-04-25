@@ -172,7 +172,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (selectSubCategory.isNotEmpty) {
                           countField++;
                         }
-                        if (format1 != '' || format2 != '') {
+                        if (format1 != null || format2 != null) {
                           countField++;
                         }
 
@@ -316,7 +316,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       keyWordController.text = '';
                       isRegion = [];
                       selectSubCategory = [];
-
                       country = '';
                       setState(() {});
                     },
