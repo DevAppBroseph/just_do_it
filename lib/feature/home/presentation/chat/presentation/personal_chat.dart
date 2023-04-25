@@ -49,7 +49,7 @@ class _PersonalChatState extends State<PersonalChat> {
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
     }
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
     });
   }
@@ -126,7 +126,7 @@ class _PersonalChatState extends State<PersonalChat> {
                     width: 240.w,
                     child: AutoSizeText(
                       // 'Яковлев Максим Алексеевич',
-                      widget.name,
+                      widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
                       style: CustomTextStyle.black_22_w700,
                       maxLines: 1,
                     ),
@@ -327,84 +327,96 @@ class _PersonalChatState extends State<PersonalChat> {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: EdgeInsets.only(top: 19.h),
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    SizedBox(
-                      width: 327.w,
-                      height: 70.h,
+              child: widget.name.isEmpty
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.all(24.w),
+                      child:  Text(
+                        'Вы не можете написать собеседнику\nтак как он удалил свой акккаунт',
+                        style: CustomTextStyle.black_14_w400_515150,
+                        textAlign: TextAlign.center,
+                      ),
+                    ))
+                  : Padding(
+                      padding: EdgeInsets.only(top: 19.h),
                       child: Stack(
+                        alignment: Alignment.topCenter,
                         children: [
-                          CustomTextField(
-                            width: 327.w,
-                            height: 70.h,
-                            focusNode: focusNode,
-                            actionButton: false,
-                            hintText: 'Введите сообщение',
-                            textEditingController: textController,
-                            fillColor: ColorStyles.greyF9F9F9,
-                            maxLines: 10,
-                            onTap: () {
-                              // Future.delayed(const Duration(milliseconds: 800),
-                              //     () {
-                              //   scrollController.animateTo(
-                              //     scrollController.position.maxScrollExtent,
-                              //     duration: const Duration(milliseconds: 100),
-                              //     curve: Curves.linear,
-                              //   );
-                              // });
-                            },
-                            contentPadding: EdgeInsets.only(
-                              left: 16.w,
-                              top: 20.h,
-                              bottom: 20.h,
-                              right: 90.h,
-                            ),
-                          ),
                           SizedBox(
                             width: 327.w,
-                            height: 56.h,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  // SvgPicture.asset(
-                                  //   'assets/icons/add.svg',
-                                  //   color: ColorStyles.greyBDBDBD,
-                                  // ),
-                                  SizedBox(width: 18.w),
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (textController.text.isNotEmpty) {
-                                        BlocProvider.of<ChatBloc>(context).add(
-                                          SendMessageEvent(
-                                            textController.text,
-                                            widget.idWithChat,
-                                            user!.id!.toString(),
+                            height: 70.h,
+                            child: Stack(
+                              children: [
+                                CustomTextField(
+                                  width: 327.w,
+                                  height: 70.h,
+                                  focusNode: focusNode,
+                                  actionButton: false,
+                                  hintText: 'Введите сообщение',
+                                  textEditingController: textController,
+                                  fillColor: ColorStyles.greyF9F9F9,
+                                  maxLines: 10,
+                                  onTap: () {
+                                    // Future.delayed(const Duration(milliseconds: 800),
+                                    //     () {
+                                    //   scrollController.animateTo(
+                                    //     scrollController.position.maxScrollExtent,
+                                    //     duration: const Duration(milliseconds: 100),
+                                    //     curve: Curves.linear,
+                                    //   );
+                                    // });
+                                  },
+                                  contentPadding: EdgeInsets.only(
+                                    left: 16.w,
+                                    top: 20.h,
+                                    bottom: 20.h,
+                                    right: 90.h,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 327.w,
+                                  height: 56.h,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // SvgPicture.asset(
+                                        //   'assets/icons/add.svg',
+                                        //   color: ColorStyles.greyBDBDBD,
+                                        // ),
+                                        SizedBox(width: 18.w),
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (textController
+                                                .text.isNotEmpty) {
+                                              BlocProvider.of<ChatBloc>(context)
+                                                  .add(
+                                                SendMessageEvent(
+                                                  textController.text,
+                                                  widget.idWithChat,
+                                                  user!.id!.toString(),
+                                                ),
+                                              );
+                                            }
+                                            textController.text = '';
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/send-2.svg',
+                                            color: ColorStyles.black515150,
                                           ),
-                                        );
-                                      }
-                                      textController.text = '';
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/icons/send-2.svg',
-                                      color: ColorStyles.black515150,
+                                        ),
+                                        SizedBox(width: 16.w),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(width: 16.w),
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ),
           ),
           // SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

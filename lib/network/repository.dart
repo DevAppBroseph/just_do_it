@@ -509,8 +509,10 @@ class Repository {
       for (var element in response.data['messages_list']) {
         chatList.add(
           ChatMessage(
-            user:
-                ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
+            user: element['sender'] == null
+                ? ChatUser(id: '-1')
+                : ChatUser(
+                    id: Sender.fromJson(element['sender']).id.toString()),
             createdAt: DateTime.parse(element['time']),
             text: element['text'],
           ),
