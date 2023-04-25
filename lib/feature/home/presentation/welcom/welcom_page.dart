@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dar
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -41,7 +42,7 @@ class _WelcomPageState extends State<WelcomPage> {
     // String? access = BlocProvider.of<PofileBloc>(context).access;
     // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-     access =  BlocProvider.of<ProfileBloc>(context).access;
+    access = BlocProvider.of<ProfileBloc>(context).access;
     if (Platform.isAndroid) {
       FirebaseDynamicLinks.instance.getInitialLink().then((value) {
         if (value != null) parseTripRefCode(value);
@@ -50,7 +51,7 @@ class _WelcomPageState extends State<WelcomPage> {
     FirebaseDynamicLinks.instance.onLink.listen((event) {
       parseTripRefCode(event);
     });
-    
+
     super.initState();
     notificationInit();
   }
@@ -61,16 +62,21 @@ class _WelcomPageState extends State<WelcomPage> {
     log('OPEN WITH REFCODE $refCode');
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
-    }else if(userProfile!=null) {
-      final owner =  await Repository().getRanking(access!, Owner(id: int.parse(userProfile), firstname: '', lastname: '', photo: ''));
-      if(owner!=null) {
-        Navigator.push(context, MaterialPageRoute(builder:(context) =>  ProfileView(owner: owner)));
+    } else if (userProfile != null) {
+      final owner = await Repository().getRanking(
+          access!,
+          Owner(
+              id: int.parse(userProfile),
+              firstname: '',
+              lastname: '',
+              photo: ''));
+      if (owner != null) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProfileView(owner: owner)));
       }
     }
-
-   
   }
- 
+
   Future<void> notificationInit() async {
     await NotificationService().inject();
   }

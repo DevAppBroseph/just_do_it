@@ -549,6 +549,7 @@ class _ScorePageState extends State<ScorePage> {
           width: 25.w,
           child: Text(
             score.toString(),
+            textAlign: TextAlign.center,
             style: CustomTextStyle.black_12_w400_515150,
           ),
         ),

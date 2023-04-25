@@ -85,7 +85,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                         height: MediaQuery.of(context).size.height -
                             20.h -
                             10.h -
-                            77.h,
+                            82.h,
                         child: ListView.builder(
                           itemCount: taskList.length,
                           padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
