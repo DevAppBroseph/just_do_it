@@ -613,7 +613,7 @@ void showRegionWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: 130.h,
+                            height: 120.h,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: list.length,

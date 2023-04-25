@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
 
 class Customer extends StatefulWidget {
@@ -460,11 +461,11 @@ class _CustomerState extends State<Customer> {
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
           formatters: [
-            // MaskTextInputFormatter(
-            //   // initialText: '+ ',
-            //   mask: '+############',
-            //   filter: {"#": RegExp(r'[0-9]')},
-            // ),
+            MaskTextInputFormatter(
+              mask: '+############',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.eager,
+            ),
             // if (phoneController.text.contains('+7'))
             //   LengthLimitingTextInputFormatter(12),
             // if (phoneController.text.contains('+9'))
@@ -477,19 +478,20 @@ class _CustomerState extends State<Customer> {
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             // setState(() {});
-            // print(value);
-            if (value.length == 1 && !value.contains('+')) {
-              phoneController.text = '+$value';
-              phoneController.selection =
-                  TextSelection.collapsed(offset: phoneController.text.length);
-            }
             print(value);
+            // if (value.length == 1 && !value.contains('+')) {
+            //   phoneController.text = '+$value';
+            //   phoneController.selection =
+            //       TextSelection.collapsed(offset: phoneController.text.length);
+            // }
+            // print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
+            if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
                   duration: const Duration(milliseconds: 100),

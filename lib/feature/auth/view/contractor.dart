@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -500,12 +501,11 @@ class _ContractorState extends State<Contractor> {
           textEditingController: phoneController,
           hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
-            // MaskTextInputFormatter(
-            //   // initialText: '',
-            //   mask: '+#############',
-            //   filter: {"#": RegExp(r'[0-9]')},
-            //   type: MaskAutoCompletionType.eager,
-            // ),
+            MaskTextInputFormatter(
+              mask: '+############',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.eager,
+            ),
             // if (phoneController.text.contains('+7'))
             //   LengthLimitingTextInputFormatter(12),
             // if (phoneController.text.contains('+9'))
@@ -514,27 +514,31 @@ class _ContractorState extends State<Contractor> {
             //     !phoneController.text.contains('+9'))
             //   LengthLimitingTextInputFormatter(12),
           ],
+          onTap: () {
+            if (phoneController.text.isEmpty) phoneController.text = '+';
+          },
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            setState(() {});
+            // setState(() {});
             print(value);
-            if (value.length == 1 && !value.contains('+')) {
-              print('12312312');
-              phoneController.text = '+$value';
-              phoneController.selection =
-                  TextSelection.collapsed(offset: phoneController.text.length);
-            }
-            print(value);
-            if (value.contains('+7')) {
-              countryCode = CountryCode.ru;
-            } else if (value.contains('+9')) {
-              countryCode = CountryCode.oae;
-            }
+            // if (value.length == 1 && !value.contains('+')) {
+            //   print('12312312');
+            //   phoneController.text = '+$value';
+            //   phoneController.selection =
+            //       TextSelection.collapsed(offset: phoneController.text.length);
+            // }
+            // print(value);
+            // if (value.contains('+7')) {
+            //   countryCode = CountryCode.ru;
+            // } else if (value.contains('+9')) {
+            //   countryCode = CountryCode.oae;
+            // }
 
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
+            if (phoneController.text == '+') phoneController.text = '';
             requestNextEmptyFocusStage1();
           },
         ),
