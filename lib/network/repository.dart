@@ -62,7 +62,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      return tasks;
+      final reversedTasks = tasks.reversed;
+      return reversedTasks.toList();
     }
     return tasks;
   }
@@ -106,7 +107,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      return tasks;
+      final reversedTasks = tasks.reversed;
+      return reversedTasks.toList();
     }
     return tasks;
   }
@@ -125,6 +127,29 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> editTask(String access, Task task) async {
+    Map<String, dynamic> map = task.toJson();
+    FormData data = FormData.fromMap(map);
+
+    // log('message map ${data.fields}---${map}');
+
+    final response = await dio.patch(
+      '$server/orders/${task.id}',
+      data: data,
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log('message map ${task.id} ${response.statusCode}');
+    // log('message map ${response.data}');
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
@@ -486,8 +511,10 @@ class Repository {
       for (var element in response.data['messages_list']) {
         chatList.add(
           ChatMessage(
-            user:
-                ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
+            user: element['sender'] == null
+                ? ChatUser(id: '-1')
+                : ChatUser(
+                    id: Sender.fromJson(element['sender']).id.toString()),
             createdAt: DateTime.parse(element['time']),
             text: element['text'],
           ),

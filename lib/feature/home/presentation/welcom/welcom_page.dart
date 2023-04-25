@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -15,7 +14,6 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -329,8 +327,8 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/contractor.svg',
+                                  child: Image.asset(
+                                    'assets/images/contractor.png',
                                     height: 105.h,
                                   ),
                                 ),
@@ -383,8 +381,8 @@ class _WelcomPageState extends State<WelcomPage> {
                               children: [
                                 Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/customer.svg',
+                                  child: Image.asset(
+                                    'assets/images/customer.png',
                                     height: 105.h,
                                   ),
                                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,7 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum SocialMedia { facebook, instagram, tiktok, email }
+enum SocialMedia { whatsup, instagram, facebook, telegram }
 
 class ReferalPage extends StatefulWidget {
   const ReferalPage({super.key});
@@ -28,9 +29,9 @@ class _ReferalPageState extends State<ReferalPage> {
           'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
       SocialMedia.instagram:
           'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
-      SocialMedia.tiktok:
-          'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
-      SocialMedia.email: 'mailto:?body=$text\n$urlShare',
+      // SocialMedia.tiktok:
+      //     'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
+      // SocialMedia.email: 'mailto:?body=$text\n$urlShare',
     };
     final url = urls[socialplatform]!;
     await launch(url);
@@ -123,14 +124,18 @@ class _ReferalPageState extends State<ReferalPage> {
               child: ScaleButton(
                 duration: const Duration(milliseconds: 50),
                 bound: 0.01,
-                onTap: () {
+                onTap: () async {
                   String code = '';
                   for (int i = 0; i < user!.link!.length; i++) {
                     if (RegExp(r'[0-9]').hasMatch(user!.link![i])) {
                       code += user!.link![i];
                     }
                   }
-                  FirebaseDynamicLinksService().share(int.parse(code));
+
+                  final res = await FirebaseDynamicLinksService()
+                      .share(int.parse(code));
+                  Clipboard.setData(ClipboardData(text: res));
+
                   const snackBar = SnackBar(
                     backgroundColor: ColorStyles.yellowFFCA0D,
                     content: Text('Скопировано'),
@@ -194,7 +199,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            share(SocialMedia.email);
+                            share(SocialMedia.whatsup);
                           },
                           child: Container(
                             height: 54.h,
@@ -204,7 +209,7 @@ class _ReferalPageState extends State<ReferalPage> {
                               borderRadius: BorderRadius.circular(10.r),
                               color: ColorStyles.greyF9F9F9,
                             ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
+                            child: Image.asset('assets/images/ic_whatsup.png'),
                           ),
                         ),
                         SizedBox(width: 8.h),
@@ -220,7 +225,8 @@ class _ReferalPageState extends State<ReferalPage> {
                               borderRadius: BorderRadius.circular(10.r),
                               color: ColorStyles.greyF9F9F9,
                             ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
+                            child:
+                                Image.asset('assets/images/ic_instagram.png'),
                           ),
                         ),
                         SizedBox(width: 8.h),
@@ -236,13 +242,13 @@ class _ReferalPageState extends State<ReferalPage> {
                               borderRadius: BorderRadius.circular(10.r),
                               color: ColorStyles.greyF9F9F9,
                             ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
+                            child: Image.asset('assets/images/ic_facebook.png'),
                           ),
                         ),
                         SizedBox(width: 8.h),
                         GestureDetector(
                           onTap: () {
-                            share(SocialMedia.tiktok);
+                            share(SocialMedia.telegram);
                           },
                           child: Container(
                             height: 54.h,
@@ -252,20 +258,9 @@ class _ReferalPageState extends State<ReferalPage> {
                               borderRadius: BorderRadius.circular(10.r),
                               color: ColorStyles.greyF9F9F9,
                             ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
+                            child: Image.asset('assets/images/ic_telegram.png'),
                           ),
                         ),
-                        SizedBox(width: 8.h),
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
-                          ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
-                        )
                       ],
                     ),
                   )

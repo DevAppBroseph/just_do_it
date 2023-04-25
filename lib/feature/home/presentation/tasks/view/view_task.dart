@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +6,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -18,11 +17,13 @@ class TaskView extends StatefulWidget {
   Task selectTask;
   Function(Owner?) openOwner;
   bool canSelect;
+  bool canEdit;
   TaskView({
     super.key,
     required this.selectTask,
     required this.openOwner,
     this.canSelect = false,
+    this.canEdit = false,
   });
 
   @override
@@ -67,7 +68,32 @@ class _TaskViewState extends State<TaskView> {
               ),
             ],
           ),
-          SizedBox(height: 22.h),
+          if (widget.canEdit)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              child: Row(
+                children: [
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return EditTasks(task: widget.selectTask);
+                          },
+                        ),
+                      );
+                      
+                    },
+                    child: Text(
+                      'Редактировать',
+                      style: CustomTextStyle.black_14_w400_171716,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          // SizedBox(height: 22.h),
           Text(
             'до ${widget.selectTask.priceTo} ₽',
             style: CustomTextStyle.black_17_w500_171716,

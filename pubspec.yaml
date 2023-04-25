@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  share_plus: ^4.0.0
   open_file: ^3.2.1
   auto_size_text: ^3.0.0
   dash_chat_2: ^0.0.15

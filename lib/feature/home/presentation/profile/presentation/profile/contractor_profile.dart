@@ -24,6 +24,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ContractorProfile extends StatefulWidget {
   double padding;
@@ -279,9 +280,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                     ],
                   ),
-                  SvgPicture.asset(
-                    'assets/icons/share.svg',
-                    height: 25.h,
+                  GestureDetector(
+                    onTap: () async {
+                      final res = await Clipboard.getData('text/plain');
+                      if (res != null &&
+                          res.text != null &&
+                          res.text!.isNotEmpty) Share.share(res.text!);
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/share.svg',
+                      height: 25.h,
+                    ),
                   ),
                 ],
               ),
