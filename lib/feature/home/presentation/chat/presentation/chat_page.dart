@@ -124,7 +124,9 @@ class _ChatPageState extends State<ChatPage> {
             AppRoute.personalChat,
             arguments: [
               '${chat.id}',
-              '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
+              chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
+                  ? ''
+                  : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
               '${chat.chatWith?.id}',
               '${chat.chatWith?.photo}',
             ],
@@ -186,7 +188,10 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 width: 180.w,
                                 child: AutoSizeText(
-                                  '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
+                                  chat.chatWith != null &&
+                                          chat.chatWith!.firstname!.isEmpty
+                                      ? 'Аккаунт удален'
+                                      : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                                   style: CustomTextStyle.black_14_w400_000000,
                                   maxLines: 1,
                                 ),

@@ -12,7 +12,6 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/task.dart';
@@ -21,20 +20,18 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CeateTasks extends StatefulWidget {
-  Activities? selectCategory;
-  bool customer;
-  CeateTasks({
+class EditTasks extends StatefulWidget {
+  Task task;
+  EditTasks({
     super.key,
-    this.selectCategory,
-    required this.customer,
+    required this.task,
   });
 
   @override
-  State<CeateTasks> createState() => _CeateTasksState();
+  State<EditTasks> createState() => _EditTasksState();
 }
 
-class _CeateTasksState extends State<CeateTasks> {
+class _EditTasksState extends State<EditTasks> {
   final PageController pageController = PageController();
   PanelController panelController = PanelController();
   int page = 0;
@@ -55,6 +52,34 @@ class _CeateTasksState extends State<CeateTasks> {
 
   DateTime? startDate;
   DateTime? endDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectCategory = widget.task.activities;
+    selectSubCategory = widget.task.subcategory;
+    aboutController.text = widget.task.description;
+    titleController.text = widget.task.name;
+    coastMinController.text = widget.task.priceFrom.toString();
+    coastMaxController.text = widget.task.priceTo.toString();
+    final splitStartDate = widget.task.dateStart.split('-');
+    startDate = DateTime(int.parse(splitStartDate[0]),
+        int.parse(splitStartDate[1]), int.parse(splitStartDate[2]));
+    final splitEndDate = widget.task.dateEnd.split('-');
+    endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
+        int.parse(splitEndDate[2]));
+    region = widget.task.region;
+    log('message ${widget.task.toJson()}');
+
+    // if (widget.selectCategory != null) {
+    //   for (var element in widget.selectCategory!.subcategory) {
+    //     if (widget.selectCategory!.selectSubcategory
+    //         .contains(element.description)) {
+    //       selectSubCategory = element;
+    //     }
+    //   }
+    // }
+  }
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -126,22 +151,7 @@ class _CeateTasksState extends State<CeateTasks> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    selectCategory = widget.selectCategory;
-    if (widget.selectCategory != null) {
-      for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory
-            .contains(element.description)) {
-          selectSubCategory = element;
-        }
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    log('message ${widget.customer}');
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -171,7 +181,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       ),
                       SizedBox(width: 12.w),
                       Text(
-                        'Создание задания',
+                        'Редактирование',
                         style: CustomTextStyle.black_22_w700,
                       ),
                       Text(
@@ -196,7 +206,8 @@ class _CeateTasksState extends State<CeateTasks> {
                         onAttach: () => onAttach(),
                         document: document,
                         photo: photo,
-                        selectCategory: selectCategory ?? widget.selectCategory,
+                        selectCategory:
+                            selectCategory ?? widget.task.activities,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
                         aboutController: aboutController,
@@ -270,9 +281,9 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-
                           Task newTask = Task(
-                            asCustomer: widget.customer,
+                            id: widget.task.id,
+                            asCustomer: widget.task.asCustomer,
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
@@ -298,35 +309,12 @@ class _CeateTasksState extends State<CeateTasks> {
                             coast: '',
                             search: '',
                           );
+
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
-                              .createTask(profileBloc.access!, newTask);
-                          if (res) {
-                            if (widget.selectCategory == null) {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
-                            } else {
-                              Navigator.of(context).pop();
-                            }
-                          }
-                          final access =
-                              BlocProvider.of<ProfileBloc>(context).access;
-                          context.read<TasksBloc>().add(
-                                GetTasksEvent(
-                                  access,
-                                  '',
-                                  null,
-                                  null,
-                                  null,
-                                  null,
-                                  [],
-                                  [],
-                                  null,
-                                  null,
-                                ),
-                              );
+                              .editTask(profileBloc.access!, newTask);
+                          if (res) Navigator.of(context)..pop()..pop();
                           Loader.hide();
                         }
                       } else {
@@ -363,7 +351,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
-                      page == 0 ? 'Далее' : 'Создать заказ',
+                      page == 0 ? 'Далее' : 'Редактировать задание',
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),

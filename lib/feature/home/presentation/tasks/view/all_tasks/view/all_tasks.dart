@@ -104,6 +104,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                       )
                     : TaskView(
                         selectTask: selectTask!,
+                        canEdit: true,
                         openOwner: (owner) {},
                       ),
               ],
