@@ -32,6 +32,7 @@ class DatePicker extends StatefulWidget {
 
 class _DatePickerState extends State<DatePicker> {
   bool openRegion = false;
+  ScrollController controller = ScrollController();
 
   void _showDatePicker(ctx, int index) {
     showCupertinoModalPopup(
@@ -144,6 +145,7 @@ class _DatePickerState extends State<DatePicker> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
+        controller: controller,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
@@ -169,7 +171,7 @@ class _DatePickerState extends State<DatePicker> {
                         'Дата начала',
                         style: CustomTextStyle.grey_14_w400,
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 0.h),
                       if (widget.startDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
@@ -211,7 +213,7 @@ class _DatePickerState extends State<DatePicker> {
                         'Дата завершения',
                         style: CustomTextStyle.grey_14_w400,
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 0.h),
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),
@@ -346,6 +348,15 @@ class _DatePickerState extends State<DatePicker> {
             onTap: () {
               setState(() {
                 openRegion = !openRegion;
+              });
+              FocusScope.of(context).unfocus();
+
+              Future.delayed(Duration(milliseconds: 300), () {
+                controller.animateTo(
+                  controller.position.maxScrollExtent - 20.h,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                );
               });
             },
             child: CustomTextField(

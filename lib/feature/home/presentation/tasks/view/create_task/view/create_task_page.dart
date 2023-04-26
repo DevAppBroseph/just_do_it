@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -133,8 +134,7 @@ class _CeateTasksState extends State<CeateTasks> {
     selectCategory = widget.selectCategory;
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory
-            .contains(element.description)) {
+        if (widget.selectCategory!.selectSubcategory.contains(element.description)) {
           selectSubCategory = element;
         }
       }
@@ -165,8 +165,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600),
-                                curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -229,8 +228,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -258,12 +256,9 @@ class _CeateTasksState extends State<CeateTasks> {
                           errorsFlag = true;
                         }
 
-                        if (coastMinController.text.isNotEmpty &&
-                            coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) >
-                              int.parse(coastMaxController.text)) {
-                            error +=
-                                '\n- минимальный бюджет должен быть меньше максимального';
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
+                            error += '\n- минимальный бюджет должен быть меньше максимального';
                             errorsFlag = true;
                           }
                         }
@@ -272,24 +267,19 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-
+                          Currency currency = Currency(id: 1, name: 'Российский рубль', shortName: 'RUB');
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
-                            dateStart:
-                                DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
                             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
-                              coastMinController.text.isEmpty
-                                  ? '0'
-                                  : coastMinController.text,
+                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
                             ),
                             priceTo: int.parse(
-                              coastMaxController.text.isEmpty
-                                  ? '0'
-                                  : coastMaxController.text,
+                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
                             ),
                             region: region ?? '',
                             file: null,
@@ -299,38 +289,13 @@ class _CeateTasksState extends State<CeateTasks> {
                             whenStart: '',
                             coast: '',
                             search: '',
+                            currency: currency,
                           );
-                          final profileBloc =
-                              BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository()
-                              .createTask(profileBloc.access!, newTask);
-                          if (res) {
-                            if (widget.doublePop) {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
-                              final access =
-                                  BlocProvider.of<ProfileBloc>(context).access;
-                              context.read<TasksBloc>().add(
-                                    GetTasksEvent(
-                                      access: access,
-                                      query: '',
-                                      dateEnd: '',
-                                      dateStart: '',
-                                      priceFrom: 0,
-                                      priceTo: 50000000,
-                                      region: [],
-                                      subcategory: [],
-                                      countFilter: null,
-                                      customer: null,
-                                    ),
-                                  );
-                            } else {
-                              Navigator.of(context).pop();
-                            }
-                            BlocProvider.of<TasksBloc>(context)
-                                .add(GetTasksEvent());
-                          }
+
+                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                          bool res = await Repository().createTask(profileBloc.access!, newTask);
+                          log(res.toString());
+                          if (res) Navigator.of(context).pop();
                           Loader.hide();
                         }
                       } else {
@@ -364,6 +329,137 @@ class _CeateTasksState extends State<CeateTasks> {
                           );
                         }
                       }
+                      // if (page == 1) {
+                      //   String error = 'Укажите:';
+                      //   bool errorsFlag = false;
+
+                      //   if (startDate == null) {
+                      //     error += '\n- дату начала';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (startDate == null) {
+                      //     error += '\n- дату завершения';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (coastMinController.text.isEmpty) {
+                      //     error += '\n- минимальную цену';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (coastMaxController.text.isEmpty) {
+                      //     error += '\n- максимальную цену';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (region == null || region!.isEmpty) {
+                      //     error += '\n- регион';
+                      //     errorsFlag = true;
+                      //   }
+
+                      //   if (coastMinController.text.isNotEmpty &&
+                      //       coastMaxController.text.isNotEmpty) {
+                      //     if (int.parse(coastMinController.text) >
+                      //         int.parse(coastMaxController.text)) {
+                      //       error +=
+                      //           '\n- минимальный бюджет должен быть меньше максимального';
+                      //       errorsFlag = true;
+                      //     }
+                      //   }
+
+                      //   if (errorsFlag) {
+                      //     showAlertToast(error);
+                      //   } else {
+                      //     showLoaderWrapper(context);
+
+                      //     Task newTask = Task(
+                      //       asCustomer: widget.customer,
+                      //       name: titleController.text,
+                      //       description: aboutController.text,
+                      //       subcategory: selectSubCategory!,
+                      //       dateStart:
+                      //           DateFormat('yyyy-MM-dd').format(startDate!),
+                      //       dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
+                      //       priceFrom: int.parse(
+                      //         coastMinController.text.isEmpty
+                      //             ? '0'
+                      //             : coastMinController.text,
+                      //       ),
+                      //       priceTo: int.parse(
+                      //         coastMaxController.text.isEmpty
+                      //             ? '0'
+                      //             : coastMaxController.text,
+                      //       ),
+                      //       region: region ?? '',
+                      //       file: null,
+                      //       icon: '',
+                      //       task: '',
+                      //       typeLocation: '',
+                      //       whenStart: '',
+                      //       coast: '',
+                      //       search: '',
+                      //     );
+                      //     final profileBloc =
+                      //         BlocProvider.of<ProfileBloc>(context);
+                      //     bool res = await Repository()
+                      //         .createTask(profileBloc.access!, newTask);
+                      //     if (res) {
+                      //       if (widget.doublePop) {
+                      //         Navigator.of(context)
+                      //           ..pop()
+                      //           ..pop();
+                      //         final access =
+                      //             BlocProvider.of<ProfileBloc>(context).access;
+                      //         context.read<TasksBloc>().add(
+                      //               GetTasksEvent(
+                      //                 access: access,
+                      //                 query: '',
+                      //                 dateEnd: '',
+                      //                 dateStart: '',
+                      //                 priceFrom: 0,
+                      //                 priceTo: 50000000,
+                      //                 region: [],
+                      //                 subcategory: [],
+                      //                 countFilter: null,
+                      //                 customer: null,
+                      //               ),
+                      //             );
+                      //       } else {
+                      //         Navigator.of(context).pop();
+                      //       }
+                      //       BlocProvider.of<TasksBloc>(context)
+                      //           .add(GetTasksEvent());
+                      //     }
+                      //     Loader.hide();
+                      //   }
+                      // } else {
+                      //   String error = 'Укажите:';
+                      //   bool errorsFlag = false;
+
+                      //   if (selectCategory == null) {
+                      //     error += '\n- категорию';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (selectSubCategory == null) {
+                      //     error += '\n- подкатегорию';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (titleController.text.isEmpty) {
+                      //     error += '\n- название';
+                      //     errorsFlag = true;
+                      //   }
+                      //   if (aboutController.text.isEmpty) {
+                      //     error += '\n- описание';
+                      //     errorsFlag = true;
+                      //   }
+
+                      //   if (errorsFlag) {
+                      //     showAlertToast(error);
+                      //   } else {
+                      //     pageController.animateToPage(
+                      //       1,
+                      //       duration: const Duration(milliseconds: 600),
+                      //       curve: Curves.easeInOut,
+                      //     );
+                      //   }
+                      // }
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(

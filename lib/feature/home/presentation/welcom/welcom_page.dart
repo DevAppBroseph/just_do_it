@@ -20,6 +20,7 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
+import 'package:just_do_it/widget/dialog.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -37,54 +38,17 @@ class _WelcomPageState extends State<WelcomPage> {
   int indexLanguage = 0;
   int index = 0;
   String choiceLanguage = '';
+
+  Future<void> notificationInit() async {
+    await NotificationService().inject();
+  }
+
   String? access;
 
   @override
   void initState() {
-    // String? access = BlocProvider.of<PofileBloc>(context).access;
-    // BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
-    BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    access = BlocProvider.of<ProfileBloc>(context).access;
-    if (Platform.isAndroid) {
-      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
-        if (value != null) parseTripRefCode(value);
-      });
-    }
-    FirebaseDynamicLinks.instance.onLink.listen((event) {
-      parseTripRefCode(event);
-    });
-
     super.initState();
     notificationInit();
-  }
-
-  void parseTripRefCode(PendingDynamicLinkData event) async {
-    String? refCode = event.link.queryParameters['ref_code'];
-    String? userProfile = event.link.queryParameters['user_profile'];
-    log('OPEN WITH REFCODE $refCode');
-    if (refCode != null) {
-      BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
-    } else if (userProfile != null) {
-      final owner = await Repository().getRanking(
-          access!,
-          Owner(
-              id: int.parse(userProfile),
-              firstname: '',
-              lastname: '',
-              photo: ''));
-      if (owner != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewProfileLink(owner),
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> notificationInit() async {
-    await NotificationService().inject();
   }
 
   @override
@@ -332,7 +296,7 @@ class _WelcomPageState extends State<WelcomPage> {
                           child: Container(
                             height: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
-                                25.w,
+                                40.w,
                             width: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
                                 25.w,
@@ -389,7 +353,7 @@ class _WelcomPageState extends State<WelcomPage> {
                           child: Container(
                             height: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
-                                25.w,
+                                40.w,
                             width: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
                                 25.w,

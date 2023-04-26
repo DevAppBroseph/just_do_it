@@ -244,8 +244,7 @@ class Activities {
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(
-      this.isSelect, this.id, this.description, this.photo, this.subcategory);
+  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
@@ -275,19 +274,18 @@ class Subcategory {
   }
 }
 
+
 class DocumentInfo {
   String? serial, documentNumber, whoGiveDocument, documentData;
-  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument,
-      this.documentData);
+  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument, this.documentData);
   factory DocumentInfo.fromJson(String data) {
     List<String> list = data.split('\n');
     list.map((e) => e.split(' ').length > 1 ? e.split(' ')[1] : e);
 
     String? serial = list[0].split(':').last.replaceAll(' ', '');
     String? documentNumber = list[1].split(':').last.replaceAll(' ', '');
-    String? whoGiveDocument = list[2].split(':').last != ' '
-        ? list[2].split(':').last.substring(1, list[2].split(':').last.length)
-        : '';
+    String? whoGiveDocument =
+        list[2].split(':').last != ' ' ? list[2].split(':').last.substring(1, list[2].split(':').last.length) : '';
 
     String? documentData = list[3].split(':').last.replaceAll(' ', '');
     print(documentData);

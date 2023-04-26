@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
@@ -14,8 +18,13 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/dialog.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +39,34 @@ class _HomePageState extends State<HomePage> {
   PanelController panelController = PanelController();
   final streamController = StreamController<int>();
   int page = 5;
+
+  String? access;
+
+  void parseTripRefCode(PendingDynamicLinkData event) async {
+    access = await Storage().getAccessToken();
+    String? refCode = event.link.queryParameters['ref_code'];
+    String? userProfile = event.link.queryParameters['user_profile'];
+    log('OPEN WITH REFCODE $refCode');
+    if (refCode != null) {
+      BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
+    } else if (userProfile != null) {
+      final owner = await Repository().getRanking(
+          access!,
+          Owner(
+              id: int.parse(userProfile),
+              firstname: '',
+              lastname: '',
+              photo: ''));
+      if (owner != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewProfileLink(owner),
+          ),
+        );
+      }
+    }
+  }
 
   void selectUser(int value) {
     pageController.jumpToPage(value);
@@ -50,6 +87,15 @@ class _HomePageState extends State<HomePage> {
       if (BlocProvider.of<ProfileBloc>(context).access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
+    });
+
+    if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefCode(value);
+      });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefCode(event);
     });
   }
 

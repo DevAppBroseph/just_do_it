@@ -305,11 +305,6 @@ class _ContractorState extends State<Contractor> {
                     showAlertToast('- минимальная длина пароля 6 символов');
                   } else if (!emailValid) {
                     showAlertToast('Введите корректный адрес почты');
-                  } else if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!)) {
-                    showAlertToast('Ваш паспорт просрочен');
-                  } else if (checkExpireDate(dateTimeEnd) != null) {
-                    showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else if (!confirmTermsPolicy) {
                     showAlertToast(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
@@ -369,10 +364,17 @@ class _ContractorState extends State<Contractor> {
                   if (errorsFlag) {
                     showAlertToast(error);
                   } else {
-                    showLoaderWrapper(context);
+                    if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш паспорт просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    } else {
+                      showLoaderWrapper(context);
 
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SendProfileEvent(user));
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SendProfileEvent(user));
+                    }
                   }
                 }
               },

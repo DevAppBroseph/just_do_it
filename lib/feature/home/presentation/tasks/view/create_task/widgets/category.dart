@@ -247,6 +247,7 @@ class _CategoryState extends State<Category> {
                                 widget.selectSubCategory = null;
                               } else {
                                 widget.selectSubCategory = e;
+                                // openSubCategory = false;
                               }
                               setState(() {});
                               widget.onEdit(
@@ -289,9 +290,7 @@ class _CategoryState extends State<Category> {
           ),
           SizedBox(height: 9.h),
           ScaleButton(
-            onTap: () {
-           
-            },
+            onTap: () {},
             bound: 0.02,
             child: Container(
               height: 50.h,
@@ -301,6 +300,11 @@ class _CategoryState extends State<Category> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
+                onTap: () {
+                  openSubCategory = false;
+                  openCategory = false;
+                  setState(() {});
+                },
                 hintText: 'Название Вашей задачи',
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
@@ -328,6 +332,11 @@ class _CategoryState extends State<Category> {
               ),
               child: CustomTextField(
                 maxLines: 8,
+                onTap: () {
+                  openSubCategory = false;
+                  openCategory = false;
+                  setState(() {});
+                },
                 hintText: 'Описание задачи',
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,

@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   SizedBox(height: 10.h),
                   SizedBox(
-                    height: 76.h,
+                    height: 90.h,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -71,32 +71,34 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                           ),
                         SizedBox(width: 17.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${owner?.firstname ?? '-'} ${owner?.lastname ?? '-'}',
-                              style: CustomTextStyle.black_17_w600_171716,
-                            ),
-                            const Spacer(),
-                            Text(
-                              'Рейтинг',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            SizedBox(height: 9.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset('assets/icons/star.svg'),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  owner?.ranking ?? '-',
-                                  style: CustomTextStyle.black_13_w500_171716,
-                                ),
-                              ],
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${owner?.firstname ?? ''} ${owner?.lastname ?? ''}',
+                                style: CustomTextStyle.black_17_w600_171716,
+                                softWrap: true,
+                              ),
+                              const Spacer(),
+                              Text(
+                                'Рейтинг',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                              SizedBox(height: 9.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset('assets/icons/star.svg'),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    owner?.ranking ?? '-',
+                                    style: CustomTextStyle.black_13_w500_171716,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Spacer(),
                         GestureDetector(
                           onTap: () => taskMoreDialog(
                             context,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,7 @@ class _SearchPageState extends State<SearchPage> {
   Owner? owner;
 
   String? access;
+  List<String> historySearch = [];
 
   @override
   void initState() {
@@ -144,6 +147,10 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             hintText: 'Поиск',
                             textEditingController: TextEditingController(),
+                            onTap: () {
+                              historySearch.add(TextEditingController().text);
+                              log(historySearch.first);
+                            },
                             onChanged: (value) async {
                               context.read<TasksBloc>().add(
                                     GetTasksEvent(
@@ -367,7 +374,7 @@ class _SearchPageState extends State<SearchPage> {
                     SizedBox(
                       width: 235.w,
                       child: Text(
-                        task.description,
+                        task.name,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: CustomTextStyle.black_14_w500_171716,
