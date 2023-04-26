@@ -65,6 +65,8 @@ class _ContractorState extends State<Contractor> {
   List<ArrayImages> photos = [];
   File? cv;
   bool confirmTermsPolicy = false;
+  DateTime? dateTimeStart;
+  DateTime? dateTimeEnd;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
@@ -303,6 +305,11 @@ class _ContractorState extends State<Contractor> {
                     showAlertToast('- минимальная длина пароля 6 символов');
                   } else if (!emailValid) {
                     showAlertToast('Введите корректный адрес почты');
+                  } else if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
+                    showAlertToast('Ваш паспорт просрочен');
+                  } else if (checkExpireDate(dateTimeEnd) != null) {
+                    showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else if (!confirmTermsPolicy) {
                     showAlertToast(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
@@ -901,6 +908,8 @@ class _ContractorState extends State<Contractor> {
                               whoGiveDocController.text = '';
                               dateDocController.text = '';
                               dateTime = null;
+                              dateTimeEnd = null;
+                              dateTimeStart = null;
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -1399,7 +1408,7 @@ class _ContractorState extends State<Contractor> {
         if (user.docType != 'Resident_ID')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, true);
+              _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
               hintText: 'Дата выдачи',
@@ -1416,7 +1425,7 @@ class _ContractorState extends State<Contractor> {
         if (user.docType != 'Passport')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, false, title: 'Срок действия');
+              _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
               hintText: 'Срок действия',
@@ -1429,6 +1438,10 @@ class _ContractorState extends State<Contractor> {
               onChanged: (value) => documentEdit(),
             ),
           ),
+        Text(
+          checkExpireDate(dateTimeEnd) ?? '',
+          style: CustomTextStyle.red_11_w400_171716,
+        ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
@@ -1458,8 +1471,35 @@ class _ContractorState extends State<Contractor> {
     );
   }
 
-  void _showDatePicker(ctx, bool isPassport, {String? title}) {
-    dateTime = null;
+  void _showDatePicker(ctx, int index, bool isInternational) {
+    DateTime initialDateTime = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
+
+    DateTime maximumDate = index == 1
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        : dateTimeEnd != null
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
+
+    DateTime minimumDate = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
@@ -1485,21 +1525,36 @@ class _ContractorState extends State<Contractor> {
                                       fontSize: 15.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
-                                  if (dateTime == null) {
-                                    if (isPassport) {
-                                      dateDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
-                                      documentEdit();
-                                    } else {
-                                      whoGiveDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
-                                      documentEdit();
+                                  if (index == 0) {
+                                    if (dateTimeStart == null) {
+                                      dateTimeStart = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  } else {
+                                    if (dateTimeEnd == null) {
+                                      dateTimeEnd = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
                                     }
                                   }
 
                                   Navigator.of(ctx).pop();
+                                  setState(() {});
                                 },
                               ),
                               SizedBox(width: 5.w),
@@ -1514,35 +1569,49 @@ class _ContractorState extends State<Contractor> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
-                        maximumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year + 10,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime.now()
-                            : DateTime.now(),
-                        minimumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime(2000, 1, 1, 1)
-                            : DateTime(2000, 1, 1, 1),
+                        initialDateTime: initialDateTime,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
                         onDateTimeChanged: (val) {
-                          dateTime = val;
-                          if (isPassport) {
-                            dateDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                          if (index == 0) {
+                            dateTimeStart = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
-                            whoGiveDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                            dateTimeEnd = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
-                          documentEdit();
-                          print(isPassport);
                         }),
                   ),
                 ],
               ),
             ));
+  }
+
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
   }
 
   void documentEdit() {
