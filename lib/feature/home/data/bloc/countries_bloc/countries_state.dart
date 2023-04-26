@@ -1,7 +1,5 @@
-import 'package:just_do_it/models/countries.dart';
 
-
-
+part of 'countries_bloc.dart';
 
 class CountriesState {}
 
@@ -11,6 +9,7 @@ class CountriesLoading extends CountriesState {}
 
 class CountriesLoaded extends CountriesState {
   final List<Countries>? country;
+
 
   CountriesLoaded({required this.country});
 }

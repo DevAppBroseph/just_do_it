@@ -559,7 +559,6 @@ class Repository {
       '$server/countries/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-    log(response.statusCode.toString());
     if (response.statusCode == 200) {
       log("Countries ${response.data}");
       return response.data.map<Countries>((article) => Countries.fromJson(article)).toList();
@@ -573,7 +572,7 @@ class Repository {
         '$server/countries/${countries[i].id}',
         options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
       );
-      log(response.statusCode.toString());
+     
       if (response.statusCode == 200) {
         log("Countries ${response.data}");
         List<String> regions = [];

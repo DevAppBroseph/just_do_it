@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+            BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
             BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
             BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
