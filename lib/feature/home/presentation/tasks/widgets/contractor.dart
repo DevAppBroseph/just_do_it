@@ -192,7 +192,7 @@ class Contractor extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 102.h),
+          SizedBox(height: 60.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
