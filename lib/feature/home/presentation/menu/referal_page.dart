@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -177,6 +179,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       code += user!.link![i];
                     }
                   }
+                  log('message ${code}');
 
                   final res = await FirebaseDynamicLinksService()
                       .share(int.parse(code));

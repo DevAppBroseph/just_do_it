@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +15,11 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
-  Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
