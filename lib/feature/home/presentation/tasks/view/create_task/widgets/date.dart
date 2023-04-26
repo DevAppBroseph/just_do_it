@@ -169,7 +169,7 @@ class _DatePickerState extends State<DatePicker> {
                         'Дата начала',
                         style: CustomTextStyle.grey_14_w400,
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 0.h),
                       if (widget.startDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
@@ -211,7 +211,7 @@ class _DatePickerState extends State<DatePicker> {
                         'Дата завершения',
                         style: CustomTextStyle.grey_14_w400,
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 0.h),
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),

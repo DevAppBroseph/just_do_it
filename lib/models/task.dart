@@ -18,6 +18,7 @@ class Task {
   String region;
   String? search;
   Uint8List? file;
+  Currency? currency;
 
   String? icon;
   String? task;
@@ -30,6 +31,7 @@ class Task {
     this.owner,
     this.asCustomer,
     this.chatId,
+    this.currency,
     required this.name,
     required this.description,
     this.activities,
@@ -51,6 +53,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) => Task(
         id: json["id"],
         owner: Owner.fromJson(json["owner"]),
+        currency: Currency.fromJson(json['currency']),
         name: json["name"],
         description: json["description"],
         chatId: json["chat_id"],
@@ -63,6 +66,7 @@ class Task {
         region: json["region"],
         search: json['search'],
         asCustomer: json['as_customer'],
+       
       );
 
   Map<String, dynamic> toJson() => {
@@ -76,5 +80,6 @@ class Task {
         "region": region,
         'search': search,
         "as_customer": asCustomer,
+        'currency': currency!.id
       };
 }
