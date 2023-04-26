@@ -9,6 +9,7 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum SocialMedia { whatsup, instagram, facebook, telegram }
@@ -165,108 +166,144 @@ class _ReferalPageState extends State<ReferalPage> {
                 ),
               ),
             ),
-            SizedBox(height: 52.h),
+            SizedBox(height: 25.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 1.h,
-                        color: ColorStyles.greyF3F3F3,
-                      )),
-                      SizedBox(width: 24.w),
-                      Text(
-                        'Поделиться',
-                        style: CustomTextStyle.grey_14_w400,
-                      ),
-                      SizedBox(width: 24.w),
-                      Expanded(
-                          child: Container(
-                        height: 1.h,
-                        color: ColorStyles.greyF3F3F3,
-                      )),
-                    ],
+              child: ScaleButton(
+                onTap: () async {
+                  String code = '';
+                  for (int i = 0; i < user!.link!.length; i++) {
+                    if (RegExp(r'[0-9]').hasMatch(user!.link![i])) {
+                      code += user!.link![i];
+                    }
+                  }
+
+                  final res = await FirebaseDynamicLinksService()
+                      .share(int.parse(code));
+                  if (res != null) Share.share(res);
+                },
+                child: Container(
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.yellowFFCA0D,
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  SizedBox(height: 17.h),
-                  SizedBox(
-                    height: 54.h,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            share(SocialMedia.whatsup);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: Image.asset('assets/images/ic_whatsup.png'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: () {
-                            share(SocialMedia.instagram);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child:
-                                Image.asset('assets/images/ic_instagram.png'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: () {
-                            share(SocialMedia.facebook);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: Image.asset('assets/images/ic_facebook.png'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: () {
-                            share(SocialMedia.telegram);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: Image.asset('assets/images/ic_telegram.png'),
-                          ),
+                        Text(
+                          'Поделиться',
+                          style: CustomTextStyle.white_16_w600,
                         ),
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           Expanded(
+            //               child: Container(
+            //             height: 1.h,
+            //             color: ColorStyles.greyF3F3F3,
+            //           )),
+            //           SizedBox(width: 24.w),
+            //           Text(
+            //             'Поделиться',
+            //             style: CustomTextStyle.grey_14_w400,
+            //           ),
+            //           SizedBox(width: 24.w),
+            //           Expanded(
+            //               child: Container(
+            //             height: 1.h,
+            //             color: ColorStyles.greyF3F3F3,
+            //           )),
+            //         ],
+            //       ),
+            //       SizedBox(height: 17.h),
+            //       SizedBox(
+            //         height: 54.h,
+            //         child: ListView(
+            //           shrinkWrap: true,
+            //           scrollDirection: Axis.horizontal,
+            //           children: [
+            //             GestureDetector(
+            //               onTap: () {
+            //                 share(SocialMedia.whatsup);
+            //               },
+            //               child: Container(
+            //                 height: 54.h,
+            //                 width: 54.h,
+            //                 padding: EdgeInsets.all(15.h),
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10.r),
+            //                   color: ColorStyles.greyF9F9F9,
+            //                 ),
+            //                 child: Image.asset('assets/images/ic_whatsup.png'),
+            //               ),
+            //             ),
+            //             SizedBox(width: 8.h),
+            //             GestureDetector(
+            //               onTap: () {
+            //                 share(SocialMedia.instagram);
+            //               },
+            //               child: Container(
+            //                 height: 54.h,
+            //                 width: 54.h,
+            //                 padding: EdgeInsets.all(15.h),
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10.r),
+            //                   color: ColorStyles.greyF9F9F9,
+            //                 ),
+            //                 child:
+            //                     Image.asset('assets/images/ic_instagram.png'),
+            //               ),
+            //             ),
+            //             SizedBox(width: 8.h),
+            //             GestureDetector(
+            //               onTap: () {
+            //                 share(SocialMedia.facebook);
+            //               },
+            //               child: Container(
+            //                 height: 54.h,
+            //                 width: 54.h,
+            //                 padding: EdgeInsets.all(15.h),
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10.r),
+            //                   color: ColorStyles.greyF9F9F9,
+            //                 ),
+            //                 child: Image.asset('assets/images/ic_facebook.png'),
+            //               ),
+            //             ),
+            //             SizedBox(width: 8.h),
+            //             GestureDetector(
+            //               onTap: () {
+            //                 share(SocialMedia.telegram);
+            //               },
+            //               child: Container(
+            //                 height: 54.h,
+            //                 width: 54.h,
+            //                 padding: EdgeInsets.all(15.h),
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10.r),
+            //                   color: ColorStyles.greyF9F9F9,
+            //                 ),
+            //                 child: Image.asset('assets/images/ic_telegram.png'),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

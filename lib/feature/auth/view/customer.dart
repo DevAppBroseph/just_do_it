@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
 
 class Customer extends StatefulWidget {
@@ -54,7 +55,8 @@ class _CustomerState extends State<Customer> {
   bool confirmTermsPolicy = false;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
-  DateTime? dateTime;
+  DateTime? dateTimeStart;
+  DateTime? dateTimeEnd;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
@@ -318,6 +320,11 @@ class _CustomerState extends State<Customer> {
                             repeatPasswordController.text)) {
                       // error += 'Пароли не совпадают';
                       showAlertToast('Пароли не совпадают');
+                    } else if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш паспорт просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
                       showLoaderWrapper(context);
                       documentEdit();
@@ -460,11 +467,11 @@ class _CustomerState extends State<Customer> {
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
           formatters: [
-            // MaskTextInputFormatter(
-            //   // initialText: '+ ',
-            //   mask: '+############',
-            //   filter: {"#": RegExp(r'[0-9]')},
-            // ),
+            MaskTextInputFormatter(
+              mask: '+############',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.eager,
+            ),
             // if (phoneController.text.contains('+7'))
             //   LengthLimitingTextInputFormatter(12),
             // if (phoneController.text.contains('+9'))
@@ -477,19 +484,20 @@ class _CustomerState extends State<Customer> {
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             // setState(() {});
-            // print(value);
-            if (value.length == 1 && !value.contains('+')) {
-              phoneController.text = '+$value';
-              phoneController.selection =
-                  TextSelection.collapsed(offset: phoneController.text.length);
-            }
             print(value);
+            // if (value.length == 1 && !value.contains('+')) {
+            //   phoneController.text = '+$value';
+            //   phoneController.selection =
+            //       TextSelection.collapsed(offset: phoneController.text.length);
+            // }
+            // print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
+            if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
                   duration: const Duration(milliseconds: 100),
@@ -853,7 +861,8 @@ class _CustomerState extends State<Customer> {
                               numberDocController.text = '';
                               whoGiveDocController.text = '';
                               dateDocController.text = '';
-                              dateTime = null;
+                              dateTimeEnd = null;
+                              dateTimeStart = null;
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -1002,7 +1011,7 @@ class _CustomerState extends State<Customer> {
         if (user.docType != 'Resident_ID')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, true);
+              _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
               hintText: 'Дата выдачи',
@@ -1019,7 +1028,7 @@ class _CustomerState extends State<Customer> {
         if (user.docType != 'Passport')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, false, title: 'Срок действия');
+              _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
               hintText: 'Срок действия',
@@ -1032,6 +1041,10 @@ class _CustomerState extends State<Customer> {
               onChanged: (value) => documentEdit(),
             ),
           ),
+        Text(
+          checkExpireDate(dateTimeEnd) ?? '',
+          style: CustomTextStyle.red_11_w400_171716,
+        ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
@@ -1061,90 +1074,147 @@ class _CustomerState extends State<Customer> {
     );
   }
 
-  void _showDatePicker(ctx, bool isPassport, {String? title}) {
-    dateTime = null;
-    showCupertinoModalPopup(
-      context: ctx,
-      builder: (_) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        child: Column(
-          children: [
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 40.h,
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        CupertinoButton(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          borderRadius: BorderRadius.zero,
-                          child: Text(
-                            'Готово',
-                            style:
-                                TextStyle(fontSize: 15.sp, color: Colors.black),
-                          ),
-                          onPressed: () {
-                            if (dateTime == null) {
-                              if (isPassport) {
-                                dateDocController.text =
-                                    DateFormat('dd.MM.yyyy')
-                                        .format(DateTime.now());
-                                documentEdit();
-                              } else {
-                                whoGiveDocController.text =
-                                    DateFormat('dd.MM.yyyy')
-                                        .format(DateTime.now());
-                                documentEdit();
-                              }
-                            }
+  void _showDatePicker(ctx, int index, bool isInternational) {
+    DateTime initialDateTime = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
-                            Navigator.of(ctx).pop();
-                          },
+    DateTime maximumDate = index == 1
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        : dateTimeEnd != null
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
+
+    DateTime minimumDate = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40.h,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              CupertinoButton(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                borderRadius: BorderRadius.zero,
+                                child: Text(
+                                  'Готово',
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  if (index == 0) {
+                                    if (dateTimeStart == null) {
+                                      dateTimeStart = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  } else {
+                                    if (dateTimeEnd == null) {
+                                      dateTimeEnd = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  }
+
+                                  Navigator.of(ctx).pop();
+                                  setState(() {});
+                                },
+                              ),
+                              SizedBox(width: 5.w),
+                            ],
+                          ),
                         ),
-                        SizedBox(width: 5.w),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            Container(
-              height: 200.h,
-              color: Colors.white,
-              child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now(),
-                  maximumDate: title != null
-                      ? title == 'Срок действия'
-                          ? DateTime(DateTime.now().year + 10,
-                              DateTime.now().month, DateTime.now().day)
-                          : DateTime.now()
-                      : DateTime.now(),
-                  minimumDate: title != null
-                      ? title == 'Срок действия'
-                          ? DateTime(DateTime.now().year, DateTime.now().month,
-                              DateTime.now().day)
-                          : DateTime(2000, 1, 1, 1)
-                      : DateTime(2000, 1, 1, 1),
-                  onDateTimeChanged: (val) {
-                    dateTime = val;
-                    if (isPassport) {
-                      dateDocController.text =
-                          DateFormat('dd.MM.yyyy').format(val);
-                    } else {
-                      whoGiveDocController.text =
-                          DateFormat('dd.MM.yyyy').format(val);
-                    }
-                  }),
-            ),
-          ],
-        ),
-      ),
-    );
+                  Container(
+                    height: 200.h,
+                    color: Colors.white,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: initialDateTime,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
+                        onDateTimeChanged: (val) {
+                          if (index == 0) {
+                            dateTimeStart = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                          } else {
+                            dateTimeEnd = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                          }
+                        }),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
   }
 
   void documentEdit() {

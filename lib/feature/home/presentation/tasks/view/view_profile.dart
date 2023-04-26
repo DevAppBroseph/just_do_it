@@ -42,50 +42,12 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-       data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
-           mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              height: 100.h,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
-                ],
-              ),
-              child: Column(
-                children: [
-                 SizedBox(height: 60.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Профиль',
-                              style: CustomTextStyle.black_22_w700,
-                            ),
-                          ),
-                          CustomIconButton(
-                            onBackPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: SvgImg.arrowRight,
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: ListView(
@@ -170,7 +132,8 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             Text(
                               'Резюме',
-                              style: CustomTextStyle.black_11_w400_171716.copyWith(
+                              style:
+                                  CustomTextStyle.black_11_w400_171716.copyWith(
                                 color: ColorStyles.blue336FEE,
                               ),
                             )
@@ -249,8 +212,8 @@ class _ProfileViewState extends State<ProfileView> {
                               ],
                             ),
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.h, vertical: 8.h),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -285,8 +248,8 @@ class _ProfileViewState extends State<ProfileView> {
                               ],
                             ),
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.h, vertical: 8.h),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -321,8 +284,8 @@ class _ProfileViewState extends State<ProfileView> {
                               ],
                             ),
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.h, vertical: 8.h),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -381,7 +344,8 @@ class _ProfileViewState extends State<ProfileView> {
                         )
                       ],
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                     child: Column(
                       children: [
                         Text(
@@ -431,11 +395,13 @@ class _ProfileViewState extends State<ProfileView> {
                                     padding: EdgeInsets.all(10.h),
                                     child: Row(
                                       children: [
-                                        SvgPicture.asset('assets/icons/translate.svg'),
+                                        SvgPicture.asset(
+                                            'assets/icons/translate.svg'),
                                         SizedBox(width: 8.h),
                                         Text(
                                           'Перевод',
-                                          style: CustomTextStyle.blue_14_w400_336FEE,
+                                          style: CustomTextStyle
+                                              .blue_14_w400_336FEE,
                                         )
                                       ],
                                     ),

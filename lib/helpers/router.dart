@@ -56,7 +56,9 @@ class AppRoute {
         return MaterialPageRoute(
             builder: (_) => AllTasksView(asCustomer: arg[0]));
       case archiveTasks:
-        return MaterialPageRoute(builder: (_) => ArchiveTasksView());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => ArchiveTasksView(asCustomer: arg[0]));
       case tasks:
         List<dynamic> arg = route.arguments as List<dynamic>;
         return MaterialPageRoute(

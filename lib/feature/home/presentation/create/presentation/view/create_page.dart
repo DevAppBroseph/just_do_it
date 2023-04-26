@@ -160,8 +160,9 @@ class _CreatePageState extends State<CreatePage> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return CeateTasks(
-                                        customer: true,
-                                        selectCategory: selectCategory);
+                                      customer: true,
+                                      selectCategory: selectCategory,
+                                    );
                                   },
                                 ),
                               );

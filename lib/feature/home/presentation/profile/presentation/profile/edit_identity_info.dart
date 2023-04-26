@@ -104,23 +104,22 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(
                 onTap: () {
-                 
-                 if ((passwordController.text.isNotEmpty &&
+                  if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
                     showAlertToast('Пароли не совпадают');
-                  } else if (passwordController.text.length < 6 &&  passwordController.text.isNotEmpty) {
+                  } else if (passwordController.text.length < 6 &&
+                      passwordController.text.isNotEmpty) {
                     showAlertToast('минимальная длина пароля 6 символов');
-                  } 
-                  else{
-                     user!.copyWith(isEntity: physics);
+                  } else {
+                    user!.copyWith(isEntity: physics);
                     BlocProvider.of<ProfileBloc>(context).setUser(user);
                     Repository().updateUser(
                         BlocProvider.of<ProfileBloc>(context).access, user!);
                     Navigator.of(context).pop();
                   }
-                   if (dateTimeEnd != null &&
+                  if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!)) {
                     showAlertToast('Ваш паспорт просрочен');
                   } else if (checkExpireDate(dateTimeEnd) != null) {
@@ -774,7 +773,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     additionalInfo = true;
     serialDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-    print(DocumentInfo.fromJson(userRegModel.docInfo!).serial);
+    // print(DocumentInfo.fromJson(userRegModel.docInfo!).serial);
     numberDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
     whoGiveDocController.text =
@@ -782,12 +781,20 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     dateDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
 
+    log('message ${dateDocController.text}---${whoGiveDocController.text}');
+
     final start = dateDocController.text.split('.');
-    dateTimeStart =
-        DateTime(int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+    final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
+    log('message1 ${regDate.hasMatch(dateDocController.text)}');
+    if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
+      dateTimeStart = DateTime(
+          int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+    }
 
     final end = whoGiveDocController.text.split('.');
-    dateTimeEnd =
-        DateTime(int.parse(end[2]), int.parse(end[1]), int.parse(end[0]));
+    if (end.isNotEmpty) {
+      // dateTimeEnd =
+      //     DateTime(int.parse(end[2]), int.parse(end[1]), int.parse(end[0]));
+    }
   }
 }

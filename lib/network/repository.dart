@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
@@ -62,8 +63,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      final reversedTasks = tasks.reversed;
-      return reversedTasks.toList();
+      // final reversedTasks = tasks.reversed;
+      return tasks;
     }
     return tasks;
   }
@@ -90,6 +91,8 @@ class Repository {
         "subcategory": subcategory,
       "as_customer": customer,
     };
+
+    log('message query ${queryParameters}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -107,8 +110,8 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      final reversedTasks = tasks.reversed;
-      return reversedTasks.toList();
+      // final reversedTasks = tasks.reversed;
+      return tasks;
     }
     return tasks;
   }
@@ -569,13 +572,30 @@ class Repository {
     );
     log(response.statusCode.toString());
     if (response.statusCode == 200) {
-      log("fsafas${response.data}");
+      log("Levels ${response.data}");
       return response.data
           .map<Levels>((article) => Levels.fromJson(article))
           .toList();
     }
     return [];
   }
+    Future<List<Levels>> countries(String? access) async {
+    final response = await dio.get(
+      '$server/countries/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      log("Countries ${response.data}");
+      return response.data
+          .map<Countries>((article) => Countries.fromJson(article))
+          .toList();
+    }
+    return [];
+  }
+
 
   Future<String?> getFile(String file) async {
     try {

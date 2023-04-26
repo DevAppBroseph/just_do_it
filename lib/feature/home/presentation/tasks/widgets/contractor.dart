@@ -68,7 +68,8 @@ class Contractor extends StatelessWidget {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(AppRoute.archiveTasks);
+              Navigator.of(context)
+                  .pushNamed(AppRoute.archiveTasks, arguments: [true]);
             },
             child: Container(
               height: 55.h,
@@ -127,7 +128,10 @@ class Contractor extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Выполняются');
+                      return TaskAdditional(
+                        title: 'Выполняются',
+                        asCustomer: true,
+                      );
                     }),
                   );
                 },
@@ -152,7 +156,10 @@ class Contractor extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Выполнены');
+                      return TaskAdditional(
+                        title: 'Выполнены',
+                        asCustomer: true,
+                      );
                     }),
                   );
                 },
@@ -177,7 +184,10 @@ class Contractor extends StatelessWidget {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return TaskAdditional(title: 'Ждут подтверждения');
+                      return TaskAdditional(
+                        title: 'Ждут подтверждения',
+                        asCustomer: true,
+                      );
                     }),
                   );
                 },
@@ -192,7 +202,7 @@ class Contractor extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 102.h),
+          SizedBox(height: 60.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
@@ -200,7 +210,10 @@ class Contractor extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return CeateTasks(customer: true);
+                      return CeateTasks(
+                        customer: true,
+                        doublePop: true,
+                      );
                     },
                   ),
                 );

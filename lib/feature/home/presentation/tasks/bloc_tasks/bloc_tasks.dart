@@ -29,7 +29,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     );
     tasks = tasks;
     emit(TasksLoaded(event.countFilter, tasks: tasks));
-    log(event.query);
+    // log(event.query);
     // } else {
     // emit(TasksError());
     // }

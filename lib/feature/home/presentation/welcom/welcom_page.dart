@@ -13,11 +13,13 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -71,8 +73,12 @@ class _WelcomPageState extends State<WelcomPage> {
               lastname: '',
               photo: ''));
       if (owner != null) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProfileView(owner: owner)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewProfileLink(owner),
+          ),
+        );
       }
     }
   }
@@ -343,11 +349,14 @@ class _WelcomPageState extends State<WelcomPage> {
                             ),
                             child: Stack(
                               children: [
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/contractor.png',
-                                    height: 105.h,
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 15.h),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Image.asset(
+                                      'assets/images/contractor.png',
+                                      height: 70.h,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -397,11 +406,14 @@ class _WelcomPageState extends State<WelcomPage> {
                             ),
                             child: Stack(
                               children: [
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Image.asset(
-                                    'assets/images/customer.png',
-                                    height: 105.h,
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 15.h),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Image.asset(
+                                      'assets/images/customer.png',
+                                      height: 70.h,
+                                    ),
                                   ),
                                 ),
                                 Padding(

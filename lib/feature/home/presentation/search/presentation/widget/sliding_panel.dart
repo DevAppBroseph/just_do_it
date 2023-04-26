@@ -176,20 +176,24 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           countField++;
                         }
 
-                        context.read<TasksBloc>().add(GetTasksEvent(
-                            access,
-                            keyWordController.text,
-                            format1,
-                            format2,
-                            int.tryParse(coastMinController.text),
-                            int.tryParse(coastMaxController.text),
-                            isRegion,
-                            selectSubCategory,
-                            countField,
-                            (contractorFlag && contractorFlag) ||
-                                    (contractorFlag && contractorFlag)
-                                ? null
-                                : customerFlag));
+                        context.read<TasksBloc>().add(
+                              GetTasksEvent(
+                                access: access,
+                                query: keyWordController.text,
+                                dateEnd: format1,
+                                dateStart: format2,
+                                priceFrom:
+                                    int.tryParse(coastMinController.text),
+                                priceTo: int.tryParse(coastMaxController.text),
+                                region: isRegion,
+                                subcategory: selectSubCategory,
+                                countFilter: countField,
+                                customer: (contractorFlag && contractorFlag) ||
+                                        (contractorFlag && contractorFlag)
+                                    ? null
+                                    : customerFlag,
+                              ),
+                            );
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
@@ -317,6 +321,18 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       isRegion = [];
                       selectSubCategory = [];
                       country = '';
+                       for (int i = 0; i < activities.length; i++) {
+                        for (int y = 0;
+                            y < activities[i].subcategory.length;
+                            y++) {
+                          activities[i].subcategory[y].isSelect = false;
+                          selectSubCategory = [];
+                        }
+                        activities[i].isSelect = false;
+                      }
+                      for (var element in allRegoins) {
+                        element.select = false;
+                    }
                       setState(() {});
                     },
                     child: Text(

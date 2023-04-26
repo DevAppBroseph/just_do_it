@@ -3,7 +3,7 @@ part of 'bloc_tasks.dart';
 class TasksEvent {}
 
 class GetTasksEvent extends TasksEvent {
-  String query;
+  String? query;
   String? access;
   List<int?> subcategory;
   String? dateStart;
@@ -13,18 +13,18 @@ class GetTasksEvent extends TasksEvent {
   List<String?> region;
   bool? customer;
   int? countFilter;
-  GetTasksEvent(
+  GetTasksEvent({
     this.access,
     this.query,
     this.dateEnd,
     this.dateStart,
     this.priceFrom,
     this.priceTo,
-    this.region,
-    this.subcategory,
+    this.region = const [],
+    this.subcategory = const [],
     this.countFilter,
     this.customer,
-  );
+  });
 }
 // class SearchTasksEvent extends TasksEvent {
 //   final String? tasksName;

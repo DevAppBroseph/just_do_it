@@ -12,6 +12,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/task.dart';
@@ -23,10 +24,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class CeateTasks extends StatefulWidget {
   Activities? selectCategory;
   bool customer;
+  bool doublePop;
   CeateTasks({
     super.key,
     this.selectCategory,
     required this.customer,
+    this.doublePop = false,
   });
 
   @override
@@ -227,7 +230,7 @@ class _CeateTasksState extends State<CeateTasks> {
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -301,7 +304,33 @@ class _CeateTasksState extends State<CeateTasks> {
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .createTask(profileBloc.access!, newTask);
-                          if (res) Navigator.of(context).pop();
+                          if (res) {
+                            if (widget.doublePop) {
+                              Navigator.of(context)
+                                ..pop()
+                                ..pop();
+                              final access =
+                                  BlocProvider.of<ProfileBloc>(context).access;
+                              context.read<TasksBloc>().add(
+                                    GetTasksEvent(
+                                      access: access,
+                                      query: '',
+                                      dateEnd: '',
+                                      dateStart: '',
+                                      priceFrom: 0,
+                                      priceTo: 50000000,
+                                      region: [],
+                                      subcategory: [],
+                                      countFilter: null,
+                                      customer: null,
+                                    ),
+                                  );
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                            BlocProvider.of<TasksBloc>(context)
+                                .add(GetTasksEvent());
+                          }
                           Loader.hide();
                         }
                       } else {
