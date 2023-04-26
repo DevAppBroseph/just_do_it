@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   SizedBox(height: 10.h),
                   SizedBox(
-                    height: 76.h,
+                    height: 87.h,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -74,9 +74,14 @@ class _ProfileViewState extends State<ProfileView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${owner?.firstname ?? '-'} ${owner?.lastname ?? '-'}',
-                              style: CustomTextStyle.black_17_w600_171716,
+                            SizedBox(
+                              width: 240,
+                              child: Text(
+                                '${owner?.firstname ?? '-'} ${owner?.lastname ?? '-'}',
+                                style: CustomTextStyle.black_17_w600_171716,
+                                 softWrap: true,
+                              ),
+                              
                             ),
                             const Spacer(),
                             Text(

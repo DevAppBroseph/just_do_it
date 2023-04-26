@@ -88,7 +88,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'Это ваша реферальная ссылка',
+                'Это Ваша реферальная ссылка',
                 style: CustomTextStyle.black_16_w500_000000,
               ),
             ),
@@ -96,7 +96,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'За каждого нового пользователя, кто установит приложение\nпо Вашей ссылке, Вы получите от 100 баллов.',
+                'За каждого нового пользователя, кто установит приложение по Вашей ссылке, Вы получите от 100 баллов.',
                 style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
