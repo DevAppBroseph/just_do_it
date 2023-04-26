@@ -14,6 +14,7 @@ class OrderTask {
     this.description,
     this.owner,
   });
+  
 
   factory OrderTask.fromJson(Map<String, dynamic> json) => OrderTask(
         id: json["id"],
@@ -30,6 +31,28 @@ class OrderTask {
         "owner": owner,
       };
 }
+
+class Currency {
+  int? id;
+  String? name;
+  String? shortName;
+
+  Currency({required this.id, required this.name, required this.shortName});
+
+  factory Currency.fromJson(Map<String, dynamic> json) {
+    return Currency(
+     id: json['id'],
+     name: json['name'],
+     shortName: json['short_name']
+    );
+  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "short_name": shortName,
+      };
+}
+
 
 class Owner {
   int? id;

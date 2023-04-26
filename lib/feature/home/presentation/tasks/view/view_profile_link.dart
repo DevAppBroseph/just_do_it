@@ -6,10 +6,15 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dar
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class ViewProfileLink extends StatelessWidget {
+class ViewProfileLink extends StatefulWidget {
   Owner owner;
   ViewProfileLink(this.owner);
 
+  @override
+  State<ViewProfileLink> createState() => _ViewProfileLinkState();
+}
+
+class _ViewProfileLinkState extends State<ViewProfileLink> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +41,7 @@ class ViewProfileLink extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: ProfileView(owner: owner)),
+          Expanded(child: ProfileView(owner: widget.owner)),
         ],
       ),
     );

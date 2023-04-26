@@ -332,7 +332,7 @@ class _WelcomPageState extends State<WelcomPage> {
                           child: Container(
                             height: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
-                                25.w,
+                                40.w,
                             width: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
                                 25.w,
@@ -389,7 +389,7 @@ class _WelcomPageState extends State<WelcomPage> {
                           child: Container(
                             height: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
-                                25.w,
+                                40.w,
                             width: ((MediaQuery.of(context).size.width * 47) /
                                     100) -
                                 25.w,

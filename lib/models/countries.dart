@@ -1,6 +1,7 @@
 class Countries {
   String? name;
   int? id;
+  List regions = [];
 
 
   Countries({
@@ -13,7 +14,9 @@ class Countries {
     return Countries(
       name: json['name'],
       id: json['id'],
+      
     );
+    
   }
     Map<String, dynamic> toJson() => {
         "name": name,
