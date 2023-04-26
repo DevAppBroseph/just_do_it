@@ -228,7 +228,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {

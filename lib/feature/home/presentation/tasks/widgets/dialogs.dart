@@ -84,7 +84,7 @@ void taskMoreDialog(
               child: Stack(
                 children: [
                   Container(
-                    width: 115.w,
+                    width: 125.w,
                     height: 72.h,
                     decoration: BoxDecoration(
                       color: Colors.white,

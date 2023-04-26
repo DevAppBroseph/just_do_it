@@ -237,34 +237,36 @@ class _TaskViewState extends State<TaskView> {
                       ),
                     ),
                   SizedBox(width: 10.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 260,
-                        child: Text(
-                          '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
-                          style: CustomTextStyle.black_17_w600_171716,
-                          softWrap: true,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 260,
+                          child: Text(
+                            '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
+                            style: CustomTextStyle.black_17_w600_171716,
+                            softWrap: true,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 6.h),
-                      Row(
-                        children: [
-                          Text(
-                            'Рейтинг',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                          SizedBox(width: 8.w),
-                          SvgPicture.asset('assets/icons/star.svg'),
-                          SizedBox(width: 4.w),
-                          Text(
-                            '-',
-                            style: CustomTextStyle.black_13_w500_171716,
-                          ),
-                        ],
-                      ),
-                    ],
+                        SizedBox(height: 6.h),
+                        Row(
+                          children: [
+                            Text(
+                              'Рейтинг',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            SizedBox(width: 8.w),
+                            SvgPicture.asset('assets/icons/star.svg'),
+                            SizedBox(width: 4.w),
+                            Text(
+                              '-',
+                              style: CustomTextStyle.black_13_w500_171716,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

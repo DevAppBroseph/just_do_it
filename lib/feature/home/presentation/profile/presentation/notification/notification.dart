@@ -13,8 +13,8 @@ class NotificationPage extends StatelessWidget {
   List<notifModel.Notification> notification = [
     notifModel.Notification(
         title: 'Вас выбрали исполнителем', date: '12.09.2022'),
-    notifModel.Notification(title: 'У вас новый отклик', date: '22.02.2022'),
-    notifModel.Notification(title: 'У вас новый отклик', date: '14:32'),
+    notifModel.Notification(title: 'У Вас новый отклик', date: '22.02.2022'),
+    notifModel.Notification(title: 'У Вас новый отклик', date: '14:32'),
   ];
 
   @override
