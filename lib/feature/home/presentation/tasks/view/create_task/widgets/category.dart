@@ -177,6 +177,7 @@ class _CategoryState extends State<Category> {
               if (widget.selectCategory != null) {
                 setState(() {
                   openSubCategory = !openSubCategory;
+                  openCategory = false;
                 });
               } else {
                 setState(() {
@@ -288,7 +289,9 @@ class _CategoryState extends State<Category> {
           ),
           SizedBox(height: 9.h),
           ScaleButton(
-            onTap: () {},
+            onTap: () {
+           
+            },
             bound: 0.02,
             child: Container(
               height: 50.h,
