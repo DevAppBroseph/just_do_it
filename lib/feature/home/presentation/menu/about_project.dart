@@ -111,13 +111,7 @@ class _AboutProjectState extends State<AboutProject> {
                       //   ),
                       // ),
                       Container(color: ColorStyles.yellowFFD70A, child: SizedBox(height: 40.h)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Container(
-                          height: 1.h,
-                          color: ColorStyles.greyDADADA,
-                        ),
-                      ),
+                     
                       SizedBox(height: 40.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),

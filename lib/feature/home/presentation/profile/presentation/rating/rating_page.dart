@@ -397,67 +397,75 @@ class _RatingPageState extends State<RatingPage> {
               ],
             ),
           ),
-          SizedBox(height: 40.h),
-          Row(
-            children: [
-              SizedBox(width: 24.w),
-              SizedBox(
-                width: 188.w,
-                child: AutoSizeText(
-                  '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                  style: CustomTextStyle.black_34_w800_171716,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ),
-              const Spacer(),
-              Container(
-                height: 76.h,
-                width: 130.h,
-                padding: EdgeInsets.only(
-                    left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
-                decoration: BoxDecoration(
-                  color: ColorStyles.greyF3F3F3,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.r),
-                    bottomLeft: Radius.circular(10.r),
+        
+          Container(
+            height: 127.h,
+            color: ColorStyles.yellowFFD70A,
+            child: Row(
+              children: [
+                SizedBox(width: 24.w),
+                SizedBox(
+                  width: 188.w,
+                  child: AutoSizeText(
+                    '${bloc.user?.firstname}\n${bloc.user?.lastname}',
+                    style: CustomTextStyle.black_34_w800_171716,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Ваш рейтинг',
-                      style: CustomTextStyle.black_14_w400_515150,
+                const Spacer(),
+                Container(
+                  height: 76.h,
+                  width: 130.h,
+                  padding: EdgeInsets.only(
+                      left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.greyF3F3F3,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.r),
+                      bottomLeft: Radius.circular(10.r),
                     ),
-                    SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        SvgPicture.asset('assets/icons/star.svg'),
-                        SizedBox(width: 4.w),
-                        Text(
-                          reviews.ranking == null
-                              ? '-'
-                              : (reviews.ranking!).toString(),
-                          style: CustomTextStyle.black_20_w600,
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ваш рейтинг',
+                        style: CustomTextStyle.black_14_w400_515150,
+                      ),
+                      SizedBox(height: 6.h),
+                      Row(
+                        children: [
+                          SvgPicture.asset('assets/icons/star.svg'),
+                          SizedBox(width: 4.w),
+                          Text(
+                            reviews.ranking == null
+                                ? '-'
+                                : (reviews.ranking!).toString(),
+                            style: CustomTextStyle.black_20_w600,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          SizedBox(height: 30.h),
-          Row(
-            children: [
-              SizedBox(width: 24.w),
-              Text(
-                'Вы выполнили ${reviews.reviewsDetail.length} заданий',
-                style: CustomTextStyle.black_14_w400_515150,
-              ),
-            ],
+         
+          Container(
+            height: 55.h,
+            color: ColorStyles.yellowFFD70A,
+            child: Row(
+              children: [
+                SizedBox(width: 24.w),
+                Text(
+                  'Вы выполнили ${reviews.reviewsDetail.length} заданий',
+                  style: CustomTextStyle.black_14_w400_515150,
+                ),
+              ],
+            ),
           )
         ],
       ),

@@ -8,8 +8,10 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -25,7 +27,7 @@ class ArchiveTasksView extends StatefulWidget {
 class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   List<Task> taskList = [];
   Task? selectTask;
-
+Owner? owner;
   @override
   void initState() {
     super.initState();
@@ -102,10 +104,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                           },
                         ),
                       )
-                    : TaskView(
-                        selectTask: selectTask!,
-                        openOwner: (owner) {},
-                      ),
+                    : view(),
               ],
             ),
           ),
@@ -137,5 +136,23 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
         ],
       ),
     );
+  }
+   Widget view() {
+    if (owner != null) {
+      return Expanded(child: ProfileView(owner: owner!));
+    }
+    if (selectTask != null) {
+      return Expanded(
+        child: TaskView(
+          selectTask: selectTask!,
+          openOwner: (owner) {
+            this.owner = owner;
+            setState(() {});
+          },
+          canSelect: true,
+        ),
+      );
+    }
+    return Container();
   }
 }
