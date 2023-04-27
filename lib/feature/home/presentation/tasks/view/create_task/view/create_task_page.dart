@@ -227,6 +227,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20.h),
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(

@@ -418,6 +418,7 @@ class _DatePickerState extends State<DatePicker> {
                           if (widget.selectRegion == e) {
                             widget.selectRegion = null;
                           } else {
+                            openRegion = false;
                             widget.selectRegion = e;
                           }
                           widget.onEdit(
