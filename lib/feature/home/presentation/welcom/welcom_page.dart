@@ -48,6 +48,7 @@ class _WelcomPageState extends State<WelcomPage> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     notificationInit();
   }
 

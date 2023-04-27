@@ -76,23 +76,31 @@ class _AboutProjectState extends State<AboutProject> {
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: [
-                      SizedBox(height: 50.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50.w),
-                        child: Center(
-                          child: Text(
-                            'jobyfine'.toUpperCase(),
-                            style: CustomTextStyle.black_39_w900_171716
-                                .copyWith(color: ColorStyles.yellowFFD70B),
+                      SizedBox(height: 10.h),
+                      Container(color: ColorStyles.yellowFFD70A,
+                        child: SizedBox(height: 50.h)),
+                      Container(
+                        color: ColorStyles.yellowFFD70A,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 50.w),
+                          child: Center(
+                            child: Text(
+                              'jobyfine'.toUpperCase(),
+                              style: CustomTextStyle.black_39_w900_171716
+                                  .copyWith(color: ColorStyles.black),
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 40.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          about?.about ?? '',
-                          style: CustomTextStyle.black_14_w400_515150,
+                      Container(color: ColorStyles.yellowFFD70A, child: SizedBox(height: 40.h)),
+                      Container(
+                        color: ColorStyles.yellowFFD70A,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.w),
+                          child: Text(
+                            about?.about ?? '',
+                            style: CustomTextStyle.black_14_w400_515150,
+                          ),
                         ),
                       ),
                       // Padding(
@@ -102,7 +110,7 @@ class _AboutProjectState extends State<AboutProject> {
                       //     style: CustomTextStyle.black_13_w400_515150,
                       //   ),
                       // ),
-                      SizedBox(height: 40.h),
+                      Container(color: ColorStyles.yellowFFD70A, child: SizedBox(height: 40.h)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Container(

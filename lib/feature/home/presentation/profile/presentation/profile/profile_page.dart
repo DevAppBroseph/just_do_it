@@ -83,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: 40.h,
                                 width: widthTabBarItem,
                                 decoration: BoxDecoration(
-                                  color: Colors.black,
+                                  color:  ColorStyles.yellowFFD70A,
                                   borderRadius: BorderRadius.only(
                                     topLeft: !state
                                         ? Radius.circular(20.r)
@@ -127,13 +127,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     },
                                     child: Container(
                                       color: Colors.transparent,
+                                      
                                       child: Center(
                                         child: Text(
                                           'Как исполнитель',
-                                          style: state
-                                              ? CustomTextStyle
+                                          style: 
+                                               CustomTextStyle
                                                   .black_14_w400_171716
-                                              : CustomTextStyle.white_14_w400,
+                                              
                                         ),
                                       ),
                                     ),
@@ -166,9 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       child: Center(
                                         child: Text(
                                           'Как заказчик',
-                                          style: state
-                                              ? CustomTextStyle.white_14_w400
-                                              : CustomTextStyle
+                                          style:CustomTextStyle
                                                   .black_14_w400_171716,
                                         ),
                                       ),

@@ -101,7 +101,7 @@ class _TasksPageState extends State<TasksPage> {
                       decoration: BoxDecoration(
                         color: snapshot.data! == 1
                             ? ColorStyles.greyE0E6EE
-                            : ColorStyles.black171716,
+                            :  ColorStyles.yellowFFD70A,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
                           bottomLeft: Radius.circular(20.r),
@@ -109,9 +109,8 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                       child: Text(
                         'Я исполнитель',
-                        style: snapshot.data! == 1
-                            ? CustomTextStyle.black_14_w400_171716
-                            : CustomTextStyle.white_14_w400,
+                        style: CustomTextStyle.black_14_w400_171716
+                           
                       ),
                     ),
                   ),
@@ -130,7 +129,7 @@ class _TasksPageState extends State<TasksPage> {
                       decoration: BoxDecoration(
                         color: snapshot.data! == 0
                             ? ColorStyles.greyE0E6EE
-                            : ColorStyles.black171716,
+                            : ColorStyles.yellowFFD70A,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20.r),
                           bottomRight: Radius.circular(20.r),
@@ -138,9 +137,8 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                       child: Text(
                         'Я заказчик',
-                        style: snapshot.data! == 0
-                            ? CustomTextStyle.black_14_w400_171716
-                            : CustomTextStyle.white_14_w400,
+                        style:  CustomTextStyle.black_14_w400_171716
+                          
                       ),
                     ),
                   ),
