@@ -5,16 +5,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:scale_button/scale_button.dart';
 
 class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(String?, DateTime?, DateTime?) onEdit;
+  Function(Regions?, DateTime?, DateTime?) onEdit;
   DateTime? startDate;
   DateTime? endDate;
-  String? selectRegion;
+  Regions? selectRegion;
   DatePicker({
     super.key,
     required this.onEdit,
@@ -384,7 +385,7 @@ class _DatePickerState extends State<DatePicker> {
                 ],
               ),
               textEditingController:
-                  TextEditingController(text: widget.selectRegion ?? ''),
+                  TextEditingController(text: widget.selectRegion.toString()),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             ),
@@ -418,8 +419,7 @@ class _DatePickerState extends State<DatePicker> {
                           if (widget.selectRegion == e) {
                             widget.selectRegion = null;
                           } else {
-                            openRegion = false;
-                            widget.selectRegion = e;
+                            
                           }
                           widget.onEdit(
                             widget.selectRegion,

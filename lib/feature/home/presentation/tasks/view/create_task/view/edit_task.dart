@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -45,7 +46,7 @@ class _EditTasksState extends State<EditTasks> {
   File? document;
   File? photo;
 
-  String? region;
+  Regions? region;
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -68,7 +69,7 @@ class _EditTasksState extends State<EditTasks> {
     final splitEndDate = widget.task.dateEnd.split('-');
     endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
         int.parse(splitEndDate[2]));
-    region = widget.task.region;
+    region = widget.task.regions;
     log('message ${widget.task.toJson()}');
 
     // if (widget.selectCategory != null) {
@@ -229,7 +230,7 @@ class _EditTasksState extends State<EditTasks> {
                         endDate: endDate,
                         selectRegion: region,
                         onEdit: (region, startDate, endDate) {
-                          this.region = region;
+                          this.region = region as Regions?;
                           this.startDate = startDate;
                           this.endDate = endDate;
                         },
@@ -262,7 +263,7 @@ class _EditTasksState extends State<EditTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (region == null || region!.isEmpty) {
+                        if (region == null ) {
                           error += '\n- регион';
                           errorsFlag = true;
                         }
@@ -300,7 +301,7 @@ class _EditTasksState extends State<EditTasks> {
                                   ? '0'
                                   : coastMaxController.text,
                             ),
-                            region: region ?? '',
+                            regions:  region,
                             file: null,
                             icon: '',
                             task: '',

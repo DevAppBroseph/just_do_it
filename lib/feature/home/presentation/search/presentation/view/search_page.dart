@@ -389,7 +389,7 @@ class _SearchPageState extends State<SearchPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                task.region,
+                                task.regions.toString(),
                                 style: CustomTextStyle.black_12_w400,
                               ),
                               SizedBox(height: 2.h),

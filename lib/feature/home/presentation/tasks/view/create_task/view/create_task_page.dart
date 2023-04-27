@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -51,7 +52,7 @@ class _CeateTasksState extends State<CeateTasks> {
   File? document;
   File? photo;
 
-  String? region;
+  Regions? region;
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -219,7 +220,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         endDate: endDate,
                         selectRegion: region,
                         onEdit: (region, startDate, endDate) {
-                          this.region = region;
+                          this.region = region as Regions?;
                           this.startDate = startDate;
                           this.endDate = endDate;
                         },
@@ -252,10 +253,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (region == null || region!.isEmpty) {
-                          error += '\n- регион';
-                          errorsFlag = true;
-                        }
+                        // if (region == null ) {
+                        //   error += '\n- регион';
+                        //   errorsFlag = true;
+                        // }
 
                         if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
@@ -282,7 +283,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             priceTo: int.parse(
                               coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
                             ),
-                            region: region ?? '',
+                            regions: region,
                             file: null,
                             icon: '',
                             task: '',
