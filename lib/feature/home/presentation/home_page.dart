@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                       page = 5;
                       streamController.add(4);
                     },
-                    onSelect: selectUser,
+                    onSelect: selectUser, whichPage: WhichPage.main,
                   ),
                   SearchPage(
                     onBackPressed: () {
