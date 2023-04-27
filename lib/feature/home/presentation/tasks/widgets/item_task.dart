@@ -69,7 +69,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              task.region,
+                              task.regions.toString(),
                               style: CustomTextStyle.black_12_w500_515150,
                             ),
                             SizedBox(height: 5.h),

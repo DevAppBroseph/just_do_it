@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -15,11 +16,12 @@ class Task {
   String dateEnd;
   int priceFrom;
   int priceTo;
-  String region;
+  Countries? countries;
+  Regions? regions;
   String? search;
   Uint8List? file;
   Currency? currency;
-
+  Towns? towns;
   String? icon;
   String? task;
   String? typeLocation;
@@ -40,7 +42,9 @@ class Task {
     required this.dateEnd,
     required this.priceFrom,
     required this.priceTo,
-    required this.region,
+    this.regions,
+    this.towns,
+    this.countries,
     this.file,
     this.icon,
     this.task,
@@ -63,9 +67,10 @@ class Task {
         dateEnd: json["date_end"],
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
-        region: json["region"],
         search: json['search'],
         asCustomer: json['as_customer'],
+     
+       
        
       );
 
@@ -77,9 +82,10 @@ class Task {
         "date_end": dateEnd,
         "price_from": priceFrom,
         "price_to": priceTo,
-        "region": region,
+        "regions": regions,
         'search': search,
         "as_customer": asCustomer,
-        'currency': currency!.id
+        'currency': currency!.id,
+        'towns' : towns,
       };
 }

@@ -175,7 +175,7 @@ class _TaskViewState extends State<TaskView> {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      widget.selectTask.region,
+                      widget.selectTask.regions.toString(),
                       style: CustomTextStyle.black_12_w400_292D32,
                     ),
                   ],
