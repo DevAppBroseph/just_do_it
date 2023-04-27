@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:just_do_it/models/user_reg.dart';
@@ -52,6 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
     List<Activities>? res = await Repository().getCategories();
     activities = res ?? [];
+    log(activities.toString());
     if (res != null) {
       emit(GetCategoriesState(res));
     }

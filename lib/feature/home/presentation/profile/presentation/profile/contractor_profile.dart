@@ -290,9 +290,19 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
+                            color:  ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
+                          //  decoration: BoxDecoration(
+                          //         color: ColorStyles.yellowFFD70A,
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //             color: ColorStyles.shadowFC6554,
+                          //             offset: const Offset(0, -4),
+                          //             blurRadius: 55.r,
+                          //           )
+                          //         ],
+                          //       ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,7 +335,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
+                            color:  ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(

@@ -32,7 +32,7 @@ class Contractor extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color: ColorStyles.greyF9F9F9,
+                color: ColorStyles.yellowFFD70A,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -77,7 +77,7 @@ class Contractor extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color: ColorStyles.greyF9F9F9,
+                color: ColorStyles.yellowFFD70A,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(

@@ -177,7 +177,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         height: 68.h,
                         padding: EdgeInsets.only(left: 16.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color:  ColorStyles.yellowFFD70A,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -212,7 +212,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         height: 68.h,
                         padding: EdgeInsets.only(left: 16.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color:  ColorStyles.yellowFFD70A,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Row(

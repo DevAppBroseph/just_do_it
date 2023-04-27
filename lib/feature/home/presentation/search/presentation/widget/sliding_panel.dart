@@ -1474,11 +1474,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           SizedBox(height: 20.h),
           SizedBox(
             height: 700.h,
-            child: BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
-              if (state is CountriesLoaded) {
-                countries = state.country!;
-                log(' fewfwefwe wef ${countries}');
-                return ListView.builder(
+            // child: BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+            //   if (state is CountriesLoaded) {
+            //     countries = state.country!;
+            //     log(' fewfwefwe wef ${countries}');
+                child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: region.length,
                     padding: EdgeInsets.only(left: 10.w),
@@ -1527,10 +1527,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           ),
                         ),
                       );
-                    }));
-              }
-              return Container();
-            }),
+                    }),
+             ),
           ),
         ]);
   }
