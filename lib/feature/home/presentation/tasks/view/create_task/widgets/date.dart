@@ -416,7 +416,6 @@ class _DatePickerState extends State<DatePicker> {
                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
                       child: GestureDetector(
                         onTap: () {
-                         
                           widget.onEdit(
                             widget.selectRegion,
                             widget.startDate,

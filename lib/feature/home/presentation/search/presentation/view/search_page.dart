@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
@@ -50,6 +51,7 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<CountriesBloc>().add(GetCountryEvent(access));
 
     context.read<TasksBloc>().add(
           GetTasksEvent(
@@ -212,8 +214,11 @@ class _SearchPageState extends State<SearchPage> {
                     const Spacer(),
                     ScaleButton(
                       bound: 0.01,
-                      onTap: () => BlocProvider.of<SearchBloc>(context)
-                          .add(OpenSlidingPanelEvent()),
+                      onTap: () { 
+                        
+                        BlocProvider.of<SearchBloc>(context)
+                          .add(OpenSlidingPanelEvent());
+                      },
                       child: SizedBox(
                         height: 40.h,
                         width: 90.h,
