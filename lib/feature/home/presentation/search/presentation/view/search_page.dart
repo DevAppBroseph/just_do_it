@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                           },
                           icon: SvgImg.arrowRight,
                         ),
-                        Spacer(),
+                        const Spacer(),
                         SizedBox(
                           width: 240.w,
                           height: 36.h,
@@ -385,21 +385,24 @@ class _SearchPageState extends State<SearchPage> {
                       width: 235.w,
                       child: Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                task.regions.toString(),
-                                style: CustomTextStyle.black_12_w400,
-                              ),
-                              SizedBox(height: 2.h),
-                              Text(
-                                task.dateEnd,
-                                style: CustomTextStyle.grey_12_w400,
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _textCountry(task),
+                                  style: CustomTextStyle.black_12_w400,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 2.h),
+                                Text(
+                                  task.dateEnd,
+                                  style: CustomTextStyle.grey_12_w400,
+                                ),
+                              ],
+                            ),
                           ),
-                          const Spacer(),
+                        
                           Text(
                             'до ${task.priceTo} ₽',
                             style: CustomTextStyle.black_14_w500_171716,
@@ -423,6 +426,23 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
+  }
+
+  String _textCountry(Task task){
+    var text = '';
+    for (var country in task.countries) {
+      text += '${country.name}, ';
+    }
+    for (var region in task.regions) {
+      text += '${region.name}, ';
+    }
+    for (var town in task.towns) {
+      text += '${town.name}, ';
+    }
+    if(text.isNotEmpty) text = text.substring(0, text.length-2);
+    if(text.isEmpty) text = 'Выбраны все страны';
+   
+   return text;
   }
 
   Widget view() {

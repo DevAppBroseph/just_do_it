@@ -585,7 +585,7 @@ class Repository {
     return [];
   }
 
-  Future<List<Towns>> towns(String? access, List<Regions> regions) async {
+  Future<List<Town>> towns(String? access, List<Regions> regions) async {
     for (int i = 0; i < regions.length; i++) {
       final response = await dio.get(
         '$server/countries/region/${regions[i].id}',
@@ -594,7 +594,7 @@ class Repository {
 
       if (response.statusCode == 200) {
         log("Countries ${response.data}");
-        List<Towns> towns = [];
+        List<Town> towns = [];
         for (var element in response.data['towns']) {
           regions.add(element['id']['name']);
         }

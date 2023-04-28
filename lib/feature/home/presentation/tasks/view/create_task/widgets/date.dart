@@ -12,10 +12,10 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(Regions?, DateTime?, DateTime?) onEdit;
+  Function(List<Regions>, DateTime?, DateTime?) onEdit;
   DateTime? startDate;
   DateTime? endDate;
-  Regions? selectRegion;
+  List<Regions> selectRegion;
   DatePicker({
     super.key,
     required this.onEdit,
@@ -416,11 +416,7 @@ class _DatePickerState extends State<DatePicker> {
                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
                       child: GestureDetector(
                         onTap: () {
-                          if (widget.selectRegion == e) {
-                            widget.selectRegion = null;
-                          } else {
-                            
-                          }
+                         
                           widget.onEdit(
                             widget.selectRegion,
                             widget.startDate,

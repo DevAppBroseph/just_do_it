@@ -40,17 +40,17 @@ class Regions {
       };
 }
 
-class Towns {
+class Town {
   String? name;
   int? id;
 
-  Towns({
+  Town({
     required this.name,
     required this.id,
   });
 
-  factory Towns.fromJson(Map<String, dynamic> json) {
-    return Towns(
+  factory Town.fromJson(Map<String, dynamic> json) {
+    return Town(
       name: json['name'],
       id: json['id'],
     );

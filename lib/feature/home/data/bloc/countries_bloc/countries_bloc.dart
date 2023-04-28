@@ -14,19 +14,17 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   CountriesBloc() : super(CountriesLoading()) {
     on<GetCountryEvent>(_getCountries);
   }
-  List<Countries>? countries;
-  List<Regions>? regions;
-  List<Towns>? towns;
- 
+
 
 
   void _getCountries(GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
     if (event.access != null) {
-      countries = await Repository().countries(event.access);
-      regions = await Repository().regions(event.access, countries!);
-      towns = await Repository().towns(event.access, regions!);
-      emit(CountriesLoaded(country: countries));
+      final countries = await Repository().countries(event.access);
+      final regions = await Repository().regions(event.access, countries);
+      final towns = await Repository().towns(event.access, regions);
+
+      emit(CountriesLoaded(country: countries, region: regions, town: towns));
      
     } else {
       emit(CountriesError());
