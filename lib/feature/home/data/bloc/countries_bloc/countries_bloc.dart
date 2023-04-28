@@ -12,9 +12,8 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
     on<GetCountryEvent>(_getCountries);
     on<GetRegionEvent>(_getRegions);
     on<GetTownsEvent>(_getTowns);
-    on<SwitchCountry>(_switchCountry);
+    // on<SwitchCountry>(_switchCountry);
   }
-  
 
   void _getCountries(GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
@@ -24,9 +23,15 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
       log(countries.toString());
       final prefstate = state;
       if (prefstate is! CountriesLoaded) {
-        emit(CountriesLoaded(country: countries, region: [], town: [], switchCountry: false));
+        emit(CountriesLoaded(
+          country: countries,
+          region: [],
+          town: [],
+        ));
       } else {
-        emit(prefstate.copyWith(country: countries, switchCountry: prefstate.switchCountry));
+        emit(prefstate.copyWith(
+          country: countries,
+        ));
       }
     } else {
       emit(CountriesError());
@@ -34,16 +39,24 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   }
 
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
-    emit(CountriesLoading());
-
     if (event.access != null) {
       final regions = await Repository().regions(event.access, event.countries);
       log(regions.toString());
       final prefstate = state;
-      if (prefstate is! CountriesLoaded) {
-        emit(CountriesLoaded(country: [], region: regions, town: [], switchCountry: false));
+      if (prefstate is CountriesLoading) {
+        emit(CountriesLoading());
       } else {
-        emit(prefstate.copyWith(region: regions, switchCountry: prefstate.switchCountry));
+        if (prefstate is! CountriesLoaded) {
+          emit(CountriesLoaded(
+            country: [],
+            region: regions,
+            town: [],
+          ));
+        } else {
+          emit(prefstate.copyWith(
+            region: regions,
+          ));
+        }
       }
     } else {
       emit(CountriesError());
@@ -51,30 +64,36 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   }
 
   void _getTowns(GetTownsEvent event, Emitter<CountriesState> emit) async {
-    emit(CountriesLoading());
-
     if (event.access != null) {
       final towns = await Repository().towns(event.access, event.regions);
+      print(towns);
       final prefstate = state;
-      if (prefstate is! CountriesLoaded) {
-        emit(CountriesLoaded(country: [], region: [], town: towns, switchCountry: false));
+      if (prefstate is CountriesLoading) {
+        emit(CountriesLoading());
       } else {
-        emit(prefstate.copyWith(
-          town: towns,
-          switchCountry: prefstate.switchCountry
-        ));
+        if (prefstate is! CountriesLoaded) {
+          emit(CountriesLoaded(
+            country: [],
+            region: [],
+            town: towns,
+          ));
+        } else {
+          emit(prefstate.copyWith(
+            town: towns,
+          ));
+        }
       }
     } else {
       emit(CountriesError());
     }
   }
 
-  void _switchCountry(SwitchCountry event, Emitter<CountriesState> emit) async {
-    final prefstate = state;
-     if (prefstate is CountriesLoaded) {
-        emit(prefstate.copyWith(
-          switchCountry: !prefstate.switchCountry ,
-        ));
-     }
-  }
+  // void _switchCountry(SwitchCountry event, Emitter<CountriesState> emit) async {
+  //   final prefstate = state;
+  //    if (prefstate is CountriesLoaded) {
+  //       emit(prefstate.copyWith(
+  //         switchCountry: !prefstate.switchCountry ,
+  //       ));
+  //    }
+  // }
 }

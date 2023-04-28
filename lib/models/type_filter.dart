@@ -1,1 +1,1 @@
-enum TypeFilter { main, category, category1, country, region, date }
+enum TypeFilter { main, category, category1, country, region, towns, date }

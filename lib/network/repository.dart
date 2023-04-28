@@ -566,38 +566,28 @@ class Repository {
     return [];
   }
 
-  Future<List<Regions>> regions(String? access, List<Countries> countries) async {
-    for (int i = 0; i < countries.length; i++) {
-      log(countries.length.toString());
-      final response = await dio.get(
-        '$server/countries/${countries[i].id}',
-        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
-      );
-
-      if (response.statusCode == 200) {
-        log("Countries ${response.data}");
-        log(response.data['regions'].toString());
-        return response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
-      }
+  Future<List<Regions>> regions(String? access, Countries countries) async {
+    final response = await dio.get(
+      '$server/countries/${countries.id}',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+    if (response.statusCode == 200) {
+      log("Countries ${response.data}");
+      log(response.data['regions'].toString());
+      return response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
     }
     return [];
   }
 
-  Future<List<Town>> towns(String? access, List<Regions> regions) async {
-    for (int i = 0; i < regions.length; i++) {
-      final response = await dio.get(
-        '$server/countries/region/${regions[i].id}',
-        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
-      );
+  Future<List<Town>> towns(String? access, Regions regions) async {
+    final response = await dio.get(
+      '$server/countries/region/${regions.id}',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
 
-      if (response.statusCode == 200) {
-        log("Countries ${response.data}");
-        List<Town> towns = [];
-        for (var element in response.data['towns']) {
-          regions.add(element);
-        }
-         return towns;
-      }
+    if (response.statusCode == 200) {
+      log(response.data['towns'].toString());
+      return response.data['towns'].map<Town>((article) => Town.fromJson(article)).toList();
     }
     return [];
   }

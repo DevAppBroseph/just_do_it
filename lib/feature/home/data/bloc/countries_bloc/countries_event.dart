@@ -8,14 +8,14 @@ class GetCountryEvent extends CountriesEvent {
   GetCountryEvent(this.access);
 }
 class GetRegionEvent extends CountriesEvent {
-  List<Countries> countries;
+  Countries countries;
   String? access;
   GetRegionEvent(this.access, this.countries);
 }
 
 class GetTownsEvent extends CountriesEvent {
   String? access;
-  List<Regions> regions;
+  Regions regions;
   GetTownsEvent(this.access, this.regions);
 }
 

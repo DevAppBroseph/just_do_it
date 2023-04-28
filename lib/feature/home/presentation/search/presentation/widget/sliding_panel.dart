@@ -47,12 +47,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   String strcat3 = '';
   int? groupValueCountry;
   Activities? selectActivities;
+  Countries? countryFirst;
+  Regions? regionsFirst;
   List<int?> selectSubCategory = [];
   List<int?> selectCountry = [];
   List<int?> selectRegions = [];
   List<int?> selectTowns = [];
   List<Activities> activities = [];
   List<Countries> countries = [];
+  List<Regions> regions = [];
+  List<Town> towns = [];
   Activities? selectCategory;
   bool slide = false;
   List<String> isRegion = [];
@@ -92,8 +96,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       return BlocBuilder<CountriesBloc, CountriesState>(buildWhen: (previous, current) {
         if (current is CountriesLoaded) {
           countries = current.country;
-
-          log('sssss$allCountry');
+          regions = current.region;
+          towns = current.town;
         }
         return true;
       }, builder: (context, state) {
@@ -155,7 +159,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                         ? dateFilter()
                                         : typeFilter == TypeFilter.country
                                             ? countryFilter()
-                                            : const SizedBox()
+                                            : typeFilter == TypeFilter.region
+                                                ? listRegion(countryFirst!)
+                                                : typeFilter == TypeFilter.towns
+                                                ? listTowns(regionsFirst!)
+                                                : SizedBox()
                       ],
                     ),
                   ),
@@ -335,8 +343,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         }
                         activities[i].isSelect = false;
                       }
-                      for (var element in allRegoins) {
-                        element.select = false;
+                      for (var element in regions) {
+                        element.isSelect = false;
                       }
                       setState(() {});
                     },
@@ -1102,7 +1110,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     selectActivity?.isSelect = !selectActivity.isSelect;
                     for (var element in selectActivity!.subcategory) {
                       element.isSelect = value;
-                      strcat += '${element.id}, ';
+                      strcat += '${element.description}, ';
                       if (element.isSelect == true) {
                         selectSubCategory.add(element.id);
                       }
@@ -1295,7 +1303,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       for (int i = 0; i < countries.length; i++) {
                         countries[i].isSelect = true;
                       }
-                      countryString = str;
+                      countryString = '';
                     }
 
                     if (value == false) {
@@ -1334,38 +1342,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget itemCountry(Countries country) {
+  Widget itemCountry(Countries countrySecond) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
-            String str1 = '';
-            String str3 = '';
-            setState(() {});
-            country.isSelect = !country.isSelect;
-
-            if (country.isSelect == true) {
-              selectCountry.add(country.id);
-              str += '${country.name!}, ';
-             
-            }
-            if (country.isSelect == false) {
-              selectCountry.remove(country.id);
-              str1 = '${country.name!}, ';
-            }
-            if (selectCountry.isEmpty) {
-              str = '';
-              str1 = '';
-            }
-
-            str3 = str.replaceAll(str1, '');
-            log('1');
-            str = str3;
-            countryString = str3;
-
-            if (selectCountry.length == 1) {
-              countryString = countryString?.replaceAll(',', '');
-            }
+            countryFirst = countrySecond;
+            final access = BlocProvider.of<ProfileBloc>(context).access;
+            context.read<CountriesBloc>().add(GetRegionEvent(access, countrySecond));
+            BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            typeFilter = TypeFilter.region;
           },
           child: Container(
             color: Colors.transparent,
@@ -1376,35 +1362,65 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Row(
                   children: [
                     Text(
-                      country.name!,
+                      countrySecond.name!,
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                     const Spacer(),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height: 18.h,
-                          width: 18.h,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFEAECEE),
+                    GestureDetector(
+                      onTap: () {
+                        String str1 = '';
+                        String str3 = '';
+                        setState(() {});
+                        countrySecond.isSelect = !countrySecond.isSelect;
+
+                        if (countrySecond.isSelect == true) {
+                          selectCountry.add(countrySecond.id);
+                          str += '${countrySecond.name!}, ';
+                        }
+                        if (countrySecond.isSelect == false) {
+                          selectCountry.remove(countrySecond.id);
+                          str1 = '${countrySecond.name!}, ';
+                        }
+                        if (selectCountry.isEmpty) {
+                          str = '';
+                          str1 = '';
+                        }
+
+                        str3 = str.replaceAll(str1, '');
+                        log('1');
+                        str = str3;
+                        countryString = str3;
+
+                        if (selectCountry.length == 1) {
+                          countryString = countryString?.replaceAll(',', '');
+                        }
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            height: 18.h,
+                            width: 18.h,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFEAECEE),
+                            ),
                           ),
-                        ),
-                        Container(
-                          height: 10.h,
-                          width: 10.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: country.isSelect ? Colors.black : Colors.transparent,
+                          Container(
+                            height: 10.h,
+                            width: 10.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: countrySecond.isSelect ? Colors.black : Colors.transparent,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
                 const Spacer(),
-                country.isSelect
+                countrySecond.isSelect
                     ? SizedBox(
                         height: 16.h,
                       )
@@ -1413,17 +1429,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
           ),
         ),
-        // country.select
-        //     ? country.name == 'Россия'
-        //         ? listRegion(countryRussia)
-        //         : listRegion(countryOAE)
-        //     : const SizedBox(),
-        country.isSelect ? const Divider() : const SizedBox()
       ],
     );
   }
 
-  Widget listRegion(List<City> region) {
+  Widget listRegion(Countries country) {
     return ListView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -1449,7 +1459,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               CustomIconButton(
                 onBackPressed: () {
                   BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
-                  typeFilter = TypeFilter.main;
+                  typeFilter = TypeFilter.country;
                 },
                 icon: SvgImg.arrowRight,
               ),
@@ -1479,20 +1489,20 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   const Spacer(),
                   Switch.adaptive(
                     activeColor: ColorStyles.yellowFFD70B,
-                    value: allCountry,
+                    value: country.isSelect,
                     onChanged: (value) {
-                      allCountry = !allCountry;
+                      country.isSelect = !country.isSelect;
                       String str = '';
-                      for (var element in allRegoins) {
-                        element.select = value;
+                      for (var element in regions) {
+                        element.isSelect = value;
                         str += '${element.name}, ';
-                        if (element.select == true) {
-                          isRegion.add(element.name);
+                        if (element.isSelect == true) {
+                          selectRegions.add(element.id!);
                         }
-                        if (element.select == false) {
-                          isRegion.remove(element.name);
+                        if (element.isSelect == false) {
+                          selectRegions.remove(element.id);
+                          str = '';
                         }
-                        print(isRegion);
                       }
                       countryString = str;
                       setState(() {});
@@ -1505,39 +1515,199 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           SizedBox(height: 20.h),
           SizedBox(
             height: 700.h,
-            // child: BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
-            //   if (state is CountriesLoaded) {
-            //     countries = state.country!;
-            //     log(' fewfwefwe wef ${countries}');
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: region.length,
+              itemCount: regions.length,
+              padding: EdgeInsets.only(left: 10.w),
+              itemBuilder: ((context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    regionsFirst = regions[index];
+                    final access = BlocProvider.of<ProfileBloc>(context).access;
+                    context.read<CountriesBloc>().add(GetTownsEvent(access, regions[index]));
+                    BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                    typeFilter = TypeFilter.towns;
+                  },
+                  child: Container(
+                    height: 40.h,
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        Text(
+                          regions[index].name!,
+                          style: CustomTextStyle.black_14_w500_171716,
+                        ),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            String str1 = '';
+                            String str3 = '';
+                            regions[index].isSelect = !regions[index].isSelect;
+                            setState(() {});
+                            if (regions[index].isSelect == true) {
+                              selectRegions.add(regions[index].id!);
+
+                              str += '${regions[index].name}, ';
+                            }
+                            if (regions[index].isSelect == false) {
+                              selectRegions.remove(regions[index].id);
+                              str1 = '${regions[index].name}, ';
+                            }
+
+                            if (selectRegions.isEmpty) {
+                              str = '';
+                            }
+
+                            str3 = str.replaceAll(str1, '');
+                            str = str3;
+                            countryString = str3;
+                            if (selectRegions.length == 1) {
+                              countryString = countryString?.replaceAll(',', '');
+                            }
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                height: 18.h,
+                                width: 18.h,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFFEAECEE),
+                                ),
+                              ),
+                              Container(
+                                height: 10.h,
+                                width: 10.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: regions[index].isSelect ? Colors.black : Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ]);
+  }
+
+  Widget listTowns(Regions region) {
+    return ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        children: [
+          SizedBox(height: 8.h),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 5.h,
+                width: 81.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.r),
+                  color: ColorStyles.blueFC6554,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 27.h),
+          Row(
+            children: [
+              CustomIconButton(
+                onBackPressed: () {
+                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  typeFilter = TypeFilter.region;
+                },
+                icon: SvgImg.arrowRight,
+              ),
+              SizedBox(width: 12.h),
+              Text(
+                'Подрегионы',
+                style: CustomTextStyle.black_22_w700,
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          ScaleButton(
+            bound: 0.02,
+            child: Container(
+              height: 55.h,
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'Все подрегионы',
+                    style: CustomTextStyle.black_14_w400_171716,
+                  ),
+                  const Spacer(),
+                  Switch.adaptive(
+                    activeColor: ColorStyles.yellowFFD70B,
+                    value: region.isSelect,
+                    onChanged: (value) {
+                      region.isSelect = !region.isSelect;
+                      String str = '';
+                      for (var element in towns) {
+                        element.isSelect = value;
+                        str += '${element.name}, ';
+                        if (element.isSelect == true) {
+                          selectTowns.add(element.id!);
+                        }
+                        if (element.isSelect == false) {
+                          selectTowns.remove(element.id);
+                          str = '';
+                        }
+                      }
+                      countryString = str;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          SizedBox(
+            height: 700.h,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: towns.length,
               padding: EdgeInsets.only(left: 10.w),
               itemBuilder: ((context, index) {
                 return GestureDetector(
                   onTap: () {
                     String str1 = '';
                     String str3 = '';
-                    region[index].select = !region[index].select;
+                    towns[index].isSelect = !towns[index].isSelect;
 
-                    if (region[index].select == true) {
-                      isRegion.add(region[index].name);
+                    if (towns[index].isSelect == true) {
+                      selectTowns.add(towns[index].id!);
 
-                      str += '${region[index].name}, ';
+                      str += '${towns[index].name}, ';
                     }
-                    if (region[index].select == false) {
-                      isRegion.remove(region[index].name);
-                      str1 = '${region[index].name}, ';
+                    if (towns[index].isSelect == false) {
+                      selectTowns.remove(towns[index].id);
+                      str1 = '${towns[index].name}, ';
                     }
 
-                    if (isRegion.isEmpty) {
+                    if (selectTowns.isEmpty) {
                       str = '';
                     }
 
                     str3 = str.replaceAll(str1, '');
                     str = str3;
                     countryString = str3;
-                    if (isRegion.length == 1) {
+                    if (selectTowns.length == 1) {
                       countryString = countryString?.replaceAll(',', '');
                     }
 
@@ -1549,11 +1719,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     child: Row(
                       children: [
                         Text(
-                          region[index].name,
+                          towns[index].name!,
                           style: CustomTextStyle.black_14_w500_171716,
                         ),
                         const Spacer(),
-                        if (region[index].select) const Icon(Icons.check)
+                        if (towns[index].isSelect) const Icon(Icons.check)
                       ],
                     ),
                   ),
@@ -1563,173 +1733,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           ),
         ]);
   }
-
-  List<City> regionList = [];
-
-  // Widget regionFilter() {
-  //   regionList.clear();
-  //   for (var element in countryList) {
-  //     if (element.select && element.name == 'Россия') {
-  //       regionList.addAll(countryRussia);
-  //     } else if (element.select && element.name == 'ОАЭ') {
-  //       regionList.addAll(countryOAE);
-  //     }
-  //   }
-  //   return ListView(
-  //     shrinkWrap: true,
-  //     padding: EdgeInsets.symmetric(horizontal: 24.w),
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     children: [
-  //       SizedBox(height: 8.h),
-  //       Stack(
-  //         alignment: Alignment.center,
-  //         children: [
-  //           Container(
-  //             height: 5.h,
-  //             width: 81.w,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(25.r),
-  //               color: ColorStyles.blueFC6554,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 27.h),
-  //       Row(
-  //         children: [
-  //           GestureDetector(
-  //             onTap: () {
-  //               BlocProvider.of<SearchBloc>(context)
-  //                   .add(OpenSlidingPanelToEvent(686.h));
-  //               typeFilter = TypeFilter.main;
-  //             },
-  //             child: Transform.rotate(
-  //               angle: pi,
-  //               child: SvgPicture.asset(
-  //                 'assets/icons/arrow_right.svg',
-  //                 height: 16.h,
-  //                 width: 16.h,
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(width: 12.h),
-  //           Text(
-  //             'Регионы',
-  //             style: CustomTextStyle.black_20_w700,
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 20.h),
-  //       ScaleButton(
-  //         bound: 0.02,
-  //         child: Container(
-  //           height: 55.h,
-  //           padding: EdgeInsets.only(left: 16.w, right: 16.w),
-  //           decoration: BoxDecoration(
-  //             color: Colors.grey[100],
-  //             borderRadius: BorderRadius.circular(10.r),
-  //           ),
-  //           child: Row(
-  //             children: [
-  //               Text(
-  //                 'Все регионы',
-  //                 style: CustomTextStyle.black_12_w400_171716,
-  //               ),
-  //               const Spacer(),
-  //               Switch.adaptive(
-  //                 value: allCity,
-  //                 onChanged: (value) {
-  //                   allCity = !allCity;
-  //                   for (var element in regionList) {
-  //                     element.select = value;
-  //                   }
-  //                   setState(() {});
-  //                 },
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       SizedBox(height: 20.h),
-  //       ListView(
-  //         shrinkWrap: true,
-  //         padding: EdgeInsets.only(bottom: 50.h),
-  //         children: [
-  //           Builder(
-  //             builder: (context) {
-  //               List<Widget> items = [];
-  //               for (int i = 0; i < regionList.length; i++) {
-  //                 items.add(itemRegion(regionList[i], i));
-  //               }
-  //               return Column(
-  //                 children: items,
-  //               );
-  //             },
-  //           )
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget itemRegion(City city, int index) {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       allCity = !allCity;
-
-  //       city.select = !city.select;
-  //       String str = '';
-  //       for (int i = 0; i < regionList.length; i++) {
-  //         if (regionList[i].select && str.isEmpty) {
-  //           str += '${regionList[i].name}';
-  //         } else if (regionList[i].select) str += ', ${regionList[i].name}';
-  //       }
-  //       allCity = false;
-  //       this.region = str;
-  //       setState(() {});
-  //     },
-  //     child: SizedBox(
-  //       height: 50.h,
-  //       child: Column(
-  //         children: [
-  //           const Spacer(),
-  //           Row(
-  //             children: [
-  //               Text(
-  //                 city.name,
-  //                 style: CustomTextStyle.black_12_w500_171716,
-  //               ),
-  //               const Spacer(),
-  //               Stack(
-  //                 alignment: Alignment.center,
-  //                 children: [
-  //                   Container(
-  //                     height: 18.h,
-  //                     width: 18.h,
-  //                     decoration: const BoxDecoration(
-  //                       shape: BoxShape.circle,
-  //                       color: Color(0xFFEAECEE),
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     height: 10.h,
-  //                     width: 10.h,
-  //                     decoration: BoxDecoration(
-  //                       shape: BoxShape.circle,
-  //                       color: city.select ? Colors.black : Colors.transparent,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           const Spacer(),
-  //           const Divider()
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget dateFilter() {
     return ListView(
@@ -1912,67 +1915,4 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   DateTime? startDate;
   DateTime? endDate;
-
-  List<City> countryList = [
-    City('Россия'),
-    City('ОАЭ'),
-  ];
-
-  List<City> allRegoins = [
-    City('Краснодарский край'),
-    City('Красноярский край'),
-    City('Пермский край'),
-    City('Белгородская область'),
-    City('Курская область'),
-    City('Московская область'),
-    City('Смоленская область'),
-    City('Дубай'),
-    City('Абу-Даби'),
-    // City('Абу-Даби'),
-    City('Аджмана'),
-    City('Фуджейры'),
-    City('Рас-Эль-Хаймы'),
-    City('Шарджи'),
-  ];
-
-  // List<City> countryOAE = [
-  //   City('Дубай'),
-  //   City('Абу-Даби'),
-  //   // City('Абу-Даби'),
-  //   City('Аджмана'),
-  //   City('Фуджейры'),
-  //   City('Рас-Эль-Хаймы'),
-  //   City('Шарджи'),
-  // ];
-
-  List<CategorySelect> listCategory2 = [
-    CategorySelect(
-      title: 'Услуги пешего курьера',
-      id: 1,
-    ),
-    CategorySelect(
-      title: 'Услуги курьера на легковом авто',
-      id: 2,
-    ),
-    CategorySelect(
-      title: 'Купить и доставить',
-      id: 3,
-    ),
-    CategorySelect(
-      title: 'Срочная доставка',
-      id: 4,
-    ),
-    CategorySelect(
-      title: 'Доставка продуктов',
-      id: 5,
-    ),
-    CategorySelect(
-      title: 'Услуги пешего курьера',
-      id: 6,
-    ),
-    CategorySelect(
-      title: 'Курьер на день',
-      id: 7,
-    ),
-  ];
 }
