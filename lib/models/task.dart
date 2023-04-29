@@ -101,5 +101,6 @@ class Task {
         "as_customer": asCustomer,
         'currency': currency!.id,
         'towns': towns,
+        'countries': countries
       };
 }

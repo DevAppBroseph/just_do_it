@@ -553,6 +553,18 @@ class Repository {
     }
     return [];
   }
+    Future<List<Currency>> currency(String? access) async {
+    final response = await dio.get(
+      '$server/orders/currencies',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      log("Currency ${response.data}");
+      return response.data.map<Currency>((article) => Currency.fromJson(article)).toList();
+    }
+    return [];
+  }
 
   Future<List<Countries>> countries(String? access) async {
     final response = await dio.get(

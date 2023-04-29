@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
@@ -52,6 +53,7 @@ class _SearchPageState extends State<SearchPage> {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<CountriesBloc>().add(GetCountryEvent(access));
+    context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
 
     context.read<TasksBloc>().add(
           GetTasksEvent(

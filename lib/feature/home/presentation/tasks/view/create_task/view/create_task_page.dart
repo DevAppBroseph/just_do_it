@@ -269,7 +269,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                          Currency currency = Currency(id: 1, name: 'Российский рубль', shortName: 'RUB');
+                          Currency currency = Currency(false, id: 1, name: 'Российский рубль', shortName: 'RUB');
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,

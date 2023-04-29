@@ -33,14 +33,16 @@ class OrderTask {
 }
 
 class Currency {
+  bool isSelect;
   int? id;
   String? name;
   String? shortName;
 
-  Currency({required this.id, required this.name, required this.shortName});
+  Currency(this.isSelect, {required this.id, required this.name, required this.shortName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
     return Currency(
+      false,
      id: json['id'],
      name: json['name'],
      shortName: json['short_name']
