@@ -159,56 +159,95 @@ class _ContractorProfileState extends State<ContractorProfile> {
             // physics: const ClampingScrollPhysics(),
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 25.h),
                   Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
                             height: 70.h,
-                            width: 70.h,
-                            child: Stack(
-                              alignment: Alignment.center,
+                            width: 350.h,
+                            child: Column(
                               children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                    if (image != null) {
-                                      BlocProvider.of<ProfileBloc>(context).add(
-                                        UpdateProfilePhotoEvent(photo: image),
-                                      );
-                                    }
-                                  },
-                                  child: ClipOval(
-                                    child: SizedBox.fromSize(
-                                        size: Size.fromRadius(30.r),
-                                        child: user!.photoLink == null
-                                            ? Container(
-                                                height: 60.h,
-                                                width: 60.h,
-                                                padding: EdgeInsets.all(10.h),
-                                                decoration: const BoxDecoration(
-                                                  color: ColorStyles.shadowFC6554,
-                                                ),
-                                                child: Image.asset('assets/images/camera.png'),
-                                              )
-                                            : CachedNetworkImage(
-                                                imageUrl: user!.photoLink!.contains(server)
-                                                    ? user!.photoLink!
-                                                    : server + user!.photoLink!,
-                                                fit: BoxFit.cover,
-                                              )
-                                        // : Image.network(
-                                        //     BlocProvider.of<ProfileBloc>(context)
-                                        //         .user!
-                                        //         .photoLink!,
-                                        //     fit: BoxFit.cover,
-                                        //   ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 50.w),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                          if (image != null) {
+                                            BlocProvider.of<ProfileBloc>(context).add(
+                                              UpdateProfilePhotoEvent(photo: image),
+                                            );
+                                          }
+                                        },
+                                        child: ClipOval(
+                                          child: SizedBox.fromSize(
+                                              size: Size.fromRadius(30.r),
+                                              child: user!.photoLink == null
+                                                  ? Container(
+                                                      height: 60.h,
+                                                      width: 60.h,
+                                                      padding: EdgeInsets.all(10.h),
+                                                      decoration: const BoxDecoration(
+                                                        color: ColorStyles.shadowFC6554,
+                                                      ),
+                                                      child: Image.asset('assets/images/camera.png'),
+                                                    )
+                                                  : CachedNetworkImage(
+                                                      imageUrl: user!.photoLink!.contains(server)
+                                                          ? user!.photoLink!
+                                                          : server + user!.photoLink!,
+                                                      fit: BoxFit.cover,
+                                                    )),
                                         ),
-                                  ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                      child: Expanded(
+                                        child: ScaleButton(
+                                          bound: 0.02,
+                                          child: Container(
+                                            height: 68.h,
+                                            width: 150,
+                                            padding: EdgeInsets.only(left: 16.w),
+                                            decoration: BoxDecoration(
+                                              color: ColorStyles.yellowFFD70A,
+                                              borderRadius: BorderRadius.circular(10.r),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Ваш рейтинг',
+                                                  style: CustomTextStyle.black_12_w500_515150,
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      'assets/icons/star.svg',
+                                                      color: ColorStyles.black,
+                                                    ),
+                                                    SizedBox(width: 4.w),
+                                                    Text(
+                                                      reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
+                                                      style: CustomTextStyle.black_20_w700_171716,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 if (user?.photoLink != null)
                                   Align(
@@ -246,35 +285,40 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         ],
                       ),
                       SizedBox(height: 8.h),
-                      Container(
-                        // width: 327.w,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 240.w,
-                              child: AutoSizeText(
-                                '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                                maxLines: 2,
-                              ),
+                      Row(
+                        children: [
+                          Container(
+                            // width: 327.w,
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 240.w,
+                                  child: AutoSizeText(
+                                    '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              final code =
+                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
+                              Share.share(code.toString());
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/share.svg',
+                              height: 25.h,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      final code = await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
-                      Share.share(code.toString());
-                    },
-                    child: SvgPicture.asset(
-                      'assets/icons/share.svg',
-                      height: 25.h,
-                    ),
                   ),
                 ],
               ),
@@ -290,52 +334,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color:  ColorStyles.yellowFFD70A,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          //  decoration: BoxDecoration(
-                          //         color: ColorStyles.yellowFFD70A,
-                          //         boxShadow: [
-                          //           BoxShadow(
-                          //             color: ColorStyles.shadowFC6554,
-                          //             offset: const Offset(0, -4),
-                          //             blurRadius: 55.r,
-                          //           )
-                          //         ],
-                          //       ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Ваш рейтинг',
-                                style: CustomTextStyle.black_12_w500_515150,
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  SvgPicture.asset('assets/icons/star.svg', color: ColorStyles.black,),
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
-                                    style: CustomTextStyle.black_20_w700_171716,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 21.w),
-                    Expanded(
-                      child: ScaleButton(
-                        bound: 0.02,
-                        child: Container(
-                          height: 68.h,
-                          padding: EdgeInsets.only(left: 16.w),
-                          decoration: BoxDecoration(
-                            color:  ColorStyles.yellowFFD70A,
+                            color: ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
@@ -345,16 +344,59 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Ваши баллы',
+                                    'Ваш грейд',
                                     style: CustomTextStyle.black_12_w500_515150,
                                   ),
                                   SizedBox(height: 8.h),
                                   Row(
                                     children: [
-                                      Text(
-                                        user?.balance.toString() ?? '0',
-                                        style: CustomTextStyle.purple_20_w700,
-                                      ),
+                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                        if (state is ScoreLoaded) {
+                                          final levels = state.levels;
+                                          if (user!.balance! < levels![0].mustCoins!) {
+                                            return Text(
+                                              levels[0].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+
+                                          if (user!.balance! > levels[0].mustCoins! &&
+                                              user!.balance! < levels[1].mustCoins!) {
+                                            return  Text(
+                                              levels[0].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[1].mustCoins! &&
+                                              user!.balance! < levels[2].mustCoins!) {
+                                            return  Text(
+                                              levels[1].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[2].mustCoins! &&
+                                              user!.balance! < levels[3].mustCoins!) {
+                                            return  Text(
+                                              levels[2].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[3].mustCoins! &&
+                                              user!.balance! < levels[4].mustCoins!) {
+                                            return  Text(
+                                              levels[3].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[4].mustCoins!) {
+                                            return Text(
+                                              levels[4].name.toString(),
+                                              style: CustomTextStyle.purple_14_w600,
+                                            );
+                                          }
+                                        }
+                                        return Container();
+                                      }),
                                     ],
                                   ),
                                 ],
@@ -413,6 +455,44 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 }
                                 return Container();
                               }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 21.w),
+                    Expanded(
+                      child: ScaleButton(
+                        bound: 0.02,
+                        child: Container(
+                          height: 68.h,
+                          padding: EdgeInsets.only(left: 16.w),
+                          decoration: BoxDecoration(
+                            color: ColorStyles.yellowFFD70A,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ваши баллы',
+                                    style: CustomTextStyle.black_12_w500_515150,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        user?.balance.toString() ?? '0',
+                                        style: CustomTextStyle.purple_20_w700,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
                               SizedBox(width: 16.w),
                             ],
                           ),
