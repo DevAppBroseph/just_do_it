@@ -25,6 +25,24 @@ class ChangeTownEvent extends CountriesEvent {
   Town town;
   ChangeTownEvent(this.town);
 }
+class RemoveTownEvent extends CountriesEvent {
+  Town town;
+ 
+  RemoveTownEvent(this.town);
+}
+class RemoveCountryEvent extends CountriesEvent {
+  Countries countries;
+ 
+  RemoveCountryEvent(this.countries);
+}
+
+class RemoveRegionEvent extends CountriesEvent {
+ Regions region;
+ 
+  RemoveRegionEvent(this.region);
+}
+
+
 
 
 class GetTownsEvent extends CountriesEvent {

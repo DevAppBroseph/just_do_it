@@ -10,17 +10,23 @@ class GetTasksEvent extends TasksEvent {
   String? dateEnd;
   int? priceFrom;
   int? priceTo;
-  List<String?> region;
   bool? customer;
   int? countFilter;
+  int? currency;
+  List<Countries>? isSelectCountry;
+  List<Regions>? isSelectRegions;
+  List<Town>? isSelectTown;
   GetTasksEvent({
+    this.currency,
     this.access,
     this.query,
     this.dateEnd,
     this.dateStart,
     this.priceFrom,
     this.priceTo,
-    this.region = const [],
+    this.isSelectRegions = const [],
+    this.isSelectCountry = const [],
+    this.isSelectTown = const [],
     this.subcategory = const [],
     this.countFilter,
     this.customer,

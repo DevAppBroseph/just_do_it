@@ -72,21 +72,27 @@ class Repository {
   Future<List<Task>> getTaskList(
     String? access,
     String? query,
-    List<String?> region,
     int? priceFrom,
     int? priceTo,
     String? dateStart,
     String? dateEnd,
     List<int?>? subcategory,
+    List<int?>? regions,
+    List<int?>? towns,
+    List<int?>? countries,
     bool? customer,
+    int? currency,
   ) async {
     Map<String, dynamic>? queryParameters = {
       if (query != null && query.isNotEmpty) "search": query,
-      if (region.isNotEmpty) "region": region,
       if (priceTo != null) "price_to": priceTo,
       if (priceFrom != null) "price_from": priceFrom,
       if (dateEnd != null) "date_end": dateEnd,
       if (dateStart != null) "date_start": dateStart,
+      if (currency != null) "currency": currency,
+      if (countries != null && countries.isNotEmpty) "countries": countries,
+      if (towns != null && towns.isNotEmpty) "towns": towns,
+      if (regions != null && regions.isNotEmpty) "towns": regions,
       if (subcategory != null && subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
@@ -553,7 +559,8 @@ class Repository {
     }
     return [];
   }
-    Future<List<Currency>> currency(String? access) async {
+
+  Future<List<Currency>> currency(String? access) async {
     final response = await dio.get(
       '$server/orders/currencies',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
