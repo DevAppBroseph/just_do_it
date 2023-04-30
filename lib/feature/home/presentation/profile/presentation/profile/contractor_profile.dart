@@ -200,14 +200,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                     ? user!.photoLink!
                                                     : server + user!.photoLink!,
                                                 fit: BoxFit.cover,
-                                              )
-                                        // : Image.network(
-                                        //     BlocProvider.of<ProfileBloc>(context)
-                                        //         .user!
-                                        //         .photoLink!,
-                                        //     fit: BoxFit.cover,
-                                        //   ),
-                                        ),
+                                              )),
                                   ),
                                 ),
                                 if (user?.photoLink != null)
@@ -246,35 +239,40 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         ],
                       ),
                       SizedBox(height: 8.h),
-                      Container(
-                        // width: 327.w,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 240.w,
-                              child: AutoSizeText(
-                                '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                                maxLines: 2,
-                              ),
+                      Row(
+                        children: [
+                          Container(
+                            // width: 327.w,
+                         
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                 
+                                  child: AutoSizeText(
+                                    '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              final code =
+                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
+                              Share.share(code.toString());
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/share.svg',
+                              height: 25.h,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      final code = await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
-                      Share.share(code.toString());
-                    },
-                    child: SvgPicture.asset(
-                      'assets/icons/share.svg',
-                      height: 25.h,
-                    ),
                   ),
                 ],
               ),
@@ -290,19 +288,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color:  ColorStyles.yellowFFD70A,
+                            color: ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
-                          //  decoration: BoxDecoration(
-                          //         color: ColorStyles.yellowFFD70A,
-                          //         boxShadow: [
-                          //           BoxShadow(
-                          //             color: ColorStyles.shadowFC6554,
-                          //             offset: const Offset(0, -4),
-                          //             blurRadius: 55.r,
-                          //           )
-                          //         ],
-                          //       ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,7 +302,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               SizedBox(height: 8.h),
                               Row(
                                 children: [
-                                  SvgPicture.asset('assets/icons/star.svg', color: ColorStyles.black,),
+                                  SvgPicture.asset(
+                                    'assets/icons/star.svg',
+                                    color: ColorStyles.black,
+                                  ),
                                   SizedBox(width: 4.w),
                                   Text(
                                     reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
@@ -335,7 +326,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color:  ColorStyles.yellowFFD70A,
+                            color: ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(

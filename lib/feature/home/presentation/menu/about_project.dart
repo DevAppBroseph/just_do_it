@@ -43,40 +43,48 @@ class _AboutProjectState extends State<AboutProject> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 66.h),
-                Padding(
-                  padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                  child: SizedBox(
-                    height: 24.h,
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        CustomIconButton(
-                          onBackPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: SvgImg.arrowRight,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'О проекте',
-                              style: CustomTextStyle.black_22_w700,
-                            ),
-                          ],
-                        ),
-                      ],
+                Container(
+                  color: ColorStyles.yellowFFD70A,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 66.h),
+                      Padding(
+                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    child: SizedBox(
+                      height: 24.h,
+                      child: Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          CustomIconButton(
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'О проекте',
+                                style: CustomTextStyle.black_22_w700,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                    ],
+                  ),
                 ),
+                
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: [
-                      SizedBox(height: 10.h),
+                     
                       Container(color: ColorStyles.yellowFFD70A,
                         child: SizedBox(height: 50.h)),
                       Container(
