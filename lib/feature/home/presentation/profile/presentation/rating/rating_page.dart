@@ -68,7 +68,10 @@ class _RatingPageState extends State<RatingPage> {
           return SafeArea(
             child: Column(
               children: [
-                header(reviews!),
+                Container(
+                  color: ColorStyles.yellowFFD70A,
+                  child: header(reviews!),
+                ),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -393,14 +396,13 @@ class _RatingPageState extends State<RatingPage> {
                     Navigator.of(context).pop();
                   },
                   icon: SvgImg.arrowRight,
+                  color: Colors.white,
                 ),
               ],
             ),
           ),
-        
           Container(
             height: 127.h,
-            color: ColorStyles.yellowFFD70A,
             child: Row(
               children: [
                 SizedBox(width: 24.w),
@@ -453,7 +455,6 @@ class _RatingPageState extends State<RatingPage> {
               ],
             ),
           ),
-         
           Container(
             height: 55.h,
             color: ColorStyles.yellowFFD70A,

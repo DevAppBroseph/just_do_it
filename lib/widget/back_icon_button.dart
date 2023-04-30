@@ -6,10 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CustomIconButton extends StatelessWidget {
   Function onBackPressed;
   String icon;
+  Color? color;
 
   CustomIconButton({
     required this.onBackPressed,
     required this.icon,
+    this.color,
   });
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class CustomIconButton extends StatelessWidget {
               icon,
               height: 20.h,
               width: 20.w,
+              color: color,
             ),
           ),
         ),
