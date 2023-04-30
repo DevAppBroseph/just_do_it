@@ -132,12 +132,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                          
+                            width: 160.w,
                             child: AutoSizeText(
-                              '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                              ' ${user.firstname ?? ''} ${user.lastname ?? ''}',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                              maxLines: 2,
+                              maxLines: 3,
+                              softWrap: true,
                             ),
                           ),
                           GestureDetector(
