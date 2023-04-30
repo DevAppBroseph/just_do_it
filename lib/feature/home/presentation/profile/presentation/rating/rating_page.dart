@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
+import 'package:just_do_it/widget/back_icon_button_white.dart';
 
 class RatingPage extends StatefulWidget {
   const RatingPage({super.key});
@@ -390,7 +391,7 @@ class _RatingPageState extends State<RatingPage> {
                       style: CustomTextStyle.black_22_w700,
                     ),
                   ),
-                  CustomIconButton(
+                  CustomIconButtonWhite(
                     onBackPressed: () {
                       Navigator.of(context).pop();
                     },

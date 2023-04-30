@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
+import 'package:just_do_it/widget/back_icon_button_white.dart';
 import 'package:open_file/open_file.dart';
 
 class AboutProject extends StatefulWidget {
@@ -55,7 +56,7 @@ class _AboutProjectState extends State<AboutProject> {
                       child: Stack(
                         alignment: Alignment.centerLeft,
                         children: [
-                          CustomIconButton(
+                          CustomIconButtonWhite(
                             onBackPressed: () {
                               Navigator.of(context).pop();
                             },
