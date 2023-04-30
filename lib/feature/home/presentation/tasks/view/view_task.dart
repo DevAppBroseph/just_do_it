@@ -175,7 +175,7 @@ class _TaskViewState extends State<TaskView> {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      widget.selectTask.regions.toString(),
+                      _textCountry(widget.selectTask),
                       style: CustomTextStyle.black_12_w400_292D32,
                     ),
                   ],
@@ -312,4 +312,21 @@ class _TaskViewState extends State<TaskView> {
       ),
     );
   }
+  String _textCountry(Task task){
+    var text = '';
+    for (var country in task.countries) {
+      text += '${country.name}, ';
+    }
+    for (var region in task.regions) {
+      text += '${region.name}, ';
+    }
+    for (var town in task.towns) {
+      text += '${town.name}, ';
+    }
+    if(text.isNotEmpty) text = text.substring(0, text.length-2);
+    if(text.isEmpty) text = 'Выбраны все страны';
+   
+   return text;
+  }
+
 }

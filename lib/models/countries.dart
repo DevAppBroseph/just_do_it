@@ -2,7 +2,8 @@ class Countries {
   String? name;
   int? id;
 
-  Countries({
+  Countries(
+    {
     required this.name,
     required this.id,
   });
@@ -23,11 +24,11 @@ class Regions {
   String? name;
   int? id;
 
-  Regions({
+  Regions(
+    {
     required this.name,
     required this.id,
   });
-
   factory Regions.fromJson(Map<String, dynamic> json) {
     return Regions(
       name: json['name'],
@@ -40,17 +41,18 @@ class Regions {
       };
 }
 
-class Towns {
+class Town {
   String? name;
   int? id;
 
-  Towns({
+  Town(
+    {
     required this.name,
     required this.id,
   });
 
-  factory Towns.fromJson(Map<String, dynamic> json) {
-    return Towns(
+  factory Town.fromJson(Map<String, dynamic> json) {
+    return Town(
       name: json['name'],
       id: json['id'],
     );

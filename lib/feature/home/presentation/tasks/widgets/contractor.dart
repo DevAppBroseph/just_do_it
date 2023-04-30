@@ -39,7 +39,7 @@ class Contractor extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     SvgImg.task,
-                    color: ColorStyles.yellowFFCA0D,
+                    color: ColorStyles.black,
                   ),
                   SizedBox(width: 16.w),
                   Column(
@@ -48,7 +48,7 @@ class Contractor extends StatelessWidget {
                     children: [
                       Text(
                         '322 задания',
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
                         'Все задания',
@@ -84,7 +84,7 @@ class Contractor extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     SvgImg.archive,
-                    color: ColorStyles.yellowFFCA0D,
+                    color: ColorStyles.black,
                   ),
                   SizedBox(width: 16.w),
                   Column(
@@ -93,7 +93,7 @@ class Contractor extends StatelessWidget {
                     children: [
                       Text(
                         '322 задания',
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
                         'В архиве',

@@ -52,7 +52,7 @@ class _CeateTasksState extends State<CeateTasks> {
   File? document;
   File? photo;
 
-  Regions? region;
+  List<Regions> regions = [];
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -218,9 +218,9 @@ class _CeateTasksState extends State<CeateTasks> {
                         coastMinController: coastMinController,
                         startDate: startDate,
                         endDate: endDate,
-                        selectRegion: region,
+                        selectRegion: regions,
                         onEdit: (region, startDate, endDate) {
-                          this.region = region as Regions?;
+                          this.regions = region;
                           this.startDate = startDate;
                           this.endDate = endDate;
                         },
@@ -253,10 +253,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        // if (region == null ) {
-                        //   error += '\n- регион';
-                        //   errorsFlag = true;
-                        // }
+                        if (regions == [] ) {
+                          error += '\n- регион';
+                          errorsFlag = true;
+                        }
 
                         if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
@@ -269,7 +269,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                          Currency currency = Currency(id: 1, name: 'Российский рубль', shortName: 'RUB');
+                          Currency currency = Currency(false, id: 1, name: 'Российский рубль', shortName: 'RUB');
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,
@@ -283,7 +283,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             priceTo: int.parse(
                               coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
                             ),
-                            regions: region,
+                            regions: regions,
                             file: null,
                             icon: '',
                             task: '',

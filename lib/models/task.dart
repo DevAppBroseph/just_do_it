@@ -16,12 +16,12 @@ class Task {
   String dateEnd;
   int priceFrom;
   int priceTo;
-  Countries? countries;
-  Regions? regions;
+  List<Countries> countries;
+  List<Regions> regions;
   String? search;
   Uint8List? file;
   Currency? currency;
-  Towns? towns;
+  List<Town> towns;
   String? icon;
   String? task;
   String? typeLocation;
@@ -42,9 +42,9 @@ class Task {
     required this.dateEnd,
     required this.priceFrom,
     required this.priceTo,
-    this.regions,
-    this.towns,
-    this.countries,
+    this.regions = const [],
+    this.towns = const [],
+    this.countries = const [],
     this.file,
     this.icon,
     this.task,
@@ -54,7 +54,21 @@ class Task {
     this.coast,
   });
 
-  factory Task.fromJson(Map<String, dynamic> json) => Task(
+  factory Task.fromJson(Map<String, dynamic> json) {
+    List<Regions> regions = [];
+    for (var element in json['regions']) {
+      regions.add(Regions.fromJson(element));
+    }
+    List<Countries> countries = [];
+    for (var element in json['countries']) {
+      countries.add(Countries.fromJson(element));
+    }
+    List<Town> towns = [];
+    for (var element in json['towns']) {
+      towns.add(Town.fromJson(element));
+    }
+
+    return Task(
         id: json["id"],
         owner: Owner.fromJson(json["owner"]),
         currency: Currency.fromJson(json['currency']),
@@ -69,10 +83,10 @@ class Task {
         priceTo: json["price_to"],
         search: json['search'],
         asCustomer: json['as_customer'],
-     
-       
-       
-      );
+        countries: countries,
+        regions: regions,
+        towns: towns);
+  }
 
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -86,6 +100,7 @@ class Task {
         'search': search,
         "as_customer": asCustomer,
         'currency': currency!.id,
-        'towns' : towns,
+        'towns': towns,
+        'countries': countries
       };
 }

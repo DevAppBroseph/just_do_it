@@ -28,6 +28,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       event.customer,
     );
     tasks = tasks;
+    // .map((e) => e.id).toList()
     emit(TasksLoaded(event.countFilter, tasks: tasks));
     // log(event.query);
     // } else {

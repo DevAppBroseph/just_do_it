@@ -189,7 +189,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                                SvgPicture.asset('assets/icons/star.svg'),
+                                SvgPicture.asset('assets/icons/star.svg', color: ColorStyles.black),
                                 SizedBox(width: 4.w),
                                 Text(
                                   reviews?.ranking == null
