@@ -69,7 +69,10 @@ class _RatingPageState extends State<RatingPage> {
           return SafeArea(
             child: Column(
               children: [
-                header(reviews!),
+                Container(
+                  color: ColorStyles.yellowFFD70A,
+                  child: header(reviews!),
+                ),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(

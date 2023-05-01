@@ -15,7 +15,8 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>) onEdit;
+  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>)
+      onEdit;
   DateTime? startDate;
   DateTime? endDate;
   List<Countries> selectCountry;
@@ -66,7 +67,8 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'Готово',
-                            style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                            style:
+                                TextStyle(fontSize: 15.sp, color: Colors.black),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -76,7 +78,11 @@ class _DatePickerState extends State<DatePicker> {
                             }
                             setState(() {});
                             Navigator.of(ctx).pop();
-                            widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
+                            widget.onEdit(
+                                widget.selectRegion,
+                                widget.startDate,
+                                widget.endDate,
+                                widget.selectCountry,
                                 widget.selectTown);
                           },
                         ),
@@ -133,7 +139,11 @@ class _DatePickerState extends State<DatePicker> {
                       widget.endDate = val;
                     }
                     widget.onEdit(
-                        widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry, widget.selectTown);
+                        widget.selectRegion,
+                        widget.startDate,
+                        widget.endDate,
+                        widget.selectCountry,
+                        widget.selectTown);
                     setState(() {});
                   }),
             ),
@@ -145,7 +155,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, state) {
       if (state is CountriesLoaded) {
         final countries = state.country;
         final regions = state.allRegion;
@@ -165,7 +176,8 @@ class _DatePickerState extends State<DatePicker> {
                 },
                 child: Container(
                   height: 60.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -182,7 +194,8 @@ class _DatePickerState extends State<DatePicker> {
                           SizedBox(height: 0.h),
                           if (widget.startDate != null)
                             Text(
-                              DateFormat('dd.MM.yyyy').format(widget.startDate!),
+                              DateFormat('dd.MM.yyyy')
+                                  .format(widget.startDate!),
                               // : 'Выберите дату начала выполнения',
                               style: CustomTextStyle.black_14_w400_171716,
                             ),
@@ -207,7 +220,8 @@ class _DatePickerState extends State<DatePicker> {
                 },
                 child: Container(
                   height: 60.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -270,8 +284,12 @@ class _DatePickerState extends State<DatePicker> {
                                     setState(() {});
                                   },
                                   onChanged: (value) {
-                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
-                                        widget.selectCountry, widget.selectTown);
+                                    widget.onEdit(
+                                        widget.selectRegion,
+                                        widget.startDate,
+                                        widget.endDate,
+                                        widget.selectCountry,
+                                        widget.selectTown);
                                   },
                                   onFieldSubmitted: (value) {
                                     setState(() {});
@@ -281,7 +299,8 @@ class _DatePickerState extends State<DatePicker> {
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_14_w400_171716,
-                                  textEditingController: widget.coastMinController,
+                                  textEditingController:
+                                      widget.coastMinController,
                                 ),
                               ],
                             ),
@@ -322,8 +341,12 @@ class _DatePickerState extends State<DatePicker> {
                                     setState(() {});
                                   },
                                   onChanged: (value) {
-                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
-                                        widget.selectCountry, widget.selectTown);
+                                    widget.onEdit(
+                                        widget.selectRegion,
+                                        widget.startDate,
+                                        widget.endDate,
+                                        widget.selectCountry,
+                                        widget.selectTown);
                                   },
                                   onFieldSubmitted: (value) {
                                     setState(() {});
@@ -333,7 +356,8 @@ class _DatePickerState extends State<DatePicker> {
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_14_w400_171716,
-                                  textEditingController: widget.coastMaxController,
+                                  textEditingController:
+                                      widget.coastMaxController,
                                 ),
                               ],
                             ),
@@ -385,8 +409,10 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ],
                   ),
-                  textEditingController: TextEditingController(text: widget.selectRegion.toString()),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  textEditingController: TextEditingController(
+                      text: widget.selectCountry.toString()),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 ),
               ),
               SizedBox(height: 14.h),
@@ -415,7 +441,13 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GestureDetector(
                             onTap: () {
-                              widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
+                              List<Countries> selectCountry = widget.selectCountry;
+                              selectCountry.add(e);
+                              widget.onEdit(
+                                  widget.selectRegion,
+                                  widget.startDate,
+                                  widget.endDate,
+                                  selectCountry,
                                   widget.selectTown);
                               setState(() {});
                             },
@@ -431,11 +463,13 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle.black_14_w400_515150,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (e == widget.selectCountry) const Icon(Icons.check)
+                                      if (widget.selectCountry.contains(e))
+                                        const Icon(Icons.check)
                                     ],
                                   ),
                                 ],
@@ -452,7 +486,9 @@ class _DatePickerState extends State<DatePicker> {
                 bound: 0.02,
                 onTap: () {
                   final access = BlocProvider.of<ProfileBloc>(context).access;
-                  context.read<CountriesBloc>().add(GetAllRegionEvent(access, countries));
+                  context
+                      .read<CountriesBloc>()
+                      .add(GetAllRegionEvent(access, countries));
                   setState(() {
                     openRegion = !openRegion;
                   });
@@ -490,8 +526,10 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ],
                   ),
-                  textEditingController: TextEditingController(text: widget.selectRegion.toString()),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  textEditingController: TextEditingController(
+                      text: widget.selectRegion.toString()),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 ),
               ),
               SizedBox(height: 14.h),
@@ -520,7 +558,13 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GestureDetector(
                             onTap: () {
-                              widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
+                              List<Regions> selectRegion = widget.selectRegion;
+                              selectRegion.add(e);
+                              widget.onEdit(
+                                  selectRegion,
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.selectCountry,
                                   widget.selectTown);
                               setState(() {});
                             },
@@ -536,11 +580,13 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle.black_14_w400_515150,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (e == widget.selectRegion) const Icon(Icons.check)
+                                      if (widget.selectRegion.contains(e))
+                                        const Icon(Icons.check)
                                     ],
                                   ),
                                 ],
@@ -558,7 +604,9 @@ class _DatePickerState extends State<DatePicker> {
                 onTap: () {
                   setState(() {
                     final access = BlocProvider.of<ProfileBloc>(context).access;
-                  context.read<CountriesBloc>().add(GetAllTownsEvent(access, regions));
+                    context
+                        .read<CountriesBloc>()
+                        .add(GetAllTownsEvent(access, regions));
                     openTown = !openTown;
                   });
                   FocusScope.of(context).unfocus();
@@ -595,8 +643,10 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ],
                   ),
-                  textEditingController: TextEditingController(text: widget.selectRegion.toString()),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  textEditingController: TextEditingController(
+                      text: widget.selectTown.toString()),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 ),
               ),
               SizedBox(height: 14.h),
@@ -625,7 +675,11 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GestureDetector(
                             onTap: () {
-                              widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
+                              widget.onEdit(
+                                  widget.selectRegion,
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.selectCountry,
                                   widget.selectTown);
                               setState(() {});
                             },
@@ -641,11 +695,13 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle.black_14_w400_515150,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (e == widget.selectRegion) const Icon(Icons.check)
+                                      if (e == widget.selectRegion)
+                                        const Icon(Icons.check)
                                     ],
                                   ),
                                 ],

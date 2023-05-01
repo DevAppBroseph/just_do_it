@@ -229,6 +229,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           this.endDate = endDate;
                           this.countries = countries;
                           this.towns = towns;
+                          setState(() {});
                         },
                       ),
                     ],

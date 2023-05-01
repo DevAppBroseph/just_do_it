@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -37,6 +38,7 @@ class _CreatePageState extends State<CreatePage> {
   List<Activities> activities = [];
   Activities? selectCategory;
   ScrollController scrollController = ScrollController();
+  bool searchList = false;
 
   @override
   void initState() {
@@ -50,6 +52,9 @@ class _CreatePageState extends State<CreatePage> {
      final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<CountriesBloc>().add(GetCountryEvent(access));
     context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
+    double heightScreen = MediaQuery.of(context).size.height;
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+
     return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
       if (current is GetCategoriesState) {
         activities.clear();
@@ -103,6 +108,16 @@ class _CreatePageState extends State<CreatePage> {
                                   ),
                                 ],
                               ),
+                              onTap: () {
+                                setState(() {
+                                  searchList = true;
+                                });
+                              },
+                              onFieldSubmitted: (value) {
+                                setState(() {
+                                  searchList = false;
+                                });
+                              },
                               hintText: 'Поиск',
                               hintStyle: CustomTextStyle.grey_14_w400
                                   .copyWith(overflow: TextOverflow.ellipsis),
@@ -140,50 +155,59 @@ class _CreatePageState extends State<CreatePage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const ClampingScrollPhysics(),
-                      children: [firstStage()],
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.h, vertical: 20.h),
-                        child: CustomButton(
-                          onTap: () {
-                            final bloc = BlocProvider.of<ProfileBloc>(context);
-                            if (bloc.user == null) {
-                              Navigator.of(context).pushNamed(AppRoute.auth);
-                            } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return CeateTasks(
-                                      customer: true,
-                                      selectCategory: selectCategory,
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          },
-                          btnColor: ColorStyles.yellowFFD70A,
-                          textLabel: Text(
-                            'Создать',
-                            style: CustomTextStyle.black_16_w600_171716,
+              searchList
+                  ? SearchList(
+                      heightScreen,
+                      bottomInsets,
+                      (value) {},
+                      [],
+                    )
+                  : Expanded(
+                      child: Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          ListView(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const ClampingScrollPhysics(),
+                            children: [firstStage()],
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.h, vertical: 20.h),
+                              child: CustomButton(
+                                onTap: () {
+                                  final bloc =
+                                      BlocProvider.of<ProfileBloc>(context);
+                                  if (bloc.user == null) {
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoute.auth);
+                                  } else {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return CeateTasks(
+                                            customer: true,
+                                            selectCategory: selectCategory,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                                btnColor: ColorStyles.yellowFFD70A,
+                                textLabel: Text(
+                                  'Создать',
+                                  style: CustomTextStyle.black_16_w600_171716,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )
+                    )
             ],
           ),
         ),
