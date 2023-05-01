@@ -11,7 +11,9 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   CountriesBloc() : super(CountriesLoading()) {
     on<GetCountryEvent>(_getCountries);
     on<GetRegionEvent>(_getRegions);
+    on<GetAllRegionEvent>(_getAllRegions);
     on<GetTownsEvent>(_getTowns);
+    on<GetAllTownsEvent>(_getAllTowns);
     on<ChangeCountryEvent>(_changeCountry);
     on<ChangeRegionEvent>(_changeRegion);
     on<ChangeTownEvent>(_changeTowns);
@@ -88,12 +90,12 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
     emit(prefState.copyWith(selectRegion: selectRegion));
   }
 
-    void _removeTown(RemoveTownEvent event, Emitter<CountriesState> emit) async {
+  void _removeTown(RemoveTownEvent event, Emitter<CountriesState> emit) async {
     final prefState = state;
     if (prefState is! CountriesLoaded) {
       return;
     }
-  
+
     final selectTown = prefState.selectTown.toList();
     final isSelectTown = selectTown.any((element) => element.id == event.town.id);
     if (isSelectTown) {
@@ -136,7 +138,10 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
     if (event.access != null) {
       final regions = await Repository().regions(event.access, event.countries);
-      log(regions.toString());
+      // List<Regions> allRegions = [];
+      // allRegions.addAll(regions);
+      // final combineRegions = allRegions;
+      // log(combineRegions.length.toString());
       final prefstate = state;
       if (prefstate is CountriesLoading) {
         emit(CountriesLoading());
@@ -150,6 +155,48 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
         } else {
           emit(prefstate.copyWith(
             region: regions,
+          ));
+        }
+      }
+    } else {
+      emit(CountriesError());
+    }
+  }
+
+  void _getAllRegions(GetAllRegionEvent event, Emitter<CountriesState> emit) async {
+    if (event.access != null) {
+      final regions = await Repository().allRegions(event.access, event.countries);
+      log(regions.length.toString());
+      final prefstate = state;
+      if (prefstate is CountriesLoading) {
+        emit(CountriesLoading());
+      } else {
+        if (prefstate is! CountriesLoaded) {
+          emit(CountriesLoading());
+        } else {
+          emit(prefstate.copyWith(
+            allRegion: regions,
+          ));
+        }
+      }
+    } else {
+      emit(CountriesError());
+    }
+  }
+
+  void _getAllTowns(GetAllTownsEvent event, Emitter<CountriesState> emit) async {
+    if (event.access != null) {
+      final towns = await Repository().allTowns(event.access, event.regions);
+
+      final prefstate = state;
+      if (prefstate is CountriesLoading) {
+        emit(CountriesLoading());
+      } else {
+        if (prefstate is! CountriesLoaded) {
+          emit(CountriesLoading());
+        } else {
+          emit(prefstate.copyWith(
+            allTown: towns,
           ));
         }
       }
