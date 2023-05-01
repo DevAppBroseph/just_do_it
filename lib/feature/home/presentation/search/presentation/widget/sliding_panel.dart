@@ -63,7 +63,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   List<Town> towns = [];
   Activities? selectCategory;
   bool slide = false;
-  List<String> isRegion = [];
 
   TypeFilter typeFilter = TypeFilter.main;
 
@@ -196,16 +195,23 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (keyWordController.text != '') {
                           countField++;
                         }
-                        if (isRegion.isNotEmpty) {
-                          countField++;
-                        }
+                        // if (isRegion.isNotEmpty) {
+                        //   countField++;
+                        // }
                         if (selectSubCategory.isNotEmpty) {
                           countField++;
                         }
                         if (format1 != null || format2 != null) {
                           countField++;
                         }
-
+                        if(countriesSelect.isNotEmpty || regionsSelect.isNotEmpty || townsSelect.isNotEmpty){
+                            countField++;
+                        }
+                        
+                        if(currencyString != null && currencyString!.isNotEmpty){
+                            countField++;
+                        }
+                   
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,
@@ -356,7 +362,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           coastMinController.text = '';
                           coastMaxController.text = '';
                           keyWordController.text = '';
-                          isRegion = [];
+                          // isRegion = [];
                           selectSubCategory = [];
                           countryString = '';
                           passportAndCV = false;
@@ -640,8 +646,29 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                             if(currencyString == '')
                             Text(
                               'Бюджет от ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Российский рубль')
+                            Text(
+                              'Бюджет от ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Доллар США')
+                            Text(
+                              'Бюджет от \$',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Евро')
+                            Text(
+                              'Бюджет от €',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Дирхам')
+                            Text(
+                              'Бюджет от AED',
                               style: CustomTextStyle.grey_14_w400,
                             ),
                             SizedBox(height: 3.h),
@@ -697,8 +724,29 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            if(currencyString == '')
                             Text(
                               'Бюджет до ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Российский рубль')
+                            Text(
+                              'Бюджет до ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Доллар США')
+                            Text(
+                              'Бюджет до \$',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Евро')
+                            Text(
+                              'Бюджет до €',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            if(currencyString == 'Дирхам')
+                            Text(
+                              'Бюджет до AED',
                               style: CustomTextStyle.grey_14_w400,
                             ),
                             SizedBox(height: 3.h),
