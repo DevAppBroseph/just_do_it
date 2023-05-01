@@ -1587,8 +1587,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                        String str1 = '';
-                        String str3 = '';
+                      
                         setState(() {});
                         context.read<CountriesBloc>().add(ChangeCountryEvent(countrySecond));
 
