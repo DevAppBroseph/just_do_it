@@ -98,16 +98,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       }
       return true;
     }, builder: (context, snapshot) {
-      return BlocBuilder<CountriesBloc, CountriesState>(buildWhen: (previous, current) {
-        if (current is CountriesLoaded) {
-          countries = current.country;
-          regions = current.region;
-          towns = current.town;
-        }
-        return true;
-      }, builder: (context, state) {
+      return BlocBuilder<CountriesBloc, CountriesState>( builder: (context, state) {
         if(state is CountriesLoaded)
         {
+          countries = state.country;
+          regions = state.region;
+          towns = state.town;
           final countrySelect = state.selectCountry;
           final regionSelect = state.selectRegion;
           final townSelect = state.selectTown;

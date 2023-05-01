@@ -598,6 +598,41 @@ class Repository {
     return [];
   }
 
+  Future<List<Regions>> allRegions(String? access, List<Countries> countries) async {
+    List<Regions> regions = [];
+    for (var element in countries) {
+      log('wddwdadwdadw ${element.name}');
+      final response = await dio.get(
+        '$server/countries/${element.id}',
+        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      );
+      if (response.statusCode == 200) {
+        log("Countries ${response.data}");
+        log(response.data['regions'].toString());
+        regions += response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
+       
+      }
+    }
+    return regions;
+  }
+
+  Future<List<Town>> allTowns(String? access, List<Regions> regions) async {
+    List<Town> towns = [];
+    for (var element in regions) {
+      final response = await dio.get(
+        '$server/countries/region/${element.id}',
+        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      );
+      if (response.statusCode == 200) {
+        log("Countries ${response.data}");
+        log(response.data['towns'].toString());
+        towns += response.data['towns'].map<Town>((article) => Town.fromJson(article)).toList();
+       
+      }
+    }
+    return towns;
+  }
+
   Future<List<Town>> towns(String? access, Regions regions) async {
     final response = await dio.get(
       '$server/countries/region/${regions.id}',

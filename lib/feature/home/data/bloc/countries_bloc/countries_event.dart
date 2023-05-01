@@ -13,6 +13,11 @@ class GetRegionEvent extends CountriesEvent {
   String? access;
   GetRegionEvent(this.access, this.countries);
 }
+class GetAllRegionEvent extends CountriesEvent {
+  List<Countries> countries;
+  String? access;
+  GetAllRegionEvent(this.access, this.countries);
+}
 class ChangeCountryEvent extends CountriesEvent {
   Countries countries;
   ChangeCountryEvent(this.countries);
@@ -43,6 +48,11 @@ class RemoveRegionEvent extends CountriesEvent {
 }
 
 
+class GetAllTownsEvent extends CountriesEvent {
+  String? access;
+  List <Regions> regions;
+  GetAllTownsEvent(this.access, this.regions);
+}
 
 
 class GetTownsEvent extends CountriesEvent {
