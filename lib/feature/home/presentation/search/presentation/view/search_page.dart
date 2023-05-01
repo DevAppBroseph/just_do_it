@@ -27,8 +27,13 @@ import 'package:skeleton_loader/skeleton_loader.dart';
 class SearchPage extends StatefulWidget {
   final Function() onBackPressed;
   final Function(int) onSelect;
+  final String text;
 
-  SearchPage({required this.onBackPressed, required this.onSelect});
+  SearchPage({
+    required this.onBackPressed,
+    required this.onSelect,
+    required this.text,
+  });
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -44,24 +49,31 @@ class _SearchPageState extends State<SearchPage> {
   String? access;
   List<String> historySearch = [];
 
+  TextEditingController searchController = TextEditingController();
+
   bool searchList = false;
+  List<String> searchChoose = [];
 
   @override
   void initState() {
     super.initState();
+    searchController.text = widget.text;
+    initFunc();
     getTaskList();
   }
 
-  void getTaskList() {
+  void initFunc() {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<CountriesBloc>().add(GetCountryEvent(access));
     context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
+  }
 
+  void getTaskList() {
     context.read<TasksBloc>().add(
           GetTasksEvent(
             access: access,
-            query: '',
+            query: searchController.text,
             dateEnd: null,
             dateStart: null,
             priceFrom: null,
@@ -78,19 +90,6 @@ class _SearchPageState extends State<SearchPage> {
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(
-          GetTasksEvent(
-            access: access,
-            query: '',
-            dateEnd: '',
-            dateStart: '',
-            priceFrom: 0,
-            priceTo: 50000000,
-            subcategory: [],
-            countFilter: null,
-            customer: null,
-          ),
-        );
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -153,11 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                               ],
                             ),
                             hintText: 'Поиск',
-                            textEditingController: TextEditingController(),
-                            // onTap: () {
-                            // historySearch.add(TextEditingController().text);
-                            // log(historySearch.first);
-                            // },
+                            textEditingController: searchController,
                             onTap: () {
                               setState(() {
                                 searchList = true;
@@ -167,21 +162,44 @@ class _SearchPageState extends State<SearchPage> {
                               setState(() {
                                 searchList = false;
                               });
+                              FocusScope.of(context).unfocus();
+                              searchList = false;
+                              searchController.text = value;
+                              getTaskList();
                             },
                             onChanged: (value) async {
-                              context.read<TasksBloc>().add(
-                                    GetTasksEvent(
-                                      access: access,
-                                      query: value,
-                                      dateEnd: '',
-                                      dateStart: '',
-                                      priceFrom: 0,
-                                      priceTo: 50000000,
-                                      subcategory: [],
-                                      countFilter: null,
-                                      customer: null,
-                                    ),
-                                  );
+                              List<Activities> activities =
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .activities;
+                              searchChoose.clear();
+                              if (value.isNotEmpty) {
+                                for (var element1 in activities) {
+                                  for (var element2 in element1.subcategory) {
+                                    if (element2.description!
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) &&
+                                        !searchChoose.contains(element2
+                                            .description!
+                                            .toLowerCase())) {
+                                      searchChoose.add(element2.description!);
+                                    }
+                                  }
+                                }
+                              }
+                              setState(() {});
+                              // context.read<TasksBloc>().add(
+                              //       GetTasksEvent(
+                              //         access: access,
+                              //         query: value,
+                              //         dateEnd: '',
+                              //         dateStart: '',
+                              //         priceFrom: 0,
+                              //         priceTo: 50000000,
+                              //         subcategory: [],
+                              //         countFilter: null,
+                              //         customer: null,
+                              //       ),
+                              //     );
                             },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),
@@ -221,8 +239,14 @@ class _SearchPageState extends State<SearchPage> {
                   ? SearchList(
                       heightScreen,
                       bottomInsets,
-                      (value) {},
-                      [],
+                      (value) {
+                        searchList = false;
+                        // BlocProvider.of<ProfileBloc>(context)
+                        //     .add(EditPageSearchEvent(1, value));
+                        searchController.text = value;
+                        getTaskList();
+                      },
+                      searchChoose,
                     )
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),

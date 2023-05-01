@@ -33,6 +33,7 @@ class _SearchListState extends State<SearchList> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              FocusScope.of(context).unfocus();
               widget.onSelect(widget.array[index]);
             },
             child: Column(
@@ -42,13 +43,13 @@ class _SearchListState extends State<SearchList> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
                   child: Text(
-                    '$index. ${widget.array}',
+                    widget.array[index],
                     style: CustomTextStyle.black_13_w500_171716,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Divider(),
+                  child: const Divider(),
                 ),
               ],
             ),

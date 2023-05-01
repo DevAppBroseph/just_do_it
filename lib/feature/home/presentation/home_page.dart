@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   int page = 5;
 
   String? access;
+  String searchQuery = '';
 
   void parseTripRefCode(PendingDynamicLinkData event) async {
     access = await Storage().getAccessToken();
@@ -113,6 +114,15 @@ class _HomePageState extends State<HomePage> {
       children: [
         Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (previous, current) {
+              if (current is EditPageState) {
+                searchQuery = current.text;
+                page = current.page;
+                pageController.jumpToPage(page);
+                streamController.add(page);
+              }
+              return true;
+            },
             builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
                 return const CupertinoActivityIndicator();
@@ -130,6 +140,7 @@ class _HomePageState extends State<HomePage> {
                     onSelect: selectUser,
                   ),
                   SearchPage(
+                    text: searchQuery,
                     onBackPressed: () {
                       pageController.jumpToPage(4);
                       page = 5;

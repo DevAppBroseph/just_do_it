@@ -19,6 +19,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateProfileCvEvent>(_updateProfileCv);
     on<UpdateProfileWithoutLoadingEvent>(_updateWithoutLoadingProfile);
     on<GetCategorieProfileEvent>(_getCategories);
+    on<EditPageSearchEvent>(_editPage);
   }
 
   String? access;
@@ -31,6 +32,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void setUser(UserRegModel? user) => this.user = user;
+
+  void _editPage(
+    EditPageSearchEvent event,
+    Emitter<ProfileState> emit,
+  ) {
+    emit(EditPageState(event.page, event.text));
+  }
 
   void _updateProfile(
     UpdateProfileEvent event,

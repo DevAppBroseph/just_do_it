@@ -1,8 +1,5 @@
-import 'dart:developer';
-import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,15 +10,10 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
-import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
-import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:just_do_it/widget/dialog.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -40,6 +32,9 @@ class _WelcomPageState extends State<WelcomPage> {
   int index = 0;
   String choiceLanguage = '';
   bool searchList = false;
+  List<String> searchChoose = [];
+
+  TextEditingController searchController = TextEditingController();
 
   Future<void> notificationInit() async {
     await NotificationService().inject();
@@ -112,9 +107,33 @@ class _WelcomPageState extends State<WelcomPage> {
                               setState(() {
                                 searchList = false;
                               });
+                              FocusScope.of(context).unfocus();
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(EditPageSearchEvent(1, value));
+                            },
+                            onChanged: (value) {
+                              List<Activities> activities =
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .activities;
+                              searchChoose.clear();
+                              if (value.isNotEmpty) {
+                                for (var element1 in activities) {
+                                  for (var element2 in element1.subcategory) {
+                                    if (element2.description!
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) &&
+                                        !searchChoose.contains(element2
+                                            .description!
+                                            .toLowerCase())) {
+                                      searchChoose.add(element2.description!);
+                                    }
+                                  }
+                                }
+                              }
+                              setState(() {});
                             },
                             hintText: 'Поиск',
-                            textEditingController: TextEditingController(),
+                            textEditingController: searchController,
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),
                           ),
@@ -153,8 +172,11 @@ class _WelcomPageState extends State<WelcomPage> {
                 ? SearchList(
                     heightScreen,
                     bottomInsets,
-                    (value) {},
-                    [],
+                    (value) {
+                      BlocProvider.of<ProfileBloc>(context)
+                          .add(EditPageSearchEvent(1, value));
+                    },
+                    searchChoose,
                   )
                 : Expanded(
                     child: ListView(

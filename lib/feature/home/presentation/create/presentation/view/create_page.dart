@@ -39,6 +39,8 @@ class _CreatePageState extends State<CreatePage> {
   Activities? selectCategory;
   ScrollController scrollController = ScrollController();
   bool searchList = false;
+  List<String> searchChoose = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -49,7 +51,7 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
-     final access = BlocProvider.of<ProfileBloc>(context).access;
+    final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<CountriesBloc>().add(GetCountryEvent(access));
     context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
     double heightScreen = MediaQuery.of(context).size.height;
@@ -117,11 +119,35 @@ class _CreatePageState extends State<CreatePage> {
                                 setState(() {
                                   searchList = false;
                                 });
+                                FocusScope.of(context).unfocus();
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .add(EditPageSearchEvent(1, value));
+                              },
+                              onChanged: (value) {
+                                List<Activities> activities =
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .activities;
+                                searchChoose.clear();
+                                if (value.isNotEmpty) {
+                                  for (var element1 in activities) {
+                                    for (var element2 in element1.subcategory) {
+                                      if (element2.description!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()) &&
+                                          !searchChoose.contains(element2
+                                              .description!
+                                              .toLowerCase())) {
+                                        searchChoose.add(element2.description!);
+                                      }
+                                    }
+                                  }
+                                }
+                                setState(() {});
                               },
                               hintText: 'Поиск',
                               hintStyle: CustomTextStyle.grey_14_w400
                                   .copyWith(overflow: TextOverflow.ellipsis),
-                              textEditingController: TextEditingController(),
+                              textEditingController: searchController,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 11.w, vertical: 11.h),
                             ),
@@ -159,8 +185,11 @@ class _CreatePageState extends State<CreatePage> {
                   ? SearchList(
                       heightScreen,
                       bottomInsets,
-                      (value) {},
-                      [],
+                      (value) {
+                        BlocProvider.of<ProfileBloc>(context)
+                            .add(EditPageSearchEvent(1, value));
+                      },
+                      searchChoose,
                     )
                   : Expanded(
                       child: Stack(
