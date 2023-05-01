@@ -17,6 +17,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -67,6 +68,12 @@ class _SearchPageState extends State<SearchPage> {
     access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<CountriesBloc>().add(GetCountryEvent(access));
     context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
+  }
+
+  void getHistoryList() async {
+    final List<String> list = await Storage().getListHistory();
+    searchChoose.clear();
+    searchChoose.addAll(list);
   }
 
   void getTaskList() {
@@ -153,10 +160,11 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             hintText: 'Поиск',
                             textEditingController: searchController,
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 searchList = true;
                               });
+                              getHistoryList();
                             },
                             onFieldSubmitted: (value) {
                               setState(() {
@@ -165,9 +173,13 @@ class _SearchPageState extends State<SearchPage> {
                               FocusScope.of(context).unfocus();
                               searchList = false;
                               searchController.text = value;
+                              Storage().setListHistory(value);
                               getTaskList();
                             },
                             onChanged: (value) async {
+                              if (value.isEmpty) {
+                                getHistoryList();
+                              }
                               List<Activities> activities =
                                   BlocProvider.of<ProfileBloc>(context)
                                       .activities;
@@ -241,6 +253,7 @@ class _SearchPageState extends State<SearchPage> {
                       bottomInsets,
                       (value) {
                         searchList = false;
+                        Storage().setListHistory(value);
                         // BlocProvider.of<ProfileBloc>(context)
                         //     .add(EditPageSearchEvent(1, value));
                         searchController.text = value;

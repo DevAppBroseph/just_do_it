@@ -1,5 +1,4 @@
 import 'dart:developer' as dev;
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
@@ -47,6 +47,12 @@ class _CreatePageState extends State<CreatePage> {
     super.initState();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
     print(activities.length);
+  }
+
+  void getHistoryList() async {
+    final List<String> list = await Storage().getListHistory();
+    searchChoose.clear();
+    searchChoose.addAll(list);
   }
 
   @override
@@ -110,20 +116,25 @@ class _CreatePageState extends State<CreatePage> {
                                   ),
                                 ],
                               ),
-                              onTap: () {
+                              onTap: () async {
                                 setState(() {
                                   searchList = true;
                                 });
+                                getHistoryList();
                               },
                               onFieldSubmitted: (value) {
                                 setState(() {
                                   searchList = false;
                                 });
+                                Storage().setListHistory(value);
                                 FocusScope.of(context).unfocus();
                                 BlocProvider.of<ProfileBloc>(context)
                                     .add(EditPageSearchEvent(1, value));
                               },
                               onChanged: (value) {
+                                if (value.isEmpty) {
+                                  getHistoryList();
+                                }
                                 List<Activities> activities =
                                     BlocProvider.of<ProfileBloc>(context)
                                         .activities;
@@ -186,6 +197,7 @@ class _CreatePageState extends State<CreatePage> {
                       heightScreen,
                       bottomInsets,
                       (value) {
+                        Storage().setListHistory(value);
                         BlocProvider.of<ProfileBloc>(context)
                             .add(EditPageSearchEvent(1, value));
                       },

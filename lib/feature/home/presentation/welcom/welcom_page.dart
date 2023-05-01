@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/rating
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:scale_button/scale_button.dart';
@@ -47,6 +48,12 @@ class _WelcomPageState extends State<WelcomPage> {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     notificationInit();
+  }
+
+  void getHistoryList() async {
+    final List<String> list = await Storage().getListHistory();
+    searchChoose.clear();
+    searchChoose.addAll(list);
   }
 
   @override
@@ -88,10 +95,11 @@ class _WelcomPageState extends State<WelcomPage> {
                           width: 270.w,
                           height: 36.h,
                           child: CustomTextField(
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 searchList = true;
                               });
+                              getHistoryList();
                             },
                             fillColor: ColorStyles.greyF7F7F8,
                             prefixIcon: Stack(
@@ -107,11 +115,15 @@ class _WelcomPageState extends State<WelcomPage> {
                               setState(() {
                                 searchList = false;
                               });
+                              Storage().setListHistory(value);
                               FocusScope.of(context).unfocus();
                               BlocProvider.of<ProfileBloc>(context)
                                   .add(EditPageSearchEvent(1, value));
                             },
                             onChanged: (value) {
+                              if (value.isEmpty) {
+                                getHistoryList();
+                              }
                               List<Activities> activities =
                                   BlocProvider.of<ProfileBloc>(context)
                                       .activities;
@@ -173,6 +185,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     heightScreen,
                     bottomInsets,
                     (value) {
+                      Storage().setListHistory(value);
                       BlocProvider.of<ProfileBloc>(context)
                           .add(EditPageSearchEvent(1, value));
                     },
