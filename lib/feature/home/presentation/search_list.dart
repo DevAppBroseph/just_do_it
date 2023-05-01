@@ -36,22 +36,25 @@ class _SearchListState extends State<SearchList> {
               FocusScope.of(context).unfocus();
               widget.onSelect(widget.array[index]);
             },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
-                  child: Text(
-                    widget.array[index],
-                    style: CustomTextStyle.black_13_w500_171716,
+            child: Container(
+              color: Colors.transparent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
+                    child: Text(
+                      widget.array[index],
+                      style: CustomTextStyle.black_13_w500_171716,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: const Divider(),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: const Divider(),
+                  ),
+                ],
+              ),
             ),
           );
         },

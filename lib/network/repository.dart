@@ -29,8 +29,6 @@ class Repository {
       ),
     );
 
-    log('message ${response.data}');
-
     if (response.statusCode == 201 || response.statusCode == 200) {
       return Owner.fromJson(response.data);
     }
@@ -98,7 +96,6 @@ class Repository {
       "as_customer": customer,
     };
 
-    log('message query ${queryParameters}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -107,8 +104,6 @@ class Repository {
         // headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
-    log('message ${response.data}');
 
     List<Task> tasks = [];
 
@@ -126,8 +121,6 @@ class Repository {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
-    log('message map ${data.fields}---${map}');
-
     final response = await dio.post(
       '$server/orders/',
       data: data,
@@ -136,7 +129,6 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    log(response.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
@@ -147,8 +139,6 @@ class Repository {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
-    // log('message map ${data.fields}---${map}');
-
     final response = await dio.patch(
       '$server/orders/${task.id}',
       data: data,
@@ -157,8 +147,6 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    log('message map ${task.id} ${response.statusCode}');
-    // log('message map ${response.data}');
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
@@ -310,8 +298,6 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
     if (response.statusCode == 201) {
       return true;
     }
@@ -413,8 +399,6 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
-      log(response.data.toString());
-      // print(response.data['activities_info']);
       final user = UserRegModel.fromJson(response.data);
       return user;
     }
@@ -492,8 +476,6 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
-    log('message connect ${response.data}');
 
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
@@ -576,9 +558,7 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    log(response.statusCode.toString());
     if (response.statusCode == 200) {
-      log("Levels ${response.data}");
       return response.data
           .map<Levels>((article) => Levels.fromJson(article))
           .toList();
@@ -593,9 +573,7 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    log(response.statusCode.toString());
     if (response.statusCode == 200) {
-      log("Currency ${response.data}");
       return response.data
           .map<Currency>((article) => Currency.fromJson(article))
           .toList();
@@ -611,7 +589,6 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
-      log("Countries ${response.data}");
       return response.data
           .map<Countries>((article) => Countries.fromJson(article))
           .toList();
@@ -627,8 +604,6 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
-      log("Countries ${response.data}");
-      log(response.data['regions'].toString());
       return response.data['regions']
           .map<Regions>((article) => Regions.fromJson(article))
           .toList();
@@ -640,7 +615,6 @@ class Repository {
       String? access, List<Countries> countries) async {
     List<Regions> regions = [];
     for (var element in countries) {
-      log('wddwdadwdadw ${element.name}');
       final response = await dio.get(
         '$server/countries/${element.id}',
         options: Options(
@@ -648,8 +622,6 @@ class Repository {
             headers: {'Authorization': 'Bearer $access'}),
       );
       if (response.statusCode == 200) {
-        log("Countries ${response.data}");
-        log(response.data['regions'].toString());
         regions += response.data['regions']
             .map<Regions>((article) => Regions.fromJson(article))
             .toList();
@@ -668,8 +640,6 @@ class Repository {
             headers: {'Authorization': 'Bearer $access'}),
       );
       if (response.statusCode == 200) {
-        log("Countries ${response.data}");
-        log(response.data['towns'].toString());
         towns += response.data['towns']
             .map<Town>((article) => Town.fromJson(article))
             .toList();
@@ -687,7 +657,6 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
-      log(response.data['towns'].toString());
       return response.data['towns']
           .map<Town>((article) => Town.fromJson(article))
           .toList();
