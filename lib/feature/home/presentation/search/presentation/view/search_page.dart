@@ -406,7 +406,6 @@ class _SearchPageState extends State<SearchPage> {
                               ],
                             ),
                           ),
-                        
                           Text(
                             'до ${task.priceTo} ₽',
                             style: CustomTextStyle.black_14_w500_171716,
