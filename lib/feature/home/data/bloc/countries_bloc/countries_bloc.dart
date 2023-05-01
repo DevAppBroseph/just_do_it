@@ -15,6 +15,9 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
     on<ChangeCountryEvent>(_changeCountry);
     on<ChangeRegionEvent>(_changeRegion);
     on<ChangeTownEvent>(_changeTowns);
+    on<RemoveCountryEvent>(_removeCountry);
+    on<RemoveRegionEvent>(_removeRegion);
+    on<RemoveTownEvent>(_removeTown);
     // on<SwitchCountry>(_switchCountry);
   }
 
@@ -40,55 +43,95 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
       emit(CountriesError());
     }
   }
- void _changeCountry(ChangeCountryEvent event, Emitter<CountriesState> emit) async {
+
+  void _changeCountry(ChangeCountryEvent event, Emitter<CountriesState> emit) async {
     final prefState = state;
-    if(prefState is! CountriesLoaded){
+    if (prefState is! CountriesLoaded) {
       return;
     }
     final selectCountry = prefState.selectCountry.toList();
     final isSelect = selectCountry.any((element) => element.id == event.countries.id);
     print(isSelect);
-    if(isSelect){
+    if (isSelect) {
       selectCountry.removeWhere((element) => element.id == event.countries.id);
-    }
-    else{
+    } else {
       selectCountry.add(event.countries);
     }
     emit(prefState.copyWith(selectCountry: selectCountry));
   }
-  
-   void _changeRegion(ChangeRegionEvent event, Emitter<CountriesState> emit) async {
+
+  void _removeCountry(RemoveCountryEvent event, Emitter<CountriesState> emit) async {
     final prefState = state;
-    if(prefState is! CountriesLoaded){
+    if (prefState is! CountriesLoaded) {
+      return;
+    }
+    final selectCountry = prefState.selectCountry.toList();
+    final isSelectCountry = selectCountry.any((element) => element.id == event.countries.id);
+    if (isSelectCountry) {
+      selectCountry.removeWhere((element) => element.id == event.countries.id);
+    }
+    emit(prefState.copyWith(selectCountry: selectCountry));
+  }
+
+  void _removeRegion(RemoveRegionEvent event, Emitter<CountriesState> emit) async {
+    final prefState = state;
+    if (prefState is! CountriesLoaded) {
+      return;
+    }
+
+    final selectRegion = prefState.selectRegion.toList();
+    final isSelectRegion = selectRegion.any((element) => element.id == event.region.id);
+    if (isSelectRegion) {
+      selectRegion.removeWhere((element) => element.id == event.region.id);
+    }
+
+    emit(prefState.copyWith(selectRegion: selectRegion));
+  }
+
+    void _removeTown(RemoveTownEvent event, Emitter<CountriesState> emit) async {
+    final prefState = state;
+    if (prefState is! CountriesLoaded) {
+      return;
+    }
+  
+    final selectTown = prefState.selectTown.toList();
+    final isSelectTown = selectTown.any((element) => element.id == event.town.id);
+    if (isSelectTown) {
+      selectTown.removeWhere((element) => element.id == event.town.id);
+    }
+
+    emit(prefState.copyWith(selectTown: selectTown));
+  }
+
+  void _changeRegion(ChangeRegionEvent event, Emitter<CountriesState> emit) async {
+    final prefState = state;
+    if (prefState is! CountriesLoaded) {
       return;
     }
     final selectRegion = prefState.selectRegion.toList();
     final isSelect = selectRegion.any((element) => element.id == event.region.id);
-    if(isSelect){
+    if (isSelect) {
       selectRegion.removeWhere((element) => element.id == event.region.id);
-    }
-    else{
+    } else {
       selectRegion.add(event.region);
     }
     emit(prefState.copyWith(selectRegion: selectRegion));
   }
 
- void _changeTowns(ChangeTownEvent event, Emitter<CountriesState> emit) async {
+  void _changeTowns(ChangeTownEvent event, Emitter<CountriesState> emit) async {
     final prefState = state;
-    if(prefState is! CountriesLoaded){
+    if (prefState is! CountriesLoaded) {
       return;
     }
     final selectTown = prefState.selectTown.toList();
     final isSelect = selectTown.any((element) => element.id == event.town.id);
-    if(isSelect){
+    if (isSelect) {
       selectTown.removeWhere((element) => element.id == event.town.id);
-    }
-    else{
+    } else {
       selectTown.add(event.town);
     }
     emit(prefState.copyWith(selectTown: selectTown));
   }
-
 
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
     if (event.access != null) {

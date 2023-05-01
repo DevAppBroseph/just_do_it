@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
+import 'package:just_do_it/widget/back_icon_button_white.dart';
 import 'package:open_file/open_file.dart';
 
 class AboutProject extends StatefulWidget {
@@ -45,26 +46,21 @@ class _AboutProjectState extends State<AboutProject> {
               children: [
                 Container(
                   color: ColorStyles.yellowFFD70A,
-                  child: SizedBox(
-                    height: 66.h,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-                Container(
-                  color: ColorStyles.yellowFFD70A,
-                  child: Padding(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 66.h),
+                      Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: SizedBox(
                       height: 24.h,
                       child: Stack(
                         alignment: Alignment.centerLeft,
                         children: [
-                          CustomIconButton(
+                          CustomIconButtonWhite(
                             onBackPressed: () {
                               Navigator.of(context).pop();
                             },
                             icon: SvgImg.arrowRight,
-                            color: Colors.white,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,13 +75,19 @@ class _AboutProjectState extends State<AboutProject> {
                       ),
                     ),
                   ),
+                    ],
+                  ),
                 ),
+                
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: [
+                     
+                      Container(color: ColorStyles.yellowFFD70A,
+                        child: SizedBox(height: 50.h)),
                       Container(
                           color: ColorStyles.yellowFFD70A,
                           child: SizedBox(height: 10.h)),
