@@ -47,6 +47,8 @@ class _EditTasksState extends State<EditTasks> {
   File? photo;
 
   List<Regions> region = [];
+  List<Countries> countries = [];
+  List<Town> town = [];
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -229,10 +231,14 @@ class _EditTasksState extends State<EditTasks> {
                         startDate: startDate,
                         endDate: endDate,
                         selectRegion: region,
-                        onEdit: (region, startDate, endDate) {
+                        selectCountry: countries,
+                        selectTown: town,
+                        onEdit: (region, startDate, endDate, countries, town) {
                           this.region = region;
                           this.startDate = startDate;
                           this.endDate = endDate;
+                          this.countries = countries;
+                          this.town = town;
                         },
                       ),
                     ],

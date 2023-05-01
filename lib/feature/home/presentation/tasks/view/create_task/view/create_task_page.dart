@@ -53,6 +53,8 @@ class _CeateTasksState extends State<CeateTasks> {
   File? photo;
 
   List<Regions> regions = [];
+  List<Countries> countries = [];
+  List<Town> towns = [];
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -219,10 +221,15 @@ class _CeateTasksState extends State<CeateTasks> {
                         startDate: startDate,
                         endDate: endDate,
                         selectRegion: regions,
-                        onEdit: (region, startDate, endDate) {
+                        selectCountry: countries,
+                        selectTown: towns,
+                        onEdit: (region, startDate, endDate, countries, towns) {
                           this.regions = region;
                           this.startDate = startDate;
                           this.endDate = endDate;
+                          this.countries = countries;
+                          this.towns = towns;
+                          setState(() {});
                         },
                       ),
                     ],
@@ -253,10 +260,18 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (regions == [] ) {
-                          error += '\n- регион';
+                        if (countries == [] ) {
+                          error += '\n- страна';
                           errorsFlag = true;
                         }
+                        // if (towns == [] ) {
+                        //   error += '\n- регион';
+                        //   errorsFlag = true;
+                        // }
+                        // if (regions == [] ) {
+                        //   error += '\n- регион';
+                        //   errorsFlag = true;
+                        // }
 
                         if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
@@ -330,138 +345,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             curve: Curves.easeInOut,
                           );
                         }
-                      }
-                      // if (page == 1) {
-                      //   String error = 'Укажите:';
-                      //   bool errorsFlag = false;
-
-                      //   if (startDate == null) {
-                      //     error += '\n- дату начала';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (startDate == null) {
-                      //     error += '\n- дату завершения';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (coastMinController.text.isEmpty) {
-                      //     error += '\n- минимальную цену';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (coastMaxController.text.isEmpty) {
-                      //     error += '\n- максимальную цену';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (region == null || region!.isEmpty) {
-                      //     error += '\n- регион';
-                      //     errorsFlag = true;
-                      //   }
-
-                      //   if (coastMinController.text.isNotEmpty &&
-                      //       coastMaxController.text.isNotEmpty) {
-                      //     if (int.parse(coastMinController.text) >
-                      //         int.parse(coastMaxController.text)) {
-                      //       error +=
-                      //           '\n- минимальный бюджет должен быть меньше максимального';
-                      //       errorsFlag = true;
-                      //     }
-                      //   }
-
-                      //   if (errorsFlag) {
-                      //     showAlertToast(error);
-                      //   } else {
-                      //     showLoaderWrapper(context);
-
-                      //     Task newTask = Task(
-                      //       asCustomer: widget.customer,
-                      //       name: titleController.text,
-                      //       description: aboutController.text,
-                      //       subcategory: selectSubCategory!,
-                      //       dateStart:
-                      //           DateFormat('yyyy-MM-dd').format(startDate!),
-                      //       dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
-                      //       priceFrom: int.parse(
-                      //         coastMinController.text.isEmpty
-                      //             ? '0'
-                      //             : coastMinController.text,
-                      //       ),
-                      //       priceTo: int.parse(
-                      //         coastMaxController.text.isEmpty
-                      //             ? '0'
-                      //             : coastMaxController.text,
-                      //       ),
-                      //       region: region ?? '',
-                      //       file: null,
-                      //       icon: '',
-                      //       task: '',
-                      //       typeLocation: '',
-                      //       whenStart: '',
-                      //       coast: '',
-                      //       search: '',
-                      //     );
-                      //     final profileBloc =
-                      //         BlocProvider.of<ProfileBloc>(context);
-                      //     bool res = await Repository()
-                      //         .createTask(profileBloc.access!, newTask);
-                      //     if (res) {
-                      //       if (widget.doublePop) {
-                      //         Navigator.of(context)
-                      //           ..pop()
-                      //           ..pop();
-                      //         final access =
-                      //             BlocProvider.of<ProfileBloc>(context).access;
-                      //         context.read<TasksBloc>().add(
-                      //               GetTasksEvent(
-                      //                 access: access,
-                      //                 query: '',
-                      //                 dateEnd: '',
-                      //                 dateStart: '',
-                      //                 priceFrom: 0,
-                      //                 priceTo: 50000000,
-                      //                 region: [],
-                      //                 subcategory: [],
-                      //                 countFilter: null,
-                      //                 customer: null,
-                      //               ),
-                      //             );
-                      //       } else {
-                      //         Navigator.of(context).pop();
-                      //       }
-                      //       BlocProvider.of<TasksBloc>(context)
-                      //           .add(GetTasksEvent());
-                      //     }
-                      //     Loader.hide();
-                      //   }
-                      // } else {
-                      //   String error = 'Укажите:';
-                      //   bool errorsFlag = false;
-
-                      //   if (selectCategory == null) {
-                      //     error += '\n- категорию';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (selectSubCategory == null) {
-                      //     error += '\n- подкатегорию';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (titleController.text.isEmpty) {
-                      //     error += '\n- название';
-                      //     errorsFlag = true;
-                      //   }
-                      //   if (aboutController.text.isEmpty) {
-                      //     error += '\n- описание';
-                      //     errorsFlag = true;
-                      //   }
-
-                      //   if (errorsFlag) {
-                      //     showAlertToast(error);
-                      //   } else {
-                      //     pageController.animateToPage(
-                      //       1,
-                      //       duration: const Duration(milliseconds: 600),
-                      //       curve: Curves.easeInOut,
-                      //     );
-                      //   }
-                      // }
+                      }                  
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(

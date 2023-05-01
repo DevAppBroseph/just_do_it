@@ -53,11 +53,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
     List<Activities>? res = await Repository().getCategories();
-    activities = res ?? [];
-    log(activities.toString());
-    if (res != null) {
-      emit(GetCategoriesState(res));
-    }
+    activities = res;
+    emit(GetCategoriesState(res));
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {

@@ -1,5 +1,4 @@
 import 'dart:developer' as dev;
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
@@ -35,6 +38,9 @@ class _CreatePageState extends State<CreatePage> {
   List<Activities> activities = [];
   Activities? selectCategory;
   ScrollController scrollController = ScrollController();
+  bool searchList = false;
+  List<String> searchChoose = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -43,14 +49,23 @@ class _CreatePageState extends State<CreatePage> {
     print(activities.length);
   }
 
+  void getHistoryList() async {
+    final List<String> list = await Storage().getListHistory();
+    searchChoose.clear();
+    searchChoose.addAll(list);
+  }
+
   @override
   Widget build(BuildContext context) {
+    double heightScreen = MediaQuery.of(context).size.height;
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+
     return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
       if (current is GetCategoriesState) {
         activities.clear();
         activities.addAll(current.res);
       }
-      return false;
+      return true;
     }, builder: (context, snapshot) {
       print(activities.length);
       return MediaQuery(
@@ -98,10 +113,49 @@ class _CreatePageState extends State<CreatePage> {
                                   ),
                                 ],
                               ),
+                              onTap: () async {
+                                setState(() {
+                                  searchList = true;
+                                });
+                                getHistoryList();
+                              },
+                              onFieldSubmitted: (value) {
+                                setState(() {
+                                  searchList = false;
+                                });
+                                Storage().setListHistory(value);
+                                FocusScope.of(context).unfocus();
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .add(EditPageSearchEvent(1, value));
+                              },
+                              onChanged: (value) {
+                                if (value.isEmpty) {
+                                  getHistoryList();
+                                }
+                                List<Activities> activities =
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .activities;
+                                searchChoose.clear();
+                                if (value.isNotEmpty) {
+                                  for (var element1 in activities) {
+                                    for (var element2 in element1.subcategory) {
+                                      if (element2.description!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()) &&
+                                          !searchChoose.contains(element2
+                                              .description!
+                                              .toLowerCase())) {
+                                        searchChoose.add(element2.description!);
+                                      }
+                                    }
+                                  }
+                                }
+                                setState(() {});
+                              },
                               hintText: 'Поиск',
                               hintStyle: CustomTextStyle.grey_14_w400
                                   .copyWith(overflow: TextOverflow.ellipsis),
-                              textEditingController: TextEditingController(),
+                              textEditingController: searchController,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 11.w, vertical: 11.h),
                             ),
@@ -135,50 +189,63 @@ class _CreatePageState extends State<CreatePage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const ClampingScrollPhysics(),
-                      children: [firstStage()],
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.h, vertical: 20.h),
-                        child: CustomButton(
-                          onTap: () {
-                            final bloc = BlocProvider.of<ProfileBloc>(context);
-                            if (bloc.user == null) {
-                              Navigator.of(context).pushNamed(AppRoute.auth);
-                            } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return CeateTasks(
-                                      customer: true,
-                                      selectCategory: selectCategory,
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          },
-                          btnColor: ColorStyles.yellowFFD70A,
-                          textLabel: Text(
-                            'Создать',
-                            style: CustomTextStyle.black_16_w600_171716,
+              searchList
+                  ? SearchList(
+                      heightScreen,
+                      bottomInsets,
+                      (value) {
+                        Storage().setListHistory(value);
+                        BlocProvider.of<ProfileBloc>(context)
+                            .add(EditPageSearchEvent(1, value));
+                      },
+                      searchChoose,
+                    )
+                  : Expanded(
+                      child: Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          ListView(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const ClampingScrollPhysics(),
+                            children: [firstStage()],
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.h, vertical: 20.h),
+                              child: CustomButton(
+                                onTap: () {
+                                  final bloc =
+                                      BlocProvider.of<ProfileBloc>(context);
+                                  if (bloc.user == null) {
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoute.auth);
+                                  } else {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return CeateTasks(
+                                            customer: true,
+                                            selectCategory: selectCategory,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                                btnColor: ColorStyles.yellowFFD70A,
+                                textLabel: Text(
+                                  'Создать',
+                                  style: CustomTextStyle.black_16_w600_171716,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )
+                    )
             ],
           ),
         ),

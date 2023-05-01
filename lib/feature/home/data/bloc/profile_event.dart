@@ -9,6 +9,12 @@ class UpdateProfileEvent extends ProfileEvent {
   UpdateProfileEvent(this.newUser);
 }
 
+class EditPageSearchEvent extends ProfileEvent {
+  int page;
+  String text;
+  EditPageSearchEvent(this.page, this.text);
+}
+
 class GetCategorieProfileEvent extends ProfileEvent {}
 
 class UpdateProfileWithoutUserEvent extends ProfileEvent {}

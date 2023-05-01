@@ -15,4 +15,18 @@ class Storage {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('access');
   }
+
+  Future<void> setListHistory(String value) async {
+    if (value.isNotEmpty) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> list = prefs.getStringList('history') ?? [];
+      list.add(value);
+      await prefs.setStringList('history', list);
+    }
+  }
+
+  Future<List<String>> getListHistory() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList('history') ?? [];
+  }
 }
