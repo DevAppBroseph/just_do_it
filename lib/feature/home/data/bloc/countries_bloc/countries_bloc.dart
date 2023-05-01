@@ -53,7 +53,6 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
     }
     final selectCountry = prefState.selectCountry.toList();
     final isSelect = selectCountry.any((element) => element.id == event.countries.id);
-    print(isSelect);
     if (isSelect) {
       selectCountry.removeWhere((element) => element.id == event.countries.id);
     } else {

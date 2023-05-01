@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +17,7 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>)
-      onEdit;
+  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>) onEdit;
   DateTime? startDate;
   DateTime? endDate;
   List<Countries> selectCountry;
@@ -43,6 +44,8 @@ class _DatePickerState extends State<DatePicker> {
   bool openCountry = false;
   bool openRegion = false;
   bool openTown = false;
+  List<Town> selectTown2 = [];
+  List<Regions> selectRegions = [];
   ScrollController controller = ScrollController();
 
   void _showDatePicker(ctx, int index) {
@@ -67,8 +70,7 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'Готово',
-                            style:
-                                TextStyle(fontSize: 15.sp, color: Colors.black),
+                            style: TextStyle(fontSize: 15.sp, color: Colors.black),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -78,11 +80,7 @@ class _DatePickerState extends State<DatePicker> {
                             }
                             setState(() {});
                             Navigator.of(ctx).pop();
-                            widget.onEdit(
-                                widget.selectRegion,
-                                widget.startDate,
-                                widget.endDate,
-                                widget.selectCountry,
+                            widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
                                 widget.selectTown);
                           },
                         ),
@@ -139,11 +137,7 @@ class _DatePickerState extends State<DatePicker> {
                       widget.endDate = val;
                     }
                     widget.onEdit(
-                        widget.selectRegion,
-                        widget.startDate,
-                        widget.endDate,
-                        widget.selectCountry,
-                        widget.selectTown);
+                        widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry, widget.selectTown);
                     setState(() {});
                   }),
             ),
@@ -155,12 +149,16 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CountriesBloc, CountriesState>(
-        builder: (context, state) {
+    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
       if (state is CountriesLoaded) {
         final countries = state.country;
-        final regions = state.allRegion;
-        final towns = state.allTown;
+        final countriesSelect = state.selectCountry;
+        final regionsSelect = state.selectRegion;
+        final townsSelect = state.selectTown;
+        final regions = state.region;
+        final allregions = state.allRegion;
+        final town = state.town;
+        final alltown = state.allTown;
         return MediaQuery(
           data: const MediaQueryData(textScaleFactor: 1.0),
           child: ListView(
@@ -176,8 +174,7 @@ class _DatePickerState extends State<DatePicker> {
                 },
                 child: Container(
                   height: 60.h,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -194,8 +191,7 @@ class _DatePickerState extends State<DatePicker> {
                           SizedBox(height: 0.h),
                           if (widget.startDate != null)
                             Text(
-                              DateFormat('dd.MM.yyyy')
-                                  .format(widget.startDate!),
+                              DateFormat('dd.MM.yyyy').format(widget.startDate!),
                               // : 'Выберите дату начала выполнения',
                               style: CustomTextStyle.black_14_w400_171716,
                             ),
@@ -220,8 +216,7 @@ class _DatePickerState extends State<DatePicker> {
                 },
                 child: Container(
                   height: 60.h,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -284,12 +279,8 @@ class _DatePickerState extends State<DatePicker> {
                                     setState(() {});
                                   },
                                   onChanged: (value) {
-                                    widget.onEdit(
-                                        widget.selectRegion,
-                                        widget.startDate,
-                                        widget.endDate,
-                                        widget.selectCountry,
-                                        widget.selectTown);
+                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
+                                        widget.selectCountry, widget.selectTown);
                                   },
                                   onFieldSubmitted: (value) {
                                     setState(() {});
@@ -299,8 +290,7 @@ class _DatePickerState extends State<DatePicker> {
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_14_w400_171716,
-                                  textEditingController:
-                                      widget.coastMinController,
+                                  textEditingController: widget.coastMinController,
                                 ),
                               ],
                             ),
@@ -341,12 +331,8 @@ class _DatePickerState extends State<DatePicker> {
                                     setState(() {});
                                   },
                                   onChanged: (value) {
-                                    widget.onEdit(
-                                        widget.selectRegion,
-                                        widget.startDate,
-                                        widget.endDate,
-                                        widget.selectCountry,
-                                        widget.selectTown);
+                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
+                                        widget.selectCountry, widget.selectTown);
                                   },
                                   onFieldSubmitted: (value) {
                                     setState(() {});
@@ -356,8 +342,7 @@ class _DatePickerState extends State<DatePicker> {
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
                                   style: CustomTextStyle.black_14_w400_171716,
-                                  textEditingController:
-                                      widget.coastMaxController,
+                                  textEditingController: widget.coastMaxController,
                                 ),
                               ],
                             ),
@@ -409,10 +394,8 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ],
                   ),
-                  textEditingController: TextEditingController(
-                      text: widget.selectCountry.toString()),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  textEditingController: TextEditingController(text: _countriesString(countriesSelect)),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 ),
               ),
               SizedBox(height: 14.h),
@@ -441,15 +424,19 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GestureDetector(
                             onTap: () {
-                              List<Countries> selectCountry = widget.selectCountry;
-                              selectCountry.add(e);
-                              widget.onEdit(
-                                  widget.selectRegion,
-                                  widget.startDate,
-                                  widget.endDate,
-                                  selectCountry,
+                              context.read<CountriesBloc>().add(ChangeCountryEvent(e));
+                              log(e.name.toString());
+                              widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, countriesSelect,
                                   widget.selectTown);
-                              setState(() {});
+                              final access = BlocProvider.of<ProfileBloc>(context).access;
+                              selectRegions = [];
+                              print(countriesSelect.length);
+                              for (var element in countriesSelect) {
+                                 context.read<CountriesBloc>().add(GetRegionEvent(access, element));
+                                selectRegions += regions;
+                               
+                              }
+                              print(selectRegions);
                             },
                             child: Container(
                               color: Colors.transparent,
@@ -463,13 +450,11 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
+                                          style: CustomTextStyle.black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (widget.selectCountry.contains(e))
-                                        const Icon(Icons.check)
+                                      if (countriesSelect.contains(e)) const Icon(Icons.check)
                                     ],
                                   ),
                                 ],
@@ -482,56 +467,52 @@ class _DatePickerState extends State<DatePicker> {
                 ),
               ),
               SizedBox(height: 14.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  final access = BlocProvider.of<ProfileBloc>(context).access;
-                  context
-                      .read<CountriesBloc>()
-                      .add(GetAllRegionEvent(access, countries));
-                  setState(() {
-                    openRegion = !openRegion;
-                  });
-                  FocusScope.of(context).unfocus();
+              countriesSelect.isNotEmpty
+                  ? ScaleButton(
+                      bound: 0.02,
+                      onTap: () {
+                        setState(() {
+                          openRegion = !openRegion;
+                        });
+                        FocusScope.of(context).unfocus();
 
-                  Future.delayed(Duration(milliseconds: 300), () {
-                    controller.animateTo(
-                      controller.position.maxScrollExtent - 20.h,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.linear,
-                    );
-                  });
-                },
-                child: CustomTextField(
-                  fillColor: ColorStyles.greyF9F9F9,
-                  hintText: 'Выбрать регион',
-                  hintStyle: CustomTextStyle.grey_14_w400,
-                  height: 55.h,
-                  enabled: false,
-                  suffixIcon: Stack(
-                    alignment: Alignment.centerRight,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.h),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                        Future.delayed(Duration(milliseconds: 300), () {
+                          controller.animateTo(
+                            controller.position.maxScrollExtent - 20.h,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear,
+                          );
+                        });
+                      },
+                      child: CustomTextField(
+                        fillColor: ColorStyles.greyF9F9F9,
+                        hintText: 'Выбрать регион',
+                        hintStyle: CustomTextStyle.grey_14_w400,
+                        height: 55.h,
+                        enabled: false,
+                        suffixIcon: Stack(
+                          alignment: Alignment.centerRight,
                           children: [
-                            SvgPicture.asset(
-                              SvgImg.earth,
-                              height: 15.h,
-                              width: 15.h,
+                            Padding(
+                              padding: EdgeInsets.only(right: 16.h),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                    SvgImg.earth,
+                                    height: 15.h,
+                                    width: 15.h,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
+                        textEditingController: TextEditingController(text: _regionsString(regionsSelect)),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                       ),
-                    ],
-                  ),
-                  textEditingController: TextEditingController(
-                      text: widget.selectRegion.toString()),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                ),
-              ),
+                    )
+                  : Container(),
               SizedBox(height: 14.h),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
@@ -549,106 +530,106 @@ class _DatePickerState extends State<DatePicker> {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
                 child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const ClampingScrollPhysics(),
-                  children: regions
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              List<Regions> selectRegion = widget.selectRegion;
-                              selectRegion.add(e);
-                              widget.onEdit(
-                                  selectRegion,
-                                  widget.startDate,
-                                  widget.endDate,
-                                  widget.selectCountry,
-                                  widget.selectTown);
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: const ClampingScrollPhysics(),
+                    children: selectRegions
+                            .map(
+                              (e) => Padding(
+                                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.read<CountriesBloc>().add(ChangeRegionEvent(e));
+                                    widget.onEdit(regionsSelect, widget.startDate, widget.endDate, widget.selectCountry,
+                                        widget.selectTown);
+                                    final access = BlocProvider.of<ProfileBloc>(context).access;
+                                    for (var element in regionsSelect) {
+                                      if (countriesSelect.length == 1) {
+                                        context.read<CountriesBloc>().add(GetTownsEvent(access, element));
+                                      }
+                                    }
+                                    selectTown2 = [];
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    height: 40.h,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 250.w,
+                                              child: Text(
+                                                e.name!,
+                                                style: CustomTextStyle.black_14_w400_515150,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            if (regionsSelect.contains(e)) const Icon(Icons.check)
+                                          ],
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      if (widget.selectRegion.contains(e))
-                                        const Icon(Icons.check)
-                                    ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList()),
+              ),
+              SizedBox(height: 14.h),
+              regionsSelect.isNotEmpty
+                  ? ScaleButton(
+                      bound: 0.02,
+                      onTap: () {
+                        setState(() {
+                          final access = BlocProvider.of<ProfileBloc>(context).access;
+                          for (var element in regionsSelect) {
+                            context.read<CountriesBloc>().add(GetTownsEvent(access, element));
+                            selectTown2 += town;
+                          }
+                          openTown = !openTown;
+                        });
+                        FocusScope.of(context).unfocus();
+
+                        Future.delayed(Duration(milliseconds: 300), () {
+                          controller.animateTo(
+                            controller.position.maxScrollExtent - 20.h,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear,
+                          );
+                        });
+                      },
+                      child: CustomTextField(
+                        fillColor: ColorStyles.greyF9F9F9,
+                        hintText: 'Выбрать подрегион',
+                        hintStyle: CustomTextStyle.grey_14_w400,
+                        height: 55.h,
+                        enabled: false,
+                        suffixIcon: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 16.h),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                    SvgImg.earth,
+                                    height: 15.h,
+                                    width: 15.h,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-              SizedBox(height: 14.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  setState(() {
-                    final access = BlocProvider.of<ProfileBloc>(context).access;
-                    context
-                        .read<CountriesBloc>()
-                        .add(GetAllTownsEvent(access, regions));
-                    openTown = !openTown;
-                  });
-                  FocusScope.of(context).unfocus();
-
-                  Future.delayed(Duration(milliseconds: 300), () {
-                    controller.animateTo(
-                      controller.position.maxScrollExtent - 20.h,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.linear,
-                    );
-                  });
-                },
-                child: CustomTextField(
-                  fillColor: ColorStyles.greyF9F9F9,
-                  hintText: 'Выбрать подрегион',
-                  hintStyle: CustomTextStyle.grey_14_w400,
-                  height: 55.h,
-                  enabled: false,
-                  suffixIcon: Stack(
-                    alignment: Alignment.centerRight,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.h),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              SvgImg.earth,
-                              height: 15.h,
-                              width: 15.h,
-                            ),
                           ],
                         ),
+                        textEditingController: TextEditingController(text: _townsString(townsSelect)),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                       ),
-                    ],
-                  ),
-                  textEditingController: TextEditingController(
-                      text: widget.selectTown.toString()),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                ),
-              ),
+                    )
+                  : Container(),
               SizedBox(height: 14.h),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
@@ -666,52 +647,84 @@ class _DatePickerState extends State<DatePicker> {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
                 child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const ClampingScrollPhysics(),
-                  children: towns
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.onEdit(
-                                  widget.selectRegion,
-                                  widget.startDate,
-                                  widget.endDate,
-                                  widget.selectCountry,
-                                  widget.selectTown);
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: const ClampingScrollPhysics(),
+                    children: regionsSelect.length == 1
+                        ? town
+                            .map(
+                              (e) => Padding(
+                                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.read<CountriesBloc>().add(ChangeTownEvent(e));
+                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
+                                        widget.selectCountry, townsSelect);
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    height: 40.h,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 250.w,
+                                              child: Text(
+                                                e.name!,
+                                                style: CustomTextStyle.black_14_w400_515150,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            if (townsSelect.contains(e)) const Icon(Icons.check)
+                                          ],
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      if (e == widget.selectRegion)
-                                        const Icon(Icons.check)
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
+                            )
+                            .toList()
+                        : alltown
+                            .map(
+                              (e) => Padding(
+                                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.read<CountriesBloc>().add(ChangeTownEvent(e));
+                                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
+                                        widget.selectCountry, townsSelect);
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    height: 40.h,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 250.w,
+                                              child: Text(
+                                                e.name!,
+                                                style: CustomTextStyle.black_14_w400_515150,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            if (townsSelect.contains(e)) const Icon(Icons.check)
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList()),
               ),
               Row(
                 children: [
@@ -738,5 +751,38 @@ class _DatePickerState extends State<DatePicker> {
       }
       return Container();
     });
+  }
+
+  String _countriesString(List<Countries> selectCountries) {
+    String nameCountries = '';
+    for (var element in selectCountries) {
+      nameCountries += '${element.name!}, ';
+    }
+    if (selectCountries.length == 1) {
+      nameCountries = nameCountries.replaceAll(',', '');
+    }
+    return nameCountries;
+  }
+
+  String _regionsString(List<Regions> selectRegions) {
+    String nameRegions = '';
+    for (var element in selectRegions) {
+      nameRegions += '${element.name!}, ';
+    }
+    if (selectRegions.length == 1) {
+      nameRegions = nameRegions.replaceAll(',', '');
+    }
+    return nameRegions;
+  }
+
+  String _townsString(List<Town> selectTowns) {
+    String nameTowns = '';
+    for (var element in selectTowns) {
+      nameTowns += '${element.name!}, ';
+    }
+    if (selectTowns.length == 1) {
+      nameTowns = nameTowns.replaceAll(',', '');
+    }
+    return nameTowns;
   }
 }
