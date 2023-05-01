@@ -9,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
@@ -83,9 +85,13 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     BlocProvider.of<ChatBloc>(context).add(GetListMessage());
+
     Future.delayed(Duration(seconds: 3), () {
+      String? access = BlocProvider.of<ProfileBloc>(context).access;
+      BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent(access));
+      BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent(access));
       // panelController.close();
-      if (BlocProvider.of<ProfileBloc>(context).access != null) {
+      if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
     });

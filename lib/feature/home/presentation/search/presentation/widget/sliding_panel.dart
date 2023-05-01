@@ -97,9 +97,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       }
       return true;
     }, builder: (context, snapshot) {
-      return BlocBuilder<CountriesBloc, CountriesState>( builder: (context, state) {
-        if(state is CountriesLoaded)
-        {
+      return BlocBuilder<CountriesBloc, CountriesState>(
+          builder: (context, state) {
+        if (state is CountriesLoaded) {
           countries = state.country;
           regions = state.region;
           towns = state.town;
@@ -107,32 +107,35 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           final regionSelect = state.selectRegion;
           final townSelect = state.selectTown;
           return SlidingUpPanel(
-          controller: widget.panelController,
-          renderPanelSheet: false,
-          panel: panel(context, townSelect, countrySelect, regionSelect),
-          onPanelSlide: (position) {
-            if (position == 0) {
-              BlocProvider.of<SearchBloc>(context).add(HideSlidingPanelEvent());
-              typeFilter = TypeFilter.main;
-              focusCoastMin.unfocus();
-              focusCoastMax.unfocus();
-              focusCoastKeyWord.unfocus();
-              slide = false;
-            }
-          },
-          maxHeight: heightPanel,
-          minHeight: 0.h,
-          backdropEnabled: true,
-          backdropColor: Colors.black,
-          backdropOpacity: 0.8,
-          defaultPanelState: PanelState.CLOSED,
-        );}
+            controller: widget.panelController,
+            renderPanelSheet: false,
+            panel: panel(context, townSelect, countrySelect, regionSelect),
+            onPanelSlide: (position) {
+              if (position == 0) {
+                BlocProvider.of<SearchBloc>(context)
+                    .add(HideSlidingPanelEvent());
+                typeFilter = TypeFilter.main;
+                focusCoastMin.unfocus();
+                focusCoastMax.unfocus();
+                focusCoastKeyWord.unfocus();
+                slide = false;
+              }
+            },
+            maxHeight: heightPanel,
+            minHeight: 0.h,
+            backdropEnabled: true,
+            backdropColor: Colors.black,
+            backdropOpacity: 0.8,
+            defaultPanelState: PanelState.CLOSED,
+          );
+        }
         return Container();
       });
     });
   }
 
-  Widget panel(BuildContext context, List<Town> townsSelect, List<Countries> countriesSelect, List<Regions> regionsSelect) {
+  Widget panel(BuildContext context, List<Town> townsSelect,
+      List<Countries> countriesSelect, List<Regions> regionsSelect) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -169,7 +172,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                                 ? listRegion(countryFirst!)
                                                 : typeFilter == TypeFilter.towns
                                                     ? listTowns(regionsFirst!)
-                                                    : typeFilter == TypeFilter.currency
+                                                    : typeFilter ==
+                                                            TypeFilter.currency
                                                         ? currency()
                                                         : SizedBox(),
                       ],
@@ -188,9 +192,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           countField++;
                         }
 
-                        var format1 = endDate == null ? null : "${endDate?.year}-${endDate?.month}-${endDate?.day}";
-                        var format2 =
-                            startDate == null ? null : "${startDate?.year}-${startDate?.month}-${startDate?.day}";
+                        var format1 = endDate == null
+                            ? null
+                            : "${endDate?.year}-${endDate?.month}-${endDate?.day}";
+                        var format2 = startDate == null
+                            ? null
+                            : "${startDate?.year}-${startDate?.month}-${startDate?.day}";
 
                         if (keyWordController.text != '') {
                           countField++;
@@ -204,21 +211,25 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (format1 != null || format2 != null) {
                           countField++;
                         }
-                        if(countriesSelect.isNotEmpty || regionsSelect.isNotEmpty || townsSelect.isNotEmpty){
-                            countField++;
+                        if (countriesSelect.isNotEmpty ||
+                            regionsSelect.isNotEmpty ||
+                            townsSelect.isNotEmpty) {
+                          countField++;
                         }
-                        
-                        if(currencyString != null && currencyString!.isNotEmpty){
-                            countField++;
+
+                        if (currencyString != null &&
+                            currencyString!.isNotEmpty) {
+                          countField++;
                         }
-                   
+
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,
                                 query: keyWordController.text,
                                 dateEnd: format1,
                                 dateStart: format2,
-                                priceFrom: int.tryParse(coastMinController.text),
+                                priceFrom:
+                                    int.tryParse(coastMinController.text),
                                 priceTo: int.tryParse(coastMaxController.text),
                                 isSelectCountry: countriesSelect,
                                 isSelectRegions: regionsSelect,
@@ -226,7 +237,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 subcategory: selectSubCategory,
                                 countFilter: countField,
                                 currency: selectCurrency?.id,
-                                customer: (contractorFlag && contractorFlag) || (contractorFlag && contractorFlag)
+                                customer: (contractorFlag && contractorFlag) ||
+                                        (contractorFlag && contractorFlag)
                                     ? null
                                     : customerFlag,
                               ),
@@ -243,20 +255,24 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ],
               ),
               if (MediaQuery.of(context).viewInsets.bottom > 0 &&
-                  (focusCoastMin.hasFocus || focusCoastMax.hasFocus || focusCoastKeyWord.hasFocus))
+                  (focusCoastMin.hasFocus ||
+                      focusCoastMax.hasFocus ||
+                      focusCoastKeyWord.hasFocus))
                 Column(
                   children: [
                     const Spacer(),
                     AnimatedPadding(
                       duration: const Duration(milliseconds: 0),
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
                               color: Colors.grey[200],
                               child: MediaQuery(
-                                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                                data: MediaQuery.of(context)
+                                    .copyWith(textScaleFactor: 1.0),
                                 child: Align(
                                   alignment: Alignment.centerRight,
                                   child: Padding(
@@ -297,8 +313,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       // date =
       //     '${DateFormat('dd.MM.yyyy').format(DateTime.now())} - ${DateFormat('dd.MM.yyyy').format(DateTime.now())}';
     } else {
-      date = startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
-      date += ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+      date =
+          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+      date +=
+          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
     }
 
     // else {
@@ -338,22 +356,23 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
-                  BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+                  BlocBuilder<CountriesBloc, CountriesState>(
+                      builder: (context, state) {
                     if (state is CountriesLoaded) {
-                      final country = state.country;
-                      final region = state.region;
-                      final town = state.town;
+                      // final country = state.country;
+                      // final region = state.region;
+                      // final town = state.town;
                       return GestureDetector(
                         onTap: () {
-                          for (var element in country) {
-                            context.read<CountriesBloc>().add(RemoveCountryEvent(element));
-                          }
-                           for (var element in region) {
-                            context.read<CountriesBloc>().add(RemoveRegionEvent(element));
-                          }
-                           for (var element in town) {
-                            context.read<CountriesBloc>().add(RemoveTownEvent(element));
-                          }
+                          // for (var element in country) {
+                          //   context.read<CountriesBloc>().add(RemoveCountryEvent(element));
+                          // }
+                          //  for (var element in region) {
+                          //   context.read<CountriesBloc>().add(RemoveRegionEvent(element));
+                          // }
+                          //  for (var element in town) {
+                          //   context.read<CountriesBloc>().add(RemoveTownEvent(element));
+                          // }
                           currencyString = '';
                           endDate = null;
                           startDate = null;
@@ -370,7 +389,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           strcat = '';
                           allCategory = false;
                           for (int i = 0; i < activities.length; i++) {
-                            for (int y = 0; y < activities[i].subcategory.length; y++) {
+                            for (int y = 0;
+                                y < activities[i].subcategory.length;
+                                y++) {
                               activities[i].subcategory[y].isSelect = false;
                               selectSubCategory = [];
                             }
@@ -405,7 +426,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             children: [
               ScaleButton(
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.category;
                 },
                 bound: 0.02,
@@ -432,7 +454,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              category != null && category!.isNotEmpty ? category! : 'Все категории',
+                              category != null && category!.isNotEmpty
+                                  ? category!
+                                  : 'Все категории',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -454,7 +478,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.country;
                 },
                 child: Container(
@@ -479,7 +504,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(height: 3.h),
                           SizedBox(
                             width: 200.w,
-                            child: BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+                            child: BlocBuilder<CountriesBloc, CountriesState>(
+                                builder: (context, state) {
                               if (state is CountriesLoaded) {
                                 String str = '';
                                 final contriesSelect = state.selectCountry;
@@ -504,16 +530,22 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 }
                                 countryString = str;
                                 if (contriesSelect.length == 1) {
-                                  countryString = countryString?.replaceAll(',', '');
+                                  countryString =
+                                      countryString?.replaceAll(',', '');
                                 }
                                 if (regionsSelect.length == 1) {
-                                  countryString = countryString?.replaceAll(',', '');
+                                  countryString =
+                                      countryString?.replaceAll(',', '');
                                 }
                                 if (townsSelect.length == 1) {
-                                  countryString = countryString?.replaceAll(',', '');
+                                  countryString =
+                                      countryString?.replaceAll(',', '');
                                 }
                                 return Text(
-                                  countryString != null && countryString!.isNotEmpty ? countryString! : 'Страны не выбраны',
+                                  countryString != null &&
+                                          countryString!.isNotEmpty
+                                      ? countryString!
+                                      : 'Страны не выбраны',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: CustomTextStyle.black_14_w400_171716,
@@ -538,7 +570,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(414.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(414.h));
                   typeFilter = TypeFilter.date;
                 },
                 child: Container(
@@ -581,7 +614,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
-                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(OpenSlidingPanelToEvent(686.h));
                   typeFilter = TypeFilter.currency;
                 },
                 child: Container(
@@ -607,7 +641,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              currencyString != null && currencyString!.isNotEmpty ? currencyString! : 'Валюта не выбрана',
+                              currencyString != null &&
+                                      currencyString!.isNotEmpty
+                                  ? currencyString!
+                                  : 'Валюта не выбрана',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -646,31 +683,31 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                             if(currencyString == '')
-                            Text(
-                              'Бюджет от ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Российский рубль')
-                            Text(
-                              'Бюджет от ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Доллар США')
-                            Text(
-                              'Бюджет от \$',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Евро')
-                            Text(
-                              'Бюджет от €',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Дирхам')
-                            Text(
-                              'Бюджет от AED',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
+                            if (currencyString == '')
+                              Text(
+                                'Бюджет от ₽',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Российский рубль')
+                              Text(
+                                'Бюджет от ₽',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Доллар США')
+                              Text(
+                                'Бюджет от \$',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Евро')
+                              Text(
+                                'Бюджет от €',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Дирхам')
+                              Text(
+                                'Бюджет от AED',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
                             SizedBox(height: 3.h),
                             Row(
                               children: [
@@ -683,7 +720,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1), curve: Curves.linear);
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
                                     setState(() {});
                                   },
                                   onChanged: (value) {},
@@ -724,31 +762,31 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if(currencyString == '')
-                            Text(
-                              'Бюджет до ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Российский рубль')
-                            Text(
-                              'Бюджет до ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Доллар США')
-                            Text(
-                              'Бюджет до \$',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Евро')
-                            Text(
-                              'Бюджет до €',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                            if(currencyString == 'Дирхам')
-                            Text(
-                              'Бюджет до AED',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
+                            if (currencyString == '')
+                              Text(
+                                'Бюджет до ₽',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Российский рубль')
+                              Text(
+                                'Бюджет до ₽',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Доллар США')
+                              Text(
+                                'Бюджет до \$',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Евро')
+                              Text(
+                                'Бюджет до €',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
+                            if (currencyString == 'Дирхам')
+                              Text(
+                                'Бюджет до AED',
+                                style: CustomTextStyle.grey_14_w400,
+                              ),
                             SizedBox(height: 3.h),
                             Row(
                               children: [
@@ -761,7 +799,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   onTap: () {
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1), curve: Curves.linear);
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear);
                                     setState(() {});
                                   },
                                   onChanged: (value) {},
@@ -797,7 +836,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     Expanded(
                       child: Container(
                         height: 99.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF9F9F9,
                           borderRadius: BorderRadius.circular(10.r),
@@ -807,7 +847,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset('assets/icons/quote-up-square.svg'),
+                                SvgPicture.asset(
+                                    'assets/icons/quote-up-square.svg'),
                                 SizedBox(width: 10.w),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -826,9 +867,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           focusNode: focusCoastKeyWord,
                                           onTap: () {
                                             slide = true;
-                                            Future.delayed(const Duration(milliseconds: 200), () {
-                                              mainScrollController.animateTo(heightPanel,
-                                                  duration: const Duration(seconds: 1), curve: Curves.linear);
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 200), () {
+                                              mainScrollController.animateTo(
+                                                  heightPanel,
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  curve: Curves.linear);
                                             });
                                             setState(() {});
                                           },
@@ -838,11 +884,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                             setState(() {});
                                           },
                                           contentPadding: EdgeInsets.zero,
-                                          hintText: 'Например, покупка апельсинов..',
+                                          hintText:
+                                              'Например, покупка апельсинов..',
                                           fillColor: ColorStyles.greyF9F9F9,
                                           maxLines: 4,
-                                          style: CustomTextStyle.black_14_w400_171716,
-                                          textEditingController: keyWordController,
+                                          style: CustomTextStyle
+                                              .black_14_w400_171716,
+                                          textEditingController:
+                                              keyWordController,
                                         ),
                                       ],
                                     ),
@@ -883,7 +932,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: 24.0,
                     height: 24.0,
                     child: Checkbox(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.r)),
                       value: customerFlag,
                       onChanged: (value) {
                         setState(() {
@@ -904,7 +954,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: 24.0,
                     height: 24.0,
                     child: Checkbox(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.r)),
                       value: contractorFlag,
                       onChanged: (value) {
                         setState(() {
@@ -932,7 +983,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   void openKeyboard() {
     slide = true;
-    mainScrollController.animateTo(heightPanel, duration: const Duration(seconds: 1), curve: Curves.linear);
+    mainScrollController.animateTo(heightPanel,
+        duration: const Duration(seconds: 1), curve: Curves.linear);
     setState(() {});
   }
 
@@ -964,7 +1016,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 CustomIconButton(
                   onBackPressed: () {
-                    BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
                     typeFilter = TypeFilter.main;
                   },
                   icon: SvgImg.arrowRight,
@@ -1008,7 +1061,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           onTap: () {
             currencyString = currency.name;
             selectCurrency = currency;
-            BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            BlocProvider.of<SearchBloc>(context)
+                .add(OpenSlidingPanelToEvent(686.h));
             typeFilter = TypeFilter.main;
           },
           child: Container(
@@ -1067,7 +1121,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           children: [
             CustomIconButton(
               onBackPressed: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.main;
               },
               icon: SvgImg.arrowRight,
@@ -1104,10 +1159,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     setState(() {});
                     if (allCategory == true) {
                       for (int i = 0; i < activities.length; i++) {
-                        for (int y = 0; y < activities[i].subcategory.length; y++) {
+                        for (int y = 0;
+                            y < activities[i].subcategory.length;
+                            y++) {
                           activities[i].subcategory[y].isSelect = true;
-                          selectSubCategory.add(activities[i].subcategory[y].id);
-                          strcat += '${activities[i].subcategory[y].description!}, ';
+                          selectSubCategory
+                              .add(activities[i].subcategory[y].id);
+                          strcat +=
+                              '${activities[i].subcategory[y].description!}, ';
                         }
                         activities[i].isSelect = true;
                       }
@@ -1115,7 +1174,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     }
                     if (allCategory == false) {
                       for (int i = 0; i < activities.length; i++) {
-                        for (int y = 0; y < activities[i].subcategory.length; y++) {
+                        for (int y = 0;
+                            y < activities[i].subcategory.length;
+                            y++) {
                           activities[i].subcategory[y].isSelect = false;
                           selectSubCategory = [];
                         }
@@ -1154,7 +1215,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex,
+      {List<String> choice = const []}) {
     String selectWork = '';
     if (choice.isNotEmpty) {
       selectWork = '- ${choice.first}';
@@ -1169,7 +1231,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       child: GestureDetector(
         onTap: () {
           selectActivities = activities[currentIndex];
-          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+          BlocProvider.of<SearchBloc>(context)
+              .add(OpenSlidingPanelToEvent(686.h));
           typeFilter = TypeFilter.category1;
         },
         child: Container(
@@ -1282,7 +1345,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           children: [
             CustomIconButton(
               onBackPressed: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.category;
               },
               icon: SvgImg.arrowRight,
@@ -1358,7 +1422,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     return GestureDetector(
       onTap: () {
         strcat2 = '';
-        selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;
+        selectActivities!.subcategory[index].isSelect =
+            !selectActivities!.subcategory[index].isSelect;
         setState(() {});
         if (selectActivities!.subcategory[index].isSelect == true) {
           selectSubCategory.add(selectActivities!.subcategory[index].id);
@@ -1402,7 +1467,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                   ),
                   const Spacer(),
-                  if (selectActivities!.subcategory[index].isSelect && selectSubCategory != []) const Icon(Icons.check)
+                  if (selectActivities!.subcategory[index].isSelect &&
+                      selectSubCategory != [])
+                    const Icon(Icons.check)
                 ],
               ),
             ],
@@ -1451,7 +1518,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget countryFilter() {
-    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, state) {
       if (state is CountriesLoaded) {
         final countrySelect = state.selectCountry;
         return ListView(
@@ -1478,7 +1546,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 CustomIconButton(
                   onBackPressed: () {
-                    BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
                     typeFilter = TypeFilter.main;
                   },
                   icon: SvgImg.arrowRight,
@@ -1513,19 +1582,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       onChanged: (value) {
                         allCountry = !allCountry;
                         setState(() {});
-                        if (value == true) {
-                          for (int i = 0; i < countries.length; i++) {
-                            context.read<CountriesBloc>().add(ChangeCountryEvent(countries[i]));
-                          }
-                          countryString = '';
-                        }
+                        // if (value == true) {
+                        //   for (int i = 0; i < countries.length; i++) {
+                        //     context.read<CountriesBloc>().add(ChangeCountryEvent(countries[i]));
+                        //   }
+                        //   countryString = '';
+                        // }
 
-                        if (value == false) {
-                          for (int i = 0; i < countries.length; i++) {
-                            context.read<CountriesBloc>().add(ChangeCountryEvent(countries[i]));
-                          }
-                          countryString = '';
-                        }
+                        // if (value == false) {
+                        //   for (int i = 0; i < countries.length; i++) {
+                        //     context.read<CountriesBloc>().add(ChangeCountryEvent(countries[i]));
+                        //   }
+                        //   countryString = '';
+                        // }
                       },
                     ),
                   ],
@@ -1560,7 +1629,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget itemCountry(Countries countrySecond, List<Countries> countrySelect) {
-    final isSelectedCountry = countrySelect.any((element) => countrySecond.id == element.id);
+    final isSelectedCountry =
+        countrySelect.any((element) => countrySecond.id == element.id);
     log(isSelectedCountry.toString());
     return Column(
       children: [
@@ -1568,8 +1638,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           onTap: () {
             countryFirst = countrySecond;
             final access = BlocProvider.of<ProfileBloc>(context).access;
-            context.read<CountriesBloc>().add(GetRegionEvent(access, countrySecond));
-            BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+            // context
+            //     .read<CountriesBloc>()
+            //     .add(GetRegionEvent(access, countrySecond));
+            BlocProvider.of<SearchBloc>(context)
+                .add(OpenSlidingPanelToEvent(686.h));
             typeFilter = TypeFilter.region;
           },
           child: Container(
@@ -1587,9 +1660,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                      
                         setState(() {});
-                        context.read<CountriesBloc>().add(ChangeCountryEvent(countrySecond));
+                        // context.read<CountriesBloc>().add(ChangeCountryEvent(countrySecond));
 
                         // if (countrySecond.isSelect == true) {
                         //   selectCountry.add(countrySecond.id);
@@ -1629,7 +1701,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             width: 10.h,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isSelectedCountry ? Colors.black : Colors.transparent,
+                              color: isSelectedCountry
+                                  ? Colors.black
+                                  : Colors.transparent,
                             ),
                           ),
                         ],
@@ -1652,11 +1726,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget listRegion(Countries country) {
-    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, state) {
       if (state is CountriesLoaded) {
         final regionSelect = state.selectRegion;
-        final isSelectedEveryRegion =
-            state.region.every((region) => regionSelect.any((choosenRegion) => choosenRegion.id == region.id));
+        final isSelectedEveryRegion = state.region.every((region) =>
+            regionSelect.any((choosenRegion) => choosenRegion.id == region.id));
         return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -1681,7 +1756,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   CustomIconButton(
                     onBackPressed: () {
-                      BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                      BlocProvider.of<SearchBloc>(context)
+                          .add(OpenSlidingPanelToEvent(686.h));
                       typeFilter = TypeFilter.country;
                     },
                     icon: SvgImg.arrowRight,
@@ -1714,9 +1790,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         activeColor: ColorStyles.yellowFFD70B,
                         value: isSelectedEveryRegion,
                         onChanged: (value) {
-                          for (var element in regions) {
-                            context.read<CountriesBloc>().add(ChangeRegionEvent(element));
-                          }
+                          // for (var element in regions) {
+                          //   context.read<CountriesBloc>().add(ChangeRegionEvent(element));
+                          // }
                           setState(() {});
                         },
                       ),
@@ -1732,13 +1808,18 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   itemCount: regions.length,
                   padding: EdgeInsets.only(left: 10.w),
                   itemBuilder: ((context, index) {
-                    final isSelectedRegion = regionSelect.any((element) => regions[index].id == element.id);
+                    final isSelectedRegion = regionSelect
+                        .any((element) => regions[index].id == element.id);
                     return GestureDetector(
                       onTap: () {
                         regionsFirst = regions[index];
-                        final access = BlocProvider.of<ProfileBloc>(context).access;
-                        context.read<CountriesBloc>().add(GetTownsEvent(access, regions[index]));
-                        BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                        final access =
+                            BlocProvider.of<ProfileBloc>(context).access;
+                        // context
+                        //     .read<CountriesBloc>()
+                        //     .add(GetTownsEvent(access, regions[index]));
+                        BlocProvider.of<SearchBloc>(context)
+                            .add(OpenSlidingPanelToEvent(686.h));
                         typeFilter = TypeFilter.towns;
                       },
                       child: Container(
@@ -1753,7 +1834,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () {
-                                context.read<CountriesBloc>().add(ChangeRegionEvent(regions[index]));
+                                // context.read<CountriesBloc>().add(ChangeRegionEvent(regions[index]));
                                 setState(() {});
                               },
                               child: Stack(
@@ -1772,7 +1853,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                     width: 10.h,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: isSelectedRegion ? Colors.black : Colors.transparent,
+                                      color: isSelectedRegion
+                                          ? Colors.black
+                                          : Colors.transparent,
                                     ),
                                   ),
                                 ],
@@ -1792,11 +1875,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget listTowns(Regions region) {
-    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, state) {
       if (state is CountriesLoaded) {
         final townSelect = state.selectTown;
-        final isSelectedEveryTown =
-            state.town.every((town) => townSelect.any((choosenTown) => choosenTown.id == town.id));
+        final isSelectedEveryTown = state.town.every((town) =>
+            townSelect.any((choosenTown) => choosenTown.id == town.id));
         return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -1821,7 +1905,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   CustomIconButton(
                     onBackPressed: () {
-                      BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                      BlocProvider.of<SearchBloc>(context)
+                          .add(OpenSlidingPanelToEvent(686.h));
                       typeFilter = TypeFilter.region;
                     },
                     icon: SvgImg.arrowRight,
@@ -1854,9 +1939,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         activeColor: ColorStyles.yellowFFD70B,
                         value: isSelectedEveryTown,
                         onChanged: (value) {
-                          for (var element in towns) {
-                            context.read<CountriesBloc>().add(ChangeTownEvent(element));
-                          }
+                          // for (var element in towns) {
+                          //   context.read<CountriesBloc>().add(ChangeTownEvent(element));
+                          // }
                         },
                       ),
                     ],
@@ -1871,10 +1956,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   itemCount: towns.length,
                   padding: EdgeInsets.only(left: 10.w),
                   itemBuilder: ((context, index) {
-                    final isSelectedTown = townSelect.any((element) => towns[index].id == element.id);
+                    final isSelectedTown = townSelect
+                        .any((element) => towns[index].id == element.id);
                     return GestureDetector(
                       onTap: () {
-                        context.read<CountriesBloc>().add(ChangeTownEvent(towns[index]));
+                        // context.read<CountriesBloc>().add(ChangeTownEvent(towns[index]));
                         setState(() {});
                       },
                       child: Container(
@@ -1926,7 +2012,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           children: [
             CustomIconButton(
               onBackPressed: () {
-                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+                BlocProvider.of<SearchBloc>(context)
+                    .add(OpenSlidingPanelToEvent(686.h));
                 typeFilter = TypeFilter.main;
               },
               icon: SvgImg.arrowRight,
@@ -2003,7 +2090,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : 'Выберите дату завершения задачи',
+                      endDate != null
+                          ? DateFormat('dd.MM.yyyy').format(endDate!)
+                          : 'Выберите дату завершения задачи',
                       style: CustomTextStyle.black_14_w400_171716,
                     ),
                   ],
@@ -2039,7 +2128,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'Готово',
-                                  style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
                                   if (index == 0 && startDate == null) {
@@ -2064,8 +2154,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
                         initialDateTime: index == 0 ? startDate : endDate,
-                        minimumDate: index == 1 && startDate != null ? startDate : null,
-                        maximumDate: index == 0 && endDate != null ? endDate : null,
+                        minimumDate:
+                            index == 1 && startDate != null ? startDate : null,
+                        maximumDate:
+                            index == 0 && endDate != null ? endDate : null,
                         onDateTimeChanged: (val) {
                           if (index == 0) {
                             startDate = val;

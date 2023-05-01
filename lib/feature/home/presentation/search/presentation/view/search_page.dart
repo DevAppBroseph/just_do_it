@@ -66,8 +66,6 @@ class _SearchPageState extends State<SearchPage> {
   void initFunc() {
     BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
     access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<CountriesBloc>().add(GetCountryEvent(access));
-    context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
   }
 
   void getHistoryList() async {

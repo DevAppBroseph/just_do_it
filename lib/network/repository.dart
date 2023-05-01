@@ -93,7 +93,8 @@ class Repository {
       if (countries != null && countries.isNotEmpty) "countries": countries,
       if (towns != null && towns.isNotEmpty) "towns": towns,
       if (regions != null && regions.isNotEmpty) "towns": regions,
-      if (subcategory != null && subcategory.isNotEmpty) "subcategory": subcategory,
+      if (subcategory != null && subcategory.isNotEmpty)
+        "subcategory": subcategory,
       "as_customer": customer,
     };
 
@@ -181,7 +182,8 @@ class Repository {
 
   // регистрация профиля
   // auth/ post
-  Future<Map<String, dynamic>?> confirmRegister(UserRegModel userRegModel) async {
+  Future<Map<String, dynamic>?> confirmRegister(
+      UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -216,7 +218,9 @@ class Repository {
     final response = await dio.patch(
       '$server/profile/',
       data: photo != null ? data : map,
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
@@ -241,7 +245,9 @@ class Repository {
     final response = await dio.patch(
       '$server/profile/',
       data: file != null ? data : map,
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
@@ -251,14 +257,17 @@ class Repository {
     }
   }
 
-  Future<UserRegModel?> updateUser(String? access, UserRegModel userRegModel) async {
+  Future<UserRegModel?> updateUser(
+      String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
     final response = await dio.patch(
       '$server/profile/',
       data: data,
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
@@ -269,7 +278,8 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
+  Future<String?> confirmCodeRegistration(
+      String phone, String code, int? refCode) async {
     final response = await dio.put(
       '$server/auth/',
       data: {
@@ -316,7 +326,12 @@ class Repository {
   ) async {
     final response = await dio.put(
       '$server/auth/',
-      data: {"code": code, "phone_number": phone, "update_passwd": true, "password": updatePassword},
+      data: {
+        "code": code,
+        "phone_number": phone,
+        "update_passwd": true,
+        "password": updatePassword
+      },
       options: Options(
         validateStatus: ((status) => status! >= 200),
       ),
@@ -333,7 +348,7 @@ class Repository {
   }
 
   // подтвердить код в забыли пароль
-  Future<List<Activities>?> getCategories() async {
+  Future<List<Activities>> getCategories() async {
     final response = await dio.get(
       '$server/auth/categories',
       options: Options(
@@ -348,14 +363,16 @@ class Repository {
       }
       return list;
     }
-    return null;
+    return [];
   }
 
   // get reviews
   Future<Reviews?> getReviews(String? access) async {
     final response = await dio.get(
       '$server/ranking/',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
@@ -390,7 +407,9 @@ class Repository {
     print('object token= $access');
     final response = await dio.get(
       '$server/profile/',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
@@ -450,7 +469,9 @@ class Repository {
   Future<bool> editPassword(String password, String access) async {
     final response = await dio.post(
       '$server/auth/reset_password_confirm',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
       data: {
         "password": password,
       },
@@ -501,7 +522,8 @@ class Repository {
           ChatMessage(
             user: element['sender'] == null
                 ? ChatUser(id: '-1')
-                : ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
+                : ChatUser(
+                    id: Sender.fromJson(element['sender']).id.toString()),
             createdAt: DateTime.parse(element['time']),
             text: element['text'],
           ),
@@ -550,12 +572,16 @@ class Repository {
   Future<List<Levels>> levels(String? access) async {
     final response = await dio.get(
       '$server/levels/',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
     log(response.statusCode.toString());
     if (response.statusCode == 200) {
       log("Levels ${response.data}");
-      return response.data.map<Levels>((article) => Levels.fromJson(article)).toList();
+      return response.data
+          .map<Levels>((article) => Levels.fromJson(article))
+          .toList();
     }
     return [];
   }
@@ -563,12 +589,16 @@ class Repository {
   Future<List<Currency>> currency(String? access) async {
     final response = await dio.get(
       '$server/orders/currencies',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
     log(response.statusCode.toString());
     if (response.statusCode == 200) {
       log("Currency ${response.data}");
-      return response.data.map<Currency>((article) => Currency.fromJson(article)).toList();
+      return response.data
+          .map<Currency>((article) => Currency.fromJson(article))
+          .toList();
     }
     return [];
   }
@@ -576,11 +606,15 @@ class Repository {
   Future<List<Countries>> countries(String? access) async {
     final response = await dio.get(
       '$server/countries/',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
       log("Countries ${response.data}");
-      return response.data.map<Countries>((article) => Countries.fromJson(article)).toList();
+      return response.data
+          .map<Countries>((article) => Countries.fromJson(article))
+          .toList();
     }
     return [];
   }
@@ -588,29 +622,37 @@ class Repository {
   Future<List<Regions>> regions(String? access, Countries countries) async {
     final response = await dio.get(
       '$server/countries/${countries.id}',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
       log("Countries ${response.data}");
       log(response.data['regions'].toString());
-      return response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
+      return response.data['regions']
+          .map<Regions>((article) => Regions.fromJson(article))
+          .toList();
     }
     return [];
   }
 
-  Future<List<Regions>> allRegions(String? access, List<Countries> countries) async {
+  Future<List<Regions>> allRegions(
+      String? access, List<Countries> countries) async {
     List<Regions> regions = [];
     for (var element in countries) {
       log('wddwdadwdadw ${element.name}');
       final response = await dio.get(
         '$server/countries/${element.id}',
-        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+        options: Options(
+            validateStatus: ((status) => status! >= 200),
+            headers: {'Authorization': 'Bearer $access'}),
       );
       if (response.statusCode == 200) {
         log("Countries ${response.data}");
         log(response.data['regions'].toString());
-        regions += response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
-       
+        regions += response.data['regions']
+            .map<Regions>((article) => Regions.fromJson(article))
+            .toList();
       }
     }
     return regions;
@@ -621,13 +663,16 @@ class Repository {
     for (var element in regions) {
       final response = await dio.get(
         '$server/countries/region/${element.id}',
-        options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+        options: Options(
+            validateStatus: ((status) => status! >= 200),
+            headers: {'Authorization': 'Bearer $access'}),
       );
       if (response.statusCode == 200) {
         log("Countries ${response.data}");
         log(response.data['towns'].toString());
-        towns += response.data['towns'].map<Town>((article) => Town.fromJson(article)).toList();
-       
+        towns += response.data['towns']
+            .map<Town>((article) => Town.fromJson(article))
+            .toList();
       }
     }
     return towns;
@@ -636,12 +681,16 @@ class Repository {
   Future<List<Town>> towns(String? access, Regions regions) async {
     final response = await dio.get(
       '$server/countries/region/${regions.id}',
-      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
     );
 
     if (response.statusCode == 200) {
       log(response.data['towns'].toString());
-      return response.data['towns'].map<Town>((article) => Town.fromJson(article)).toList();
+      return response.data['towns']
+          .map<Town>((article) => Town.fromJson(article))
+          .toList();
     }
     return [];
   }
@@ -680,7 +729,9 @@ class Repository {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }

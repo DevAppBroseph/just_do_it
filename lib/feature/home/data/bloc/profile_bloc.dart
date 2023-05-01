@@ -78,10 +78,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void _getCategories(
       GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
     List<Activities>? res = await Repository().getCategories();
-    activities = res ?? [];
-    if (res != null) {
-      emit(GetCategoriesProfileState(activities: res));
-    }
+    activities = res;
+    emit(GetCategoriesProfileState(activities: res));
   }
 
   void _updateProfilePhoto(

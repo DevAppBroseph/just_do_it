@@ -57,9 +57,6 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<CountriesBloc>().add(GetCountryEvent(access));
-    context.read<CurrencyBloc>().add(GetCurrencyEvent(access));
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
 
@@ -68,7 +65,7 @@ class _CreatePageState extends State<CreatePage> {
         activities.clear();
         activities.addAll(current.res);
       }
-      return false;
+      return true;
     }, builder: (context, snapshot) {
       print(activities.length);
       return MediaQuery(
