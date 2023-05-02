@@ -494,7 +494,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'По странам',
+                            'Страны',
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),

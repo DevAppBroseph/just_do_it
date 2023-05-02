@@ -111,9 +111,13 @@ class _TaskViewState extends State<TaskView> {
                 height: 24.h,
               ),
               SizedBox(width: 8.h),
-              Text(
-                '${widget.selectTask.activities?.description ?? '-'}, ${widget.selectTask.subcategory?.description ?? '-'}',
-                style: CustomTextStyle.black_12_w400_292D32,
+              SizedBox(
+                width: 260,
+                child: Text(
+                  '${widget.selectTask.activities?.description ?? '-'}, ${widget.selectTask.subcategory?.description ?? '-'}',
+                  style: CustomTextStyle.black_12_w400_292D32,
+                   softWrap: true,
+                ),
               ),
             ],
           ),
