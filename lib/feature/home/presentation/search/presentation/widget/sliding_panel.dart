@@ -217,7 +217,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             currencyString!.isNotEmpty) {
                           countField++;
                         }
-                       
+
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,
@@ -1056,8 +1056,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       children: [
         GestureDetector(
           onTap: () {
-            currencyString = currency.name;
-            selectCurrency = currency;
+            if (currency.id == selectCurrency?.id) {
+              currencyString = null;
+              selectCurrency = null;
+            } else {
+              currencyString = currency.name;
+              selectCurrency = currency;
+            }
+
             BlocProvider.of<SearchBloc>(context)
                 .add(OpenSlidingPanelToEvent(686.h));
             typeFilter = TypeFilter.main;
@@ -1075,6 +1081,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                     const Spacer(),
+                    if (currency.id == selectCurrency?.id) Icon(Icons.check),
                   ],
                 ),
                 const Spacer(),

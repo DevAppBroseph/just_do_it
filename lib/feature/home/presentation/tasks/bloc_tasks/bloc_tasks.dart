@@ -19,6 +19,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final regions = event.isSelectRegions.map((e) => e.id!).toList();
     final towns = event.isSelectTown.map((e) => e.id!).toList();
     final countries = event.isSelectCountry.map((e) => e.id!).toList();
+    
+
+    log('message ${regions}---${towns}---${countries}');
 
 
 
@@ -36,7 +39,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       event.customer,
       event.currency,
     );
-    tasks = tasks;
+    // tasks = tasks;
     // .map((e) => e.id).toList()
     emit(TasksLoaded(event.countFilter, tasks: tasks));
     // log(event.query);

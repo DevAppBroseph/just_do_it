@@ -90,11 +90,11 @@ class Repository {
       if (currency != null) "currency": currency,
       if (countries.isNotEmpty) "countries": countries,
       if (towns.isNotEmpty) "towns": towns,
-      if (regions.isNotEmpty) "towns": regions,
+      if (regions.isNotEmpty) "regions": regions,
       if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
-  log('wqdwqdwqdwqdq ${currency}');
+    log('wqdwqdwqdwqdq ${queryParameters}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -110,6 +110,7 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
+      log('wqdwqdwqdwqdq1212121 ${tasks.length}');
       // final reversedTasks = tasks.reversed;
       return tasks;
     }

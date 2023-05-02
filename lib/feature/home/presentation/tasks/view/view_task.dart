@@ -188,6 +188,7 @@ class _TaskViewState extends State<TaskView> {
           ),
           SizedBox(height: 30.h),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 width: 150.w,
@@ -206,6 +207,7 @@ class _TaskViewState extends State<TaskView> {
                   ],
                 ),
               ),
+              Spacer(),
               SizedBox(
                 width: 150.w,
                 child: Column(
