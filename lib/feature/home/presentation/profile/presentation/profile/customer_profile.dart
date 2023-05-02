@@ -176,15 +176,19 @@ class _CustomerProfileState extends State<CustomerProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 290.w,
-                  child: AutoSizeText(
-                    '${user.firstname ?? ''} ${user.lastname ?? ''}',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                    maxLines: 3,
-                    softWrap: true,
+                Padding(
+                  padding: EdgeInsets.only(left: 5.w),
+                  child: SizedBox(
+                    width: 290.w,
+                    child: AutoSizeText(
+                      '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                      // 'Мухалабада Мухаабдулаев',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30.sp, fontWeight: FontWeight.w800),
+                      maxLines: 2,
+                      softWrap: true,
+                    ),
                   ),
                 ),
                 SizedBox(width: 5.w),
