@@ -271,6 +271,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- страну';
                           errorsFlag = true;
                         }
+                         if (currency == null) {
+                          error += '\n- валюту';
+                          errorsFlag = true;
+                        }
                         if (regions.isEmpty) {
                           error += '\n- регион';
                           errorsFlag = true;
