@@ -55,6 +55,7 @@ class _CeateTasksState extends State<CeateTasks> {
   List<Regions> regions = [];
   List<Countries> countries = [];
   List<Town> towns = [];
+  Currency? currency;
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -225,13 +226,15 @@ class _CeateTasksState extends State<CeateTasks> {
                         selectRegion: regions,
                         selectCountry: countries,
                         selectTown: towns,
+                        currecy: currency,
                         onEdit:
-                            (regions, startDate, endDate, countries, towns) {
+                            (regions, startDate, endDate, countries, towns, currency) {
                           this.regions = regions;
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.towns = towns;
+                          this.currency = currency;
                           setState(() {});
                         },
                       ),
@@ -291,10 +294,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                          Currency currency = Currency(false,
-                              id: 1,
-                              name: 'Российский рубль',
-                              shortName: 'RUB');
+                         
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,

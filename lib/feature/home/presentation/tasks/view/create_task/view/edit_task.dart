@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -49,7 +50,7 @@ class _EditTasksState extends State<EditTasks> {
   List<Regions> region = [];
   List<Countries> countries = [];
   List<Town> town = [];
-
+  Currency? currency;
   Activities? selectCategory;
   Subcategory? selectSubCategory;
 
@@ -233,12 +234,14 @@ class _EditTasksState extends State<EditTasks> {
                         selectRegion: region,
                         selectCountry: countries,
                         selectTown: town,
-                        onEdit: (region, startDate, endDate, countries, town) {
+                        currecy: currency,
+                        onEdit: (region, startDate, endDate, countries, town, currency) {
                           this.region = region;
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.town = town;
+                          this.currency = currency;
                         },
                       ),
                     ],

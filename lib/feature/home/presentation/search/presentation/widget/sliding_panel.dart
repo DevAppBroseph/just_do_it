@@ -217,7 +217,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             currencyString!.isNotEmpty) {
                           countField++;
                         }
-
+                       
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,
@@ -497,7 +497,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'По странам',
+                            'Страны',
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),

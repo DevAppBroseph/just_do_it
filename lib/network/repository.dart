@@ -94,9 +94,7 @@ class Repository {
       if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
-
-    log('message queryParameters ${queryParameters}');
-
+  log('wqdwqdwqdwqdq ${currency}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
