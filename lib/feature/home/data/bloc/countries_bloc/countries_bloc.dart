@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -21,13 +19,9 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   void _getCountries(
       GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
-    log('message 1');
-
     if (event.access != null) {
-      log('message 2');
       country = await Repository().countries(event.access);
     } else {
-      log('message 3');
       emit(CountriesError());
     }
   }

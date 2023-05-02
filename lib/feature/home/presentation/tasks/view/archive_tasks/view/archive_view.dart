@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -27,7 +24,7 @@ class ArchiveTasksView extends StatefulWidget {
 class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   List<Task> taskList = [];
   Task? selectTask;
-Owner? owner;
+  Owner? owner;
   @override
   void initState() {
     super.initState();
@@ -137,7 +134,8 @@ Owner? owner;
       ),
     );
   }
-   Widget view() {
+
+  Widget view() {
     if (owner != null) {
       return Expanded(child: ProfileView(owner: owner!));
     }

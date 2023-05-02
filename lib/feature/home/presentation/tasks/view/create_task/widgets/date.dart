@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,7 +202,6 @@ class _DatePickerState extends State<DatePicker> {
                         if (widget.startDate != null)
                           Text(
                             DateFormat('dd.MM.yyyy').format(widget.startDate!),
-                            // : 'Выберите дату начала выполнения',
                             style: CustomTextStyle.black_14_w400_171716,
                           ),
                       ],
@@ -245,7 +243,6 @@ class _DatePickerState extends State<DatePicker> {
                         if (widget.endDate != null)
                           Text(
                             DateFormat('dd.MM.yyyy').format(widget.endDate!),
-                            // : 'Выберите дату завершения задачи',
                             style: CustomTextStyle.black_14_w400_171716,
                           ),
                       ],
@@ -615,23 +612,13 @@ class _DatePickerState extends State<DatePicker> {
                       child: GestureDetector(
                         onTap: () {
                           List<Countries> list = widget.selectCountry;
-                          // bool select = false;
-                          // for (int i = 0; i < list.length; i++) {
-                          //   if (e.id == list[i].id) {
-                          //     select = true;
-                          //     break;
-                          //   }
-                          // }
                           if (select) {
                             list.remove(e);
                           } else {
                             list.add(e);
                           }
-                          log('message ${widget.selectRegion}');
-                          // if (list.isEmpty) {
                           openRegion = false;
                           openTown = false;
-                          // }
                           widget.onEdit(
                             widget.selectRegion,
                             widget.startDate,
@@ -761,7 +748,6 @@ class _DatePickerState extends State<DatePicker> {
                             List<Regions> list = widget.selectRegion;
                             Regions? regDel;
                             for (int i = 0; i < list.length; i++) {
-                              log('message asdasd ${e.name} ${list[i].name}');
                               if (e.id == list[i].id) {
                                 regDel = list[i];
                                 break;
@@ -900,7 +886,6 @@ class _DatePickerState extends State<DatePicker> {
                           break;
                         }
                       }
-                      // log('message asdasd ${widget.selectTown} ${e.name}');
                       return Padding(
                         padding: EdgeInsets.only(left: 20.w, right: 20.w),
                         child: GestureDetector(
@@ -956,49 +941,7 @@ class _DatePickerState extends State<DatePicker> {
                       );
                     },
                   ).toList(),
-                  // : allTown
-                  //     .map(
-                  //       (e) => Padding(
-                  //         padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  //         child: GestureDetector(
-                  //           onTap: () {
-                  //             widget.onEdit(
-                  //                 widget.selectRegion,
-                  //                 widget.startDate,
-                  //                 widget.endDate,
-                  //                 widget.selectCountry,
-                  //                 townsSelect);
-                  //             setState(() {});
-                  //           },
-                  //           child: Container(
-                  //             color: Colors.transparent,
-                  //             height: 40.h,
-                  //             child: Column(
-                  //               mainAxisAlignment: MainAxisAlignment.center,
-                  //               children: [
-                  //                 Row(
-                  //                   children: [
-                  //                     SizedBox(
-                  //                       width: 250.w,
-                  //                       child: Text(
-                  //                         e.name!,
-                  //                         style: CustomTextStyle
-                  //                             .black_14_w400_515150,
-                  //                       ),
-                  //                     ),
-                  //                     const Spacer(),
-                  //                     if (widget.selectTown.contains(e))
-                  //                       const Icon(Icons.check)
-                  //                   ],
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ),
-                )
-                //     .toList()),
-                ),
+                )),
             Row(
               children: [
                 const Spacer(),

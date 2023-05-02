@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/notification.dart' as notifModel;
@@ -101,10 +98,6 @@ class NotificationPage extends StatelessWidget {
                   ),
                 ),
               ),
-              // Text(
-              //   'Удалить аккаунт',
-              //   style: CustomTextStyle.black_14_w500_171716,
-              // ),
               SizedBox(height: 52.h),
             ],
           ),

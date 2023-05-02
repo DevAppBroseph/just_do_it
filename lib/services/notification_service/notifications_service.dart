@@ -1,13 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/firebase_options.dart';
 import 'package:just_do_it/services/notification_service/i_notifications_service.dart';
-
 
 class NotificationService implements INotificationService {
   Future<void> inject() async {
@@ -16,8 +13,9 @@ class NotificationService implements INotificationService {
       await fcmInit(plugin);
       await getToken();
       await plugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel( const AndroidNotificationChannel(
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(const AndroidNotificationChannel(
             'default_notification_channel',
             'Notifications',
             description: 'This channel is used for notifications.',
@@ -34,15 +32,13 @@ class NotificationService implements INotificationService {
       onTapWhenAppBg(
         onTap: () {},
       );
-    } catch (e) {
-    log(e.toString());
-    }
+    } catch (e) {}
   }
 
-  
   @override
   Future<void> fcmInit(FlutterLocalNotificationsPlugin plugin) async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
 
     FirebaseMessaging fcm = FirebaseMessaging.instance;
     final result = await fcm.requestPermission(
@@ -54,13 +50,11 @@ class NotificationService implements INotificationService {
       provisional: false,
       sound: true,
     );
-    log('AuthorizationStatus: ${result.authorizationStatus}');
   }
 
   @override
   Future getToken() async {
     final token = await FirebaseMessaging.instance.getToken();
-    log('[FCM Token] $token');
     return token;
   }
 
@@ -68,7 +62,6 @@ class NotificationService implements INotificationService {
   Future<void> listener({FlutterLocalNotificationsPlugin? plugin}) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification? notification = message.notification;
-      // AndroidNotification? android = message.notification?.android;
       if (notification != null) {
         plugin?.show(
           notification.hashCode,
@@ -97,7 +90,6 @@ class NotificationService implements INotificationService {
         } else {
           await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
         }
-        log("[Firebase] Handling a background message: ${message.messageId}");
       },
     );
   }

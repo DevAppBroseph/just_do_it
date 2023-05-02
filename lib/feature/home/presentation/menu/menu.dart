@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +19,6 @@ class MenuPage extends StatelessWidget {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
-        // backgroundColor: ColorStyles.whiteF5F5F5,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -54,17 +52,6 @@ class MenuPage extends StatelessWidget {
                 children: [
                   itemMenu('assets/icons/add_circle.svg', 'Создать задание',
                       () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => CreatePage(
-                    //       onBackPressed: () {
-                    //         Navigator.pop(context);
-                    //       },
-                    //       whichPage: WhichPage.menu,
-                    //     ),
-                    //   ),
-                    // );
                     Navigator.pop(context, 'create');
                   }),
                   itemMenu('assets/icons/search2.svg', 'Найти задания', () {

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +9,6 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/models/review.dart';
-import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:just_do_it/widget/back_icon_button_white.dart';
 
 class RatingPage extends StatefulWidget {
@@ -131,7 +128,6 @@ class _RatingPageState extends State<RatingPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SizedBox(width: 16.w),
           ClipOval(
             child: SizedBox.fromSize(
               size: Size.fromRadius(25.r),
@@ -258,21 +254,8 @@ class _RatingPageState extends State<RatingPage> {
                         width: 34.h,
                         imageUrl: review.reviewerDetails.photo!,
                         fit: BoxFit.cover,
-                      )
-                // : Image.network(
-                //     BlocProvider.of<ProfileBloc>(context)
-                //         .user!
-                //         .photoLink!,
-                //     fit: BoxFit.cover,
-                //   ),
-                ),
+                      )),
           ),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: ColorStyles.shadowFC6554,
-          //     borderRadius: BorderRadius.circular(50.r),
-          //   ),
-          // ),
           SizedBox(width: 16.w),
           Stack(
             children: [
@@ -280,22 +263,10 @@ class _RatingPageState extends State<RatingPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SizedBox(
-                  //   width: width - (66 + 50),
-                  //   child: Row(
-                  //     children: [
                   Text(
                     '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
                     style: CustomTextStyle.black_14_w500_171716,
                   ),
-                  //       const Spacer(),
-                  //       Text(
-                  //         '01.04.2023',
-                  //         style: CustomTextStyle.grey_11_w400,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   SizedBox(height: 12.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,

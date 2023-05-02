@@ -17,7 +17,6 @@ class MessageDialogs {
   }) {
     SmartDialog.showToast(
       message,
-      // clickMaskDismiss: true,
       usePenetrate: false,
       clickMaskDismiss: true,
       consumeEvent: true,

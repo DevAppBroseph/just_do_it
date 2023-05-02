@@ -1,13 +1,8 @@
-import 'dart:math' as math;
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
-import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:just_do_it/widget/back_icon_button_white.dart';
 import 'package:open_file/open_file.dart';
 

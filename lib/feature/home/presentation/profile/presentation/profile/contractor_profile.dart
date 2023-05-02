@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -128,7 +126,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
-      log('message ${result.files.first.path!.split('.').last}');
       this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
@@ -314,7 +311,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       width: 290.w,
                       child: AutoSizeText(
                         '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
-                        // 'Мухалабада Мухаабдулаев',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 30.sp, fontWeight: FontWeight.w800),
@@ -337,7 +333,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ],
               ),
-
               SizedBox(height: 18.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -736,17 +731,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           context,
                           _categoryButtonKey,
                           (value) {
-                            // String str = '';
-                            // if (value.isNotEmpty) {
-                            //   str = value.first;
-                            // }
-
-                            // if (value.length > 1) {
-                            //   for (int i = 1; i < typeCategories.length; i++) {
-                            //     str += ', ${typeCategories[i]}';
-                            //   }
-                            // }
-
                             List<int> activityIndexes = [];
 
                             typeCategories.forEach((element) {
@@ -761,8 +745,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             );
                             BlocProvider.of<ProfileBloc>(context)
                                 .add(UpdateProfileEvent(user));
-
-                            // categoryController.text = str;
 
                             setState(() {});
                           },
@@ -876,9 +858,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   .copyWith(
                                       activity: experienceController.text);
 
-                              print(BlocProvider.of<ProfileBloc>(context)
-                                  .user
-                                  ?.activity);
                               setState(() {});
                             },
                           ),
@@ -968,10 +947,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 EdgeInsets.only(right: 10.w),
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
-                                              // border: Border.all(
-                                              //   width: 1,
-                                              //   color: Colors.black,
-                                              // ),
                                               shape: BoxShape.circle,
                                             ),
                                             alignment: Alignment.center,
@@ -1116,20 +1091,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
-              //     BlocProvider.of<ProfileBloc>(context).setUser(null);
-              //     Navigator.of(context)
-              //         .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
-              //   },
-              //   child: Center(
-              //     child: Text(
-              //       'Удалить аккаунт',
-              //       style: CustomTextStyle.black_13_w500_171716,
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: widget.padding + 50.h),
             ],
           ),
@@ -1170,7 +1131,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
           ],
         ),
       ),
-      // color: Colors.red,
     );
   }
 }

@@ -182,7 +182,6 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     width: 290.w,
                     child: AutoSizeText(
                       '${user.firstname ?? ''} ${user.lastname ?? ''}',
-                      // 'Мухалабада Мухаабдулаев',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 30.sp, fontWeight: FontWeight.w800),

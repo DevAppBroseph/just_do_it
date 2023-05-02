@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -268,7 +266,6 @@ void iconSelectModalCategories(
                               itemBuilder: (context, index) {
                                 return ElevatedButton(
                                   onPressed: () {
-                                    log('message ${selectCategories.length}');
                                     if (selectCategories.length > 1) {
                                       if (selectCategories.length < 3) {
                                         if (selectCategories.contains(
@@ -463,8 +460,6 @@ void showCountryWidget(
                                   onPressed: () {
                                     onTap(list[index]);
                                     Navigator.of(context).pop();
-
-                                    // setState((() {}));
                                   },
                                   style: ButtonStyle(
                                       padding: const MaterialStatePropertyAll(
@@ -625,8 +620,6 @@ void showRegionWidget(
                                   onPressed: () {
                                     onTap(list[index]);
                                     Navigator.of(context).pop();
-
-                                    // setState((() {}));
                                   },
                                   style: ButtonStyle(
                                       padding: const MaterialStatePropertyAll(

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +25,6 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
-import 'package:just_do_it/widget/dialog.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,7 +47,6 @@ class _HomePageState extends State<HomePage> {
     access = await Storage().getAccessToken();
     String? refCode = event.link.queryParameters['ref_code'];
     String? userProfile = event.link.queryParameters['user_profile'];
-    log('OPEN WITH REFCODE $refCode');
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
@@ -90,7 +87,6 @@ class _HomePageState extends State<HomePage> {
       String? access = BlocProvider.of<ProfileBloc>(context).access;
       BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent(access));
       BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent(access));
-      // panelController.close();
       if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
@@ -167,7 +163,6 @@ class _HomePageState extends State<HomePage> {
                     page = 5;
                     streamController.add(4);
                   }, selectUser),
-                  // PersonalAccountPage(),
                   WelcomPage(selectUser)
                 ],
               );

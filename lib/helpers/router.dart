@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone_code.dart';
@@ -75,7 +73,6 @@ class AppRoute {
       case about:
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
-        log('message ${route.arguments}');
         List<dynamic> arg = route.arguments as List<dynamic>;
 
         return MaterialPageRoute(

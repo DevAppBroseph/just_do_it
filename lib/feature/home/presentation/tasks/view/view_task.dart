@@ -55,9 +55,7 @@ class _TaskViewState extends State<TaskView> {
                 onTap: () => taskMoreDialog(
                   context,
                   getWidgetPosition(globalKey),
-                  (index) {
-                    // Navigator.pop(context);
-                  },
+                  (index) {},
                 ),
                 child: SvgPicture.asset(
                   'assets/icons/more-circle.svg',
@@ -92,7 +90,6 @@ class _TaskViewState extends State<TaskView> {
                 ],
               ),
             ),
-          // SizedBox(height: 22.h),
           if (widget.selectTask.currency?.name == null)
             Text(
               'до ${widget.selectTask.priceTo} ₽',
@@ -118,7 +115,6 @@ class _TaskViewState extends State<TaskView> {
               'до ${widget.selectTask.priceTo} €',
               style: CustomTextStyle.black_17_w500_171716,
             ),
-
           SizedBox(height: 12.h),
           Text(
             widget.selectTask.name,

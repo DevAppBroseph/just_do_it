@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
@@ -61,7 +60,6 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      // final reversedTasks = tasks.reversed;
       return tasks;
     }
     return tasks;
@@ -94,7 +92,6 @@ class Repository {
       if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
-    log('wqdwqdwqdwqdq ${queryParameters}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -110,8 +107,6 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      log('wqdwqdwqdwqdq1212121 ${tasks.length}');
-      // final reversedTasks = tasks.reversed;
       return tasks;
     }
     return tasks;
@@ -120,8 +115,6 @@ class Repository {
   Future<bool> createTask(String access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
-
-    log('message data create ${data}');
 
     final response = await dio.post(
       '$server/orders/',
@@ -325,8 +318,6 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       await Storage().setAccessToken(accessToken);
@@ -392,7 +383,6 @@ class Repository {
 
   // profile/ get
   Future<UserRegModel?> getProfile(String access) async {
-    print('object token= $access');
     final response = await dio.get(
       '$server/profile/',
       options: Options(

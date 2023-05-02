@@ -32,11 +32,3 @@ class GetTasksEvent extends TasksEvent {
     this.customer,
   });
 }
-// class SearchTasksEvent extends TasksEvent {
-//   final String? tasksName;
-//   String? access;
-//   SearchTasksEvent(this.access, {required this.tasksName});
-// }
-
-
-

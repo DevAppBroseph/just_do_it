@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +112,6 @@ class _ContractorState extends State<Contractor> {
         File? file = File(pickedFile.path);
         files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
       }
-      // photos.clear();
       setState(() {
         photos.addAll(files);
         user.copyWith(images: photos);
@@ -193,7 +190,6 @@ class _ContractorState extends State<Contractor> {
         Loader.hide();
         if (current is CheckUserState) {
           if (current.error != null) {
-            //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
             showAlertToast(
                 'Пользователь с такой почтой или номером телефона уже зарегистрирован');
           } else {
@@ -515,13 +511,6 @@ class _ContractorState extends State<Contractor> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
           ],
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
@@ -529,21 +518,6 @@ class _ContractorState extends State<Contractor> {
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            // setState(() {});
-            print(value);
-            // if (value.length == 1 && !value.contains('+')) {
-            //   print('12312312');
-            //   phoneController.text = '+$value';
-            //   phoneController.selection =
-            //       TextSelection.collapsed(offset: phoneController.text.length);
-            // }
-            // print(value);
-            // if (value.contains('+7')) {
-            //   countryCode = CountryCode.ru;
-            // } else if (value.contains('+9')) {
-            //   countryCode = CountryCode.oae;
-            // }
-
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -680,9 +654,7 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
@@ -815,7 +787,6 @@ class _ContractorState extends State<Contractor> {
               regionController.text = '';
               user.copyWith(country: countryController.text);
               setState(() {});
-              print(countryController.text);
             },
             country,
             'Выберите страну',
@@ -959,7 +930,6 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                // key: _categoryButtonKey,
                 hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,
@@ -1617,8 +1587,6 @@ class _ContractorState extends State<Contractor> {
   }
 
   void documentEdit() {
-    print(
-        'Серия: ${serialDocController.text} Номер: ${numberDocController.text} Кем выдан: ${whoGiveDocController.text} Дата выдачи: ${dateDocController.text}');
     user.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',

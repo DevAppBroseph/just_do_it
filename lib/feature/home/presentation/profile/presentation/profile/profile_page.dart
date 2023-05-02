@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
@@ -36,9 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
             backgroundColor: ColorStyles.whiteFFFFFF,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
-              // if (snapshot is LoadProfileState) {
-              //   return const CupertinoActivityIndicator();
-              // }
               return SafeArea(
                 child: Column(
                   children: [
@@ -83,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: 40.h,
                                 width: widthTabBarItem,
                                 decoration: BoxDecoration(
-                                  color:  ColorStyles.yellowFFD70A,
+                                  color: ColorStyles.yellowFFD70A,
                                   borderRadius: BorderRadius.only(
                                     topLeft: !state
                                         ? Radius.circular(20.r)
@@ -127,15 +121,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     },
                                     child: Container(
                                       color: Colors.transparent,
-                                      
                                       child: Center(
-                                        child: Text(
-                                          'Как исполнитель',
-                                          style: 
-                                               CustomTextStyle
-                                                  .black_14_w400_171716
-                                              
-                                        ),
+                                        child: Text('Как исполнитель',
+                                            style: CustomTextStyle
+                                                .black_14_w400_171716),
                                       ),
                                     ),
                                   ),
@@ -167,8 +156,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       child: Center(
                                         child: Text(
                                           'Как заказчик',
-                                          style:CustomTextStyle
-                                                  .black_14_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_14_w400_171716,
                                         ),
                                       ),
                                     ),

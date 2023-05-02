@@ -1,8 +1,5 @@
 part of 'currency_bloc.dart';
 
-
-
-
 class CurrencyState {}
 
 class CurrencyEmpty extends CurrencyState {}
@@ -16,5 +13,3 @@ class CurrencyLoaded extends CurrencyState {
 }
 
 class CurrencyError extends CurrencyState {}
-
-

@@ -1,15 +1,10 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
-import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
@@ -196,19 +191,6 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               }
                               setState(() {});
-                              // context.read<TasksBloc>().add(
-                              //       GetTasksEvent(
-                              //         access: access,
-                              //         query: value,
-                              //         dateEnd: '',
-                              //         dateStart: '',
-                              //         priceFrom: 0,
-                              //         priceTo: 50000000,
-                              //         subcategory: [],
-                              //         countFilter: null,
-                              //         customer: null,
-                              //       ),
-                              //     );
                             },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 11.w, vertical: 11.h),
@@ -254,8 +236,6 @@ class _SearchPageState extends State<SearchPage> {
                         });
                         FocusScope.of(context).unfocus();
                         Storage().setListHistory(value);
-                        // BlocProvider.of<ProfileBloc>(context)
-                        //     .add(EditPageSearchEvent(1, value));
 
                         searchController.text = value;
                         getTaskList();
@@ -470,31 +450,31 @@ class _SearchPageState extends State<SearchPage> {
                               ],
                             ),
                           ),
-                          if(task.currency?.name == null)
-                          Text(
-                            'до ${task.priceTo} ₽',
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          if(task.currency?.name == 'Дирхам')
-                          Text(
-                            'до ${task.priceTo} AED',
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          if(task.currency?.name == 'Российский рубль')
-                          Text(
-                            'до ${task.priceTo}  ₽',
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          if(task.currency?.name == 'Доллар США')
-                          Text(
-                            'до ${task.priceTo} \$',
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          if(task.currency?.name == 'Евро')
-                          Text(
-                            'до ${task.priceTo} €',
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
+                          if (task.currency?.name == null)
+                            Text(
+                              'до ${task.priceTo} ₽',
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
+                          if (task.currency?.name == 'Дирхам')
+                            Text(
+                              'до ${task.priceTo} AED',
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
+                          if (task.currency?.name == 'Российский рубль')
+                            Text(
+                              'до ${task.priceTo}  ₽',
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
+                          if (task.currency?.name == 'Доллар США')
+                            Text(
+                              'до ${task.priceTo} \$',
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
+                          if (task.currency?.name == 'Евро')
+                            Text(
+                              'до ${task.priceTo} €',
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
                           SizedBox(width: 5.w),
                           SizedBox(
                             width: 16.h,

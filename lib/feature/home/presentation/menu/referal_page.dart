@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +30,6 @@ class _ReferalPageState extends State<ReferalPage> {
           'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
       SocialMedia.instagram:
           'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
-      // SocialMedia.tiktok:
-      //     'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
-      // SocialMedia.email: 'mailto:?body=$text\n$urlShare',
     };
     final url = urls[socialplatform]!;
     await launch(url);
@@ -179,7 +174,6 @@ class _ReferalPageState extends State<ReferalPage> {
                       code += user!.link![i];
                     }
                   }
-                  log('message ${code}');
 
                   final res = await FirebaseDynamicLinksService()
                       .share(int.parse(code));
@@ -206,107 +200,6 @@ class _ReferalPageState extends State<ReferalPage> {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 24.w),
-            //   child: Column(
-            //     children: [
-            //       Row(
-            //         children: [
-            //           Expanded(
-            //               child: Container(
-            //             height: 1.h,
-            //             color: ColorStyles.greyF3F3F3,
-            //           )),
-            //           SizedBox(width: 24.w),
-            //           Text(
-            //             'Поделиться',
-            //             style: CustomTextStyle.grey_14_w400,
-            //           ),
-            //           SizedBox(width: 24.w),
-            //           Expanded(
-            //               child: Container(
-            //             height: 1.h,
-            //             color: ColorStyles.greyF3F3F3,
-            //           )),
-            //         ],
-            //       ),
-            //       SizedBox(height: 17.h),
-            //       SizedBox(
-            //         height: 54.h,
-            //         child: ListView(
-            //           shrinkWrap: true,
-            //           scrollDirection: Axis.horizontal,
-            //           children: [
-            //             GestureDetector(
-            //               onTap: () {
-            //                 share(SocialMedia.whatsup);
-            //               },
-            //               child: Container(
-            //                 height: 54.h,
-            //                 width: 54.h,
-            //                 padding: EdgeInsets.all(15.h),
-            //                 decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(10.r),
-            //                   color: ColorStyles.greyF9F9F9,
-            //                 ),
-            //                 child: Image.asset('assets/images/ic_whatsup.png'),
-            //               ),
-            //             ),
-            //             SizedBox(width: 8.h),
-            //             GestureDetector(
-            //               onTap: () {
-            //                 share(SocialMedia.instagram);
-            //               },
-            //               child: Container(
-            //                 height: 54.h,
-            //                 width: 54.h,
-            //                 padding: EdgeInsets.all(15.h),
-            //                 decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(10.r),
-            //                   color: ColorStyles.greyF9F9F9,
-            //                 ),
-            //                 child:
-            //                     Image.asset('assets/images/ic_instagram.png'),
-            //               ),
-            //             ),
-            //             SizedBox(width: 8.h),
-            //             GestureDetector(
-            //               onTap: () {
-            //                 share(SocialMedia.facebook);
-            //               },
-            //               child: Container(
-            //                 height: 54.h,
-            //                 width: 54.h,
-            //                 padding: EdgeInsets.all(15.h),
-            //                 decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(10.r),
-            //                   color: ColorStyles.greyF9F9F9,
-            //                 ),
-            //                 child: Image.asset('assets/images/ic_facebook.png'),
-            //               ),
-            //             ),
-            //             SizedBox(width: 8.h),
-            //             GestureDetector(
-            //               onTap: () {
-            //                 share(SocialMedia.telegram);
-            //               },
-            //               child: Container(
-            //                 height: 54.h,
-            //                 width: 54.h,
-            //                 padding: EdgeInsets.all(15.h),
-            //                 decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(10.r),
-            //                   color: ColorStyles.greyF9F9F9,
-            //                 ),
-            //                 child: Image.asset('assets/images/ic_telegram.png'),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),

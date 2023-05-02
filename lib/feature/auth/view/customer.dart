@@ -146,7 +146,6 @@ class _CustomerState extends State<Customer> {
           Loader.hide();
           if (current is CheckUserState) {
             if (current.error != null) {
-              //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
               showAlertToast(
                   'Пользователь с такой почтой или номером телефона уже зарегистрирован');
             } else {
@@ -196,13 +195,6 @@ class _CustomerState extends State<Customer> {
               SizedBox(height: 10.h),
               CustomButton(
                 onTap: () {
-                  print(emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2);
                   if (page == 0) {
                     requestNextEmptyFocusStage1();
                     String error = 'Укажите:';
@@ -223,16 +215,6 @@ class _CustomerState extends State<Customer> {
                       error += '\n- почту';
                       errorsFlag = true;
                     }
-
-                    // if (emailController.text
-                    //         .split('@')
-                    //         .last
-                    //         .split('.')
-                    //         .last
-                    //         .length <
-                    //     2) {
-                    //   errorsFlag = true;
-                    // }
 
                     String email = emailController.text;
 
@@ -318,7 +300,6 @@ class _CustomerState extends State<Customer> {
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      // error += 'Пароли не совпадают';
                       showAlertToast('Пароли не совпадают');
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
@@ -472,25 +453,10 @@ class _CustomerState extends State<Customer> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            // setState(() {});
-            print(value);
-            // if (value.length == 1 && !value.contains('+')) {
-            //   phoneController.text = '+$value';
-            //   phoneController.selection =
-            //       TextSelection.collapsed(offset: phoneController.text.length);
-            // }
-            // print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -651,9 +617,7 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
@@ -877,7 +841,6 @@ class _CustomerState extends State<Customer> {
             ],
           ),
         ),
-        // SizedBox(height: 16.h),
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 10.h),
         Text(

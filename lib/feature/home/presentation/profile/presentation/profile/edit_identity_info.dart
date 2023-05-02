@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +98,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             ),
             SizedBox(height: 50.h),
             Expanded(child: secondStage(heightKeyBoard)),
-            // const Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(
@@ -426,7 +424,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   Widget additionalInfoWidget() {
-    print(user?.docInfo);
     return ListView(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
@@ -748,7 +745,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   void documentEdit() {
-    print(dateDocController.text);
     user!.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
@@ -764,7 +760,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;
     }
-    print(userRegModel.country);
     if (userRegModel.country != null) {
       countryController.text = userRegModel.country!;
     }
@@ -773,7 +768,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     additionalInfo = true;
     serialDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-    // print(DocumentInfo.fromJson(userRegModel.docInfo!).serial);
     numberDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
     whoGiveDocController.text =
@@ -781,20 +775,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     dateDocController.text =
         DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
 
-    log('message ${dateDocController.text}---${whoGiveDocController.text}');
-
     final start = dateDocController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
-    log('message1 ${regDate.hasMatch(dateDocController.text)}');
     if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
       dateTimeStart = DateTime(
           int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
     }
 
     final end = whoGiveDocController.text.split('.');
-    if (end.isNotEmpty) {
-      // dateTimeEnd =
-      //     DateTime(int.parse(end[2]), int.parse(end[1]), int.parse(end[0]));
-    }
+    if (end.isNotEmpty) {}
   }
 }

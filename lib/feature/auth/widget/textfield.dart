@@ -94,7 +94,6 @@ class CustomTextField extends StatelessWidget {
           height: height,
           width: widthOfScreen,
           child: TextFormField(
-            // key: key,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,
@@ -196,7 +195,6 @@ class CustomTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
-            // key: key,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,

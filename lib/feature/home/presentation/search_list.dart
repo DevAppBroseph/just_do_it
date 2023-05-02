@@ -24,7 +24,6 @@ class _SearchListState extends State<SearchList> {
   Widget build(BuildContext context) {
     return Container(
       height: widget.heightScreen - 100.h - 96.h - 220.h,
-      // width: MediaQuery.of(context).size.width,
       color: Colors.white,
       child: ListView.builder(
         itemCount: widget.array.length,

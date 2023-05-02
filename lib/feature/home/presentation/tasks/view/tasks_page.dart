@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -101,17 +100,14 @@ class _TasksPageState extends State<TasksPage> {
                       decoration: BoxDecoration(
                         color: snapshot.data! == 1
                             ? ColorStyles.greyE0E6EE
-                            :  ColorStyles.yellowFFD70A,
+                            : ColorStyles.yellowFFD70A,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
                           bottomLeft: Radius.circular(20.r),
                         ),
                       ),
-                      child: Text(
-                        'Я исполнитель',
-                        style: CustomTextStyle.black_14_w400_171716
-                           
-                      ),
+                      child: Text('Я исполнитель',
+                          style: CustomTextStyle.black_14_w400_171716),
                     ),
                   ),
                   GestureDetector(
@@ -135,11 +131,8 @@ class _TasksPageState extends State<TasksPage> {
                           bottomRight: Radius.circular(20.r),
                         ),
                       ),
-                      child: Text(
-                        'Я заказчик',
-                        style:  CustomTextStyle.black_14_w400_171716
-                          
-                      ),
+                      child: Text('Я заказчик',
+                          style: CustomTextStyle.black_14_w400_171716),
                     ),
                   ),
                   const Spacer(),
