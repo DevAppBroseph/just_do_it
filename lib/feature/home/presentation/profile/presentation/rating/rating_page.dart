@@ -69,10 +69,7 @@ class _RatingPageState extends State<RatingPage> {
           return SafeArea(
             child: Column(
               children: [
-                Container(
-                  color: ColorStyles.yellowFFD70A,
-                  child: header(reviews!),
-                ),
+                header(reviews!),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -376,105 +373,107 @@ class _RatingPageState extends State<RatingPage> {
 
   Widget header(Reviews reviews) {
     final bloc = BlocProvider.of<ProfileBloc>(context);
-    return Container(
-      color: ColorStyles.yellowFFD70A,
-      child: SizedBox(
-        height: 274.h,
-        child: Column(
-          children: [
-            SizedBox(height: 60.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Рейтинг',
-                      style: CustomTextStyle.black_22_w700,
-                    ),
+    return SizedBox(
+      height: 280.h,
+      child: Column(
+        children: [
+          SizedBox(height: 60.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Рейтинг',
+                    style: CustomTextStyle.black_22_w700,
                   ),
-                  CustomIconButtonWhite(
-                    onBackPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: SvgImg.arrowRight,
-                  ),
-                ],
-              ),
+                ),
+                CustomIconButtonWhite(
+                  onBackPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: SvgImg.arrowRight,
+                  color: ColorStyles.greyBDBDBD,
+                ),
+              ],
             ),
-          
-            Container(
-              height: 127.h,
-              color: ColorStyles.yellowFFD70A,
-              child: Row(
-                children: [
-                  SizedBox(width: 24.w),
-                  SizedBox(
-                    width: 188.w,
-                    child: AutoSizeText(
-                      '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                      style: CustomTextStyle.black_34_w800_171716,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    height: 76.h,
-                    width: 130.h,
-                    padding: EdgeInsets.only(
-                        left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyF3F3F3,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        bottomLeft: Radius.circular(10.r),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Ваш рейтинг',
-                          style: CustomTextStyle.black_14_w400_515150,
+          ),
+          SizedBox(height: 8.h),
+          Container(
+            color: ColorStyles.yellowFFD70A,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 127.h,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 24.w),
+                      SizedBox(
+                        width: 188.w,
+                        child: AutoSizeText(
+                          '${bloc.user?.firstname}\n${bloc.user?.lastname}',
+                          style: CustomTextStyle.black_34_w800_171716,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                        SizedBox(height: 6.h),
-                        Row(
+                      ),
+                      const Spacer(),
+                      Container(
+                        height: 76.h,
+                        width: 130.h,
+                        padding: EdgeInsets.only(
+                            left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyF3F3F3,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.r),
+                            bottomLeft: Radius.circular(10.r),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SvgPicture.asset('assets/icons/star.svg'),
-                            SizedBox(width: 4.w),
                             Text(
-                              reviews.ranking == null
-                                  ? '-'
-                                  : (reviews.ranking!).toString(),
-                              style: CustomTextStyle.black_20_w600,
+                              'Ваш рейтинг',
+                              style: CustomTextStyle.black_14_w400_515150,
+                            ),
+                            SizedBox(height: 6.h),
+                            Row(
+                              children: [
+                                SvgPicture.asset('assets/icons/star.svg'),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  reviews.ranking == null
+                                      ? '-'
+                                      : (reviews.ranking!).toString(),
+                                  style: CustomTextStyle.black_20_w600,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 53.h,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 24.w),
+                      Text(
+                        'Вы выполнили ${reviews.reviewsDetail.length} заданий',
+                        style: CustomTextStyle.black_14_w400_515150,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-           
-            Container(
-              height: 55.h,
-              color: ColorStyles.yellowFFD70A,
-              child: Row(
-                children: [
-                  SizedBox(width: 24.w),
-                  Text(
-                    'Вы выполнили ${reviews.reviewsDetail.length} заданий',
-                    style: CustomTextStyle.black_14_w400_515150,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

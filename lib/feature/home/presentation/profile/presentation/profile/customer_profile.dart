@@ -37,125 +37,154 @@ class _CustomerProfileState extends State<CustomerProfile> {
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 25.h),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 70.h,
-                          width: 70.h,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                  if (image != null) {
-                                    BlocProvider.of<ProfileBloc>(context).add(
-                                      UpdateProfilePhotoEvent(photo: image),
-                                    );
-                                  }
-                                },
-                                child: ClipOval(
-                                  child: SizedBox.fromSize(
-                                      size: Size.fromRadius(30.r),
-                                      child: user!.photoLink == null
-                                          ? Container(
-                                              height: 60.h,
-                                              width: 60.h,
-                                              padding: EdgeInsets.all(10.h),
-                                              decoration: const BoxDecoration(
-                                                color: ColorStyles.shadowFC6554,
-                                              ),
-                                              child: Image.asset('assets/images/camera.png'),
-                                            )
-                                          : CachedNetworkImage(
-                                              imageUrl: user.photoLink!.contains(server)
-                                                  ? user.photoLink!
-                                                  : server + user.photoLink!,
-                                              fit: BoxFit.cover,
-                                            )
-                                      // : Image.network(
-                                      //     BlocProvider.of<ProfileBloc>(context)
-                                      //         .user!
-                                      //         .photoLink!,
-                                      //     fit: BoxFit.cover,
-                                      //   ),
-                                      ),
-                                ),
-                              ),
-                              if (user.photoLink != null)
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      user.photo = null;
-                                      user.photoLink = null;
-                                      BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                      BlocProvider.of<ProfileBloc>(context).add(
-                                        UpdateProfilePhotoEvent(photo: null),
-                                      );
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      height: 20.h,
-                                      width: 20.h,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [BoxShadow(color: Colors.black)],
-                                        borderRadius: BorderRadius.circular(100.r),
-                                        color: Colors.white,
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 10.h,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    Container(
-                      // width: 327.w,
-                   
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 70.h,
+                      width: 70.h,
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          SizedBox(
-                            width: 160.w,
-                            child: AutoSizeText(
-                              ' ${user.firstname ?? ''} ${user.lastname ?? ''}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                              maxLines: 3,
-                              softWrap: true,
-                            ),
-                          ),
                           GestureDetector(
                             onTap: () async {
-                              final code =
-                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(user.id.toString()));
-                              Share.share(code.toString());
+                              var image = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              if (image != null) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateProfilePhotoEvent(photo: image),
+                                );
+                              }
                             },
-                            child: SvgPicture.asset(
-                              'assets/icons/share.svg',
-                              height: 25.h,
+                            child: ClipOval(
+                              child: SizedBox.fromSize(
+                                  size: Size.fromRadius(30.r),
+                                  child: user!.photoLink == null
+                                      ? Container(
+                                          height: 60.h,
+                                          width: 60.h,
+                                          padding: EdgeInsets.all(10.h),
+                                          decoration: const BoxDecoration(
+                                            color: ColorStyles.shadowFC6554,
+                                          ),
+                                          child: Image.asset(
+                                              'assets/images/camera.png'),
+                                        )
+                                      : CachedNetworkImage(
+                                          imageUrl:
+                                              user.photoLink!.contains(server)
+                                                  ? user.photoLink!
+                                                  : server + user.photoLink!,
+                                          fit: BoxFit.cover,
+                                        )),
                             ),
                           ),
+                          if (user.photoLink != null)
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  user.photo = null;
+                                  user.photoLink = null;
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context).add(
+                                    UpdateProfilePhotoEvent(photo: null),
+                                  );
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [BoxShadow(color: Colors.black)],
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 10.h,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                         ],
                       ),
                     ),
-                  ],
+                  ),
+                  SizedBox(width: 21.w),
+                  Expanded(
+                    child: ScaleButton(
+                      bound: 0.02,
+                      child: Container(
+                        height: 68.h,
+                        padding: EdgeInsets.only(left: 16.w),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.yellowFFD70A,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Ваш рейтинг',
+                              style: CustomTextStyle.black_12_w500_515150,
+                            ),
+                            SizedBox(height: 8.h),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/star.svg',
+                                  color: ColorStyles.black,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  reviews?.ranking == null
+                                      ? '-'
+                                      : (reviews!.ranking!).toString(),
+                                  style: CustomTextStyle.black_20_w700_171716,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                   width: 290.w,
+                  child: AutoSizeText(
+                    '${user.firstname ?? ''} ${user.lastname ?? ''}',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
+                    maxLines: 3,
+                    softWrap: true,
+                  ),
+                ),
+                SizedBox(width: 5.w),
+                GestureDetector(
+                  onTap: () async {
+                    final code = await FirebaseDynamicLinksService()
+                        .shareUserProfile(int.parse(user.id.toString()));
+                    Share.share(code.toString());
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/share.svg',
+                    height: 25.h,
+                  ),
                 ),
               ],
             ),
@@ -174,22 +203,96 @@ class _CustomerProfileState extends State<CustomerProfile> {
                           color: ColorStyles.yellowFFD70A,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            Text('Ваш рейтинг', style: CustomTextStyle.black_12_w500_515150),
-                            SizedBox(height: 8.h),
-                            Row(
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset('assets/icons/star.svg', color: ColorStyles.black),
-                                SizedBox(width: 4.w),
                                 Text(
-                                  reviews?.ranking == null ? '-' : (reviews?.ranking!).toString(),
-                                  style: CustomTextStyle.black_20_w700_171716,
+                                  'Ваш грейд',
+                                  style: CustomTextStyle.black_12_w500_515150,
+                                ),
+                                SizedBox(height: 8.h),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Супермен',
+                                      style: CustomTextStyle.purple_20_w700
+                                          .copyWith(fontSize: 19),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            Spacer(),
+                            BlocBuilder<ScoreBloc, ScoreState>(
+                                builder: (context, state) {
+                              if (state is ScoreLoaded) {
+                                final levels = state.levels;
+                                if (user.balance! < levels![0].mustCoins!) {
+                                  return CachedNetworkImage(
+                                    imageUrl: '${levels[0].bwImage}',
+                                    height: 42,
+                                    width: 42,
+                                  );
+                                }
+
+                                if (user.balance! > levels[0].mustCoins! &&
+                                    user.balance! < levels[1].mustCoins!) {
+                                  return Image.network(
+                                    '${levels[0].image}',
+                                    height: 42,
+                                    width: 42,
+                                  );
+                                }
+                                if (user.balance! >= levels[1].mustCoins! &&
+                                    user.balance! < levels[2].mustCoins!) {
+                                  return Image.network(
+                                    levels[1].image != null
+                                        ? '${levels[1].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[2].mustCoins! &&
+                                    user.balance! < levels[3].mustCoins!) {
+                                  return Image.network(
+                                    levels[2].image != null
+                                        ? '${levels[2].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[3].mustCoins! &&
+                                    user.balance! < levels[4].mustCoins!) {
+                                  return Image.network(
+                                    levels[3].image != null
+                                        ? '${levels[3].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[4].mustCoins!) {
+                                  return Image.network(
+                                    levels[4].image != null
+                                        ? '${levels[4].image}'
+                                        : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                              }
+                              return Container();
+                            }),
+                            Spacer(),
                           ],
                         ),
                       ),
@@ -220,68 +323,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 Row(
                                   children: [
                                     Text(
-                                      user.balance.toString(),
+                                      user.balance?.toString() ?? '0',
                                       style: CustomTextStyle.purple_20_w700,
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            const Spacer(),
-                            BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                              if (state is ScoreLoaded) {
-                                final levels = state.levels;
-                                if (user.balance! < levels![0].mustCoins!) {
-                                  return CachedNetworkImage(
-                                    imageUrl: '${levels[0].bwImage}',
-                                    height: 42,
-                                    width: 42,
-                                  );
-                                }
-
-                                if (user.balance! > levels[0].mustCoins! && user.balance! < levels[1].mustCoins!) {
-                                  return Image.network(
-                                    '${levels[0].image}',
-                                    height: 42,
-                                    width: 42,
-                                  );
-                                }
-                                if (user.balance! >= levels[1].mustCoins! && user.balance! < levels[2].mustCoins!) {
-                                  return Image.network(
-                                    levels[1].image != null ? '${levels[1].image}' : '',
-                                    height: 42,
-                                    width: 42,
-                                    fit: BoxFit.fill,
-                                  );
-                                }
-                                if (user.balance! >= levels[2].mustCoins! && user.balance! < levels[3].mustCoins!) {
-                                  return Image.network(
-                                    levels[2].image != null ? '${levels[2].image}' : '',
-                                    height: 42,
-                                    width: 42,
-                                    fit: BoxFit.fill,
-                                  );
-                                }
-                                if (user.balance! >= levels[3].mustCoins! && user.balance! < levels[4].mustCoins!) {
-                                  return Image.network(
-                                    levels[3].image != null ? '${levels[3].image}' : '',
-                                    height: 42,
-                                    width: 42,
-                                    fit: BoxFit.fill,
-                                  );
-                                }
-                                if (user.balance! >= levels[4].mustCoins!) {
-                                  return Image.network(
-                                    levels[4].image != null ? '${levels[4].image}' : '',
-                                    height: 42,
-                                    width: 42,
-                                    fit: BoxFit.fill,
-                                  );
-                                }
-                              }
-                              return Container();
-                            }),
-                            SizedBox(width: 16.w),
                           ],
                         ),
                       ),
@@ -400,7 +448,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
               onTap: () {
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Container(
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -430,10 +479,12 @@ class _CustomerProfileState extends State<CustomerProfile> {
             SizedBox(height: 40.h),
             GestureDetector(
               onTap: () async {
-                await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                await Repository().deleteProfile(
+                    BlocProvider.of<ProfileBloc>(context).access!);
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Center(
                 child: Text(

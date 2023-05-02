@@ -16,9 +16,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   void _getAllTasks(GetTasksEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
     log(event.priceFrom.toString());
-    final regions = event.isSelectRegions?.map((e) => e.id).toList();
-    final towns = event.isSelectTown?.map((e) => e.id).toList();
-    final countries = event.isSelectCountry?.map((e) => e.id).toList();
+    final regions = event.isSelectRegions.map((e) => e.id!).toList();
+    final towns = event.isSelectTown.map((e) => e.id!).toList();
+    final countries = event.isSelectCountry.map((e) => e.id!).toList();
 
 
 

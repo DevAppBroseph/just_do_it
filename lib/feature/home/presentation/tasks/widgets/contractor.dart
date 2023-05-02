@@ -59,7 +59,7 @@ class Contractor extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     Icons.keyboard_arrow_right_rounded,
-                    color: ColorStyles.greyBDBDBD,
+                    color: ColorStyles.whiteFFFFFF,
                   ),
                 ],
               ),
@@ -104,7 +104,7 @@ class Contractor extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     Icons.keyboard_arrow_right_rounded,
-                    color: ColorStyles.greyBDBDBD,
+                    color: ColorStyles.whiteFFFFFF,
                   ),
                 ],
               ),

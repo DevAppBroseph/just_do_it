@@ -576,6 +576,7 @@ class _DatePickerState extends State<DatePicker> {
                         child: GestureDetector(
                           onTap: () {
                             openRegion = false;
+                            openTown = false;
 
                             List<Countries> list = widget.selectCountry;
                             if (list.contains(e)) {
@@ -753,7 +754,7 @@ class _DatePickerState extends State<DatePicker> {
                     },
                     child: CustomTextField(
                       fillColor: ColorStyles.greyF9F9F9,
-                      hintText: 'Выбрать подрегион',
+                      hintText: 'Выбрать район',
                       hintStyle: CustomTextStyle.grey_14_w400,
                       height: 55.h,
                       enabled: false,
@@ -914,13 +915,12 @@ class _DatePickerState extends State<DatePicker> {
 
   String _countriesString(List<Countries> selectCountries) {
     String nameCountries = '';
-    String src = '';
     for (int i = 0; i < selectCountries.length; i++) {
-      src = '${selectCountries[i].name!}, ';
       if (i == selectCountries.length - 1) {
-        src = src.replaceAll(',', '');
+        nameCountries += '${selectCountries[i].name}';
+      } else {
+        nameCountries += '${selectCountries[i].name}, ';
       }
-      nameCountries += src;
     }
     if (selectCountries.length == 1) {
       nameCountries = nameCountries.replaceAll(',', '');
@@ -930,13 +930,12 @@ class _DatePickerState extends State<DatePicker> {
 
   String _regionsString(List<Regions> selectRegions) {
     String nameRegions = '';
-    String src = '';
     for (int i = 0; i < selectRegions.length; i++) {
-      src = '${selectRegions[i].name!}, ';
       if (i == selectRegions.length - 1) {
-        src = src.replaceAll(',', '');
+        nameRegions += '${selectRegions[i].name}';
+      } else {
+        nameRegions += '${selectRegions[i].name}, ';
       }
-      nameRegions += src;
     }
     if (selectRegions.length == 1) {
       nameRegions = nameRegions.replaceAll(',', '');
@@ -946,13 +945,12 @@ class _DatePickerState extends State<DatePicker> {
 
   String _townsString(List<Town> selectTowns) {
     String nameTowns = '';
-    String src = '';
     for (int i = 0; i < selectTowns.length; i++) {
-      src = '${selectTowns[i].name!}, ';
       if (i == selectTowns.length - 1) {
-        src = src.replaceAll(',', '');
+        nameTowns += '${selectTowns[i].name}';
+      } else {
+        nameTowns += '${selectTowns[i].name}, ';
       }
-      nameTowns += src;
     }
     if (selectTowns.length == 1) {
       nameTowns = nameTowns.replaceAll(',', '');
