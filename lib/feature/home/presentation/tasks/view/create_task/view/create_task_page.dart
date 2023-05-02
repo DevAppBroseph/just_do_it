@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
@@ -217,27 +218,61 @@ class _CeateTasksState extends State<CeateTasks> {
                           setState(() {});
                         },
                       ),
-                      DatePicker(
-                        bottomInsets: bottomInsets,
-                        coastMaxController: coastMaxController,
-                        coastMinController: coastMinController,
-                        startDate: startDate,
-                        endDate: endDate,
-                        selectRegion: regions,
-                        selectCountry: countries,
-                        selectTown: towns,
-                        currecy: currency,
-                        onEdit:
-                            (regions, startDate, endDate, countries, towns, currency) {
-                          this.regions = regions;
-                          this.startDate = startDate;
-                          this.endDate = endDate;
-                          this.countries = countries;
-                          this.towns = towns;
-                          this.currency = currency;
-                          setState(() {});
-                        },
-                      ),
+                      BlocBuilder<CountriesBloc, CountriesState>(
+                          builder: (context, snapshot) {
+                        // List<Countries> allCountries =
+                        //     BlocProvider.of<CountriesBloc>(context).country;
+                        // List<Regions> allRegion =
+                        //     BlocProvider.of<CountriesBloc>(context).region;
+                        // List<Town> allTown =
+                        //     BlocProvider.of<CountriesBloc>(context).town;
+                        // List<Regions> listTempRegion = [];
+                        // for (int i = 0; i < regions.length; i++) {
+                        //   for (int j = 0; j < allRegion.length; j++) {
+                        //     if (regions[i].id == allRegion[j].id) {
+                        //       listTempRegion.add(allRegion[j]);
+                        //       // log('message ${regions[i].name} --- ${allRegion[j].id}');
+                        //       break;
+                        //     }
+                        //   }
+                        // }
+                        // regions.clear();
+                        // regions.addAll(listTempRegion);
+
+                        // List<Town> listTempTown = [];
+                        // for (int i = 0; i < towns.length; i++) {
+                        //   for (int j = 0; j < allTown.length; j++) {
+                        //     if (towns[i].id == allTown[j].id) {
+                        //       listTempTown.add(allTown[j]);
+                        //       // log('message ${towns[i].name} --- ${allTown[j].id}');
+                        //       break;
+                        //     }
+                        //   }
+                        // }
+                        // towns.clear();
+                        // towns.addAll(listTempTown);
+                        return DatePicker(
+                          bottomInsets: bottomInsets,
+                          coastMaxController: coastMaxController,
+                          coastMinController: coastMinController,
+                          startDate: startDate,
+                          endDate: endDate,
+                          selectRegion: regions,
+                          selectCountry: countries,
+                          selectTown: towns,
+                          currecy: currency,
+                          onEdit: (regions, startDate, endDate, countries,
+                              towns, currency) {
+                            this.regions = regions;
+                            this.startDate = startDate;
+                            this.endDate = endDate;
+                            this.countries = countries;
+                            this.towns = towns;
+                            this.currency = currency;
+                            setState(() {});
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -271,7 +306,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- страну';
                           errorsFlag = true;
                         }
-                         if (currency == null) {
+                        if (currency == null) {
                           error += '\n- валюту';
                           errorsFlag = true;
                         }
@@ -298,7 +333,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                         
+
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,

@@ -39,6 +39,7 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
         region.addAll(await Repository().regions(event.access, element));
       }
       emit(CountriesUpdateState());
+      add(GetTownsEvent(event.access, region));
     } else {
       emit(CountriesError());
     }

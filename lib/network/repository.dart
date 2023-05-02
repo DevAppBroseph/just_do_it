@@ -120,6 +120,8 @@ class Repository {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
+    log('message data create ${data}');
+
     final response = await dio.post(
       '$server/orders/',
       data: data,

@@ -18,7 +18,8 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>, Currency?) onEdit;
+  Function(List<Regions>, DateTime?, DateTime?, List<Countries>, List<Town>,
+      Currency?) onEdit;
   DateTime? startDate;
   DateTime? endDate;
   List<Countries> selectCountry;
@@ -72,7 +73,8 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'Готово',
-                            style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                            style:
+                                TextStyle(fontSize: 15.sp, color: Colors.black),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -82,8 +84,13 @@ class _DatePickerState extends State<DatePicker> {
                             }
                             setState(() {});
                             Navigator.of(ctx).pop();
-                            widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
-                                widget.selectTown, widget.currecy);
+                            widget.onEdit(
+                                widget.selectRegion,
+                                widget.startDate,
+                                widget.endDate,
+                                widget.selectCountry,
+                                widget.selectTown,
+                                widget.currecy);
                           },
                         ),
                         SizedBox(width: 5.w),
@@ -138,8 +145,13 @@ class _DatePickerState extends State<DatePicker> {
                     } else if (index == 1) {
                       widget.endDate = val;
                     }
-                    widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
-                        widget.selectTown, widget.currecy);
+                    widget.onEdit(
+                        widget.selectRegion,
+                        widget.startDate,
+                        widget.endDate,
+                        widget.selectCountry,
+                        widget.selectTown,
+                        widget.currecy);
                     setState(() {});
                   }),
             ),
@@ -151,8 +163,10 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CountriesBloc, CountriesState>(builder: (context, state) {
-      List<Countries> allCountries = BlocProvider.of<CountriesBloc>(context).country;
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, state) {
+      List<Countries> allCountries =
+          BlocProvider.of<CountriesBloc>(context).country;
       List<Regions> allRegion = BlocProvider.of<CountriesBloc>(context).region;
       List<Town> allTown = BlocProvider.of<CountriesBloc>(context).town;
 
@@ -272,20 +286,19 @@ class _DatePickerState extends State<DatePicker> {
                       padding: EdgeInsets.only(right: 16.h),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                         SvgPicture.asset(SvgImg.arrowRight)
-                        ],
+                        children: [SvgPicture.asset(SvgImg.arrowRight)],
                       ),
                     ),
                   ],
                 ),
-                textEditingController: TextEditingController(text: widget.currecy?.name),
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                textEditingController:
+                    TextEditingController(text: widget.currecy?.name),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
             ),
             SizedBox(height: 14.h),
             BlocBuilder<CurrencyBloc, CurrencyState>(builder: (context, state) {
-              log(state.toString());
               if (state is CurrencyLoaded) {
                 final currecy = state.currency;
                 return AnimatedContainer(
@@ -319,7 +332,8 @@ class _DatePickerState extends State<DatePicker> {
                                   widget.currecy = e;
                                 }
 
-                                widget.onEdit([], widget.startDate, widget.endDate, [], [], widget.currecy);
+                                widget.onEdit([], widget.startDate,
+                                    widget.endDate, [], [], widget.currecy);
 
                                 setState(() {});
                               },
@@ -335,11 +349,13 @@ class _DatePickerState extends State<DatePicker> {
                                           width: 250.w,
                                           child: Text(
                                             e.name!,
-                                            style: CustomTextStyle.black_14_w400_515150,
+                                            style: CustomTextStyle
+                                                .black_14_w400_515150,
                                           ),
                                         ),
                                         const Spacer(),
-                                        if (widget.currecy?.id == e.id) const Icon(Icons.check)
+                                        if (widget.currecy?.id == e.id)
+                                          const Icon(Icons.check)
                                       ],
                                     ),
                                   ],
@@ -372,31 +388,31 @@ class _DatePickerState extends State<DatePicker> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                           if (widget.currecy?.name == null)
-                              Text(
-                                'Бюджет от ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Российский рубль')
-                              Text(
-                                'Бюджет от ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Доллар США')
-                              Text(
-                                'Бюджет от \$',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Евро')
-                              Text(
-                                'Бюджет от €',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Дирхам')
-                              Text(
-                                'Бюджет от AED',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
+                          if (widget.currecy?.name == null)
+                            Text(
+                              'Бюджет от ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Российский рубль')
+                            Text(
+                              'Бюджет от ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Доллар США')
+                            Text(
+                              'Бюджет от \$',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Евро')
+                            Text(
+                              'Бюджет от €',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Дирхам')
+                            Text(
+                              'Бюджет от AED',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
                           SizedBox(height: 3.h),
                           Row(
                             children: [
@@ -409,8 +425,13 @@ class _DatePickerState extends State<DatePicker> {
                                   setState(() {});
                                 },
                                 onChanged: (value) {
-                                  widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
-                                      widget.selectCountry, widget.selectTown, widget.currecy);
+                                  widget.onEdit(
+                                      widget.selectRegion,
+                                      widget.startDate,
+                                      widget.endDate,
+                                      widget.selectCountry,
+                                      widget.selectTown,
+                                      widget.currecy);
                                 },
                                 onFieldSubmitted: (value) {
                                   setState(() {});
@@ -420,7 +441,8 @@ class _DatePickerState extends State<DatePicker> {
                                 fillColor: ColorStyles.greyF9F9F9,
                                 maxLines: null,
                                 style: CustomTextStyle.black_14_w400_171716,
-                                textEditingController: widget.coastMinController,
+                                textEditingController:
+                                    widget.coastMinController,
                               ),
                             ],
                           ),
@@ -445,31 +467,31 @@ class _DatePickerState extends State<DatePicker> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                           if (widget.currecy?.name == null)
-                              Text(
-                                'Бюджет до ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Российский рубль')
-                              Text(
-                                'Бюджет до ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Доллар США')
-                              Text(
-                                'Бюджет до \$',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Евро')
-                              Text(
-                                'Бюджет до €',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (widget.currecy?.name == 'Дирхам')
-                              Text(
-                                'Бюджет до AED',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
+                          if (widget.currecy?.name == null)
+                            Text(
+                              'Бюджет до ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Российский рубль')
+                            Text(
+                              'Бюджет до ₽',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Доллар США')
+                            Text(
+                              'Бюджет до \$',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Евро')
+                            Text(
+                              'Бюджет до €',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                          if (widget.currecy?.name == 'Дирхам')
+                            Text(
+                              'Бюджет до AED',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
                           SizedBox(height: 3.h),
                           Row(
                             children: [
@@ -482,8 +504,13 @@ class _DatePickerState extends State<DatePicker> {
                                   setState(() {});
                                 },
                                 onChanged: (value) {
-                                  widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate,
-                                      widget.selectCountry, widget.selectTown, widget.currecy);
+                                  widget.onEdit(
+                                      widget.selectRegion,
+                                      widget.startDate,
+                                      widget.endDate,
+                                      widget.selectCountry,
+                                      widget.selectTown,
+                                      widget.currecy);
                                 },
                                 onFieldSubmitted: (value) {
                                   setState(() {});
@@ -493,7 +520,8 @@ class _DatePickerState extends State<DatePicker> {
                                 fillColor: ColorStyles.greyF9F9F9,
                                 maxLines: null,
                                 style: CustomTextStyle.black_14_w400_171716,
-                                textEditingController: widget.coastMaxController,
+                                textEditingController:
+                                    widget.coastMaxController,
                               ),
                             ],
                           ),
@@ -545,8 +573,10 @@ class _DatePickerState extends State<DatePicker> {
                     ),
                   ],
                 ),
-                textEditingController: TextEditingController(text: _countriesString(widget.selectCountry)),
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                textEditingController: TextEditingController(
+                    text: _countriesString(widget.selectCountry)),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
             ),
             SizedBox(height: 14.h),
@@ -575,18 +605,29 @@ class _DatePickerState extends State<DatePicker> {
                         padding: EdgeInsets.only(left: 20.w, right: 20.w),
                         child: GestureDetector(
                           onTap: () {
-                            openRegion = false;
-                            openTown = false;
-
                             List<Countries> list = widget.selectCountry;
                             if (list.contains(e)) {
                               list.remove(e);
                             } else {
                               list.add(e);
                             }
-                            widget.onEdit([], widget.startDate, widget.endDate, list, [], widget.currecy);
-                            final access = BlocProvider.of<ProfileBloc>(context).access;
-                            context.read<CountriesBloc>().add(GetRegionEvent(access, list));
+                            // if (list.isEmpty) {
+                            openRegion = false;
+                            openTown = false;
+                            // }
+                            widget.onEdit(
+                              [],
+                              widget.startDate,
+                              widget.endDate,
+                              list,
+                              [],
+                              widget.currecy,
+                            );
+                            final access =
+                                BlocProvider.of<ProfileBloc>(context).access;
+                            context
+                                .read<CountriesBloc>()
+                                .add(GetRegionEvent(access, list));
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -600,11 +641,13 @@ class _DatePickerState extends State<DatePicker> {
                                       width: 250.w,
                                       child: Text(
                                         e.name!,
-                                        style: CustomTextStyle.black_14_w400_515150,
+                                        style: CustomTextStyle
+                                            .black_14_w400_515150,
                                       ),
                                     ),
                                     const Spacer(),
-                                    if (widget.selectCountry.contains(e)) const Icon(Icons.check)
+                                    if (widget.selectCountry.contains(e))
+                                      const Icon(Icons.check)
                                   ],
                                 ),
                               ],
@@ -658,8 +701,10 @@ class _DatePickerState extends State<DatePicker> {
                           ),
                         ],
                       ),
-                      textEditingController: TextEditingController(text: _regionsString(widget.selectRegion)),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                      textEditingController: TextEditingController(
+                          text: _regionsString(widget.selectRegion)),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
                     ),
                   )
                 : Container(),
@@ -689,8 +734,6 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GestureDetector(
                             onTap: () {
-                              openTown = false;
-
                               List<Regions> list = widget.selectRegion;
                               if (list.contains(e)) {
                                 list.remove(e);
@@ -698,11 +741,23 @@ class _DatePickerState extends State<DatePicker> {
                                 list.add(e);
                               }
 
-                              widget.onEdit(
-                                  list, widget.startDate, widget.endDate, widget.selectCountry, [], widget.currecy);
+                              // if (list.isEmpty) {
+                              openTown = false;
+                              // }
 
-                              final access = BlocProvider.of<ProfileBloc>(context).access;
-                              context.read<CountriesBloc>().add(GetTownsEvent(access, list));
+                              widget.onEdit(
+                                  list,
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.selectCountry,
+                                  [],
+                                  widget.currecy);
+
+                              final access =
+                                  BlocProvider.of<ProfileBloc>(context).access;
+                              context
+                                  .read<CountriesBloc>()
+                                  .add(GetTownsEvent(access, list));
                               setState(() {});
                             },
                             child: Container(
@@ -717,11 +772,13 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle.black_14_w400_515150,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (widget.selectRegion.contains(e)) const Icon(Icons.check)
+                                      if (widget.selectRegion.contains(e))
+                                        const Icon(Icons.check)
                                     ],
                                   ),
                                 ],
@@ -776,8 +833,10 @@ class _DatePickerState extends State<DatePicker> {
                           ),
                         ],
                       ),
-                      textEditingController: TextEditingController(text: _townsString(widget.selectTown)),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                      textEditingController: TextEditingController(
+                          text: _townsString(widget.selectTown)),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
                     ),
                   )
                 : Container(),
@@ -814,8 +873,13 @@ class _DatePickerState extends State<DatePicker> {
                                 list.add(e);
                               }
 
-                              widget.onEdit(widget.selectRegion, widget.startDate, widget.endDate, widget.selectCountry,
-                                  list, widget.currecy);
+                              widget.onEdit(
+                                  widget.selectRegion,
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.selectCountry,
+                                  list,
+                                  widget.currecy);
 
                               setState(() {});
                             },
@@ -831,11 +895,13 @@ class _DatePickerState extends State<DatePicker> {
                                         width: 250.w,
                                         child: Text(
                                           e.name!,
-                                          style: CustomTextStyle.black_14_w400_515150,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
                                         ),
                                       ),
                                       const Spacer(),
-                                      if (widget.selectTown.contains(e)) const Icon(Icons.check)
+                                      if (widget.selectTown.contains(e))
+                                        const Icon(Icons.check)
                                     ],
                                   ),
                                 ],
