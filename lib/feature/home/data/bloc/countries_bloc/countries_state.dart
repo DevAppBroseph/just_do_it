@@ -50,4 +50,6 @@ class CountriesLoaded extends CountriesState {
   }
 }
 
+class CountriesUpdateState extends CountriesState {}
+
 class CountriesError extends CountriesState {}

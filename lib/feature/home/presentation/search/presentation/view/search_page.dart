@@ -169,7 +169,6 @@ class _SearchPageState extends State<SearchPage> {
                                 searchList = false;
                               });
                               FocusScope.of(context).unfocus();
-                              searchList = false;
                               searchController.text = value;
                               Storage().setListHistory(value);
                               getTaskList();
@@ -250,10 +249,14 @@ class _SearchPageState extends State<SearchPage> {
                       heightScreen,
                       bottomInsets,
                       (value) {
-                        searchList = false;
+                        setState(() {
+                          searchList = false;
+                        });
+                        FocusScope.of(context).unfocus();
                         Storage().setListHistory(value);
                         // BlocProvider.of<ProfileBloc>(context)
                         //     .add(EditPageSearchEvent(1, value));
+
                         searchController.text = value;
                         getTaskList();
                       },

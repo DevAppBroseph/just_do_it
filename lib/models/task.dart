@@ -96,11 +96,11 @@ class Task {
         "date_end": dateEnd,
         "price_from": priceFrom,
         "price_to": priceTo,
-        "regions": regions,
+        "regions": regions.map((e) => e.toJson()).toList(),
         'search': search,
         "as_customer": asCustomer,
         'currency': currency!.id,
-        'towns': towns,
-        'countries': countries
+        'towns': towns.map((e) => e.toJson()).toList(),
+        'countries': countries.map((e) => e.toJson()).toList(),
       };
 }

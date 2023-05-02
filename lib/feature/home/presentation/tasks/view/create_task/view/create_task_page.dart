@@ -137,7 +137,8 @@ class _CeateTasksState extends State<CeateTasks> {
     selectCategory = widget.selectCategory;
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory.contains(element.description)) {
+        if (widget.selectCategory!.selectSubcategory
+            .contains(element.description)) {
           selectSubCategory = element;
         }
       }
@@ -168,7 +169,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600),
+                                curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -223,8 +225,9 @@ class _CeateTasksState extends State<CeateTasks> {
                         selectRegion: regions,
                         selectCountry: countries,
                         selectTown: towns,
-                        onEdit: (region, startDate, endDate, countries, towns) {
-                          this.regions = region;
+                        onEdit:
+                            (regions, startDate, endDate, countries, towns) {
+                          this.regions = regions;
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
@@ -237,7 +240,8 @@ class _CeateTasksState extends State<CeateTasks> {
                 ),
                 SizedBox(height: 20.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
+                  padding:
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -260,22 +264,25 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (countries == [] ) {
-                          error += '\n- страна';
+                        if (countries == []) {
+                          error += '\n- страну';
                           errorsFlag = true;
                         }
-                        // if (towns == [] ) {
-                        //   error += '\n- регион';
-                        //   errorsFlag = true;
-                        // }
-                        // if (regions == [] ) {
-                        //   error += '\n- регион';
-                        //   errorsFlag = true;
-                        // }
+                        if (regions.isEmpty) {
+                          error += '\n- регион';
+                          errorsFlag = true;
+                        }
+                        if (towns.isEmpty) {
+                          error += '\n- подрегион';
+                          errorsFlag = true;
+                        }
 
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-                            error += '\n- минимальный бюджет должен быть меньше максимального';
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) >
+                              int.parse(coastMaxController.text)) {
+                            error +=
+                                '\n- минимальный бюджет должен быть меньше максимального';
                             errorsFlag = true;
                           }
                         }
@@ -284,21 +291,31 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                          Currency currency = Currency(false, id: 1, name: 'Российский рубль', shortName: 'RUB');
+                          Currency currency = Currency(false,
+                              id: 1,
+                              name: 'Российский рубль',
+                              shortName: 'RUB');
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
-                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateStart:
+                                DateFormat('yyyy-MM-dd').format(startDate!),
                             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
-                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+                              coastMinController.text.isEmpty
+                                  ? '0'
+                                  : coastMinController.text,
                             ),
                             priceTo: int.parse(
-                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+                              coastMaxController.text.isEmpty
+                                  ? '0'
+                                  : coastMaxController.text,
                             ),
                             regions: regions,
+                            countries: countries,
+                            towns: towns,
                             file: null,
                             icon: '',
                             task: '',
@@ -309,9 +326,11 @@ class _CeateTasksState extends State<CeateTasks> {
                             currency: currency,
                           );
 
-                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository().createTask(profileBloc.access!, newTask);
-                          log(res.toString());
+                          final profileBloc =
+                              BlocProvider.of<ProfileBloc>(context);
+                          bool res = await Repository()
+                              .createTask(profileBloc.access!, newTask);
+                          log(newTask.toJson().toString());
                           if (res) Navigator.of(context).pop();
                           Loader.hide();
                         }
@@ -345,7 +364,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             curve: Curves.easeInOut,
                           );
                         }
-                      }                  
+                      }
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
