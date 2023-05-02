@@ -83,7 +83,6 @@ class _TaskViewState extends State<TaskView> {
                           },
                         ),
                       );
-                      
                     },
                     child: Text(
                       'Редактировать',
@@ -94,10 +93,32 @@ class _TaskViewState extends State<TaskView> {
               ),
             ),
           // SizedBox(height: 22.h),
-          Text(
-            'до ${widget.selectTask.priceTo} ₽',
-            style: CustomTextStyle.black_17_w500_171716,
-          ),
+          if (widget.selectTask.currency?.name == null)
+            Text(
+              'до ${widget.selectTask.priceTo} ₽',
+              style: CustomTextStyle.black_17_w500_171716,
+            ),
+          if (widget.selectTask.currency?.name == 'Дирхам')
+            Text(
+              'до ${widget.selectTask.priceTo} AED',
+              style: CustomTextStyle.black_17_w500_171716,
+            ),
+          if (widget.selectTask.currency?.name == 'Российский рубль')
+            Text(
+              'до ${widget.selectTask.priceTo}  ₽',
+              style: CustomTextStyle.black_17_w500_171716,
+            ),
+          if (widget.selectTask.currency?.name == 'Доллар США')
+            Text(
+              'до ${widget.selectTask.priceTo} \$',
+              style: CustomTextStyle.black_17_w500_171716,
+            ),
+          if (widget.selectTask.currency?.name == 'Евро')
+            Text(
+              'до ${widget.selectTask.priceTo} €',
+              style: CustomTextStyle.black_17_w500_171716,
+            ),
+
           SizedBox(height: 12.h),
           Text(
             widget.selectTask.name,
@@ -116,7 +137,7 @@ class _TaskViewState extends State<TaskView> {
                 child: Text(
                   '${widget.selectTask.activities?.description ?? '-'}, ${widget.selectTask.subcategory?.description ?? '-'}',
                   style: CustomTextStyle.black_12_w400_292D32,
-                   softWrap: true,
+                  softWrap: true,
                 ),
               ),
             ],
@@ -316,7 +337,8 @@ class _TaskViewState extends State<TaskView> {
       ),
     );
   }
-  String _textCountry(Task task){
+
+  String _textCountry(Task task) {
     var text = '';
     for (var country in task.countries) {
       text += '${country.name}, ';
@@ -327,10 +349,9 @@ class _TaskViewState extends State<TaskView> {
     for (var town in task.towns) {
       text += '${town.name}, ';
     }
-    if(text.isNotEmpty) text = text.substring(0, text.length-2);
-    if(text.isEmpty) text = 'Выбраны все страны';
-   
-   return text;
-  }
+    if (text.isNotEmpty) text = text.substring(0, text.length - 2);
+    if (text.isEmpty) text = 'Выбраны все страны';
 
+    return text;
+  }
 }

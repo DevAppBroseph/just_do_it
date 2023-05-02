@@ -80,10 +80,32 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           ],
                         ),
                         const Spacer(),
-                        Text(
-                          'до ${task.priceTo} ₽',
-                          style: CustomTextStyle.black_14_w500_171716,
-                        ),
+                         if(task.currency?.name == null)
+                          Text(
+                            'до ${task.priceTo} ₽',
+                            style: CustomTextStyle.black_14_w500_171716,
+                          ),
+                          if(task.currency?.name == 'Дирхам')
+                          Text(
+                            'до ${task.priceTo} AED',
+                            style: CustomTextStyle.black_14_w500_171716,
+                          ),
+                          if(task.currency?.name == 'Российский рубль')
+                          Text(
+                            'до ${task.priceTo}  ₽',
+                            style: CustomTextStyle.black_14_w500_171716,
+                          ),
+                          if(task.currency?.name == 'Доллар США')
+                          Text(
+                            'до ${task.priceTo} \$',
+                            style: CustomTextStyle.black_14_w500_171716,
+                          ),
+                          if(task.currency?.name == 'Евро')
+                          Text(
+                            'до ${task.priceTo} €',
+                            style: CustomTextStyle.black_14_w500_171716,
+                          ),
+                       
                         SizedBox(width: 5.w),
                         SvgPicture.asset(
                           'assets/icons/card.svg',
