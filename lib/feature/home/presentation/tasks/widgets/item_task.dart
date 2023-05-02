@@ -68,9 +68,14 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              _textCountry(task),
-                              style: CustomTextStyle.black_12_w500_515150,
+                            SizedBox(
+                              width: 140.w,
+                              child: Text(
+                                _textCountry(task),
+                                style: CustomTextStyle.black_12_w500_515150,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             SizedBox(height: 5.h),
                             Text(
@@ -80,32 +85,31 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           ],
                         ),
                         const Spacer(),
-                         if(task.currency?.name == null)
+                        if (task.currency?.name == null)
                           Text(
                             'до ${task.priceTo} ₽',
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                          if(task.currency?.name == 'Дирхам')
+                        if (task.currency?.name == 'Дирхам')
                           Text(
                             'до ${task.priceTo} AED',
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                          if(task.currency?.name == 'Российский рубль')
+                        if (task.currency?.name == 'Российский рубль')
                           Text(
                             'до ${task.priceTo}  ₽',
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                          if(task.currency?.name == 'Доллар США')
+                        if (task.currency?.name == 'Доллар США')
                           Text(
                             'до ${task.priceTo} \$',
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                          if(task.currency?.name == 'Евро')
+                        if (task.currency?.name == 'Евро')
                           Text(
                             'до ${task.priceTo} €',
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                       
                         SizedBox(width: 5.w),
                         SvgPicture.asset(
                           'assets/icons/card.svg',
@@ -122,22 +126,21 @@ Widget itemTask(Task task, Function(Task) onSelect) {
       ),
     ),
   );
-  
 }
 
- String _textCountry(Task task){
-    var text = '';
-    for (var country in task.countries) {
-      text += '${country.name}, ';
-    }
-    for (var region in task.regions) {
-      text += '${region.name}, ';
-    }
-    for (var town in task.towns) {
-      text += '${town.name}, ';
-    }
-    if(text.isNotEmpty) text = text.substring(0, text.length-2);
-    if(text.isEmpty) text = 'Выбраны все страны';
-   
-   return text;
+String _textCountry(Task task) {
+  var text = '';
+  for (var country in task.countries) {
+    text += '${country.name}, ';
   }
+  for (var region in task.regions) {
+    text += '${region.name}, ';
+  }
+  for (var town in task.towns) {
+    text += '${town.name}, ';
+  }
+  if (text.isNotEmpty) text = text.substring(0, text.length - 2);
+  if (text.isEmpty) text = 'Выбраны все страны';
+
+  return text;
+}
