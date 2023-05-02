@@ -220,37 +220,42 @@ class _CeateTasksState extends State<CeateTasks> {
                       ),
                       BlocBuilder<CountriesBloc, CountriesState>(
                           builder: (context, snapshot) {
-                        // List<Countries> allCountries =
-                        //     BlocProvider.of<CountriesBloc>(context).country;
-                        // List<Regions> allRegion =
-                        //     BlocProvider.of<CountriesBloc>(context).region;
-                        // List<Town> allTown =
-                        //     BlocProvider.of<CountriesBloc>(context).town;
-                        // List<Regions> listTempRegion = [];
-                        // for (int i = 0; i < regions.length; i++) {
-                        //   for (int j = 0; j < allRegion.length; j++) {
-                        //     if (regions[i].id == allRegion[j].id) {
-                        //       listTempRegion.add(allRegion[j]);
-                        //       // log('message ${regions[i].name} --- ${allRegion[j].id}');
-                        //       break;
-                        //     }
-                        //   }
-                        // }
-                        // regions.clear();
-                        // regions.addAll(listTempRegion);
+                        List<Countries> allCountries =
+                            BlocProvider.of<CountriesBloc>(context).country;
+                        List<Regions> allRegion =
+                            BlocProvider.of<CountriesBloc>(context).region;
+                        List<Town> allTown =
+                            BlocProvider.of<CountriesBloc>(context).town;
+                        List<Regions> listTempRegion = [];
+                        // log('message451212 ${regions}--- ${allRegion}');
+                        for (int i = 0; i < regions.length; i++) {
+                          for (int j = 0; j < allRegion.length; j++) {
+                            if (regions[i].id == allRegion[j].id) {
+                              listTempRegion.add(regions[i]);
+                              // log('message ЫГЧЧУЫЫЫ ${regions[i].name}');
+                              break;
+                            }
+                          }
+                        }
+                        // log('message45 ${listTempRegion}');
 
-                        // List<Town> listTempTown = [];
-                        // for (int i = 0; i < towns.length; i++) {
-                        //   for (int j = 0; j < allTown.length; j++) {
-                        //     if (towns[i].id == allTown[j].id) {
-                        //       listTempTown.add(allTown[j]);
-                        //       // log('message ${towns[i].name} --- ${allTown[j].id}');
-                        //       break;
-                        //     }
-                        //   }
-                        // }
-                        // towns.clear();
-                        // towns.addAll(listTempTown);
+                        regions.clear();
+                        regions.addAll(listTempRegion);
+
+                        List<Town> listTempTown = [];
+                        for (int i = 0; i < towns.length; i++) {
+                          for (int j = 0; j < allTown.length; j++) {
+                            if (towns[i].id == allTown[j].id) {
+                              listTempTown.add(allTown[j]);
+                              // log('message ${towns[i].name} --- ${allTown[j].id}');
+                              break;
+                            }
+                          }
+                        }
+                        // log('message990 ${listTempTown}');
+                        towns.clear();
+                        towns.addAll(listTempTown);
+
                         return DatePicker(
                           bottomInsets: bottomInsets,
                           coastMaxController: coastMaxController,
@@ -310,14 +315,14 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- валюту';
                           errorsFlag = true;
                         }
-                        if (regions.isEmpty) {
-                          error += '\n- регион';
-                          errorsFlag = true;
-                        }
-                        if (towns.isEmpty) {
-                          error += '\n- район';
-                          errorsFlag = true;
-                        }
+                        // if (regions.isEmpty) {
+                        //   error += '\n- регион';
+                        //   errorsFlag = true;
+                        // }
+                        // if (towns.isEmpty) {
+                        //   error += '\n- район';
+                        //   errorsFlag = true;
+                        // }
 
                         if (coastMinController.text.isNotEmpty &&
                             coastMaxController.text.isNotEmpty) {

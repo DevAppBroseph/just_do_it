@@ -148,6 +148,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       }
       return true;
     }, builder: (context, data) {
+      double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -169,79 +170,93 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: SizedBox(
-                        height: 70.h,
-                        width: 70.h,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 21.w),
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () async {
-                                var image = await ImagePicker()
-                                    .pickImage(source: ImageSource.gallery);
-                                if (image != null) {
-                                  BlocProvider.of<ProfileBloc>(context).add(
-                                    UpdateProfilePhotoEvent(photo: image),
-                                  );
-                                }
-                              },
-                              child: ClipOval(
-                                child: SizedBox.fromSize(
-                                    size: Size.fromRadius(30.r),
-                                    child: user!.photoLink == null
-                                        ? Container(
-                                            height: 60.h,
-                                            width: 60.h,
-                                            padding: EdgeInsets.all(10.h),
-                                            decoration: const BoxDecoration(
-                                              color: ColorStyles.shadowFC6554,
-                                            ),
-                                            child: Image.asset(
-                                                'assets/images/camera.png'),
-                                          )
-                                        : CachedNetworkImage(
-                                            imageUrl: user!.photoLink!
-                                                    .contains(server)
-                                                ? user!.photoLink!
-                                                : server + user!.photoLink!,
-                                            fit: BoxFit.cover,
-                                          )),
-                              ),
-                            ),
-                            if (user?.photoLink != null)
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    user?.photo = null;
-                                    user?.photoLink = null;
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .setUser(user);
-                                    BlocProvider.of<ProfileBloc>(context).add(
-                                      UpdateProfilePhotoEvent(photo: null),
-                                    );
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 20.h,
-                                    width: 20.h,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(color: Colors.black)
-                                      ],
-                                      borderRadius:
-                                          BorderRadius.circular(100.r),
-                                      color: Colors.white,
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 10.h,
-                                      ),
+                            SizedBox(
+                              height: 68.h,
+                              width: 68.h,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var image = await ImagePicker().pickImage(
+                                          source: ImageSource.gallery);
+                                      if (image != null) {
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .add(
+                                          UpdateProfilePhotoEvent(photo: image),
+                                        );
+                                      }
+                                    },
+                                    child: ClipOval(
+                                      child: SizedBox.fromSize(
+                                          size: Size.fromRadius(30.r),
+                                          child: user!.photoLink == null
+                                              ? Container(
+                                                  height: 60.h,
+                                                  width: 60.h,
+                                                  padding: EdgeInsets.all(10.h),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: ColorStyles
+                                                        .shadowFC6554,
+                                                  ),
+                                                  child: Image.asset(
+                                                      'assets/images/camera.png'),
+                                                )
+                                              : CachedNetworkImage(
+                                                  imageUrl: user!.photoLink!
+                                                          .contains(server)
+                                                      ? user!.photoLink!
+                                                      : server +
+                                                          user!.photoLink!,
+                                                  fit: BoxFit.cover,
+                                                )),
                                     ),
                                   ),
-                                ),
-                              )
+                                  if (user?.photoLink != null)
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          user?.photo = null;
+                                          user?.photoLink = null;
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(
+                                            UpdateProfilePhotoEvent(
+                                                photo: null),
+                                          );
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          height: 20.h,
+                                          width: 20.h,
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(100.r),
+                                            color: Colors.white,
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 10.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -293,15 +308,19 @@ class _ContractorProfileState extends State<ContractorProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 290.w,
-                    child: AutoSizeText(
-                      '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 33.sp, fontWeight: FontWeight.w800),
-                      maxLines: 3,
-                      softWrap: true,
+                  Padding(
+                    padding: EdgeInsets.only(left: 5.w),
+                    child: SizedBox(
+                      width: 290.w,
+                      child: AutoSizeText(
+                        '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
+                        // 'Мухалабада Мухаабдулаев',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 30.sp, fontWeight: FontWeight.w800),
+                        maxLines: 2,
+                        softWrap: true,
+                      ),
                     ),
                   ),
                   SizedBox(width: 5.w),

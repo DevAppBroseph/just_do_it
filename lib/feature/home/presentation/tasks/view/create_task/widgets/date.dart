@@ -422,6 +422,7 @@ class _DatePickerState extends State<DatePicker> {
                                 textInputType: TextInputType.number,
                                 actionButton: false,
                                 onTap: () {
+                                  openCurrency = false;
                                   setState(() {});
                                 },
                                 onChanged: (value) {
@@ -501,6 +502,7 @@ class _DatePickerState extends State<DatePicker> {
                                 actionButton: false,
                                 textInputType: TextInputType.number,
                                 onTap: () {
+                                  openCurrency = false;
                                   setState(() {});
                                 },
                                 onChanged: (value) {
@@ -599,72 +601,87 @@ class _DatePickerState extends State<DatePicker> {
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const ClampingScrollPhysics(),
-                children: allCountries
-                    .map(
-                      (e) => Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: GestureDetector(
-                          onTap: () {
-                            List<Countries> list = widget.selectCountry;
-                            if (list.contains(e)) {
-                              list.remove(e);
-                            } else {
-                              list.add(e);
-                            }
-                            // if (list.isEmpty) {
-                            openRegion = false;
-                            openTown = false;
-                            // }
-                            widget.onEdit(
-                              [],
-                              widget.startDate,
-                              widget.endDate,
-                              list,
-                              [],
-                              widget.currecy,
-                            );
-                            final access =
-                                BlocProvider.of<ProfileBloc>(context).access;
-                            context
-                                .read<CountriesBloc>()
-                                .add(GetRegionEvent(access, list));
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            height: 40.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 250.w,
-                                      child: Text(
-                                        e.name!,
-                                        style: CustomTextStyle
-                                            .black_14_w400_515150,
-                                      ),
+                children: allCountries.map(
+                  (e) {
+                    bool select = false;
+                    for (int i = 0; i < widget.selectCountry.length; i++) {
+                      if (e.id == widget.selectCountry[i].id) {
+                        select = true;
+                        break;
+                      }
+                    }
+                    return Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          List<Countries> list = widget.selectCountry;
+                          // bool select = false;
+                          // for (int i = 0; i < list.length; i++) {
+                          //   if (e.id == list[i].id) {
+                          //     select = true;
+                          //     break;
+                          //   }
+                          // }
+                          if (select) {
+                            list.remove(e);
+                          } else {
+                            list.add(e);
+                          }
+                          log('message ${widget.selectRegion}');
+                          // if (list.isEmpty) {
+                          openRegion = false;
+                          openTown = false;
+                          // }
+                          widget.onEdit(
+                            widget.selectRegion,
+                            widget.startDate,
+                            widget.endDate,
+                            list,
+                            widget.selectTown,
+                            widget.currecy,
+                          );
+                          final access =
+                              BlocProvider.of<ProfileBloc>(context).access;
+                          context
+                              .read<CountriesBloc>()
+                              .add(GetRegionEvent(access, list));
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 40.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 250.w,
+                                    child: Text(
+                                      e.name!,
+                                      style:
+                                          CustomTextStyle.black_14_w400_515150,
                                     ),
-                                    const Spacer(),
-                                    if (widget.selectCountry.contains(e))
-                                      const Icon(Icons.check)
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  const Spacer(),
+                                  if (select) const Icon(Icons.check)
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    )
-                    .toList(),
+                    );
+                  },
+                ).toList(),
               ),
             ),
             SizedBox(height: 14.h),
-            widget.selectCountry.isNotEmpty
+            widget.selectCountry.isNotEmpty && allRegion.isNotEmpty
                 ? ScaleButton(
                     bound: 0.02,
                     onTap: () {
                       setState(() {
+                        openCountry = false;
                         openRegion = !openRegion;
                       });
                       FocusScope.of(context).unfocus();
@@ -728,74 +745,88 @@ class _DatePickerState extends State<DatePicker> {
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: const ClampingScrollPhysics(),
-                  children: allRegion
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              List<Regions> list = widget.selectRegion;
-                              if (list.contains(e)) {
-                                list.remove(e);
-                              } else {
-                                list.add(e);
+                  children: allRegion.map(
+                    (e) {
+                      bool select = false;
+                      for (int i = 0; i < widget.selectRegion.length; i++) {
+                        if (e.id == widget.selectRegion[i].id) {
+                          select = true;
+                          break;
+                        }
+                      }
+                      return Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            List<Regions> list = widget.selectRegion;
+                            Regions? regDel;
+                            for (int i = 0; i < list.length; i++) {
+                              log('message asdasd ${e.name} ${list[i].name}');
+                              if (e.id == list[i].id) {
+                                regDel = list[i];
+                                break;
                               }
+                            }
 
-                              // if (list.isEmpty) {
-                              openTown = false;
-                              // }
+                            if (regDel != null) {
+                              list.remove(regDel);
+                            } else {
+                              list.add(e);
+                            }
 
-                              widget.onEdit(
-                                  list,
-                                  widget.startDate,
-                                  widget.endDate,
-                                  widget.selectCountry,
-                                  [],
-                                  widget.currecy);
+                            openTown = false;
 
-                              final access =
-                                  BlocProvider.of<ProfileBloc>(context).access;
-                              context
-                                  .read<CountriesBloc>()
-                                  .add(GetTownsEvent(access, list));
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
-                                        ),
+                            widget.onEdit(
+                                list,
+                                widget.startDate,
+                                widget.endDate,
+                                widget.selectCountry,
+                                widget.selectTown,
+                                widget.currecy);
+
+                            final access =
+                                BlocProvider.of<ProfileBloc>(context).access;
+                            context
+                                .read<CountriesBloc>()
+                                .add(GetTownsEvent(access, list));
+                            setState(() {});
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 40.h,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 250.w,
+                                      child: Text(
+                                        e.name!,
+                                        style: CustomTextStyle
+                                            .black_14_w400_515150,
                                       ),
-                                      const Spacer(),
-                                      if (widget.selectRegion.contains(e))
-                                        const Icon(Icons.check)
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                    const Spacer(),
+                                    if (select) const Icon(Icons.check)
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                      .toList()),
+                      );
+                    },
+                  ).toList()),
             ),
             SizedBox(height: 14.h),
-            widget.selectRegion.isNotEmpty
+            widget.selectRegion.isNotEmpty && allTown.isNotEmpty
                 ? ScaleButton(
                     bound: 0.02,
                     onTap: () {
                       setState(() {
                         setState(() {
+                          openRegion = false;
                           openTown = !openTown;
                         });
                         FocusScope.of(context).unfocus();
@@ -860,57 +891,71 @@ class _DatePickerState extends State<DatePicker> {
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: const ClampingScrollPhysics(),
-                  children: allTown
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              List<Town> list = widget.selectTown;
-                              if (list.contains(e)) {
-                                list.remove(e);
-                              } else {
-                                list.add(e);
+                  children: allTown.map(
+                    (e) {
+                      bool select = false;
+                      for (int i = 0; i < widget.selectTown.length; i++) {
+                        if (e.id == widget.selectTown[i].id) {
+                          select = true;
+                          break;
+                        }
+                      }
+                      // log('message asdasd ${widget.selectTown} ${e.name}');
+                      return Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            List<Town> list = widget.selectTown;
+                            Town? townDel;
+                            for (int i = 0; i < list.length; i++) {
+                              if (e.id == list[i].id) {
+                                townDel = list[i];
+                                break;
                               }
+                            }
+                            if (townDel != null) {
+                              list.remove(townDel);
+                            } else {
+                              list.add(e);
+                            }
 
-                              widget.onEdit(
-                                  widget.selectRegion,
-                                  widget.startDate,
-                                  widget.endDate,
-                                  widget.selectCountry,
-                                  list,
-                                  widget.currecy);
+                            widget.onEdit(
+                                widget.selectRegion,
+                                widget.startDate,
+                                widget.endDate,
+                                widget.selectCountry,
+                                list,
+                                widget.currecy);
 
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
-                                        ),
+                            setState(() {});
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 40.h,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 250.w,
+                                      child: Text(
+                                        e.name!,
+                                        style: CustomTextStyle
+                                            .black_14_w400_515150,
                                       ),
-                                      const Spacer(),
-                                      if (widget.selectTown.contains(e))
-                                        const Icon(Icons.check)
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                    const Spacer(),
+                                    if (select) const Icon(Icons.check)
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                      .toList(),
+                      );
+                    },
+                  ).toList(),
                   // : allTown
                   //     .map(
                   //       (e) => Padding(
