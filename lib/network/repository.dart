@@ -74,10 +74,10 @@ class Repository {
     int? priceTo,
     String? dateStart,
     String? dateEnd,
-    List<int?>? subcategory,
-    List<int?>? regions,
-    List<int?>? towns,
-    List<int?>? countries,
+    List<int> subcategory,
+    List<int> regions,
+    List<int> towns,
+    List<int> countries,
     bool? customer,
     int? currency,
   ) async {
@@ -88,13 +88,14 @@ class Repository {
       if (dateEnd != null) "date_end": dateEnd,
       if (dateStart != null) "date_start": dateStart,
       if (currency != null) "currency": currency,
-      if (countries != null && countries.isNotEmpty) "countries": countries,
-      if (towns != null && towns.isNotEmpty) "towns": towns,
-      if (regions != null && regions.isNotEmpty) "towns": regions,
-      if (subcategory != null && subcategory.isNotEmpty)
-        "subcategory": subcategory,
+      if (countries.isNotEmpty) "countries": countries,
+      if (towns.isNotEmpty) "towns": towns,
+      if (regions.isNotEmpty) "towns": regions,
+      if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
+
+    log('message queryParameters ${queryParameters}');
 
     final response = await dio.get(
       '$server/orders/',

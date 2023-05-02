@@ -264,7 +264,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (countries == []) {
+                        if (countries.isEmpty) {
                           error += '\n- страну';
                           errorsFlag = true;
                         }
@@ -273,7 +273,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           errorsFlag = true;
                         }
                         if (towns.isEmpty) {
-                          error += '\n- подрегион';
+                          error += '\n- район';
                           errorsFlag = true;
                         }
 

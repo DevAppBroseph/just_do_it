@@ -227,9 +227,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 priceFrom:
                                     int.tryParse(coastMinController.text),
                                 priceTo: int.tryParse(coastMaxController.text),
-                                isSelectCountry: countries,
-                                isSelectRegions: regions,
-                                isSelectTown: towns,
+                                isSelectCountry: selectCountry,
+                                isSelectRegions: selectRegions,
+                                isSelectTown: selectTowns,
                                 subcategory: selectSubCategory,
                                 countFilter: countField,
                                 currency: selectCurrency?.id,
@@ -354,57 +354,60 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   const Spacer(),
                   BlocBuilder<CountriesBloc, CountriesState>(
                       builder: (context, state) {
-                    if (state is CountriesLoaded) {
-                      // final country = state.country;
-                      // final region = state.region;
-                      // final town = state.town;
-                      return GestureDetector(
-                        onTap: () {
-                          // for (var element in country) {
-                          //   context.read<CountriesBloc>().add(RemoveCountryEvent(element));
-                          // }
-                          //  for (var element in region) {
-                          //   context.read<CountriesBloc>().add(RemoveRegionEvent(element));
-                          // }
-                          //  for (var element in town) {
-                          //   context.read<CountriesBloc>().add(RemoveTownEvent(element));
-                          // }
-                          currencyString = '';
-                          endDate = null;
-                          startDate = null;
-                          date = '';
-                          category = '';
-                          coastMinController.text = '';
-                          coastMaxController.text = '';
-                          keyWordController.text = '';
-                          // isRegion = [];
-                          selectSubCategory = [];
-                          countryString = '';
-                          passportAndCV = false;
-                          strcat2 = '';
-                          strcat = '';
-                          allCategory = false;
-                          for (int i = 0; i < activities.length; i++) {
-                            for (int y = 0;
-                                y < activities[i].subcategory.length;
-                                y++) {
-                              activities[i].subcategory[y].isSelect = false;
-                              selectSubCategory = [];
-                            }
-                            activities[i].isSelect = false;
+                    // if (state is CountriesLoaded) {
+                    // final country = state.country;
+                    // final region = state.region;
+                    // final town = state.town;
+                    return GestureDetector(
+                      onTap: () {
+                        // for (var element in country) {
+                        //   context.read<CountriesBloc>().add(RemoveCountryEvent(element));
+                        // }
+                        //  for (var element in region) {
+                        //   context.read<CountriesBloc>().add(RemoveRegionEvent(element));
+                        // }
+                        //  for (var element in town) {
+                        //   context.read<CountriesBloc>().add(RemoveTownEvent(element));
+                        // }
+                        selectCountry = [];
+                        selectRegions = [];
+                        selectTowns = [];
+                        currencyString = '';
+                        endDate = null;
+                        startDate = null;
+                        date = '';
+                        category = '';
+                        coastMinController.text = '';
+                        coastMaxController.text = '';
+                        keyWordController.text = '';
+                        // isRegion = [];
+                        selectSubCategory = [];
+                        countryString = '';
+                        passportAndCV = false;
+                        strcat2 = '';
+                        strcat = '';
+                        allCategory = false;
+                        for (int i = 0; i < activities.length; i++) {
+                          for (int y = 0;
+                              y < activities[i].subcategory.length;
+                              y++) {
+                            activities[i].subcategory[y].isSelect = false;
+                            selectSubCategory = [];
                           }
-                          // for (var element in regions) {
-                          //   element.isSelect = false;
-                          // }
-                          setState(() {});
-                        },
-                        child: Text(
-                          'Очистить',
-                          style: CustomTextStyle.red_16_w400,
-                        ),
-                      );
-                    }
-                    return Container();
+                          activities[i].isSelect = false;
+                        }
+                        // for (var element in regions) {
+                        //   element.isSelect = false;
+                        // }
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Очистить',
+                        style: CustomTextStyle.red_16_w400,
+                      ),
+                    );
+                    // }
+                    // return Container();
                   }),
                 ],
               ),
@@ -1516,7 +1519,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         builder: (context, state) {
       final allCountryList = BlocProvider.of<CountriesBloc>(context).country;
 
-      allCountrys = allCountryList.length == selectCountry.length;
+      if (selectCountry.isEmpty) {
+        allCountrys = false;
+      } else {
+        allCountrys = allCountryList.length == selectCountry.length;
+      }
 
       return ListView(
         shrinkWrap: true,
@@ -1581,6 +1588,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       if (allCountrys) {
                         selectCountry.clear();
                         selectCountry.addAll(allCountryList);
+                        final access =
+                            BlocProvider.of<ProfileBloc>(context).access;
+                        BlocProvider.of<CountriesBloc>(context)
+                            .add(GetRegionEvent(access, selectCountry));
+                        typeFilter = TypeFilter.region;
                       } else {
                         selectCountry.clear();
                       }
@@ -1695,7 +1707,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         builder: (context, state) {
       final regionSelect = BlocProvider.of<CountriesBloc>(context).region;
 
-      allRegions = regionSelect.length == selectRegions.length;
+      if (regionSelect.isEmpty) {
+        allRegions = false;
+      } else {
+        allRegions = regionSelect.length == selectRegions.length;
+      }
 
       return ListView(
           shrinkWrap: true,
@@ -1756,10 +1772,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       value: allRegions,
                       onChanged: (value) {
                         allRegions = !allRegions;
-
+                        final access =
+                            BlocProvider.of<ProfileBloc>(context).access;
                         if (allRegions) {
                           selectRegions.clear();
                           selectRegions.addAll(regionSelect);
+                          typeFilter = TypeFilter.towns;
+                          BlocProvider.of<CountriesBloc>(context)
+                              .add(GetTownsEvent(access, selectRegions));
                         } else {
                           selectRegions.clear();
                         }
@@ -1855,7 +1875,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         builder: (context, state) {
       final townSelect = BlocProvider.of<CountriesBloc>(context).town;
 
-      allTowns = townSelect.length == selectTowns.length;
+      if (townSelect.isEmpty) {
+        allTowns = false;
+      } else {
+        allTowns = townSelect.length == selectTowns.length;
+      }
 
       return ListView(
           shrinkWrap: true,
@@ -1889,7 +1913,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 ),
                 SizedBox(width: 12.h),
                 Text(
-                  'Подрегионы',
+                  'Районы',
                   style: CustomTextStyle.black_22_w700,
                 ),
               ],
@@ -1907,7 +1931,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 child: Row(
                   children: [
                     Text(
-                      'Все подрегионы',
+                      'Все районы',
                       style: CustomTextStyle.black_14_w400_171716,
                     ),
                     const Spacer(),

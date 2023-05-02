@@ -44,96 +44,78 @@ class _AboutProjectState extends State<AboutProject> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  color: ColorStyles.yellowFFD70A,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 66.h),
-                      Padding(
-                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                    child: SizedBox(
-                      height: 24.h,
-                      child: Stack(
-                        alignment: Alignment.centerLeft,
-                        children: [
-                          CustomIconButtonWhite(
-                            onBackPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: SvgImg.arrowRight,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'О проекте',
-                                style: CustomTextStyle.black_22_w700,
-                              ),
-                            ],
-                          ),
-                        ],
+                Column(
+                  children: [
+                    SizedBox(height: 66.h),
+                    Padding(
+                      padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                      child: SizedBox(
+                        height: 24.h,
+                        child: Stack(
+                          alignment: Alignment.centerLeft,
+                          children: [
+                            CustomIconButtonWhite(
+                              onBackPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: SvgImg.arrowRight,
+                              color: ColorStyles.greyBDBDBD,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'О проекте',
+                                  style: CustomTextStyle.black_22_w700,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                    ],
-                  ),
+                    SizedBox(height: 8.h)
+                  ],
                 ),
-                
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: [
-                     
-                      Container(color: ColorStyles.yellowFFD70A,
-                        child: SizedBox(height: 50.h)),
-                      Container(
-                          color: ColorStyles.yellowFFD70A,
-                          child: SizedBox(height: 10.h)),
-                      Container(
-                          color: ColorStyles.yellowFFD70A,
-                          child: SizedBox(height: 50.h)),
                       Container(
                         color: ColorStyles.yellowFFD70A,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.w),
-                              child: Center(
-                                child: Text(
-                                  'jobyfine'.toUpperCase(),
-                                  style: CustomTextStyle.black_39_w900_171716
-                                      .copyWith(color: ColorStyles.black),
+                            SizedBox(height: 40.h),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 50.w),
+                                  child: Center(
+                                    child: Text(
+                                      'jobyfine'.toUpperCase(),
+                                      style: CustomTextStyle
+                                          .black_39_w900_171716
+                                          .copyWith(color: ColorStyles.black),
+                                    ),
+                                  ),
                                 ),
+                              ],
+                            ),
+                            SizedBox(height: 40.h),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 40.w),
+                              child: Text(
+                                about?.about ?? '',
+                                style: CustomTextStyle.black_14_w400_515150,
                               ),
                             ),
+                            SizedBox(height: 40.h),
                           ],
                         ),
-                      ),
-                      Container(
-                          color: ColorStyles.yellowFFD70A,
-                          child: SizedBox(height: 40.h)),
-                      Container(
-                        color: ColorStyles.yellowFFD70A,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: Text(
-                            about?.about ?? '',
-                            style: CustomTextStyle.black_14_w400_515150,
-                          ),
-                        ),
-                      ),
-                      // Padding(
-                      //   padding: EdgeInsets.symmetric(horizontal: 40.w),
-                      //   child: Text(
-                      //     'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud ametAmet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                      //     style: CustomTextStyle.black_13_w400_515150,
-                      //   ),
-                      // ),
-                      Container(
-                        color: ColorStyles.yellowFFD70A,
-                        child: SizedBox(height: 40.h),
                       ),
                       SizedBox(height: 40.h),
                       Padding(
