@@ -217,7 +217,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             currencyString!.isNotEmpty) {
                           countField++;
                         }
-
+                       
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,

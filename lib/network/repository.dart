@@ -90,12 +90,12 @@ class Repository {
       if (currency != null) "currency": currency,
       if (countries != null && countries.isNotEmpty) "countries": countries,
       if (towns != null && towns.isNotEmpty) "towns": towns,
-      if (regions != null && regions.isNotEmpty) "towns": regions,
+      if (regions != null && regions.isNotEmpty) "regions": regions,
       if (subcategory != null && subcategory.isNotEmpty)
         "subcategory": subcategory,
       "as_customer": customer,
     };
-
+  log('wqdwqdwqdwqdq ${currency}');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
