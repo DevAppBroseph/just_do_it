@@ -82,10 +82,10 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     BlocProvider.of<ChatBloc>(context).add(GetListMessage());
+    BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
+    BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
     Future.delayed(Duration(seconds: 3), () {
-      BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
-      BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
       if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }

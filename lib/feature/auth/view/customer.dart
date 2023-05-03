@@ -140,12 +140,6 @@ class _CustomerState extends State<Customer> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
-  }
-
-  @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return BlocBuilder<CountriesBloc, CountriesState>(
@@ -646,6 +640,8 @@ class _CustomerState extends State<Customer> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),

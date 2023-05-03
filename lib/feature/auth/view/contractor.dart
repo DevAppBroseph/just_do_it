@@ -99,7 +99,6 @@ class _ContractorState extends State<Contractor> {
   void initState() {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
   }
 
   _selectImage() async {
@@ -688,6 +687,8 @@ class _ContractorState extends State<Contractor> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
