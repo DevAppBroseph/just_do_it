@@ -302,13 +302,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 ),
               ),
               SizedBox(height: 8.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.w),
-                    child: SizedBox(
-                      width: 290.w,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 25.w),
+                    Spacer(),
+                    SizedBox(
+                      width: 240.w,
                       child: AutoSizeText(
                         '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
                         textAlign: TextAlign.center,
@@ -318,20 +320,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         softWrap: true,
                       ),
                     ),
-                  ),
-                  SizedBox(width: 5.w),
-                  GestureDetector(
-                    onTap: () async {
-                      final code = await FirebaseDynamicLinksService()
-                          .shareUserProfile(int.parse(user!.id.toString()));
-                      Share.share(code.toString());
-                    },
-                    child: SvgPicture.asset(
-                      'assets/icons/share.svg',
-                      height: 25.h,
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () async {
+                        final code = await FirebaseDynamicLinksService()
+                            .shareUserProfile(int.parse(user!.id.toString()));
+                        Share.share(code.toString());
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/share.svg',
+                        height: 25.h,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(height: 18.h),
               Padding(

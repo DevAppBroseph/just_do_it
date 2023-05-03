@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 showIconModal(
@@ -357,8 +358,8 @@ void iconSelectModalCategories(
 showCountry(
   BuildContext context,
   GlobalKey key,
-  Function(String) onTap,
-  List<String> list,
+  Function(Countries) onTap,
+  List<Countries> list,
   String label,
 ) async {
   showCountryWidget(
@@ -372,9 +373,9 @@ showCountry(
 
 void showCountryWidget(
   BuildContext context,
-  Function(String) onTap,
+  Function(Countries) onTap,
   Offset offset,
-  List<String> list,
+  List<Countries> list,
   String label,
 ) {
   showDialog(
@@ -484,7 +485,7 @@ void showCountryWidget(
                                       child: Row(
                                         children: [
                                           Text(
-                                            list[index],
+                                            list[index].name ?? "-",
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14.sp,
@@ -517,8 +518,8 @@ void showCountryWidget(
 showRegion(
   BuildContext context,
   GlobalKey key,
-  Function(String) onTap,
-  List<String> list,
+  Function(Regions) onTap,
+  List<Regions> list,
   String label,
 ) async {
   showRegionWidget(
@@ -532,9 +533,9 @@ showRegion(
 
 void showRegionWidget(
   BuildContext context,
-  Function(String) onTap,
+  Function(Regions) onTap,
   Offset offset,
-  List<String> list,
+  List<Regions> list,
   String label,
 ) {
   showDialog(
@@ -643,12 +644,16 @@ void showRegionWidget(
                                       height: 50.h,
                                       child: Row(
                                         children: [
-                                          Text(
-                                            list[index],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w300,
+                                          SizedBox(
+                                            width: 250.w,
+                                            child: Text(
+                                              list[index].name ?? '-',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                              maxLines: null,
                                             ),
                                           ),
                                           const Spacer(),

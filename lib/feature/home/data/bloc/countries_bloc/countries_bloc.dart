@@ -19,39 +19,27 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   void _getCountries(
       GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
-    if (event.access != null) {
-      country = await Repository().countries(event.access);
-    } else {
-      emit(CountriesError());
-    }
+    country = await Repository().countries();
   }
 
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
-    if (event.access != null) {
-      List<Regions> regionTemp = [];
-      for (var element in event.countries) {
-        regionTemp.addAll(await Repository().regions(event.access, element));
-      }
-      region.clear();
-      region.addAll(regionTemp);
-      emit(CountriesUpdateState());
-      add(GetTownsEvent(event.access, region));
-    } else {
-      emit(CountriesError());
+    List<Regions> regionTemp = [];
+    for (var element in event.countries) {
+      regionTemp.addAll(await Repository().regions(element));
     }
+    region.clear();
+    region.addAll(regionTemp);
+    emit(CountriesUpdateState());
+    add(GetTownsEvent(region));
   }
 
   void _getTowns(GetTownsEvent event, Emitter<CountriesState> emit) async {
-    if (event.access != null) {
-      List<Town> townTemp = [];
-      for (var element in event.regions) {
-        townTemp.addAll(await Repository().towns(event.access, element));
-      }
-      town.clear();
-      town.addAll(townTemp);
-      emit(CountriesUpdateState());
-    } else {
-      emit(CountriesError());
+    List<Town> townTemp = [];
+    for (var element in event.regions) {
+      townTemp.addAll(await Repository().towns(element));
     }
+    town.clear();
+    town.addAll(townTemp);
+    emit(CountriesUpdateState());
   }
 }

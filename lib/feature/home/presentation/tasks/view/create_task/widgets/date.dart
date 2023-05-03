@@ -8,7 +8,6 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
-import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:scale_button/scale_button.dart';
@@ -627,11 +626,9 @@ class _DatePickerState extends State<DatePicker> {
                             widget.selectTown,
                             widget.currecy,
                           );
-                          final access =
-                              BlocProvider.of<ProfileBloc>(context).access;
                           context
                               .read<CountriesBloc>()
-                              .add(GetRegionEvent(access, list));
+                              .add(GetRegionEvent(list));
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -770,11 +767,9 @@ class _DatePickerState extends State<DatePicker> {
                                 widget.selectTown,
                                 widget.currecy);
 
-                            final access =
-                                BlocProvider.of<ProfileBloc>(context).access;
                             context
                                 .read<CountriesBloc>()
-                                .add(GetTownsEvent(access, list));
+                                .add(GetTownsEvent(list));
                             setState(() {});
                           },
                           child: Container(

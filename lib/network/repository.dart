@@ -558,13 +558,11 @@ class Repository {
     return [];
   }
 
-  Future<List<Currency>> currency(String? access) async {
-    final response = await dio.get(
-      '$server/orders/currencies',
-      options: Options(
+  Future<List<Currency>> currency() async {
+    final response = await dio.get('$server/orders/currencies',
+        options: Options(
           validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
-    );
+        ));
     if (response.statusCode == 200) {
       return response.data
           .map<Currency>((article) => Currency.fromJson(article))
@@ -573,12 +571,10 @@ class Repository {
     return [];
   }
 
-  Future<List<Countries>> countries(String? access) async {
+  Future<List<Countries>> countries() async {
     final response = await dio.get(
       '$server/countries/',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+      options: Options(validateStatus: ((status) => status! >= 200)),
     );
     if (response.statusCode == 200) {
       return response.data
@@ -588,12 +584,10 @@ class Repository {
     return [];
   }
 
-  Future<List<Regions>> regions(String? access, Countries countries) async {
+  Future<List<Regions>> regions(Countries countries) async {
     final response = await dio.get(
       '$server/countries/${countries.id}',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+      options: Options(validateStatus: ((status) => status! >= 200)),
     );
     if (response.statusCode == 200) {
       return response.data['regions']
@@ -640,12 +634,12 @@ class Repository {
     return towns;
   }
 
-  Future<List<Town>> towns(String? access, Regions regions) async {
+  Future<List<Town>> towns(Regions regions) async {
     final response = await dio.get(
       '$server/countries/region/${regions.id}',
       options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+        validateStatus: ((status) => status! >= 200),
+      ),
     );
 
     if (response.statusCode == 200) {

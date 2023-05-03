@@ -413,7 +413,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             child: Text(
                               category != null && category!.isNotEmpty
                                   ? category!
-                                  : 'Все категории',
+                                  : 'Категории не выбраны',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -1487,10 +1487,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       if (allCountrys) {
                         selectCountry.clear();
                         selectCountry.addAll(allCountryList);
-                        final access =
-                            BlocProvider.of<ProfileBloc>(context).access;
                         BlocProvider.of<CountriesBloc>(context)
-                            .add(GetRegionEvent(access, selectCountry));
+                            .add(GetRegionEvent(selectCountry));
                         typeFilter = TypeFilter.region;
                       } else {
                         selectCountry.clear();
@@ -1534,7 +1532,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       children: [
         GestureDetector(
           onTap: () {
-            final access = BlocProvider.of<ProfileBloc>(context).access;
             if (selectCountry.contains(countrySecond)) {
               selectCountry.remove(countrySecond);
             } else {
@@ -1544,7 +1541,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               typeFilter = TypeFilter.region;
             }
             BlocProvider.of<CountriesBloc>(context)
-                .add(GetRegionEvent(access, selectCountry));
+                .add(GetRegionEvent(selectCountry));
             selectRegions.clear();
             selectTowns.clear();
             setState(() {});
@@ -1671,14 +1668,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       value: allRegions,
                       onChanged: (value) {
                         allRegions = !allRegions;
-                        final access =
-                            BlocProvider.of<ProfileBloc>(context).access;
                         if (allRegions) {
                           selectRegions.clear();
                           selectRegions.addAll(regionSelect);
                           typeFilter = TypeFilter.towns;
                           BlocProvider.of<CountriesBloc>(context)
-                              .add(GetTownsEvent(access, selectRegions));
+                              .add(GetTownsEvent(selectRegions));
                         } else {
                           selectRegions.clear();
                         }
@@ -1692,7 +1687,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(height: 20.h),
             SizedBox(
-              height: 700.h,
+              height: 400.h,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: regionSelect.length,
@@ -1702,9 +1697,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       .any((element) => regionSelect[index].id == element.id);
                   return GestureDetector(
                     onTap: () {
-                      final access =
-                          BlocProvider.of<ProfileBloc>(context).access;
-
                       if (selectRegions.contains(regionSelect[index])) {
                         selectRegions.remove(regionSelect[index]);
                       } else {
@@ -1714,49 +1706,53 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         typeFilter = TypeFilter.towns;
                       }
                       BlocProvider.of<CountriesBloc>(context)
-                          .add(GetTownsEvent(access, selectRegions));
+                          .add(GetTownsEvent(selectRegions));
                       selectTowns.clear();
                       setState(() {});
                     },
                     child: Container(
-                      height: 40.h,
                       color: Colors.transparent,
-                      child: Row(
-                        children: [
-                          Text(
-                            regionSelect[index].name!,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {});
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  height: 18.h,
-                                  width: 18.h,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color(0xFFEAECEE),
-                                  ),
-                                ),
-                                Container(
-                                  height: 10.h,
-                                  width: 10.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isSelectedRegion
-                                        ? Colors.black
-                                        : Colors.transparent,
-                                  ),
-                                ),
-                              ],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                regionSelect[index].name!,
+                                style: CustomTextStyle.black_14_w500_171716,
+                              ),
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 10.w),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {});
+                              },
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    height: 18.h,
+                                    width: 18.h,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFFEAECEE),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 10.h,
+                                    width: 10.h,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isSelectedRegion
+                                          ? Colors.black
+                                          : Colors.transparent,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -1853,7 +1849,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(height: 20.h),
             SizedBox(
-              height: 700.h,
+              height: 400.h,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: townSelect.length,
@@ -1872,17 +1868,22 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       setState(() {});
                     },
                     child: Container(
-                      height: 40.h,
                       color: Colors.transparent,
-                      child: Row(
-                        children: [
-                          Text(
-                            townSelect[index].name!,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                          const Spacer(),
-                          if (isSelectedTown) const Icon(Icons.check)
-                        ],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                townSelect[index].name!,
+                                style: CustomTextStyle.black_14_w500_171716,
+                              ),
+                            ),
+                            SizedBox(width: 10.h),
+                            // const Spacer(),
+                            if (isSelectedTown) const Icon(Icons.check)
+                          ],
+                        ),
                       ),
                     ),
                   );

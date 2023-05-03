@@ -12,7 +12,9 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
@@ -75,6 +77,12 @@ class _CustomerState extends State<Customer> {
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
 
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+  Regions? selectRegions;
+
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
@@ -134,12 +142,16 @@ class _CustomerState extends State<Customer> {
   @override
   void initState() {
     super.initState();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
   }
 
   @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, snapshot) {
+      listRegions.clear();
+      listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
@@ -726,12 +738,15 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
-              user.copyWith(country: value);
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent([selectCountries!]));
+              user.copyWith(country: countryController.text);
               setState(() {});
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
@@ -754,11 +769,11 @@ class _CustomerState extends State<Customer> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
-                  user.copyWith(region: value);
+                  regionController.text = value.name ?? '-';
+                  user.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {

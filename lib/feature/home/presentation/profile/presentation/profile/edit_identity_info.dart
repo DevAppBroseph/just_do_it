@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -22,8 +24,6 @@ class EditIdentityInfo extends StatefulWidget {
 }
 
 class _EditIdentityInfoState extends State<EditIdentityInfo> {
-  final GlobalKey _iconBtn = GlobalKey();
-
   int groupValue = 0;
   int page = 0;
   bool visiblePassword = false;
@@ -59,8 +59,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   ScrollController scrollController2 = ScrollController();
   late UserRegModel? user;
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+  Regions? selectRegions;
+
   @override
   void initState() {
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     user = BlocProvider.of<ProfileBloc>(context).user!;
     fillData(user);
 
@@ -75,71 +82,76 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
-        body: Column(
-          children: [
-            SizedBox(height: 60.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                children: [
-                  CustomIconButton(
-                    onBackPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: SvgImg.arrowRight,
-                  ),
-                  SizedBox(width: 12.w),
-                  Text(
-                    'Безопасность',
-                    style: CustomTextStyle.black_22_w700,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 50.h),
-            Expanded(child: secondStage(heightKeyBoard)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: CustomButton(
-                onTap: () {
-                  if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    showAlertToast('Пароли не совпадают');
-                  } else if (passwordController.text.length < 6 &&
-                      passwordController.text.isNotEmpty) {
-                    showAlertToast('минимальная длина пароля 6 символов');
-                  } else {
-                    user!.copyWith(isEntity: physics);
-                    BlocProvider.of<ProfileBloc>(context).setUser(user);
-                    Repository().updateUser(
-                        BlocProvider.of<ProfileBloc>(context).access, user!);
-                    Navigator.of(context).pop();
-                  }
-                  if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!)) {
-                    showAlertToast('Ваш паспорт просрочен');
-                  } else if (checkExpireDate(dateTimeEnd) != null) {
-                    showAlertToast(checkExpireDate(dateTimeEnd)!);
-                  } else {
-                    user!.copyWith(isEntity: physics);
-                    BlocProvider.of<ProfileBloc>(context).setUser(user);
-                    Repository().updateUser(
-                        BlocProvider.of<ProfileBloc>(context).access, user!);
-                    Navigator.of(context).pop();
-                  }
-                },
-                btnColor: ColorStyles.yellowFFD70B,
-                textLabel: Text(
-                  'Сохранить',
-                  style: CustomTextStyle.black_16_w600_171716,
+        body: BlocBuilder<CountriesBloc, CountriesState>(
+            builder: (context, snapshot) {
+          listRegions.clear();
+          listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
+          return Column(
+            children: [
+              SizedBox(height: 60.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    CustomIconButton(
+                      onBackPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgImg.arrowRight,
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      'Безопасность',
+                      style: CustomTextStyle.black_22_w700,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 52.h),
-          ],
-        ),
+              SizedBox(height: 50.h),
+              Expanded(child: secondStage(heightKeyBoard)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: CustomButton(
+                  onTap: () {
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      showAlertToast('Пароли не совпадают');
+                    } else if (passwordController.text.length < 6 &&
+                        passwordController.text.isNotEmpty) {
+                      showAlertToast('минимальная длина пароля 6 символов');
+                    } else {
+                      user!.copyWith(isEntity: physics);
+                      BlocProvider.of<ProfileBloc>(context).setUser(user);
+                      Repository().updateUser(
+                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Navigator.of(context).pop();
+                    }
+                    if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш паспорт просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    } else {
+                      user!.copyWith(isEntity: physics);
+                      BlocProvider.of<ProfileBloc>(context).setUser(user);
+                      Repository().updateUser(
+                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  btnColor: ColorStyles.yellowFFD70B,
+                  textLabel: Text(
+                    'Сохранить',
+                    style: CustomTextStyle.black_16_w600_171716,
+                  ),
+                ),
+              ),
+              SizedBox(height: 52.h),
+            ],
+          );
+        }),
       ),
     );
   }
@@ -290,12 +302,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent([selectCountries!]));
               user?.copyWith(country: countryController.text);
               setState(() {});
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
@@ -318,11 +333,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
-                  user!.copyWith(region: value);
+                  regionController.text = value.name ?? '-';
+                  user!.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                // countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {

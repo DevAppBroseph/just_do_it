@@ -13,11 +13,7 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
 
   void _getCurrency(GetCurrencyEvent event, Emitter<CurrencyState> emit) async {
     emit(CurrencyLoading());
-    if (event.access != null) {
-      currency = await Repository().currency(event.access);
-      emit(CurrencyLoaded(currency: currency));
-    } else {
-      emit(CurrencyError());
-    }
+    currency = await Repository().currency();
+    emit(CurrencyLoaded(currency: currency));
   }
 }

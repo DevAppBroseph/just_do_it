@@ -84,9 +84,8 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<ChatBloc>(context).add(GetListMessage());
 
     Future.delayed(Duration(seconds: 3), () {
-      String? access = BlocProvider.of<ProfileBloc>(context).access;
-      BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent(access));
-      BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent(access));
+      BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
+      BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
       if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }
