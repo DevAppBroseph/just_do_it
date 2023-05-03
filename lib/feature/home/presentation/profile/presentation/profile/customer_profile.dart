@@ -234,11 +234,54 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 SizedBox(height: 8.h),
                                 Row(
                                   children: [
-                                    Text(
-                                      'Супермен',
-                                      style: CustomTextStyle.purple_20_w700
-                                          .copyWith(fontSize: 19),
-                                    ),
+                                    BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                        if (state is ScoreLoaded) {
+                                          final levels = state.levels;
+                                          if (user.balance! < levels![0].mustCoins!) {
+                                            return Text(
+                                              levels[0].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+
+                                          if (user.balance! >= levels[0].mustCoins! &&
+                                              user.balance! < levels[1].mustCoins!) {
+                                            return Text(
+                                              levels[0].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user.balance! >= levels[1].mustCoins! &&
+                                              user.balance! < levels[2].mustCoins!) {
+                                            return Text(
+                                              levels[1].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user.balance! >= levels[2].mustCoins! &&
+                                              user.balance! < levels[3].mustCoins!) {
+                                            return Text(
+                                              levels[2].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user.balance! >= levels[3].mustCoins! &&
+                                              user.balance! < levels[4].mustCoins!) {
+                                            return Text(
+                                              levels[3].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user.balance! >= levels[4].mustCoins!) {
+                                            return Text(
+                                              levels[4].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                    
+                                        }
+                                        return Container();
+                                      }),
                                   ],
                                 ),
                               ],
@@ -256,7 +299,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                   );
                                 }
 
-                                if (user.balance! > levels[0].mustCoins! &&
+                                if (user.balance! >= levels[0].mustCoins! &&
                                     user.balance! < levels[1].mustCoins!) {
                                   return Image.network(
                                     '${levels[0].image}',
