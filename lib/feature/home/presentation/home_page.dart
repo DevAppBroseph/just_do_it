@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
     BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }

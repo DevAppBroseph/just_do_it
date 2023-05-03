@@ -35,10 +35,11 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
 
   void _getTowns(GetTownsEvent event, Emitter<CountriesState> emit) async {
     List<Town> townTemp = [];
+    town.clear();
+    emit(CountriesUpdateState());
     for (var element in event.regions) {
       townTemp.addAll(await Repository().towns(element));
     }
-    town.clear();
     town.addAll(townTemp);
     emit(CountriesUpdateState());
   }
