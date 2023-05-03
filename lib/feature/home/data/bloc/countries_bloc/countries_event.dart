@@ -5,11 +5,11 @@ class CountriesEvent {}
 class GetCountryEvent extends CountriesEvent {}
 
 class GetRegionEvent extends CountriesEvent {
-  List<Countries> countries;
+  Countries countries;
   GetRegionEvent(this.countries);
 }
 
 class GetTownsEvent extends CountriesEvent {
-  List<Regions> regions;
+  Regions regions;
   GetTownsEvent(this.regions);
 }

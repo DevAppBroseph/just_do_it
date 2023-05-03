@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
@@ -210,14 +211,14 @@ class _CreatePageState extends State<CreatePage> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.h, vertical: 20.h),
                               child: CustomButton(
-                                onTap: () {
+                                onTap: () async {
                                   final bloc =
                                       BlocProvider.of<ProfileBloc>(context);
                                   if (bloc.user == null) {
                                     Navigator.of(context)
                                         .pushNamed(AppRoute.auth);
                                   } else {
-                                    Navigator.of(context).push(
+                                    await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
                                           return CeateTasks(
@@ -227,6 +228,8 @@ class _CreatePageState extends State<CreatePage> {
                                         },
                                       ),
                                     );
+                                    BlocProvider.of<CountriesBloc>(context)
+                                        .add(GetCountryEvent());
                                   }
                                 },
                                 btnColor: ColorStyles.yellowFFD70A,
@@ -308,10 +311,10 @@ class _CreatePageState extends State<CreatePage> {
         onTap: () => setState(() {
           if (openCategory != currentIndex) {
             openCategory = currentIndex;
-            Future.delayed(Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 300), () {
               scrollController.animateTo(
                 65.h * currentIndex,
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
               );
             });

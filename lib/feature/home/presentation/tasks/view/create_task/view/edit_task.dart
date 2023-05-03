@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
@@ -46,9 +48,7 @@ class _EditTasksState extends State<EditTasks> {
   File? document;
   File? photo;
 
-  List<Regions> region = [];
   List<Countries> countries = [];
-  List<Town> town = [];
   Currency? currency;
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -59,6 +59,8 @@ class _EditTasksState extends State<EditTasks> {
   @override
   void initState() {
     super.initState();
+
+    currency = widget.task.currency;
     selectCategory = widget.task.activities;
     selectSubCategory = widget.task.subcategory;
     aboutController.text = widget.task.description;
@@ -71,7 +73,47 @@ class _EditTasksState extends State<EditTasks> {
     final splitEndDate = widget.task.dateEnd.split('-');
     endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
         int.parse(splitEndDate[2]));
-    region = widget.task.regions;
+    initCountry();
+  }
+
+  initCountry() async {
+    countries = BlocProvider.of<CountriesBloc>(context).country;
+    for (var element1 in countries) {
+      element1.select = false;
+    }
+
+    for (var element1 in widget.task.countries) {
+      for (var element2 in countries) {
+        if (element1.id == element2.id) {
+          element2.select = true;
+          element2.region = await Repository().regions(element2);
+        }
+      }
+    }
+
+    for (var element1 in widget.task.regions) {
+      for (var element2 in countries) {
+        for (var element3 in element2.region) {
+          if (element1.id == element3.id) {
+            element3.select = true;
+            element3.town = await Repository().towns(element3);
+          }
+        }
+      }
+    }
+
+    for (var element1 in widget.task.towns) {
+      for (var element2 in countries) {
+        for (var element3 in element2.region) {
+          for (var element4 in element3.town) {
+            if (element1.id == element4.id) {
+              element4.select = true;
+            }
+          }
+        }
+      }
+    }
+    setState(() {});
   }
 
   _selectImage() async {
@@ -214,26 +256,27 @@ class _EditTasksState extends State<EditTasks> {
                           setState(() {});
                         },
                       ),
-                      DatePicker(
-                        bottomInsets: bottomInsets,
-                        coastMaxController: coastMaxController,
-                        coastMinController: coastMinController,
-                        startDate: startDate,
-                        endDate: endDate,
-                        selectRegion: region,
-                        selectCountry: countries,
-                        selectTown: town,
-                        currecy: currency,
-                        onEdit: (region, startDate, endDate, countries, town,
-                            currency) {
-                          this.region = region;
-                          this.startDate = startDate;
-                          this.endDate = endDate;
-                          this.countries = countries;
-                          this.town = town;
-                          this.currency = currency;
-                        },
-                      ),
+                      BlocBuilder<CountriesBloc, CountriesState>(
+                          builder: (context, snapshot) {
+                        countries =
+                            BlocProvider.of<CountriesBloc>(context).country;
+                        return DatePicker(
+                          bottomInsets: bottomInsets,
+                          coastMaxController: coastMaxController,
+                          coastMinController: coastMinController,
+                          startDate: startDate,
+                          endDate: endDate,
+                          allCountries: countries,
+                          currecy: currency,
+                          onEdit: (startDate, endDate, countries, currency) {
+                            this.startDate = startDate;
+                            this.endDate = endDate;
+                            this.countries = countries;
+                            this.currency = currency;
+                            setState(() {});
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -262,10 +305,10 @@ class _EditTasksState extends State<EditTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (region == null) {
-                          error += '\n- регион';
-                          errorsFlag = true;
-                        }
+                        // if (region == null) {
+                        //   error += '\n- регион';
+                        //   errorsFlag = true;
+                        // }
 
                         if (coastMinController.text.isNotEmpty &&
                             coastMaxController.text.isNotEmpty) {
@@ -281,6 +324,33 @@ class _EditTasksState extends State<EditTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
+
+                          List<Countries> country = [];
+                          List<Regions> regions = [];
+                          List<Town> towns = [];
+
+                          for (var element in countries) {
+                            if (element.select) {
+                              country.add(element);
+                            }
+                          }
+
+                          for (var element in country) {
+                            for (var element1 in element.region) {
+                              if (element1.select) {
+                                regions.add(element1);
+                              }
+                            }
+                          }
+
+                          for (var element in regions) {
+                            for (var element1 in element.town) {
+                              if (element1.select) {
+                                towns.add(element1);
+                              }
+                            }
+                          }
+
                           Task newTask = Task(
                             id: widget.task.id,
                             asCustomer: widget.task.asCustomer,
@@ -300,7 +370,10 @@ class _EditTasksState extends State<EditTasks> {
                                   ? '0'
                                   : coastMaxController.text,
                             ),
-                            regions: region,
+                            countries: country,
+                            regions: regions,
+                            currency: currency,
+                            towns: towns,
                             file: null,
                             icon: '',
                             task: '',
@@ -314,10 +387,11 @@ class _EditTasksState extends State<EditTasks> {
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .editTask(profileBloc.access!, newTask);
-                          if (res)
+                          if (res) {
                             Navigator.of(context)
                               ..pop()
                               ..pop();
+                          }
                           Loader.hide();
                         }
                       } else {

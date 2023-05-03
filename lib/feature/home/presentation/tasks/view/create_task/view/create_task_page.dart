@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,9 +52,7 @@ class _CeateTasksState extends State<CeateTasks> {
   File? document;
   File? photo;
 
-  List<Regions> regions = [];
   List<Countries> countries = [];
-  List<Town> towns = [];
   Currency? currency;
 
   Activities? selectCategory;
@@ -217,54 +216,20 @@ class _CeateTasksState extends State<CeateTasks> {
                       ),
                       BlocBuilder<CountriesBloc, CountriesState>(
                           builder: (context, snapshot) {
-                        List<Countries> allCountries =
+                        countries =
                             BlocProvider.of<CountriesBloc>(context).country;
-                        List<Regions> allRegion =
-                            BlocProvider.of<CountriesBloc>(context).region;
-                        List<Town> allTown =
-                            BlocProvider.of<CountriesBloc>(context).town;
-                        List<Regions> listTempRegion = [];
-                        for (int i = 0; i < regions.length; i++) {
-                          for (int j = 0; j < allRegion.length; j++) {
-                            if (regions[i].id == allRegion[j].id) {
-                              listTempRegion.add(regions[i]);
-                              break;
-                            }
-                          }
-                        }
-
-                        regions.clear();
-                        regions.addAll(listTempRegion);
-
-                        List<Town> listTempTown = [];
-                        for (int i = 0; i < towns.length; i++) {
-                          for (int j = 0; j < allTown.length; j++) {
-                            if (towns[i].id == allTown[j].id) {
-                              listTempTown.add(allTown[j]);
-                              break;
-                            }
-                          }
-                        }
-                        towns.clear();
-                        towns.addAll(listTempTown);
-
                         return DatePicker(
                           bottomInsets: bottomInsets,
                           coastMaxController: coastMaxController,
                           coastMinController: coastMinController,
                           startDate: startDate,
                           endDate: endDate,
-                          selectRegion: regions,
-                          selectCountry: countries,
-                          selectTown: towns,
+                          allCountries: countries,
                           currecy: currency,
-                          onEdit: (regions, startDate, endDate, countries,
-                              towns, currency) {
-                            this.regions = regions;
+                          onEdit: (startDate, endDate, countries, currency) {
                             this.startDate = startDate;
                             this.endDate = endDate;
                             this.countries = countries;
-                            this.towns = towns;
                             this.currency = currency;
                             setState(() {});
                           },
@@ -322,6 +287,32 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
+
+                          List<Countries> country = [];
+                          List<Regions> regions = [];
+                          List<Town> towns = [];
+
+                          for (var element in countries) {
+                            if (element.select) {
+                              country.add(element);
+                            }
+                          }
+
+                          for (var element in country) {
+                            for (var element1 in element.region) {
+                              if (element1.select) {
+                                regions.add(element1);
+                              }
+                            }
+                          }
+
+                          for (var element in regions) {
+                            for (var element1 in element.town) {
+                              if (element1.select) {
+                                towns.add(element1);
+                              }
+                            }
+                          }
 
                           Task newTask = Task(
                             asCustomer: widget.customer,

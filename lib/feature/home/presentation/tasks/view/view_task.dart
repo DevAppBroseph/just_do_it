@@ -50,7 +50,7 @@ class _TaskViewState extends State<TaskView> {
                 'Открыто',
                 style: CustomTextStyle.grey_12_w400,
               ),
-              Spacer(),
+              const Spacer(),
               GestureDetector(
                 onTap: () => taskMoreDialog(
                   context,
@@ -71,7 +71,7 @@ class _TaskViewState extends State<TaskView> {
               padding: EdgeInsets.symmetric(vertical: 10.h),
               child: Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () async {
                       await Navigator.of(context).push(
@@ -203,7 +203,7 @@ class _TaskViewState extends State<TaskView> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: 150.w,
                 child: Column(

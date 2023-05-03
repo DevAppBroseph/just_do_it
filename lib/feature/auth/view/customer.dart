@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,7 +82,6 @@ class _CustomerState extends State<Customer> {
   Countries? selectCountries;
 
   List<Regions> listRegions = [];
-  Regions? selectRegions;
 
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -144,8 +144,6 @@ class _CustomerState extends State<Customer> {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return BlocBuilder<CountriesBloc, CountriesState>(
         builder: (context, snapshot) {
-      listRegions.clear();
-      listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
@@ -738,7 +736,7 @@ class _CustomerState extends State<Customer> {
               selectCountries = value;
               regionController.text = '';
               BlocProvider.of<CountriesBloc>(context)
-                  .add(GetRegionEvent([selectCountries!]));
+                  .add(GetRegionEvent(selectCountries!));
               user.copyWith(country: countryController.text);
               setState(() {});
             },
@@ -761,6 +759,7 @@ class _CustomerState extends State<Customer> {
           key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
+              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,

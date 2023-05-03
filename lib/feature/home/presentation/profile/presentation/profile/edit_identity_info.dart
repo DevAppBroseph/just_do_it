@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,7 +86,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         body: BlocBuilder<CountriesBloc, CountriesState>(
             builder: (context, snapshot) {
           listRegions.clear();
-          listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
+          // listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
           return Column(
             children: [
               SizedBox(height: 60.h),
@@ -306,7 +307,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               selectCountries = value;
               regionController.text = '';
               BlocProvider.of<CountriesBloc>(context)
-                  .add(GetRegionEvent([selectCountries!]));
+                  .add(GetRegionEvent(selectCountries!));
               user?.copyWith(country: countryController.text);
               setState(() {});
             },
@@ -329,6 +330,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
+              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,
@@ -337,7 +339,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   user!.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                // countryController.text == 'Россия' ? countryRussia : countryOAE,
                 listRegions,
                 'Выберите регион',
               );

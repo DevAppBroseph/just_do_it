@@ -13,34 +13,35 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   }
 
   List<Countries> country = [];
-  List<Regions> region = [];
-  List<Town> town = [];
 
   void _getCountries(
       GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
     country = await Repository().countries();
+    emit(CountriesLoaded());
   }
 
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
-    List<Regions> regionTemp = [];
-    for (var element in event.countries) {
-      regionTemp.addAll(await Repository().regions(element));
+    List<Regions> regions = await Repository().regions(event.countries);
+    for (var element in country) {
+      if (event.countries.id == element.id) {
+        element.region = regions;
+        break;
+      }
     }
-    region.clear();
-    region.addAll(regionTemp);
     emit(CountriesUpdateState());
-    add(GetTownsEvent(region));
   }
 
   void _getTowns(GetTownsEvent event, Emitter<CountriesState> emit) async {
-    List<Town> townTemp = [];
-    town.clear();
-    emit(CountriesUpdateState());
-    for (var element in event.regions) {
-      townTemp.addAll(await Repository().towns(element));
+    List<Town> towns = await Repository().towns(event.regions);
+    for (var element1 in country) {
+      for (var element2 in element1.region) {
+        if (element2.id == event.regions.id) {
+          element2.town = towns;
+          break;
+        }
+      }
     }
-    town.addAll(townTemp);
     emit(CountriesUpdateState());
   }
 }
