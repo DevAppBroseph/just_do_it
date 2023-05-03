@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class OrderTask {
   int? id;
   int? chatId;
@@ -14,7 +12,6 @@ class OrderTask {
     this.description,
     this.owner,
   });
-  
 
   factory OrderTask.fromJson(Map<String, dynamic> json) => OrderTask(
         id: json["id"],
@@ -38,15 +35,12 @@ class Currency {
   String? name;
   String? shortName;
 
-  Currency(this.isSelect, {required this.id, required this.name, required this.shortName});
+  Currency(this.isSelect,
+      {required this.id, required this.name, required this.shortName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(
-      false,
-     id: json['id'],
-     name: json['name'],
-     shortName: json['short_name']
-    );
+    return Currency(false,
+        id: json['id'], name: json['name'], shortName: json['short_name']);
   }
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -54,7 +48,6 @@ class Currency {
         "short_name": shortName,
       };
 }
-
 
 class Owner {
   int? id;

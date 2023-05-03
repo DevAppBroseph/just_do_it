@@ -10,7 +10,6 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -540,17 +539,6 @@ class _WelcomPageState extends State<WelcomPage> {
                                       ),
                                     ),
                                   ),
-                                  // Align(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: Padding(
-                                  //     padding:
-                                  //         EdgeInsets.only(left: 16.w, bottom: 31.h),
-                                  //     child: Image.asset(
-                                  //       'assets/images/thor4.png',
-                                  //       height: 56.h,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),
@@ -572,19 +560,11 @@ class _WelcomPageState extends State<WelcomPage> {
       child: ScaleButton(
         bound: 0.02,
         onTap: () => setState(() {
-          // if (firstStageSelect) {
           if (indexLanguage != currentIndex) {
             indexLanguage = currentIndex;
           } else {
             indexLanguage = 0;
           }
-          // } else {
-          //   if (index != currentIndex) {
-          //     index = currentIndex;
-          //   } else {
-          //     index = 0;
-          //   }
-          // }
         }),
         child: Container(
           decoration: BoxDecoration(

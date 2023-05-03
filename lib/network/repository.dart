@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
@@ -61,7 +60,6 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      // final reversedTasks = tasks.reversed;
       return tasks;
     }
     return tasks;
@@ -74,10 +72,10 @@ class Repository {
     int? priceTo,
     String? dateStart,
     String? dateEnd,
-    List<int?>? subcategory,
-    List<int?>? regions,
-    List<int?>? towns,
-    List<int?>? countries,
+    List<int> subcategory,
+    List<int> regions,
+    List<int> towns,
+    List<int> countries,
     bool? customer,
     int? currency,
   ) async {
@@ -88,14 +86,12 @@ class Repository {
       if (dateEnd != null) "date_end": dateEnd,
       if (dateStart != null) "date_start": dateStart,
       if (currency != null) "currency": currency,
-      if (countries != null && countries.isNotEmpty) "countries": countries,
-      if (towns != null && towns.isNotEmpty) "towns": towns,
-      if (regions != null && regions.isNotEmpty) "towns": regions,
-      if (subcategory != null && subcategory.isNotEmpty)
-        "subcategory": subcategory,
+      if (countries.isNotEmpty) "countries": countries,
+      if (towns.isNotEmpty) "towns": towns,
+      if (regions.isNotEmpty) "regions": regions,
+      if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
-
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -111,7 +107,6 @@ class Repository {
       for (var element in response.data) {
         tasks.add(Task.fromJson(element));
       }
-      // final reversedTasks = tasks.reversed;
       return tasks;
     }
     return tasks;
@@ -323,8 +318,6 @@ class Repository {
       ),
     );
 
-    print('object ${response.data}');
-
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       await Storage().setAccessToken(accessToken);
@@ -390,7 +383,6 @@ class Repository {
 
   // profile/ get
   Future<UserRegModel?> getProfile(String access) async {
-    print('object token= $access');
     final response = await dio.get(
       '$server/profile/',
       options: Options(
@@ -566,13 +558,11 @@ class Repository {
     return [];
   }
 
-  Future<List<Currency>> currency(String? access) async {
-    final response = await dio.get(
-      '$server/orders/currencies',
-      options: Options(
+  Future<List<Currency>> currency() async {
+    final response = await dio.get('$server/orders/currencies',
+        options: Options(
           validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
-    );
+        ));
     if (response.statusCode == 200) {
       return response.data
           .map<Currency>((article) => Currency.fromJson(article))
@@ -581,12 +571,10 @@ class Repository {
     return [];
   }
 
-  Future<List<Countries>> countries(String? access) async {
+  Future<List<Countries>> countries() async {
     final response = await dio.get(
       '$server/countries/',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+      options: Options(validateStatus: ((status) => status! >= 200)),
     );
     if (response.statusCode == 200) {
       return response.data
@@ -596,12 +584,10 @@ class Repository {
     return [];
   }
 
-  Future<List<Regions>> regions(String? access, Countries countries) async {
+  Future<List<Regions>> regions(Countries countries) async {
     final response = await dio.get(
       '$server/countries/${countries.id}',
-      options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+      options: Options(validateStatus: ((status) => status! >= 200)),
     );
     if (response.statusCode == 200) {
       return response.data['regions']
@@ -648,12 +634,12 @@ class Repository {
     return towns;
   }
 
-  Future<List<Town>> towns(String? access, Regions regions) async {
+  Future<List<Town>> towns(Regions regions) async {
     final response = await dio.get(
       '$server/countries/region/${regions.id}',
       options: Options(
-          validateStatus: ((status) => status! >= 200),
-          headers: {'Authorization': 'Bearer $access'}),
+        validateStatus: ((status) => status! >= 200),
+      ),
     );
 
     if (response.statusCode == 200) {

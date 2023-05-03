@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +14,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -49,7 +49,7 @@ class _EditTasksState extends State<EditTasks> {
   List<Regions> region = [];
   List<Countries> countries = [];
   List<Town> town = [];
-
+  Currency? currency;
   Activities? selectCategory;
   Subcategory? selectSubCategory;
 
@@ -72,16 +72,6 @@ class _EditTasksState extends State<EditTasks> {
     endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
         int.parse(splitEndDate[2]));
     region = widget.task.regions;
-    log('message ${widget.task.toJson()}');
-
-    // if (widget.selectCategory != null) {
-    //   for (var element in widget.selectCategory!.subcategory) {
-    //     if (widget.selectCategory!.selectSubcategory
-    //         .contains(element.description)) {
-    //       selectSubCategory = element;
-    //     }
-    //   }
-    // }
   }
 
   _selectImage() async {
@@ -233,12 +223,15 @@ class _EditTasksState extends State<EditTasks> {
                         selectRegion: region,
                         selectCountry: countries,
                         selectTown: town,
-                        onEdit: (region, startDate, endDate, countries, town) {
+                        currecy: currency,
+                        onEdit: (region, startDate, endDate, countries, town,
+                            currency) {
                           this.region = region;
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.town = town;
+                          this.currency = currency;
                         },
                       ),
                     ],
@@ -269,7 +262,7 @@ class _EditTasksState extends State<EditTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (region == null ) {
+                        if (region == null) {
                           error += '\n- регион';
                           errorsFlag = true;
                         }
@@ -307,7 +300,7 @@ class _EditTasksState extends State<EditTasks> {
                                   ? '0'
                                   : coastMaxController.text,
                             ),
-                            regions:  region,
+                            regions: region,
                             file: null,
                             icon: '',
                             task: '',
@@ -321,7 +314,10 @@ class _EditTasksState extends State<EditTasks> {
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .editTask(profileBloc.access!, newTask);
-                          if (res) Navigator.of(context)..pop()..pop();
+                          if (res)
+                            Navigator.of(context)
+                              ..pop()
+                              ..pop();
                           Loader.hide();
                         }
                       } else {

@@ -15,11 +15,9 @@ class CountriesLoaded extends CountriesState {
   List<Town> town;
   List<Town> selectTown;
   List<Town> allTown;
-  //  bool switchCountry;
 
   CountriesLoaded(
-      {
-      this.allRegion = const [],
+      {this.allRegion = const [],
       this.allTown = const [],
       this.selectCountry = const [],
       this.selectRegion = const [],
@@ -28,7 +26,6 @@ class CountriesLoaded extends CountriesState {
       required this.town,
       required this.country});
   CountriesLoaded copyWith({
-    // bool? switchCountry,
     List<Regions>? allRegion,
     List<Town>? allTown,
     List<Regions>? selectRegion,
@@ -39,7 +36,7 @@ class CountriesLoaded extends CountriesState {
     List<Town>? town,
   }) {
     return CountriesLoaded(
-       allTown: allTown ?? this.allTown,
+        allTown: allTown ?? this.allTown,
         selectTown: selectTown ?? this.selectTown,
         selectRegion: selectRegion ?? this.selectRegion,
         allRegion: allRegion ?? this.allRegion,

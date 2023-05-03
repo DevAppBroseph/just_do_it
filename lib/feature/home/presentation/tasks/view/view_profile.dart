@@ -5,14 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
-import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/auth/widget/widget_position.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
-import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
-import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ProfileView extends StatefulWidget {
   Owner owner;
@@ -103,9 +100,7 @@ class _ProfileViewState extends State<ProfileView> {
                           onTap: () => taskMoreDialog(
                             context,
                             getWidgetPosition(globalKey),
-                            (index) {
-                              // Navigator.pop(context);
-                            },
+                            (index) {},
                           ),
                           child: SvgPicture.asset(
                             'assets/icons/more-circle.svg',
@@ -193,7 +188,6 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(
                     height: 70.h,
                     child: ListView(
-                      // itemCount: 3,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -306,26 +300,6 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         )
                       ],
-                      // itemBuilder: (context, index) {
-                      // return Padding(
-                      //   padding: EdgeInsets.only(right: 5.w),
-                      //   child: Container(
-                      //     height: 70.h,
-                      //     width: 105.w,
-                      //     decoration: BoxDecoration(
-                      //       color: const Color(0xFFFFEACB),
-                      //       borderRadius: BorderRadius.circular(10.r),
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //           color: ColorStyles.shadowFC6554,
-                      //           offset: const Offset(0, 4),
-                      //           blurRadius: 45.r,
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // );
-                      // },
                     ),
                   ),
                   SizedBox(height: 30.h),

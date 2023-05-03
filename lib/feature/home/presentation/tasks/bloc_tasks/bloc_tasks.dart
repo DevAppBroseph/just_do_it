@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task.dart';
@@ -15,12 +14,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
   void _getAllTasks(GetTasksEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
-    log(event.priceFrom.toString());
-    final regions = event.isSelectRegions?.map((e) => e.id).toList();
-    final towns = event.isSelectTown?.map((e) => e.id).toList();
-    final countries = event.isSelectCountry?.map((e) => e.id).toList();
-
-
+    final regions = event.isSelectRegions.map((e) => e.id!).toList();
+    final towns = event.isSelectTown.map((e) => e.id!).toList();
+    final countries = event.isSelectCountry.map((e) => e.id!).toList();
 
     tasks = await Repository().getTaskList(
       event.access,
@@ -36,12 +32,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       event.customer,
       event.currency,
     );
-    tasks = tasks;
-    // .map((e) => e.id).toList()
+
     emit(TasksLoaded(event.countFilter, tasks: tasks));
-    // log(event.query);
-    // } else {
-    // emit(TasksError());
-    // }
   }
 }

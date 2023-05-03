@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +53,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description == user!.activitiesInfo?[j].description) {
+        if (listCategories[i].description ==
+            user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
         }
       }
@@ -68,7 +67,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
   }
 
   void downloadCV(String url) async {
-    Uint8List? byte = await Repository().downloadFile(url.contains(server) ? url : server + url);
+    Uint8List? byte = await Repository()
+        .downloadFile(url.contains(server) ? url : server + url);
     String savePath = await getFilePath(url.split('/').last);
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
@@ -89,7 +89,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }
@@ -124,7 +126,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
-      log('message ${result.files.first.path!.split('.').last}');
       this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
@@ -136,13 +137,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
       }
       return true;
     }, builder: (context, data) {
+      double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -150,138 +153,112 @@ class _ContractorProfileState extends State<ContractorProfile> {
             if (focusNode.hasFocus) {
               focusNode.unfocus();
               user!.copyWith(activity: experienceController.text);
-              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(UpdateProfileEvent(user));
             }
           },
           child: ListView(
             shrinkWrap: true,
             padding: MediaQuery.of(context).viewInsets,
-            // physics: const ClampingScrollPhysics(),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 25.h),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 70.h,
-                            width: 70.h,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                    if (image != null) {
-                                      BlocProvider.of<ProfileBloc>(context).add(
-                                        UpdateProfilePhotoEvent(photo: image),
-                                      );
-                                    }
-                                  },
-                                  child: ClipOval(
-                                    child: SizedBox.fromSize(
-                                        size: Size.fromRadius(30.r),
-                                        child: user!.photoLink == null
-                                            ? Container(
-                                                height: 60.h,
-                                                width: 60.h,
-                                                padding: EdgeInsets.all(10.h),
-                                                decoration: const BoxDecoration(
-                                                  color: ColorStyles.shadowFC6554,
-                                                ),
-                                                child: Image.asset('assets/images/camera.png'),
-                                              )
-                                            : CachedNetworkImage(
-                                                imageUrl: user!.photoLink!.contains(server)
-                                                    ? user!.photoLink!
-                                                    : server + user!.photoLink!,
-                                                fit: BoxFit.cover,
-                                              )),
-                                  ),
-                                ),
-                                if (user?.photoLink != null)
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        user?.photo = null;
-                                        user?.photoLink = null;
-                                        BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                        BlocProvider.of<ProfileBloc>(context).add(
-                                          UpdateProfilePhotoEvent(photo: null),
-                                        );
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        height: 20.h,
-                                        width: 20.h,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [BoxShadow(color: Colors.black)],
-                                          borderRadius: BorderRadius.circular(100.r),
-                                          color: Colors.white,
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.close,
-                                            size: 10.h,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Row(
-                        children: [
-                          Container(
-                            // width: 327.w,
-                         
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                 width: 160.w,
-                                  child: AutoSizeText(
-                                    '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
-                                    maxLines: 3,
-                                    softWrap: true,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              final code =
-                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
-                              Share.share(code.toString());
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/share.svg',
-                              height: 25.h,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 18.h),
+              SizedBox(width: 25.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Row(
                   children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 21.w),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              height: 68.h,
+                              width: 68.h,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var image = await ImagePicker().pickImage(
+                                          source: ImageSource.gallery);
+                                      if (image != null) {
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .add(
+                                          UpdateProfilePhotoEvent(photo: image),
+                                        );
+                                      }
+                                    },
+                                    child: ClipOval(
+                                      child: SizedBox.fromSize(
+                                          size: Size.fromRadius(30.r),
+                                          child: user!.photoLink == null
+                                              ? Container(
+                                                  height: 60.h,
+                                                  width: 60.h,
+                                                  padding: EdgeInsets.all(10.h),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: ColorStyles
+                                                        .shadowFC6554,
+                                                  ),
+                                                  child: Image.asset(
+                                                      'assets/images/camera.png'),
+                                                )
+                                              : CachedNetworkImage(
+                                                  imageUrl: user!.photoLink!
+                                                          .contains(server)
+                                                      ? user!.photoLink!
+                                                      : server +
+                                                          user!.photoLink!,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                    ),
+                                  ),
+                                  if (user?.photoLink != null)
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          user?.photo = null;
+                                          user?.photoLink = null;
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(
+                                            UpdateProfilePhotoEvent(
+                                                photo: null),
+                                          );
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          height: 20.h,
+                                          width: 20.h,
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(100.r),
+                                            color: Colors.white,
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 10.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 21.w),
                     Expanded(
                       child: ScaleButton(
                         bound: 0.02,
@@ -309,11 +286,160 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
+                                    reviews?.ranking == null
+                                        ? '-'
+                                        : (reviews!.ranking!).toString(),
                                     style: CustomTextStyle.black_20_w700_171716,
                                   ),
                                 ],
                               ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 25.w),
+                    Spacer(),
+                    SizedBox(
+                      width: 240.w,
+                      child: AutoSizeText(
+                        '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 30.sp, fontWeight: FontWeight.w800),
+                        maxLines: 2,
+                        softWrap: true,
+                      ),
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () async {
+                        final code = await FirebaseDynamicLinksService()
+                            .shareUserProfile(int.parse(user!.id.toString()));
+                        Share.share(code.toString());
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/share.svg',
+                        height: 25.h,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 18.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ScaleButton(
+                        bound: 0.02,
+                        child: Container(
+                          height: 68.h,
+                          padding: EdgeInsets.only(left: 16.w),
+                          decoration: BoxDecoration(
+                            color: ColorStyles.yellowFFD70A,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ваш грейд',
+                                    style: CustomTextStyle.black_12_w500_515150,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Супермен',
+                                        style: CustomTextStyle.purple_20_w700
+                                            .copyWith(fontSize: 19),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Spacer(),
+                              BlocBuilder<ScoreBloc, ScoreState>(
+                                  builder: (context, state) {
+                                if (state is ScoreLoaded) {
+                                  final levels = state.levels;
+                                  if (user!.balance! < levels![0].mustCoins!) {
+                                    return CachedNetworkImage(
+                                      imageUrl: '${levels[0].bwImage}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+
+                                  if (user!.balance! > levels[0].mustCoins! &&
+                                      user!.balance! < levels[1].mustCoins!) {
+                                    return Image.network(
+                                      '${levels[0].image}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[1].mustCoins! &&
+                                      user!.balance! < levels[2].mustCoins!) {
+                                    return Image.network(
+                                      levels[1].image != null
+                                          ? '${levels[1].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[2].mustCoins! &&
+                                      user!.balance! < levels[3].mustCoins!) {
+                                    return Image.network(
+                                      levels[2].image != null
+                                          ? '${levels[2].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[3].mustCoins! &&
+                                      user!.balance! < levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[3].image != null
+                                          ? '${levels[3].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[4].image != null
+                                          ? '${levels[4].image}'
+                                          : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                }
+                                return Container();
+                              }),
+                              Spacer(),
                             ],
                           ),
                         ),
@@ -351,61 +477,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   ),
                                 ],
                               ),
-                              const Spacer(),
-                              BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                                if (state is ScoreLoaded) {
-                                  final levels = state.levels;
-                                  if (user!.balance! < levels![0].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      imageUrl: '${levels[0].bwImage}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-
-                                  if (user!.balance! > levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
-                                    return Image.network(
-                                      '${levels[0].image}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[1].mustCoins! && user!.balance! < levels[2].mustCoins!) {
-                                    return Image.network(
-                                      levels[1].image != null ? '${levels[1].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[2].mustCoins! && user!.balance! < levels[3].mustCoins!) {
-                                    return Image.network(
-                                      levels[2].image != null ? '${levels[2].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[3].mustCoins! && user!.balance! < levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[3].image != null ? '${levels[3].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[4].image != null ? '${levels[4].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                }
-                                return Container();
-                              }),
-                              SizedBox(width: 16.w),
                             ],
                           ),
                         ),
@@ -532,7 +603,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           onTap: _selectCV,
                           child: Container(
                             height: 40.h,
-                            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.h, vertical: 11.h),
                             decoration: BoxDecoration(
                               color: ColorStyles.greyF9F9F9,
                               borderRadius: BorderRadius.circular(10.r),
@@ -592,7 +664,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 width: 50.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(10.r)),
                                 child: Center(
                                   child: SvgPicture.asset(
@@ -611,7 +685,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   user?.cv = null;
                                   user?.cvLink = null;
                                   user?.cvType = null;
-                                  BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .setUser(user);
                                   BlocProvider.of<ProfileBloc>(context).add(
                                     UpdateProfileCvEvent(file: null),
                                   );
@@ -622,8 +697,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   width: 15.h,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      boxShadow: const [BoxShadow(color: Colors.black)],
-                                      borderRadius: BorderRadius.circular(40.r)),
+                                      boxShadow: const [
+                                        BoxShadow(color: Colors.black)
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.circular(40.r)),
                                   child: Center(
                                     child: Icon(
                                       Icons.close,
@@ -655,30 +733,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           context,
                           _categoryButtonKey,
                           (value) {
-                            // String str = '';
-                            // if (value.isNotEmpty) {
-                            //   str = value.first;
-                            // }
-
-                            // if (value.length > 1) {
-                            //   for (int i = 1; i < typeCategories.length; i++) {
-                            //     str += ', ${typeCategories[i]}';
-                            //   }
-                            // }
-
                             List<int> activityIndexes = [];
 
                             typeCategories.forEach((element) {
-                              activityIndexes
-                                  .add(listCategories.firstWhere((element2) => element2.description == element).id);
+                              activityIndexes.add(listCategories
+                                  .firstWhere((element2) =>
+                                      element2.description == element)
+                                  .id);
                             });
                             user?.copyWith(
                               activitiesDocument: activityIndexes,
                               groups: [4],
                             );
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
-                            // categoryController.text = str;
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(UpdateProfileEvent(user));
 
                             setState(() {});
                           },
@@ -715,8 +783,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     padding: EdgeInsets.only(left: 24.w, right: 18.w),
                     itemCount: typeCategories.length,
                     itemBuilder: (context, index) {
-                      var category =
-                          listCategories.firstWhere((element) => element.description == typeCategories[index]);
+                      var category = listCategories.firstWhere((element) =>
+                          element.description == typeCategories[index]);
 
                       return _categoryItem(category, index);
                     },
@@ -757,7 +825,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: TextFormField(
                             onTap: () {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -765,7 +834,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText: "Опишите свой опыт работы и прикрепите изображения",
+                              hintText:
+                                  "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
                               hintStyle: CustomTextStyle.black_14_w400_515150,
                             ),
@@ -774,17 +844,22 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             maxLines: null,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
                               }
                             },
-                            inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(500)
+                            ],
                             onChanged: (String value) {
-                              BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .user!
+                                  .copyWith(
+                                      activity: experienceController.text);
 
-                              print(BlocProvider.of<ProfileBloc>(context).user?.activity);
                               setState(() {});
                             },
                           ),
@@ -803,27 +878,39 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   child: Stack(
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(right: 5.w, left: 5.w),
+                                        padding: EdgeInsets.only(
+                                            right: 5.w, left: 5.w),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10.r),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
                                           child: SizedBox(
                                             width: 65.h,
                                             height: 65.h,
-                                            child: user!.images![index].byte != null
+                                            child: user!.images![index].byte !=
+                                                    null
                                                 ? Image.memory(
                                                     user!.images![index].byte!,
                                                     width: 65.h,
                                                     height: 65.h,
                                                     fit: BoxFit.cover,
-                                                    frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                                                    frameBuilder: (context,
+                                                        child,
+                                                        frame,
+                                                        wasSynchronouslyLoaded) {
                                                       return const CupertinoActivityIndicator();
                                                     },
                                                   )
                                                 : CachedNetworkImage(
-                                                    imageUrl: user!.images![index].linkUrl!.contains(server)
-                                                        ? user!.images![index].linkUrl!
+                                                    imageUrl: user!
+                                                            .images![index]
+                                                            .linkUrl!
+                                                            .contains(server)
+                                                        ? user!.images![index]
+                                                            .linkUrl!
                                                         : '$server${user!.images![index].linkUrl}',
-                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                    progressIndicatorBuilder:
+                                                        (context, url,
+                                                            progress) {
                                                       return const CupertinoActivityIndicator();
                                                     },
                                                     width: 65.h,
@@ -838,16 +925,19 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           user!.images!.removeAt(index);
                                           setState(() {});
                                           for (var element in user!.images!) {
-                                            element.byte ??= await Repository().downloadFile(
+                                            element.byte ??=
+                                                await Repository().downloadFile(
                                               element.linkUrl!.contains(server)
                                                   ? element.linkUrl!
                                                   : '$server${element.linkUrl}',
                                             );
                                           }
 
-                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
 
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(UpdateProfileEvent(user));
                                           setState(() {});
                                         },
                                         child: Align(
@@ -855,13 +945,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           child: Container(
                                             width: 20.w,
                                             height: 20.h,
-                                            margin: EdgeInsets.only(right: 10.w),
+                                            margin:
+                                                EdgeInsets.only(right: 10.w),
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
-                                              // border: Border.all(
-                                              //   width: 1,
-                                              //   color: Colors.black,
-                                              // ),
                                               shape: BoxShape.circle,
                                             ),
                                             alignment: Alignment.center,
@@ -961,7 +1048,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -991,10 +1079,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
               SizedBox(height: 60.h),
               GestureDetector(
                 onTap: () async {
-                  await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                  await Repository().deleteProfile(
+                      BlocProvider.of<ProfileBloc>(context).access!);
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Center(
                   child: Text(
@@ -1003,20 +1093,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
-              //     BlocProvider.of<ProfileBloc>(context).setUser(null);
-              //     Navigator.of(context)
-              //         .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
-              //   },
-              //   child: Center(
-              //     child: Text(
-              //       'Удалить аккаунт',
-              //       style: CustomTextStyle.black_13_w500_171716,
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: widget.padding + 50.h),
             ],
           ),
@@ -1057,7 +1133,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
           ],
         ),
       ),
-      // color: Colors.red,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +51,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     add(RefreshTripEvent());
   }
 
-  void _getListMessageItem(GetListMessageItem event, Emitter<ChatState> emit) async {
+  void _getListMessageItem(
+      GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
     messages.clear();
     for (var element in res) {
@@ -74,8 +74,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final token = await Storage().getAccessToken();
     if (token != null) {
       final res = await Repository().getListMessage(token);
-    
-    chatList.addAll(res);
+
+      chatList.addAll(res);
     }
     emit(UpdateListMessageState(idChat));
   }
@@ -83,18 +83,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
-    log('message connect');
-
     channel?.stream.listen(
       (event) async {
         try {
-          log('message NEW $event ${jsonDecode(event)}');
-
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
             var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
-            print(newMessage.from);
             if (showPersonChat) {
               MessageDialogs().showMessage(
                 newMessage.fromName,
@@ -105,7 +100,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 idWithChat: newMessage.from,
                 image: newMessage.image,
               );
-              // editShowPersonChat(false);
               editChatId(int.parse(newMessage.id!));
             }
             messages.add(
@@ -118,19 +112,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           add(RefreshPersonChatEvent());
           add(GetListMessage());
-        } catch (e) {
-          log('message catch connection destroyed, for reason: $e');
-        }
+        } catch (e) {}
       },
-      onError: (e) {
-        log('message connection destroyed, for reason: $e');
-      },
+      onError: (e) {},
       onDone: () {},
       cancelOnError: false,
     );
   }
 
-  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) => emit(UpdateListMessageItemState());
+  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListMessageItemState());
 
-  void _refreshPersonChat(RefreshPersonChatEvent event, Emitter<ChatState> emit) => emit(UpdateListPersonState());
+  void _refreshPersonChat(
+          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListPersonState());
 }

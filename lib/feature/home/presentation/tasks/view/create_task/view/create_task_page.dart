@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,8 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/countries.dart';
@@ -55,6 +54,7 @@ class _CeateTasksState extends State<CeateTasks> {
   List<Regions> regions = [];
   List<Countries> countries = [];
   List<Town> towns = [];
+  Currency? currency;
 
   Activities? selectCategory;
   Subcategory? selectSubCategory;
@@ -147,7 +147,6 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
-    log('message ${widget.customer}');
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -216,25 +215,61 @@ class _CeateTasksState extends State<CeateTasks> {
                           setState(() {});
                         },
                       ),
-                      DatePicker(
-                        bottomInsets: bottomInsets,
-                        coastMaxController: coastMaxController,
-                        coastMinController: coastMinController,
-                        startDate: startDate,
-                        endDate: endDate,
-                        selectRegion: regions,
-                        selectCountry: countries,
-                        selectTown: towns,
-                        onEdit:
-                            (regions, startDate, endDate, countries, towns) {
-                          this.regions = regions;
-                          this.startDate = startDate;
-                          this.endDate = endDate;
-                          this.countries = countries;
-                          this.towns = towns;
-                          setState(() {});
-                        },
-                      ),
+                      BlocBuilder<CountriesBloc, CountriesState>(
+                          builder: (context, snapshot) {
+                        List<Countries> allCountries =
+                            BlocProvider.of<CountriesBloc>(context).country;
+                        List<Regions> allRegion =
+                            BlocProvider.of<CountriesBloc>(context).region;
+                        List<Town> allTown =
+                            BlocProvider.of<CountriesBloc>(context).town;
+                        List<Regions> listTempRegion = [];
+                        for (int i = 0; i < regions.length; i++) {
+                          for (int j = 0; j < allRegion.length; j++) {
+                            if (regions[i].id == allRegion[j].id) {
+                              listTempRegion.add(regions[i]);
+                              break;
+                            }
+                          }
+                        }
+
+                        regions.clear();
+                        regions.addAll(listTempRegion);
+
+                        List<Town> listTempTown = [];
+                        for (int i = 0; i < towns.length; i++) {
+                          for (int j = 0; j < allTown.length; j++) {
+                            if (towns[i].id == allTown[j].id) {
+                              listTempTown.add(allTown[j]);
+                              break;
+                            }
+                          }
+                        }
+                        towns.clear();
+                        towns.addAll(listTempTown);
+
+                        return DatePicker(
+                          bottomInsets: bottomInsets,
+                          coastMaxController: coastMaxController,
+                          coastMinController: coastMinController,
+                          startDate: startDate,
+                          endDate: endDate,
+                          selectRegion: regions,
+                          selectCountry: countries,
+                          selectTown: towns,
+                          currecy: currency,
+                          onEdit: (regions, startDate, endDate, countries,
+                              towns, currency) {
+                            this.regions = regions;
+                            this.startDate = startDate;
+                            this.endDate = endDate;
+                            this.countries = countries;
+                            this.towns = towns;
+                            this.currency = currency;
+                            setState(() {});
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -264,16 +299,12 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (countries == []) {
+                        if (countries.isEmpty) {
                           error += '\n- страну';
                           errorsFlag = true;
                         }
-                        if (regions.isEmpty) {
-                          error += '\n- регион';
-                          errorsFlag = true;
-                        }
-                        if (towns.isEmpty) {
-                          error += '\n- подрегион';
+                        if (currency == null) {
+                          error += '\n- валюту';
                           errorsFlag = true;
                         }
 
@@ -291,10 +322,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-                          Currency currency = Currency(false,
-                              id: 1,
-                              name: 'Российский рубль',
-                              shortName: 'RUB');
+
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,
@@ -330,7 +358,6 @@ class _CeateTasksState extends State<CeateTasks> {
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .createTask(profileBloc.access!, newTask);
-                          log(newTask.toJson().toString());
                           if (res) Navigator.of(context).pop();
                           Loader.hide();
                         }

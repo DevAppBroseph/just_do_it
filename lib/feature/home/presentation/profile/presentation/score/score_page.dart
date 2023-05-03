@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
-import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ScorePage extends StatefulWidget {
@@ -230,10 +225,6 @@ class _ScorePageState extends State<ScorePage> {
                                               style:
                                                   CustomTextStyle.white_34_w800,
                                             ),
-                                            // Text(
-                                            //   'Баллов',
-                                            //   style: CustomTextStyle.white_32_w800,
-                                            // ),
                                             GestureDetector(
                                               onTap: () {
                                                 if (page == 0) {
@@ -267,15 +258,9 @@ class _ScorePageState extends State<ScorePage> {
                                             GestureDetector(
                                               onTap: () {
                                                 page = 1;
-                                                // _pageController.nextPage(
-                                                //     duration: const Duration(
-                                                //         microseconds: 100),
-                                                //     curve: Curves.bounceIn);
-                                                // setState(() {});
                                               },
                                               child: Container(
                                                 height: 29.h,
-                                                // width: 160.w,
                                                 padding: EdgeInsets.symmetric(
                                                   horizontal: 12.w,
                                                   vertical: 8.h,
@@ -322,7 +307,6 @@ class _ScorePageState extends State<ScorePage> {
                         child: PageView(
                           controller: _pageController,
                           scrollDirection: Axis.horizontal,
-                          // pageSnapping: false,
                           physics: const NeverScrollableScrollPhysics(),
                           children: <Widget>[
                             SingleChildScrollView(
@@ -452,15 +436,6 @@ class _ScorePageState extends State<ScorePage> {
                                               : '',
                                           levels[index].name ?? '',
                                         );
-
-                                        // itemScore('assets/images/rassomaha.png', 'Росомаха'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/hulk.png', 'Халк'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/batman.png', 'Бэтмен'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/america.png', 'Супермен'),
-                                        // SizedBox(height: 40.h)
                                       }),
                                   SizedBox(height: 18.h),
                                 ],

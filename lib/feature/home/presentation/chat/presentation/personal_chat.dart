@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -53,15 +52,6 @@ class _PersonalChatState extends State<PersonalChat> {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
     });
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   final access = BlocProvider.of<ProfileBloc>(context).access;
-  //   Future.delayed(Duration(milliseconds: 1000), () {
-  //     BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-  //   });
-  //   super.didChangeDependencies();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +115,6 @@ class _PersonalChatState extends State<PersonalChat> {
                   child: SizedBox(
                     width: 240.w,
                     child: AutoSizeText(
-                      // 'Яковлев Максим Алексеевич',
                       widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
                       style: CustomTextStyle.black_22_w700,
                       maxLines: 1,
@@ -137,9 +126,7 @@ class _PersonalChatState extends State<PersonalChat> {
                   onTap: () => iconSelectTranslate(
                     context,
                     getWidgetPosition(iconBtn),
-                    (index) {
-                      // Navigator.pop(context);
-                    },
+                    (index) {},
                   ),
                   child: Container(
                     color: Colors.white,
@@ -151,27 +138,6 @@ class _PersonalChatState extends State<PersonalChat> {
                     ),
                   ),
                 ),
-                // Container(
-                //   height: 36.h,
-                //   decoration: BoxDecoration(
-                //     color: ColorStyles.whiteF5F5F5,
-                //     borderRadius: BorderRadius.circular(8.r),
-                //   ),
-                //   child: Padding(
-                //     padding: EdgeInsets.all(10.h),
-                //     child: Row(
-                //       children: [
-                //         // SvgPicture.asset('assets/icons/translate.svg'),
-                //         // SizedBox(width: 8.h),
-                //         Text(
-                //           'Показать оригинал',
-                //           style: CustomTextStyle.blue_13_w400_336FEE,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // )
-                // SvgPicture.asset('assets/icons/more-circle.svg'),
               ],
             ),
           ),
@@ -258,13 +224,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                             ),
                                           ),
                                           SizedBox(height: 8.h),
-                                          // Text(
-                                          //   messages[index]
-                                          //       .createdAt
-                                          //       .toUtc()
-                                          //       .toString(),
-                                          //   style: CustomTextStyle.grey_11_w400DADADA,
-                                          // ),
                                         ],
                                       ),
                                     ),
@@ -295,11 +254,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                   ),
                                 ),
                               ),
-                              // SizedBox(height: 8.h),
-                              // Text(
-                              //   '${++index} минут назад',
-                              //   style: CustomTextStyle.grey_11_w400DADADA,
-                              // ),
                             ],
                           ),
                         ),
@@ -331,7 +285,7 @@ class _PersonalChatState extends State<PersonalChat> {
                   ? Center(
                       child: Padding(
                       padding: EdgeInsets.all(24.w),
-                      child:  Text(
+                      child: Text(
                         'Вы не можете написать собеседнику\nтак как он удалил свой акккаунт',
                         style: CustomTextStyle.black_14_w400_515150,
                         textAlign: TextAlign.center,
@@ -356,16 +310,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                   textEditingController: textController,
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: 10,
-                                  onTap: () {
-                                    // Future.delayed(const Duration(milliseconds: 800),
-                                    //     () {
-                                    //   scrollController.animateTo(
-                                    //     scrollController.position.maxScrollExtent,
-                                    //     duration: const Duration(milliseconds: 100),
-                                    //     curve: Curves.linear,
-                                    //   );
-                                    // });
-                                  },
+                                  onTap: () {},
                                   contentPadding: EdgeInsets.only(
                                     left: 16.w,
                                     top: 20.h,
@@ -381,10 +326,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        // SvgPicture.asset(
-                                        //   'assets/icons/add.svg',
-                                        //   color: ColorStyles.greyBDBDBD,
-                                        // ),
                                         SizedBox(width: 18.w),
                                         GestureDetector(
                                           onTap: () {
@@ -419,7 +360,6 @@ class _PersonalChatState extends State<PersonalChat> {
                     ),
             ),
           ),
-          // SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),
     );

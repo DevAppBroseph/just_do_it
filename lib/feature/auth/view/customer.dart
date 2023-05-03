@@ -12,7 +12,9 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
@@ -75,6 +77,12 @@ class _CustomerState extends State<Customer> {
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
 
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+  Regions? selectRegions;
+
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
@@ -132,21 +140,18 @@ class _CustomerState extends State<Customer> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, snapshot) {
+      listRegions.clear();
+      listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
           Loader.hide();
           if (current is CheckUserState) {
             if (current.error != null) {
-              //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
               showAlertToast(
                   'Пользователь с такой почтой или номером телефона уже зарегистрирован');
             } else {
@@ -196,13 +201,6 @@ class _CustomerState extends State<Customer> {
               SizedBox(height: 10.h),
               CustomButton(
                 onTap: () {
-                  print(emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2);
                   if (page == 0) {
                     requestNextEmptyFocusStage1();
                     String error = 'Укажите:';
@@ -223,16 +221,6 @@ class _CustomerState extends State<Customer> {
                       error += '\n- почту';
                       errorsFlag = true;
                     }
-
-                    // if (emailController.text
-                    //         .split('@')
-                    //         .last
-                    //         .split('.')
-                    //         .last
-                    //         .length <
-                    //     2) {
-                    //   errorsFlag = true;
-                    // }
 
                     String email = emailController.text;
 
@@ -318,7 +306,6 @@ class _CustomerState extends State<Customer> {
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      // error += 'Пароли не совпадают';
                       showAlertToast('Пароли не совпадают');
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
@@ -472,25 +459,10 @@ class _CustomerState extends State<Customer> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            // setState(() {});
-            print(value);
-            // if (value.length == 1 && !value.contains('+')) {
-            //   phoneController.text = '+$value';
-            //   phoneController.selection =
-            //       TextSelection.collapsed(offset: phoneController.text.length);
-            // }
-            // print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -651,9 +623,7 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
@@ -670,6 +640,8 @@ class _CustomerState extends State<Customer> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),
@@ -762,12 +734,15 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
-              user.copyWith(country: value);
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent([selectCountries!]));
+              user.copyWith(country: countryController.text);
               setState(() {});
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
@@ -790,11 +765,11 @@ class _CustomerState extends State<Customer> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
-                  user.copyWith(region: value);
+                  regionController.text = value.name ?? '-';
+                  user.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {
@@ -877,7 +852,6 @@ class _CustomerState extends State<Customer> {
             ],
           ),
         ),
-        // SizedBox(height: 16.h),
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 10.h),
         Text(

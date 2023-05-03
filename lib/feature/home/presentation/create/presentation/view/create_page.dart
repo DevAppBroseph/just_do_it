@@ -1,5 +1,3 @@
-import 'dart:developer' as dev;
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
-import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
@@ -46,7 +42,6 @@ class _CreatePageState extends State<CreatePage> {
   void initState() {
     super.initState();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
-    print(activities.length);
   }
 
   void getHistoryList() async {
@@ -67,7 +62,6 @@ class _CreatePageState extends State<CreatePage> {
       }
       return true;
     }, builder: (context, snapshot) {
-      print(activities.length);
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: Scaffold(

@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -26,12 +23,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
   TextEditingController lastnameController = TextEditingController();
   TextEditingController phoneController = TextEditingController(text: '+');
   TextEditingController emailController = TextEditingController();
-
-  // FocusNode focusNodeAbout = FocusNode();
-  // FocusNode focusNodeName = FocusNode();
-  // FocusNode focusNodeLastName = FocusNode();
-  // FocusNode focusNodePhone = FocusNode();
-  // FocusNode focusNodeEmail = FocusNode();
 
   ScrollController scrollController1 = ScrollController();
   late UserRegModel? user;
@@ -89,7 +80,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeName,
                             hintText: 'Ваше имя',
                             height: 50,
                             textEditingController: firstnameController,
@@ -109,7 +99,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeLastName,
                             hintText: 'Ваша фамилия',
                             height: 50.h,
                             textEditingController: lastnameController,
@@ -138,7 +127,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
                             readOnly: true,
-                            // focusNode: focusNodePhone,
                             hintText: 'Номер телефона',
                             height: 50.h,
                             textInputType: TextInputType.phone,
@@ -166,7 +154,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeEmail,
                             hintText: 'E-mail',
                             height: 50.h,
                             textEditingController: emailController,
@@ -268,25 +255,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
     );
   }
 
-  void requestNextEmptyFocusStage1() {
-    // if (firstnameController.text.isEmpty) {
-    //   focusNodeName.requestFocus();
-    //   scrollController1.animateTo(0,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (lastnameController.text.isEmpty) {
-    //   focusNodeLastName.requestFocus();
-    //   scrollController1.animateTo(50.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (phoneController.text.isEmpty) {
-    //   focusNodePhone.requestFocus();
-    //   scrollController1.animateTo(100.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (emailController.text.isEmpty) {
-    //   focusNodeEmail.requestFocus();
-    //   scrollController1.animateTo(150.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // }
-  }
+  void requestNextEmptyFocusStage1() {}
 
   fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -247,7 +246,6 @@ class _CategoryState extends State<Category> {
                                 widget.selectSubCategory = null;
                               } else {
                                 widget.selectSubCategory = e;
-                                // openSubCategory = false;
                               }
                               setState(() {});
                               widget.onEdit(
@@ -404,7 +402,6 @@ class _CategoryState extends State<Category> {
                 if (widget.photo != null)
                   GestureDetector(
                     onTap: () {
-                      log('message ${widget.photo!.path}');
                       OpenFile.open(widget.photo!.path);
                     },
                     child: SizedBox(
@@ -461,7 +458,6 @@ class _CategoryState extends State<Category> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            log('message ${widget.document!.path}');
                             OpenFile.open(widget.document!.path);
                           },
                           child: Container(

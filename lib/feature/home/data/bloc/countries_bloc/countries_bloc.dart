@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -21,38 +19,27 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   void _getCountries(
       GetCountryEvent event, Emitter<CountriesState> emit) async {
     emit(CountriesLoading());
-    log('message 1');
-
-    if (event.access != null) {
-      log('message 2');
-      country = await Repository().countries(event.access);
-    } else {
-      log('message 3');
-      emit(CountriesError());
-    }
+    country = await Repository().countries();
   }
 
   void _getRegions(GetRegionEvent event, Emitter<CountriesState> emit) async {
-    if (event.access != null) {
-      region.clear();
-      for (var element in event.countries) {
-        region.addAll(await Repository().regions(event.access, element));
-      }
-      emit(CountriesUpdateState());
-    } else {
-      emit(CountriesError());
+    List<Regions> regionTemp = [];
+    for (var element in event.countries) {
+      regionTemp.addAll(await Repository().regions(element));
     }
+    region.clear();
+    region.addAll(regionTemp);
+    emit(CountriesUpdateState());
+    add(GetTownsEvent(region));
   }
 
   void _getTowns(GetTownsEvent event, Emitter<CountriesState> emit) async {
-    if (event.access != null) {
-      town.clear();
-      for (var element in event.regions) {
-        town.addAll(await Repository().towns(event.access, element));
-      }
-      emit(CountriesUpdateState());
-    } else {
-      emit(CountriesError());
+    List<Town> townTemp = [];
+    for (var element in event.regions) {
+      townTemp.addAll(await Repository().towns(element));
     }
+    town.clear();
+    town.addAll(townTemp);
+    emit(CountriesUpdateState());
   }
 }

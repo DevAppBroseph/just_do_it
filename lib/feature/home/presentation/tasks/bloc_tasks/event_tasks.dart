@@ -5,7 +5,7 @@ class TasksEvent {}
 class GetTasksEvent extends TasksEvent {
   String? query;
   String? access;
-  List<int?> subcategory;
+  List<int> subcategory;
   String? dateStart;
   String? dateEnd;
   int? priceFrom;
@@ -13,9 +13,9 @@ class GetTasksEvent extends TasksEvent {
   bool? customer;
   int? countFilter;
   int? currency;
-  List<Countries>? isSelectCountry;
-  List<Regions>? isSelectRegions;
-  List<Town>? isSelectTown;
+  List<Countries> isSelectCountry;
+  List<Regions> isSelectRegions;
+  List<Town> isSelectTown;
   GetTasksEvent({
     this.currency,
     this.access,
@@ -32,11 +32,3 @@ class GetTasksEvent extends TasksEvent {
     this.customer,
   });
 }
-// class SearchTasksEvent extends TasksEvent {
-//   final String? tasksName;
-//   String? access;
-//   SearchTasksEvent(this.access, {required this.tasksName});
-// }
-
-
-

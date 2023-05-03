@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +14,9 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
@@ -88,7 +88,12 @@ class _ContractorState extends State<Contractor> {
 
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
-  bool isRussia = true;
+
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+  Regions? selectRegions;
 
   @override
   void initState() {
@@ -114,7 +119,6 @@ class _ContractorState extends State<Contractor> {
         File? file = File(pickedFile.path);
         files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
       }
-      // photos.clear();
       setState(() {
         photos.addAll(files);
         user.copyWith(images: photos);
@@ -187,232 +191,240 @@ class _ContractorState extends State<Contractor> {
   @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        Loader.hide();
-        if (current is CheckUserState) {
-          if (current.error != null) {
-            //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            showAlertToast(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован');
-          } else {
-            page = 1;
-            widget.stage(2);
-          }
-        } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
-        } else if (current is GetCategoriesState) {
-          listCategories.clear();
-          listCategories.addAll(current.res);
-        } else if (current is SendProfileErrorState) {
-          String messageError = 'Ошибка\n';
-          if (current.error!['email'] != null &&
-              current.error!['email'][0] != null) {
-            String email = current.error!['email'][0];
-            if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            } else if (email.contains('Enter a valid email address.')) {
-              messageError = 'Введите корректный адрес почты';
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, snapshot) {
+      listRegions.clear();
+      listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+          Loader.hide();
+          if (current is CheckUserState) {
+            if (current.error != null) {
+              showAlertToast(
+                  'Пользователь с такой почтой или номером телефона уже зарегистрирован');
+            } else {
+              page = 1;
+              widget.stage(2);
             }
-          } else if (current.error!['phone_number'] != null &&
-              current.error!['phone_number'][0] != null) {
-            String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber
-                .contains('custom user with this Телефон already exists.')) {
-              messageError =
-                  'Пользователь с таким телефоном уже зарегистрирован';
-            } else if (phoneNumber
-                .contains('The phone number entered is not valid.')) {
-              messageError = 'Введите корректный номер телефона';
+          } else if (current is SendProfileSuccessState) {
+            Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+                arguments: [phoneController.text]);
+          } else if (current is GetCategoriesState) {
+            listCategories.clear();
+            listCategories.addAll(current.res);
+          } else if (current is SendProfileErrorState) {
+            String messageError = 'Ошибка\n';
+            if (current.error!['email'] != null &&
+                current.error!['email'][0] != null) {
+              String email = current.error!['email'][0];
+              if (email
+                  .contains('custom user with this Email already exists.')) {
+                messageError =
+                    'Пользователь с такой почтой уже зарегистрирован';
+              } else if (email.contains('Enter a valid email address.')) {
+                messageError = 'Введите корректный адрес почты';
+              }
+            } else if (current.error!['phone_number'] != null &&
+                current.error!['phone_number'][0] != null) {
+              String phoneNumber = current.error!['phone_number'][0];
+              if (phoneNumber
+                  .contains('custom user with this Телефон already exists.')) {
+                messageError =
+                    'Пользователь с таким телефоном уже зарегистрирован';
+              } else if (phoneNumber
+                  .contains('The phone number entered is not valid.')) {
+                messageError = 'Введите корректный номер телефона';
+              }
             }
+            showAlertToast(messageError);
           }
-          showAlertToast(messageError);
-        }
-        return false;
-      }, builder: (context, snapshot) {
-        return Column(
-          children: [
-            Expanded(
-                child: page == 0
-                    ? firstStage(heightKeyBoard)
-                    : secondStage(heightKeyBoard)),
-            SizedBox(height: 10.h),
-            CustomButton(
-              onTap: () {
-                if (page == 0) {
-                  requestNextEmptyFocusStage1();
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
+          return false;
+        }, builder: (context, snapshot) {
+          return Column(
+            children: [
+              Expanded(
+                  child: page == 0
+                      ? firstStage(heightKeyBoard)
+                      : secondStage(heightKeyBoard)),
+              SizedBox(height: 10.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 0) {
+                    requestNextEmptyFocusStage1();
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
 
-                  if (firstnameController.text.isEmpty) {
-                    error += '\n- имя';
-                    errorsFlag = true;
-                  }
+                    if (firstnameController.text.isEmpty) {
+                      error += '\n- имя';
+                      errorsFlag = true;
+                    }
 
-                  if (lastnameController.text.isEmpty) {
-                    error += '\n- фамилию';
-                    errorsFlag = true;
-                  }
+                    if (lastnameController.text.isEmpty) {
+                      error += '\n- фамилию';
+                      errorsFlag = true;
+                    }
 
-                  if (phoneController.text.isEmpty) {
-                    error += '\n- мобильный номер';
-                    errorsFlag = true;
-                  }
+                    if (phoneController.text.isEmpty) {
+                      error += '\n- мобильный номер';
+                      errorsFlag = true;
+                    }
 
-                  if (emailController.text.isEmpty) {
-                    error += '\n- почту';
-                    errorsFlag = true;
-                  }
+                    if (emailController.text.isEmpty) {
+                      error += '\n- почту';
+                      errorsFlag = true;
+                    }
 
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
-                    error += '\n- пароль';
-                    errorsFlag = true;
-                  }
+                    if (passwordController.text.isEmpty ||
+                        repeatPasswordController.text.isEmpty) {
+                      error += '\n- пароль';
+                      errorsFlag = true;
+                    }
 
-                  String email = emailController.text;
+                    String email = emailController.text;
 
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
 
-                  if (errorsFlag) {
-                    if ((passwordController.text.isNotEmpty &&
+                    if (errorsFlag) {
+                      if ((passwordController.text.isNotEmpty &&
+                              repeatPasswordController.text.isNotEmpty) &&
+                          (passwordController.text !=
+                              repeatPasswordController.text)) {
+                        error += '\n\nПароли не совпадают';
+                      }
+                      showAlertToast(error);
+                    } else if (phoneController.text.length < 12) {
+                      showAlertToast('- Некорректный номер телефона.');
+                    } else if (emailController.text
+                            .split('@')
+                            .last
+                            .split('.')
+                            .last
+                            .length <
+                        2) {
+                      showAlertToast('- Введите корректный адрес почты');
+                    } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      error += '\n\nПароли не совпадают';
-                    }
-                    showAlertToast(error);
-                  } else if (phoneController.text.length < 12) {
-                    showAlertToast('- Некорректный номер телефона.');
-                  } else if (emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2) {
-                    showAlertToast('- Введите корректный адрес почты');
-                  } else if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    showAlertToast('- пароли не совпадают');
-                  } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длина пароля 6 символов');
-                  } else if (!emailValid) {
-                    showAlertToast('Введите корректный адрес почты');
-                  } else if (!confirmTermsPolicy) {
-                    showAlertToast(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
-                  } else {
-                    showLoaderWrapper(context);
-
-                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
-                        phoneController.text, emailController.text));
-                  }
-                } else {
-                  List<int> categorySelect = [];
-                  for (int i = 0; i < typeCategories.length; i++) {
-                    for (int j = 0; j < listCategories.length; j++) {
-                      if (typeCategories[i] == listCategories[j].description) {
-                        categorySelect.add(listCategories[j].id);
-                      }
-                    }
-                  }
-                  requestNextEmptyFocusStage2();
-                  user.copyWith(
-                      activitiesDocument: categorySelect, groups: [4]);
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
-
-                  if (countryController.text.isEmpty) {
-                    error += '\n- страну';
-                    errorsFlag = true;
-                  }
-                  if (regionController.text.isEmpty) {
-                    error += '\n- регион';
-                    errorsFlag = true;
-                  }
-                  if (typeCategories.isEmpty) {
-                    error += '\n- до 3х категорий';
-                    errorsFlag = true;
-                  }
-                  if (additionalInfo) {
-                    if (serialDocController.text.isEmpty &&
-                        user.docType != 'Resident_ID') {
-                      error += '\n- серию документа';
-                      errorsFlag = true;
-                    }
-                    if (numberDocController.text.isEmpty) {
-                      error += '\n- номер документа';
-                      errorsFlag = true;
-                    }
-                    if (whoGiveDocController.text.isEmpty) {
-                      error += '\n- кем был вадан документ';
-                      errorsFlag = true;
-                    }
-                    if (dateDocController.text.isEmpty) {
-                      error += '\n- дату выдачи документа';
-                      errorsFlag = true;
-                    }
-                  }
-
-                  if (errorsFlag) {
-                    showAlertToast(error);
-                  } else {
-                    if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш паспорт просрочен');
-                    } else if (checkExpireDate(dateTimeEnd) != null) {
-                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                      showAlertToast('- пароли не совпадают');
+                    } else if (passwordController.text.length < 6) {
+                      showAlertToast('- минимальная длина пароля 6 символов');
+                    } else if (!emailValid) {
+                      showAlertToast('Введите корректный адрес почты');
+                    } else if (!confirmTermsPolicy) {
+                      showAlertToast(
+                          'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
                     } else {
                       showLoaderWrapper(context);
 
-                      BlocProvider.of<AuthBloc>(context)
-                          .add(SendProfileEvent(user));
+                      BlocProvider.of<AuthBloc>(context).add(
+                          CheckUserExistEvent(
+                              phoneController.text, emailController.text));
+                    }
+                  } else {
+                    List<int> categorySelect = [];
+                    for (int i = 0; i < typeCategories.length; i++) {
+                      for (int j = 0; j < listCategories.length; j++) {
+                        if (typeCategories[i] ==
+                            listCategories[j].description) {
+                          categorySelect.add(listCategories[j].id);
+                        }
+                      }
+                    }
+                    requestNextEmptyFocusStage2();
+                    user.copyWith(
+                        activitiesDocument: categorySelect, groups: [4]);
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
+
+                    if (countryController.text.isEmpty) {
+                      error += '\n- страну';
+                      errorsFlag = true;
+                    }
+                    if (regionController.text.isEmpty) {
+                      error += '\n- регион';
+                      errorsFlag = true;
+                    }
+                    if (typeCategories.isEmpty) {
+                      error += '\n- до 3х категорий';
+                      errorsFlag = true;
+                    }
+                    if (additionalInfo) {
+                      if (serialDocController.text.isEmpty &&
+                          user.docType != 'Resident_ID') {
+                        error += '\n- серию документа';
+                        errorsFlag = true;
+                      }
+                      if (numberDocController.text.isEmpty) {
+                        error += '\n- номер документа';
+                        errorsFlag = true;
+                      }
+                      if (whoGiveDocController.text.isEmpty) {
+                        error += '\n- кем был вадан документ';
+                        errorsFlag = true;
+                      }
+                      if (dateDocController.text.isEmpty) {
+                        error += '\n- дату выдачи документа';
+                        errorsFlag = true;
+                      }
+                    }
+
+                    if (errorsFlag) {
+                      showAlertToast(error);
+                    } else {
+                      if (dateTimeEnd != null &&
+                          DateTime.now().isAfter(dateTimeEnd!)) {
+                        showAlertToast('Ваш паспорт просрочен');
+                      } else if (checkExpireDate(dateTimeEnd) != null) {
+                        showAlertToast(checkExpireDate(dateTimeEnd)!);
+                      } else {
+                        showLoaderWrapper(context);
+
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(SendProfileEvent(user));
+                      }
                     }
                   }
-                }
-              },
-              btnColor: page == 0
-                  ? confirmTermsPolicy
-                      ? ColorStyles.yellowFFD70A
-                      : ColorStyles.greyE0E6EE
-                  : countryController.text.isNotEmpty &&
-                          regionController.text.isNotEmpty &&
-                          typeCategories.isNotEmpty
-                      ? ColorStyles.yellowFFD70A
-                      : ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_16_w600_171716,
+                },
+                btnColor: page == 0
+                    ? confirmTermsPolicy
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE
+                    : countryController.text.isNotEmpty &&
+                            regionController.text.isNotEmpty &&
+                            typeCategories.isNotEmpty
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  page == 0 ? 'Далее' : 'Зарегистрироваться',
+                  style: CustomTextStyle.black_16_w600_171716,
+                ),
               ),
-            ),
-            SizedBox(height: 18.h),
-            CustomButton(
-              onTap: () {
-                if (page == 1) {
-                  page = 0;
-                  widget.stage(1);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-              btnColor: ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                'Назад',
-                style: CustomTextStyle.black_16_w600_515150,
+              SizedBox(height: 18.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 1) {
+                    page = 0;
+                    widget.stage(1);
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+                btnColor: ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  'Назад',
+                  style: CustomTextStyle.black_16_w600_515150,
+                ),
               ),
-            ),
-            SizedBox(height: 34.h),
-          ],
-        );
-      }),
-    );
+              SizedBox(height: 34.h),
+            ],
+          );
+        }),
+      );
+    });
   }
 
   Widget firstStage(double heightKeyBoard) {
@@ -515,13 +527,6 @@ class _ContractorState extends State<Contractor> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
           ],
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
@@ -529,21 +534,6 @@ class _ContractorState extends State<Contractor> {
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            // setState(() {});
-            print(value);
-            // if (value.length == 1 && !value.contains('+')) {
-            //   print('12312312');
-            //   phoneController.text = '+$value';
-            //   phoneController.selection =
-            //       TextSelection.collapsed(offset: phoneController.text.length);
-            // }
-            // print(value);
-            // if (value.contains('+7')) {
-            //   countryCode = CountryCode.ru;
-            // } else if (value.contains('+9')) {
-            //   countryCode = CountryCode.oae;
-            // }
-
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
@@ -680,9 +670,7 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
@@ -699,6 +687,8 @@ class _ContractorState extends State<Contractor> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
@@ -811,13 +801,15 @@ class _ContractorState extends State<Contractor> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent([selectCountries!]));
               user.copyWith(country: countryController.text);
               setState(() {});
-              print(countryController.text);
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
@@ -840,11 +832,11 @@ class _ContractorState extends State<Contractor> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
+                  regionController.text = value.name ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {
@@ -959,7 +951,6 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                // key: _categoryButtonKey,
                 hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,
@@ -1617,8 +1608,6 @@ class _ContractorState extends State<Contractor> {
   }
 
   void documentEdit() {
-    print(
-        'Серия: ${serialDocController.text} Номер: ${numberDocController.text} Кем выдан: ${whoGiveDocController.text} Дата выдачи: ${dateDocController.text}');
     user.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
