@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -113,8 +114,8 @@ class UserRegModel {
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
     this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
-    this.balance = balance ?? this.balance;
-    this.link = link ?? this.link;
+    balance = balance ?? balance;
+    link = link ?? link;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -210,7 +211,7 @@ class UserRegModel {
     if (cv != null) {
       data['CV'] = MultipartFile.fromBytes(
         cv!,
-        filename: DateTime.now().toString() + '.$cvType!',
+        filename: '${DateTime.now()}.$cvType!',
       );
     }
     data['groups'] = groups;

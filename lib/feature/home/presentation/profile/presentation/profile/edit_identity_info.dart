@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -68,11 +69,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   @override
   void initState() {
+    super.initState();
     listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     user = BlocProvider.of<ProfileBloc>(context).user!;
     fillData(user);
-
-    super.initState();
   }
 
   @override
@@ -85,8 +85,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: BlocBuilder<CountriesBloc, CountriesState>(
             builder: (context, snapshot) {
-          listRegions.clear();
-          // listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
           return Column(
             children: [
               SizedBox(height: 60.h),
@@ -302,12 +300,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           onTap: () => showCountry(
             context,
             _countryKey,
-            (value) {
+            (value) async {
               countryController.text = value.name ?? '-';
               selectCountries = value;
               regionController.text = '';
-              BlocProvider.of<CountriesBloc>(context)
-                  .add(GetRegionEvent(selectCountries!));
+              listRegions.clear();
+              listRegions = await Repository().regions(selectCountries!);
               user?.copyWith(country: countryController.text);
               setState(() {});
             },
@@ -329,8 +327,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         GestureDetector(
           key: _regionKey,
           onTap: () {
+            log('message $listRegions');
             if (countryController.text.isNotEmpty) {
-              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,
@@ -768,6 +766,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     );
   }
 
+  initRegions() async {
+    for (var element in listCountries) {
+      if (user?.country?.toLowerCase() == element.name?.toLowerCase()) {
+        listRegions = await Repository().regions(element);
+      }
+    }
+  }
+
   fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;
     if (userRegModel.docType != null) {
@@ -781,16 +787,17 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       countryController.text = userRegModel.country!;
     }
 
-    if (userRegModel.docInfo == null) return;
     additionalInfo = true;
-    serialDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-    numberDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
-    whoGiveDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
-    dateDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+    if (userRegModel.docInfo != null) {
+      serialDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
+      numberDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
+      whoGiveDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
+      dateDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+    }
 
     final start = dateDocController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
@@ -801,5 +808,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
     final end = whoGiveDocController.text.split('.');
     if (end.isNotEmpty) {}
+    initRegions();
   }
 }
