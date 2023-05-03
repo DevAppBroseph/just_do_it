@@ -261,10 +261,10 @@ class _DatePickerState extends State<DatePicker> {
                 });
                 FocusScope.of(context).unfocus();
 
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   controller.animateTo(
                     controller.position.maxScrollExtent - 20.h,
-                    duration: Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 200),
                     curve: Curves.linear,
                   );
                 });
@@ -536,13 +536,15 @@ class _DatePickerState extends State<DatePicker> {
               onTap: () {
                 setState(() {
                   openCountry = !openCountry;
+                  openRegion = false;
+                  openTown = false;
                 });
                 FocusScope.of(context).unfocus();
 
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   controller.animateTo(
                     controller.position.maxScrollExtent - 20.h,
-                    duration: Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 200),
                     curve: Curves.linear,
                   );
                 });
@@ -666,14 +668,15 @@ class _DatePickerState extends State<DatePicker> {
                     onTap: () {
                       setState(() {
                         openCountry = false;
+                        openTown = false;
                         openRegion = !openRegion;
                       });
                       FocusScope.of(context).unfocus();
 
-                      Future.delayed(Duration(milliseconds: 300), () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
                         controller.animateTo(
                           controller.position.maxScrollExtent - 20.h,
-                          duration: Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 200),
                           curve: Curves.linear,
                         );
                       });
@@ -807,15 +810,16 @@ class _DatePickerState extends State<DatePicker> {
                     onTap: () {
                       setState(() {
                         setState(() {
+                          openCountry = false;
                           openRegion = false;
                           openTown = !openTown;
                         });
                         FocusScope.of(context).unfocus();
 
-                        Future.delayed(Duration(milliseconds: 300), () {
+                        Future.delayed(const Duration(milliseconds: 300), () {
                           controller.animateTo(
                             controller.position.maxScrollExtent - 20.h,
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.linear,
                           );
                         });
