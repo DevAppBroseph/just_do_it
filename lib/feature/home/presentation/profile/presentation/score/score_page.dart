@@ -342,7 +342,7 @@ class _ScorePageState extends State<ScorePage> {
                                                       : '${levels[0].bwImage}',
                                                   levels[0].name ?? '',
                                                   user!.balance!,
-                                                  levels[1].mustCoins!),
+                                                  levels[0].mustCoins!),
                                               firstPageItemScore(
                                                   user!.balance! >=
                                                           levels[1].mustCoins!
