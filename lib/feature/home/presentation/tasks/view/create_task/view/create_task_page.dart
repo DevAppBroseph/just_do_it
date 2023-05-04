@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +39,12 @@ class CeateTasks extends StatefulWidget {
 }
 
 class _CeateTasksState extends State<CeateTasks> {
-  final PageController pageController = PageController();
+    int type = 1;
+
+  bool state = false;
+
+  PageController pageController = PageController();
+  
   PanelController panelController = PanelController();
   int page = 0;
 
@@ -147,6 +153,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
+        double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -175,8 +182,14 @@ class _CeateTasksState extends State<CeateTasks> {
                         icon: SvgImg.arrowRight,
                       ),
                       SizedBox(width: 12.w),
+                      if(widget.customer == false)
                       Text(
                         'Создание задания',
+                        style: CustomTextStyle.black_22_w700,
+                      ),
+                      if(widget.customer == true)
+                      Text(
+                        'Создание предложение',
                         style: CustomTextStyle.black_22_w700,
                       ),
                       Text(
@@ -185,8 +198,116 @@ class _CeateTasksState extends State<CeateTasks> {
                       )
                     ],
                   ),
-                ),
-                SizedBox(height: 50.h),
+                ),SizedBox(height: 24.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyE0E6EE,
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Stack(
+                          children: [
+                            AnimatedAlign(
+                              duration: const Duration(milliseconds: 100),
+                              alignment: type == 1
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                              child: Container(
+                                height: 40.h,
+                                width: widthTabBarItem,
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.yellowFFD70A,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: !state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    bottomLeft: !state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    topRight: state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                    bottomRight: state
+                                        ? Radius.circular(20.r)
+                                        : Radius.zero,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (type != 1) {
+                                          Future.delayed(
+                                            const Duration(milliseconds: 50),
+                                            (() {
+                                              setState(() {
+                                                widget.customer = false;
+                                                log(widget.customer.toString());
+                                                state = !state;
+                                              });
+                                             
+                                            }),
+                                          );
+                                        }
+                                        type = 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: Center(
+                                        child: Text('Как исполнитель',
+                                            style: CustomTextStyle
+                                                .black_14_w400_171716),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (type != 2) {
+                                          Future.delayed(
+                                            const Duration(milliseconds: 50),
+                                            (() {
+                                              setState(() {
+                                                widget.customer = true;
+                                                 log(widget.customer.toString());
+                                                state = !state;
+                                              });
+                                             
+                                      
+                                            }),
+                                          );
+                                        }
+                                        type = 2;
+                                      });
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: Center(
+                                        child: Text(
+                                          'Как заказчик',
+                                          style: CustomTextStyle
+                                              .black_14_w400_171716,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                SizedBox(height: 24.h),
                 Expanded(
                   child: PageView(
                     controller: pageController,
@@ -322,7 +443,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           showAlertToast(error);
                         } else {
                           showLoaderWrapper(context);
-
+                          log(widget.customer.toString());
                           Task newTask = Task(
                             asCustomer: widget.customer,
                             name: titleController.text,
@@ -353,7 +474,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             search: '',
                             currency: currency,
                           );
-
+                          widget.customer = false;
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()

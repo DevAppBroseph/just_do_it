@@ -68,6 +68,7 @@ class Task {
       towns.add(Town.fromJson(element));
     }
 
+
     return Task(
         id: json["id"],
         owner: Owner.fromJson(json["owner"]),
@@ -89,6 +90,7 @@ class Task {
   }
 
   Map<String, dynamic> toJson() => {
+    
         "name": name,
         "description": description,
         "subcategory": subcategory?.id,
