@@ -138,7 +138,7 @@ class Repository {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
-    final response = await dio.patch(
+    final response = await dio.put(
       '$server/orders/${task.id}',
       data: data,
       options: Options(

@@ -341,7 +341,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
-                            search: '',
+                            // search: '',
                             currency: currency,
                           );
 

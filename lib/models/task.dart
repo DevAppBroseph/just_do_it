@@ -18,7 +18,6 @@ class Task {
   int priceTo;
   List<Countries> countries;
   List<Regions> regions;
-  String? search;
   Uint8List? file;
   Currency? currency;
   List<Town> towns;
@@ -48,7 +47,6 @@ class Task {
     this.file,
     this.icon,
     this.task,
-    this.search,
     this.typeLocation,
     this.whenStart,
     this.coast,
@@ -81,7 +79,6 @@ class Task {
         dateEnd: json["date_end"],
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
-        search: json['search'],
         asCustomer: json['as_customer'],
         countries: countries,
         regions: regions,
@@ -97,7 +94,6 @@ class Task {
         "price_from": priceFrom,
         "price_to": priceTo,
         "regions": regions.map((e) => e.id).toList(),
-        'search': search,
         "as_customer": asCustomer,
         'currency': currency!.id,
         'towns': towns.map((e) => e.id).toList(),

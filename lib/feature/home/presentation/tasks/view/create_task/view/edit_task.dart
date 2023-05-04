@@ -380,7 +380,6 @@ class _EditTasksState extends State<EditTasks> {
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
-                            search: '',
                           );
 
                           final profileBloc =
