@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
@@ -110,8 +111,8 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
             child: Padding(
               padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 34.h),
               child: CustomButton(
-                onTap: () {
-                  Navigator.of(context).push(
+                onTap: () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
                         return CeateTasks(
@@ -121,6 +122,8 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                       },
                     ),
                   );
+                  BlocProvider.of<CountriesBloc>(context)
+                      .add(GetCountryEvent());
                 },
                 btnColor: ColorStyles.yellowFFD70A,
                 textLabel: Text(

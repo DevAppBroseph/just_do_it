@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
@@ -10,7 +12,7 @@ import 'package:just_do_it/helpers/router.dart';
 
 class Contractor extends StatelessWidget {
   final Size size;
-  Contractor({super.key, required this.size});
+  const Contractor({super.key, required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -206,8 +208,8 @@ class Contractor extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
-              onTap: () {
-                Navigator.of(context).push(
+              onTap: () async {
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return CeateTasks(
@@ -217,6 +219,7 @@ class Contractor extends StatelessWidget {
                     },
                   ),
                 );
+                BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

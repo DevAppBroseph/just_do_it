@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
@@ -36,7 +38,7 @@ class Customer extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color:  ColorStyles.yellowFFD70A,
+                color: ColorStyles.yellowFFD70A,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -81,7 +83,7 @@ class Customer extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color:  ColorStyles.yellowFFD70A,
+                color: ColorStyles.yellowFFD70A,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -183,7 +185,7 @@ class Customer extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
               onTap: () async {
-                Navigator.of(context).push(
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return CeateTasks(
@@ -193,6 +195,7 @@ class Customer extends StatelessWidget {
                     },
                   ),
                 );
+                BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

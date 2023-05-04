@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,6 @@ class _ContractorState extends State<Contractor> {
   Countries? selectCountries;
 
   List<Regions> listRegions = [];
-  Regions? selectRegions;
 
   @override
   void initState() {
@@ -193,8 +193,6 @@ class _ContractorState extends State<Contractor> {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return BlocBuilder<CountriesBloc, CountriesState>(
         builder: (context, snapshot) {
-      listRegions.clear();
-      listRegions.addAll(BlocProvider.of<CountriesBloc>(context).region);
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
@@ -805,7 +803,7 @@ class _ContractorState extends State<Contractor> {
               selectCountries = value;
               regionController.text = '';
               BlocProvider.of<CountriesBloc>(context)
-                  .add(GetRegionEvent([selectCountries!]));
+                  .add(GetRegionEvent(selectCountries!));
               user.copyWith(country: countryController.text);
               setState(() {});
             },
@@ -828,6 +826,7 @@ class _ContractorState extends State<Contractor> {
           key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
+              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,

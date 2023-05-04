@@ -1,11 +1,14 @@
 class Countries {
   String? name;
   int? id;
+  List<Regions> region;
+  bool select;
 
-  Countries(
-    {
+  Countries({
     required this.name,
     required this.id,
+    this.select = false,
+    this.region = const [],
   });
 
   factory Countries.fromJson(Map<String, dynamic> json) {
@@ -23,11 +26,14 @@ class Countries {
 class Regions {
   String? name;
   int? id;
+  List<Town> town;
+  bool select;
 
-  Regions(
-    {
+  Regions({
     required this.name,
     required this.id,
+    this.select = false,
+    this.town = const [],
   });
   factory Regions.fromJson(Map<String, dynamic> json) {
     return Regions(
@@ -44,11 +50,12 @@ class Regions {
 class Town {
   String? name;
   int? id;
+  bool select;
 
-  Town(
-    {
+  Town({
     required this.name,
     required this.id,
+    this.select = false,
   });
 
   factory Town.fromJson(Map<String, dynamic> json) {

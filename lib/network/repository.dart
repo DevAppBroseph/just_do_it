@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -92,6 +94,8 @@ class Repository {
       if (subcategory.isNotEmpty) "subcategory": subcategory,
       "as_customer": customer,
     };
+
+    log('message params\n$queryParameters');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -134,7 +138,7 @@ class Repository {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
-    final response = await dio.patch(
+    final response = await dio.put(
       '$server/orders/${task.id}',
       data: data,
       options: Options(
