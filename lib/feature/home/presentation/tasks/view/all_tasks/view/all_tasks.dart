@@ -119,6 +119,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                         return CeateTasks(
                           customer: widget.asCustomer,
                           doublePop: true,
+                          currentPage: 1,
                         );
                       },
                     ),
