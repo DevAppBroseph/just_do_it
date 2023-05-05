@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +41,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool allCountrys = false;
   bool allRegions = false;
   bool allTowns = false;
+  bool? asCustomer;
   int groupValueCity = 0;
   String str2 = '';
   String strcat = '';
@@ -233,7 +236,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             }
                           }
                         }
-
+                        log(customerFlag.toString());
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
                                 access: access,
@@ -249,10 +252,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 subcategory: selectSubCategory,
                                 countFilter: countField,
                                 currency: selectCurrency?.id,
-                                customer: (contractorFlag && contractorFlag) ||
-                                        (contractorFlag && contractorFlag)
+                                customer: (customerFlag && contractorFlag)
                                     ? null
-                                    : customerFlag,
+                                    : (customerFlag) ? true : false
                               ),
                             );
                       },
