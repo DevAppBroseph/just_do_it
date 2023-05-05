@@ -444,13 +444,21 @@ class _CeateTasksState extends State<CeateTasks> {
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository().createTask(profileBloc.access!, newTask);
                           if (res) Navigator.of(context).pop();
-                          if (res && widget.currentPage != 3 && widget.currentPage != 4) {
+                          if (res && widget.currentPage == 6) {
                             Navigator.of(context)
                           .pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                          }
+                          if (res && widget.currentPage == 2) {
+                           Navigator.of(context).pop();
+                          }
+                           if (res && widget.currentPage == 1) {
+                           Navigator.of(context).pop();
                           }
                         
 
                           Loader.hide();
+                          log(widget.currentPage.toString());
+                          
                         }
                       } else {
                         String error = 'Укажите:';
