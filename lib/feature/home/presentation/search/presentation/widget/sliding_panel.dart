@@ -252,7 +252,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 subcategory: selectSubCategory,
                                 countFilter: countField,
                                 currency: selectCurrency?.id,
-                                customer: (customerFlag && contractorFlag)
+                                customer: (customerFlag == contractorFlag) 
                                     ? null
                                     : (customerFlag) ? true : false
                               ),
