@@ -181,12 +181,12 @@ class _CeateTasksState extends State<CeateTasks> {
                         icon: SvgImg.arrowRight,
                       ),
                       SizedBox(width: 12.w),
-                      if (!widget.customer)
+                      if (widget.customer)
                         Text(
                           'Создание задания',
                           style: CustomTextStyle.black_22_w700,
                         ),
-                      if (widget.customer)
+                      if (!widget.customer)
                         Text(
                           'Создание предложения',
                           style: CustomTextStyle.black_22_w700,
@@ -503,7 +503,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
-                      page == 0 ? 'Далее' : 'Создать заказ',
+                      page == 0 ? 'Далее' : widget.customer ?'Создать заказ' :'Создать предложение' ,
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
