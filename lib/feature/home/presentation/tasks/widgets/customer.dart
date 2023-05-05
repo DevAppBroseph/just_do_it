@@ -191,6 +191,7 @@ class Customer extends StatelessWidget {
                       return CeateTasks(
                         customer: false,
                         doublePop: true,
+                        currentPage: 4,
                       );
                     },
                   ),

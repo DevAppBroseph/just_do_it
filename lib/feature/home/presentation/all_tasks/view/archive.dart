@@ -108,6 +108,7 @@ class _ArchivePageState extends State<ArchivePage> {
                           return CeateTasks(
                             customer: false,
                             doublePop: true,
+                            currentPage: 5,
                           );
                         },
                       ),

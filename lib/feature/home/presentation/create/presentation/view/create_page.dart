@@ -224,6 +224,7 @@ class _CreatePageState extends State<CreatePage> {
                                           return CeateTasks(
                                             customer: false,
                                             selectCategory: selectCategory,
+                                            currentPage: 6,
                                           );
                                         },
                                       ),

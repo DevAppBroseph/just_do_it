@@ -118,6 +118,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                         return CeateTasks(
                           customer: false,
                           doublePop: true,
+                          currentPage: 2,
                         );
                       },
                     ),

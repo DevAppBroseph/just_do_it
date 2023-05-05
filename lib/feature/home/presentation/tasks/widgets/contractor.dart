@@ -215,6 +215,7 @@ class Contractor extends StatelessWidget {
                       return CeateTasks(
                         customer: false,
                         doublePop: true,
+                        currentPage: 3,
                       );
                     },
                   ),
