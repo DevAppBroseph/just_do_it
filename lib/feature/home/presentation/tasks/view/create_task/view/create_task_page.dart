@@ -16,7 +16,6 @@ import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -429,7 +428,7 @@ class _CeateTasksState extends State<CeateTasks> {
                               coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
                             ),
                             regions: regions,
-                            countries: countries,
+                            countries: country,
                             towns: towns,
                             file: null,
                             icon: '',
@@ -445,8 +444,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository().createTask(profileBloc.access!, newTask);
                           if (res) Navigator.of(context).pop();
-                          if (res && widget.currentPage != 3 && widget.currentPage != 4)  Navigator.of(context)
+                          if (res && widget.currentPage != 3 && widget.currentPage != 4) {
+                            Navigator.of(context)
                           .pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                          }
                         
 
                           Loader.hide();
