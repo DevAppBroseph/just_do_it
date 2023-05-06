@@ -286,48 +286,27 @@ class _ContractorState extends State<Contractor> {
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(email);
 
-                    if (!emailValid && emailController.text.isNotEmpty) {
-                      error += '\n- корректную почту';
-                      errorsFlag = true;
-                    }
-                     if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
-                          (passwordController.text != repeatPasswordController.text)) {
-                        if(errorsFlag == true){
-                          error += '\n\nПароли не совпадают';
-                        }
-                        else{
-                          error += '\nПароли не совпадают';
-                        }
-                        errorsFlag = true;
-                      }
-                      if (passwordController.text.length < 6) {
-                     error += '\nМинимальная длина пароля 6 символов';
-                     errorsFlag = true;
-                    } 
-
-                    if (errorsFlag) {
-                     
-                      showAlertToast(error);
-                    } else if (phoneController.text.length < 12) {
-                      showAlertToast('- Некорректный номер телефона.');
-                    } else if (emailController.text.split('@').last.split('.').last.length < 2) {
-                      showAlertToast('- Введите корректный адрес почты');
-                    } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
-                        (passwordController.text != repeatPasswordController.text)) {
-                      showAlertToast('- пароли не совпадают');
-                    } else if (passwordController.text.length < 6) {
-                      showAlertToast('- минимальная длина пароля 6 символов');
-                    } else if (!emailValid) {
-                      showAlertToast('Введите корректный адрес почты');
-                    } else if (!confirmTermsPolicy) {
-                      showAlertToast(
-                          'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
+                  if (!emailValid && emailController.text.isNotEmpty) {
+                    error += '\n- корректную почту';
+                    errorsFlag = true;
+                  }
+                  if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    if (errorsFlag == true) {
+                      error += '\n\nПароли не совпадают';
                     } else {
-                      showLoaderWrapper(context);
-
-                      BlocProvider.of<AuthBloc>(context)
-                          .add(CheckUserExistEvent(phoneController.text, emailController.text));
+                      error += '\nПароли не совпадают';
                     }
+                    errorsFlag = true;
+                  }
+                  if (passwordController.text.length < 6) {
+                    error += '\nМинимальная длина пароля 6 символов';
+                    errorsFlag = true;
+                  }
+
+                  if (errorsFlag) {
                     showAlertToast(error);
                   } else if (phoneController.text.length < 12) {
                     showAlertToast('- Некорректный номер телефона.');
@@ -398,49 +377,31 @@ class _ContractorState extends State<Contractor> {
                       error += '\n- кем был выдан документ';
                       errorsFlag = true;
                     }
-                    if (additionalInfo) {
-                      if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
-                        error += '\n- серию документа';
-                        errorsFlag = true;
+                    if (dateDocController.text.isEmpty) {
+                      if (user.docType == 'Resident_ID') {
+                        error += '\n- место выдачи документа';
+                      } else {
+                        error += '\n- дату выдачи документа';
                       }
-                      if (numberDocController.text.isEmpty) {
-                        error += '\n- номер документа';
-                        errorsFlag = true;
-                      }
-                      if (whoGiveDocController.text.isEmpty) {
-                        error += '\n- кем был выдан документ';
-                        errorsFlag = true;
-                      }
-                      if (dateDocController.text.isEmpty) {
-                        if(user.docType == 'Resident_ID'){
-                          error += '\n- место выдачи документа';
-                        }
-                        else{
-                          error += '\n- дату выдачи документа';
-                        }
-                        errorsFlag = true;
-                      }
+                      errorsFlag = true;
                     }
-                     if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                        error += '\n\n Ваш документ просрочен';
-                        errorsFlag = true;
-                      }
+                  }
+                  if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
+                    error += '\n\n Ваш документ просрочен';
+                    errorsFlag = true;
+                  }
 
                   if (errorsFlag) {
                     showAlertToast(error);
                   } else {
                     if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш паспорт просрочен');
+                      showAlertToast('Ваш документ просрочен');
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
-                      if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                        showAlertToast('Ваш документ просрочен');
-                      } else if (checkExpireDate(dateTimeEnd) != null) {
-                        showAlertToast(checkExpireDate(dateTimeEnd)!);
-                      } else {
-                        showLoaderWrapper(context);
+                      showLoaderWrapper(context);
 
                       BlocProvider.of<AuthBloc>(context)
                           .add(SendProfileEvent(user));

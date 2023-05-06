@@ -90,26 +90,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   CustomIconButton(
                     onBackPressed: () {
                       Navigator.of(context).pop();
-                    }
-                    if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш документ просрочен');
-                    } else if (checkExpireDate(dateTimeEnd) != null) {
-                      showAlertToast(checkExpireDate(dateTimeEnd)!);
-                    } else {
-                      user!.copyWith(isEntity: physics);
-                      // BlocProvider.of<CountriesBloc>(context)
-                      //     .add(ResetCountryEvent());
-                      BlocProvider.of<ProfileBloc>(context).setUser(user);
-                      Repository().updateUser(
-                          BlocProvider.of<ProfileBloc>(context).access, user!);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  btnColor: ColorStyles.yellowFFD70B,
-                  textLabel: Text(
-                    'Сохранить',
-                    style: CustomTextStyle.black_16_w600_171716,
+                    },
+                    icon: SvgImg.arrowRight,
                   ),
                   SizedBox(width: 12.w),
                   Text(
