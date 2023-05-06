@@ -29,12 +29,13 @@ class CeateTasks extends StatefulWidget {
   Activities? selectCategory;
   bool customer;
   bool doublePop;
-  final int currentPage; 
+  final int currentPage;
   CeateTasks({
     super.key,
     this.selectCategory,
     required this.customer,
-    this.doublePop = false, required this.currentPage,
+    this.doublePop = false,
+    required this.currentPage,
   });
 
   @override
@@ -382,6 +383,18 @@ class _CeateTasksState extends State<CeateTasks> {
                             errorsFlag = true;
                           }
                         }
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) > 1000000000) {
+                            error += '\n- слишком большая сумма у минимального бюджета';
+                            errorsFlag = true;
+                          }
+                        }
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                          if (  int.parse(coastMaxController.text)> 1000000000) {
+                            error += '\n- слишком большая сумма у максимального бюджета';
+                            errorsFlag = true;
+                          }
+                        }
 
                         if (errorsFlag) {
                           showAlertToast(error);
@@ -440,25 +453,22 @@ class _CeateTasksState extends State<CeateTasks> {
                             currency: currency,
                           );
                           widget.customer = false;
-                         
+
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository().createTask(profileBloc.access!, newTask);
+                          log(res.toString());
                           if (res) Navigator.of(context).pop();
                           if (res && widget.currentPage == 6) {
-                            Navigator.of(context)
-                          .pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                            Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
                           }
                           if (res && widget.currentPage == 2) {
-                           Navigator.of(context).pop();
+                            Navigator.of(context).pop();
                           }
-                           if (res && widget.currentPage == 1) {
-                           Navigator.of(context).pop();
+                          if (res && widget.currentPage == 1) {
+                            Navigator.of(context).pop();
                           }
-                        
 
                           Loader.hide();
-                          log(widget.currentPage.toString());
-                          
                         }
                       } else {
                         String error = 'Укажите:';

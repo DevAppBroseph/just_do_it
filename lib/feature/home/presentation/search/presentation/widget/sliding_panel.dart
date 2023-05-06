@@ -200,11 +200,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (format1 != null || format2 != null) {
                           countField++;
                         }
-                        // if (countries.isNotEmpty ||
-                        //     regions.isNotEmpty ||
-                        //     towns.isNotEmpty) {
-                        //   countField++;
-                        // }
+                        
 
                         if (currencyString != null &&
                             currencyString!.isNotEmpty) {
@@ -235,6 +231,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                               towns.add(element1);
                             }
                           }
+                        }
+                        if (country.isNotEmpty ||
+                            regions.isNotEmpty ||
+                            towns.isNotEmpty) {
+                          countField++;
                         }
                         log(customerFlag.toString());
                         context.read<TasksBloc>().add(
