@@ -5,15 +5,43 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/task.dart';
 
-class Contractor extends StatelessWidget {
+import '../../../../../models/order_task.dart';
+import '../../../../../network/repository.dart';
+
+class Contractor extends StatefulWidget {
   final Size size;
   const Contractor({super.key, required this.size});
 
+  @override
+  State<Contractor> createState() => _ContractorState();
+}
+
+class _ContractorState extends State<Contractor> {
+  List<Task> taskList = [];
+  Task? selectTask;
+  Owner? owner;
+  @override
+  void initState() {
+    super.initState();
+    getListTask();
+  }
+
+  void getListTask() async {
+    List<Task> res = await Repository().getMyTaskList(
+        BlocProvider.of<ProfileBloc>(context).access!, true);
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -30,7 +58,7 @@ class Contractor extends StatelessWidget {
             },
             child: Container(
               height: 55.h,
-              width: size.width,
+              width: widget.size.width,
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
@@ -49,7 +77,7 @@ class Contractor extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '322 задания',
+                        '${taskList.length} задания',
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -75,7 +103,7 @@ class Contractor extends StatelessWidget {
             },
             child: Container(
               height: 55.h,
-              width: size.width,
+              width: widget.size.width,
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
@@ -94,7 +122,7 @@ class Contractor extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '322 задания',
+                        '${taskList.length} задания',
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -116,7 +144,7 @@ class Contractor extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вас выбрали в 3 заданиях',
+              'Вас выбрали в ${taskList.length} заданиях',
               style: CustomTextStyle.black_18_w500_171716,
             ),
           ),
@@ -125,7 +153,7 @@ class Contractor extends StatelessWidget {
             children: [
               itemButton(
                 'Выполняются',
-                '1 задания',
+                '${taskList.length} задания',
                 SvgImg.inProgress,
                 () {
                   Navigator.of(context).push(
@@ -153,7 +181,7 @@ class Contractor extends StatelessWidget {
               SizedBox(height: 18.h),
               itemButton(
                 'Выполненные',
-                '1 задания',
+                '${taskList.length} задания',
                 SvgImg.complete,
                 () {
                   Navigator.of(context).push(
@@ -181,7 +209,7 @@ class Contractor extends StatelessWidget {
               SizedBox(height: 18.h),
               itemButton(
                 'Ждут подтверждения',
-                '1 задания',
+                '${taskList.length} задания',
                 SvgImg.needSuccess,
                 () {
                   Navigator.of(context).push(
