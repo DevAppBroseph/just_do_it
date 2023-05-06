@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,7 @@ import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -25,7 +25,8 @@ class SearchPage extends StatefulWidget {
   final Function(int) onSelect;
   final String text;
 
-  const SearchPage({super.key, 
+  const SearchPage({
+    super.key,
     required this.onBackPressed,
     required this.onSelect,
     required this.text,
@@ -65,8 +66,9 @@ class _SearchPageState extends State<SearchPage> {
 
   void getHistoryList() async {
     final List<String> list = await Storage().getListHistory();
+    final List<String> listReversed = list.reversed.toList();
     searchChoose.clear();
-    searchChoose.addAll(list);
+    searchChoose.addAll(listReversed);
   }
 
   void getTaskList() {
@@ -375,7 +377,13 @@ class _SearchPageState extends State<SearchPage> {
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
-                    children: taskList.map((e) => itemTask(e)).toList(),
+                    children: taskList
+                        .map((e) => itemTask(e, (task) {
+                              setState(() {
+                                selectTask = task;
+                              });
+                            }))
+                        .toList(),
                   );
                 }),
               ),
@@ -384,142 +392,6 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
-  }
-
-  Widget itemTask(Task task) {
-    return Padding(
-      padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
-      child: ScaleButton(
-        bound: 0.01,
-        onTap: () {
-          setState(() {
-            selectTask = task;
-          });
-        },
-        child: Container(
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
-            borderRadius: BorderRadius.circular(10.r),
-            boxShadow: [
-              BoxShadow(
-                color: ColorStyles.shadowFC6554,
-                offset: const Offset(0, -4),
-                blurRadius: 55.r,
-              )
-            ],
-          ),
-          width: 327.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: server + task.activities!.photo!,
-                      height: 34.h,
-                      width: 34.h,
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-                SizedBox(width: 16.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 235.w,
-                      child: Text(
-                        task.name,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: CustomTextStyle.black_14_w500_171716,
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 235.w,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _textCountry(task),
-                                  style: CustomTextStyle.black_12_w400,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  task.dateEnd,
-                                  style: CustomTextStyle.grey_12_w400,
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (task.currency?.name == null)
-                            Text(
-                              'до ${task.priceTo} ₽',
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          if (task.currency?.name == 'Дирхам')
-                            Text(
-                              'до ${task.priceTo} AED',
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          if (task.currency?.name == 'Российский рубль')
-                            Text(
-                              'до ${task.priceTo}  ₽',
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          if (task.currency?.name == 'Доллар США')
-                            Text(
-                              'до ${task.priceTo} \$',
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          if (task.currency?.name == 'Евро')
-                            Text(
-                              'до ${task.priceTo} €',
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          SizedBox(width: 5.w),
-                          SizedBox(
-                            width: 16.h,
-                            child: SvgPicture.asset(
-                              'assets/icons/card.svg',
-                              height: 16.h,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _textCountry(Task task) {
-    var text = '';
-    for (var country in task.countries) {
-      text += '${country.name}, ';
-    }
-    for (var region in task.regions) {
-      text += '${region.name}, ';
-    }
-    for (var town in task.towns) {
-      text += '${town.name}, ';
-    }
-    if (text.isNotEmpty) text = text.substring(0, text.length - 2);
-    if (text.isEmpty) text = 'Выбраны все страны';
-
-    return text;
   }
 
   Widget view() {

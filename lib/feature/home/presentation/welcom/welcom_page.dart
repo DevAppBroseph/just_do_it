@@ -19,7 +19,7 @@ import 'package:scale_button/scale_button.dart';
 class WelcomPage extends StatefulWidget {
   Function(int) onSelect;
 
-  WelcomPage(this.onSelect);
+  WelcomPage(this.onSelect, {super.key});
 
   @override
   State<WelcomPage> createState() => _WelcomPageState();
@@ -51,8 +51,9 @@ class _WelcomPageState extends State<WelcomPage> {
 
   void getHistoryList() async {
     final List<String> list = await Storage().getListHistory();
+    final List<String> listReversed = list.reversed.toList();
     searchChoose.clear();
-    searchChoose.addAll(list);
+    searchChoose.addAll(listReversed);
   }
 
   @override

@@ -638,8 +638,9 @@ class _CustomerState extends State<Customer> {
   }
 
   Widget secondStage(double heightKeyBoard) {
-    listCountries.clear();
-    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
+    if (listCountries.isEmpty) {
+      listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
+    }
     return ListView(
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),

@@ -8,12 +8,8 @@ class SearchList extends StatefulWidget {
   Function(String) onSelect;
   List<String> array = [];
 
-  SearchList(
-    this.heightScreen,
-    this.bottomInsets,
-    this.onSelect,
-    this.array,
-  );
+  SearchList(this.heightScreen, this.bottomInsets, this.onSelect, this.array,
+      {super.key});
 
   @override
   State<SearchList> createState() => _SearchListState();
