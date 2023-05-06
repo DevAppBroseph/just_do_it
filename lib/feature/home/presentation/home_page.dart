@@ -16,20 +16,19 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart' as search;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
+    as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart'
+    as search;
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -46,6 +45,7 @@ class _HomePageState extends State<HomePage> {
   PanelController panelControllerReply = PanelController();
   final streamController = StreamController<int>();
   int page = 5;
+  int? idTask;
 
   String? access;
   String searchQuery = '';
@@ -58,8 +58,13 @@ class _HomePageState extends State<HomePage> {
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
-      final owner = await Repository()
-          .getRanking(access!, Owner(id: int.parse(userProfile), firstname: '', lastname: '', photo: ''));
+      final owner = await Repository().getRanking(
+          access!,
+          Owner(
+              id: int.parse(userProfile),
+              firstname: '',
+              lastname: '',
+              photo: ''));
       if (owner != null) {
         Navigator.push(
           context,
@@ -69,21 +74,12 @@ class _HomePageState extends State<HomePage> {
         );
       }
     } else if (taskId != null) {
-      
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SearchPage(
-            text: searchQuery,
-            onBackPressed: () {
-              pageController.jumpToPage(4);
-              page = 5;
-              streamController.add(4);
-            },
-            onSelect: selectUser,
-          ),
-        ),
-      );
+      Future.delayed(const Duration(seconds: 1), () {
+        idTask = int.parse(taskId);
+        pageController.jumpToPage(1);
+        page = 1;
+        setState(() {});
+      });
     }
   }
 
@@ -123,7 +119,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     if (panelController.isPanelOpen) panelController.close();
-    // if (panelControllerReply.isPanelOpen) panelControllerReply.close();
+    if (panelControllerReply.isPanelOpen) panelControllerReply.close();
     streamController.close();
     pageController.dispose();
     super.dispose();
@@ -161,11 +157,15 @@ class _HomePageState extends State<HomePage> {
                     onSelect: selectUser,
                   ),
                   SearchPage(
+                    taskId: idTask,
                     text: searchQuery,
                     onBackPressed: () {
                       pageController.jumpToPage(4);
                       page = 5;
                       streamController.add(4);
+                    },
+                    clearId: () {
+                      idTask = null;
                     },
                     onSelect: selectUser,
                   ),
@@ -204,9 +204,11 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   height: 96.h,
-                  child: BlocBuilder<ChatBloc, ChatState>(builder: (context, snapshot) {
+                  child: BlocBuilder<ChatBloc, ChatState>(
+                      builder: (context, snapshot) {
                     int undreadMessage = 0;
-                    for (var element in BlocProvider.of<ChatBloc>(context).chatList) {
+                    for (var element
+                        in BlocProvider.of<ChatBloc>(context).chatList) {
                       undreadMessage += element.countUnreadMessage ?? 0;
                     }
                     return Padding(
@@ -234,7 +236,8 @@ class _HomePageState extends State<HomePage> {
                             'assets/icons/messages.svg',
                             'Чат',
                             3,
-                            counderMessage: undreadMessage != 0 ? undreadMessage : null,
+                            counderMessage:
+                                undreadMessage != 0 ? undreadMessage : null,
                           ),
                           itemBottomNavigatorBar(
                             'assets/icons/profile.svg',
@@ -274,7 +277,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(String icon, String label, int index, {int? counderMessage}) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index,
+      {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
         searchQuery = '';
@@ -315,7 +319,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   SvgPicture.asset(
                     icon,
-                    color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                    color:
+                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
                   ),
                   SizedBox(height: 4.h),
                   Text(
