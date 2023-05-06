@@ -317,6 +317,9 @@ class _CategoryState extends State<Category> {
                     widget.aboutController.text,
                   );
                 },
+                formatters: [
+                  UpperEveryTextInputFormatter(),
+                ],
               ),
             ),
           ),

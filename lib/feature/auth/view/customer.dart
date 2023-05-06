@@ -226,7 +226,7 @@ class _CustomerState extends State<Customer> {
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(email);
                         
-                      if (!emailValid) {
+                      if (!emailValid && emailController.text.isNotEmpty) {
                       error += '\n- корректную почту';
                       errorsFlag = true;
                     }
@@ -294,14 +294,25 @@ class _CustomerState extends State<Customer> {
                         errorsFlag = true;
                       }
                     }
-
-                    if (errorsFlag) {
+                     if (passwordController.text.length < 6) {
+                      error += '\n\nМинимальная длина пароля 6 символов';
+                       errorsFlag = true;
+                    }
                       if ((passwordController.text.isNotEmpty &&
                               repeatPasswordController.text.isNotEmpty) &&
                           (passwordController.text !=
                               repeatPasswordController.text)) {
-                        error += '\n\nПароли не совпадают';
+                        error += '\nПароли не совпадают';
+                         errorsFlag = true;
                       }
+                      if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      error += '\nВаш документ просрочен';
+                       errorsFlag = true;
+                    }
+
+                    if (errorsFlag) {
+                     
                       showAlertToast(error);
                     } else if (passwordController.text.length < 6) {
                       showAlertToast('- минимальная длина пароля 6 символов');
@@ -312,7 +323,7 @@ class _CustomerState extends State<Customer> {
                       showAlertToast('Пароли не совпадают');
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш паспорт просрочен');
+                      showAlertToast('Ваш документ просрочен');
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {

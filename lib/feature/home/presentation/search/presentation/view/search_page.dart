@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +61,36 @@ class _SearchPageState extends State<SearchPage> {
     searchController.text = widget.text;
     initFunc();
     getTaskList();
+    if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefCode(value);
+      });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefCode(event);
+    });
+  }
+  
+  void parseTripRefCode(PendingDynamicLinkData event) async {
+    String? taskId = event.link.queryParameters['task_id'];
+    taskList = await BlocProvider.of<TasksBloc>(context).tasks;
+     if (taskId != null) {
+     log(taskId.toString());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TaskView(
+          selectTask: taskList[0],
+          openOwner: (owner) {
+            this.owner = owner;
+            setState(() {});
+          },
+          canSelect: true,
+        ),
+        ),
+      );
+    }
+    taskList.clear();
   }
 
   void initFunc() {
@@ -398,7 +432,9 @@ class _SearchPageState extends State<SearchPage> {
     if (owner != null) {
       return Expanded(child: ProfileView(owner: owner!));
     }
+    
     if (selectTask != null) {
+      log(selectTask!.id.toString());
       return Expanded(
         child: TaskView(
           selectTask: selectTask!,

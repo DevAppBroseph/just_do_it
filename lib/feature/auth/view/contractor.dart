@@ -262,16 +262,27 @@ class _ContractorState extends State<Contractor> {
                     bool emailValid =
                         RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 
-                    if (!emailValid) {
+                    if (!emailValid && emailController.text.isNotEmpty) {
                       error += '\n- корректную почту';
                       errorsFlag = true;
                     }
+                     if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                          (passwordController.text != repeatPasswordController.text)) {
+                        if(errorsFlag == true){
+                          error += '\n\nПароли не совпадают';
+                        }
+                        else{
+                          error += '\nПароли не совпадают';
+                        }
+                        errorsFlag = true;
+                      }
+                      if (passwordController.text.length < 6) {
+                     error += '\nМинимальная длина пароля 6 символов';
+                     errorsFlag = true;
+                    } 
 
                     if (errorsFlag) {
-                      if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
-                          (passwordController.text != repeatPasswordController.text)) {
-                        error += '\n\nПароли не совпадают';
-                      }
+                     
                       showAlertToast(error);
                     } else if (phoneController.text.length < 12) {
                       showAlertToast('- Некорректный номер телефона.');
@@ -333,16 +344,25 @@ class _ContractorState extends State<Contractor> {
                         errorsFlag = true;
                       }
                       if (dateDocController.text.isEmpty) {
-                        error += '\n- дату выдачи документа';
+                        if(user.docType == 'Resident_ID'){
+                          error += '\n- место выдачи документа';
+                        }
+                        else{
+                          error += '\n- дату выдачи документа';
+                        }
                         errorsFlag = true;
                       }
                     }
+                     if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                        error += '\n\n Ваш документ просрочен';
+                        errorsFlag = true;
+                      }
 
                     if (errorsFlag) {
                       showAlertToast(error);
                     } else {
                       if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                        showAlertToast('Ваш паспорт просрочен');
+                        showAlertToast('Ваш документ просрочен');
                       } else if (checkExpireDate(dateTimeEnd) != null) {
                         showAlertToast(checkExpireDate(dateTimeEnd)!);
                       } else {

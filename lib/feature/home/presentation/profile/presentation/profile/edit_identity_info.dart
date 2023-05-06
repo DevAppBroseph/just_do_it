@@ -129,7 +129,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     }
                     if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш паспорт просрочен');
+                      showAlertToast('Ваш документ просрочен');
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
