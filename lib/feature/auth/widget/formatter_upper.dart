@@ -11,16 +11,12 @@ class UpperEveryTextInputFormatter extends TextInputFormatter {
       str = newValue.text[0].toUpperCase();
       for (int i = 1; i < newValue.text.length; i++) {
         if (i >= 2) {
-          if (newValue.text[i - 2] == '.') {
+          if (newValue.text[i - 2] == '.'  ) {
             str += newValue.text[i].toUpperCase();
           } else {
             str += newValue.text[i];
           }
-          if (newValue.text[i - 1] == '.') {
-            str += newValue.text[i].toUpperCase();
-          } else {
-            str += newValue.text[i];
-          }
+         
         } else {
           str += newValue.text[i];
         }

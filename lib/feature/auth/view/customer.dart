@@ -225,6 +225,11 @@ class _CustomerState extends State<Customer> {
                     bool emailValid = RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(email);
+                        
+                      if (!emailValid) {
+                      error += '\n- корректную почту';
+                      errorsFlag = true;
+                    }
 
                     if (errorsFlag) {
                       showAlertToast(error);

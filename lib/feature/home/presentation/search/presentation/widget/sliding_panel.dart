@@ -386,6 +386,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         strcat2 = '';
                         strcat = '';
                         allCategory = false;
+                        selectCurrency = null;
                         for (int i = 0; i < activities.length; i++) {
                           for (int y = 0;
                               y < activities[i].subcategory.length;

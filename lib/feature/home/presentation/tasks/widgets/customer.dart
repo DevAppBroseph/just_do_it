@@ -5,18 +5,43 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/network/repository.dart';
 
-class Customer extends StatelessWidget {
+class Customer extends StatefulWidget {
   const Customer({
     Key? key,
     required this.size,
   }) : super(key: key);
 
   final Size size;
+
+  @override
+  State<Customer> createState() => _CustomerState();
+}
+
+class _CustomerState extends State<Customer> {
+  List<Task> taskList = [];
+  Task? selectTask;
+  Owner? owner;
+  @override
+  void initState() {
+    super.initState();
+    getListTask();
+  }
+
+  void getListTask() async {
+    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
+    taskList.clear();
+    taskList.addAll(res.reversed);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +54,11 @@ class Customer extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .pushNamed(AppRoute.allTasks, arguments: [false]);
+              Navigator.of(context).pushNamed(AppRoute.allTasks, arguments: [false]);
             },
             child: Container(
               height: 55.h,
-              width: size.width,
+              width: widget.size.width,
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
@@ -53,7 +77,7 @@ class Customer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '322 задания',
+                        '${taskList.length} задания',
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -74,12 +98,11 @@ class Customer extends StatelessWidget {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .pushNamed(AppRoute.archiveTasks, arguments: [false]);
+              Navigator.of(context).pushNamed(AppRoute.archiveTasks, arguments: [false]);
             },
             child: Container(
               height: 55.h,
-              width: size.width,
+              width: widget.size.width,
               margin: EdgeInsets.symmetric(horizontal: 24.w),
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
@@ -98,7 +121,7 @@ class Customer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '322 задания',
+                        '${taskList.length} задания',
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -120,7 +143,7 @@ class Customer extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вы создали 3 задания',
+              'Вы создали ${taskList.length} задания',
               style: CustomTextStyle.black_18_w500_171716,
             ),
           ),
@@ -129,7 +152,7 @@ class Customer extends StatelessWidget {
             children: [
               itemButton(
                 'Открыты',
-                '1 задания',
+                '${taskList.length} задания',
                 SvgImg.inProgress,
                 () {
                   Navigator.of(context).push(
@@ -157,7 +180,7 @@ class Customer extends StatelessWidget {
               SizedBox(height: 18.h),
               itemButton(
                 'Невыполненные',
-                '1 задания',
+                '${taskList.length} задания',
                 SvgImg.close,
                 () {
                   Navigator.of(context).push(
