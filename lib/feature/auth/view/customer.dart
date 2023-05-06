@@ -211,7 +211,7 @@ class _CustomerState extends State<Customer> {
                       error += '\n- фамилию';
                       errorsFlag = true;
                     }
-                    if (phoneController.text.isEmpty) {
+                    if (phoneController.text.isEmpty || phoneController.text == '+') {
                       error += '\n- мобильный номер';
                       errorsFlag = true;
                     }

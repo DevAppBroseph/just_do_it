@@ -263,12 +263,12 @@ class _ContractorState extends State<Contractor> {
                       errorsFlag = true;
                     }
 
-                    if (phoneController.text.isEmpty) {
+                    if (phoneController.text.isEmpty|| phoneController.text == '+' ) {
                       error += '\n- мобильный номер';
                       errorsFlag = true;
                     }
 
-                    if (emailController.text.isEmpty) {
+                    if (emailController.text.isEmpty ) {
                       error += '\n- почту';
                       errorsFlag = true;
                     }
@@ -278,8 +278,20 @@ class _ContractorState extends State<Contractor> {
                       error += '\n- пароль';
                       errorsFlag = true;
                     }
+                    
 
                     String email = emailController.text;
+
+                    if (emailController.text
+                            .split('@')
+                            .last
+                            .split('.')
+                            .last
+                            .length <
+                        2) {
+                        error += '\n- корректную почту';
+                      errorsFlag = true;
+                    } 
 
                     bool emailValid = RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -361,7 +373,7 @@ class _ContractorState extends State<Contractor> {
                         errorsFlag = true;
                       }
                       if (whoGiveDocController.text.isEmpty) {
-                        error += '\n- кем был вадан документ';
+                        error += '\n- кем был выдан документ';
                         errorsFlag = true;
                       }
                       if (dateDocController.text.isEmpty) {

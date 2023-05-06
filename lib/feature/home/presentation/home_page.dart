@@ -250,16 +250,16 @@ class _HomePageState extends State<HomePage> {
             return SlidingPanelSearch(panelController);
           },
         ),
-        BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
-          builder: (context, snapshot) {
-            if (snapshot is rep.OpenSlidingPanelState) {
-              panelController.animatePanelToPosition(1.0);
-            } else if (snapshot is rep.CloseSlidingPanelState) {
-              panelController.animatePanelToPosition(0.0);
-            }
-            return SlidingPanelReply(panelController);
-          },
-        ),
+        // BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
+        //   builder: (context, snapshot) {
+        //     if (snapshot is rep.OpenSlidingPanelState) {
+        //       panelController.animatePanelToPosition(1.0);
+        //     } else if (snapshot is rep.CloseSlidingPanelState) {
+        //       panelController.animatePanelToPosition(0.0);
+        //     }
+        //     // return SlidingPanelReply(panelController);
+        //   },
+        // ),
       ],
     );
   }
