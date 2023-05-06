@@ -374,8 +374,13 @@ class _ContractorState extends State<Contractor> {
                       errorsFlag = true;
                     }
                     if (whoGiveDocController.text.isEmpty) {
-                      error += '\n- кем был выдан документ';
-                      errorsFlag = true;
+                      if (user.docType != 'Passport') {
+                        error += '\n- срок действия документа';
+                        errorsFlag = true;
+                      } else if (user.docType != 'Resident_ID') {
+                        error += '\n- кем был выдан документ';
+                        errorsFlag = true;
+                      }
                     }
                     if (dateDocController.text.isEmpty) {
                       if (user.docType == 'Resident_ID') {
@@ -573,7 +578,11 @@ class _ContractorState extends State<Contractor> {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage1();
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
+            if (!emailValid) showAlertToast('Почта указана неверно');
+            if (emailValid) requestNextEmptyFocusStage1();
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 250), () {
