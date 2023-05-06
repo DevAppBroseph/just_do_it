@@ -1,17 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-enum SocialMedia{facebook, instagram, tiktok, email}
+enum SocialMedia { whatsup, instagram, facebook, telegram }
 
 class ReferalPage extends StatefulWidget {
   const ReferalPage({super.key});
@@ -21,35 +22,29 @@ class ReferalPage extends StatefulWidget {
 }
 
 class _ReferalPageState extends State<ReferalPage> {
- Future share(SocialMedia socialplatform) async{
-  const text = 'Ваша реферальная ссылка';
-  final urlShare = Uri.encodeComponent('${user?.link}');
-  final urls = {
-    SocialMedia.facebook: 'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.instagram:'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.tiktok:'https://www.tiktok.com/sharer.php?t=$text&u=$urlShare',
-    SocialMedia.email:'mailto:?body=$text\n$urlShare',
-  };
-  final url = urls[socialplatform]!;
-  final uri = Uri.parse(url);
-  if(await canLaunchUrl(uri)){
-    await launchUrl(uri);
+  Future share(SocialMedia socialplatform) async {
+    const text = 'Ваша реферальная ссылка';
+    final urlShare = Uri.encodeComponent('${user?.link}');
+    final urls = {
+      SocialMedia.facebook:
+          'https://www.facebook.com/sharer/sharer.php?t=$text&u=$urlShare',
+      SocialMedia.instagram:
+          'https://www.instagram.com/sharer.php?t=$text&u=$urlShare',
+    };
+    final url = urls[socialplatform]!;
+    await launch(url);
   }
 
- }
-    late UserRegModel? user;
-   
-   @override
-   void initState() {
+  late UserRegModel? user;
+
+  @override
+  void initState() {
     user = BlocProvider.of<ProfileBloc>(context).user;
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    
-
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -67,21 +62,18 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
-                    GestureDetector(
-                      onTap: () {
+                    CustomIconButton(
+                      onBackPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Transform.rotate(
-                          angle: pi,
-                          child:
-                              SvgPicture.asset('assets/icons/arrow_right.svg')),
+                      icon: SvgImg.arrowRight,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Реферальная система',
-                          style: CustomTextStyle.black_21_w700,
+                          style: CustomTextStyle.black_22_w700,
                         ),
                       ],
                     ),
@@ -93,16 +85,16 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'Это ваша реферальная ссылка',
-                style: CustomTextStyle.black_15_w500_000000,
+                'Это Ваша реферальная ссылка',
+                style: CustomTextStyle.black_16_w500_000000,
               ),
             ),
             SizedBox(height: 8.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'За каждого нового пользователя, кто установит приложение\nпо вашей ссылке, Вы получите от 100 баллов.',
-                style: CustomTextStyle.black_13_w400_515150,
+                'За каждого нового пользователя, кто установит приложение по Вашей ссылке, Вы получите от 100 баллов.',
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
             SizedBox(height: 50.h),
@@ -119,7 +111,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 children: [
                   Text(
                     'Установите приложение JOBYFINE и получите\nдополнительно 200 баллов на свой счет!',
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ],
               ),
@@ -130,7 +122,25 @@ class _ReferalPageState extends State<ReferalPage> {
               child: ScaleButton(
                 duration: const Duration(milliseconds: 50),
                 bound: 0.01,
-                onTap: () {},
+                onTap: () async {
+                  String code = '';
+                  for (int i = 0; i < user!.link!.length; i++) {
+                    if (RegExp(r'[0-9]').hasMatch(user!.link![i])) {
+                      code += user!.link![i];
+                    }
+                  }
+
+                  final res = await FirebaseDynamicLinksService()
+                      .share(int.parse(code));
+                  Clipboard.setData(ClipboardData(text: res));
+
+                  const snackBar = SnackBar(
+                    backgroundColor: ColorStyles.yellowFFCA0D,
+                    content: Text('Скопировано'),
+                    duration: Duration(seconds: 1),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
@@ -142,8 +152,8 @@ class _ReferalPageState extends State<ReferalPage> {
                     child: Row(
                       children: [
                         Text(
-                          'www.link//32xs2cw',
-                          style: CustomTextStyle.white_15_w600,
+                          user?.link ?? '-',
+                          style: CustomTextStyle.white_16_w600,
                         ),
                         const Spacer(),
                         SvgPicture.asset('assets/icons/copy.svg')
@@ -153,116 +163,41 @@ class _ReferalPageState extends State<ReferalPage> {
                 ),
               ),
             ),
-            SizedBox(height: 52.h),
+            SizedBox(height: 25.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 1.h,
-                        color: ColorStyles.greyF3F3F3,
-                      )),
-                      SizedBox(width: 24.w),
-                      Text(
-                        'Поделиться',
-                        style: CustomTextStyle.grey_13_w400,
-                      ),
-                      SizedBox(width: 24.w),
-                      Expanded(
-                          child: Container(
-                        height: 1.h,
-                        color: ColorStyles.greyF3F3F3,
-                      )),
-                    ],
+              child: ScaleButton(
+                onTap: () async {
+                  String code = '';
+                  for (int i = 0; i < user!.link!.length; i++) {
+                    if (RegExp(r'[0-9]').hasMatch(user!.link![i])) {
+                      code += user!.link![i];
+                    }
+                  }
+
+                  final res = await FirebaseDynamicLinksService()
+                      .share(int.parse(code));
+                  if (res != null) Share.share(res);
+                },
+                child: Container(
+                  height: 55.h,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.yellowFFCA0D,
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  SizedBox(height: 17.h),
-                  SizedBox(
-                    height: 54.h,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: (){
-                            share(SocialMedia.email);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
-                          ),
+                        Text(
+                          'Поделиться',
+                          style: CustomTextStyle.white_16_w600,
                         ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: (){
-                            share(SocialMedia.instagram);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: (){
-                            share(SocialMedia.facebook);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        GestureDetector(
-                          onTap: (){
-                            share(SocialMedia.tiktok);
-                          },
-                          child: Container(
-                            height: 54.h,
-                            width: 54.h,
-                            padding: EdgeInsets.all(15.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: ColorStyles.greyF9F9F9,
-                            ),
-                            child: SvgPicture.asset('assets/icons/russia.svg'),
-                          ),
-                        ),
-                        SizedBox(width: 8.h),
-                        Container(
-                          height: 54.h,
-                          width: 54.h,
-                          padding: EdgeInsets.all(15.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: ColorStyles.greyF9F9F9,
-                          ),
-                          child: SvgPicture.asset('assets/icons/russia.svg'),
-                        )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
           ],

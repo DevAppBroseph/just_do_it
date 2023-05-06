@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class ChatPage extends StatefulWidget {
@@ -30,8 +29,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void getInitMessage() async {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    BlocProvider.of<ChatBloc>(context).add(GetListMessage(access!));
+    BlocProvider.of<ChatBloc>(context).add(GetListMessage());
   }
 
   @override
@@ -50,31 +48,22 @@ class _ChatPageState extends State<ChatPage> {
               child: Row(
                 children: [
                   if (widget.onBackPressed != null)
-                    GestureDetector(
-                      onTap: widget.onBackPressed,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Transform.rotate(
-                          angle: pi,
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow_right.svg',
-                            height: 20.h,
-                            width: 20.w,
-                          ),
-                        ),
-                      ),
+                    CustomIconButton(
+                      onBackPressed: widget.onBackPressed!,
+                      icon: SvgImg.arrowRight,
                     ),
                   if (widget.onBackPressed != null) SizedBox(width: 15.w),
+                  const Spacer(),
                   Text(
                     'Сообщения',
-                    style: CustomTextStyle.black_21_w700,
+                    style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(AppRoute.menu,
-                          arguments: [(page) {}]).then((value) {
+                          arguments: [(page) {}, false]).then((value) {
                         if (value != null) {
                           if (value == 'create') {
                             widget.onSelect(0);
@@ -119,13 +108,13 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget itemChatMessage(ChatList chat) {
+    final user = BlocProvider.of<ProfileBloc>(context).user;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: ScaleButton(
         bound: 0.02,
         onTap: () async {
           final chatBloc = BlocProvider.of<ChatBloc>(context);
-          final profileBloc = BlocProvider.of<ProfileBloc>(context);
           chatBloc.editShowPersonChat(false);
           chatBloc.editChatId(chat.id);
           chatBloc.messages = [];
@@ -133,7 +122,9 @@ class _ChatPageState extends State<ChatPage> {
             AppRoute.personalChat,
             arguments: [
               '${chat.id}',
-              '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
+              chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
+                  ? ''
+                  : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
               '${chat.chatWith?.id}',
               '${chat.chatWith?.photo}',
             ],
@@ -195,8 +186,11 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 width: 180.w,
                                 child: AutoSizeText(
-                                  '${chat.chatWith?.firstname ?? ''} ${chat.chatWith?.lastname ?? ''}',
-                                  style: CustomTextStyle.black_13_w400_000000,
+                                  chat.chatWith != null &&
+                                          chat.chatWith!.firstname!.isEmpty
+                                      ? 'Аккаунт удален'
+                                      : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
+                                  style: CustomTextStyle.black_14_w400_000000,
                                   maxLines: 1,
                                 ),
                               ),
@@ -207,23 +201,43 @@ class _ChatPageState extends State<ChatPage> {
                                         .toString()
                                         .substring(0, 10) ??
                                     '-',
-                                style: CustomTextStyle.grey_11_w400,
+                                style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                           SizedBox(height: 8.h),
-                          Text(
-                            chat.lastMsg?.text ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: CustomTextStyle.black_13_w400_171716,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  chat.lastMsg?.text ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: CustomTextStyle.black_14_w400_171716,
+                                ),
+                              ),
+                              if (chat.lastMsg?.unread != null &&
+                                  chat.lastMsg!.unread! &&
+                                  (user != null &&
+                                      user.id != chat.lastMsg?.sender?.id))
+                                Container(
+                                  height: 15.h,
+                                  width: 15.h,
+                                  decoration: BoxDecoration(
+                                    color: ColorStyles.yellowFFCA0D,
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      chat.countUnreadMessage?.toString() ?? '',
+                                      style: CustomTextStyle.white_10_w700,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                           SizedBox(height: 8.h),
-                          // Text(
-                          //   chat.typeWork,
-                          //   style: CustomTextStyle.grey_13_w400,
-                          // ),
                         ],
                       ),
                     ),

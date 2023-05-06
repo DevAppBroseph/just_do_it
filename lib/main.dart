@@ -1,16 +1,28 @@
+import 'dart:ui';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,13 +35,17 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+            BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
+            BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
+            BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
+            BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
             BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
             BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
             BlocProvider<ChatBloc>(create: (context) => ChatBloc())
           ],
-          child:  MaterialApp(
+          child: MaterialApp(
             builder: FlutterSmartDialog.init(),
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.home,

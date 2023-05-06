@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,12 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class EditIdentityInfo extends StatefulWidget {
   const EditIdentityInfo({Key? key}) : super(key: key);
@@ -23,8 +26,6 @@ class EditIdentityInfo extends StatefulWidget {
 }
 
 class _EditIdentityInfoState extends State<EditIdentityInfo> {
-  final GlobalKey _iconBtn = GlobalKey();
-
   int groupValue = 0;
   int page = 0;
   bool visiblePassword = false;
@@ -46,7 +47,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
   bool confirmTermsPolicy = false;
-  DateTime? dateTime;
+  DateTime? dateTimeStart;
+  DateTime? dateTimeEnd;
   List<Activities> listCategories = [];
   bool physics = false;
 
@@ -59,12 +61,18 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   ScrollController scrollController2 = ScrollController();
   late UserRegModel? user;
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+  Regions? selectRegions;
+
   @override
   void initState() {
+    super.initState();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     user = BlocProvider.of<ProfileBloc>(context).user!;
     fillData(user);
-
-    super.initState();
   }
 
   @override
@@ -75,53 +83,74 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
-        body: Column(
-          children: [
-            SizedBox(height: 60.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Transform.rotate(
-                      angle: pi,
-                      child: SvgPicture.asset(
-                        'assets/icons/arrow_right.svg',
-                      ),
+        body: BlocBuilder<CountriesBloc, CountriesState>(
+            builder: (context, snapshot) {
+          return Column(
+            children: [
+              SizedBox(height: 60.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    CustomIconButton(
+                      onBackPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgImg.arrowRight,
                     ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Text(
-                    'Безопасность',
-                    style: CustomTextStyle.black_21_w700,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 50.h),
-            Expanded(child: secondStage(heightKeyBoard)),
-            // const Spacer(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: CustomButton(
-                onTap: () {
-                  user!.copyWith(isEntity: physics);
-                  BlocProvider.of<ProfileBloc>(context).setUser(user);
-                  Repository().updateUser(
-                      BlocProvider.of<ProfileBloc>(context).access, user!);
-                  Navigator.of(context).pop();
-                },
-                btnColor: ColorStyles.yellowFFD70B,
-                textLabel: Text(
-                  'Сохранить',
-                  style: CustomTextStyle.black_14_w600_171716,
+                    SizedBox(width: 12.w),
+                    Text(
+                      'Безопасность',
+                      style: CustomTextStyle.black_22_w700,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 52.h),
-          ],
-        ),
+              SizedBox(height: 50.h),
+              Expanded(child: secondStage(heightKeyBoard)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: CustomButton(
+                  onTap: () {
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      showAlertToast('Пароли не совпадают');
+                    } else if (passwordController.text.length < 6 &&
+                        passwordController.text.isNotEmpty) {
+                      showAlertToast('минимальная длина пароля 6 символов');
+                    } else {
+                      user!.copyWith(isEntity: physics);
+                      BlocProvider.of<ProfileBloc>(context).setUser(user);
+                      Repository().updateUser(
+                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Navigator.of(context).pop();
+                    }
+                    if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш паспорт просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    } else {
+                      user!.copyWith(isEntity: physics);
+                      BlocProvider.of<ProfileBloc>(context).setUser(user);
+                      Repository().updateUser(
+                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  btnColor: ColorStyles.yellowFFD70B,
+                  textLabel: Text(
+                    'Сохранить',
+                    style: CustomTextStyle.black_16_w600_171716,
+                  ),
+                ),
+              ),
+              SizedBox(height: 52.h),
+            ],
+          );
+        }),
       ),
     );
   }
@@ -134,102 +163,158 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       controller: scrollController2,
       shrinkWrap: true,
       children: [
-        // CustomTextField(
-        //   hintText: 'Пароль',
-        //   hintStyle: CustomTextStyle.grey_13_w400,
-        //   height: 50.h,
-        //   focusNode: focusNodePassword1,
-        //   obscureText: !visiblePassword,
-        //   suffixIcon: GestureDetector(
-        //     onTap: () {
-        //       visiblePassword = !visiblePassword;
-        //       setState(() {});
-        //     },
-        //     child: visiblePassword
-        //         ? const Icon(Icons.remove_red_eye_outlined)
-        //         : Stack(
-        //             alignment: Alignment.center,
-        //             children: [
-        //               SvgPicture.asset(
-        //                 'assets/icons/eye_close.svg',
-        //                 height: 18.h,
-        //               ),
-        //             ],
-        //           ),
-        //   ),
-        //   textEditingController: passwordController,
-        //   contentPadding:
-        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-        //   onChanged: (value) {
-        //     user!.copyWith(password: value);
-        //   },
-        //   onFieldSubmitted: (value) {
-        //     requestNextEmptyFocusStage2();
-        //   },
-        //   onTap: () {
-        //     Future.delayed(const Duration(milliseconds: 300), () {
-        //       scrollController2.animateTo(0.h,
-        //           duration: const Duration(milliseconds: 100),
-        //           curve: Curves.linear);
-        //     });
-        //   },
-        // ),
-        // SizedBox(height: 16.h),
-        // CustomTextField(
-        //   hintText: 'Повторите пароль',
-        //   hintStyle: CustomTextStyle.grey_13_w400,
-        //   height: 50.h,
-        //   focusNode: focusNodePassword2,
-        //   obscureText: !visiblePasswordRepeat,
-        //   suffixIcon: GestureDetector(
-        //     onTap: () {
-        //       visiblePasswordRepeat = !visiblePasswordRepeat;
-        //       setState(() {});
-        //     },
-        //     child: visiblePasswordRepeat
-        //         ? const Icon(Icons.remove_red_eye_outlined)
-        //         : Stack(
-        //             alignment: Alignment.center,
-        //             children: [
-        //               SvgPicture.asset(
-        //                 'assets/icons/eye_close.svg',
-        //                 height: 18.h,
-        //               ),
-        //             ],
-        //           ),
-        //   ),
-        //   onFieldSubmitted: (value) {
-        //     requestNextEmptyFocusStage2();
-        //   },
-        //   textEditingController: repeatPasswordController,
-        //   contentPadding:
-        //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-        //   onTap: () {
-        //     Future.delayed(const Duration(milliseconds: 300), () {
-        //       scrollController2.animateTo(50.h,
-        //           duration: const Duration(milliseconds: 100),
-        //           curve: Curves.linear);
-        //     });
-        //   },
-        // ),
-        // SizedBox(height: 16.h),
+        Container(
+          height: 50.h,
+          decoration: BoxDecoration(
+            color: ColorStyles.greyEAECEE,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const Spacer(),
+                  CustomTextField(
+                    hintText: '',
+                    hintStyle: CustomTextStyle.grey_14_w400,
+                    height: 30.h,
+                    focusNode: focusNodePassword1,
+                    obscureText: !visiblePassword,
+                    onFieldSubmitted: (value) {
+                      requestNextEmptyFocusStage2();
+                    },
+                    textEditingController: passwordController,
+                    contentPadding: EdgeInsets.only(left: 18.w, right: 50.w),
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        scrollController2.animateTo(50.h,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.linear);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, left: 18.h),
+                child: Text(
+                  'Новый пароль',
+                  style: CustomTextStyle.grey_12_w400,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      visiblePassword = !visiblePassword;
+                      setState(() {});
+                    },
+                    child: visiblePassword
+                        ? const Icon(Icons.remove_red_eye_outlined)
+                        : Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/eye_close.svg',
+                                height: 18.h,
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
+        Container(
+          height: 50.h,
+          decoration: BoxDecoration(
+            color: ColorStyles.greyEAECEE,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const Spacer(),
+                  CustomTextField(
+                    hintText: '',
+                    hintStyle: CustomTextStyle.grey_14_w400,
+                    height: 30.h,
+                    focusNode: focusNodePassword2,
+                    obscureText: !visiblePasswordRepeat,
+                    onFieldSubmitted: (value) {
+                      requestNextEmptyFocusStage2();
+                    },
+                    textEditingController: repeatPasswordController,
+                    contentPadding: EdgeInsets.only(left: 18.w, right: 50.w),
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        scrollController2.animateTo(50.h,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.linear);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, left: 18.h),
+                child: Text(
+                  'Повторите пароль',
+                  style: CustomTextStyle.grey_12_w400,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      visiblePasswordRepeat = !visiblePasswordRepeat;
+                      setState(() {});
+                    },
+                    child: visiblePasswordRepeat
+                        ? const Icon(Icons.remove_red_eye_outlined)
+                        : Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/eye_close.svg',
+                                height: 18.h,
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
         GestureDetector(
           key: _countryKey,
           onTap: () => showCountry(
             context,
             _countryKey,
-            (value) {
-              countryController.text = value;
+            (value) async {
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
+              listRegions.clear();
+              listRegions = await Repository().regions(selectCountries!);
               user?.copyWith(country: countryController.text);
               setState(() {});
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
             hintText: 'Страна',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -242,16 +327,17 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         GestureDetector(
           key: _regionKey,
           onTap: () {
+            log('message $listRegions');
             if (countryController.text.isNotEmpty) {
               showRegion(
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
-                  user!.copyWith(region: value);
+                  regionController.text = value.name ?? '-';
+                  user!.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {
@@ -260,7 +346,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           },
           child: CustomTextField(
             hintText: 'Регион',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -281,15 +367,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документ',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Тип документа',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintText: 'Документ',
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -312,7 +398,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                               numberDocController.text = '';
                               whoGiveDocController.text = '';
                               dateDocController.text = '';
-                              dateTime = null;
+                              dateTimeStart = null;
+                              dateTimeEnd = null;
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -352,7 +439,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   Widget additionalInfoWidget() {
-    print(user?.docInfo);
     return ListView(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
@@ -364,7 +450,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             if (user?.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -392,7 +478,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             CustomTextField(
               hintText: user?.docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -431,7 +517,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -448,17 +534,17 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (user?.docType == 'International Passport')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, false,
-                  title: user?.docType == 'Resident_ID'
-                      ? 'Срок действия'
-                      : 'Дата выдачи');
+              _showDatePicker(
+                context,
+                0,
+                false,
+                title: 'Дата выдачи',
+              );
             },
             child: CustomTextField(
-              hintText: user?.docType == 'Resident_ID'
-                  ? 'Срок действия'
-                  : 'Дата выдачи',
+              hintText: 'Дата выдачи',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -474,6 +560,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           onTap: () async {
             _showDatePicker(
               context,
+              1,
               user?.docType == 'Resident_ID'
                   ? true
                   : user?.docType == 'Passport'
@@ -485,7 +572,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           child: CustomTextField(
             hintText: 'Срок действия',
             enabled: false,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -495,6 +582,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             ],
             onChanged: (value) => documentEdit(),
           ),
+        ),
+        Text(
+          checkExpireDate(dateTimeEnd) ?? '',
+          style: CustomTextStyle.red_11_w400_171716,
         ),
         if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user?.docType == 'Resident_ID')
@@ -508,7 +599,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -525,9 +616,44 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     );
   }
 
-  void _showDatePicker(ctx, bool isInternational, {String? title}) {
-    print('title is: $title');
-    dateTime = null;
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
+  }
+
+  void _showDatePicker(ctx, int index, bool isInternational, {String? title}) {
+    DateTime initialDateTime = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
+
+    DateTime maximumDate = index == 1
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        : dateTimeEnd != null
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
+
+    DateTime minimumDate = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
@@ -550,22 +676,39 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 child: Text(
                                   'Готово',
                                   style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.black),
+                                      fontSize: 15.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
-                                  if (dateTime == null) {
-                                    if (isInternational) {
-                                      dateDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
-                                    } else {
-                                      whoGiveDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
+                                  if (index == 0) {
+                                    if (dateTimeStart == null) {
+                                      dateTimeStart = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  } else {
+                                    if (dateTimeEnd == null) {
+                                      dateTimeEnd = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
                                     }
                                   }
 
                                   Navigator.of(ctx).pop();
+                                  setState(() {});
                                 },
                               ),
                               SizedBox(width: 5.w),
@@ -580,31 +723,35 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
-                        maximumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year + 10,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime.now()
-                            : DateTime.now(),
-                        minimumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime(2000, 1, 1, 1)
-                            : DateTime(2000, 1, 1, 1),
+                        initialDateTime: initialDateTime,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
                         onDateTimeChanged: (val) {
-                          dateTime = val;
-                          if (isInternational) {
-                            dateDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                          if (index == 0) {
+                            dateTimeStart = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user!.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
-                            whoGiveDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                            dateTimeEnd = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user!.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
-                          user!.copyWith(
-                              docInfo:
-                                  'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                         }),
                   ),
                 ],
@@ -613,11 +760,18 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   void documentEdit() {
-    print(dateDocController.text);
     user!.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
+  }
+
+  initRegions() async {
+    for (var element in listCountries) {
+      if (user?.country?.toLowerCase() == element.name?.toLowerCase()) {
+        listRegions = await Repository().regions(element);
+      }
+    }
   }
 
   fillData(UserRegModel? userRegModel) {
@@ -629,21 +783,31 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;
     }
-    print(userRegModel.country);
     if (userRegModel.country != null) {
       countryController.text = userRegModel.country!;
     }
 
-    if (userRegModel.docInfo == null) return;
     additionalInfo = true;
-    serialDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-    print(DocumentInfo.fromJson(userRegModel.docInfo!).serial);
-    numberDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
-    whoGiveDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
-    dateDocController.text =
-        DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+    if (userRegModel.docInfo != null) {
+      serialDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
+      numberDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
+      whoGiveDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
+      dateDocController.text =
+          DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+    }
+
+    final start = dateDocController.text.split('.');
+    final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
+    if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
+      dateTimeStart = DateTime(
+          int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+    }
+
+    final end = whoGiveDocController.text.split('.');
+    if (end.isNotEmpty) {}
+    initRegions();
   }
 }

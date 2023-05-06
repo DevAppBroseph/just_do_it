@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ArrayImages {
   String? linkUrl;
   Uint8List? byte;
+  File? file;
 
-  ArrayImages(this.linkUrl, this.byte);
+  ArrayImages(this.linkUrl, this.byte, {this.file});
 }
 
 class UserRegModel {
@@ -26,6 +29,7 @@ class UserRegModel {
   bool? isEntity;
   List<ArrayImages>? images;
   Uint8List? cv;
+  String? cvType;
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
@@ -52,6 +56,7 @@ class UserRegModel {
     this.isEntity,
     this.images,
     this.cv,
+    this.cvType,
     this.groups,
     this.activities,
     this.activitiesDocument,
@@ -75,6 +80,7 @@ class UserRegModel {
     String? activity,
     List<ArrayImages>? images,
     Uint8List? cv,
+    String? cvType,
     List<dynamic>? groups,
     List<Activities>? activities,
     List<int>? activitiesDocument,
@@ -98,6 +104,7 @@ class UserRegModel {
     this.activity = activity ?? this.activity;
     this.images = images ?? this.images;
     this.cv = cv ?? this.cv;
+    this.cvType = cvType ?? this.cvType;
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
     this.region = region ?? this.region;
@@ -107,8 +114,8 @@ class UserRegModel {
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
     this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
-    this.balance = balance ?? this.balance;
-    this.link = link ?? this.link;
+    balance = balance ?? balance;
+    link = link ?? link;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
@@ -176,6 +183,8 @@ class UserRegModel {
         photo!,
         filename: '${DateTime.now()}.jpg',
       );
+    } else {
+      data['photo'] = null;
     }
     data['sex'] = sex;
     data['doc_type'] = docType;
@@ -202,7 +211,7 @@ class UserRegModel {
     if (cv != null) {
       data['CV'] = MultipartFile.fromBytes(
         cv!,
-        filename: DateTime.now().toString(),
+        filename: '${DateTime.now()}.$cvType!',
       );
     }
     data['groups'] = groups;
@@ -228,36 +237,41 @@ class ActivitiesInfo {
 }
 
 class Activities {
+  bool isSelect;
   int id;
   String? description;
   String? photo;
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(this.id, this.description, this.photo, this.subcategory);
+  Activities(
+      this.isSelect, this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
     String? photo = data['photo'];
     List<Subcategory> subcategory = [];
-    for (var element in data['subcategories']) {
-      subcategory.add(Subcategory.fromJson(element));
+    if (data['subcategories'] != null) {
+      for (var element in data['subcategories']) {
+        subcategory.add(Subcategory.fromJson(element));
+      }
     }
-    return Activities(id, description, photo, subcategory);
+    return Activities(false, id, description, photo, subcategory);
   }
 }
 
 class Subcategory {
+  bool isSelect;
   int id;
   String? description;
 
-  Subcategory({required this.id, required this.description});
+  Subcategory(this.isSelect, {required this.id, required this.description});
 
   factory Subcategory.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
-    return Subcategory(id: id, description: description);
+    return Subcategory(false, id: id, description: description);
   }
 }
 
@@ -276,7 +290,6 @@ class DocumentInfo {
         : '';
 
     String? documentData = list[3].split(':').last.replaceAll(' ', '');
-    print(documentData);
     return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);
   }
   String toJson() {

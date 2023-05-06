@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,7 +19,12 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ContractorProfile extends StatefulWidget {
   double padding;
@@ -38,6 +42,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   List<String> typeCategories = [];
   List<Activities> listCategories = [];
   List<ArrayImages> photos = [];
+  File? cv;
 
   @override
   void initState() {
@@ -48,15 +53,48 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description ==
-            user!.activitiesInfo?[j].description) {
+        if (listCategories[i].description == user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
         }
       }
     }
+
     experienceController.text = user?.activity == null ? '' : user!.activity!;
+    if (user?.cvLink != null) downloadCV(user!.cvLink!);
 
     super.initState();
+  }
+
+  void downloadCV(String url) async {
+    Uint8List? byte = await Repository().downloadFile(url.contains(server) ? url : server + url);
+    String savePath = await getFilePath(url.split('/').last);
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    if (statuses[Permission.storage]!.isGranted) {
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(byte!);
+      cv = file;
+      await raf.close();
+      setState(() {});
+    }
+  }
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+
+    Directory? dir;
+    if (Platform.isAndroid) {
+      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
+    path = '${dir!.path}/$uniqueFileName';
+
+    return path;
   }
 
   _selectImages() async {
@@ -84,7 +122,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
+      this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
+      user!.copyWith(cvType: result.files.first.path!.split('.').last);
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
       setState(() {});
     }
@@ -93,15 +133,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    log('message ${user?.firstname}');
-    return BlocBuilder<ProfileBloc, ProfileState>(
-        buildWhen: (previous, current) {
+    return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
       }
       return true;
     }, builder: (context, data) {
+      double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -109,94 +148,170 @@ class _ContractorProfileState extends State<ContractorProfile> {
             if (focusNode.hasFocus) {
               focusNode.unfocus();
               user!.copyWith(activity: experienceController.text);
-              BlocProvider.of<ProfileBloc>(context)
-                  .add(UpdateProfileEvent(user));
+              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
             }
           },
           child: ListView(
             shrinkWrap: true,
             padding: MediaQuery.of(context).viewInsets,
-            // physics: const ClampingScrollPhysics(),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 25.h),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              var image = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                              if (image != null) {
-                                BlocProvider.of<ProfileBloc>(context).add(
-                                  UpdateProfilePhotoEvent(photo: image),
-                                );
-                              }
-                            },
-                            child: ClipOval(
-                              child: SizedBox.fromSize(
-                                  size: Size.fromRadius(30.r),
-                                  child: user!.photoLink == null
-                                      ? Container(
-                                          height: 60.h,
-                                          width: 60.h,
-                                          padding: EdgeInsets.all(10.h),
-                                          decoration: const BoxDecoration(
-                                            color: ColorStyles.shadowFC6554,
-                                          ),
-                                          child: Image.asset(
-                                              'assets/images/camera.png'),
-                                        )
-                                      : CachedNetworkImage(
-                                          imageUrl:
-                                              user!.photoLink!.contains(server)
-                                                  ? user!.photoLink!
-                                                  : server + user!.photoLink!,
-                                          fit: BoxFit.cover,
-                                        )
-                                  // : Image.network(
-                                  //     BlocProvider.of<ProfileBloc>(context)
-                                  //         .user!
-                                  //         .photoLink!,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  ),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Container(
-                        // width: 327.w,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(width: 25.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 21.w),
+                        child: Stack(
+                          alignment: Alignment.center,
                           children: [
                             SizedBox(
-                              width: 240.w,
-                              child: AutoSizeText(
-                                '${user?.firstname ?? ''}\n${user?.lastname ?? ''}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 32.sp,
-                                    fontWeight: FontWeight.w800),
-                                maxLines: 2,
+                              height: 68.h,
+                              width: 68.h,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                      if (image != null) {
+                                        BlocProvider.of<ProfileBloc>(context).add(
+                                          UpdateProfilePhotoEvent(photo: image),
+                                        );
+                                      }
+                                    },
+                                    child: ClipOval(
+                                      child: SizedBox.fromSize(
+                                          size: Size.fromRadius(30.r),
+                                          child: user!.photoLink == null
+                                              ? Container(
+                                                  height: 60.h,
+                                                  width: 60.h,
+                                                  padding: EdgeInsets.all(10.h),
+                                                  decoration: const BoxDecoration(
+                                                    color: ColorStyles.shadowFC6554,
+                                                  ),
+                                                  child: Image.asset('assets/images/camera.png'),
+                                                )
+                                              : CachedNetworkImage(
+                                                  imageUrl: user!.photoLink!.contains(server)
+                                                      ? user!.photoLink!
+                                                      : server + user!.photoLink!,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                    ),
+                                  ),
+                                  if (user?.photoLink != null)
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          user?.photo = null;
+                                          user?.photoLink = null;
+                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context).add(
+                                            UpdateProfilePhotoEvent(photo: null),
+                                          );
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          height: 20.h,
+                                          width: 20.h,
+                                          decoration: BoxDecoration(
+                                            boxShadow: [BoxShadow(color: Colors.black)],
+                                            borderRadius: BorderRadius.circular(100.r),
+                                            color: Colors.white,
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 10.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    'assets/icons/share.svg',
-                    height: 25.h,
-                  ),
-                ],
+                    ),
+                    SizedBox(width: 21.w),
+                    Expanded(
+                      child: ScaleButton(
+                        bound: 0.02,
+                        child: Container(
+                          height: 68.h,
+                          padding: EdgeInsets.only(left: 16.w),
+                          decoration: BoxDecoration(
+                            color: ColorStyles.yellowFFD70A,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Ваш рейтинг',
+                                style: CustomTextStyle.black_12_w500_515150,
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/star.svg',
+                                    color: ColorStyles.black,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
+                                    style: CustomTextStyle.black_20_w700_171716,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 25.w),
+                    Spacer(),
+                    SizedBox(
+                      width: 240.w,
+                      child: AutoSizeText(
+                        '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w800),
+                        maxLines: 2,
+                        softWrap: true,
+                      ),
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () async {
+                        final code =
+                            await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
+                        Share.share(code.toString());
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/share.svg',
+                        height: 25.h,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 18.h),
               Padding(
@@ -210,30 +325,129 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
+                            color: ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
-                              Text(
-                                'Ваш рейтинг',
-                                style: CustomTextStyle.black_11_w500_515150,
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SvgPicture.asset('assets/icons/star.svg'),
-                                  SizedBox(width: 4.w),
                                   Text(
-                                    reviews?.ranking == null
-                                        ? '-'
-                                        : (reviews!.ranking!).toString(),
-                                    style: CustomTextStyle.black_19_w700_171716,
+                                    'Ваш грейд',
+                                    style: CustomTextStyle.black_12_w500_515150,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                        if (state is ScoreLoaded) {
+                                          final levels = state.levels;
+                                          if (user!.balance! < levels![0].mustCoins!) {
+                                            return Text(
+                                              levels[0].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+
+                                          if (user!.balance! >= levels[0].mustCoins! &&
+                                              user!.balance! < levels[1].mustCoins!) {
+                                            return Text(
+                                              levels[0].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[1].mustCoins! &&
+                                              user!.balance! < levels[2].mustCoins!) {
+                                            return Text(
+                                              levels[1].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[2].mustCoins! &&
+                                              user!.balance! < levels[3].mustCoins!) {
+                                            return Text(
+                                              levels[2].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[3].mustCoins! &&
+                                              user!.balance! < levels[4].mustCoins!) {
+                                            return Text(
+                                              levels[3].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                          if (user!.balance! >= levels[4].mustCoins!) {
+                                            return Text(
+                                              levels[4].name!,
+                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            );
+                                          }
+                                    
+                                        }
+                                        return Container();
+                                      }),
+                                    ],
                                   ),
                                 ],
                               ),
+                              Spacer(),
+                              BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                if (state is ScoreLoaded) {
+                                  final levels = state.levels;
+                                  if (user!.balance! < levels![0].mustCoins!) {
+                                    return CachedNetworkImage(
+                                      imageUrl: '${levels[0].bwImage}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+
+                                  if (user!.balance! >= levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
+                                    return Image.network(
+                                      '${levels[0].image}',
+                                      height: 42,
+                                      width: 42,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[1].mustCoins! && user!.balance! < levels[2].mustCoins!) {
+                                    return Image.network(
+                                      levels[1].image != null ? '${levels[1].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[2].mustCoins! && user!.balance! < levels[3].mustCoins!) {
+                                    return Image.network(
+                                      levels[2].image != null ? '${levels[2].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[3].mustCoins! && user!.balance! < levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[3].image != null ? '${levels[3].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                  if (user!.balance! >= levels[4].mustCoins!) {
+                                    return Image.network(
+                                      levels[4].image != null ? '${levels[4].image}' : '',
+                                      height: 42,
+                                      width: 42,
+                                      fit: BoxFit.fill,
+                                    );
+                                  }
+                                }
+                                return Container();
+                              }),
+                              Spacer(),
                             ],
                           ),
                         ),
@@ -247,7 +461,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           height: 68.h,
                           padding: EdgeInsets.only(left: 16.w),
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
+                            color: ColorStyles.yellowFFD70A,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
@@ -258,81 +472,19 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 children: [
                                   Text(
                                     'Ваши баллы',
-                                    style: CustomTextStyle.black_11_w500_515150,
+                                    style: CustomTextStyle.black_12_w500_515150,
                                   ),
                                   SizedBox(height: 8.h),
                                   Row(
                                     children: [
                                       Text(
-                                        user?.balance.toString() ??
-                                            'Балы не загрузились',
-                                        style: CustomTextStyle.purple_19_w700,
+                                        user?.balance.toString() ?? '0',
+                                        style: CustomTextStyle.purple_20_w700,
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                              const Spacer(),
-                              BlocBuilder<ScoreBloc, ScoreState>(
-                                  builder: (context, state) {
-                                if (state is ScoreLoaded) {
-                                  final levels = state.levels;
-
-                                  if (user!.balance! < levels![0].mustCoins!) {
-                                    log(levels[0].image.toString());
-                                    return Image.network(
-                                      '${levels[0].image}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[1].mustCoins! &&
-                                      user!.balance! < levels[2].mustCoins!) {
-                                    return Image.network(
-                                      levels[1].image != null
-                                          ? '${levels[1].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[2].mustCoins! &&
-                                      user!.balance! < levels[3].mustCoins!) {
-                                    return Image.network(
-                                      levels[2].image != null
-                                          ? '${levels[2].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[3].mustCoins! &&
-                                      user!.balance! < levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[3].image != null
-                                          ? '${levels[3].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[4].mustCoins!) {
-                                    return Image.network(
-                                      levels[4].image != null
-                                          ? '${levels[4].image}'
-                                          : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                }
-                                return Container();
-                              }),
-                              SizedBox(width: 16.w),
                             ],
                           ),
                         ),
@@ -346,7 +498,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Text(
                   'Общие настройки профиля',
-                  style: CustomTextStyle.grey_13_w400,
+                  style: CustomTextStyle.grey_14_w400,
                 ),
               ),
               SizedBox(height: 20.h),
@@ -377,12 +529,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               'Основная информация',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               'Имя, Телефон и E-mail',
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                             ),
                           ],
                         ),
@@ -425,12 +577,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               'Безопасность',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               'Пароль, паспортные данные, регион',
-                              style: CustomTextStyle.black_13_w400_171716,
+                              style: CustomTextStyle.black_14_w400_171716,
                             ),
                           ],
                         ),
@@ -448,61 +600,124 @@ class _ContractorProfileState extends State<ContractorProfile> {
               SizedBox(height: 18.h),
               Row(
                 children: [
-                  Expanded(
-                    flex: 11,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: Stack(
-                        children: [
-                          ScaleButton(
-                            duration: const Duration(milliseconds: 50),
-                            bound: 0.01,
-                            onTap: _selectCV,
-                            child: Container(
-                              height: 40.h,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.h, vertical: 11.h),
-                              decoration: BoxDecoration(
-                                color: ColorStyles.greyF9F9F9,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 14.h,
-                                    width: 14.h,
-                                    child:
-                                        SvgPicture.asset(SvgImg.documentText),
-                                  ),
-                                  SizedBox(width: 9.17.w),
-                                  Text(
-                                    'Загрузить резюме (10мб)',
-                                    style: CustomTextStyle.black_11_w400,
-                                  )
-                                ],
-                              ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24.w),
+                    width: 180.w,
+                    child: Stack(
+                      children: [
+                        ScaleButton(
+                          duration: const Duration(milliseconds: 50),
+                          bound: 0.01,
+                          onTap: _selectCV,
+                          child: Container(
+                            height: 40.h,
+                            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
+                            decoration: BoxDecoration(
+                              color: ColorStyles.greyF9F9F9,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 14.h,
+                                  width: 14.h,
+                                  child: SvgPicture.asset(SvgImg.documentText),
+                                ),
+                                SizedBox(width: 9.17.w),
+                                Text(
+                                  'Загрузить резюме (10мб)',
+                                  style: CustomTextStyle.black_12_w400,
+                                )
+                              ],
                             ),
                           ),
-                          if (user?.cvLink != null)
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                height: 12.h,
-                                width: 12.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(40.r),
-                                ),
+                        ),
+                        if (cv != null)
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              height: 12.h,
+                              width: 12.h,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(40.r),
                               ),
-                            )
-                        ],
-                      ),
+                            ),
+                          )
+                      ],
                     ),
                   ),
-                  Expanded(flex: 8, child: Container()),
                 ],
               ),
+              if (cv != null) SizedBox(height: 8.h),
+              if (cv != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 60.h,
+                        width: 60.h,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                OpenFile.open(cv!.path);
+                              },
+                              child: Container(
+                                height: 50.h,
+                                width: 50.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    SvgImg.documentText,
+                                    height: 25.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  cv = null;
+
+                                  user?.cv = null;
+                                  user?.cvLink = null;
+                                  user?.cvType = null;
+                                  BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context).add(
+                                    UpdateProfileCvEvent(file: null),
+                                  );
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  height: 15.h,
+                                  width: 15.h,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: const [BoxShadow(color: Colors.black)],
+                                      borderRadius: BorderRadius.circular(40.r)),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 10.h,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               SizedBox(height: 50.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -510,7 +725,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   children: [
                     Text(
                       'Ваши категории',
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey_14_w400,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -519,35 +734,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           context,
                           _categoryButtonKey,
                           (value) {
-                            // categoryController.text = '';
-
-                            String str = '';
-                            if (value.isNotEmpty) {
-                              str = value.first;
-                            }
-
-                            if (value.length > 1) {
-                              for (int i = 1; i < typeCategories.length; i++) {
-                                str += ', ${typeCategories[i]}';
-                              }
-                            }
-
                             List<int> activityIndexes = [];
 
                             typeCategories.forEach((element) {
-                              activityIndexes.add(listCategories
-                                  .firstWhere((element2) =>
-                                      element2.description == element)
-                                  .id);
+                              activityIndexes
+                                  .add(listCategories.firstWhere((element2) => element2.description == element).id);
                             });
                             user?.copyWith(
                               activitiesDocument: activityIndexes,
                               groups: [4],
                             );
-                            BlocProvider.of<ProfileBloc>(context)
-                                .add(UpdateProfileEvent(user));
-
-                            // categoryController.text = str;
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
                             setState(() {});
                           },
@@ -559,7 +756,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: Text(
                         'Изменить',
                         key: _categoryButtonKey,
-                        style: CustomTextStyle.blue_13_w400_336FEE,
+                        style: CustomTextStyle.blue_14_w400_336FEE,
                       ),
                     ),
                   ],
@@ -571,12 +768,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Text(
                     'Вы не выбрали ни одной категории',
-                    style: CustomTextStyle.black_13_w400_515150,
+                    style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ),
               if (user != null && typeCategories.isNotEmpty)
                 Container(
-                  height: 74.h,
+                  height: 90.h,
                   width: double.infinity,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -584,8 +781,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     padding: EdgeInsets.only(left: 24.w, right: 18.w),
                     itemCount: typeCategories.length,
                     itemBuilder: (context, index) {
-                      var category = listCategories.firstWhere((element) =>
-                          element.description == typeCategories[index]);
+                      var category =
+                          listCategories.firstWhere((element) => element.description == typeCategories[index]);
 
                       return _categoryItem(category, index);
                     },
@@ -596,7 +793,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Text(
                   'Описание вашего опыта',
-                  style: CustomTextStyle.grey_13_w400,
+                  style: CustomTextStyle.grey_14_w400,
                 ),
               ),
               SizedBox(height: 10.h),
@@ -626,8 +823,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: TextFormField(
                             onTap: () {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(
-                                    activity: experienceController.text);
+                                user!.copyWith(activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -635,35 +831,25 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText:
-                                  "Опишите свой опыт работы и прикрепите изображения",
+                              hintText: "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
-                              hintStyle: CustomTextStyle.black_13_w400_515150,
+                              hintStyle: CustomTextStyle.black_14_w400_515150,
                             ),
                             controller: experienceController,
-                            style: CustomTextStyle.black_13_w400_515150,
+                            style: CustomTextStyle.black_14_w400_515150,
                             maxLines: null,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(
-                                    activity: experienceController.text);
+                                user!.copyWith(activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
                               }
                             },
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(500)
-                            ],
+                            inputFormatters: [LengthLimitingTextInputFormatter(500)],
                             onChanged: (String value) {
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .user!
-                                  .copyWith(
-                                      activity: experienceController.text);
+                              BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
 
-                              print(BlocProvider.of<ProfileBloc>(context)
-                                  .user
-                                  ?.activity);
                               setState(() {});
                             },
                           ),
@@ -676,46 +862,33 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                log('message ${index}');
                                 return SizedBox(
                                   width: 80.h,
                                   height: 65.h,
                                   child: Stack(
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 5.w, left: 5.w),
+                                        padding: EdgeInsets.only(right: 5.w, left: 5.w),
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                           child: SizedBox(
                                             width: 65.h,
                                             height: 65.h,
-                                            child: user!.images![index].byte !=
-                                                    null
+                                            child: user!.images![index].byte != null
                                                 ? Image.memory(
                                                     user!.images![index].byte!,
                                                     width: 65.h,
                                                     height: 65.h,
                                                     fit: BoxFit.cover,
-                                                    frameBuilder: (context,
-                                                        child,
-                                                        frame,
-                                                        wasSynchronouslyLoaded) {
+                                                    frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                                                       return const CupertinoActivityIndicator();
                                                     },
                                                   )
                                                 : CachedNetworkImage(
-                                                    imageUrl: user!
-                                                            .images![index]
-                                                            .linkUrl!
-                                                            .contains(server)
-                                                        ? user!.images![index]
-                                                            .linkUrl!
+                                                    imageUrl: user!.images![index].linkUrl!.contains(server)
+                                                        ? user!.images![index].linkUrl!
                                                         : '$server${user!.images![index].linkUrl}',
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                            progress) {
+                                                    progressIndicatorBuilder: (context, url, progress) {
                                                       return const CupertinoActivityIndicator();
                                                     },
                                                     width: 65.h,
@@ -727,52 +900,29 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       ),
                                       GestureDetector(
                                         onTap: () async {
-                                          showDialog(
-                                            context: context,
-                                            barrierColor: ColorStyles.black
-                                                .withOpacity(0.4),
-                                            barrierDismissible: false,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                elevation: 0,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                content: SizedBox(
-                                                  height: 100.h,
-                                                  child:
-                                                      const CupertinoActivityIndicator(),
-                                                ),
-                                              );
-                                            },
-                                          );
                                           user!.images!.removeAt(index);
+                                          setState(() {});
                                           for (var element in user!.images!) {
-                                            element.byte ??=
-                                                await Repository().downloadFile(
+                                            element.byte ??= await Repository().downloadFile(
                                               element.linkUrl!.contains(server)
                                                   ? element.linkUrl!
                                                   : '$server${element.linkUrl}',
                                             );
                                           }
 
-                                          Navigator.of(context).pop();
+                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
 
-                                          BlocProvider.of<ProfileBloc>(context)
-                                              .add(UpdateProfileEvent(user));
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          setState(() {});
                                         },
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Container(
                                             width: 20.w,
                                             height: 20.h,
-                                            margin:
-                                                EdgeInsets.only(right: 10.w),
+                                            margin: EdgeInsets.only(right: 10.w),
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
-                                              // border: Border.all(
-                                              //   width: 1,
-                                              //   color: Colors.black,
-                                              // ),
                                               shape: BoxShape.circle,
                                             ),
                                             alignment: Alignment.center,
@@ -796,7 +946,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               '${experienceController.text.length}/500',
-                              style: CustomTextStyle.grey_11_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             )
                           ],
                         )
@@ -833,7 +983,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             SizedBox(width: 9.17.w),
                             Text(
                               'Изображения',
-                              style: CustomTextStyle.black_11_w400,
+                              style: CustomTextStyle.black_12_w400,
                             ),
                           ],
                         ),
@@ -856,7 +1006,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 user?.images?.length.toString() ?? '',
                                 style: TextStyle(
                                   color: ColorStyles.whiteFFFFFF,
-                                  fontSize: 10.sp,
+                                  fontSize: 11.sp,
                                 ),
                               ),
                             ),
@@ -872,8 +1022,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -893,7 +1042,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         SizedBox(width: 12.w),
                         Text(
                           'Выйти из аккаунта',
-                          style: CustomTextStyle.black_13_w500_171716,
+                          style: CustomTextStyle.black_14_w500_171716,
                         ),
                       ],
                     ),
@@ -902,33 +1051,19 @@ class _ContractorProfileState extends State<ContractorProfile> {
               ),
               SizedBox(height: 60.h),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Center(
                   child: Text(
                     'Удалить аккаунт',
-                    style: CustomTextStyle.black_13_w500_171716,
+                    style: CustomTextStyle.black_14_w500_171716,
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
-              //     BlocProvider.of<ProfileBloc>(context).setUser(null);
-              //     Navigator.of(context)
-              //         .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
-              //   },
-              //   child: Center(
-              //     child: Text(
-              //       'Удалить аккаунт',
-              //       style: CustomTextStyle.black_13_w500_171716,
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: widget.padding + 50.h),
             ],
           ),
@@ -939,18 +1074,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   Widget _categoryItem(Activities activitiy, int index) {
     return Container(
-      height: 74.h,
+      height: 90.h,
       width: 115.w,
       margin: const EdgeInsets.only(right: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        boxShadow: [
-          // BoxShadow(
-          //   color: Color.fromRGBO(26, 42, 97, 0.06),
-          //   offset: Offset(0, 4),
-          //   blurRadius: .h,
-          // )
-        ],
         color: index == 0
             ? const Color.fromRGBO(255, 234, 203, 1)
             : index == 1
@@ -967,22 +1095,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 server + activitiy.photo!,
                 width: 24.w,
                 height: 24.h,
-              )
-            else
-              SizedBox(height: 24.h),
-            SizedBox(height: 8.h),
+              ),
+            Spacer(),
             Text(
               activitiy.description ?? '',
-              style: CustomTextStyle.black_15_w400_515150.copyWith(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+              style: CustomTextStyle.black_11_w400_171716,
             ),
           ],
         ),
       ),
-      // color: Colors.red,
     );
   }
 }

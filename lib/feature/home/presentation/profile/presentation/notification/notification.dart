@@ -1,19 +1,17 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/notification.dart' as notifModel;
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class NotificationPage extends StatelessWidget {
   List<notifModel.Notification> notification = [
     notifModel.Notification(
         title: 'Вас выбрали исполнителем', date: '12.09.2022'),
-    notifModel.Notification(title: 'У вас новый отклик', date: '22.02.2022'),
-    notifModel.Notification(title: 'У вас новый отклик', date: '14:32'),
+    notifModel.Notification(title: 'У Вас новый отклик', date: '22.02.2022'),
+    notifModel.Notification(title: 'У Вас новый отклик', date: '14:32'),
   ];
 
   @override
@@ -30,20 +28,19 @@ class NotificationPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Transform.rotate(
-                        angle: pi,
-                        child: SvgPicture.asset(
-                          'assets/icons/arrow_right.svg',
-                        ),
-                      ),
+                    CustomIconButton(
+                      onBackPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgImg.arrowRight,
                     ),
-                    SizedBox(width: 12.w),
+                    Spacer(),
                     Text(
                       'Уведомления',
-                      style: CustomTextStyle.black_21_w700,
+                      style: CustomTextStyle.black_22_w700,
                     ),
+                    Spacer(),
+                    SizedBox(width: 12.w)
                   ],
                 ),
               ),
@@ -69,12 +66,12 @@ class NotificationPage extends StatelessWidget {
                                 notification[index].title,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
-                                style: CustomTextStyle.black_13_w400_171716,
+                                style: CustomTextStyle.black_14_w400_171716,
                               ),
                               const Spacer(),
                               Text(
                                 notification[index].date,
-                                style: CustomTextStyle.grey_13_w400,
+                                style: CustomTextStyle.grey_14_w400,
                               ),
                             ],
                           ),
@@ -97,14 +94,10 @@ class NotificationPage extends StatelessWidget {
                   btnColor: ColorStyles.greyE0E6EE,
                   textLabel: Text(
                     'Очистить',
-                    style: CustomTextStyle.black_15_w600_515150,
+                    style: CustomTextStyle.black_16_w600_515150,
                   ),
                 ),
               ),
-              // Text(
-              //   'Удалить аккаунт',
-              //   style: CustomTextStyle.black_14_w500_171716,
-              // ),
               SizedBox(height: 52.h),
             ],
           ),

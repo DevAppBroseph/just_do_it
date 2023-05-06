@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -12,7 +9,10 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalChat extends StatefulWidget {
   String? id;
@@ -44,23 +44,13 @@ class _PersonalChatState extends State<PersonalChat> {
   }
 
   void getInitMessage() async {
-    log('${widget.id} --- ${widget.idWithChat}');
     final access = BlocProvider.of<ProfileBloc>(context).access;
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
     }
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    Future.delayed(Duration(milliseconds: 1000), () {
-      BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-    });
-    super.didChangeDependencies();
   }
 
   @override
@@ -75,21 +65,60 @@ class _PersonalChatState extends State<PersonalChat> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Transform.rotate(
-                    angle: math.pi,
-                    child: SvgPicture.asset('assets/icons/arrow_right.svg'),
-                  ),
+                CustomIconButton(
+                  onBackPressed: () => Navigator.of(context).pop(),
+                  icon: SvgImg.arrowRight,
                 ),
                 SizedBox(width: 8.w),
-                SizedBox(
-                  width: 260.w,
-                  child: AutoSizeText(
-                    // 'Яковлев Максим Алексеевич',
-                    widget.name,
-                    style: CustomTextStyle.black_21_w700,
-                    maxLines: 1,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return Scaffold(
+                          body: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 66.h),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 25.w, right: 28.w),
+                                child: Row(
+                                  children: [
+                                    CustomIconButton(
+                                      onBackPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: SvgImg.arrowRight,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      'Профиль',
+                                      style: CustomTextStyle.black_22_w700,
+                                    ),
+                                    const Spacer(),
+                                    SizedBox(width: 30.w),
+                                  ],
+                                ),
+                              ),
+                              ProfileView(
+                                  owner: Owner(
+                                      id: int.parse(widget.idWithChat),
+                                      firstname: null,
+                                      lastname: null,
+                                      photo: null)),
+                            ],
+                          ),
+                        );
+                      },
+                    ));
+                  },
+                  child: SizedBox(
+                    width: 240.w,
+                    child: AutoSizeText(
+                      widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
+                      style: CustomTextStyle.black_22_w700,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
                 const Spacer(),
@@ -97,9 +126,7 @@ class _PersonalChatState extends State<PersonalChat> {
                   onTap: () => iconSelectTranslate(
                     context,
                     getWidgetPosition(iconBtn),
-                    (index) {
-                      // Navigator.pop(context);
-                    },
+                    (index) {},
                   ),
                   child: Container(
                     color: Colors.white,
@@ -111,27 +138,6 @@ class _PersonalChatState extends State<PersonalChat> {
                     ),
                   ),
                 ),
-                // Container(
-                //   height: 36.h,
-                //   decoration: BoxDecoration(
-                //     color: ColorStyles.whiteF5F5F5,
-                //     borderRadius: BorderRadius.circular(8.r),
-                //   ),
-                //   child: Padding(
-                //     padding: EdgeInsets.all(10.h),
-                //     child: Row(
-                //       children: [
-                //         // SvgPicture.asset('assets/icons/translate.svg'),
-                //         // SizedBox(width: 8.h),
-                //         Text(
-                //           'Показать оригинал',
-                //           style: CustomTextStyle.blue_13_w400_336FEE,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // )
-                // SvgPicture.asset('assets/icons/more-circle.svg'),
               ],
             ),
           ),
@@ -143,6 +149,10 @@ class _PersonalChatState extends State<PersonalChat> {
                   widget.id =
                       BlocProvider.of<ChatBloc>(context).idChat.toString();
                   return true;
+                } else if (current is UpdateListPersonState) {
+                  final access = BlocProvider.of<ProfileBloc>(context).access;
+                  BlocProvider.of<ChatBloc>(context)
+                      .add(GetListMessageItem(access!));
                 }
                 return true;
               },
@@ -214,13 +224,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                             ),
                                           ),
                                           SizedBox(height: 8.h),
-                                          // Text(
-                                          //   messages[index]
-                                          //       .createdAt
-                                          //       .toUtc()
-                                          //       .toString(),
-                                          //   style: CustomTextStyle.grey_11_w400DADADA,
-                                          // ),
                                         ],
                                       ),
                                     ),
@@ -251,11 +254,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                   ),
                                 ),
                               ),
-                              // SizedBox(height: 8.h),
-                              // Text(
-                              //   '${++index} минут назад',
-                              //   style: CustomTextStyle.grey_11_w400DADADA,
-                              // ),
                             ],
                           ),
                         ),
@@ -283,87 +281,85 @@ class _PersonalChatState extends State<PersonalChat> {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: EdgeInsets.only(top: 19.h),
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    SizedBox(
-                      width: 327.w,
-                      height: 70.h,
+              child: widget.name.isEmpty
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.all(24.w),
+                      child: Text(
+                        'Вы не можете написать собеседнику\nтак как он удалил свой акккаунт',
+                        style: CustomTextStyle.black_14_w400_515150,
+                        textAlign: TextAlign.center,
+                      ),
+                    ))
+                  : Padding(
+                      padding: EdgeInsets.only(top: 19.h),
                       child: Stack(
+                        alignment: Alignment.topCenter,
                         children: [
-                          CustomTextField(
-                            width: 327.w,
-                            height: 70.h,
-                            focusNode: focusNode,
-                            actionButton: false,
-                            hintText: 'Введите сообщение',
-                            textEditingController: textController,
-                            fillColor: ColorStyles.greyF9F9F9,
-                            maxLines: 10,
-                            onTap: () {
-                              // Future.delayed(const Duration(milliseconds: 800),
-                              //     () {
-                              //   scrollController.animateTo(
-                              //     scrollController.position.maxScrollExtent,
-                              //     duration: const Duration(milliseconds: 100),
-                              //     curve: Curves.linear,
-                              //   );
-                              // });
-                            },
-                            contentPadding: EdgeInsets.only(
-                              left: 16.w,
-                              top: 20.h,
-                              bottom: 20.h,
-                              right: 90.h,
-                            ),
-                          ),
                           SizedBox(
                             width: 327.w,
-                            height: 56.h,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  // SvgPicture.asset(
-                                  //   'assets/icons/add.svg',
-                                  //   color: ColorStyles.greyBDBDBD,
-                                  // ),
-                                  SizedBox(width: 18.w),
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (textController.text.isNotEmpty) {
-                                        BlocProvider.of<ChatBloc>(context).add(
-                                          SendMessageEvent(
-                                            textController.text,
-                                            widget.idWithChat,
-                                            user!.id!.toString(),
+                            height: 70.h,
+                            child: Stack(
+                              children: [
+                                CustomTextField(
+                                  width: 327.w,
+                                  height: 70.h,
+                                  focusNode: focusNode,
+                                  actionButton: false,
+                                  hintText: 'Введите сообщение',
+                                  textEditingController: textController,
+                                  fillColor: ColorStyles.greyF9F9F9,
+                                  maxLines: 10,
+                                  onTap: () {},
+                                  contentPadding: EdgeInsets.only(
+                                    left: 16.w,
+                                    top: 20.h,
+                                    bottom: 20.h,
+                                    right: 90.h,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 327.w,
+                                  height: 56.h,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 18.w),
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (textController
+                                                .text.isNotEmpty) {
+                                              BlocProvider.of<ChatBloc>(context)
+                                                  .add(
+                                                SendMessageEvent(
+                                                  textController.text,
+                                                  widget.idWithChat,
+                                                  user!.id!.toString(),
+                                                ),
+                                              );
+                                            }
+                                            textController.text = '';
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/send-2.svg',
+                                            color: ColorStyles.black515150,
                                           ),
-                                        );
-                                      }
-                                      textController.text = '';
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/icons/send-2.svg',
-                                      color: ColorStyles.black515150,
+                                        ),
+                                        SizedBox(width: 16.w),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(width: 16.w),
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ),
           ),
-          // SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),
     );

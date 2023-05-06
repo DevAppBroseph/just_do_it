@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 
 class ArchivePage extends StatefulWidget {
   const ArchivePage({super.key});
@@ -41,7 +44,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       child: Text(
                         'В архиве',
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 21.sp,
                           color: Colors.black,
                         ),
                       ),
@@ -98,7 +101,21 @@ class _ArchivePageState extends State<ArchivePage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: CustomButton(
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CeateTasks(
+                            customer: false,
+                            doublePop: true,
+                            currentPage: 5,
+                          );
+                        },
+                      ),
+                    );
+                    BlocProvider.of<CountriesBloc>(context)
+                        .add(GetCountryEvent());
+                  },
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: const Text('Создать новое'),
                 ),

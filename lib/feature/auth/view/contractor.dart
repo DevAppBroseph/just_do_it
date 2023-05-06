@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -16,8 +15,12 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
 
 enum CountryCode { ru, oae }
@@ -59,10 +62,12 @@ class _ContractorState extends State<Contractor> {
   TextEditingController regionController = TextEditingController();
   List<String> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
+  File? image;
   List<ArrayImages> photos = [];
   File? cv;
   bool confirmTermsPolicy = false;
+  DateTime? dateTimeStart;
+  DateTime? dateTimeEnd;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
@@ -84,7 +89,11 @@ class _ContractorState extends State<Contractor> {
 
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
-  bool isRussia = true;
+
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
 
   @override
   void initState() {
@@ -96,8 +105,8 @@ class _ContractorState extends State<Contractor> {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file.readAsBytesSync();
-      user.copyWith(photo: image);
+      image = file;
+      user.copyWith(photo: image?.readAsBytesSync());
     }
     setState(() {});
   }
@@ -108,9 +117,8 @@ class _ContractorState extends State<Contractor> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync()));
+        files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
       }
-      photos.clear();
       setState(() {
         photos.addAll(files);
         user.copyWith(images: photos);
@@ -183,220 +191,238 @@ class _ContractorState extends State<Contractor> {
   @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
-        Loader.hide();
-        if (current is CheckUserState) {
-          if (current.error != null) {
-            //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            showAlertToast(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован');
-          } else {
-            page = 1;
-            widget.stage(2);
-          }
-        } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
-        } else if (current is GetCategoriesState) {
-          listCategories.clear();
-          listCategories.addAll(current.res);
-        } else if (current is SendProfileErrorState) {
-          String messageError = 'Ошибка\n';
-          if (current.error!['email'] != null &&
-              current.error!['email'][0] != null) {
-            String email = current.error!['email'][0];
-            if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'Пользователь с такой почтой уже зарегистрирован';
-            } else if (email.contains('Enter a valid email address.')) {
-              messageError = 'Введите корректный адрес почты';
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, snapshot) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+          Loader.hide();
+          if (current is CheckUserState) {
+            if (current.error != null) {
+              showAlertToast(
+                  'Пользователь с такой почтой или номером телефона уже зарегистрирован');
+            } else {
+              page = 1;
+              widget.stage(2);
             }
-          } else if (current.error!['phone_number'] != null &&
-              current.error!['phone_number'][0] != null) {
-            String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber
-                .contains('custom user with this Телефон already exists.')) {
-              messageError =
-                  'Пользователь с таким телефоном уже зарегистрирован';
-            } else if (phoneNumber
-                .contains('The phone number entered is not valid.')) {
-              messageError = 'Введите корректный номер телефона';
+          } else if (current is SendProfileSuccessState) {
+            Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+                arguments: [phoneController.text]);
+          } else if (current is GetCategoriesState) {
+            listCategories.clear();
+            listCategories.addAll(current.res);
+          } else if (current is SendProfileErrorState) {
+            String messageError = 'Ошибка\n';
+            if (current.error!['email'] != null &&
+                current.error!['email'][0] != null) {
+              String email = current.error!['email'][0];
+              if (email
+                  .contains('custom user with this Email already exists.')) {
+                messageError =
+                    'Пользователь с такой почтой уже зарегистрирован';
+              } else if (email.contains('Enter a valid email address.')) {
+                messageError = 'Введите корректный адрес почты';
+              }
+            } else if (current.error!['phone_number'] != null &&
+                current.error!['phone_number'][0] != null) {
+              String phoneNumber = current.error!['phone_number'][0];
+              if (phoneNumber
+                  .contains('custom user with this Телефон already exists.')) {
+                messageError =
+                    'Пользователь с таким телефоном уже зарегистрирован';
+              } else if (phoneNumber
+                  .contains('The phone number entered is not valid.')) {
+                messageError = 'Введите корректный номер телефона';
+              }
             }
+            showAlertToast(messageError);
           }
-          showAlertToast(messageError);
-        }
-        return false;
-      }, builder: (context, snapshot) {
-        return Column(
-          children: [
-            Expanded(
-                child: page == 0
-                    ? firstStage(heightKeyBoard)
-                    : secondStage(heightKeyBoard)),
-            SizedBox(height: 10.h),
-            CustomButton(
-              onTap: () {
-                if (page == 0) {
-                  requestNextEmptyFocusStage1();
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
+          return false;
+        }, builder: (context, snapshot) {
+          return Column(
+            children: [
+              Expanded(
+                  child: page == 0
+                      ? firstStage(heightKeyBoard)
+                      : secondStage(heightKeyBoard)),
+              SizedBox(height: 10.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 0) {
+                    requestNextEmptyFocusStage1();
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
 
-                  if (firstnameController.text.isEmpty) {
-                    error += '\n- имя';
-                    errorsFlag = true;
-                  }
+                    if (firstnameController.text.isEmpty) {
+                      error += '\n- имя';
+                      errorsFlag = true;
+                    }
 
-                  if (lastnameController.text.isEmpty) {
-                    error += '\n- фамилию';
-                    errorsFlag = true;
-                  }
+                    if (lastnameController.text.isEmpty) {
+                      error += '\n- фамилию';
+                      errorsFlag = true;
+                    }
 
-                  if (phoneController.text.isEmpty) {
-                    error += '\n- мобильный номер';
-                    errorsFlag = true;
-                  }
+                    if (phoneController.text.isEmpty) {
+                      error += '\n- мобильный номер';
+                      errorsFlag = true;
+                    }
 
-                  if (emailController.text.isEmpty) {
-                    error += '\n- почту';
-                    errorsFlag = true;
-                  }
+                    if (emailController.text.isEmpty) {
+                      error += '\n- почту';
+                      errorsFlag = true;
+                    }
 
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
-                    error += '\n- пароль';
-                    errorsFlag = true;
-                  }
+                    if (passwordController.text.isEmpty ||
+                        repeatPasswordController.text.isEmpty) {
+                      error += '\n- пароль';
+                      errorsFlag = true;
+                    }
 
-                  String email = emailController.text;
+                    String email = emailController.text;
 
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
 
-                  if (errorsFlag) {
-                    if ((passwordController.text.isNotEmpty &&
+                    if (errorsFlag) {
+                      if ((passwordController.text.isNotEmpty &&
+                              repeatPasswordController.text.isNotEmpty) &&
+                          (passwordController.text !=
+                              repeatPasswordController.text)) {
+                        error += '\n\nПароли не совпадают';
+                      }
+                      showAlertToast(error);
+                    } else if (phoneController.text.length < 12) {
+                      showAlertToast('- Некорректный номер телефона.');
+                    } else if (emailController.text
+                            .split('@')
+                            .last
+                            .split('.')
+                            .last
+                            .length <
+                        2) {
+                      showAlertToast('- Введите корректный адрес почты');
+                    } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      error += '\n\nПароли не совпадают';
-                    }
-                    showAlertToast(error);
-                  } else if (phoneController.text.length < 12) {
-                    showAlertToast('- Некорректный номер телефона.');
-                  } else if (emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2) {
-                    showAlertToast('- Введите корректный адрес почты');
-                  } else if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    showAlertToast('- пароли не совпадают');
-                  } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длина пароля 6 символов');
-                  } else if (!emailValid) {
-                    showAlertToast('Введите корректный адрес почты');
-                  } else if (!confirmTermsPolicy) {
-                    showAlertToast(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
-                  } else {
-                    showLoaderWrapper(context);
+                      showAlertToast('- пароли не совпадают');
+                    } else if (passwordController.text.length < 6) {
+                      showAlertToast('- минимальная длина пароля 6 символов');
+                    } else if (!emailValid) {
+                      showAlertToast('Введите корректный адрес почты');
+                    } else if (!confirmTermsPolicy) {
+                      showAlertToast(
+                          'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
+                    } else {
+                      showLoaderWrapper(context);
 
-                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
-                        phoneController.text, emailController.text));
-                  }
-                } else {
-                  List<int> categorySelect = [];
-                  for (int i = 0; i < typeCategories.length; i++) {
-                    for (int j = 0; j < listCategories.length; j++) {
-                      if (typeCategories[i] == listCategories[j].description) {
-                        categorySelect.add(listCategories[j].id);
+                      BlocProvider.of<AuthBloc>(context).add(
+                          CheckUserExistEvent(
+                              phoneController.text, emailController.text));
+                    }
+                  } else {
+                    List<int> categorySelect = [];
+                    for (int i = 0; i < typeCategories.length; i++) {
+                      for (int j = 0; j < listCategories.length; j++) {
+                        if (typeCategories[i] ==
+                            listCategories[j].description) {
+                          categorySelect.add(listCategories[j].id);
+                        }
+                      }
+                    }
+                    requestNextEmptyFocusStage2();
+                    user.copyWith(
+                        activitiesDocument: categorySelect, groups: [4]);
+                    String error = 'Укажите:';
+                    bool errorsFlag = false;
+
+                    if (countryController.text.isEmpty) {
+                      error += '\n- страну';
+                      errorsFlag = true;
+                    }
+                    if (regionController.text.isEmpty) {
+                      error += '\n- регион';
+                      errorsFlag = true;
+                    }
+                    if (typeCategories.isEmpty) {
+                      error += '\n- до 3х категорий';
+                      errorsFlag = true;
+                    }
+                    if (additionalInfo) {
+                      if (serialDocController.text.isEmpty &&
+                          user.docType != 'Resident_ID') {
+                        error += '\n- серию документа';
+                        errorsFlag = true;
+                      }
+                      if (numberDocController.text.isEmpty) {
+                        error += '\n- номер документа';
+                        errorsFlag = true;
+                      }
+                      if (whoGiveDocController.text.isEmpty) {
+                        error += '\n- кем был вадан документ';
+                        errorsFlag = true;
+                      }
+                      if (dateDocController.text.isEmpty) {
+                        error += '\n- дату выдачи документа';
+                        errorsFlag = true;
+                      }
+                    }
+
+                    if (errorsFlag) {
+                      showAlertToast(error);
+                    } else {
+                      if (dateTimeEnd != null &&
+                          DateTime.now().isAfter(dateTimeEnd!)) {
+                        showAlertToast('Ваш паспорт просрочен');
+                      } else if (checkExpireDate(dateTimeEnd) != null) {
+                        showAlertToast(checkExpireDate(dateTimeEnd)!);
+                      } else {
+                        showLoaderWrapper(context);
+
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(SendProfileEvent(user));
                       }
                     }
                   }
-                  log('message ${user.cv}');
-                  requestNextEmptyFocusStage2();
-                  user.copyWith(
-                      activitiesDocument: categorySelect, groups: [4]);
-                  String error = 'Укажите:';
-                  bool errorsFlag = false;
-
-                  if (countryController.text.isEmpty) {
-                    error += '\n- страну';
-                    errorsFlag = true;
-                  }
-                  if (regionController.text.isEmpty) {
-                    error += '\n- регион';
-                    errorsFlag = true;
-                  }
-                  if (typeCategories.isEmpty) {
-                    error += '\n- до 3х категорий';
-                    errorsFlag = true;
-                  }
-                  if (additionalInfo) {
-                    if (serialDocController.text.isEmpty &&
-                        user.docType != 'Resident_ID') {
-                      error += '\n- серию докемента';
-                      errorsFlag = true;
-                    }
-                    if (numberDocController.text.isEmpty) {
-                      error += '\n- номер документа';
-                      errorsFlag = true;
-                    }
-                    if (whoGiveDocController.text.isEmpty) {
-                      error += '\n- кем был вадан документ';
-                      errorsFlag = true;
-                    }
-                    if (dateDocController.text.isEmpty) {
-                      error += '\n- дату выдачи документа';
-                      errorsFlag = true;
-                    }
-                  }
-
-                  if (errorsFlag) {
-                    showAlertToast(error);
+                },
+                btnColor: page == 0
+                    ? confirmTermsPolicy
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE
+                    : countryController.text.isNotEmpty &&
+                            regionController.text.isNotEmpty &&
+                            typeCategories.isNotEmpty
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  page == 0 ? 'Далее' : 'Зарегистрироваться',
+                  style: CustomTextStyle.black_16_w600_171716,
+                ),
+              ),
+              SizedBox(height: 18.h),
+              CustomButton(
+                onTap: () {
+                  if (page == 1) {
+                    page = 0;
+                    widget.stage(1);
                   } else {
-                    showLoaderWrapper(context);
-
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SendProfileEvent(user));
+                    Navigator.of(context).pop();
                   }
-                }
-              },
-              btnColor: confirmTermsPolicy
-                  ? ColorStyles.yellowFFD70A
-                  : ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                page == 0 ? 'Далее' : 'Зарегистрироваться',
-                style: CustomTextStyle.black_15_w600_171716,
+                },
+                btnColor: ColorStyles.greyE0E6EE,
+                textLabel: Text(
+                  'Назад',
+                  style: CustomTextStyle.black_16_w600_515150,
+                ),
               ),
-            ),
-            SizedBox(height: 18.h),
-            CustomButton(
-              onTap: () {
-                if (page == 1) {
-                  page = 0;
-                  widget.stage(1);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-              btnColor: ColorStyles.greyE0E6EE,
-              textLabel: Text(
-                'Назад',
-                style: CustomTextStyle.black_15_w600_515150,
-              ),
-            ),
-            SizedBox(height: 34.h),
-          ],
-        );
-      }),
-    );
+              SizedBox(height: 34.h),
+            ],
+          );
+        }),
+      );
+    });
   }
 
   Widget firstStage(double heightKeyBoard) {
@@ -412,7 +438,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваше имя*',
           height: 50.h,
           textEditingController: firstnameController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -432,7 +458,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'Ваша фамилия*',
           height: 50.h,
           textEditingController: lastnameController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -451,7 +477,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_13_w400_171716,
+              style: CustomTextStyle.black_14_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -492,43 +518,24 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
-            // MaskTextInputFormatter(
-            //   // initialText: '',
-            //   mask: '+#############',
-            //   filter: {"#": RegExp(r'[0-9]')},
-            //   type: MaskAutoCompletionType.eager,
-            // ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
+            MaskTextInputFormatter(
+              mask: '+############',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.eager,
+            ),
           ],
+          onTap: () {
+            if (phoneController.text.isEmpty) phoneController.text = '+';
+          },
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            setState(() {});
-            print(value);
-            if (value.length == 1 && !value.contains('+')) {
-              print('12312312');
-              phoneController.text = '+$value';
-              phoneController.selection =
-                  TextSelection.collapsed(offset: phoneController.text.length);
-            }
-            print(value);
-            if (value.contains('+7')) {
-              countryCode = CountryCode.ru;
-            } else if (value.contains('+9')) {
-              countryCode = CountryCode.oae;
-            }
-
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
+            if (phoneController.text == '+') phoneController.text = '';
             requestNextEmptyFocusStage1();
           },
         ),
@@ -538,7 +545,7 @@ class _ContractorState extends State<Contractor> {
           hintText: 'E-mail*',
           height: 50.h,
           textEditingController: emailController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -579,7 +586,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: passwordController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -620,7 +627,7 @@ class _ContractorState extends State<Contractor> {
                   ),
           ),
           textEditingController: repeatPasswordController,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -641,7 +648,7 @@ class _ContractorState extends State<Contractor> {
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -661,12 +668,10 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
-                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
-                  style: CustomTextStyle.black_13_w400_515150
+                  'Согласен на обработку персональных данных и с пользовательским соглашением',
+                  style: CustomTextStyle.black_14_w400_515150
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -680,6 +685,8 @@ class _ContractorState extends State<Contractor> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,
@@ -691,7 +698,7 @@ class _ContractorState extends State<Contractor> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -728,6 +735,63 @@ class _ContractorState extends State<Contractor> {
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
+        if (image != null) SizedBox(height: 6.h),
+        if (image != null)
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  OpenFile.open(image?.path);
+                },
+                child: SizedBox(
+                  height: 60.h,
+                  width: 60.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50.h,
+                        width: 50.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Image.memory(
+                            image!.readAsBytesSync(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            image = null;
+                            user.photo = null;
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 15.h,
+                            width: 15.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(40.r)),
+                            child: Center(
+                              child: Icon(
+                                Icons.close,
+                                size: 10.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         SizedBox(height: 16.h),
         GestureDetector(
           key: _countryKey,
@@ -735,18 +799,20 @@ class _ContractorState extends State<Contractor> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent(selectCountries!));
               user.copyWith(country: countryController.text);
               setState(() {});
-              print(countryController.text);
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
             hintText: 'Страна*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -760,15 +826,16 @@ class _ContractorState extends State<Contractor> {
           key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
+              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
+                  regionController.text = value.name ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {
@@ -777,7 +844,7 @@ class _ContractorState extends State<Contractor> {
           },
           child: CustomTextField(
             hintText: 'Регион*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -804,15 +871,14 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документ',
           ),
           child: Stack(
-            // key: GlobalKeys.keyIconBtn1,
+            key: GlobalKeys.keyIconBtn1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                // key: GlobalKeys.keyIconBtn1,
-                hintText: 'Тип документа',
+                hintText: 'Документ',
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -835,6 +901,8 @@ class _ContractorState extends State<Contractor> {
                               whoGiveDocController.text = '';
                               dateDocController.text = '';
                               dateTime = null;
+                              dateTimeEnd = null;
+                              dateTimeStart = null;
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -882,7 +950,6 @@ class _ContractorState extends State<Contractor> {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                // key: _categoryButtonKey,
                 hintText: 'Выбор до 3х категорий*',
                 height: 50.h,
                 enabled: false,
@@ -923,7 +990,7 @@ class _ContractorState extends State<Contractor> {
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
                     hintText: 'Описание своего опыта',
-                    hintStyle: CustomTextStyle.grey_13_w400,
+                    hintStyle: CustomTextStyle.grey_14_w400,
                     maxLines: 6,
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
@@ -951,7 +1018,7 @@ class _ContractorState extends State<Contractor> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/500',
-                    style: CustomTextStyle.grey_11_w400,
+                    style: CustomTextStyle.grey_12_w400,
                   ),
                 ),
               ),
@@ -959,6 +1026,132 @@ class _ContractorState extends State<Contractor> {
           ),
         ),
         SizedBox(height: 16.h),
+        if (photos.isNotEmpty || cv != null)
+          SizedBox(
+            height: 60.h,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                if (photos.isNotEmpty)
+                  Row(
+                    children: photos
+                        .map(
+                          (e) => GestureDetector(
+                            onTap: () {
+                              OpenFile.open(e.file!.path);
+                            },
+                            child: SizedBox(
+                              height: 60.h,
+                              width: 60.h,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 50.h,
+                                    width: 50.h,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.memory(
+                                        e.byte!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        photos.remove(e);
+                                        user.images = photos;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 15.h,
+                                        width: 15.h,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(40.r)),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 10.h,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                if (cv != null)
+                  SizedBox(
+                    height: 60.h,
+                    width: 60.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            OpenFile.open(cv!.path);
+                          },
+                          child: Container(
+                            height: 50.h,
+                            width: 50.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                SvgImg.documentText,
+                                height: 25.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              cv = null;
+                              user.cv = null;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 15.h,
+                              width: 15.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
+                                  borderRadius: BorderRadius.circular(40.r)),
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  size: 10.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
         Row(
           children: [
             ScaleButton(
@@ -966,8 +1159,8 @@ class _ContractorState extends State<Contractor> {
               bound: 0.01,
               onTap: _selectImages,
               child: SizedBox(
-                width: 145.w,
                 height: 40.h,
+                width: 150.w,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -987,10 +1180,10 @@ class _ContractorState extends State<Contractor> {
                                 width: 14.h,
                                 child: SvgPicture.asset(SvgImg.addCircle),
                               ),
-                              SizedBox(width: 9.17.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 'Изображения (10мб)',
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               )
                             ],
                           ),
@@ -1011,7 +1204,7 @@ class _ContractorState extends State<Contractor> {
                               child: Text(
                             photos.length.toString(),
                             style:
-                                TextStyle(color: Colors.white, fontSize: 10.sp),
+                                TextStyle(color: Colors.white, fontSize: 11.sp),
                           )),
                         ),
                       )
@@ -1025,7 +1218,7 @@ class _ContractorState extends State<Contractor> {
               bound: 0.01,
               onTap: _selectCV,
               child: SizedBox(
-                width: 169.w,
+                width: 172.w,
                 height: 40.h,
                 child: Stack(
                   alignment: Alignment.center,
@@ -1046,10 +1239,10 @@ class _ContractorState extends State<Contractor> {
                                 width: 14.h,
                                 child: SvgPicture.asset(SvgImg.documentText),
                               ),
-                              SizedBox(width: 9.17.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 'Загрузить резюме (10мб)',
-                                style: CustomTextStyle.black_11_w400,
+                                style: CustomTextStyle.black_12_w400,
                               )
                             ],
                           ),
@@ -1078,7 +1271,7 @@ class _ContractorState extends State<Contractor> {
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         SizedBox(height: 2.h),
@@ -1099,9 +1292,9 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: Text(
-                'Юридическое лицо',
+                'Представитель юридического лица',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
           ],
@@ -1123,7 +1316,7 @@ class _ContractorState extends State<Contractor> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1151,7 +1344,7 @@ class _ContractorState extends State<Contractor> {
             CustomTextField(
               hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1190,7 +1383,7 @@ class _ContractorState extends State<Contractor> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1207,12 +1400,12 @@ class _ContractorState extends State<Contractor> {
         if (user.docType != 'Resident_ID')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, true);
+              _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
               hintText: 'Дата выдачи',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1224,12 +1417,12 @@ class _ContractorState extends State<Contractor> {
         if (user.docType != 'Passport')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, false, title: 'Срок действия');
+              _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
               hintText: 'Срок действия',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1237,6 +1430,10 @@ class _ContractorState extends State<Contractor> {
               onChanged: (value) => documentEdit(),
             ),
           ),
+        Text(
+          checkExpireDate(dateTimeEnd) ?? '',
+          style: CustomTextStyle.red_11_w400_171716,
+        ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
@@ -1249,7 +1446,7 @@ class _ContractorState extends State<Contractor> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),
@@ -1266,8 +1463,35 @@ class _ContractorState extends State<Contractor> {
     );
   }
 
-  void _showDatePicker(ctx, bool isPassport, {String? title}) {
-    dateTime = null;
+  void _showDatePicker(ctx, int index, bool isInternational) {
+    DateTime initialDateTime = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
+
+    DateTime maximumDate = index == 1
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        : dateTimeEnd != null
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
+
+    DateTime minimumDate = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
@@ -1290,24 +1514,39 @@ class _ContractorState extends State<Contractor> {
                                 child: Text(
                                   'Готово',
                                   style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.black),
+                                      fontSize: 15.sp, color: Colors.black),
                                 ),
                                 onPressed: () {
-                                  if (dateTime == null) {
-                                    if (isPassport) {
-                                      dateDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
-                                      documentEdit();
-                                    } else {
-                                      whoGiveDocController.text =
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(DateTime.now());
-                                      documentEdit();
+                                  if (index == 0) {
+                                    if (dateTimeStart == null) {
+                                      dateTimeStart = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  } else {
+                                    if (dateTimeEnd == null) {
+                                      dateTimeEnd = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
                                     }
                                   }
 
                                   Navigator.of(ctx).pop();
+                                  setState(() {});
                                 },
                               ),
                               SizedBox(width: 5.w),
@@ -1322,30 +1561,35 @@ class _ContractorState extends State<Contractor> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
-                        maximumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year + 10,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime.now()
-                            : DateTime.now(),
-                        minimumDate: title != null
-                            ? title == 'Срок действия'
-                                ? DateTime(DateTime.now().year,
-                                    DateTime.now().month, DateTime.now().day)
-                                : DateTime(2000, 1, 1, 1)
-                            : DateTime(2000, 1, 1, 1),
+                        initialDateTime: initialDateTime,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
                         onDateTimeChanged: (val) {
-                          dateTime = val;
-                          if (isPassport) {
-                            dateDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                          if (index == 0) {
+                            dateTimeStart = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
-                            whoGiveDocController.text =
-                                DateFormat('dd.MM.yyyy').format(val);
+                            dateTimeEnd = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
-                          documentEdit();
-                          print(isPassport);
                         }),
                   ),
                 ],
@@ -1353,9 +1597,16 @@ class _ContractorState extends State<Contractor> {
             ));
   }
 
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
+  }
+
   void documentEdit() {
-    print(
-        'Серия: ${serialDocController.text} Номер: ${numberDocController.text} Кем выдан: ${whoGiveDocController.text} Дата выдачи: ${dateDocController.text}');
     user.copyWith(
       docInfo:
           'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',

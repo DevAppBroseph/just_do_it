@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +13,12 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:open_file/open_file.dart';
 
 class Customer extends StatefulWidget {
   Function(int) stage;
@@ -49,11 +54,12 @@ class _CustomerState extends State<Customer> {
   List<String> typeDocument = [];
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
-  Uint8List? image;
+  File? image;
   bool confirmTermsPolicy = false;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
-  DateTime? dateTime;
+  DateTime? dateTimeStart;
+  DateTime? dateTimeEnd;
   UserRegModel user = UserRegModel(isEntity: false);
   List<Activities> listCategories = [];
   bool physics = false;
@@ -72,12 +78,17 @@ class _CustomerState extends State<Customer> {
   ScrollController scrollController1 = ScrollController();
   ScrollController scrollController2 = ScrollController();
 
+  List<Countries> listCountries = [];
+  Countries? selectCountries;
+
+  List<Regions> listRegions = [];
+
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file.readAsBytesSync();
-      user.copyWith(photo: image);
+      image = file;
+      user.copyWith(photo: image?.readAsBytesSync());
     }
     setState(() {});
   }
@@ -129,21 +140,16 @@ class _CustomerState extends State<Customer> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, snapshot) {
+    return BlocBuilder<CountriesBloc, CountriesState>(
+        builder: (context, snapshot) {
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
           Loader.hide();
           if (current is CheckUserState) {
             if (current.error != null) {
-              //  messageError = 'Пользователь с такой почтой уже зарегистрирован';
               showAlertToast(
                   'Пользователь с такой почтой или номером телефона уже зарегистрирован');
             } else {
@@ -193,13 +199,6 @@ class _CustomerState extends State<Customer> {
               SizedBox(height: 10.h),
               CustomButton(
                 onTap: () {
-                  print(emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2);
                   if (page == 0) {
                     requestNextEmptyFocusStage1();
                     String error = 'Укажите:';
@@ -220,16 +219,6 @@ class _CustomerState extends State<Customer> {
                       error += '\n- почту';
                       errorsFlag = true;
                     }
-
-                    // if (emailController.text
-                    //         .split('@')
-                    //         .last
-                    //         .split('.')
-                    //         .last
-                    //         .length <
-                    //     2) {
-                    //   errorsFlag = true;
-                    // }
 
                     String email = emailController.text;
 
@@ -284,7 +273,7 @@ class _CustomerState extends State<Customer> {
                     if (additionalInfo) {
                       if (serialDocController.text.isEmpty &&
                           user.docType != 'Resident_ID') {
-                        error += '\n- серию докемента';
+                        error += '\n- серию документа';
                         errorsFlag = true;
                       }
                       if (numberDocController.text.isEmpty) {
@@ -315,8 +304,12 @@ class _CustomerState extends State<Customer> {
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      // error += 'Пароли не совпадают';
                       showAlertToast('Пароли не совпадают');
+                    } else if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш паспорт просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
                       showLoaderWrapper(context);
                       documentEdit();
@@ -325,12 +318,19 @@ class _CustomerState extends State<Customer> {
                     }
                   }
                 },
-                btnColor: confirmTermsPolicy
-                    ? ColorStyles.yellowFFD70A
-                    : ColorStyles.greyE0E6EE,
+                btnColor: page == 0
+                    ? confirmTermsPolicy
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE
+                    : passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty &&
+                            regionController.text.isNotEmpty &&
+                            countryController.text.isNotEmpty
+                        ? ColorStyles.yellowFFD70A
+                        : ColorStyles.greyE0E6EE,
                 textLabel: Text(
                   page == 0 ? 'Далее' : 'Зарегистрироваться',
-                  style: CustomTextStyle.black_15_w600_171716,
+                  style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
               SizedBox(height: 18.h),
@@ -346,7 +346,7 @@ class _CustomerState extends State<Customer> {
                 btnColor: ColorStyles.greyE0E6EE,
                 textLabel: Text(
                   'Назад',
-                  style: CustomTextStyle.black_15_w600_515150,
+                  style: CustomTextStyle.black_16_w600_515150,
                 ),
               ),
               SizedBox(height: 34.h),
@@ -368,7 +368,7 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваше имя*',
           focusNode: focusNodeName,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           textEditingController: firstnameController,
           formatters: [
@@ -388,7 +388,7 @@ class _CustomerState extends State<Customer> {
         CustomTextField(
           hintText: 'Ваша фамилия*',
           focusNode: focusNodeLastName,
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           textEditingController: lastnameController,
           formatters: [
@@ -409,7 +409,7 @@ class _CustomerState extends State<Customer> {
           children: [
             Text(
               'Ваш пол',
-              style: CustomTextStyle.black_13_w400_171716,
+              style: CustomTextStyle.black_14_w400_171716,
             ),
             const Spacer(),
             GestureDetector(
@@ -446,42 +446,28 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 30.h),
         CustomTextField(
           hintText: 'Номер телефона*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePhone,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
           formatters: [
-            // MaskTextInputFormatter(
-            //   // initialText: '+ ',
-            //   mask: '+############',
-            //   filter: {"#": RegExp(r'[0-9]')},
-            // ),
-            // if (phoneController.text.contains('+7'))
-            //   LengthLimitingTextInputFormatter(12),
-            // if (phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(13),
-            // if (!phoneController.text.contains('+7') &&
-            //     !phoneController.text.contains('+9'))
-            //   LengthLimitingTextInputFormatter(12),
+            MaskTextInputFormatter(
+              mask: '+############',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.eager,
+            ),
           ],
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
-            // setState(() {});
-            // print(value);
-            if (value.length == 1 && !value.contains('+')) {
-              phoneController.text = '+$value';
-              phoneController.selection =
-                  TextSelection.collapsed(offset: phoneController.text.length);
-            }
-            print(value);
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
+            if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
                   duration: const Duration(milliseconds: 100),
@@ -492,7 +478,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'E-mail*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
@@ -517,7 +503,7 @@ class _CustomerState extends State<Customer> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'Добавить фото',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             contentPadding:
@@ -554,11 +540,68 @@ class _CustomerState extends State<Customer> {
             textEditingController: TextEditingController(),
           ),
         ),
+        if (image != null) SizedBox(height: 6.h),
+        if (image != null)
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  OpenFile.open(image?.path);
+                },
+                child: SizedBox(
+                  height: 60.h,
+                  width: 60.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50.h,
+                        width: 50.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Image.memory(
+                            image!.readAsBytesSync(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            image = null;
+                            user.photo = null;
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 15.h,
+                            width: 15.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
+                                borderRadius: BorderRadius.circular(40.r)),
+                            child: Center(
+                              child: Icon(
+                                Icons.close,
+                                size: 10.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         SizedBox(height: 10.h),
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -578,12 +621,10 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {
-                  // launch('https://dzen.ru/news?issue_tld=by');
-                },
+                onTap: () {},
                 child: Text(
-                  'Согласен на обработку персональных данных\nи с пользовательским соглашением',
-                  style: CustomTextStyle.black_13_w400_515150
+                  'Согласен на обработку персональных данных и с пользовательским соглашением',
+                  style: CustomTextStyle.black_14_w400_515150
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -597,6 +638,8 @@ class _CustomerState extends State<Customer> {
   }
 
   Widget secondStage(double heightKeyBoard) {
+    listCountries.clear();
+    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     return ListView(
       addAutomaticKeepAlives: false,
       physics: const ClampingScrollPhysics(),
@@ -606,7 +649,7 @@ class _CustomerState extends State<Customer> {
       children: [
         CustomTextField(
           hintText: 'Пароль*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
@@ -647,7 +690,7 @@ class _CustomerState extends State<Customer> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: 'Повторите пароль*',
-          hintStyle: CustomTextStyle.grey_13_w400,
+          hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
@@ -689,17 +732,20 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) {
-              countryController.text = value;
+              countryController.text = value.name ?? '-';
+              selectCountries = value;
               regionController.text = '';
-              user.copyWith(country: value);
+              BlocProvider.of<CountriesBloc>(context)
+                  .add(GetRegionEvent(selectCountries!));
+              user.copyWith(country: countryController.text);
               setState(() {});
             },
-            country,
+            listCountries,
             'Выберите страну',
           ),
           child: CustomTextField(
             hintText: 'Страна*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -713,15 +759,16 @@ class _CustomerState extends State<Customer> {
           key: _regionKey,
           onTap: () {
             if (countryController.text.isNotEmpty) {
+              listRegions = selectCountries!.region;
               showRegion(
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value;
-                  user.copyWith(region: value);
+                  regionController.text = value.name ?? '-';
+                  user.copyWith(region: regionController.text);
                   setState(() {});
                 },
-                countryController.text == 'Россия' ? countryRussia : countryOAE,
+                listRegions,
                 'Выберите регион',
               );
             } else {
@@ -730,7 +777,7 @@ class _CustomerState extends State<Customer> {
           },
           child: CustomTextField(
             hintText: 'Регион*',
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -757,15 +804,15 @@ class _CustomerState extends State<Customer> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Тип документа',
+            'Документ',
           ),
           child: Stack(
             key: GlobalKeys.keyIconBtn2,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Тип документа',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintText: 'Документ',
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -788,7 +835,8 @@ class _CustomerState extends State<Customer> {
                               numberDocController.text = '';
                               whoGiveDocController.text = '';
                               dateDocController.text = '';
-                              dateTime = null;
+                              dateTimeEnd = null;
+                              dateTimeStart = null;
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -803,13 +851,12 @@ class _CustomerState extends State<Customer> {
             ],
           ),
         ),
-        // SizedBox(height: 16.h),
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 10.h),
         Text(
           '* - обязательные поля для заполнения',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_13_w400_515150,
+          style: CustomTextStyle.black_14_w400_515150,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -829,9 +876,9 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: Text(
-                'Юридическое лицо',
+                'Представитель юридического лица',
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_13_w400_515150,
+                style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
           ],
@@ -853,7 +900,7 @@ class _CustomerState extends State<Customer> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
-                hintStyle: CustomTextStyle.grey_13_w400,
+                hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -881,7 +928,7 @@ class _CustomerState extends State<Customer> {
             CustomTextField(
               hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -920,7 +967,7 @@ class _CustomerState extends State<Customer> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -937,12 +984,12 @@ class _CustomerState extends State<Customer> {
         if (user.docType != 'Resident_ID')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, true);
+              _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
               hintText: 'Дата выдачи',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -954,12 +1001,12 @@ class _CustomerState extends State<Customer> {
         if (user.docType != 'Passport')
           GestureDetector(
             onTap: () async {
-              _showDatePicker(context, false, title: 'Срок действия');
+              _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
               hintText: 'Срок действия',
               enabled: false,
-              hintStyle: CustomTextStyle.grey_13_w400,
+              hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -967,6 +1014,10 @@ class _CustomerState extends State<Customer> {
               onChanged: (value) => documentEdit(),
             ),
           ),
+        Text(
+          checkExpireDate(dateTimeEnd) ?? '',
+          style: CustomTextStyle.red_11_w400_171716,
+        ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
@@ -979,7 +1030,7 @@ class _CustomerState extends State<Customer> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_13_w400,
+            hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),
@@ -996,90 +1047,147 @@ class _CustomerState extends State<Customer> {
     );
   }
 
-  void _showDatePicker(ctx, bool isPassport, {String? title}) {
-    dateTime = null;
-    showCupertinoModalPopup(
-      context: ctx,
-      builder: (_) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        child: Column(
-          children: [
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 40.h,
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        CupertinoButton(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          borderRadius: BorderRadius.zero,
-                          child: Text(
-                            'Готово',
-                            style:
-                                TextStyle(fontSize: 14.sp, color: Colors.black),
-                          ),
-                          onPressed: () {
-                            if (dateTime == null) {
-                              if (isPassport) {
-                                dateDocController.text =
-                                    DateFormat('dd.MM.yyyy')
-                                        .format(DateTime.now());
-                                documentEdit();
-                              } else {
-                                whoGiveDocController.text =
-                                    DateFormat('dd.MM.yyyy')
-                                        .format(DateTime.now());
-                                documentEdit();
-                              }
-                            }
+  void _showDatePicker(ctx, int index, bool isInternational) {
+    DateTime initialDateTime = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
-                            Navigator.of(ctx).pop();
-                          },
+    DateTime maximumDate = index == 1
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        : dateTimeEnd != null
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
+
+    DateTime minimumDate = index == 1
+        ? dateTimeStart != null
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40.h,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              CupertinoButton(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                borderRadius: BorderRadius.zero,
+                                child: Text(
+                                  'Готово',
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  if (index == 0) {
+                                    if (dateTimeStart == null) {
+                                      dateTimeStart = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  } else {
+                                    if (dateTimeEnd == null) {
+                                      dateTimeEnd = DateTime.now();
+                                      if (isInternational) {
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      } else {
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
+                                      }
+                                    }
+                                  }
+
+                                  Navigator.of(ctx).pop();
+                                  setState(() {});
+                                },
+                              ),
+                              SizedBox(width: 5.w),
+                            ],
+                          ),
                         ),
-                        SizedBox(width: 5.w),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            Container(
-              height: 200.h,
-              color: Colors.white,
-              child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now(),
-                  maximumDate: title != null
-                      ? title == 'Срок действия'
-                          ? DateTime(DateTime.now().year + 10,
-                              DateTime.now().month, DateTime.now().day)
-                          : DateTime.now()
-                      : DateTime.now(),
-                  minimumDate: title != null
-                      ? title == 'Срок действия'
-                          ? DateTime(DateTime.now().year, DateTime.now().month,
-                              DateTime.now().day)
-                          : DateTime(2000, 1, 1, 1)
-                      : DateTime(2000, 1, 1, 1),
-                  onDateTimeChanged: (val) {
-                    dateTime = val;
-                    if (isPassport) {
-                      dateDocController.text =
-                          DateFormat('dd.MM.yyyy').format(val);
-                    } else {
-                      whoGiveDocController.text =
-                          DateFormat('dd.MM.yyyy').format(val);
-                    }
-                  }),
-            ),
-          ],
-        ),
-      ),
-    );
+                  Container(
+                    height: 200.h,
+                    color: Colors.white,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: initialDateTime,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
+                        onDateTimeChanged: (val) {
+                          if (index == 0) {
+                            dateTimeStart = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                          } else {
+                            dateTimeEnd = val;
+                            if (isInternational) {
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            } else {
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
+                            }
+                            user.copyWith(
+                                docInfo:
+                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                          }
+                        }),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  String? checkExpireDate(DateTime? value) {
+    if (value != null) {
+      if (value.difference(DateTime.now()).inDays < 30) {
+        return 'Срок действия документа составляет менее 30 дней';
+      }
+    }
+    return null;
   }
 
   void documentEdit() {

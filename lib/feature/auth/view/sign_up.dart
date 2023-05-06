@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/view/contractor.dart';
 import 'package:just_do_it/feature/auth/view/customer.dart';
+import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,6 +18,12 @@ class _SignUpPageState extends State<SignUpPage> {
   bool state = false;
   PageController pageController = PageController();
   int stageRegistragion = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
+  }
 
   @override
   void dispose() {
@@ -49,11 +57,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: [
                         TextSpan(
                           text: 'Регистрация ',
-                          style: CustomTextStyle.black_21_w700,
+                          style: CustomTextStyle.black_22_w700,
                         ),
                         TextSpan(
                           text: '$stageRegistragion/2',
-                          style: CustomTextStyle.grey_21_w700,
+                          style: CustomTextStyle.grey_22_w700,
                         ),
                       ],
                     ),
@@ -125,8 +133,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Text(
                                   'Исполнитель',
                                   style: state
-                                      ? CustomTextStyle.black_13_w400_171716
-                                      : CustomTextStyle.white_13_w400,
+                                      ? CustomTextStyle.black_14_w400_171716
+                                      : CustomTextStyle.white_14_w400,
                                 ),
                               ),
                             ),
@@ -160,8 +168,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Text(
                                   'Заказчик',
                                   style: state
-                                      ? CustomTextStyle.white_13_w400
-                                      : CustomTextStyle.black_13_w400_171716,
+                                      ? CustomTextStyle.white_14_w400
+                                      : CustomTextStyle.black_14_w400_171716,
                                 ),
                               ),
                             ),

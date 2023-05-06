@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,14 +47,7 @@ class _ListTasksState extends State<ListTasks> {
         children: [
           Center(
             child: ElevatedButton(
-              onPressed: () async {
-                bool res = await Repository().createTask(
-                  profileBloc.access!,
-                  'Заказ ${orderTask.length + 1}',
-                  'Описание ${orderTask.length + 1}',
-                );
-                if (res) getOrders();
-              },
+              onPressed: () async {},
               child: const Text('Создать заказ'),
             ),
           ),

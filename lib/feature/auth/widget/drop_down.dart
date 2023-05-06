@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 showIconModal(
@@ -79,7 +80,7 @@ void iconSelectModal(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -134,7 +135,7 @@ void iconSelectModal(
                                             list[index],
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -236,7 +237,7 @@ void iconSelectModalCategories(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -266,23 +267,32 @@ void iconSelectModalCategories(
                               itemBuilder: (context, index) {
                                 return ElevatedButton(
                                   onPressed: () {
-                                    if (selectCategories.length < 3) {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories.remove(
-                                            list[index].description ?? '');
+                                    if (selectCategories.length > 1) {
+                                      if (selectCategories.length < 3) {
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories.remove(
+                                              list[index].description ?? '');
+                                        } else {
+                                          selectCategories.add(
+                                              list[index].description ?? '');
+                                        }
                                       } else {
-                                        selectCategories
-                                            .add(list[index].description ?? '');
+                                        if (selectCategories.contains(
+                                            list[index].description)) {
+                                          selectCategories
+                                              .remove(list[index].description);
+                                        }
                                       }
-                                    } else {
-                                      if (selectCategories
-                                          .contains(list[index].description)) {
-                                        selectCategories
-                                            .remove(list[index].description);
-                                      }
+                                      onTap(selectCategories);
+                                    } else if (selectCategories.isEmpty ||
+                                        selectCategories.length == 1 &&
+                                            !selectCategories.contains(
+                                                list[index].description)) {
+                                      selectCategories
+                                          .add(list[index].description ?? '');
+                                      onTap(selectCategories);
                                     }
-                                    onTap(selectCategories);
 
                                     setState((() {}));
                                   },
@@ -312,7 +322,7 @@ void iconSelectModalCategories(
                                             list[index].description!,
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -348,8 +358,8 @@ void iconSelectModalCategories(
 showCountry(
   BuildContext context,
   GlobalKey key,
-  Function(String) onTap,
-  List<String> list,
+  Function(Countries) onTap,
+  List<Countries> list,
   String label,
 ) async {
   showCountryWidget(
@@ -363,9 +373,9 @@ showCountry(
 
 void showCountryWidget(
   BuildContext context,
-  Function(String) onTap,
+  Function(Countries) onTap,
   Offset offset,
-  List<String> list,
+  List<Countries> list,
   String label,
 ) {
   showDialog(
@@ -419,7 +429,7 @@ void showCountryWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -451,8 +461,6 @@ void showCountryWidget(
                                   onPressed: () {
                                     onTap(list[index]);
                                     Navigator.of(context).pop();
-
-                                    // setState((() {}));
                                   },
                                   style: ButtonStyle(
                                       padding: const MaterialStatePropertyAll(
@@ -477,10 +485,10 @@ void showCountryWidget(
                                       child: Row(
                                         children: [
                                           Text(
-                                            list[index],
+                                            list[index].name ?? "-",
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 13.sp,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -510,8 +518,8 @@ void showCountryWidget(
 showRegion(
   BuildContext context,
   GlobalKey key,
-  Function(String) onTap,
-  List<String> list,
+  Function(Regions) onTap,
+  List<Regions> list,
   String label,
 ) async {
   showRegionWidget(
@@ -525,9 +533,9 @@ showRegion(
 
 void showRegionWidget(
   BuildContext context,
-  Function(String) onTap,
+  Function(Regions) onTap,
   Offset offset,
-  List<String> list,
+  List<Regions> list,
   String label,
 ) {
   showDialog(
@@ -581,7 +589,7 @@ void showRegionWidget(
                                       label,
                                       style: TextStyle(
                                         color: Colors.grey[400],
-                                        fontSize: 13.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w300,
                                       ),
                                     ),
@@ -601,7 +609,7 @@ void showRegionWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: 130.h,
+                            height: 120.h,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: list.length,
@@ -613,8 +621,6 @@ void showRegionWidget(
                                   onPressed: () {
                                     onTap(list[index]);
                                     Navigator.of(context).pop();
-
-                                    // setState((() {}));
                                   },
                                   style: ButtonStyle(
                                       padding: const MaterialStatePropertyAll(
@@ -638,12 +644,16 @@ void showRegionWidget(
                                       height: 50.h,
                                       child: Row(
                                         children: [
-                                          Text(
-                                            list[index],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w300,
+                                          SizedBox(
+                                            width: 250.w,
+                                            child: Text(
+                                              list[index].name ?? '-',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                              maxLines: null,
                                             ),
                                           ),
                                           const Spacer(),

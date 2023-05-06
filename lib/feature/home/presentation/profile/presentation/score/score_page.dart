@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
-import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ScorePage extends StatefulWidget {
   const ScorePage({super.key});
@@ -21,6 +17,8 @@ class ScorePage extends StatefulWidget {
 
 class _ScorePageState extends State<ScorePage> {
   late UserRegModel? user;
+  final PageController _pageController = PageController(initialPage: 0);
+  int page = 0;
 
   @override
   void initState() {
@@ -37,9 +35,6 @@ class _ScorePageState extends State<ScorePage> {
       if (state is ScoreLoaded) {
         final levels = state.levels;
 
-        print(user?.balance != null);
-
-        final balance = 700;
         return user?.balance != null && levels != null
             ? MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 1.0),
@@ -66,16 +61,11 @@ class _ScorePageState extends State<ScorePage> {
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
+                                        CustomIconButton(
+                                          onBackPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Transform.rotate(
-                                              angle: pi,
-                                              child: SvgPicture.asset(
-                                                'assets/icons/arrow_right.svg',
-                                                color: ColorStyles.greyDADADA,
-                                              )),
+                                          icon: SvgImg.arrowRight,
                                         ),
                                         Row(
                                           mainAxisAlignment:
@@ -84,7 +74,7 @@ class _ScorePageState extends State<ScorePage> {
                                             Text(
                                               'Баллы',
                                               style:
-                                                  CustomTextStyle.white_21_w700,
+                                                  CustomTextStyle.white_22_w700,
                                             ),
                                           ],
                                         ),
@@ -95,15 +85,27 @@ class _ScorePageState extends State<ScorePage> {
                                 SizedBox(height: 30.h),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 24.w),
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         children: [
-                                          if (balance >= levels[0].mustCoins! &&
-                                              balance < levels[1].mustCoins!)
+                                          if (user!.balance! <
+                                              levels[0].mustCoins!)
+                                            Image.network(
+                                              levels[0].bwImage != null
+                                                  ? '${levels[0].bwImage}'
+                                                  : '',
+                                              height: 113,
+                                              width: 113,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          if (user!.balance! >=
+                                                  levels[0].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[1].mustCoins!)
                                             Image.network(
                                               levels[0].image != null
                                                   ? '${levels[0].image}'
@@ -112,8 +114,10 @@ class _ScorePageState extends State<ScorePage> {
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (balance >= levels[1].mustCoins! &&
-                                              balance < levels[2].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[1].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[2].mustCoins!)
                                             Image.network(
                                               levels[1].image != null
                                                   ? '${levels[1].image}'
@@ -122,8 +126,10 @@ class _ScorePageState extends State<ScorePage> {
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (balance >= levels[2].mustCoins! &&
-                                              balance < levels[3].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[2].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[3].mustCoins!)
                                             Image.network(
                                               levels[2].image != null
                                                   ? '${levels[2].image}'
@@ -132,8 +138,10 @@ class _ScorePageState extends State<ScorePage> {
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (balance >= levels[3].mustCoins! &&
-                                              balance < levels[4].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[3].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[4].mustCoins!)
                                             Image.network(
                                               levels[3].image != null
                                                   ? '${levels[3].image}'
@@ -142,7 +150,8 @@ class _ScorePageState extends State<ScorePage> {
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (balance >= levels[4].mustCoins!)
+                                          if (user!.balance! >=
+                                              levels[4].mustCoins!)
                                             Image.network(
                                               levels[4].image != null
                                                   ? '${levels[4].image}'
@@ -152,44 +161,53 @@ class _ScorePageState extends State<ScorePage> {
                                               fit: BoxFit.fill,
                                             ),
                                           SizedBox(height: 12.h),
-                                          if (balance >= levels[0].mustCoins! &&
-                                              balance < levels[1].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[0].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[1].mustCoins!)
                                             Text(
                                               levels[0].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
-                                          if (balance >= levels[1].mustCoins! &&
-                                              balance < levels[2].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[1].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[2].mustCoins!)
                                             Text(
                                               levels[1].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
-                                          if (balance >= levels[2].mustCoins! &&
-                                              balance < levels[3].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[2].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[3].mustCoins!)
                                             Text(
                                               levels[2].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
-                                          if (balance >= levels[3].mustCoins! &&
-                                              balance < levels[4].mustCoins!)
+                                          if (user!.balance! >=
+                                                  levels[3].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[4].mustCoins!)
                                             Text(
                                               levels[3].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             ),
-                                          if (balance >= levels[4].mustCoins!)
+                                          if (user!.balance! >=
+                                              levels[4].mustCoins!)
                                             Text(
                                               levels[4].name?.toUpperCase() ??
                                                   '',
                                               style:
-                                                  CustomTextStyle.white_11_w900,
+                                                  CustomTextStyle.white_12_w900,
                                             )
                                         ],
                                       ),
@@ -203,52 +221,75 @@ class _ScorePageState extends State<ScorePage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              balance.toString(),
+                                              user!.balance!.toString(),
                                               style:
-                                                  CustomTextStyle.white_33_w800,
+                                                  CustomTextStyle.white_34_w800,
                                             ),
-                                            // Text(
-                                            //   'Баллов',
-                                            //   style: CustomTextStyle.white_32_w800,
-                                            // ),
-                                            Text(
-                                              "Сколько уровней я могу\nдостичь",
-                                              style: CustomTextStyle
-                                                  .white_13_w400
-                                                  .copyWith(
-                                                      decoration: TextDecoration
-                                                          .underline),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (page == 0) {
+                                                  page = 1;
+                                                  _pageController.nextPage(
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                      curve: Curves.linear);
+                                                } else {
+                                                  page = 0;
+                                                  _pageController.previousPage(
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                      curve: Curves.linear);
+                                                }
+                                                setState(() {});
+                                              },
+                                              child: Text(
+                                                page == 1
+                                                    ? 'Сколько уровней я могу\nдостичь?'
+                                                    : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
+                                                style: CustomTextStyle
+                                                    .white_14_w400
+                                                    .copyWith(
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline),
+                                              ),
                                             ),
                                             SizedBox(height: 12.h),
-                                            Container(
-                                              height: 29.h,
-                                              // width: 160.w,
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 12.w,
-                                                vertical: 8.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                                color: ColorStyles.whiteFFFFFF,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Поделиться статусом',
-                                                    style: CustomTextStyle
-                                                        .black_11_w500_171716,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 9,
-                                                  ),
-                                                  SvgPicture.asset(
-                                                    'assets/icons/share.svg',
-                                                    color: ColorStyles.black,
-                                                  )
-                                                ],
+                                            GestureDetector(
+                                              onTap: () {
+                                                page = 1;
+                                              },
+                                              child: Container(
+                                                height: 29.h,
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.w,
+                                                  vertical: 8.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
+                                                  color:
+                                                      ColorStyles.whiteFFFFFF,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Поделиться статусом',
+                                                      style: CustomTextStyle
+                                                          .black_11_w500_171716,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 9,
+                                                    ),
+                                                    SvgPicture.asset(
+                                                      'assets/icons/share.svg',
+                                                      color: ColorStyles.black,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -264,9 +305,9 @@ class _ScorePageState extends State<ScorePage> {
                       ),
                       Expanded(
                         child: PageView(
+                          controller: _pageController,
                           scrollDirection: Axis.horizontal,
-                          // pageSnapping: false,
-                          physics: const BouncingScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           children: <Widget>[
                             SingleChildScrollView(
                               physics: const BouncingScrollPhysics(),
@@ -295,28 +336,28 @@ class _ScorePageState extends State<ScorePage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               firstPageItemScore(
-                                                  balance >=
+                                                  user!.balance! >=
                                                           levels[0].mustCoins!
                                                       ? '${levels[0].image}'
-                                                      : '${levels[2].image}',
+                                                      : '${levels[0].bwImage}',
                                                   levels[0].name ?? '',
-                                                  balance,
-                                                  levels[1].mustCoins!),
+                                                  user!.balance!,
+                                                  levels[0].mustCoins!),
                                               firstPageItemScore(
-                                                  balance >=
+                                                  user!.balance! >=
                                                           levels[1].mustCoins!
                                                       ? '${levels[1].image}'
-                                                      : '${levels[2].image}',
+                                                      : '${levels[1].bwImage}',
                                                   levels[1].name ?? '',
-                                                  balance,
+                                                  user!.balance!,
                                                   levels[1].mustCoins!),
                                               firstPageItemScore(
-                                                  balance >=
+                                                  user!.balance! >=
                                                           levels[2].mustCoins!
                                                       ? '$server${levels[2].image}'
-                                                      : '${levels[2].image}',
+                                                      : '${levels[2].bwImage}',
                                                   levels[2].name ?? '',
-                                                  balance,
+                                                  user!.balance!,
                                                   levels[2].mustCoins!),
                                             ],
                                           ),
@@ -326,40 +367,41 @@ class _ScorePageState extends State<ScorePage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               firstPageItemScore(
-                                                  balance >=
-                                                          levels[3].mustCoins!
-                                                      ? '${levels[4].image}'
-                                                      : '${levels[4].image}',
-                                                  levels[4].name ?? '',
-                                                  balance,
-                                                  levels[3].mustCoins!),
+                                                  user!.balance! >=
+                                                          levels[5].mustCoins!
+                                                      ? '${levels[5].image}'
+                                                      : '${levels[5].bwImage}',
+                                                  levels[5].name ?? '',
+                                                  user!.balance!,
+                                                  levels[5].mustCoins!),
                                               firstPageItemScore(
-                                                  balance >=
-                                                          levels[3].mustCoins!
+                                                  user!.balance! >=
+                                                          levels[4].mustCoins!
                                                       ? '${levels[4].image}'
-                                                      : '${levels[4].image}',
+                                                      : '${levels[4].bwImage}',
                                                   levels[4].name ?? '',
-                                                  balance,
-                                                  levels[3].mustCoins!),
+                                                  user!.balance!,
+                                                  levels[4].mustCoins!),
                                               firstPageItemScore(
-                                                  balance >=
+                                                  user!.balance! >=
                                                           levels[3].mustCoins!
-                                                      ? '${levels[4].image}'
-                                                      : '${levels[4].image}',
+                                                      ? '${levels[3].image}'
+                                                      : '${levels[3].bwImage}',
                                                   levels[3].name ?? '',
-                                                  balance,
+                                                  user!.balance!,
                                                   levels[3].mustCoins!),
                                             ],
                                           ),
                                           SizedBox(height: 55.h),
                                           Center(
                                             child: firstPageItemScore(
-                                                levels[4].image != null
-                                                    ? '${levels[4].image}'
-                                                    : '',
-                                                levels[4].name ?? '',
-                                                balance,
-                                                levels[4].mustCoins!),
+                                                user!.balance! >=
+                                                        levels[5].mustCoins!
+                                                    ? '${levels[6].image}'
+                                                    : '${levels[6].bwImage}',
+                                                levels[6].name ?? '',
+                                                user!.balance!,
+                                                levels[6].mustCoins!),
                                           )
                                         ],
                                       ),
@@ -377,7 +419,7 @@ class _ScorePageState extends State<ScorePage> {
                                     child: Text(
                                       'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
                                       style:
-                                          CustomTextStyle.black_13_w400_171716,
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                   ListView.separated(
@@ -388,25 +430,12 @@ class _ScorePageState extends State<ScorePage> {
                                           const Divider(),
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
-                                        if (levels[index].isAvailable ==
-                                            false) {
-                                          return itemScore(
-                                            levels[index].image != null
-                                                ? '${levels[index].image}'
-                                                : '',
-                                            levels[index].name ?? '',
-                                          );
-                                        }
-                                        return Container();
-
-                                        // itemScore('assets/images/rassomaha.png', 'Росомаха'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/hulk.png', 'Халк'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/batman.png', 'Бэтмен'),
-                                        // SizedBox(height: 18.h),
-                                        // itemScore('assets/images/america.png', 'Супермен'),
-                                        // SizedBox(height: 40.h)
+                                        return itemScore(
+                                          levels[index].image != null
+                                              ? '${levels[index].image}'
+                                              : '',
+                                          levels[index].name ?? '',
+                                        );
                                       }),
                                   SizedBox(height: 18.h),
                                 ],
@@ -428,8 +457,8 @@ class _ScorePageState extends State<ScorePage> {
   Widget _loadingindicator() {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(8),
-      child: Center(
+      padding: const EdgeInsets.all(8),
+      child: const Center(
         child: CircularProgressIndicator(),
       ),
     );
@@ -445,7 +474,7 @@ class _ScorePageState extends State<ScorePage> {
       children: [
         Container(
           height: 70,
-          padding: EdgeInsets.symmetric(horizontal: 12.5.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           margin: EdgeInsets.symmetric(horizontal: 19.w),
           child: Stack(alignment: Alignment.center, children: [
             Align(
@@ -488,14 +517,15 @@ class _ScorePageState extends State<ScorePage> {
         SizedBox(height: 4.h),
         Text(
           title,
-          style: CustomTextStyle.purple_13_w600,
+          style: CustomTextStyle.purple_14_w600,
         ),
         SizedBox(height: 4.h),
         SizedBox(
           width: 25.w,
           child: Text(
             score.toString(),
-            style: CustomTextStyle.black_11_w400_515150,
+            textAlign: TextAlign.center,
+            style: CustomTextStyle.black_12_w400_515150,
           ),
         ),
       ],
@@ -532,14 +562,14 @@ class _ScorePageState extends State<ScorePage> {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.purple_13_w600,
+                style: CustomTextStyle.purple_14_w600,
               ),
               SizedBox(height: 3.h),
               SizedBox(
                 width: 230.w,
                 child: Text(
                   'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-                  style: CustomTextStyle.black_11_w400_515150,
+                  style: CustomTextStyle.black_12_w400_515150,
                 ),
               ),
             ],

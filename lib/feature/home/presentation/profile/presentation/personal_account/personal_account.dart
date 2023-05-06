@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +7,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalAccountPage extends StatefulWidget {
   const PersonalAccountPage({super.key});
@@ -45,10 +43,6 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
       child: Scaffold(
         body:
             BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-          // if (snapshot is LoadingRatingState) {
-          //   return const CupertinoActivityIndicator();
-          // }
-
           return SafeArea(
             child: Column(
               children: [
@@ -57,19 +51,16 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Transform.rotate(
-                          angle: pi,
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow_right.svg',
-                          ),
-                        ),
+                      CustomIconButton(
+                        onBackPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: SvgImg.arrowRight,
                       ),
-                      SizedBox(width: 12.w),
+                      const Spacer(),
                       Text(
                         'Личный кабинет',
-                        style: CustomTextStyle.black_21_w700,
+                        style: CustomTextStyle.black_22_w700,
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -119,7 +110,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Профиль',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(
@@ -146,7 +137,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Баллы',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(
@@ -173,7 +164,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'Рейтинг и отзывы',
-                                style: CustomTextStyle.black_17_w500_171716,
+                                style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
                               Icon(
@@ -185,46 +176,10 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                           ),
                         ),
                       ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                      //     BlocProvider.of<ProfileBloc>(context).setUser(null);
-                      //     Navigator.of(context).pushNamedAndRemoveUntil(
-                      //         AppRoute.home, (route) => false);
-                      //   },
-                      //   child: Container(
-                      //     color: Colors.transparent,
-                      //     height: 50.h,
-                      //     child: Row(
-                      //       children: [
-                      //         SvgPicture.asset(
-                      //           'assets/icons/logout_account.svg',
-                      //         ),
-                      //         SizedBox(width: 12.w),
-                      //         Text(
-                      //           'Выйти из аккаунта',
-                      //           style: CustomTextStyle.black_17_w500_171716,
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
                 const Spacer(),
-                // GestureDetector(
-                //   onTap: () {
-                //     BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                //     BlocProvider.of<ProfileBloc>(context).setUser(null);
-                //     Navigator.of(context).pushNamedAndRemoveUntil(
-                //         AppRoute.home, (route) => false);
-                //   },
-                //   child: Text(
-                //     'Удалить аккаунт',
-                //     style: CustomTextStyle.black_15_w500_171716,
-                //   ),
-                // ),
                 SizedBox(height: 72.h),
               ],
             ),

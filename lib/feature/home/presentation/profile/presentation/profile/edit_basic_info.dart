@@ -1,15 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditBasicInfo extends StatefulWidget {
@@ -25,12 +23,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
   TextEditingController lastnameController = TextEditingController();
   TextEditingController phoneController = TextEditingController(text: '+');
   TextEditingController emailController = TextEditingController();
-
-  // FocusNode focusNodeAbout = FocusNode();
-  // FocusNode focusNodeName = FocusNode();
-  // FocusNode focusNodeLastName = FocusNode();
-  // FocusNode focusNodePhone = FocusNode();
-  // FocusNode focusNodeEmail = FocusNode();
 
   ScrollController scrollController1 = ScrollController();
   late UserRegModel? user;
@@ -63,19 +55,16 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Transform.rotate(
-                              angle: pi,
-                              child: SvgPicture.asset(
-                                'assets/icons/arrow_right.svg',
-                              ),
-                            ),
+                          CustomIconButton(
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
                           ),
                           SizedBox(width: 12.w),
                           Text(
                             'Основная информация',
-                            style: CustomTextStyle.black_21_w700,
+                            style: CustomTextStyle.black_22_w700,
                           ),
                         ],
                       ),
@@ -91,11 +80,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeName,
                             hintText: 'Ваше имя',
                             height: 50,
                             textEditingController: firstnameController,
-                            hintStyle: CustomTextStyle.grey_13_w400,
+                            hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -111,11 +99,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeLastName,
                             hintText: 'Ваша фамилия',
                             height: 50.h,
                             textEditingController: lastnameController,
-                            hintStyle: CustomTextStyle.grey_13_w400,
+                            hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -132,7 +119,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
                             'Изменить E-mail',
-                            style: CustomTextStyle.grey_12_w400,
+                            style: CustomTextStyle.grey_14_w400,
                           ),
                         ),
                         SizedBox(height: 16.h),
@@ -140,12 +127,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
                             readOnly: true,
-                            // focusNode: focusNodePhone,
                             hintText: 'Номер телефона',
                             height: 50.h,
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
-                            hintStyle: CustomTextStyle.grey_13_w400,
+                            hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [
                               MaskTextInputFormatter(
                                 initialText: '+ ',
@@ -168,11 +154,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            // focusNode: focusNodeEmail,
                             hintText: 'E-mail',
                             height: 50.h,
                             textEditingController: emailController,
-                            hintStyle: CustomTextStyle.grey_13_w400,
+                            hintStyle: CustomTextStyle.grey_14_w400,
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
@@ -210,9 +195,9 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               ),
                               Flexible(
                                 child: Text(
-                                  'Юридическое лицо',
+                                  'Представитель юридического лица',
                                   textAlign: TextAlign.justify,
-                                  style: CustomTextStyle.black_13_w400_515150,
+                                  style: CustomTextStyle.black_14_w400_515150,
                                 ),
                               ),
                             ],
@@ -233,7 +218,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         btnColor: ColorStyles.yellowFFD70B,
                         textLabel: Text(
                           'Сохранить',
-                          style: CustomTextStyle.black_14_w600_171716,
+                          style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
                     ),
@@ -270,25 +255,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
     );
   }
 
-  void requestNextEmptyFocusStage1() {
-    // if (firstnameController.text.isEmpty) {
-    //   focusNodeName.requestFocus();
-    //   scrollController1.animateTo(0,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (lastnameController.text.isEmpty) {
-    //   focusNodeLastName.requestFocus();
-    //   scrollController1.animateTo(50.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (phoneController.text.isEmpty) {
-    //   focusNodePhone.requestFocus();
-    //   scrollController1.animateTo(100.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // } else if (emailController.text.isEmpty) {
-    //   focusNodeEmail.requestFocus();
-    //   scrollController1.animateTo(150.h,
-    //       duration: const Duration(milliseconds: 100), curve: Curves.linear);
-    // }
-  }
+  void requestNextEmptyFocusStage1() {}
 
   fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;

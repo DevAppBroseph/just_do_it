@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_do_it/models/category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -20,6 +19,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   List<Activities> activities = [];
+
+  int? refCode;
+
+  void setRef(int? value) => refCode = value;
 
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
     bool res = await Repository().editPassword(event.password, event.token);
@@ -47,10 +50,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
     List<Activities>? res = await Repository().getCategories();
-    activities = res ?? [];
-    if (res != null) {
-      emit(GetCategoriesState(res));
-    }
+    activities = res;
+    emit(GetCategoriesState(res));
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
@@ -64,8 +65,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res =
-        await Repository().confirmCodeRegistration(event.phone, event.code);
+    String? res = await Repository()
+        .confirmCodeRegistration(event.phone, event.code, refCode);
     if (res != null) {
       emit(ConfirmCodeRegistrSuccessState(res));
     } else {

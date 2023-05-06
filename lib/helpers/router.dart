@@ -50,11 +50,20 @@ class AppRoute {
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case allTasks:
-        return MaterialPageRoute(builder: (_) => const AllTasksView());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => AllTasksView(asCustomer: arg[0]));
       case archiveTasks:
-        return MaterialPageRoute(builder: (_) => const ArchiveTasksView());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => ArchiveTasksView(asCustomer: arg[0]));
       case tasks:
-        return MaterialPageRoute(builder: (_) => const TasksPage());
+        List<dynamic> arg = route.arguments as List<dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => TasksPage(
+            onSelect: arg[0],
+          ),
+        );
       case createTasks:
         return MaterialPageRoute(builder: (_) => ListTasks());
       case contactus:
@@ -65,9 +74,11 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => AboutProject());
       case menu:
         List<dynamic> arg = route.arguments as List<dynamic>;
+
         return MaterialPageRoute(
           builder: (_) => MenuPage(
             onBackPressed: arg[0],
+            inTask: arg[1],
           ),
         );
       case referal:

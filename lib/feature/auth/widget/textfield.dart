@@ -75,7 +75,7 @@ class CustomTextField extends StatelessWidget {
     Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
-        CustomTextStyle.grey_13_w400.copyWith(overflow: TextOverflow.ellipsis);
+        CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis);
 
     style = style ??
         TextStyle(
@@ -94,7 +94,6 @@ class CustomTextField extends StatelessWidget {
           height: height,
           width: widthOfScreen,
           child: TextFormField(
-            // key: key,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,
@@ -196,7 +195,6 @@ class CustomTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
-            // key: key,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,
@@ -230,7 +228,7 @@ class CustomTextField extends StatelessWidget {
                 color: hintTextColor,
                 fontWeight: FontWeight.w400,
               ),
-              errorStyle: const TextStyle(fontSize: 10.0),
+              errorStyle: const TextStyle(fontSize: 11),
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(
