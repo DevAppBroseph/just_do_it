@@ -200,7 +200,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (format1 != null || format2 != null) {
                           countField++;
                         }
-                        
 
                         if (currencyString != null &&
                             currencyString!.isNotEmpty) {
@@ -2187,22 +2186,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   String _countriesString() {
+    List<String> nameCountriesList = [];
     String nameCountries = '';
     int selectCount = 0;
     for (int i = 0; i < countries.length; i++) {
       if (countries[i].select) {
         selectCount += 1;
-        if (i == countries.length - 1) {
-          nameCountries += '${countries[i].name}';
-        } else {
-          nameCountries += '${countries[i].name}, ';
-        }
+        nameCountriesList.add('${countries[i].name}');
       }
     }
 
-    if (selectCount != 0 && selectCount == 1) {
-      nameCountries = nameCountries.replaceAll(',', '');
+    for (int i = 0; i < nameCountriesList.length; i++) {
+      if (i == nameCountriesList.length - 1) {
+        nameCountries += nameCountriesList[i];
+      } else {
+        nameCountries += '${nameCountriesList[i]}, ';
+      }
+      if (selectCount != 0 && selectCount == 1) {
+        nameCountries = nameCountries.replaceAll(',', '');
+      }
     }
+
     return nameCountries;
   }
 }

@@ -395,7 +395,9 @@ void showCountryWidget(
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: 180.h,
+              height: list.length < 3
+                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
+                  : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -449,7 +451,9 @@ void showCountryWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: 130.h,
+                            height: list.length < 3
+                                ? (list.isEmpty ? 1 : list.length) * 50.h
+                                : 150.h,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: list.length,
@@ -555,7 +559,9 @@ void showRegionWidget(
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: 180.h,
+              height: list.length < 3
+                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
+                  : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -609,7 +615,9 @@ void showRegionWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: 120.h,
+                            height: list.length < 3
+                                ? (list.isEmpty ? 1 : list.length) * 50.h
+                                : 150.h,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: list.length,

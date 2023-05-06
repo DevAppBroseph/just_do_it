@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -45,8 +46,8 @@ class _EditTasksState extends State<EditTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  File? document;
-  File? photo;
+  List<File> document = [];
+  List<File> photo = [];
 
   List<Countries> countries = [];
   Currency? currency;
@@ -60,8 +61,14 @@ class _EditTasksState extends State<EditTasks> {
   void initState() {
     super.initState();
 
+    for (var element in BlocProvider.of<AuthBloc>(context).activities) {
+      if (widget.task.activities?.id == element.id) {
+        selectCategory = element;
+        break;
+      }
+    }
+
     currency = widget.task.currency;
-    selectCategory = widget.task.activities;
     selectSubCategory = widget.task.subcategory;
     aboutController.text = widget.task.description;
     titleController.text = widget.task.name;
@@ -116,21 +123,25 @@ class _EditTasksState extends State<EditTasks> {
     setState(() {});
   }
 
-  _selectImage() async {
-    final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
-    if (getMedia != null) {
-      photo = File(getMedia.path);
+  _selectImages() async {
+    final getMedia = await ImagePicker().pickMultiImage();
+    if (getMedia.isNotEmpty) {
+      for (var element in getMedia) {
+        photo.add(File(element.path));
+      }
     }
     setState(() {});
   }
 
-  _selectFile() async {
+  _selectFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result != null) {
-      document = File(result.files.first.path!);
+      for (var element in result.files) {
+        document.add(File(element.path!));
+      }
       setState(() {});
     }
   }
@@ -163,7 +174,7 @@ class _EditTasksState extends State<EditTasks> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _selectImage();
+                      _selectImages();
                     },
                   ),
                   ListTile(
@@ -173,7 +184,7 @@ class _EditTasksState extends State<EditTasks> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _selectFile();
+                      _selectFiles();
                     },
                   ),
                 ],
@@ -250,9 +261,14 @@ class _EditTasksState extends State<EditTasks> {
                           selectCategory = cat;
                           selectSubCategory = subCat;
                         },
-                        removefiles: (photo, document) {
-                          this.photo = photo;
-                          this.document = document;
+                        removefiles: (photoIndex, documentIndex) {
+                          if (photoIndex != null) {
+                            photo.removeAt(photoIndex);
+                          }
+                          if (documentIndex != null) {
+                            document.removeAt(documentIndex);
+                          }
+
                           setState(() {});
                         },
                       ),
