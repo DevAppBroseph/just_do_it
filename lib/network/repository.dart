@@ -117,6 +117,7 @@ class Repository {
   }
 
   Future<bool> createTask(String access, Task task) async {
+    log(task.toString());
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -128,6 +129,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
+    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
