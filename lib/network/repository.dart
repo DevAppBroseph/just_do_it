@@ -31,6 +31,7 @@ class Repository {
     );
 
     if (response.statusCode == 201 || response.statusCode == 200) {
+      log('message ${response.data}');
       return Owner.fromJson(response.data);
     }
     return null;
@@ -109,7 +110,8 @@ class Repository {
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       for (var element in response.data) {
-        tasks.add(Task.fromJson(element));
+        final task = Task.fromJson(element);
+        tasks.add(task);
       }
       return tasks;
     }

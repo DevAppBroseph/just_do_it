@@ -156,18 +156,10 @@ class _SearchPageState extends State<SearchPage> {
                             hintText: 'Поиск',
                             textEditingController: searchController,
                             onTap: () async {
-                              if (owner != null) {
-                                setState(() {
-                                  owner = null;
-                                });
-                              } else if (selectTask != null) {
-                                setState(() {
-                                  selectTask = null;
-                                });
-                              }
-                              setState(() {
-                                searchList = true;
-                              });
+                              owner = null;
+                              selectTask = null;
+                              searchList = true;
+                              setState(() {});
                               getHistoryList();
                             },
                             onFieldSubmitted: (value) {

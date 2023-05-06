@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,6 +27,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContractorProfile extends StatefulWidget {
   double padding;
@@ -53,7 +56,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description == user!.activitiesInfo?[j].description) {
+        if (listCategories[i].description ==
+            user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
         }
       }
@@ -66,11 +70,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
   }
 
   void downloadCV(String url) async {
-    Uint8List? byte = await Repository().downloadFile(url.contains(server) ? url : server + url);
+    Uint8List? byte = await Repository()
+        .downloadFile(url.contains(server) ? url : server + url);
     String savePath = await getFilePath(url.split('/').last);
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
     ].request();
+
+    log('message $savePath');
 
     if (statuses[Permission.storage]!.isGranted) {
       File file = File(savePath);
@@ -87,7 +94,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }
@@ -105,11 +114,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
         File? file = File(pickedFile.path);
         files.add(ArrayImages(null, file.readAsBytesSync()));
       }
-      files.forEach((element) {
+      for (var element in files) {
         if (photos.length < 10) {
           photos.add(element);
         }
-      });
+      }
       user?.copyWith(images: photos);
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
@@ -125,6 +134,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
+
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
       setState(() {});
     }
@@ -133,7 +143,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
@@ -148,7 +159,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
             if (focusNode.hasFocus) {
               focusNode.unfocus();
               user!.copyWith(activity: experienceController.text);
-              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(UpdateProfileEvent(user));
             }
           },
           child: ListView(
@@ -174,9 +186,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 children: [
                                   GestureDetector(
                                     onTap: () async {
-                                      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                      var image = await ImagePicker().pickImage(
+                                          source: ImageSource.gallery);
                                       if (image != null) {
-                                        BlocProvider.of<ProfileBloc>(context).add(
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .add(
                                           UpdateProfilePhotoEvent(photo: image),
                                         );
                                       }
@@ -189,15 +203,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   height: 60.h,
                                                   width: 60.h,
                                                   padding: EdgeInsets.all(10.h),
-                                                  decoration: const BoxDecoration(
-                                                    color: ColorStyles.shadowFC6554,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: ColorStyles
+                                                        .shadowFC6554,
                                                   ),
-                                                  child: Image.asset('assets/images/camera.png'),
+                                                  child: Image.asset(
+                                                      'assets/images/camera.png'),
                                                 )
                                               : CachedNetworkImage(
-                                                  imageUrl: user!.photoLink!.contains(server)
+                                                  imageUrl: user!.photoLink!
+                                                          .contains(server)
                                                       ? user!.photoLink!
-                                                      : server + user!.photoLink!,
+                                                      : server +
+                                                          user!.photoLink!,
                                                   fit: BoxFit.cover,
                                                 )),
                                     ),
@@ -209,9 +228,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         onTap: () {
                                           user?.photo = null;
                                           user?.photoLink = null;
-                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                          BlocProvider.of<ProfileBloc>(context).add(
-                                            UpdateProfilePhotoEvent(photo: null),
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(
+                                            UpdateProfilePhotoEvent(
+                                                photo: null),
                                           );
                                           setState(() {});
                                         },
@@ -219,8 +241,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           height: 20.h,
                                           width: 20.h,
                                           decoration: BoxDecoration(
-                                            boxShadow: [BoxShadow(color: Colors.black)],
-                                            borderRadius: BorderRadius.circular(100.r),
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(100.r),
                                             color: Colors.white,
                                           ),
                                           child: Center(
@@ -267,7 +292,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
+                                    reviews?.ranking == null
+                                        ? '-'
+                                        : (reviews!.ranking!).toString(),
                                     style: CustomTextStyle.black_20_w700_171716,
                                   ),
                                 ],
@@ -287,22 +314,23 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(width: 25.w),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(
                       width: 240.w,
                       child: AutoSizeText(
                         '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w800),
+                        style: TextStyle(
+                            fontSize: 30.sp, fontWeight: FontWeight.w800),
                         maxLines: 2,
                         softWrap: true,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     GestureDetector(
                       onTap: () async {
-                        final code =
-                            await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
+                        final code = await FirebaseDynamicLinksService()
+                            .shareUserProfile(int.parse(user!.id.toString()));
                         Share.share(code.toString());
                       },
                       child: SvgPicture.asset(
@@ -341,51 +369,73 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   SizedBox(height: 8.h),
                                   Row(
                                     children: [
-                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                      BlocBuilder<ScoreBloc, ScoreState>(
+                                          builder: (context, state) {
                                         if (state is ScoreLoaded) {
                                           final levels = state.levels;
-                                          if (user!.balance! < levels![0].mustCoins!) {
+                                          if (user!.balance! <
+                                              levels![0].mustCoins!) {
                                             return Text(
                                               levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
 
-                                          if (user!.balance! >= levels[0].mustCoins! &&
-                                              user!.balance! < levels[1].mustCoins!) {
+                                          if (user!.balance! >=
+                                                  levels[0].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[1].mustCoins!) {
                                             return Text(
                                               levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
-                                          if (user!.balance! >= levels[1].mustCoins! &&
-                                              user!.balance! < levels[2].mustCoins!) {
+                                          if (user!.balance! >=
+                                                  levels[1].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[2].mustCoins!) {
                                             return Text(
                                               levels[1].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
-                                          if (user!.balance! >= levels[2].mustCoins! &&
-                                              user!.balance! < levels[3].mustCoins!) {
+                                          if (user!.balance! >=
+                                                  levels[2].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[3].mustCoins!) {
                                             return Text(
                                               levels[2].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
-                                          if (user!.balance! >= levels[3].mustCoins! &&
-                                              user!.balance! < levels[4].mustCoins!) {
+                                          if (user!.balance! >=
+                                                  levels[3].mustCoins! &&
+                                              user!.balance! <
+                                                  levels[4].mustCoins!) {
                                             return Text(
                                               levels[3].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
-                                          if (user!.balance! >= levels[4].mustCoins!) {
+                                          if (user!.balance! >=
+                                              levels[4].mustCoins!) {
                                             return Text(
                                               levels[4].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              style: CustomTextStyle
+                                                  .purple_20_w700
+                                                  .copyWith(fontSize: 15),
                                             );
                                           }
-                                    
                                         }
                                         return Container();
                                       }),
@@ -393,8 +443,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   ),
                                 ],
                               ),
-                              Spacer(),
-                              BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                              const Spacer(),
+                              BlocBuilder<ScoreBloc, ScoreState>(
+                                  builder: (context, state) {
                                 if (state is ScoreLoaded) {
                                   final levels = state.levels;
                                   if (user!.balance! < levels![0].mustCoins!) {
@@ -405,32 +456,42 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     );
                                   }
 
-                                  if (user!.balance! >= levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
+                                  if (user!.balance! >= levels[0].mustCoins! &&
+                                      user!.balance! < levels[1].mustCoins!) {
                                     return Image.network(
                                       '${levels[0].image}',
                                       height: 42,
                                       width: 42,
                                     );
                                   }
-                                  if (user!.balance! >= levels[1].mustCoins! && user!.balance! < levels[2].mustCoins!) {
+                                  if (user!.balance! >= levels[1].mustCoins! &&
+                                      user!.balance! < levels[2].mustCoins!) {
                                     return Image.network(
-                                      levels[1].image != null ? '${levels[1].image}' : '',
+                                      levels[1].image != null
+                                          ? '${levels[1].image}'
+                                          : '',
                                       height: 42,
                                       width: 42,
                                       fit: BoxFit.fill,
                                     );
                                   }
-                                  if (user!.balance! >= levels[2].mustCoins! && user!.balance! < levels[3].mustCoins!) {
+                                  if (user!.balance! >= levels[2].mustCoins! &&
+                                      user!.balance! < levels[3].mustCoins!) {
                                     return Image.network(
-                                      levels[2].image != null ? '${levels[2].image}' : '',
+                                      levels[2].image != null
+                                          ? '${levels[2].image}'
+                                          : '',
                                       height: 42,
                                       width: 42,
                                       fit: BoxFit.fill,
                                     );
                                   }
-                                  if (user!.balance! >= levels[3].mustCoins! && user!.balance! < levels[4].mustCoins!) {
+                                  if (user!.balance! >= levels[3].mustCoins! &&
+                                      user!.balance! < levels[4].mustCoins!) {
                                     return Image.network(
-                                      levels[3].image != null ? '${levels[3].image}' : '',
+                                      levels[3].image != null
+                                          ? '${levels[3].image}'
+                                          : '',
                                       height: 42,
                                       width: 42,
                                       fit: BoxFit.fill,
@@ -438,7 +499,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   }
                                   if (user!.balance! >= levels[4].mustCoins!) {
                                     return Image.network(
-                                      levels[4].image != null ? '${levels[4].image}' : '',
+                                      levels[4].image != null
+                                          ? '${levels[4].image}'
+                                          : '',
                                       height: 42,
                                       width: 42,
                                       fit: BoxFit.fill,
@@ -447,7 +510,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 }
                                 return Container();
                               }),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),
@@ -611,7 +674,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           onTap: _selectCV,
                           child: Container(
                             height: 40.h,
-                            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.h, vertical: 11.h),
                             decoration: BoxDecoration(
                               color: ColorStyles.greyF9F9F9,
                               borderRadius: BorderRadius.circular(10.r),
@@ -671,7 +735,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 width: 50.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(10.r)),
                                 child: Center(
                                   child: SvgPicture.asset(
@@ -690,7 +756,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   user?.cv = null;
                                   user?.cvLink = null;
                                   user?.cvType = null;
-                                  BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .setUser(user);
                                   BlocProvider.of<ProfileBloc>(context).add(
                                     UpdateProfileCvEvent(file: null),
                                   );
@@ -701,8 +768,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   width: 15.h,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      boxShadow: const [BoxShadow(color: Colors.black)],
-                                      borderRadius: BorderRadius.circular(40.r)),
+                                      boxShadow: const [
+                                        BoxShadow(color: Colors.black)
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.circular(40.r)),
                                   child: Center(
                                     child: Icon(
                                       Icons.close,
@@ -736,15 +806,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           (value) {
                             List<int> activityIndexes = [];
 
-                            typeCategories.forEach((element) {
-                              activityIndexes
-                                  .add(listCategories.firstWhere((element2) => element2.description == element).id);
-                            });
+                            for (var element in typeCategories) {
+                              activityIndexes.add(listCategories
+                                  .firstWhere((element2) =>
+                                      element2.description == element)
+                                  .id);
+                            }
                             user?.copyWith(
                               activitiesDocument: activityIndexes,
                               groups: [4],
                             );
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(UpdateProfileEvent(user));
 
                             setState(() {});
                           },
@@ -772,7 +845,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ),
               if (user != null && typeCategories.isNotEmpty)
-                Container(
+                SizedBox(
                   height: 90.h,
                   width: double.infinity,
                   child: ListView.builder(
@@ -781,8 +854,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     padding: EdgeInsets.only(left: 24.w, right: 18.w),
                     itemCount: typeCategories.length,
                     itemBuilder: (context, index) {
-                      var category =
-                          listCategories.firstWhere((element) => element.description == typeCategories[index]);
+                      var category = listCategories.firstWhere((element) =>
+                          element.description == typeCategories[index]);
 
                       return _categoryItem(category, index);
                     },
@@ -823,7 +896,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: TextFormField(
                             onTap: () {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -831,7 +905,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText: "Опишите свой опыт работы и прикрепите изображения",
+                              hintText:
+                                  "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
                               hintStyle: CustomTextStyle.black_14_w400_515150,
                             ),
@@ -840,15 +915,21 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             maxLines: null,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
                               }
                             },
-                            inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(500)
+                            ],
                             onChanged: (String value) {
-                              BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .user!
+                                  .copyWith(
+                                      activity: experienceController.text);
 
                               setState(() {});
                             },
@@ -862,79 +943,110 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return SizedBox(
-                                  width: 80.h,
-                                  height: 65.h,
-                                  child: Stack(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 5.w, left: 5.w),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10.r),
-                                          child: SizedBox(
-                                            width: 65.h,
-                                            height: 65.h,
-                                            child: user!.images![index].byte != null
-                                                ? Image.memory(
-                                                    user!.images![index].byte!,
-                                                    width: 65.h,
-                                                    height: 65.h,
-                                                    fit: BoxFit.cover,
-                                                    frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                                      return const CupertinoActivityIndicator();
-                                                    },
-                                                  )
-                                                : CachedNetworkImage(
-                                                    imageUrl: user!.images![index].linkUrl!.contains(server)
-                                                        ? user!.images![index].linkUrl!
-                                                        : '$server${user!.images![index].linkUrl}',
-                                                    progressIndicatorBuilder: (context, url, progress) {
-                                                      return const CupertinoActivityIndicator();
-                                                    },
-                                                    width: 65.h,
-                                                    height: 65.h,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          user!.images!.removeAt(index);
-                                          setState(() {});
-                                          for (var element in user!.images!) {
-                                            element.byte ??= await Repository().downloadFile(
-                                              element.linkUrl!.contains(server)
-                                                  ? element.linkUrl!
-                                                  : '$server${element.linkUrl}',
-                                            );
-                                          }
-
-                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
-
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                          setState(() {});
-                                        },
-                                        child: Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                            width: 20.w,
-                                            height: 20.h,
-                                            margin: EdgeInsets.only(right: 10.w),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: Icon(
-                                              Icons.close,
-                                              color: Colors.black,
-                                              size: 10.h,
+                                return GestureDetector(
+                                  onTap: () {
+                                    launch(user!.images![index].linkUrl!
+                                            .contains(server)
+                                        ? user!.images![index].linkUrl!
+                                        : server +
+                                            user!.images![index].linkUrl!);
+                                  },
+                                  child: SizedBox(
+                                    width: 80.h,
+                                    height: 65.h,
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 5.w, left: 5.w),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                            child: SizedBox(
+                                              width: 65.h,
+                                              height: 65.h,
+                                              child: user!.images![index]
+                                                          .byte !=
+                                                      null
+                                                  ? Image.memory(
+                                                      user!
+                                                          .images![index].byte!,
+                                                      width: 65.h,
+                                                      height: 65.h,
+                                                      fit: BoxFit.cover,
+                                                      frameBuilder: (context,
+                                                          child,
+                                                          frame,
+                                                          wasSynchronouslyLoaded) {
+                                                        return const CupertinoActivityIndicator();
+                                                      },
+                                                    )
+                                                  : CachedNetworkImage(
+                                                      imageUrl: user!
+                                                              .images![index]
+                                                              .linkUrl!
+                                                              .contains(server)
+                                                          ? user!.images![index]
+                                                              .linkUrl!
+                                                          : '$server${user!.images![index].linkUrl}',
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                              progress) {
+                                                        return const CupertinoActivityIndicator();
+                                                      },
+                                                      width: 65.h,
+                                                      height: 65.h,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        GestureDetector(
+                                          onTap: () async {
+                                            user!.images!.removeAt(index);
+                                            setState(() {});
+                                            for (var element in user!.images!) {
+                                              element.byte ??=
+                                                  await Repository()
+                                                      .downloadFile(
+                                                element.linkUrl!
+                                                        .contains(server)
+                                                    ? element.linkUrl!
+                                                    : '$server${element.linkUrl}',
+                                              );
+                                            }
+
+                                            BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .setUser(user);
+
+                                            BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .add(UpdateProfileEvent(user));
+                                            setState(() {});
+                                          },
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                              width: 20.w,
+                                              height: 20.h,
+                                              margin:
+                                                  EdgeInsets.only(right: 10.w),
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.close,
+                                                color: Colors.black,
+                                                size: 10.h,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
@@ -1022,7 +1134,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -1052,10 +1165,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
               SizedBox(height: 60.h),
               GestureDetector(
                 onTap: () async {
-                  await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                  await Repository().deleteProfile(
+                      BlocProvider.of<ProfileBloc>(context).access!);
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Center(
                   child: Text(
@@ -1096,7 +1211,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 width: 24.w,
                 height: 24.h,
               ),
-            Spacer(),
+            const Spacer(),
             Text(
               activitiy.description ?? '',
               style: CustomTextStyle.black_11_w400_171716,

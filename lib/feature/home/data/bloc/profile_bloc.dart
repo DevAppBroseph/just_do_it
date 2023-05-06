@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -46,6 +48,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     user = event.newUser;
+    log('message ${user?.toJson()}');
     if (access != null) {
       UserRegModel? res = await Repository().updateUser(access!, user!);
       if (res != null) {
