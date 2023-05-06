@@ -319,15 +319,19 @@ class _EditTasksState extends State<EditTasks> {
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
-                            error += '\n- слишком большая сумма у минимального бюджета';
+                            error +=
+                                '\n- слишком большая сумма у минимального бюджета';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (  int.parse(coastMaxController.text)> 1000000000) {
-                            error += '\n- слишком большая сумма у максимального бюджета';
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMaxController.text) > 1000000000) {
+                            error +=
+                                '\n- слишком большая сумма у максимального бюджета';
                             errorsFlag = true;
                           }
                         }
@@ -403,6 +407,8 @@ class _EditTasksState extends State<EditTasks> {
                               ..pop()
                               ..pop();
                           }
+                          BlocProvider.of<CountriesBloc>(context)
+                              .add(ResetCountryEvent());
                           Loader.hide();
                         }
                       } else {
