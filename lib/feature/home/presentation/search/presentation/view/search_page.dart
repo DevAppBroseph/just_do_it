@@ -20,6 +20,7 @@ import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -73,24 +74,14 @@ class _SearchPageState extends State<SearchPage> {
   
   void parseTripRefCode(PendingDynamicLinkData event) async {
     String? taskId = event.link.queryParameters['task_id'];
-    taskList = await BlocProvider.of<TasksBloc>(context).tasks;
+    final task = await Repository().getTaskById(int.parse(taskId!));
+    
      if (taskId != null) {
-     log(taskId.toString());
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TaskView(
-          selectTask: taskList[0],
-          openOwner: (owner) {
-            this.owner = owner;
-            setState(() {});
-          },
-          canSelect: true,
-        ),
-        ),
-      );
+      log('11111');
+     selectTask = task;
+     searchList = true;
     }
-    taskList.clear();
+
   }
 
   void initFunc() {
