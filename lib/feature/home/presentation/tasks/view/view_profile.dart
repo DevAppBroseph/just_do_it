@@ -104,7 +104,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => taskMoreDialog(
+                          onTap: () => taskMoreDialogForProfile(
                             context,
                             getWidgetPosition(globalKey),
                             (index) {},

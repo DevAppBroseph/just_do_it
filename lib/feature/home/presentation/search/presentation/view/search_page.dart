@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +20,7 @@ import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -57,6 +62,26 @@ class _SearchPageState extends State<SearchPage> {
     searchController.text = widget.text;
     initFunc();
     getTaskList();
+    if (Platform.isAndroid) {
+      FirebaseDynamicLinks.instance.getInitialLink().then((value) {
+        if (value != null) parseTripRefCode(value);
+      });
+    }
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      parseTripRefCode(event);
+    });
+  }
+  
+  void parseTripRefCode(PendingDynamicLinkData event) async {
+    String? taskId = event.link.queryParameters['task_id'];
+    final task = await Repository().getTaskById(int.parse(taskId!));
+    
+     if (taskId != null) {
+      log('11111');
+     selectTask = task;
+     searchList = true;
+    }
+
   }
 
   void initFunc() {
@@ -390,7 +415,9 @@ class _SearchPageState extends State<SearchPage> {
     if (owner != null) {
       return Expanded(child: ProfileView(owner: owner!));
     }
+    
     if (selectTask != null) {
+      log(selectTask!.id.toString());
       return Expanded(
         child: TaskView(
           selectTask: selectTask!,

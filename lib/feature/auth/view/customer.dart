@@ -220,9 +220,14 @@ class _CustomerState extends State<Customer> {
 
                   String email = emailController.text;
 
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
+                        
+                      if (!emailValid && emailController.text.isNotEmpty) {
+                      error += '\n- корректную почту';
+                      errorsFlag = true;
+                    }
 
                   if (!emailValid) {
                     error += '\n- корректную почту';
@@ -290,14 +295,43 @@ class _CustomerState extends State<Customer> {
                       error += '\n- дату выдачи документа';
                       errorsFlag = true;
                     }
-                  }
+                     if (passwordController.text.length < 6) {
+                      error += '\n\nМинимальная длина пароля 6 символов';
+                       errorsFlag = true;
+                    }
+                      if ((passwordController.text.isNotEmpty &&
+                              repeatPasswordController.text.isNotEmpty) &&
+                          (passwordController.text !=
+                              repeatPasswordController.text)) {
+                        error += '\nПароли не совпадают';
+                         errorsFlag = true;
+                      }
+                      if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      error += '\nВаш документ просрочен';
+                       errorsFlag = true;
+                    }
 
-                  if (errorsFlag) {
-                    if ((passwordController.text.isNotEmpty &&
+                    if (errorsFlag) {
+                     
+                      showAlertToast(error);
+                    } else if (passwordController.text.length < 6) {
+                      showAlertToast('- минимальная длина пароля 6 символов');
+                    } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      error += '\n\nПароли не совпадают';
+                      showAlertToast('Пароли не совпадают');
+                    } else if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      showAlertToast('Ваш документ просрочен');
+                    } else if (checkExpireDate(dateTimeEnd) != null) {
+                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    } else {
+                      showLoaderWrapper(context);
+                      documentEdit();
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SendProfileEvent(user));
                     }
                     showAlertToast(error);
                   } else if (passwordController.text.length < 6) {

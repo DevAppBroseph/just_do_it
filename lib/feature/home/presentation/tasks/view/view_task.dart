@@ -55,9 +55,10 @@ class _TaskViewState extends State<TaskView> {
               const Spacer(),
               GestureDetector(
                 onTap: () => taskMoreDialog(
+                  
                   context,
                   getWidgetPosition(globalKey),
-                  (index) {},
+                  (index) {},  widget.selectTask
                 ),
                 child: SvgPicture.asset(
                   'assets/icons/more-circle.svg',
