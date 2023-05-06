@@ -109,11 +109,7 @@ class Repository {
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       for (var element in response.data) {
-        final task = Task.fromJson(element);
-        if (tasks.any((element) => task.id == element.id)) {
-        } else {
-          tasks.add(Task.fromJson(element));
-        }
+        tasks.add(Task.fromJson(element));
       }
       return tasks;
     }
@@ -373,20 +369,24 @@ class Repository {
 
   // вход
   Future<String?> signIn(String phone, String password) async {
-    final response = await dio.post(
-      '$server/auth/api/token/',
-      options: Options(
-        validateStatus: ((status) => status! >= 200),
-      ),
-      data: {
-        "phone_number": phone,
-        "password": password,
-      },
-    );
-    if (response.statusCode == 200) {
-      String? accessToken = response.data['access'];
-      await Storage().setAccessToken(accessToken);
-      return response.data['access'];
+    try {
+      final response = await dio.post(
+        '$server/auth/api/token/',
+        options: Options(
+          validateStatus: ((status) => status! >= 200),
+        ),
+        data: {
+          "phone_number": phone,
+          "password": password,
+        },
+      );
+      if (response.statusCode == 200) {
+        String? accessToken = response.data['access'];
+        await Storage().setAccessToken(accessToken);
+        return response.data['access'];
+      }
+    } catch (e) {
+      log('message $e');
     }
     return null;
   }
@@ -419,6 +419,7 @@ class Repository {
         "email": email,
       },
     );
+    log('message ${response.data}');
 
     if (response.statusCode == 200) {
       return null;

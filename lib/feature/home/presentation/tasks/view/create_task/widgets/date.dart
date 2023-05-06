@@ -967,22 +967,27 @@ class _DatePickerState extends State<DatePicker> {
   }
 
   String _countriesString() {
+    List<String> nameCountriesList = [];
     String nameCountries = '';
     int selectCount = 0;
     for (int i = 0; i < widget.allCountries.length; i++) {
       if (widget.allCountries[i].select) {
         selectCount += 1;
-        if (i == widget.allCountries.length - 1) {
-          nameCountries += '${widget.allCountries[i].name}';
-        } else {
-          nameCountries += '${widget.allCountries[i].name}, ';
-        }
+        nameCountriesList.add('${widget.allCountries[i].name}');
       }
     }
 
-    if (selectCount != 0 && selectCount == 1) {
-      nameCountries = nameCountries.replaceAll(',', '');
+    for (int i = 0; i < nameCountriesList.length; i++) {
+      if (i == nameCountriesList.length - 1) {
+        nameCountries += nameCountriesList[i];
+      } else {
+        nameCountries += '${nameCountriesList[i]}, ';
+      }
+      if (selectCount != 0 && selectCount == 1) {
+        nameCountries = nameCountries.replaceAll(',', '');
+      }
     }
+
     return nameCountries;
   }
 

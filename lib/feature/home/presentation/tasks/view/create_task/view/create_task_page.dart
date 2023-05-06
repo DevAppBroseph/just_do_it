@@ -58,8 +58,8 @@ class _CeateTasksState extends State<CeateTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  File? document;
-  File? photo;
+  List<File> document = [];
+  List<File> photo = [];
 
   List<Countries> countries = [];
   Currency? currency;
@@ -70,21 +70,26 @@ class _CeateTasksState extends State<CeateTasks> {
   DateTime? startDate;
   DateTime? endDate;
 
-  _selectImage() async {
-    final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
-    if (getMedia != null) {
-      photo = File(getMedia.path);
+  _selectImages() async {
+    final getMedia = await ImagePicker().pickMultiImage();
+    log('message ${getMedia.length}');
+    if (getMedia.isNotEmpty) {
+      for (var element in getMedia) {
+        photo.add(File(element.path));
+      }
     }
     setState(() {});
   }
 
-  _selectFile() async {
+  _selectFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result != null) {
-      document = File(result.files.first.path!);
+      for (var element in result.files) {
+        document.add(File(element.path!));
+      }
       setState(() {});
     }
   }
@@ -117,7 +122,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _selectImage();
+                      _selectImages();
                     },
                   ),
                   ListTile(
@@ -127,7 +132,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _selectFile();
+                      _selectFiles();
                     },
                   ),
                 ],
@@ -328,9 +333,14 @@ class _CeateTasksState extends State<CeateTasks> {
                           selectCategory = cat;
                           selectSubCategory = subCat;
                         },
-                        removefiles: (photo, document) {
-                          this.photo = photo;
-                          this.document = document;
+                        removefiles: (photoIndex, documentIndex) {
+                          if (photoIndex != null) {
+                            photo.removeAt(photoIndex);
+                          }
+                          if (documentIndex != null) {
+                            document.removeAt(documentIndex);
+                          }
+
                           setState(() {});
                         },
                       ),
