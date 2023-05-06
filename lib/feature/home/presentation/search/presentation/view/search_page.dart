@@ -78,8 +78,11 @@ class _SearchPageState extends State<SearchPage> {
     
      if (taskId != null) {
       log('11111');
-     selectTask = task;
+      setState(() {
+        selectTask = task;
      searchList = true;
+      });
+     
     }
 
   }

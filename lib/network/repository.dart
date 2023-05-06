@@ -81,6 +81,7 @@ class Repository {
     List<int> countries,
     bool? customer,
     int? currency,
+    int? passportAndCV,
   ) async {
     Map<String, dynamic>? queryParameters = {
       if (query != null && query.isNotEmpty) "search": query,
@@ -89,6 +90,7 @@ class Repository {
       if (dateEnd != null) "date_end": dateEnd,
       if (dateStart != null) "date_start": dateStart,
       if (currency != null) "currency": currency,
+      if (passportAndCV != null) "doc_info_not_empty": passportAndCV,
       if (countries.isNotEmpty) "countries": countries,
       if (towns.isNotEmpty) "towns": towns,
       if (regions.isNotEmpty) "regions": regions,
