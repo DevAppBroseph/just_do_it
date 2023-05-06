@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onFieldSubmitted;
   final TextEditingController textEditingController;
+  final TextCapitalization? textCapitalization;
   final Color? mainColor;
   final Color? bgColor;
   final int? maxLines;
@@ -66,7 +67,7 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.height,
     this.width,
-    this.contentPadding = EdgeInsets.zero,
+    this.contentPadding = EdgeInsets.zero,  this.textCapitalization,
   });
 
   @override

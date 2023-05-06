@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:open_file/open_file.dart';
@@ -329,6 +330,7 @@ class _CategoryState extends State<Category> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
+             
                 maxLines: 8,
                 onTap: () {
                   openSubCategory = false;
@@ -346,6 +348,10 @@ class _CategoryState extends State<Category> {
                     widget.aboutController.text,
                   );
                 },
+                formatters: [
+                 UpperEveryTextInputFormatter(),
+                ],
+              
               ),
             ),
           ),
