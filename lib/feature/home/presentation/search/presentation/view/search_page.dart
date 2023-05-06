@@ -71,17 +71,18 @@ class _SearchPageState extends State<SearchPage> {
       parseTripRefCode(event);
     });
   }
-  
+
   void parseTripRefCode(PendingDynamicLinkData event) async {
     String? taskId = event.link.queryParameters['task_id'];
     final task = await Repository().getTaskById(int.parse(taskId!));
-    
-     if (taskId != null) {
-      log('11111');
-     selectTask = task;
-     searchList = true;
+    if (mounted) {
+      setState(() {
+        selectTask = task;
+        searchList = true;
+      });
     }
 
+    log(' tgtrhEF EWF EWF EWQF EWF WEF EWF EW WErtht erge rg $selectTask');
   }
 
   void initFunc() {
@@ -114,6 +115,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    log(' tgtrhrtht erge rg $selectTask');
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     String? access = BlocProvider.of<ProfileBloc>(context).access;
@@ -200,19 +202,13 @@ class _SearchPageState extends State<SearchPage> {
                               if (value.isEmpty) {
                                 getHistoryList();
                               }
-                              List<Activities> activities =
-                                  BlocProvider.of<ProfileBloc>(context)
-                                      .activities;
+                              List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
                               searchChoose.clear();
                               if (value.isNotEmpty) {
                                 for (var element1 in activities) {
                                   for (var element2 in element1.subcategory) {
-                                    if (element2.description!
-                                            .toLowerCase()
-                                            .contains(value.toLowerCase()) &&
-                                        !searchChoose.contains(element2
-                                            .description!
-                                            .toLowerCase())) {
+                                    if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                        !searchChoose.contains(element2.description!.toLowerCase())) {
                                       searchChoose.add(element2.description!);
                                     }
                                   }
@@ -220,16 +216,15 @@ class _SearchPageState extends State<SearchPage> {
                               }
                               setState(() {});
                             },
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 11.w, vertical: 11.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}, false]).then((value) {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -243,8 +238,7 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               });
                             },
-                            child:
-                                SvgPicture.asset('assets/icons/category.svg')),
+                            child: SvgPicture.asset('assets/icons/category.svg')),
                       ],
                     ),
                   ),
@@ -282,8 +276,7 @@ class _SearchPageState extends State<SearchPage> {
                           ScaleButton(
                             bound: 0.01,
                             onTap: () {
-                              BlocProvider.of<SearchBloc>(context)
-                                  .add(OpenSlidingPanelEvent());
+                              BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent());
                             },
                             child: SizedBox(
                               height: 40.h,
@@ -299,8 +292,7 @@ class _SearchPageState extends State<SearchPage> {
                                       borderRadius: BorderRadius.circular(10.r),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 10.h),
                                       child: Row(
                                         children: [
                                           SvgPicture.asset(
@@ -311,8 +303,7 @@ class _SearchPageState extends State<SearchPage> {
                                           SizedBox(width: 4.w),
                                           Text(
                                             'Фильтр',
-                                            style: CustomTextStyle
-                                                .black_14_w400_171716,
+                                            style: CustomTextStyle.black_14_w400_171716,
                                           ),
                                         ],
                                       ),
@@ -324,28 +315,22 @@ class _SearchPageState extends State<SearchPage> {
                                       height: 15.h,
                                       width: 15.h,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(369.r),
+                                        borderRadius: BorderRadius.circular(369.r),
                                         color: ColorStyles.black171716,
                                       ),
                                       child: Center(
-                                        child:
-                                            BlocBuilder<TasksBloc, TasksState>(
-                                                builder: (context, state) {
+                                        child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
                                           if (state is TasksLoaded) {
                                             return Text(
-                                              state.countFilter != 0 &&
-                                                      state.countFilter != null
+                                              state.countFilter != 0 && state.countFilter != null
                                                   ? state.countFilter.toString()
                                                   : '0',
-                                              style:
-                                                  CustomTextStyle.white_10_w700,
+                                              style: CustomTextStyle.white_10_w700,
                                             );
                                           } else {
                                             return Text(
                                               '',
-                                              style:
-                                                  CustomTextStyle.white_10_w700,
+                                              style: CustomTextStyle.white_10_w700,
                                             );
                                           }
                                         }),
@@ -362,8 +347,7 @@ class _SearchPageState extends State<SearchPage> {
             if (selectTask == null && !searchList) SizedBox(height: 30.h),
             if (selectTask == null && !searchList)
               Expanded(
-                child: BlocBuilder<TasksBloc, TasksState>(
-                    builder: (context, state) {
+                child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
                   taskList = BlocProvider.of<TasksBloc>(context).tasks;
                   if (state is TasksLoading) {
                     return SkeletonLoader(
@@ -371,8 +355,7 @@ class _SearchPageState extends State<SearchPage> {
                       baseColor: ColorStyles.whiteFFFFFF,
                       highlightColor: ColorStyles.greyF3F3F3,
                       builder: Container(
-                        margin: EdgeInsets.only(
-                            left: 24.w, right: 24.w, bottom: 24.w),
+                        margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
                         height: 100.h,
                         decoration: BoxDecoration(
                           color: ColorStyles.whiteFFFFFF,
@@ -415,7 +398,7 @@ class _SearchPageState extends State<SearchPage> {
     if (owner != null) {
       return Expanded(child: ProfileView(owner: owner!));
     }
-    
+
     if (selectTask != null) {
       log(selectTask!.id.toString());
       return Expanded(

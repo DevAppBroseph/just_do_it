@@ -31,6 +31,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       countries,
       event.customer,
       event.currency,
+      event.passportAndCV,
     );
 
     emit(TasksLoaded(event.countFilter, tasks: tasks));

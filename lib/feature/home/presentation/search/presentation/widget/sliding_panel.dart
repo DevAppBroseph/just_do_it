@@ -55,6 +55,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   List<Countries> countries = [];
   Activities? selectCategory;
   int? currencySelect;
+  int passportAndCVSelect = 0;
   bool slide = false;
   DateTime? startDate;
   DateTime? endDate;
@@ -233,9 +234,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             towns.isNotEmpty) {
                           countField++;
                         }
+                        if (passportAndCVSelect == 1) {
+                          countField++;
+                        }
                         log(customerFlag.toString());
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
+                                  passportAndCV: passportAndCVSelect,
                                   access: access,
                                   query: keyWordController.text,
                                   dateEnd: format1,
@@ -383,6 +388,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       strcat2 = '';
                       strcat = '';
                       allCategory = false;
+                      passportAndCV = false;
+                      passportAndCVSelect = 0;
                       selectCurrency = null;
                       for (int i = 0; i < activities.length; i++) {
                         for (int y = 0;
@@ -870,6 +877,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     value: passportAndCV,
                     onChanged: (value) {
                       passportAndCV = !passportAndCV;
+
+                      if(passportAndCV == true){
+                        passportAndCVSelect = 1;
+                      }
+                      if(passportAndCV == false){
+                        passportAndCVSelect = 0;
+                      }
+                      
                       setState(() {});
                     },
                   ),

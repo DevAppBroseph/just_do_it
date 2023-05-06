@@ -13,10 +13,12 @@ class GetTasksEvent extends TasksEvent {
   bool? customer;
   int? countFilter;
   int? currency;
+  int? passportAndCV;
   List<Countries> isSelectCountry;
   List<Regions> isSelectRegions;
   List<Town> isSelectTown;
   GetTasksEvent({
+    this.passportAndCV,
     this.currency,
     this.access,
     this.query,
