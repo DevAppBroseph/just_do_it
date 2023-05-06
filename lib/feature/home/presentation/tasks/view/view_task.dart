@@ -6,6 +6,8 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
+    as rep;
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -324,7 +326,10 @@ class _TaskViewState extends State<TaskView> {
           SizedBox(height: 18.h),
           if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
             CustomButton(
-              onTap: () {},
+              onTap: () {
+                BlocProvider.of<rep.ReplyBloc>(context)
+                    .add(rep.OpenSlidingPanelEvent());
+              },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(
                 'Откликнуться',
