@@ -145,7 +145,8 @@ class _CeateTasksState extends State<CeateTasks> {
     selectCategory = widget.selectCategory;
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory.contains(element.description)) {
+        if (widget.selectCategory!.selectSubcategory
+            .contains(element.description)) {
           selectSubCategory = element;
         }
       }
@@ -176,7 +177,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600),
+                                curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -212,17 +214,25 @@ class _CeateTasksState extends State<CeateTasks> {
                       children: [
                         AnimatedAlign(
                           duration: const Duration(milliseconds: 100),
-                          alignment: type == 1 ? Alignment.centerLeft : Alignment.centerRight,
+                          alignment: type == 1
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
                           child: Container(
                             height: 40.h,
                             width: widthTabBarItem,
                             decoration: BoxDecoration(
                               color: ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
-                                topLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                bottomLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                topRight: state ? Radius.circular(20.r) : Radius.zero,
-                                bottomRight: state ? Radius.circular(20.r) : Radius.zero,
+                                topLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                bottomLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                topRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
+                                bottomRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
                               ),
                             ),
                           ),
@@ -251,7 +261,9 @@ class _CeateTasksState extends State<CeateTasks> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('Как исполнитель', style: CustomTextStyle.black_14_w400_171716),
+                                    child: Text('Как исполнитель',
+                                        style: CustomTextStyle
+                                            .black_14_w400_171716),
                                   ),
                                 ),
                               ),
@@ -280,7 +292,8 @@ class _CeateTasksState extends State<CeateTasks> {
                                   child: Center(
                                     child: Text(
                                       'Как заказчик',
-                                      style: CustomTextStyle.black_14_w400_171716,
+                                      style:
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                 ),
@@ -321,8 +334,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           setState(() {});
                         },
                       ),
-                      BlocBuilder<CountriesBloc, CountriesState>(builder: (context, snapshot) {
-                        countries = BlocProvider.of<CountriesBloc>(context).country;
+                      BlocBuilder<CountriesBloc, CountriesState>(
+                          builder: (context, snapshot) {
+                        countries =
+                            BlocProvider.of<CountriesBloc>(context).country;
                         return DatePicker(
                           bottomInsets: bottomInsets,
                           coastMaxController: coastMaxController,
@@ -345,7 +360,8 @@ class _CeateTasksState extends State<CeateTasks> {
                 ),
                 SizedBox(height: 20.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
+                  padding:
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -377,21 +393,28 @@ class _CeateTasksState extends State<CeateTasks> {
                           errorsFlag = true;
                         }
 
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-                            error += '\n- минимальный бюджет должен быть меньше максимального';
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) >
+                              int.parse(coastMaxController.text)) {
+                            error +=
+                                '\n- минимальный бюджет должен быть меньше максимального';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
-                            error += '\n- слишком большая сумма у минимального бюджета';
+                            error +=
+                                '\n- слишком большая сумма у минимального бюджета';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (  int.parse(coastMaxController.text)> 1000000000) {
-                            error += '\n- слишком большая сумма у максимального бюджета';
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMaxController.text) > 1000000000) {
+                            error +=
+                                '\n- слишком большая сумма у максимального бюджета';
                             errorsFlag = true;
                           }
                         }
@@ -432,13 +455,18 @@ class _CeateTasksState extends State<CeateTasks> {
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
-                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateStart:
+                                DateFormat('yyyy-MM-dd').format(startDate!),
                             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
-                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+                              coastMinController.text.isEmpty
+                                  ? '0'
+                                  : coastMinController.text,
                             ),
                             priceTo: int.parse(
-                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+                              coastMaxController.text.isEmpty
+                                  ? '0'
+                                  : coastMaxController.text,
                             ),
                             regions: regions,
                             countries: country,
@@ -454,12 +482,15 @@ class _CeateTasksState extends State<CeateTasks> {
                           );
                           widget.customer = false;
 
-                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository().createTask(profileBloc.access!, newTask);
+                          final profileBloc =
+                              BlocProvider.of<ProfileBloc>(context);
+                          bool res = await Repository()
+                              .createTask(profileBloc.access!, newTask);
                           log(res.toString());
                           if (res) Navigator.of(context).pop();
                           if (res && widget.currentPage == 6) {
-                            Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                            Navigator.of(context).pushNamed(AppRoute.tasks,
+                                arguments: [(page) {}]);
                           }
                           if (res && widget.currentPage == 2) {
                             Navigator.of(context).pop();
@@ -467,6 +498,9 @@ class _CeateTasksState extends State<CeateTasks> {
                           if (res && widget.currentPage == 1) {
                             Navigator.of(context).pop();
                           }
+
+                          BlocProvider.of<CountriesBloc>(context)
+                              .add(ResetCountryEvent());
 
                           Loader.hide();
                         }

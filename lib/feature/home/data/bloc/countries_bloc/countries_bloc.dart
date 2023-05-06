@@ -10,9 +10,17 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
     on<GetCountryEvent>(_getCountries);
     on<GetRegionEvent>(_getRegions);
     on<GetTownsEvent>(_getTowns);
+    on<ResetCountryEvent>(_resetCountries);
   }
 
   List<Countries> country = [];
+
+  void _resetCountries(ResetCountryEvent event, Emitter<CountriesState> emit) {
+    for (var element in country) {
+      element.select = false;
+      element.region = [];
+    }
+  }
 
   void _getCountries(
       GetCountryEvent event, Emitter<CountriesState> emit) async {

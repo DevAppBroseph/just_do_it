@@ -13,3 +13,5 @@ class GetTownsEvent extends CountriesEvent {
   Regions regions;
   GetTownsEvent(this.regions);
 }
+
+class ResetCountryEvent extends CountriesEvent {}

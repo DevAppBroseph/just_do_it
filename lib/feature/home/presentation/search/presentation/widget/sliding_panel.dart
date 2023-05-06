@@ -12,7 +12,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/models/category_select.dart';
 import 'package:just_do_it/models/countries.dart';
@@ -240,23 +240,25 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         log(customerFlag.toString());
                         context.read<TasksBloc>().add(
                               GetTasksEvent(
-                                access: access,
-                                query: keyWordController.text,
-                                dateEnd: format1,
-                                dateStart: format2,
-                                priceFrom:
-                                    int.tryParse(coastMinController.text),
-                                priceTo: int.tryParse(coastMaxController.text),
-                                isSelectCountry: country,
-                                isSelectRegions: regions,
-                                isSelectTown: towns,
-                                subcategory: selectSubCategory,
-                                countFilter: countField,
-                                currency: selectCurrency?.id,
-                                customer: (customerFlag == contractorFlag) 
-                                    ? null
-                                    : (customerFlag) ? true : false
-                              ),
+                                  access: access,
+                                  query: keyWordController.text,
+                                  dateEnd: format1,
+                                  dateStart: format2,
+                                  priceFrom:
+                                      int.tryParse(coastMinController.text),
+                                  priceTo:
+                                      int.tryParse(coastMaxController.text),
+                                  isSelectCountry: country,
+                                  isSelectRegions: regions,
+                                  isSelectTown: towns,
+                                  subcategory: selectSubCategory,
+                                  countFilter: countField,
+                                  currency: selectCurrency?.id,
+                                  customer: (customerFlag == contractorFlag)
+                                      ? null
+                                      : (customerFlag)
+                                          ? true
+                                          : false),
                             );
                       },
                       btnColor: ColorStyles.yellowFFD70A,

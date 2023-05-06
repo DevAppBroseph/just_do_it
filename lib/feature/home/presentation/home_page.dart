@@ -16,9 +16,13 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
+    as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart'
+    as search;
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
@@ -38,6 +42,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   PageController pageController = PageController(initialPage: 4);
   PanelController panelController = PanelController();
+  PanelController panelControllerReply = PanelController();
   final streamController = StreamController<int>();
   int page = 5;
 
@@ -105,6 +110,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     if (panelController.isPanelOpen) panelController.close();
+    if (panelControllerReply.isPanelOpen) panelControllerReply.close();
     streamController.close();
     pageController.dispose();
     super.dispose();
@@ -234,14 +240,24 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
-        BlocBuilder<SearchBloc, SearchState>(
+        BlocBuilder<search.SearchBloc, search.SearchState>(
           builder: (context, snapshot) {
-            if (snapshot is OpenSlidingPanelState) {
+            if (snapshot is search.OpenSlidingPanelState) {
               panelController.animatePanelToPosition(1.0);
-            } else if (snapshot is CloseSlidingPanelState) {
+            } else if (snapshot is search.CloseSlidingPanelState) {
               panelController.animatePanelToPosition(0.0);
             }
             return SlidingPanelSearch(panelController);
+          },
+        ),
+        BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
+          builder: (context, snapshot) {
+            if (snapshot is rep.OpenSlidingPanelState) {
+              panelController.animatePanelToPosition(1.0);
+            } else if (snapshot is rep.CloseSlidingPanelState) {
+              panelController.animatePanelToPosition(0.0);
+            }
+            return SlidingPanelReply(panelController);
           },
         ),
       ],

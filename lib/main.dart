@@ -12,7 +12,8 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+            BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
             BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
             BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
             BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
