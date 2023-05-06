@@ -12,7 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
@@ -156,6 +155,11 @@ class _CeateTasksState extends State<CeateTasks> {
         }
       }
     }
+    getCountry();
+  }
+
+  void getCountry() async {
+    countries = await Repository().countries();
   }
 
   @override
@@ -344,29 +348,22 @@ class _CeateTasksState extends State<CeateTasks> {
                           setState(() {});
                         },
                       ),
-                      BlocBuilder<CountriesBloc, CountriesState>(
-                          builder: (context, snapshot) {
-                        if (countries.isEmpty) {
-                          countries =
-                              BlocProvider.of<CountriesBloc>(context).country;
-                        }
-                        return DatePicker(
-                          bottomInsets: bottomInsets,
-                          coastMaxController: coastMaxController,
-                          coastMinController: coastMinController,
-                          startDate: startDate,
-                          endDate: endDate,
-                          allCountries: countries,
-                          currecy: currency,
-                          onEdit: (startDate, endDate, countries, currency) {
-                            this.startDate = startDate;
-                            this.endDate = endDate;
-                            this.countries = countries;
-                            this.currency = currency;
-                            setState(() {});
-                          },
-                        );
-                      }),
+                      DatePicker(
+                        bottomInsets: bottomInsets,
+                        coastMaxController: coastMaxController,
+                        coastMinController: coastMinController,
+                        startDate: startDate,
+                        endDate: endDate,
+                        allCountries: countries,
+                        currecy: currency,
+                        onEdit: (startDate, endDate, countries, currency) {
+                          this.startDate = startDate;
+                          this.endDate = endDate;
+                          this.countries = countries;
+                          this.currency = currency;
+                          setState(() {});
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -510,9 +507,6 @@ class _CeateTasksState extends State<CeateTasks> {
                           if (res && widget.currentPage == 1) {
                             Navigator.of(context).pop();
                           }
-
-                          // BlocProvider.of<CountriesBloc>(context)
-                          //     .add(ResetCountryEvent());
 
                           Loader.hide();
                         }

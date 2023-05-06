@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
@@ -34,14 +33,13 @@ class _ContractorState extends State<Contractor> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository().getMyTaskList(
-        BlocProvider.of<ProfileBloc>(context).access!, true);
+    List<Task> res = await Repository()
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -248,7 +246,6 @@ class _ContractorState extends State<Contractor> {
                     },
                   ),
                 );
-                BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

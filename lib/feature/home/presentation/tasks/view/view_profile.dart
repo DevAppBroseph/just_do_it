@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart'
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileView extends StatefulWidget {
   Owner owner;
@@ -33,6 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
   void getProfile() async {
     String? accessToken = await Storage().getAccessToken();
     owner = await Repository().getRanking(accessToken!, widget.owner);
+    // log('message ${owner?.}');
     setState(() {});
   }
 
@@ -58,13 +60,18 @@ class _ProfileViewState extends State<ProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (owner?.photo != null)
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(1000.r),
-                            child: Image.network(
-                              owner?.photo ?? '',
-                              height: 76.h,
-                              width: 76.h,
-                              fit: BoxFit.cover,
+                          GestureDetector(
+                            onTap: () {
+                              launch(owner!.photo!);
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000.r),
+                              child: Image.network(
+                                owner?.photo ?? '',
+                                height: 76.h,
+                                width: 76.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         SizedBox(width: 17.w),
@@ -113,49 +120,63 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(height: 18.h),
                   Row(
                     children: [
-                      Container(
-                        height: 36.h,
-                        width: 75.w,
-                        decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/document_text.svg',
-                              color: ColorStyles.blue336FEE,
-                            ),
-                            Text(
-                              'Резюме',
-                              style:
-                                  CustomTextStyle.black_11_w400_171716.copyWith(
+                      if (owner != null &&
+                          owner!.cv != null &&
+                          owner!.cv!.isNotEmpty)
+                        Container(
+                          height: 36.h,
+                          width: 75.w,
+                          decoration: BoxDecoration(
+                            color: ColorStyles.greyF9F9F9,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/document_text.svg',
                                 color: ColorStyles.blue336FEE,
                               ),
-                            )
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  launch(owner!.cv!);
+                                },
+                                child: Text(
+                                  'Резюме',
+                                  style: CustomTextStyle.black_11_w400_171716
+                                      .copyWith(
+                                    color: ColorStyles.blue336FEE,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Container(
-                        height: 36.h,
-                        width: 181.w,
-                        decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
-                          borderRadius: BorderRadius.circular(8.r),
+                      if (owner != null &&
+                          owner!.cv != null &&
+                          owner!.cv!.isNotEmpty)
+                        SizedBox(width: 12.w),
+                      if (owner != null &&
+                          owner!.isPassportExist != null &&
+                          owner!.isPassportExist!)
+                        Container(
+                          height: 36.h,
+                          width: 181.w,
+                          decoration: BoxDecoration(
+                            color: ColorStyles.greyF9F9F9,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SvgPicture.asset('assets/icons/clipboard.svg'),
+                              Text(
+                                'Паспортные данные загружены',
+                                style: CustomTextStyle.black_11_w400_171716,
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SvgPicture.asset('assets/icons/clipboard.svg'),
-                            Text(
-                              'Паспортные данные загружены',
-                              style: CustomTextStyle.black_11_w400_171716,
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 12.h),
@@ -217,7 +238,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     'assets/images/build.png',
                                     height: 24.h,
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Text(
                                     'Ремонт и строительство',
                                     style: CustomTextStyle.black_11_w400_171716,
@@ -253,7 +274,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     'assets/images/soap.png',
                                     height: 24.h,
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Text(
                                     'Красота\nи здоровье',
                                     style: CustomTextStyle.black_11_w400_171716,
@@ -289,7 +310,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     'assets/images/book.png',
                                     height: 24.h,
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Text(
                                     'Репетиторы\nи обучение',
                                     style: CustomTextStyle.black_11_w400_171716,
@@ -324,10 +345,13 @@ class _ProfileViewState extends State<ProfileView> {
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                     child: Column(
                       children: [
-                        Text(
-                          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-                          style: CustomTextStyle.black_12_w400_292D32,
-                        ),
+                        if (owner != null &&
+                            owner!.activity != null &&
+                            owner!.activity!.isNotEmpty)
+                          Text(
+                            owner!.activity!,
+                            style: CustomTextStyle.black_12_w400_292D32,
+                          ),
                         if (owner != null && owner!.listPhoto.isNotEmpty)
                           Padding(
                             padding: EdgeInsets.only(top: 18.h),
@@ -339,13 +363,19 @@ class _ProfileViewState extends State<ProfileView> {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: EdgeInsets.only(right: 10.w),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      child: CachedNetworkImage(
-                                        imageUrl: owner!.listPhoto[index],
-                                        height: 66.h,
-                                        width: 66.w,
-                                        fit: BoxFit.cover,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        launch(owner!.listPhoto[index]);
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                        child: CachedNetworkImage(
+                                          imageUrl: owner!.listPhoto[index],
+                                          height: 66.h,
+                                          width: 66.w,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   );

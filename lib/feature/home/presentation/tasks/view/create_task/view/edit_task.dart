@@ -272,30 +272,22 @@ class _EditTasksState extends State<EditTasks> {
                           setState(() {});
                         },
                       ),
-                      BlocBuilder<CountriesBloc, CountriesState>(
-                          builder: (context, snapshot) {
-                        if (countries.isEmpty) {
-                          countries =
-                              BlocProvider.of<CountriesBloc>(context).country;
-                        }
-
-                        return DatePicker(
-                          bottomInsets: bottomInsets,
-                          coastMaxController: coastMaxController,
-                          coastMinController: coastMinController,
-                          startDate: startDate,
-                          endDate: endDate,
-                          allCountries: countries,
-                          currecy: currency,
-                          onEdit: (startDate, endDate, countries, currency) {
-                            this.startDate = startDate;
-                            this.endDate = endDate;
-                            this.countries = countries;
-                            this.currency = currency;
-                            setState(() {});
-                          },
-                        );
-                      }),
+                      DatePicker(
+                        bottomInsets: bottomInsets,
+                        coastMaxController: coastMaxController,
+                        coastMinController: coastMinController,
+                        startDate: startDate,
+                        endDate: endDate,
+                        allCountries: countries,
+                        currecy: currency,
+                        onEdit: (startDate, endDate, countries, currency) {
+                          this.startDate = startDate;
+                          this.endDate = endDate;
+                          this.countries = countries;
+                          this.currency = currency;
+                          setState(() {});
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -426,8 +418,7 @@ class _EditTasksState extends State<EditTasks> {
                               ..pop()
                               ..pop();
                           }
-                          // BlocProvider.of<CountriesBloc>(context)
-                          //     .add(ResetCountryEvent());
+
                           Loader.hide();
                         }
                       } else {

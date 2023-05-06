@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/type_filter.dart';
@@ -59,32 +58,24 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
       }
       return true;
     }, builder: (context, snapshot) {
-      return BlocBuilder<CountriesBloc, CountriesState>(
-          builder: (context, state) {
-        if (state is CountriesLoaded) {
-          listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
-          countries.clear();
-          countries.addAll(BlocProvider.of<CountriesBloc>(context).country);
-        }
-        return SlidingUpPanel(
-          controller: widget.panelController,
-          renderPanelSheet: false,
-          panel: panel(context),
-          onPanelSlide: (position) {
-            if (position == 0) {
-              BlocProvider.of<ReplyBloc>(context).add(HideSlidingPanelEvent());
-              typeFilter = TypeFilter.main;
-              slide = false;
-            }
-          },
-          maxHeight: heightPanel,
-          minHeight: 0.h,
-          backdropEnabled: true,
-          backdropColor: Colors.black,
-          backdropOpacity: 0.8,
-          defaultPanelState: PanelState.CLOSED,
-        );
-      });
+      return SlidingUpPanel(
+        controller: widget.panelController,
+        renderPanelSheet: false,
+        panel: panel(context),
+        onPanelSlide: (position) {
+          if (position == 0) {
+            BlocProvider.of<ReplyBloc>(context).add(HideSlidingPanelEvent());
+            typeFilter = TypeFilter.main;
+            slide = false;
+          }
+        },
+        maxHeight: heightPanel,
+        minHeight: 0.h,
+        backdropEnabled: true,
+        backdropColor: Colors.black,
+        backdropOpacity: 0.8,
+        defaultPanelState: PanelState.CLOSED,
+      );
     });
   }
 

@@ -59,7 +59,10 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                         alignment: Alignment.centerLeft,
                         child: CustomIconButton(
                           onBackPressed: () {
-                            if (selectTask != null) {
+                            if (owner != null) {
+                              owner = null;
+                              setState(() {});
+                            } else if (selectTask != null) {
                               selectTask = null;
                               setState(() {});
                             } else {
@@ -81,7 +84,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                 ),
                 SizedBox(height: 20.h),
                 selectTask == null
-                    ?  SizedBox(
+                    ? SizedBox(
                         height: MediaQuery.of(context).size.height -
                             20.h -
                             10.h -
@@ -110,7 +113,8 @@ class _TaskAdditionalState extends State<TaskAdditional> {
       ),
     );
   }
-   Widget view() {
+
+  Widget view() {
     if (owner != null) {
       return Expanded(child: ProfileView(owner: owner!));
     }

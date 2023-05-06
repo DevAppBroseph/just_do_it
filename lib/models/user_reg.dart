@@ -211,7 +211,7 @@ class UserRegModel {
     if (cv != null) {
       data['CV'] = MultipartFile.fromBytes(
         cv!,
-        filename: '${DateTime.now()}.$cvType!',
+        filename: '${DateTime.now()}.$cvType',
       );
     }
     data['groups'] = groups;

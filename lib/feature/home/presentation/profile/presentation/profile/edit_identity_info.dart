@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -70,7 +68,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   @override
   void initState() {
     super.initState();
-    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     user = BlocProvider.of<ProfileBloc>(context).user!;
     fillData(user);
   }
@@ -83,76 +80,71 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
-        body: BlocBuilder<CountriesBloc, CountriesState>(
-            builder: (context, snapshot) {
-          return Column(
-            children: [
-              SizedBox(height: 60.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  children: [
-                    CustomIconButton(
-                      onBackPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: SvgImg.arrowRight,
-                    ),
-                    SizedBox(width: 12.w),
-                    Text(
-                      'Безопасность',
-                      style: CustomTextStyle.black_22_w700,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 50.h),
-              Expanded(child: secondStage(heightKeyBoard)),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: CustomButton(
-                  onTap: () {
-                    if ((passwordController.text.isNotEmpty &&
-                            repeatPasswordController.text.isNotEmpty) &&
-                        (passwordController.text !=
-                            repeatPasswordController.text)) {
-                      showAlertToast('Пароли не совпадают');
-                    } else if (passwordController.text.length < 6 &&
-                        passwordController.text.isNotEmpty) {
-                      showAlertToast('минимальная длина пароля 6 символов');
-                    } else {
-                      user!.copyWith(isEntity: physics);
-                      BlocProvider.of<ProfileBloc>(context).setUser(user);
-                      Repository().updateUser(
-                          BlocProvider.of<ProfileBloc>(context).access, user!);
+        body: Column(
+          children: [
+            SizedBox(height: 60.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
+                children: [
+                  CustomIconButton(
+                    onBackPressed: () {
                       Navigator.of(context).pop();
-                    }
-                    if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш документ просрочен');
-                    } else if (checkExpireDate(dateTimeEnd) != null) {
-                      showAlertToast(checkExpireDate(dateTimeEnd)!);
-                    } else {
-                      user!.copyWith(isEntity: physics);
-                      // BlocProvider.of<CountriesBloc>(context)
-                      //     .add(ResetCountryEvent());
-                      BlocProvider.of<ProfileBloc>(context).setUser(user);
-                      Repository().updateUser(
-                          BlocProvider.of<ProfileBloc>(context).access, user!);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  btnColor: ColorStyles.yellowFFD70B,
-                  textLabel: Text(
-                    'Сохранить',
-                    style: CustomTextStyle.black_16_w600_171716,
+                    },
+                    icon: SvgImg.arrowRight,
                   ),
+                  SizedBox(width: 12.w),
+                  Text(
+                    'Безопасность',
+                    style: CustomTextStyle.black_22_w700,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 50.h),
+            Expanded(child: secondStage(heightKeyBoard)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: CustomButton(
+                onTap: () {
+                  if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    showAlertToast('Пароли не совпадают');
+                  } else if (passwordController.text.length < 6 &&
+                      passwordController.text.isNotEmpty) {
+                    showAlertToast('минимальная длина пароля 6 символов');
+                  } else {
+                    user!.copyWith(isEntity: physics);
+                    BlocProvider.of<ProfileBloc>(context).setUser(user);
+                    Repository().updateUser(
+                        BlocProvider.of<ProfileBloc>(context).access, user!);
+                    Navigator.of(context).pop();
+                  }
+                  if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
+                    showAlertToast('Ваш паспорт просрочен');
+                  } else if (checkExpireDate(dateTimeEnd) != null) {
+                    showAlertToast(checkExpireDate(dateTimeEnd)!);
+                  } else {
+                    user!.copyWith(isEntity: physics);
+                    BlocProvider.of<ProfileBloc>(context).setUser(user);
+                    Repository().updateUser(
+                        BlocProvider.of<ProfileBloc>(context).access, user!);
+                    Navigator.of(context).pop();
+                  }
+                },
+                btnColor: ColorStyles.yellowFFD70B,
+                textLabel: Text(
+                  'Сохранить',
+                  style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
-              SizedBox(height: 52.h),
-            ],
-          );
-        }),
+            ),
+            SizedBox(height: 52.h),
+          ],
+        ),
       ),
     );
   }
@@ -329,8 +321,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         GestureDetector(
           key: _regionKey,
           onTap: () {
-            log('message $listRegions');
-            if (countryController.text.isNotEmpty) {
+            if (listRegions.isNotEmpty) {
               showRegion(
                 context,
                 _regionKey,
@@ -768,12 +759,19 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     );
   }
 
-  initRegions() async {
+  void getCountries() async {
+    listCountries = await Repository().countries();
+    initRegions();
+  }
+
+  void initRegions() async {
     for (var element in listCountries) {
       if (user?.country?.toLowerCase() == element.name?.toLowerCase()) {
         listRegions = await Repository().regions(element);
+        break;
       }
     }
+    setState(() {});
   }
 
   fillData(UserRegModel? userRegModel) {
@@ -810,6 +808,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
     final end = whoGiveDocController.text.split('.');
     if (end.isNotEmpty) {}
-    initRegions();
+    getCountries();
   }
 }

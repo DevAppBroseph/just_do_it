@@ -6,10 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class DatePicker extends StatefulWidget {
@@ -154,466 +154,609 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CountriesBloc, CountriesState>(
-        builder: (context, state) {
-      // List<Countries> allCountries =
-      //     BlocProvider.of<CountriesBloc>(context).country;
-      return MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
-        child: ListView(
-          controller: controller,
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          children: [
-            ScaleButton(
-              bound: 0.02,
-              onTap: () {
-                _showDatePicker(context, 0);
-              },
-              child: Container(
-                height: 60.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                decoration: BoxDecoration(
-                  color: ColorStyles.greyF9F9F9,
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Дата начала',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                        SizedBox(height: 0.h),
-                        if (widget.startDate != null)
-                          Text(
-                            DateFormat('dd.MM.yyyy').format(widget.startDate!),
-                            style: CustomTextStyle.black_14_w400_171716,
-                          ),
-                      ],
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset('assets/icons/calendar.svg')
-                  ],
-                ),
+    return MediaQuery(
+      data: const MediaQueryData(textScaleFactor: 1.0),
+      child: ListView(
+        controller: controller,
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        children: [
+          ScaleButton(
+            bound: 0.02,
+            onTap: () {
+              _showDatePicker(context, 0);
+            },
+            child: Container(
+              height: 60.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              decoration: BoxDecoration(
+                color: ColorStyles.greyF9F9F9,
+                borderRadius: BorderRadius.circular(10.r),
               ),
-            ),
-            Row(
-              children: [
-                SizedBox(width: 16.h),
-                SvgPicture.asset('assets/icons/line.svg'),
-              ],
-            ),
-            ScaleButton(
-              bound: 0.02,
-              onTap: () {
-                _showDatePicker(context, 1);
-              },
-              child: Container(
-                height: 60.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                decoration: BoxDecoration(
-                  color: ColorStyles.greyF9F9F9,
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Дата завершения',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                        SizedBox(height: 0.h),
-                        if (widget.endDate != null)
-                          Text(
-                            DateFormat('dd.MM.yyyy').format(widget.endDate!),
-                            style: CustomTextStyle.black_14_w400_171716,
-                          ),
-                      ],
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset('assets/icons/calendar.svg')
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 18.h),
-            ScaleButton(
-              bound: 0.02,
-              onTap: () {
-                setState(() {
-                  openCurrency = !openCurrency;
-                });
-                FocusScope.of(context).unfocus();
-
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  controller.animateTo(
-                    controller.position.maxScrollExtent - 20.h,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.linear,
-                  );
-                });
-              },
-              child: CustomTextField(
-                fillColor: ColorStyles.greyF9F9F9,
-                hintText: 'Валюта для оплаты заказа',
-                hintStyle: CustomTextStyle.grey_14_w400,
-                height: 55.h,
-                enabled: false,
-                suffixIcon: Stack(
-                  alignment: Alignment.centerRight,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 16.h),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [SvgPicture.asset(SvgImg.arrowRight)],
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Дата начала',
+                        style: CustomTextStyle.grey_14_w400,
                       ),
-                    ),
-                  ],
-                ),
-                textEditingController:
-                    TextEditingController(text: widget.currecy?.name),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-              ),
-            ),
-            SizedBox(height: 14.h),
-            BlocBuilder<CurrencyBloc, CurrencyState>(builder: (context, state) {
-              if (state is CurrencyLoaded) {
-                final currecy = state.currency;
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: openCurrency ? 160.h : 0.h,
-                  decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
-                    borderRadius: BorderRadius.circular(10.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorStyles.shadowFC6554,
-                        offset: const Offset(0, -4),
-                        blurRadius: 55.r,
-                      )
+                      SizedBox(height: 0.h),
+                      if (widget.startDate != null)
+                        Text(
+                          DateFormat('dd.MM.yyyy').format(widget.startDate!),
+                          style: CustomTextStyle.black_14_w400_171716,
+                        ),
                     ],
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const ClampingScrollPhysics(),
-                    children: currecy!
-                        .map(
-                          (e) => Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (e.id == widget.currecy?.id) {
-                                  widget.currecy = null;
-                                } else {
-                                  widget.currecy = e;
-                                }
+                  const Spacer(),
+                  SvgPicture.asset('assets/icons/calendar.svg')
+                ],
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              SizedBox(width: 16.h),
+              SvgPicture.asset('assets/icons/line.svg'),
+            ],
+          ),
+          ScaleButton(
+            bound: 0.02,
+            onTap: () {
+              _showDatePicker(context, 1);
+            },
+            child: Container(
+              height: 60.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              decoration: BoxDecoration(
+                color: ColorStyles.greyF9F9F9,
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Дата завершения',
+                        style: CustomTextStyle.grey_14_w400,
+                      ),
+                      SizedBox(height: 0.h),
+                      if (widget.endDate != null)
+                        Text(
+                          DateFormat('dd.MM.yyyy').format(widget.endDate!),
+                          style: CustomTextStyle.black_14_w400_171716,
+                        ),
+                    ],
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset('assets/icons/calendar.svg')
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 18.h),
+          ScaleButton(
+            bound: 0.02,
+            onTap: () {
+              setState(() {
+                openCurrency = !openCurrency;
+              });
+              FocusScope.of(context).unfocus();
 
+              Future.delayed(const Duration(milliseconds: 300), () {
+                controller.animateTo(
+                  controller.position.maxScrollExtent - 20.h,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                );
+              });
+            },
+            child: CustomTextField(
+              fillColor: ColorStyles.greyF9F9F9,
+              hintText: 'Валюта для оплаты заказа',
+              hintStyle: CustomTextStyle.grey_14_w400,
+              height: 55.h,
+              enabled: false,
+              suffixIcon: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.h),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [SvgPicture.asset(SvgImg.arrowRight)],
+                    ),
+                  ),
+                ],
+              ),
+              textEditingController:
+                  TextEditingController(text: widget.currecy?.name),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            ),
+          ),
+          SizedBox(height: 14.h),
+          BlocBuilder<CurrencyBloc, CurrencyState>(builder: (context, state) {
+            if (state is CurrencyLoaded) {
+              final currecy = state.currency;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: openCurrency ? 160.h : 0.h,
+                decoration: BoxDecoration(
+                  color: ColorStyles.whiteFFFFFF,
+                  borderRadius: BorderRadius.circular(10.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorStyles.shadowFC6554,
+                      offset: const Offset(0, -4),
+                      blurRadius: 55.r,
+                    )
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const ClampingScrollPhysics(),
+                  children: currecy!
+                      .map(
+                        (e) => Padding(
+                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (e.id == widget.currecy?.id) {
+                                widget.currecy = null;
+                              } else {
+                                widget.currecy = e;
+                              }
+
+                              widget.onEdit(
+                                widget.startDate,
+                                widget.endDate,
+                                widget.allCountries,
+                                widget.currecy,
+                              );
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              height: 40.h,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 250.w,
+                                        child: Text(
+                                          e.name!,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      if (widget.currecy?.id == e.id)
+                                        const Icon(Icons.check)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              );
+            }
+            return Container();
+          }),
+          SizedBox(height: 14.h),
+          Row(
+            children: [
+              Expanded(
+                child: ScaleButton(
+                  bound: 0.02,
+                  onTap: () {},
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: ColorStyles.greyF9F9F9,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (widget.currecy?.name == null)
+                          Text(
+                            'Бюджет от ₽',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Российский рубль')
+                          Text(
+                            'Бюджет от ₽',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Доллар США')
+                          Text(
+                            'Бюджет от \$',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Евро')
+                          Text(
+                            'Бюджет от €',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Дирхам')
+                          Text(
+                            'Бюджет от AED',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        SizedBox(height: 3.h),
+                        Row(
+                          children: [
+                            CustomTextField(
+                              height: 20.h,
+                              width: 80.w,
+                              textInputType: TextInputType.number,
+                              actionButton: false,
+                              onTap: () {
+                                openCurrency = false;
+                                setState(() {});
+                              },
+                              onChanged: (value) {
                                 widget.onEdit(
                                   widget.startDate,
                                   widget.endDate,
                                   widget.allCountries,
                                   widget.currecy,
                                 );
-
+                              },
+                              onFieldSubmitted: (value) {
                                 setState(() {});
                               },
-                              child: Container(
-                                color: Colors.transparent,
-                                height: 40.h,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 250.w,
-                                          child: Text(
-                                            e.name!,
-                                            style: CustomTextStyle
-                                                .black_14_w400_515150,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        if (widget.currecy?.id == e.id)
-                                          const Icon(Icons.check)
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              contentPadding: EdgeInsets.zero,
+                              hintText: '',
+                              fillColor: ColorStyles.greyF9F9F9,
+                              maxLines: null,
+                              style: CustomTextStyle.black_14_w400_171716,
+                              textEditingController: widget.coastMinController,
                             ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                );
-              }
-              return Container();
-            }),
-            SizedBox(height: 14.h),
-            Row(
-              children: [
-                Expanded(
-                  child: ScaleButton(
-                    bound: 0.02,
-                    onTap: () {},
-                    child: Container(
-                      height: 55.h,
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                      decoration: BoxDecoration(
-                        color: ColorStyles.greyF9F9F9,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (widget.currecy?.name == null)
-                            Text(
-                              'Бюджет от ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Российский рубль')
-                            Text(
-                              'Бюджет от ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Доллар США')
-                            Text(
-                              'Бюджет от \$',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Евро')
-                            Text(
-                              'Бюджет от €',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Дирхам')
-                            Text(
-                              'Бюджет от AED',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          SizedBox(height: 3.h),
-                          Row(
-                            children: [
-                              CustomTextField(
-                                height: 20.h,
-                                width: 80.w,
-                                textInputType: TextInputType.number,
-                                actionButton: false,
-                                onTap: () {
-                                  openCurrency = false;
-                                  setState(() {});
-                                },
-                                onChanged: (value) {
-                                  widget.onEdit(
-                                    widget.startDate,
-                                    widget.endDate,
-                                    widget.allCountries,
-                                    widget.currecy,
-                                  );
-                                },
-                                onFieldSubmitted: (value) {
-                                  setState(() {});
-                                },
-                                contentPadding: EdgeInsets.zero,
-                                hintText: '',
-                                fillColor: ColorStyles.greyF9F9F9,
-                                maxLines: null,
-                                style: CustomTextStyle.black_14_w400_171716,
-                                textEditingController:
-                                    widget.coastMinController,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(width: 21.w),
-                Expanded(
-                  child: ScaleButton(
-                    bound: 0.02,
-                    onTap: () {},
-                    child: Container(
-                      height: 55.h,
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                      decoration: BoxDecoration(
-                        color: ColorStyles.greyF9F9F9,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (widget.currecy?.name == null)
-                            Text(
-                              'Бюджет до ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Российский рубль')
-                            Text(
-                              'Бюджет до ₽',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Доллар США')
-                            Text(
-                              'Бюджет до \$',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Евро')
-                            Text(
-                              'Бюджет до €',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          if (widget.currecy?.name == 'Дирхам')
-                            Text(
-                              'Бюджет до AED',
-                              style: CustomTextStyle.grey_14_w400,
-                            ),
-                          SizedBox(height: 3.h),
-                          Row(
-                            children: [
-                              CustomTextField(
-                                height: 20.h,
-                                width: 80.w,
-                                actionButton: false,
-                                textInputType: TextInputType.number,
-                                onTap: () {
-                                  openCurrency = false;
-                                  setState(() {});
-                                },
-                                onChanged: (value) {
-                                  widget.onEdit(
-                                    widget.startDate,
-                                    widget.endDate,
-                                    widget.allCountries,
-                                    widget.currecy,
-                                  );
-                                },
-                                onFieldSubmitted: (value) {
-                                  setState(() {});
-                                },
-                                contentPadding: EdgeInsets.zero,
-                                hintText: '',
-                                fillColor: ColorStyles.greyF9F9F9,
-                                maxLines: null,
-                                style: CustomTextStyle.black_14_w400_171716,
-                                textEditingController:
-                                    widget.coastMaxController,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            ScaleButton(
-              bound: 0.02,
-              onTap: () {
-                setState(() {
-                  openCountry = !openCountry;
-                  openRegion = false;
-                  openTown = false;
-                });
-                FocusScope.of(context).unfocus();
-
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  controller.animateTo(
-                    controller.position.maxScrollExtent - 20.h,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.linear,
-                  );
-                });
-              },
-              child: CustomTextField(
-                fillColor: ColorStyles.greyF9F9F9,
-                hintText: 'Выбрать страну',
-                hintStyle: CustomTextStyle.grey_14_w400,
-                height: 55.h,
-                enabled: false,
-                suffixIcon: Stack(
-                  alignment: Alignment.centerRight,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 16.h),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            SvgImg.earth,
-                            height: 15.h,
-                            width: 15.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                textEditingController:
-                    TextEditingController(text: _countriesString()),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
-            ),
-            SizedBox(height: 14.h),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: openCountry ? 80.h : 0.h,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
+              SizedBox(width: 21.w),
+              Expanded(
+                child: ScaleButton(
+                  bound: 0.02,
+                  onTap: () {},
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: ColorStyles.greyF9F9F9,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (widget.currecy?.name == null)
+                          Text(
+                            'Бюджет до ₽',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Российский рубль')
+                          Text(
+                            'Бюджет до ₽',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Доллар США')
+                          Text(
+                            'Бюджет до \$',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Евро')
+                          Text(
+                            'Бюджет до €',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        if (widget.currecy?.name == 'Дирхам')
+                          Text(
+                            'Бюджет до AED',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        SizedBox(height: 3.h),
+                        Row(
+                          children: [
+                            CustomTextField(
+                              height: 20.h,
+                              width: 80.w,
+                              actionButton: false,
+                              textInputType: TextInputType.number,
+                              onTap: () {
+                                openCurrency = false;
+                                setState(() {});
+                              },
+                              onChanged: (value) {
+                                widget.onEdit(
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.allCountries,
+                                  widget.currecy,
+                                );
+                              },
+                              onFieldSubmitted: (value) {
+                                setState(() {});
+                              },
+                              contentPadding: EdgeInsets.zero,
+                              hintText: '',
+                              fillColor: ColorStyles.greyF9F9F9,
+                              maxLines: null,
+                              style: CustomTextStyle.black_14_w400_171716,
+                              textEditingController: widget.coastMaxController,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 18.h),
+          ScaleButton(
+            bound: 0.02,
+            onTap: () {
+              setState(() {
+                openCountry = !openCountry;
+                openRegion = false;
+                openTown = false;
+              });
+              FocusScope.of(context).unfocus();
+
+              Future.delayed(const Duration(milliseconds: 300), () {
+                controller.animateTo(
+                  controller.position.maxScrollExtent - 20.h,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                );
+              });
+            },
+            child: CustomTextField(
+              fillColor: ColorStyles.greyF9F9F9,
+              hintText: 'Выбрать страну',
+              hintStyle: CustomTextStyle.grey_14_w400,
+              height: 55.h,
+              enabled: false,
+              suffixIcon: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.h),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          SvgImg.earth,
+                          height: 15.h,
+                          width: 15.h,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const ClampingScrollPhysics(),
-                children: widget.allCountries.map(
-                  (e) {
-                    bool select = false;
-                    for (var element in widget.allCountries) {
-                      if (element.select && e.id == element.id) {
-                        select = true;
-                        break;
-                      }
+              textEditingController:
+                  TextEditingController(text: _countriesString()),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            ),
+          ),
+          SizedBox(height: 14.h),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: openCountry
+                ? widget.allCountries.length < 3
+                    ? (widget.allCountries.length) * 40
+                    : 120.h
+                : 0.h,
+            decoration: BoxDecoration(
+              color: ColorStyles.whiteFFFFFF,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorStyles.shadowFC6554,
+                  offset: const Offset(0, -4),
+                  blurRadius: 55.r,
+                )
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const ClampingScrollPhysics(),
+              children: widget.allCountries.map(
+                (e) {
+                  bool select = false;
+                  for (var element in widget.allCountries) {
+                    if (element.select && e.id == element.id) {
+                      select = true;
+                      break;
                     }
+                  }
+                  return Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: GestureDetector(
+                      onTap: () async {
+                        e.select = !e.select;
+                        if (e.select) {
+                          if (e.region.isEmpty) {
+                            e.region = await Repository().regions(e);
+                          }
+                        } else {
+                          for (var element2 in e.region) {
+                            element2.select = false;
+                            for (var element3 in element2.town) {
+                              element3.select = false;
+                            }
+                          }
+                        }
+
+                        openRegion = false;
+                        openTown = false;
+                        widget.onEdit(
+                          widget.startDate,
+                          widget.endDate,
+                          widget.allCountries,
+                          widget.currecy,
+                        );
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 40.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 250.w,
+                                  child: Text(
+                                    e.name!,
+                                    style: CustomTextStyle.black_14_w400_515150,
+                                  ),
+                                ),
+                                const Spacer(),
+                                if (select) const Icon(Icons.check)
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+          ),
+          SizedBox(height: 14.h),
+          widget.allCountries.any((element) => element.select)
+              ? ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    setState(() {
+                      openCountry = false;
+                      openTown = false;
+                      openRegion = !openRegion;
+                    });
+                    FocusScope.of(context).unfocus();
+
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      controller.animateTo(
+                        controller.position.maxScrollExtent - 20.h,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.linear,
+                      );
+                    });
+                  },
+                  child: CustomTextField(
+                    fillColor: ColorStyles.greyF9F9F9,
+                    hintText: 'Выбрать регион',
+                    hintStyle: CustomTextStyle.grey_14_w400,
+                    height: 55.h,
+                    enabled: false,
+                    suffixIcon: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 16.h),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                SvgImg.earth,
+                                height: 15.h,
+                                width: 15.h,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    textEditingController:
+                        TextEditingController(text: _regionsString()),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  ),
+                )
+              : Container(),
+          SizedBox(height: 14.h),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: openRegion ? 200.h : 0.h,
+            decoration: BoxDecoration(
+              color: ColorStyles.whiteFFFFFF,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorStyles.shadowFC6554,
+                  offset: const Offset(0, -4),
+                  blurRadius: 55.r,
+                )
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.allCountries.length,
+              padding: EdgeInsets.zero,
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: (context, i) {
+                if (!widget.allCountries[i].select) return Container();
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.allCountries[i].region.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
                       child: GestureDetector(
-                        onTap: () {
-                          e.select = !e.select;
-                          if (e.select) {
-                            context
-                                .read<CountriesBloc>()
-                                .add(GetRegionEvent(e));
+                        onTap: () async {
+                          widget.allCountries[i].region[index].select =
+                              !widget.allCountries[i].region[index].select;
+                          if (widget.allCountries[i].region[index].select) {
+                            if (widget
+                                .allCountries[i].region[index].town.isEmpty) {
+                              widget.allCountries[i].region[index].town =
+                                  await Repository().towns(
+                                      widget.allCountries[i].region[index]);
+                            }
                           } else {
-                            e.region = [];
+                            widget.allCountries[i].region[index].select = false;
+                            for (var element1
+                                in widget.allCountries[i].region) {
+                              if (!element1.select) {
+                                for (var element2 in element1.town) {
+                                  element2.select = false;
+                                }
+                              }
+                            }
                           }
-
-                          openRegion = false;
+                          openCountry = false;
                           openTown = false;
                           widget.onEdit(
                             widget.startDate,
@@ -621,6 +764,8 @@ class _DatePickerState extends State<DatePicker> {
                             widget.allCountries,
                             widget.currecy,
                           );
+
+                          setState(() {});
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -633,13 +778,16 @@ class _DatePickerState extends State<DatePicker> {
                                   SizedBox(
                                     width: 250.w,
                                     child: Text(
-                                      e.name!,
+                                      widget
+                                          .allCountries[i].region[index].name!,
                                       style:
                                           CustomTextStyle.black_14_w400_515150,
                                     ),
                                   ),
                                   const Spacer(),
-                                  if (select) const Icon(Icons.check)
+                                  if (widget
+                                      .allCountries[i].region[index].select)
+                                    const Icon(Icons.check)
                                 ],
                               ),
                             ],
@@ -648,18 +796,33 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     );
                   },
-                ).toList(),
-              ),
+                );
+              },
             ),
-            SizedBox(height: 14.h),
-            widget.allCountries.any((element) => element.select)
-                ? ScaleButton(
-                    bound: 0.02,
-                    onTap: () {
+          ),
+          SizedBox(height: 14.h),
+          widget.allCountries.any(
+            (element) {
+              if (element.select) {
+                return element.region.any((element1) {
+                  if (element1.select) {
+                    return element1.town.isNotEmpty;
+                  }
+                  return false;
+                });
+              } else {
+                return false;
+              }
+            },
+          )
+              ? ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    setState(() {
                       setState(() {
                         openCountry = false;
-                        openTown = false;
-                        openRegion = !openRegion;
+                        openRegion = false;
+                        openTown = !openTown;
                       });
                       FocusScope.of(context).unfocus();
 
@@ -670,300 +833,150 @@ class _DatePickerState extends State<DatePicker> {
                           curve: Curves.linear,
                         );
                       });
-                    },
-                    child: CustomTextField(
-                      fillColor: ColorStyles.greyF9F9F9,
-                      hintText: 'Выбрать регион',
-                      hintStyle: CustomTextStyle.grey_14_w400,
-                      height: 55.h,
-                      enabled: false,
-                      suffixIcon: Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 16.h),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  SvgImg.earth,
-                                  height: 15.h,
-                                  width: 15.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      textEditingController:
-                          TextEditingController(text: _regionsString()),
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 18.w, vertical: 18.h),
-                    ),
-                  )
-                : Container(),
-            SizedBox(height: 14.h),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: openRegion ? 200.h : 0.h,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
-                ],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: widget.allCountries.length,
-                padding: EdgeInsets.zero,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, i) {
-                  if (!widget.allCountries[i].select) return Container();
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.allCountries[i].region.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: GestureDetector(
-                          onTap: () {
-                            widget.allCountries[i].region[index].select =
-                                !widget.allCountries[i].region[index].select;
-                            if (widget.allCountries[i].region[index].select) {
-                              context.read<CountriesBloc>().add(GetTownsEvent(
-                                  widget.allCountries[i].region[index]));
-                            } else {
-                              widget.allCountries[i].region[index].town = [];
-                            }
-                            openCountry = false;
-                            openTown = false;
-                            widget.onEdit(
-                              widget.startDate,
-                              widget.endDate,
-                              widget.allCountries,
-                              widget.currecy,
-                            );
-
-                            setState(() {});
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            height: 40.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 250.w,
-                                      child: Text(
-                                        widget.allCountries[i].region[index]
-                                            .name!,
-                                        style: CustomTextStyle
-                                            .black_14_w400_515150,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    if (widget
-                                        .allCountries[i].region[index].select)
-                                      const Icon(Icons.check)
-                                  ],
-                                ),
-                              ],
-                            ),
+                    });
+                  },
+                  child: CustomTextField(
+                    fillColor: ColorStyles.greyF9F9F9,
+                    hintText: 'Выбрать район',
+                    hintStyle: CustomTextStyle.grey_14_w400,
+                    height: 55.h,
+                    enabled: false,
+                    suffixIcon: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 16.h),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                SvgImg.earth,
+                                height: 15.h,
+                                width: 15.h,
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 14.h),
-            widget.allCountries.any(
-              (element) {
-                if (element.select) {
-                  return element.region.any((element1) {
-                    if (element1.select) {
-                      return element1.town.isNotEmpty;
-                    }
-                    return false;
-                  });
-                } else {
-                  return false;
-                }
-              },
-            )
-                ? ScaleButton(
-                    bound: 0.02,
-                    onTap: () {
-                      setState(() {
-                        setState(() {
-                          openCountry = false;
-                          openRegion = false;
-                          openTown = !openTown;
-                        });
-                        FocusScope.of(context).unfocus();
-
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          controller.animateTo(
-                            controller.position.maxScrollExtent - 20.h,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.linear,
-                          );
-                        });
-                      });
-                    },
-                    child: CustomTextField(
-                      fillColor: ColorStyles.greyF9F9F9,
-                      hintText: 'Выбрать район',
-                      hintStyle: CustomTextStyle.grey_14_w400,
-                      height: 55.h,
-                      enabled: false,
-                      suffixIcon: Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 16.h),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  SvgImg.earth,
-                                  height: 15.h,
-                                  width: 15.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      textEditingController:
-                          TextEditingController(text: _townsString()),
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 18.w, vertical: 18.h),
+                      ],
                     ),
-                  )
-                : Container(),
-            SizedBox(height: 14.h),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: openTown ? 200.h : 0.h,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
-                ],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-              child: ListView.builder(
-                itemCount: widget.allCountries.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, index1) {
-                  return ListView.builder(
-                    itemCount: widget.allCountries[index1].region.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index2) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: widget
-                            .allCountries[index1].region[index2].town.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index3) {
-                          return Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                widget.allCountries[index1].region[index2]
-                                        .town[index3].select =
-                                    !widget.allCountries[index1].region[index2]
-                                        .town[index3].select;
-
-                                widget.onEdit(
-                                  widget.startDate,
-                                  widget.endDate,
-                                  widget.allCountries,
-                                  widget.currecy,
-                                );
-
-                                setState(() {});
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                height: 40.h,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 250.w,
-                                          child: Text(
-                                            widget
-                                                .allCountries[index1]
-                                                .region[index2]
-                                                .town[index3]
-                                                .name!,
-                                            style: CustomTextStyle
-                                                .black_14_w400_515150,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        if (widget.allCountries[index1]
-                                            .region[index2].town[index3].select)
-                                          const Icon(Icons.check)
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            Row(
-              children: [
-                const Spacer(),
-                SvgPicture.asset(SvgImg.help),
+                    textEditingController:
+                        TextEditingController(text: _townsString()),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  ),
+                )
+              : Container(),
+          SizedBox(height: 14.h),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: openTown ? 200.h : 0.h,
+            decoration: BoxDecoration(
+              color: ColorStyles.whiteFFFFFF,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorStyles.shadowFC6554,
+                  offset: const Offset(0, -4),
+                  blurRadius: 55.r,
+                )
               ],
             ),
-            SizedBox(height: 8.h),
-            CustomButton(
-              onTap: () {},
-              btnColor: ColorStyles.purpleA401C4,
-              textLabel: Text(
-                'Поднять объявление наверх',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                ),
+            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+            child: ListView.builder(
+              itemCount: widget.allCountries.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: (context, index1) {
+                return ListView.builder(
+                  itemCount: widget.allCountries[index1].region.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index2) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget
+                          .allCountries[index1].region[index2].town.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index3) {
+                        return Padding(
+                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.allCountries[index1].region[index2]
+                                      .town[index3].select =
+                                  !widget.allCountries[index1].region[index2]
+                                      .town[index3].select;
+
+                              widget.onEdit(
+                                widget.startDate,
+                                widget.endDate,
+                                widget.allCountries,
+                                widget.currecy,
+                              );
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              height: 40.h,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 250.w,
+                                        child: Text(
+                                          widget
+                                              .allCountries[index1]
+                                              .region[index2]
+                                              .town[index3]
+                                              .name!,
+                                          style: CustomTextStyle
+                                              .black_14_w400_515150,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      if (widget.allCountries[index1]
+                                          .region[index2].town[index3].select)
+                                        const Icon(Icons.check)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Row(
+            children: [
+              const Spacer(),
+              SvgPicture.asset(SvgImg.help),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          CustomButton(
+            onTap: () {},
+            btnColor: ColorStyles.purpleA401C4,
+            textLabel: Text(
+              'Поднять объявление наверх',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
               ),
             ),
-            SizedBox(height: widget.bottomInsets),
-          ],
-        ),
-      );
-    });
+          ),
+          SizedBox(height: widget.bottomInsets),
+        ],
+      ),
+    );
   }
 
   String _countriesString() {

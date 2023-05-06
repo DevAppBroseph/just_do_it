@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
@@ -60,7 +59,10 @@ class _AllTasksViewState extends State<AllTasksView> {
                         alignment: Alignment.centerLeft,
                         child: CustomIconButton(
                           onBackPressed: () {
-                            if (selectTask != null) {
+                            if (owner != null) {
+                              owner = null;
+                              setState(() {});
+                            } else if (selectTask != null) {
                               selectTask = null;
                               setState(() {});
                             } else {
@@ -124,8 +126,6 @@ class _AllTasksViewState extends State<AllTasksView> {
                       },
                     ),
                   );
-                  BlocProvider.of<CountriesBloc>(context)
-                      .add(GetCountryEvent());
                 },
                 btnColor: ColorStyles.yellowFFD70A,
                 textLabel: Text(

@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
-import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
@@ -230,8 +229,6 @@ class _CreatePageState extends State<CreatePage> {
                                         },
                                       ),
                                     );
-                                    BlocProvider.of<CountriesBloc>(context)
-                                        .add(GetCountryEvent());
                                   }
                                 },
                                 btnColor: ColorStyles.yellowFFD70A,
