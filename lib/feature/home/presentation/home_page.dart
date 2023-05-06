@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     if (panelController.isPanelOpen) panelController.close();
-    if (panelControllerReply.isPanelOpen) panelControllerReply.close();
+    // if (panelControllerReply.isPanelOpen) panelControllerReply.close();
     streamController.close();
     pageController.dispose();
     super.dispose();
@@ -253,11 +253,11 @@ class _HomePageState extends State<HomePage> {
         BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
           builder: (context, snapshot) {
             if (snapshot is rep.OpenSlidingPanelState) {
-              panelController.animatePanelToPosition(1.0);
+              panelControllerReply.animatePanelToPosition(1.0);
             } else if (snapshot is rep.CloseSlidingPanelState) {
-              panelController.animatePanelToPosition(0.0);
+              panelControllerReply.animatePanelToPosition(0.0);
             }
-            return SlidingPanelReply(panelController);
+            return SlidingPanelReply(panelControllerReply);
           },
         ),
       ],

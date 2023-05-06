@@ -109,7 +109,11 @@ class Repository {
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       for (var element in response.data) {
-        tasks.add(Task.fromJson(element));
+        final task = Task.fromJson(element);
+        if (tasks.any((element) => task.id == element.id)) {
+        } else {
+          tasks.add(Task.fromJson(element));
+        }
       }
       return tasks;
     }

@@ -56,7 +56,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                     child: Text(
                       task.name,
                       style: CustomTextStyle.black_14_w500_171716,
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -69,7 +69,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 140.w,
+                              width: 245.w,
                               child: Text(
                                 _textCountry(task),
                                 style: CustomTextStyle.black_12_w500_515150,
@@ -85,29 +85,45 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           ],
                         ),
                         const Spacer(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 245.w,
+                    child: Row(
+                      children: [
+                        const Spacer(),
                         if (task.currency?.name == null)
-                          Text(
-                            'до ${task.priceTo} ₽',
-                            style: CustomTextStyle.black_14_w500_171716,
+                          SizedBox(
+                            width: 245.w,
+                            child: Text(
+                              'до ${task.priceTo} ₽',
+                              maxLines: 1,
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
                           ),
                         if (task.currency?.name == 'Дирхам')
                           Text(
                             'до ${task.priceTo} AED',
+                            maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
                         if (task.currency?.name == 'Российский рубль')
                           Text(
                             'до ${task.priceTo}  ₽',
+                            maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
                         if (task.currency?.name == 'Доллар США')
                           Text(
                             'до ${task.priceTo} \$',
+                            maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
                         if (task.currency?.name == 'Евро')
                           Text(
                             'до ${task.priceTo} €',
+                            maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
                         SizedBox(width: 5.w),
@@ -117,7 +133,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                         ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ],

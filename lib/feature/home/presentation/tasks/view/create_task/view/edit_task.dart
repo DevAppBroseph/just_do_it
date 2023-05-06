@@ -77,7 +77,7 @@ class _EditTasksState extends State<EditTasks> {
   }
 
   initCountry() async {
-    countries = BlocProvider.of<CountriesBloc>(context).country;
+    countries.addAll(BlocProvider.of<CountriesBloc>(context).country);
     for (var element1 in countries) {
       element1.select = false;
     }
@@ -258,8 +258,11 @@ class _EditTasksState extends State<EditTasks> {
                       ),
                       BlocBuilder<CountriesBloc, CountriesState>(
                           builder: (context, snapshot) {
-                        countries =
-                            BlocProvider.of<CountriesBloc>(context).country;
+                        if (countries.isEmpty) {
+                          countries =
+                              BlocProvider.of<CountriesBloc>(context).country;
+                        }
+
                         return DatePicker(
                           bottomInsets: bottomInsets,
                           coastMaxController: coastMaxController,
@@ -407,8 +410,8 @@ class _EditTasksState extends State<EditTasks> {
                               ..pop()
                               ..pop();
                           }
-                          BlocProvider.of<CountriesBloc>(context)
-                              .add(ResetCountryEvent());
+                          // BlocProvider.of<CountriesBloc>(context)
+                          //     .add(ResetCountryEvent());
                           Loader.hide();
                         }
                       } else {

@@ -336,8 +336,10 @@ class _CeateTasksState extends State<CeateTasks> {
                       ),
                       BlocBuilder<CountriesBloc, CountriesState>(
                           builder: (context, snapshot) {
-                        countries =
-                            BlocProvider.of<CountriesBloc>(context).country;
+                        if (countries.isEmpty) {
+                          countries =
+                              BlocProvider.of<CountriesBloc>(context).country;
+                        }
                         return DatePicker(
                           bottomInsets: bottomInsets,
                           coastMaxController: coastMaxController,
@@ -499,8 +501,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).pop();
                           }
 
-                          BlocProvider.of<CountriesBloc>(context)
-                              .add(ResetCountryEvent());
+                          // BlocProvider.of<CountriesBloc>(context)
+                          //     .add(ResetCountryEvent());
 
                           Loader.hide();
                         }

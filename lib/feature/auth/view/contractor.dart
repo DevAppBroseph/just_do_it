@@ -685,8 +685,9 @@ class _ContractorState extends State<Contractor> {
   }
 
   Widget secondStage(double heightKeyBoard) {
-    listCountries.clear();
-    listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
+    if (listCountries.isEmpty) {
+      listCountries.addAll(BlocProvider.of<CountriesBloc>(context).country);
+    }
     return ListView(
       addAutomaticKeepAlives: false,
       padding: EdgeInsets.zero,

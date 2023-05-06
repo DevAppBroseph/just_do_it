@@ -47,8 +47,9 @@ class _CreatePageState extends State<CreatePage> {
 
   void getHistoryList() async {
     final List<String> list = await Storage().getListHistory();
+    final List<String> listReversed = list.reversed.toList();
     searchChoose.clear();
-    searchChoose.addAll(list);
+    searchChoose.addAll(listReversed);
   }
 
   @override

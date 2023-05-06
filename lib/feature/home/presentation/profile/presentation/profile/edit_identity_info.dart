@@ -134,6 +134,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
                       user!.copyWith(isEntity: physics);
+                      // BlocProvider.of<CountriesBloc>(context)
+                      //     .add(ResetCountryEvent());
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
                       Repository().updateUser(
                           BlocProvider.of<ProfileBloc>(context).access, user!);
