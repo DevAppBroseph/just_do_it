@@ -220,16 +220,11 @@ class _CustomerState extends State<Customer> {
 
                   String email = emailController.text;
 
-                    bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(email);
-                        
-                      if (!emailValid && emailController.text.isNotEmpty) {
-                      error += '\n- корректную почту';
-                      errorsFlag = true;
-                    }
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(email);
 
-                  if (!emailValid) {
+                  if (!emailValid && emailController.text.isNotEmpty) {
                     error += '\n- корректную почту';
                     errorsFlag = true;
                   }
@@ -287,33 +282,38 @@ class _CustomerState extends State<Customer> {
                       error += '\n- номер документа';
                       errorsFlag = true;
                     }
+
                     if (whoGiveDocController.text.isEmpty) {
-                      error += '\n- кем был выдан документ';
-                      errorsFlag = true;
+                      if (user.docType != 'Passport') {
+                        error += '\n- срок действия документа';
+                        errorsFlag = true;
+                      } else if (user.docType != 'Resident_ID') {
+                        error += '\n- кем был выдан документ';
+                        errorsFlag = true;
+                      }
                     }
                     if (dateDocController.text.isEmpty) {
                       error += '\n- дату выдачи документа';
                       errorsFlag = true;
                     }
-                     if (passwordController.text.length < 6) {
+                    if (passwordController.text.length < 6) {
                       error += '\n\nМинимальная длина пароля 6 символов';
-                       errorsFlag = true;
+                      errorsFlag = true;
                     }
-                      if ((passwordController.text.isNotEmpty &&
-                              repeatPasswordController.text.isNotEmpty) &&
-                          (passwordController.text !=
-                              repeatPasswordController.text)) {
-                        error += '\nПароли не совпадают';
-                         errorsFlag = true;
-                      }
-                      if (dateTimeEnd != null &&
+                    if ((passwordController.text.isNotEmpty &&
+                            repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text !=
+                            repeatPasswordController.text)) {
+                      error += '\nПароли не совпадают';
+                      errorsFlag = true;
+                    }
+                    if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
                       error += '\nВаш документ просрочен';
-                       errorsFlag = true;
+                      errorsFlag = true;
                     }
 
                     if (errorsFlag) {
-                     
                       showAlertToast(error);
                     } else if (passwordController.text.length < 6) {
                       showAlertToast('- минимальная длина пароля 6 символов');
@@ -523,7 +523,11 @@ class _CustomerState extends State<Customer> {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            requestNextEmptyFocusStage1();
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
+            if (!emailValid) showAlertToast('Почта указана неверно');
+            if (emailValid) requestNextEmptyFocusStage1();
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
