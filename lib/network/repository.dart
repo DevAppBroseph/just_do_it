@@ -39,6 +39,23 @@ class Repository {
     return null;
   }
 
+  Future<bool> deleteTask(Task task, String access) async {
+    final res = await dio.delete(
+      '$server/orders/${task.id}',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (res.statusCode == 200 ||
+        res.statusCode == 201 ||
+        res.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
   Future<void> deleteProfile(String access) async {
     await dio.delete(
       '$server/profile/',
