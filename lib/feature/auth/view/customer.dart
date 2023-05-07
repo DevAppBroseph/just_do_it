@@ -84,6 +84,8 @@ class _CustomerState extends State<Customer> {
 
   List<Regions> listRegions = [];
 
+  GlobalKey key1 = GlobalKey();
+
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
@@ -272,6 +274,18 @@ class _CustomerState extends State<Customer> {
                     errorsFlag = true;
                   }
 
+                  if (passwordController.text.length < 6) {
+                    error += '\nМинимальная длина пароля 6 символов';
+                    errorsFlag = true;
+                  }
+                  if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    error += '\nПароли не совпадают';
+                    errorsFlag = true;
+                  }
+
                   if (additionalInfo) {
                     if (serialDocController.text.isEmpty &&
                         user.docType != 'Resident_ID') {
@@ -282,7 +296,6 @@ class _CustomerState extends State<Customer> {
                       error += '\n- номер документа';
                       errorsFlag = true;
                     }
-
                     if (whoGiveDocController.text.isEmpty) {
                       if (user.docType != 'Passport') {
                         error += '\n- срок действия документа';
@@ -293,23 +306,11 @@ class _CustomerState extends State<Customer> {
                       }
                     }
                     if (dateDocController.text.isEmpty) {
-                      error += '\n- дату выдачи документа';
-                      errorsFlag = true;
-                    }
-                    if (passwordController.text.length < 6) {
-                      error += '\n\nМинимальная длина пароля 6 символов';
-                      errorsFlag = true;
-                    }
-                    if ((passwordController.text.isNotEmpty &&
-                            repeatPasswordController.text.isNotEmpty) &&
-                        (passwordController.text !=
-                            repeatPasswordController.text)) {
-                      error += '\nПароли не совпадают';
-                      errorsFlag = true;
-                    }
-                    if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      error += '\nВаш документ просрочен';
+                      if (user.docType == 'Resident_ID') {
+                        error += '\n- место выдачи документа';
+                      } else {
+                        error += '\n- дату выдачи документа';
+                      }
                       errorsFlag = true;
                     }
 
@@ -334,8 +335,9 @@ class _CustomerState extends State<Customer> {
                           .add(SendProfileEvent(user));
                     }
                     showAlertToast(error);
-                  } else if (passwordController.text.length < 6) {
-                    showAlertToast('- минимальная длина пароля 6 символов');
+                  } else if (errorsFlag) {
+                    // log('message 1 $error');
+                    showAlertToast(error);
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
@@ -828,7 +830,7 @@ class _CustomerState extends State<Customer> {
         GestureDetector(
           onTap: () => showIconModal(
             context,
-            GlobalKeys.keyIconBtn2,
+            key1,
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
@@ -845,7 +847,7 @@ class _CustomerState extends State<Customer> {
             'Документ',
           ),
           child: Stack(
-            key: GlobalKeys.keyIconBtn2,
+            key: key1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(

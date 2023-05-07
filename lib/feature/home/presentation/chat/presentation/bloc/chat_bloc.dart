@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,6 +87,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
+        log('message $event');
         try {
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
@@ -112,9 +115,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           add(RefreshPersonChatEvent());
           add(GetListMessage());
-        } catch (e) {}
+        } catch (e) {
+          log('catch $event');
+        }
       },
-      onError: (e) {},
+      onError: (e) {
+        log('onError $e');
+      },
       onDone: () {},
       cancelOnError: false,
     );
