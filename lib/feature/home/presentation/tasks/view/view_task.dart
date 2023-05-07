@@ -12,8 +12,10 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class TaskView extends StatefulWidget {
@@ -87,7 +89,29 @@ class _TaskViewState extends State<TaskView> {
                     },
                     child: Text(
                       'Редактировать',
-                      style: CustomTextStyle.black_14_w400_171716,
+                      style: CustomTextStyle.black_12_w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (widget.canEdit)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () async {
+                      final access = await Storage().getAccessToken();
+                      final res = await Repository()
+                          .deleteTask(widget.selectTask, access!);
+                      if (res) Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Удалить',
+                      style: CustomTextStyle.black_12_w400
+                          .copyWith(color: Colors.red),
                     ),
                   ),
                 ],
