@@ -106,7 +106,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    log(' tgtrhrtht erge rg $selectTask');
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     String? access = BlocProvider.of<ProfileBloc>(context).access;

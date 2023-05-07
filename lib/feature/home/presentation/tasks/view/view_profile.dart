@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,6 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widget_position.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
-import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,9 +32,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void getProfile() async {
-    String? accessToken = await Storage().getAccessToken();
-    owner = await Repository().getRanking(accessToken!, widget.owner);
-    // log('message ${owner?.}');
+    owner = await Repository().getRanking(widget.owner);
     setState(() {});
   }
 
@@ -44,387 +42,407 @@ class _ProfileViewState extends State<ProfileView> {
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
+        body: owner == null
+            ? const Center(child: CupertinoActivityIndicator())
+            : Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 10.h),
-                  SizedBox(
-                    height: 90.h,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: ListView(
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
                       children: [
-                        if (owner?.photo != null)
-                          GestureDetector(
-                            onTap: () {
-                              launch(owner!.photo!);
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(1000.r),
-                              child: Image.network(
-                                owner?.photo ?? '',
-                                height: 76.h,
-                                width: 76.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        SizedBox(width: 17.w),
-                        Expanded(
-                          child: Column(
+                        SizedBox(height: 10.h),
+                        SizedBox(
+                          height: 90.h,
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${owner?.firstname ?? ''} ${owner?.lastname ?? ''}',
-                                style: CustomTextStyle.black_17_w600_171716,
-                                softWrap: true,
-                              ),
-                              const Spacer(),
-                              Text(
-                                'Рейтинг',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                              SizedBox(height: 9.h),
-                              Row(
-                                children: [
-                                  SvgPicture.asset('assets/icons/star.svg'),
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    owner?.ranking ?? '-',
-                                    style: CustomTextStyle.black_13_w500_171716,
+                              if (owner?.photo != null)
+                                GestureDetector(
+                                  onTap: () {
+                                    launch(owner!.photo!);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(1000.r),
+                                    child: Image.network(
+                                      owner?.photo ?? '',
+                                      height: 76.h,
+                                      width: 76.h,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ],
+                                ),
+                              SizedBox(width: 17.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${owner?.firstname ?? ''} ${owner?.lastname ?? ''}',
+                                      style:
+                                          CustomTextStyle.black_17_w600_171716,
+                                      softWrap: true,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      'Рейтинг',
+                                      style: CustomTextStyle.grey_14_w400,
+                                    ),
+                                    SizedBox(height: 9.h),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/star.svg'),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          owner?.ranking ?? '-',
+                                          style: CustomTextStyle
+                                              .black_13_w500_171716,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => taskMoreDialogForProfile(
+                                  context,
+                                  getWidgetPosition(globalKey),
+                                  (index) {},
+                                ),
+                                child: SvgPicture.asset(
+                                  'assets/icons/more-circle.svg',
+                                  key: globalKey,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => taskMoreDialogForProfile(
-                            context,
-                            getWidgetPosition(globalKey),
-                            (index) {},
-                          ),
-                          child: SvgPicture.asset(
-                            'assets/icons/more-circle.svg',
-                            key: globalKey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 18.h),
-                  Row(
-                    children: [
-                      if (owner != null &&
-                          owner!.cv != null &&
-                          owner!.cv!.isNotEmpty)
-                        Container(
-                          height: 36.h,
-                          width: 75.w,
-                          decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/document_text.svg',
-                                color: ColorStyles.blue336FEE,
+                        SizedBox(height: 18.h),
+                        Row(
+                          children: [
+                            if (owner != null &&
+                                owner!.cv != null &&
+                                owner!.cv!.isNotEmpty)
+                              Container(
+                                height: 36.h,
+                                width: 75.w,
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.greyF9F9F9,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/document_text.svg',
+                                      color: ColorStyles.blue336FEE,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        launch(owner!.cv!);
+                                      },
+                                      child: Text(
+                                        'Резюме',
+                                        style: CustomTextStyle
+                                            .black_11_w400_171716
+                                            .copyWith(
+                                          color: ColorStyles.blue336FEE,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  launch(owner!.cv!);
-                                },
-                                child: Text(
-                                  'Резюме',
-                                  style: CustomTextStyle.black_11_w400_171716
-                                      .copyWith(
-                                    color: ColorStyles.blue336FEE,
+                            if (owner != null &&
+                                owner!.cv != null &&
+                                owner!.cv!.isNotEmpty)
+                              SizedBox(width: 12.w),
+                            if (owner != null &&
+                                owner!.isPassportExist != null &&
+                                owner!.isPassportExist!)
+                              Container(
+                                height: 36.h,
+                                width: 181.w,
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.greyF9F9F9,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                        'assets/icons/clipboard.svg'),
+                                    Text(
+                                      'Паспортные данные загружены',
+                                      style:
+                                          CustomTextStyle.black_11_w400_171716,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        Row(
+                          children: [
+                            Text(
+                              'Создано заданий:',
+                              style: CustomTextStyle.black_12_w400_292D32,
+                            ),
+                            Text(
+                              ' 40',
+                              style: CustomTextStyle.black_13_w500_171716,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.h),
+                        Row(
+                          children: [
+                            Text(
+                              'Выполнено заданий:',
+                              style: CustomTextStyle.black_12_w400_292D32,
+                            ),
+                            Text(
+                              ' 40',
+                              style: CustomTextStyle.black_13_w500_171716,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 30.h),
+                        SizedBox(
+                          height: 70.h,
+                          child: ListView(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 5.w),
+                                child: Container(
+                                  height: 70.h,
+                                  width: 105.w,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFEACB),
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ColorStyles.shadowFC6554,
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 45.r,
+                                      )
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.h, vertical: 8.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/build.png',
+                                          height: 24.h,
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          'Ремонт и строительство',
+                                          style: CustomTextStyle
+                                              .black_11_w400_171716,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 5.w),
+                                child: Container(
+                                  height: 70.h,
+                                  width: 105.w,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFE0ED),
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ColorStyles.shadowFC6554,
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 45.r,
+                                      )
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.h, vertical: 8.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/soap.png',
+                                          height: 24.h,
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          'Красота\nи здоровье',
+                                          style: CustomTextStyle
+                                              .black_11_w400_171716,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 5.w),
+                                child: Container(
+                                  height: 70.h,
+                                  width: 105.w,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFD5F7FE),
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ColorStyles.shadowFC6554,
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 45.r,
+                                      )
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.h, vertical: 8.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/book.png',
+                                          height: 24.h,
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          'Репетиторы\nи обучение',
+                                          style: CustomTextStyle
+                                              .black_11_w400_171716,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )
                             ],
                           ),
                         ),
-                      if (owner != null &&
-                          owner!.cv != null &&
-                          owner!.cv!.isNotEmpty)
-                        SizedBox(width: 12.w),
-                      if (owner != null &&
-                          owner!.isPassportExist != null &&
-                          owner!.isPassportExist!)
+                        SizedBox(height: 30.h),
+                        Text(
+                          'Опыт работы',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                        SizedBox(height: 12.h),
                         Container(
-                          height: 36.h,
-                          width: 181.w,
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF9F9F9,
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset('assets/icons/clipboard.svg'),
-                              Text(
-                                'Паспортные данные загружены',
-                                style: CustomTextStyle.black_11_w400_171716,
-                              ),
+                            color: ColorStyles.whiteFFFFFF,
+                            borderRadius: BorderRadius.circular(10.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: ColorStyles.shadowFC6554,
+                                offset: const Offset(0, 4),
+                                blurRadius: 45.r,
+                              )
                             ],
                           ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Text(
-                        'Создано заданий:',
-                        style: CustomTextStyle.black_12_w400_292D32,
-                      ),
-                      Text(
-                        ' 40',
-                        style: CustomTextStyle.black_13_w500_171716,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 6.h),
-                  Row(
-                    children: [
-                      Text(
-                        'Выполнено заданий:',
-                        style: CustomTextStyle.black_12_w400_292D32,
-                      ),
-                      Text(
-                        ' 40',
-                        style: CustomTextStyle.black_13_w500_171716,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30.h),
-                  SizedBox(
-                    height: 70.h,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 5.w),
-                          child: Container(
-                            height: 70.h,
-                            width: 105.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFEACB),
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorStyles.shadowFC6554,
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 45.r,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.h, vertical: 8.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/build.png',
-                                    height: 24.h,
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    'Ремонт и строительство',
-                                    style: CustomTextStyle.black_11_w400_171716,
-                                  )
-                                ],
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 16.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                owner != null &&
+                                        owner!.activity != null &&
+                                        owner!.activity!.isNotEmpty
+                                    ? owner!.activity!
+                                    : 'Опыт работы не указан.',
+                                style: CustomTextStyle.black_12_w400_292D32,
                               ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 5.w),
-                          child: Container(
-                            height: 70.h,
-                            width: 105.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFE0ED),
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorStyles.shadowFC6554,
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 45.r,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.h, vertical: 8.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/soap.png',
-                                    height: 24.h,
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    'Красота\nи здоровье',
-                                    style: CustomTextStyle.black_11_w400_171716,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 5.w),
-                          child: Container(
-                            height: 70.h,
-                            width: 105.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFD5F7FE),
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorStyles.shadowFC6554,
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 45.r,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.h, vertical: 8.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/book.png',
-                                    height: 24.h,
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    'Репетиторы\nи обучение',
-                                    style: CustomTextStyle.black_11_w400_171716,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Text(
-                    'Опыт работы',
-                    style: CustomTextStyle.grey_14_w400,
-                  ),
-                  SizedBox(height: 12.h),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
-                      borderRadius: BorderRadius.circular(10.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorStyles.shadowFC6554,
-                          offset: const Offset(0, 4),
-                          blurRadius: 45.r,
-                        )
-                      ],
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                    child: Column(
-                      children: [
-                        if (owner != null &&
-                            owner!.activity != null &&
-                            owner!.activity!.isNotEmpty)
-                          Text(
-                            owner!.activity!,
-                            style: CustomTextStyle.black_12_w400_292D32,
-                          ),
-                        if (owner != null && owner!.listPhoto.isNotEmpty)
-                          Padding(
-                            padding: EdgeInsets.only(top: 18.h),
-                            child: SizedBox(
-                              height: 66.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: owner!.listPhoto.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(right: 10.w),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        launch(owner!.listPhoto[index]);
+                              if (owner != null && owner!.listPhoto.isNotEmpty)
+                                Padding(
+                                  padding: EdgeInsets.only(top: 18.h),
+                                  child: SizedBox(
+                                    height: 66.h,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: owner!.listPhoto.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(right: 10.w),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              launch(owner!.listPhoto[index]);
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    owner!.listPhoto[index],
+                                                height: 66.h,
+                                                width: 66.w,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        );
                                       },
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
-                                        child: CachedNetworkImage(
-                                          imageUrl: owner!.listPhoto[index],
-                                          height: 66.h,
-                                          width: 66.w,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        SizedBox(height: 18.h),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            width: 229.w,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  height: 36.h,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteF5F5F5,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.h),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                            'assets/icons/translate.svg'),
-                                        SizedBox(width: 8.h),
-                                        Text(
-                                          'Перевод',
-                                          style: CustomTextStyle
-                                              .blue_14_w400_336FEE,
-                                        )
-                                      ],
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              SizedBox(height: 18.h),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: SizedBox(
+                                  width: 229.w,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 36.h,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.whiteF5F5F5,
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10.h),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                  'assets/icons/translate.svg'),
+                                              SizedBox(width: 8.h),
+                                              Text(
+                                                'Перевод',
+                                                style: CustomTextStyle
+                                                    .blue_14_w400_336FEE,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

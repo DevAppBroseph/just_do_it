@@ -59,12 +59,13 @@ class _HomePageState extends State<HomePage> {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
       final owner = await Repository().getRanking(
-          access!,
-          Owner(
-              id: int.parse(userProfile),
-              firstname: '',
-              lastname: '',
-              photo: ''));
+        Owner(
+          id: int.parse(userProfile),
+          firstname: '',
+          lastname: '',
+          photo: '',
+        ),
+      );
       if (owner != null) {
         Navigator.push(
           context,

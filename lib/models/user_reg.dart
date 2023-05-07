@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -119,6 +120,7 @@ class UserRegModel {
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
+    log('message $data');
     String? email = data['email'];
     String? phoneNumber = data['phone_number'];
     String? firstname = data['firstname'];
@@ -171,7 +173,7 @@ class UserRegModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Future<Map<String, dynamic>> toJson() async {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['phone_number'] = phoneNumber;
     data['email'] = email;
@@ -197,6 +199,10 @@ class UserRegModel {
     if (images != null) {
       List<MultipartFile> files = [];
       for (var element in images!) {
+        // element.byte ??= await Repository().downloadFile(
+        //     element.linkUrl!.contains(server)
+        //         ? element.linkUrl!
+        //         : server + element.linkUrl!);
         files.add(
           MultipartFile.fromBytes(
             element.byte!,

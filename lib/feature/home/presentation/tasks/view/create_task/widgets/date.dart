@@ -154,6 +154,47 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    int countCountry = widget.allCountries.length;
+    // for (int i = 0; i < widget.allCountries.length; i++) {
+    // if (widget.allCountries[i].select) {
+    // }
+    // }
+
+    int countRegion = 0;
+    for (int i = 0; i < widget.allCountries.length; i++) {
+      if (widget.allCountries[i].select) {
+        for (int j = 0; j < widget.allCountries[i].region.length; j++) {
+          // if (widget.allCountries[i].region[j].select) {
+          // {
+          countRegion += widget.allCountries[i].region.length;
+          // }
+          // }
+        }
+      }
+    }
+
+    int countTown = 0;
+    for (int i = 0; i < widget.allCountries.length; i++) {
+      if (widget.allCountries[i].select) {
+        for (int j = 0; j < widget.allCountries[i].region.length; j++) {
+          if (widget.allCountries[i].region[j].select) {
+            {
+              countTown += widget.allCountries[i].region[j].town.length;
+              // for (int k = 0;
+              // k < widget.allCountries[i].region[j].town.length;
+              // k++) {
+              // if (widget.allCountries[i].region[j].town[k].select) {
+              // {
+              // countTown += 1;
+              // }
+              // }
+              // }
+            }
+          }
+        }
+      }
+    }
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
@@ -569,8 +610,8 @@ class _DatePickerState extends State<DatePicker> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: openCountry
-                ? widget.allCountries.length < 3
-                    ? (widget.allCountries.length) * 40
+                ? countCountry < 3
+                    ? countCountry * 40
                     : 120.h
                 : 0.h,
             decoration: BoxDecoration(
@@ -707,7 +748,11 @@ class _DatePickerState extends State<DatePicker> {
           SizedBox(height: 14.h),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: openRegion ? 200.h : 0.h,
+            height: openRegion
+                ? countRegion < 3
+                    ? countRegion * 40.h
+                    : 120.h
+                : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
               borderRadius: BorderRadius.circular(10.r),
@@ -869,7 +914,11 @@ class _DatePickerState extends State<DatePicker> {
           SizedBox(height: 14.h),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: openTown ? 200.h : 0.h,
+            height: openTown
+                ? countTown < 3
+                    ? countTown * 40.h
+                    : 120.h
+                : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
               borderRadius: BorderRadius.circular(10.r),
