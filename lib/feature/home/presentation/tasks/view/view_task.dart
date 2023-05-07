@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
@@ -55,11 +56,10 @@ class _TaskViewState extends State<TaskView> {
               const Spacer(),
               GestureDetector(
                 onTap: () => taskMoreDialog(
-                  
-                  context,
-                  getWidgetPosition(globalKey),
-                  (index) {},  widget.selectTask
-                ),
+                    context,
+                    getWidgetPosition(globalKey),
+                    (index) {},
+                    widget.selectTask),
                 child: SvgPicture.asset(
                   'assets/icons/more-circle.svg',
                   key: globalKey,
@@ -299,7 +299,9 @@ class _TaskViewState extends State<TaskView> {
             ),
           ),
           SizedBox(height: 38.h),
-          if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
+          if (user != null &&
+              widget.canSelect &&
+              user.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () async {
                 final chatBloc = BlocProvider.of<ChatBloc>(context);
@@ -328,8 +330,16 @@ class _TaskViewState extends State<TaskView> {
           if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () {
-                BlocProvider.of<rep.ReplyBloc>(context)
-                    .add(rep.OpenSlidingPanelEvent());
+                if (user == null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AuthPage(),
+                      ));
+                } else {
+                  BlocProvider.of<rep.ReplyBloc>(context)
+                      .add(rep.OpenSlidingPanelEvent());
+                }
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

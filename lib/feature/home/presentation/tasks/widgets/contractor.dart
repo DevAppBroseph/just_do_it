@@ -36,7 +36,7 @@ class _ContractorState extends State<Contractor> {
     List<Task> res = await Repository()
         .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
     taskList.clear();
-    taskList.addAll(res.reversed);
+    taskList.addAll(res);
     setState(() {});
   }
 
@@ -50,9 +50,10 @@ class _ContractorState extends State<Contractor> {
         shrinkWrap: true,
         children: [
           GestureDetector(
-            onTap: () {
-              Navigator.of(context)
+            onTap: () async {
+              await Navigator.of(context)
                   .pushNamed(AppRoute.allTasks, arguments: [true]);
+              getListTask();
             },
             child: Container(
               height: 55.h,
@@ -95,9 +96,10 @@ class _ContractorState extends State<Contractor> {
           ),
           SizedBox(height: 16.h),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context)
+            onTap: () async {
+              await Navigator.of(context)
                   .pushNamed(AppRoute.archiveTasks, arguments: [true]);
+              getListTask();
             },
             child: Container(
               height: 55.h,
@@ -153,8 +155,8 @@ class _ContractorState extends State<Contractor> {
                 'Выполняются',
                 '${taskList.length} задания',
                 SvgImg.inProgress,
-                () {
-                  Navigator.of(context).push(
+                () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(
                         title: 'Выполняются',
@@ -162,6 +164,7 @@ class _ContractorState extends State<Contractor> {
                       );
                     }),
                   );
+                  getListTask();
                 },
               ),
               Padding(
@@ -181,8 +184,8 @@ class _ContractorState extends State<Contractor> {
                 'Выполненные',
                 '${taskList.length} задания',
                 SvgImg.complete,
-                () {
-                  Navigator.of(context).push(
+                () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(
                         title: 'Выполнены',
@@ -190,6 +193,7 @@ class _ContractorState extends State<Contractor> {
                       );
                     }),
                   );
+                  getListTask();
                 },
               ),
               Padding(
@@ -209,8 +213,8 @@ class _ContractorState extends State<Contractor> {
                 'Ждут подтверждения',
                 '${taskList.length} задания',
                 SvgImg.needSuccess,
-                () {
-                  Navigator.of(context).push(
+                () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(
                         title: 'Ждут подтверждения',
@@ -218,6 +222,7 @@ class _ContractorState extends State<Contractor> {
                       );
                     }),
                   );
+                  getListTask();
                 },
               ),
               Padding(
@@ -246,6 +251,7 @@ class _ContractorState extends State<Contractor> {
                     },
                   ),
                 );
+                getListTask();
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

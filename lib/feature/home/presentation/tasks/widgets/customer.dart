@@ -39,7 +39,7 @@ class _CustomerState extends State<Customer> {
     List<Task> res = await Repository()
         .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
     taskList.clear();
-    taskList.addAll(res.reversed);
+    taskList.addAll(res);
     setState(() {});
   }
 
@@ -53,9 +53,10 @@ class _CustomerState extends State<Customer> {
         shrinkWrap: true,
         children: [
           GestureDetector(
-            onTap: () {
-              Navigator.of(context)
+            onTap: () async {
+              await Navigator.of(context)
                   .pushNamed(AppRoute.allTasks, arguments: [false]);
+              getListTask();
             },
             child: Container(
               height: 55.h,
@@ -98,9 +99,10 @@ class _CustomerState extends State<Customer> {
           ),
           SizedBox(height: 16.h),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context)
+            onTap: () async {
+              await Navigator.of(context)
                   .pushNamed(AppRoute.archiveTasks, arguments: [false]);
+              getListTask();
             },
             child: Container(
               height: 55.h,
@@ -156,8 +158,8 @@ class _CustomerState extends State<Customer> {
                 'Открыты',
                 '${taskList.length} задания',
                 SvgImg.inProgress,
-                () {
-                  Navigator.of(context).push(
+                () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(
                         title: 'Открыты',
@@ -165,6 +167,7 @@ class _CustomerState extends State<Customer> {
                       );
                     }),
                   );
+                  getListTask();
                 },
               ),
               Padding(
@@ -184,8 +187,8 @@ class _CustomerState extends State<Customer> {
                 'Невыполненные',
                 '${taskList.length} задания',
                 SvgImg.close,
-                () {
-                  Navigator.of(context).push(
+                () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
                       return TaskAdditional(
                         title: 'Невыполненные',
@@ -193,6 +196,7 @@ class _CustomerState extends State<Customer> {
                       );
                     }),
                   );
+                  getListTask();
                 },
               ),
               Padding(
@@ -221,6 +225,7 @@ class _CustomerState extends State<Customer> {
                     },
                   ),
                 );
+                getListTask();
               },
               btnColor: ColorStyles.yellowFFD70A,
               textLabel: Text(

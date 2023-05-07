@@ -49,6 +49,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   @override
   void initState() {
+    super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
@@ -65,8 +66,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     experienceController.text = user?.activity == null ? '' : user!.activity!;
     if (user?.cvLink != null) downloadCV(user!.cvLink!);
+    getPhotos();
+  }
 
-    super.initState();
+  void getPhotos() async {
+    for (var element in user!.images!) {
+      log('messageэ ${element.linkUrl}');
+      element.byte = await Repository().downloadFile(
+          element.linkUrl!.contains(server)
+              ? element.linkUrl!
+              : server + element.linkUrl!);
+      log('message ${element.linkUrl} ${element.byte == null}');
+    }
   }
 
   void downloadCV(String url) async {
@@ -76,8 +87,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
     ].request();
-
-    log('message $savePath');
 
     if (statuses[Permission.storage]!.isGranted) {
       File file = File(savePath);
