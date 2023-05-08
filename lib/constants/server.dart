@@ -1,2 +1,2 @@
-const String server = 'http://158.160.44.207:9001';
-const String webSocket = '158.160.44.207:9001';
+const String server = 'http://95.163.243.116';
+const String webSocket = '95.163.243.116:9090';
