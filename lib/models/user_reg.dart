@@ -5,11 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ArrayImages {
+  int? id;
   String? linkUrl;
   Uint8List? byte;
   File? file;
+  String? type;
 
-  ArrayImages(this.linkUrl, this.byte, {this.file});
+  ArrayImages(this.linkUrl, this.byte, {this.file, this.id, this.type});
 }
 
 class UserRegModel {
@@ -147,7 +149,7 @@ class UserRegModel {
     List<ArrayImages> listImages = [];
     if (data['images'] != null) {
       for (var element in data['images']) {
-        listImages.add(ArrayImages(element['image'], null));
+        listImages.add(ArrayImages(element['image'], null, id: element['id']));
       }
     }
     return UserRegModel(
@@ -199,16 +201,16 @@ class UserRegModel {
     if (images != null) {
       List<MultipartFile> files = [];
       for (var element in images!) {
-        // element.byte ??= await Repository().downloadFile(
-        //     element.linkUrl!.contains(server)
-        //         ? element.linkUrl!
-        //         : server + element.linkUrl!);
-        files.add(
-          MultipartFile.fromBytes(
-            element.byte!,
-            filename: '${DateTime.now()}.jpg',
-          ),
-        );
+        if (element.byte != null) {
+          files.add(
+            MultipartFile.fromBytes(
+              element.byte!,
+              filename: '${DateTime.now()}.jpg',
+            ),
+          );
+        } else {
+          files.add(MultipartFile.fromString(element.id.toString()));
+        }
       }
 
       data['images'] = files;
@@ -222,6 +224,8 @@ class UserRegModel {
     }
     data['groups'] = groups;
     if (activitiesDocument != null) data['activities'] = activitiesDocument;
+
+    log('message data = $data');
     return data;
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -46,8 +47,8 @@ class _EditTasksState extends State<EditTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  List<File> document = [];
-  List<File> photo = [];
+  List<ArrayImages> document = [];
+  // List<ArrayImages> photo = [];
 
   List<Countries> countries = [];
   Currency? currency;
@@ -81,6 +82,18 @@ class _EditTasksState extends State<EditTasks> {
     endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
         int.parse(splitEndDate[2]));
     initCountry();
+
+    for (var element in widget.task.files ?? []) {
+      document.add(
+        ArrayImages(
+          element.linkUrl!.contains(server)
+              ? element.linkUrl
+              : server + element.linkUrl!,
+          null,
+          id: element.id,
+        ),
+      );
+    }
   }
 
   initCountry() async {
@@ -127,7 +140,8 @@ class _EditTasksState extends State<EditTasks> {
     final getMedia = await ImagePicker().pickMultiImage();
     if (getMedia.isNotEmpty) {
       for (var element in getMedia) {
-        photo.add(File(element.path));
+        document.add(ArrayImages(null, await element.readAsBytes(),
+            file: File(element.path), type: element.path.split('.').last));
       }
     }
     setState(() {});
@@ -140,7 +154,8 @@ class _EditTasksState extends State<EditTasks> {
     );
     if (result != null) {
       for (var element in result.files) {
-        document.add(File(element.path!));
+        document.add(ArrayImages(null, element.bytes,
+            file: File(element.path!), type: element.path?.split('.').last));
       }
       setState(() {});
     }
@@ -251,7 +266,6 @@ class _EditTasksState extends State<EditTasks> {
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
                         document: document,
-                        photo: photo,
                         selectCategory:
                             selectCategory ?? widget.task.activities,
                         selectSubCategory: selectSubCategory,
@@ -263,7 +277,7 @@ class _EditTasksState extends State<EditTasks> {
                         },
                         removefiles: (photoIndex, documentIndex) {
                           if (photoIndex != null) {
-                            photo.removeAt(photoIndex);
+                            document.removeAt(photoIndex);
                           }
                           if (documentIndex != null) {
                             document.removeAt(documentIndex);
@@ -397,17 +411,19 @@ class _EditTasksState extends State<EditTasks> {
                                   ? '0'
                                   : coastMaxController.text,
                             ),
-                            countries: country,
                             regions: regions,
-                            currency: currency,
+                            countries: country,
                             towns: towns,
-                            file: null,
+                            files: document,
                             icon: '',
                             task: '',
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
+                            currency: currency,
                           );
+
+                          log('message edit ${newTask.toJson()}');
 
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);

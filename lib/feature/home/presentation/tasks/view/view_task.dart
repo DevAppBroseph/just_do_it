@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +19,9 @@ import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TaskView extends StatefulWidget {
   Task selectTask;
@@ -209,7 +214,178 @@ class _TaskViewState extends State<TaskView> {
               ],
             ),
           ),
-          SizedBox(height: 30.h),
+          SizedBox(height: 15.h),
+          if (widget.selectTask.files != null &&
+              widget.selectTask.files!.isNotEmpty)
+            SizedBox(
+              height: 60.h,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.selectTask.files!.length,
+                scrollDirection: Axis.horizontal,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  bool file = false;
+                  if (widget.selectTask.files![index].linkUrl != null &&
+                      (widget.selectTask.files![index].linkUrl!
+                              .contains('.png') ||
+                          widget.selectTask.files![index].linkUrl!
+                              .contains('.jpg') ||
+                          widget.selectTask.files![index].linkUrl!
+                              .contains('.jpeg'))) {
+                    file = false;
+                  } else if (widget.selectTask.files![index].linkUrl != null &&
+                      (widget.selectTask.files![index].linkUrl!
+                              .contains('.pdf') ||
+                          widget.selectTask.files![index].linkUrl!
+                              .contains('.doc') ||
+                          widget.selectTask.files![index].linkUrl!
+                              .contains('.docx'))) {
+                    file = true;
+                  } else if (widget.selectTask.files![index].type == 'pdf' ||
+                      widget.selectTask.files![index].type == 'doc' ||
+                      widget.selectTask.files![index].type == 'docx') {
+                    file = true;
+                  }
+
+                  log('message ${widget.selectTask.files![index].linkUrl}---${widget.selectTask.files![index].type}');
+
+                  if (file) {
+                    return SizedBox(
+                      height: 60.h,
+                      width: 60.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (widget.selectTask.files![index].file !=
+                                  null) {
+                                OpenFile.open(
+                                    widget.selectTask.files![index].file!.path);
+                              } else {
+                                launch(widget.selectTask.files![index].linkUrl!
+                                        .contains(server)
+                                    ? widget.selectTask.files![index].linkUrl!
+                                    : server +
+                                        widget
+                                            .selectTask.files![index].linkUrl!);
+                              }
+                            },
+                            child: Container(
+                              height: 50.h,
+                              width: 50.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
+                                  borderRadius: BorderRadius.circular(10.r)),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  SvgImg.documentText,
+                                  height: 25.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Align(
+                          //   alignment: Alignment.topRight,
+                          //   child: GestureDetector(
+                          //     onTap: () {
+                          //       // widget.removefiles(null, index);
+                          //     },
+                          //     child: Container(
+                          //       height: 15.h,
+                          //       width: 15.h,
+                          //       decoration: BoxDecoration(
+                          //           color: Colors.white,
+                          //           boxShadow: const [
+                          //             BoxShadow(color: Colors.black)
+                          //           ],
+                          //           borderRadius: BorderRadius.circular(40.r)),
+                          //       child: Center(
+                          //         child: Icon(
+                          //           Icons.close,
+                          //           size: 10.h,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      if (widget.selectTask.files![index].file != null) {
+                        OpenFile.open(
+                            widget.selectTask.files![index].file!.path);
+                      } else {
+                        launch(widget.selectTask.files![index].linkUrl!
+                                .contains(server)
+                            ? widget.selectTask.files![index].linkUrl!
+                            : server +
+                                widget.selectTask.files![index].linkUrl!);
+                      }
+                    },
+                    child: SizedBox(
+                      height: 60.h,
+                      width: 60.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
+                            height: 50.h,
+                            width: 50.h,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child:
+                                  widget.selectTask.files![index].byte != null
+                                      ? Image.memory(
+                                          widget.selectTask.files![index].byte!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : CachedNetworkImage(
+                                          imageUrl: widget.selectTask
+                                              .files![index].linkUrl!,
+                                          fit: BoxFit.cover,
+                                        ),
+                            ),
+                          ),
+                          // Align(
+                          //   alignment: Alignment.topRight,
+                          //   child: GestureDetector(
+                          //     onTap: () {
+                          //       // widget.removefiles(index, null);
+                          //     },
+                          //     child: Container(
+                          //       height: 15.h,
+                          //       width: 15.h,
+                          //       decoration: BoxDecoration(
+                          //           color: Colors.white,
+                          //           boxShadow: const [
+                          //             BoxShadow(color: Colors.black)
+                          //           ],
+                          //           borderRadius: BorderRadius.circular(40.r)),
+                          //       child: Center(
+                          //         child: Icon(
+                          //           Icons.close,
+                          //           size: 10.h,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          SizedBox(height: 15.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
