@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,10 +107,38 @@ class _TaskViewState extends State<TaskView> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () async {
-                      final access = await Storage().getAccessToken();
-                      final res = await Repository()
-                          .deleteTask(widget.selectTask, access!);
-                      if (res) Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: const Text('Удалить'),
+                            content:
+                                const Text('Вы подтверждаете удаление заказа?'),
+                            actions: [
+                              CupertinoButton(
+                                child: const Text('Отмена'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoButton(
+                                child: Text(
+                                  'Удалить',
+                                  style: CustomTextStyle.red_16_w400,
+                                ),
+                                onPressed: () async {
+                                  final access =
+                                      await Storage().getAccessToken();
+                                  final res = await Repository()
+                                      .deleteTask(widget.selectTask, access!);
+                                  if (res) Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text(
                       'Удалить',
@@ -248,8 +275,6 @@ class _TaskViewState extends State<TaskView> {
                     file = true;
                   }
 
-                  log('message ${widget.selectTask.files![index].linkUrl}---${widget.selectTask.files![index].type}');
-
                   if (file) {
                     return SizedBox(
                       height: 60.h,
@@ -289,30 +314,6 @@ class _TaskViewState extends State<TaskView> {
                               ),
                             ),
                           ),
-                          // Align(
-                          //   alignment: Alignment.topRight,
-                          //   child: GestureDetector(
-                          //     onTap: () {
-                          //       // widget.removefiles(null, index);
-                          //     },
-                          //     child: Container(
-                          //       height: 15.h,
-                          //       width: 15.h,
-                          //       decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           boxShadow: const [
-                          //             BoxShadow(color: Colors.black)
-                          //           ],
-                          //           borderRadius: BorderRadius.circular(40.r)),
-                          //       child: Center(
-                          //         child: Icon(
-                          //           Icons.close,
-                          //           size: 10.h,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     );
@@ -354,30 +355,6 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                             ),
                           ),
-                          // Align(
-                          //   alignment: Alignment.topRight,
-                          //   child: GestureDetector(
-                          //     onTap: () {
-                          //       // widget.removefiles(index, null);
-                          //     },
-                          //     child: Container(
-                          //       height: 15.h,
-                          //       width: 15.h,
-                          //       decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           boxShadow: const [
-                          //             BoxShadow(color: Colors.black)
-                          //           ],
-                          //           borderRadius: BorderRadius.circular(40.r)),
-                          //       child: Center(
-                          //         child: Icon(
-                          //           Icons.close,
-                          //           size: 10.h,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),

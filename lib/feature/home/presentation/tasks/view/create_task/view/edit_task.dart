@@ -151,6 +151,7 @@ class _EditTasksState extends State<EditTasks> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
+      withData: true,
     );
     if (result != null) {
       for (var element in result.files) {
