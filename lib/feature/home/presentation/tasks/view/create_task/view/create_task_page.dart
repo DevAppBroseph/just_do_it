@@ -73,7 +73,9 @@ class _CeateTasksState extends State<CeateTasks> {
     final getMedia = await ImagePicker().pickMultiImage();
     if (getMedia.isNotEmpty) {
       for (var element in getMedia) {
-        documents.add(ArrayImages(null, await element.readAsBytes(),
+        final byte = await element.readAsBytes();
+        log('message ${element.path} ${byte == null}');
+        documents.add(ArrayImages(null, byte,
             file: File(element.path), type: element.path.split('.').last));
       }
     }
@@ -84,9 +86,11 @@ class _CeateTasksState extends State<CeateTasks> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
+      withData: true,
     );
     if (result != null) {
       for (var element in result.files) {
+        log('message ${element.path} ${element.bytes == null}');
         documents.add(ArrayImages(null, element.bytes,
             file: File(element.path!), type: element.path?.split('.').last));
       }

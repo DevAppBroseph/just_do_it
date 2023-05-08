@@ -112,8 +112,9 @@ class Task {
     if (files != null) {
       List<MultipartFile> filesMultiDoc = [];
       for (var element in files!) {
-        log('message ${element.type} ${element.byte == null}');
+        log('message ${element.type} ${element.byte == null} ${element.id}');
         if (element.byte != null) {
+          log('message from byte');
           filesMultiDoc.add(
             MultipartFile.fromBytes(
               element.byte!,
@@ -121,6 +122,7 @@ class Task {
             ),
           );
         } else {
+          log('message from link id');
           filesMultiDoc.add(MultipartFile.fromString(element.id.toString()));
         }
       }
