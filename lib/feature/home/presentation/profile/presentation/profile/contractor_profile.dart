@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -66,17 +65,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     experienceController.text = user?.activity == null ? '' : user!.activity!;
     if (user?.cvLink != null) downloadCV(user!.cvLink!);
-    getPhotos();
-  }
-
-  void getPhotos() async {
     for (var element in user!.images!) {
-      log('messageэ ${element.linkUrl}');
-      element.byte = await Repository().downloadFile(
+      photos.add(
+        ArrayImages(
           element.linkUrl!.contains(server)
-              ? element.linkUrl!
-              : server + element.linkUrl!);
-      log('message ${element.linkUrl} ${element.byte == null}');
+              ? element.linkUrl
+              : server + element.linkUrl!,
+          null,
+          id: element.id,
+        ),
+      );
     }
   }
 
@@ -121,7 +119,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync()));
+        files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
       }
       for (var element in files) {
         if (photos.length < 10) {
@@ -1013,17 +1011,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         GestureDetector(
                                           onTap: () async {
                                             user!.images!.removeAt(index);
-                                            setState(() {});
-                                            for (var element in user!.images!) {
-                                              element.byte ??=
-                                                  await Repository()
-                                                      .downloadFile(
-                                                element.linkUrl!
-                                                        .contains(server)
-                                                    ? element.linkUrl!
-                                                    : '$server${element.linkUrl}',
-                                              );
-                                            }
 
                                             BlocProvider.of<ProfileBloc>(
                                                     context)

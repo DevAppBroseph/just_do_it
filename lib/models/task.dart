@@ -1,4 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -18,7 +20,7 @@ class Task {
   int priceTo;
   List<Countries> countries;
   List<Regions> regions;
-  Uint8List? file;
+  List<ArrayImages>? files;
   Currency? currency;
   List<Town> towns;
   String? icon;
@@ -44,7 +46,7 @@ class Task {
     this.regions = const [],
     this.towns = const [],
     this.countries = const [],
-    this.file,
+    this.files,
     this.icon,
     this.task,
     this.typeLocation,
@@ -53,6 +55,7 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
+    log('message Task.fromJson $json');
     List<Regions> regions = [];
     for (var element in json['regions']) {
       regions.add(Regions.fromJson(element));
@@ -66,6 +69,10 @@ class Task {
       towns.add(Town.fromJson(element));
     }
 
+    List<ArrayImages> files = [];
+    for (var element in json['files']) {
+      files.add(ArrayImages(element['file'], null, id: element['id']));
+    }
 
     return Task(
         id: json["id"],
@@ -83,22 +90,44 @@ class Task {
         asCustomer: json['as_customer'],
         countries: countries,
         regions: regions,
+        files: files,
         towns: towns);
   }
 
-  Map<String, dynamic> toJson() => {
-    
-        "name": name,
-        "description": description,
-        "subcategory": subcategory?.id,
-        "date_start": dateStart,
-        "date_end": dateEnd,
-        "price_from": priceFrom,
-        "price_to": priceTo,
-        "regions": regions.map((e) => e.id).toList(),
-        "as_customer": asCustomer,
-        'currency': currency!.id,
-        'towns': towns.map((e) => e.id).toList(),
-        'countries': countries.map((e) => e.id).toList(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['description'] = description;
+    data['subcategory'] = subcategory?.id;
+    data['date_start'] = dateStart;
+    data['date_end'] = dateEnd;
+    data['price_from'] = priceFrom;
+    data['price_to'] = priceTo;
+    data['regions'] = regions.map((e) => e.id).toList();
+    data['as_customer'] = asCustomer;
+    data['currency'] = currency!.id;
+    data['towns'] = towns.map((e) => e.id).toList();
+    data['countries'] = countries.map((e) => e.id).toList();
+
+    if (files != null) {
+      List<MultipartFile> filesMultiDoc = [];
+      for (var element in files!) {
+        log('message ${element.type} ${element.byte == null}');
+        if (element.byte != null) {
+          filesMultiDoc.add(
+            MultipartFile.fromBytes(
+              element.byte!,
+              filename: '${DateTime.now()}.${element.type!}',
+            ),
+          );
+        } else {
+          filesMultiDoc.add(MultipartFile.fromString(element.id.toString()));
+        }
+      }
+
+      data['files'] = filesMultiDoc;
+    }
+
+    return data;
+  }
 }

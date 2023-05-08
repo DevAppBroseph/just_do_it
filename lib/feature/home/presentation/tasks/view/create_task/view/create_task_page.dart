@@ -57,8 +57,8 @@ class _CeateTasksState extends State<CeateTasks> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
 
-  List<File> document = [];
-  List<File> photo = [];
+  List<ArrayImages> documents = [];
+  // List<ArrayImages> photo = [];
 
   List<Countries> countries = [];
   Currency? currency;
@@ -71,10 +71,10 @@ class _CeateTasksState extends State<CeateTasks> {
 
   _selectImages() async {
     final getMedia = await ImagePicker().pickMultiImage();
-    log('message ${getMedia.length}');
     if (getMedia.isNotEmpty) {
       for (var element in getMedia) {
-        photo.add(File(element.path));
+        documents.add(ArrayImages(null, await element.readAsBytes(),
+            file: File(element.path), type: element.path.split('.').last));
       }
     }
     setState(() {});
@@ -87,7 +87,8 @@ class _CeateTasksState extends State<CeateTasks> {
     );
     if (result != null) {
       for (var element in result.files) {
-        document.add(File(element.path!));
+        documents.add(ArrayImages(null, element.bytes,
+            file: File(element.path!), type: element.path?.split('.').last));
       }
       setState(() {});
     }
@@ -327,8 +328,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       Category(
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
-                        document: document,
-                        photo: photo,
+                        document: documents,
                         selectCategory: selectCategory ?? widget.selectCategory,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
@@ -339,10 +339,10 @@ class _CeateTasksState extends State<CeateTasks> {
                         },
                         removefiles: (photoIndex, documentIndex) {
                           if (photoIndex != null) {
-                            photo.removeAt(photoIndex);
+                            documents.removeAt(photoIndex);
                           }
                           if (documentIndex != null) {
-                            document.removeAt(documentIndex);
+                            documents.removeAt(documentIndex);
                           }
 
                           setState(() {});
@@ -480,22 +480,22 @@ class _CeateTasksState extends State<CeateTasks> {
                             regions: regions,
                             countries: country,
                             towns: towns,
-                            file: null,
+                            files: documents,
                             icon: '',
                             task: '',
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
-                            // search: '',
                             currency: currency,
                           );
                           widget.customer = false;
+
+                          log('message ${newTask.toJson()}');
 
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository()
                               .createTask(profileBloc.access!, newTask);
-                          log(res.toString());
                           if (res) Navigator.of(context).pop();
                           if (res && widget.currentPage == 6) {
                             Navigator.of(context).pushNamed(AppRoute.tasks,
