@@ -175,7 +175,7 @@ class UserRegModel {
     );
   }
 
-  Future<Map<String, dynamic>> toJson() async {
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['phone_number'] = phoneNumber;
     data['email'] = email;
@@ -225,7 +225,6 @@ class UserRegModel {
     data['groups'] = groups;
     if (activitiesDocument != null) data['activities'] = activitiesDocument;
 
-    log('message data = $data');
     return data;
   }
 }

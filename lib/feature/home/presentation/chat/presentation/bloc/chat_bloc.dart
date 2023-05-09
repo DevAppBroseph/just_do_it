@@ -68,6 +68,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
     List<ChatMessage> reversedList = List.from(messages.reversed);
     messages = reversedList;
+    log('message me ${messages.length} $idChat');
     add(RefreshTripEvent());
   }
 

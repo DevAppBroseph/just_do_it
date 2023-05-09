@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -44,6 +45,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   File? image;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
+  final GlobalKey _documentKey = GlobalKey();
   bool confirmTermsPolicy = false;
   DateTime? dateTimeStart;
   DateTime? dateTimeEnd;
@@ -64,6 +66,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   List<Regions> listRegions = [];
   Regions? selectRegions;
+
+  String region = '';
+  String docinfo = '';
+  String docType = '';
 
   @override
   void initState() {
@@ -115,24 +121,61 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   } else if (passwordController.text.length < 6 &&
                       passwordController.text.isNotEmpty) {
                     showAlertToast('минимальная длина пароля 6 символов');
-                  } else {
-                    user!.copyWith(isEntity: physics);
-                    BlocProvider.of<ProfileBloc>(context).setUser(user);
-                    Repository().updateUser(
-                        BlocProvider.of<ProfileBloc>(context).access, user!);
-                    Navigator.of(context).pop();
-                  }
-                  if (dateTimeEnd != null &&
+                  } else if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!)) {
                     showAlertToast('Ваш паспорт просрочен');
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else {
-                    user!.copyWith(isEntity: physics);
-                    BlocProvider.of<ProfileBloc>(context).setUser(user);
-                    Repository().updateUser(
-                        BlocProvider.of<ProfileBloc>(context).access, user!);
-                    Navigator.of(context).pop();
+                    if (additionalInfo) {
+                      additionalInfo = true;
+                      String error = 'Укажите:';
+                      if (docType != 'Resident_ID' &&
+                          serialDocController.text.isEmpty) {
+                        error += '\n- серию документа';
+                      }
+                      if (numberDocController.text.isEmpty) {
+                        error += '\n- номер документа';
+                      }
+                      if (whoGiveDocController.text.isEmpty) {
+                        if (docType == 'Passport') {
+                          error += '\n- кем выдан документ';
+                        } else if (docType == 'Resident_ID') {
+                          error += '\n- место выдачи документа';
+                        } else {
+                          error += '\n- дату выдачи документа';
+                        }
+                      }
+                      if (dateDocController.text.isEmpty) {
+                        error += '\n- срок действия документа';
+                      }
+                      if (error == 'Укажите:') {
+                        user!.copyWith(
+                            docInfo: docinfo,
+                            region: regionController.text,
+                            docType:
+                                mapDocumentType(documentTypeController.text));
+                        user!.copyWith(isEntity: physics);
+                        user!.copyWith(isEntity: physics);
+                        BlocProvider.of<ProfileBloc>(context).setUser(user);
+                        Repository().updateUser(
+                            BlocProvider.of<ProfileBloc>(context).access,
+                            user!);
+                        Navigator.of(context).pop();
+                      } else {
+                        showAlertToast(error);
+                      }
+                    } else {
+                      user!.copyWith(
+                          docInfo: '',
+                          region: regionController.text,
+                          docType: '');
+                      user!.copyWith(isEntity: physics);
+                      BlocProvider.of<ProfileBloc>(context).setUser(user);
+                      Repository().updateUser(
+                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Navigator.of(context).pop();
+                    }
                   }
                 },
                 btnColor: ColorStyles.yellowFFD70B,
@@ -327,7 +370,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 _regionKey,
                 (value) {
                   regionController.text = value.name ?? '-';
-                  user!.copyWith(region: regionController.text);
+                  // user!.copyWith(region: regionController.text);
+                  region = regionController.text;
                   setState(() {});
                 },
                 listRegions,
@@ -352,18 +396,19 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         GestureDetector(
           onTap: () => showIconModal(
             context,
-            GlobalKeys.keyIconBtn2,
+            _documentKey,
             (value) {
               documentTypeController.text = value;
               additionalInfo = true;
-              user?.copyWith(docType: mapDocumentType(value));
+              // user?.copyWith(docType: mapDocumentType(value));
+              docType = mapDocumentType(value);
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
             'Документ',
           ),
           child: Stack(
-            key: GlobalKeys.keyIconBtn2,
+            key: _documentKey,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
@@ -393,6 +438,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                               dateDocController.text = '';
                               dateTimeStart = null;
                               dateTimeEnd = null;
+                              docinfo = '';
+                              docType = '';
+                              user?.copyWith(docType: '', docInfo: '');
                               setState(() {});
                             },
                             child: const Icon(Icons.close),
@@ -440,7 +488,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         SizedBox(height: 16.h),
         Row(
           children: [
-            if (user?.docType != 'Resident_ID')
+            if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'Серия',
                 hintStyle: CustomTextStyle.grey_14_w400,
@@ -467,9 +515,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
-            if (user?.docType != 'Resident_ID') SizedBox(width: 12.w),
+            if (docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user?.docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
+              hintText: docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
@@ -487,10 +535,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       curve: Curves.linear);
                 });
               },
-              width: user?.docType != 'Resident_ID'
+              width: docType != 'Resident_ID'
                   ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
                       6.w
-                  : MediaQuery.of(context).size.width - 42.w,
+                  : MediaQuery.of(context).size.width - 48.w,
               textEditingController: numberDocController,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -498,8 +546,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             ),
           ],
         ),
-        if (user?.docType == 'Passport') SizedBox(height: 16.h),
-        if (user?.docType == 'Passport')
+        if (docType == 'Passport') SizedBox(height: 16.h),
+        if (docType == 'Passport')
           CustomTextField(
             hintText: 'Кем выдан',
             onTap: () {
@@ -523,8 +571,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
-        if (user?.docType == 'International Passport') SizedBox(height: 16.h),
-        if (user?.docType == 'International Passport')
+        if (docType == 'International Passport') SizedBox(height: 16.h),
+        if (docType == 'International Passport')
           GestureDetector(
             onTap: () async {
               _showDatePicker(
@@ -554,9 +602,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             _showDatePicker(
               context,
               1,
-              user?.docType == 'Resident_ID'
+              docType == 'Resident_ID'
                   ? true
-                  : user?.docType == 'Passport'
+                  : docType == 'Passport'
                       ? true
                       : true,
               title: 'Срок действия',
@@ -580,7 +628,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           checkExpireDate(dateTimeEnd) ?? '',
           style: CustomTextStyle.red_11_w400_171716,
         ),
-        if (user?.docType == 'Resident_ID')
+        if (docType == 'Resident_ID')
           CustomTextField(
             hintText: 'Место выдачи',
             onTap: () {
@@ -728,9 +776,11 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                               whoGiveDocController.text =
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
-                            user!.copyWith(
-                                docInfo:
-                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                            docinfo =
+                                'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+                            // user!.copyWith(
+                            // docInfo:
+                            // 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
@@ -740,9 +790,11 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                               whoGiveDocController.text =
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
-                            user!.copyWith(
-                                docInfo:
-                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                            docinfo =
+                                'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+                            // user!.copyWith(
+                            //     docInfo:
+                            //         'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
                         }),
                   ),
@@ -752,10 +804,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   void documentEdit() {
-    user!.copyWith(
-      docInfo:
-          'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
-    );
+    docinfo =
+        'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+    // user!.copyWith(
+    // docInfo:
+    // 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
+    // );
   }
 
   void getCountries() async {
@@ -774,10 +828,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   fillData(UserRegModel? userRegModel) {
+    log('message ${userRegModel?.toJson()}');
     if (userRegModel == null) return;
-    if (userRegModel.docType != null) {
+    if (userRegModel.docType != null && userRegModel.docType!.isNotEmpty) {
       documentTypeController.text =
           reverseMapDocumentType(userRegModel.docType!);
+      docType = userRegModel.docType!;
     }
     if (userRegModel.region != null) {
       regionController.text = userRegModel.region!;
@@ -786,8 +842,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       countryController.text = userRegModel.country!;
     }
 
-    additionalInfo = true;
-    if (userRegModel.docInfo != null) {
+    if (userRegModel.docInfo != null && userRegModel.docInfo!.isNotEmpty) {
+      additionalInfo = true;
       serialDocController.text =
           DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
       numberDocController.text =

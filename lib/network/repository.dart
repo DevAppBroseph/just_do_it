@@ -124,7 +124,7 @@ class Repository {
       queryParameters: queryParameters,
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        // headers: {'Authorization': 'Bearer $access'},
+        headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );
 
@@ -216,7 +216,7 @@ class Repository {
   // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(
       UserRegModel userRegModel) async {
-    Map<String, dynamic> map = await userRegModel.toJson();
+    Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
     final response = await dio.post(
@@ -291,7 +291,7 @@ class Repository {
 
   Future<UserRegModel?> updateUser(
       String? access, UserRegModel userRegModel) async {
-    Map<String, dynamic> map = await userRegModel.toJson();
+    Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
     final response = await dio.patch(

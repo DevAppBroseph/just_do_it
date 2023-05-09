@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -21,9 +22,7 @@ import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,7 +43,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
   List<String> typeCategories = [];
   List<Activities> listCategories = [];
   List<ArrayImages> photos = [];
-  File? cv;
 
   @override
   void initState() {
@@ -54,17 +52,24 @@ class _ContractorProfileState extends State<ContractorProfile> {
     context.read<ScoreBloc>().add(GetScoreEvent(access));
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
 
+    List<int> activityIndexes = [];
+
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
         if (listCategories[i].description ==
             user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
+          activityIndexes.add(user!.activitiesInfo![j].id!);
         }
       }
     }
 
+    user?.copyWith(
+      activitiesDocument: activityIndexes,
+      groups: [4],
+    );
+
     experienceController.text = user?.activity == null ? '' : user!.activity!;
-    if (user?.cvLink != null) downloadCV(user!.cvLink!);
     for (var element in user!.images!) {
       photos.add(
         ArrayImages(
@@ -75,24 +80,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
           id: element.id,
         ),
       );
-    }
-  }
-
-  void downloadCV(String url) async {
-    Uint8List? byte = await Repository()
-        .downloadFile(url.contains(server) ? url : server + url);
-    String savePath = await getFilePath(url.split('/').last);
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
-
-    if (statuses[Permission.storage]!.isGranted) {
-      File file = File(savePath);
-      var raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(byte!);
-      cv = file;
-      await raf.close();
-      setState(() {});
     }
   }
 
@@ -138,7 +125,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     );
     if (result != null) {
       var cv = File(result.files.first.path!);
-      this.cv = cv;
+      // this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
 
@@ -704,7 +691,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             ),
                           ),
                         ),
-                        if (cv != null)
+                        if (user?.cvLink != null)
                           Align(
                             alignment: Alignment.topRight,
                             child: Container(
@@ -721,8 +708,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ],
               ),
-              if (cv != null) SizedBox(height: 8.h),
-              if (cv != null)
+              if (user?.cvLink != null) SizedBox(height: 8.h),
+              if (user?.cvLink != null)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Row(
@@ -735,7 +722,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                OpenFile.open(cv!.path);
+                                // OpenFile.open(cv!.path);
+                                launch(user!.cvLink!.contains(server)
+                                    ? user!.cvLink!
+                                    : server + user!.cvLink!);
                               },
                               child: Container(
                                 height: 50.h,
@@ -758,7 +748,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               alignment: Alignment.topRight,
                               child: GestureDetector(
                                 onTap: () {
-                                  cv = null;
+                                  // cv = null;
 
                                   user?.cv = null;
                                   user?.cvLink = null;
@@ -823,6 +813,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               activitiesDocument: activityIndexes,
                               groups: [4],
                             );
+
+                            log('message showIconModalCategories ${user?.toJson()}');
                             BlocProvider.of<ProfileBloc>(context)
                                 .add(UpdateProfileEvent(user));
 
@@ -912,7 +904,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               }
                             },
                             textCapitalization: TextCapitalization.sentences,
-                            
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
                               hintText:
