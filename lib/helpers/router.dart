@@ -61,7 +61,7 @@ class AppRoute {
         List<dynamic> arg = route.arguments as List<dynamic>;
         return MaterialPageRoute(
           builder: (_) => TasksPage(
-            onSelect: arg[0],
+            onSelect: arg[0], customer: 0,
           ),
         );
       case createTasks:

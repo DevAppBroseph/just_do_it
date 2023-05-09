@@ -10,7 +10,8 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 
 class TasksPage extends StatefulWidget {
   Function(int) onSelect;
-  TasksPage({super.key, required this.onSelect});
+  final int customer;
+  TasksPage({super.key, required this.onSelect, required this.customer});
 
   @override
   State<TasksPage> createState() => _TasksPageState();
@@ -26,7 +27,7 @@ class _TasksPageState extends State<TasksPage> {
       backgroundColor: ColorStyles.whiteFFFFFF,
       body: StreamBuilder<int>(
         stream: streamController.stream,
-        initialData: 0,
+        initialData: widget.customer,
         builder: (context, snapshot) {
           return Column(
             children: [
