@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,8 +19,7 @@ void iconSelectTranslate(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(
-                top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
+            insetPadding: EdgeInsets.only(top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -64,7 +64,6 @@ void iconSelectTranslate(
     );
 
 void taskMoreDialog(
-  
   BuildContext context,
   Offset offset,
   Function(int index) onTap,
@@ -78,8 +77,7 @@ void taskMoreDialog(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -110,10 +108,10 @@ void taskMoreDialog(
                         children: [
                           GestureDetector(
                             onTap: () async {
-                      final code = await FirebaseDynamicLinksService()
-                          .shareUserTask(int.parse(selectTask.id.toString()));
-                      Share.share(code.toString());
-                    },
+                              final code = await FirebaseDynamicLinksService()
+                                  .shareUserTask(int.parse(selectTask.id.toString()));
+                              Share.share(code.toString());
+                            },
                             child: Text(
                               'Поделиться',
                               style: CustomTextStyle.black_12_w400_292D32,
@@ -134,12 +132,12 @@ void taskMoreDialog(
         );
       },
     );
-    
+
 void taskMoreDialogForProfile(
-  
   BuildContext context,
   Offset offset,
   Function(int index) onTap,
+  Owner? owner,
 ) =>
     showDialog(
       useSafeArea: false,
@@ -149,8 +147,7 @@ void taskMoreDialogForProfile(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -180,8 +177,12 @@ void taskMoreDialogForProfile(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
-                      
-                      
+                            onTap: () async{
+                                final code = await FirebaseDynamicLinksService()
+                          .shareUserProfile(int.parse(owner!.id.toString()));
+                      Share.share(code.toString());
+
+                            },
                             child: Text(
                               'Поделиться',
                               style: CustomTextStyle.black_12_w400_292D32,

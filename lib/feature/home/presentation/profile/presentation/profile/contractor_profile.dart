@@ -910,6 +910,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 );
                               }
                             },
+                            textCapitalization: TextCapitalization.words,
+                            
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
                               hintText:

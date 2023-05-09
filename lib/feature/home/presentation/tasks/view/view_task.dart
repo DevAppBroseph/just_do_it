@@ -151,7 +151,7 @@ class _TaskViewState extends State<TaskView> {
             ),
           if (widget.selectTask.currency?.name == null)
             Text(
-              'до ${widget.selectTask.priceTo} ₽',
+              'до ${widget.selectTask.priceTo} ',
               style: CustomTextStyle.black_17_w500_171716,
             ),
           if (widget.selectTask.currency?.name == 'Дирхам')

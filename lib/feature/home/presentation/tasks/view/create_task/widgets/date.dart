@@ -417,7 +417,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         if (widget.currecy?.name == null)
                           Text(
-                            'Бюджет от ₽',
+                            'Бюджет от ',
                             style: CustomTextStyle.grey_14_w400,
                           ),
                         if (widget.currecy?.name == 'Российский рубль')
@@ -495,7 +495,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         if (widget.currecy?.name == null)
                           Text(
-                            'Бюджет до ₽',
+                            'Бюджет до ',
                             style: CustomTextStyle.grey_14_w400,
                           ),
                         if (widget.currecy?.name == 'Российский рубль')

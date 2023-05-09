@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -73,6 +74,9 @@ class _ContactUsState extends State<ContactUs> {
                     height: 50.h,
                     width: 327.w,
                     hintText: 'Тема обращения',
+                     formatters: [
+                            UpperEveryTextInputFormatter()
+                          ],
                     textEditingController: controllerTheme,
                     fillColor: ColorStyles.greyF9F9F9,
                     contentPadding: EdgeInsets.all(18.h),
@@ -92,6 +96,9 @@ class _ContactUsState extends State<ContactUs> {
                         ),
                         child: CustomTextField(
                           hintText: 'Ваше сообщение',
+                          formatters: [
+                            UpperEveryTextInputFormatter()
+                          ],
                           textEditingController: controllerMessage,
                           fillColor: ColorStyles.greyF9F9F9,
                           contentPadding: EdgeInsets.all(18.h),
