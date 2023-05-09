@@ -94,7 +94,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     BlocProvider.of<ChatBloc>(context).add(GetListMessage());
@@ -102,6 +101,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
     Future.delayed(const Duration(seconds: 3), () {
+      String? access = BlocProvider.of<ProfileBloc>(context).access;
       if (access != null) {
         BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
       }

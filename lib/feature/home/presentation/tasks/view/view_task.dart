@@ -183,7 +183,7 @@ class _TaskViewState extends State<TaskView> {
           Row(
             children: [
               Image.network(
-                '$server ${widget.selectTask.activities?.photo ?? ''}',
+                '$server${widget.selectTask.activities?.photo ?? ''}',
                 height: 24.h,
               ),
               SizedBox(width: 8.h),
