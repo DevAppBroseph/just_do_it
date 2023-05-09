@@ -83,8 +83,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
+    log('socket connect1');
     final token = await Storage().getAccessToken();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
+    log('socket connect');
     channel?.stream.listen(
       (event) async {
         log('message $event');
@@ -116,13 +118,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           add(RefreshPersonChatEvent());
           add(GetListMessage());
         } catch (e) {
-          log('catch $event');
+          log('socket catch $event');
         }
       },
       onError: (e) {
-        log('onError $e');
+        log('socket onError $e');
       },
-      onDone: () {},
+      onDone: () {
+        log('socket message onDone');
+      },
       cancelOnError: false,
     );
   }
