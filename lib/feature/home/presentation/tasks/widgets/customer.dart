@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,9 +17,11 @@ import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 
 class Customer extends StatefulWidget {
-  const Customer({
+  Function(int) callBacK;
+  Customer({
     Key? key,
     required this.size,
+    required this.callBacK,
   }) : super(key: key);
 
   final Size size;
@@ -37,8 +41,7 @@ class _CustomerState extends State<Customer> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
+    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -55,8 +58,15 @@ class _CustomerState extends State<Customer> {
         children: [
           GestureDetector(
             onTap: () async {
-              await Navigator.of(context)
-                  .pushNamed(AppRoute.allTasks, arguments: [false]);
+              final res = await Navigator.of(context).pushNamed(AppRoute.allTasks, arguments: [false]);
+              if (res != null) {
+                  if (res == true) {
+                    widget.callBacK(1);
+                  }
+                  else{
+                    widget.callBacK(0);
+                  }
+                }
               getListTask();
             },
             child: Container(
@@ -101,8 +111,15 @@ class _CustomerState extends State<Customer> {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () async {
-              await Navigator.of(context)
-                  .pushNamed(AppRoute.archiveTasks, arguments: [false]);
+              final res = await Navigator.of(context).pushNamed(AppRoute.archiveTasks, arguments: [false]);
+              if (res != null) {
+                  if (res == true) {
+                    widget.callBacK(1);
+                  }
+                  else{
+                    widget.callBacK(0);
+                  }
+                }
               getListTask();
             },
             child: Container(
@@ -215,7 +232,7 @@ class _CustomerState extends State<Customer> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
               onTap: () async {
-                await Navigator.of(context).push(
+                final res = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return CeateTasks(
@@ -226,6 +243,16 @@ class _CustomerState extends State<Customer> {
                     },
                   ),
                 );
+                log('pop $res');
+                if (res != null) {
+                  if (res == true) {
+                    widget.callBacK(1);
+                  }
+                  else{
+                    widget.callBacK(0);
+                  }
+                }
+
                 getListTask();
               },
               btnColor: ColorStyles.yellowFFD70A,

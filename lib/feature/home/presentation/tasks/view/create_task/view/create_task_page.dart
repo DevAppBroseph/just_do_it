@@ -169,7 +169,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 3 && proverka == true) {
+    if ((widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 3) && proverka == true) {
       if (widget.customer == true) {
         type = 2;
         state = true;
@@ -479,11 +479,23 @@ class _CeateTasksState extends State<CeateTasks> {
 
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository().createTask(profileBloc.access!, newTask);
-                          if (res) Navigator.of(context).pop();
+                          if(widget.currentPage == 6){
+                             if (res) Navigator.of(context).pop();
+                          }
+
+                          if(widget.currentPage == 1 || widget.currentPage == 2){
+                            if (res) Navigator.of(context).pop();
+                            if (res) Navigator.of(context).pop(widget.customer);
+                          }
+                          if(widget.currentPage == 3 || widget.currentPage == 4){
+                            if (res) Navigator.of(context).pop(widget.customer);
+                          }
+                          
                           Loader.hide();
+                        
                           if (widget.customer) {
-                            widget.customer = false;
-                            await Navigator.of(context).push(
+                            
+                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
                                   title: 'Ждут подтверждения',
@@ -492,7 +504,8 @@ class _CeateTasksState extends State<CeateTasks> {
                               }),
                             );
                           } else {
-                            await Navigator.of(context).push(
+                            
+                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
                                   title: 'Открыты',

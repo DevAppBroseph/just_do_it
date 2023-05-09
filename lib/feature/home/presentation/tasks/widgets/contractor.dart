@@ -17,7 +17,8 @@ import '../../../../../network/repository.dart';
 
 class Contractor extends StatefulWidget {
   final Size size;
-  const Contractor({super.key, required this.size});
+  Function(int) callBacK;
+  Contractor({super.key, required this.size, required this.callBacK});
 
   @override
   State<Contractor> createState() => _ContractorState();
@@ -34,8 +35,7 @@ class _ContractorState extends State<Contractor> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
+    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -52,8 +52,14 @@ class _ContractorState extends State<Contractor> {
         children: [
           GestureDetector(
             onTap: () async {
-              await Navigator.of(context)
-                  .pushNamed(AppRoute.allTasks, arguments: [true]);
+              final res = await Navigator.of(context).pushNamed(AppRoute.allTasks, arguments: [true]);
+              if (res != null) {
+                if (res == true) {
+                  widget.callBacK(1);
+                } else {
+                  widget.callBacK(0);
+                }
+              }
               getListTask();
             },
             child: Container(
@@ -98,8 +104,14 @@ class _ContractorState extends State<Contractor> {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () async {
-              await Navigator.of(context)
-                  .pushNamed(AppRoute.archiveTasks, arguments: [true]);
+              final res = await Navigator.of(context).pushNamed(AppRoute.archiveTasks, arguments: [true]);
+              if (res != null) {
+                if (res == true) {
+                  widget.callBacK(1);
+                } else {
+                  widget.callBacK(0);
+                }
+              }
               getListTask();
             },
             child: Container(
@@ -241,7 +253,7 @@ class _ContractorState extends State<Contractor> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: CustomButton(
               onTap: () async {
-                await Navigator.of(context).push(
+                final res = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return CeateTasks(
@@ -252,6 +264,13 @@ class _ContractorState extends State<Contractor> {
                     },
                   ),
                 );
+                if (res != null) {
+                  if (res == true) {
+                    widget.callBacK(1);
+                  } else {
+                    widget.callBacK(0);
+                  }
+                }
                 getListTask();
               },
               btnColor: ColorStyles.yellowFFD70A,
