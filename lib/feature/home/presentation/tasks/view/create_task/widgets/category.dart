@@ -335,6 +335,7 @@ class _CategoryState extends State<Category> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
+                autocorrect:  true,
                 maxLines: 8,
                 onTap: () {
                   openSubCategory = false;

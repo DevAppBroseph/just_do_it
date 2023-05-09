@@ -901,6 +901,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         SizedBox(
                           height: 90.h,
                           child: TextFormField(
+                            autocorrect: true,
                             onTap: () {
                               if (user!.activity != experienceController.text) {
                                 user!.copyWith(
@@ -910,7 +911,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 );
                               }
                             },
-                            textCapitalization: TextCapitalization.words,
+                            textCapitalization: TextCapitalization.sentences,
                             
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(

@@ -29,6 +29,7 @@ class CustomTextField extends StatelessWidget {
   final String? prefixText;
   final bool? enabled;
   final Color? fillColor;
+  final bool? autocorrect; 
   double? height;
   double? width;
   TextStyle? hintStyle;
@@ -67,7 +68,7 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.height,
     this.width,
-    this.contentPadding = EdgeInsets.zero,  this.textCapitalization,
+    this.contentPadding = EdgeInsets.zero,  this.textCapitalization, this.autocorrect,
   });
 
   @override
@@ -95,6 +96,7 @@ class CustomTextField extends StatelessWidget {
           height: height,
           width: widthOfScreen,
           child: TextFormField(
+            autocorrect: true,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,
@@ -196,6 +198,7 @@ class CustomTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
+            autocorrect: true,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
             focusNode: focusNode,

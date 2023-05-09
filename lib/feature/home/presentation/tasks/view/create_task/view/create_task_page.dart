@@ -45,6 +45,7 @@ class _CeateTasksState extends State<CeateTasks> {
   int type = 1;
 
   bool state = false;
+  bool proverka = true;
 
   PageController pageController = PageController();
 
@@ -169,6 +170,13 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.currentPage == 3 && proverka == true){
+      if(widget.customer == true){
+      type = 2;
+      state = true;
+    }
+    proverka = false;
+    }
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
