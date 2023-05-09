@@ -19,11 +19,11 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.heightScreen - 100.h - 96.h - 220.h,
+      height: widget.heightScreen - 100.h - 220.h,
       color: Colors.white,
       child: ListView.builder(
         itemCount: widget.array.length,
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(bottom: 96.h),
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return GestureDetector(

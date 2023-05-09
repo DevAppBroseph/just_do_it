@@ -1542,7 +1542,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ],
                 ),
                 const Spacer(),
-                countrySecond.select ? SizedBox(height: 16.h) : const Divider()
+                const Divider()
               ],
             ),
           ),

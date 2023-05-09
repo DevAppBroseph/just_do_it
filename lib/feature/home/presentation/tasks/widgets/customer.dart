@@ -7,6 +7,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/counts_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -79,7 +80,7 @@ class _CustomerState extends State<Customer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${taskList.length} задания',
+                        taskCounts(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -125,7 +126,7 @@ class _CustomerState extends State<Customer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${taskList.length} задания',
+                        taskCounts(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -147,7 +148,7 @@ class _CustomerState extends State<Customer> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вы создали ${taskList.length} задания',
+              'Вы создали ${taskCounts(taskList.length)}',
               style: CustomTextStyle.black_18_w500_171716,
             ),
           ),
@@ -156,7 +157,7 @@ class _CustomerState extends State<Customer> {
             children: [
               itemButton(
                 'Открыты',
-                '${taskList.length} задания',
+                taskCounts(taskList.length),
                 SvgImg.inProgress,
                 () async {
                   await Navigator.of(context).push(
@@ -185,7 +186,7 @@ class _CustomerState extends State<Customer> {
               SizedBox(height: 18.h),
               itemButton(
                 'Невыполненные',
-                '${taskList.length} задания',
+                taskCounts(taskList.length),
                 SvgImg.close,
                 () async {
                   await Navigator.of(context).push(

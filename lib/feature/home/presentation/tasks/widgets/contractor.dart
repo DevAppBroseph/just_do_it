@@ -7,6 +7,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/counts_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_button.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
@@ -76,7 +77,7 @@ class _ContractorState extends State<Contractor> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${taskList.length} задания',
+                        taskCounts(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -122,7 +123,7 @@ class _ContractorState extends State<Contractor> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${taskList.length} задания',
+                        taskCounts(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -144,7 +145,7 @@ class _ContractorState extends State<Contractor> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вас выбрали в ${taskList.length} заданиях',
+              'Вас выбрали в ${contractorCountTask(taskList.length)}',
               style: CustomTextStyle.black_18_w500_171716,
             ),
           ),
@@ -153,7 +154,7 @@ class _ContractorState extends State<Contractor> {
             children: [
               itemButton(
                 'Выполняются',
-                '${taskList.length} задания',
+                taskCounts(taskList.length),
                 SvgImg.inProgress,
                 () async {
                   await Navigator.of(context).push(
@@ -182,7 +183,7 @@ class _ContractorState extends State<Contractor> {
               SizedBox(height: 18.h),
               itemButton(
                 'Выполненные',
-                '${taskList.length} задания',
+                taskCounts(taskList.length),
                 SvgImg.complete,
                 () async {
                   await Navigator.of(context).push(
@@ -211,7 +212,7 @@ class _ContractorState extends State<Contractor> {
               SizedBox(height: 18.h),
               itemButton(
                 'Ждут подтверждения',
-                '${taskList.length} задания',
+                taskCounts(taskList.length),
                 SvgImg.needSuccess,
                 () async {
                   await Navigator.of(context).push(

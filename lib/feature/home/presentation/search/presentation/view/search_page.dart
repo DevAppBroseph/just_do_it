@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,9 +52,12 @@ class _SearchPageState extends State<SearchPage> {
   List<String> historySearch = [];
 
   TextEditingController searchController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   bool searchList = false;
   List<String> searchChoose = [];
+
+  double lastPosition = 0;
 
   @override
   void initState() {
@@ -352,51 +353,58 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ),
             if (selectTask == null && !searchList) SizedBox(height: 30.h),
-            if (selectTask == null && !searchList)
-              Expanded(
-                child: BlocBuilder<TasksBloc, TasksState>(
+            // if (selectTask == null && !searchList)
+            Expanded(
+              child: Stack(
+                children: [
+                  BlocBuilder<TasksBloc, TasksState>(
                     builder: (context, state) {
-                  taskList = BlocProvider.of<TasksBloc>(context).tasks;
-                  if (state is TasksLoading) {
-                    return SkeletonLoader(
-                      items: 4,
-                      baseColor: ColorStyles.whiteFFFFFF,
-                      highlightColor: ColorStyles.greyF3F3F3,
-                      builder: Container(
-                        margin: EdgeInsets.only(
-                            left: 24.w, right: 24.w, bottom: 24.w),
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: ColorStyles.whiteFFFFFF,
-                          borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorStyles.shadowFC6554,
-                              offset: const Offset(0, -4),
-                              blurRadius: 55.r,
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  if (taskList.isEmpty) return Container();
+                      taskList = BlocProvider.of<TasksBloc>(context).tasks;
+                      if (state is TasksLoading) {
+                        return SkeletonLoader(
+                          items: 4,
+                          baseColor: ColorStyles.whiteFFFFFF,
+                          highlightColor: ColorStyles.greyF3F3F3,
+                          builder: Container(
+                            margin: EdgeInsets.only(
+                                left: 24.w, right: 24.w, bottom: 24.w),
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: ColorStyles.whiteFFFFFF,
+                              borderRadius: BorderRadius.circular(10.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorStyles.shadowFC6554,
+                                  offset: const Offset(0, -4),
+                                  blurRadius: 55.r,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      if (taskList.isEmpty) return Container();
 
-                  return ListView(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    children: taskList
-                        .map((e) => itemTask(e, (task) {
-                              setState(() {
-                                selectTask = task;
-                              });
-                            }))
-                        .toList(),
-                  );
-                }),
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        controller: scrollController,
+                        padding: EdgeInsets.zero,
+                        children: taskList
+                            .map((e) => itemTask(e, (task) {
+                                  setState(() {
+                                    selectTask = task;
+                                    lastPosition = scrollController.offset;
+                                  });
+                                }))
+                            .toList(),
+                      );
+                    },
+                  ),
+                  view(),
+                ],
               ),
-            view(),
+            ),
           ],
         ),
       ),
@@ -405,13 +413,16 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget view() {
     if (owner != null) {
-      return Expanded(child: ProfileView(owner: owner!));
+      return Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
+        body: ProfileView(owner: owner!),
+      );
     }
 
     if (selectTask != null) {
-      log(selectTask!.id.toString());
-      return Expanded(
-        child: TaskView(
+      return Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
+        body: TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
@@ -421,6 +432,6 @@ class _SearchPageState extends State<SearchPage> {
         ),
       );
     }
-    return Container();
+    return const SizedBox();
   }
 }
