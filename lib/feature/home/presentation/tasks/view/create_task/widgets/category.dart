@@ -105,7 +105,11 @@ class _CategoryState extends State<Category> {
           SizedBox(height: 9.h),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: openCategory ? 200.h : 0.h,
+            height: openCategory
+                ? (activities.length < 5)
+                    ? activities.length * 40.h
+                    : 200.h
+                : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
               borderRadius: BorderRadius.circular(10.r),
@@ -222,7 +226,11 @@ class _CategoryState extends State<Category> {
           SizedBox(height: 9.h),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: openSubCategory ? 200.h : 0.h,
+            height: openSubCategory
+                ? (widget.selectCategory!.subcategory.length < 5)
+                    ? widget.selectCategory!.subcategory.length * 40.h
+                    : 200.h
+                : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
               borderRadius: BorderRadius.circular(10.r),

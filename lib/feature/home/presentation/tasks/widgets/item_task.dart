@@ -23,7 +23,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
             )
           ],
         ),
-        height: 115.h,
+        height: 125.h,
         width: 327.h,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),

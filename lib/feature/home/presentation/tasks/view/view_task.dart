@@ -226,7 +226,7 @@ class _TaskViewState extends State<TaskView> {
                   style: CustomTextStyle.black_12_w400_292D32,
                 ),
                 if (!showMore) SizedBox(height: 8.h),
-                if (!showMore && widget.selectTask.description.length > 150)
+                if (!showMore && widget.selectTask.description.length > 80)
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -523,7 +523,8 @@ class _TaskViewState extends State<TaskView> {
                 'Откликнуться',
                 style: CustomTextStyle.black_16_w600_171716,
               ),
-            )
+            ),
+          SizedBox(height: 20.h),
         ],
       ),
     );

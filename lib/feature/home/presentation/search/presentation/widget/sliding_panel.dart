@@ -879,13 +879,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     onChanged: (value) {
                       passportAndCV = !passportAndCV;
 
-                      if(passportAndCV == true){
+                      if (passportAndCV == true) {
                         passportAndCVSelect = 1;
                       }
-                      if(passportAndCV == false){
+                      if (passportAndCV == false) {
                         passportAndCVSelect = 0;
                       }
-                      
+
                       setState(() {});
                     },
                   ),
@@ -1619,7 +1619,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ],
                 ),
                 const Spacer(),
-                countrySecond.select ? SizedBox(height: 16.h) : const Divider()
+                const Divider()
               ],
             ),
           ),
