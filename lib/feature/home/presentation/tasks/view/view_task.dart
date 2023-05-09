@@ -151,7 +151,7 @@ class _TaskViewState extends State<TaskView> {
             ),
           if (widget.selectTask.currency?.name == null)
             Text(
-              'до ${widget.selectTask.priceTo} ₽',
+              'до ${widget.selectTask.priceTo} ',
               style: CustomTextStyle.black_17_w500_171716,
             ),
           if (widget.selectTask.currency?.name == 'Дирхам')
@@ -183,7 +183,7 @@ class _TaskViewState extends State<TaskView> {
           Row(
             children: [
               Image.network(
-                '$server ${widget.selectTask.activities?.photo ?? ''}',
+                '$server${widget.selectTask.activities?.photo ?? ''}',
                 height: 24.h,
               ),
               SizedBox(width: 8.h),

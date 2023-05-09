@@ -400,7 +400,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         }
                         activities[i].isSelect = false;
                       }
-
+                      customerFlag = true;
+                      contractorFlag = true;
                       setState(() {});
                     },
                     child: Text(
@@ -642,7 +643,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             if (currencyString == '' || currencyString == null)
                               Text(
-                                'Бюджет от ₽',
+                                'Бюджет от ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Российский рубль')
@@ -721,7 +722,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             if (currencyString == '' || currencyString == null)
                               Text(
-                                'Бюджет до ₽',
+                                'Бюджет до ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Российский рубль')

@@ -111,6 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   context,
                                   getWidgetPosition(globalKey),
                                   (index) {},
+                                  owner,
                                 ),
                                 child: SvgPicture.asset(
                                   'assets/icons/more-circle.svg',

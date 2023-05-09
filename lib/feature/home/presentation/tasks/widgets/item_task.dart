@@ -97,7 +97,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                           SizedBox(
                             width: 245.w,
                             child: Text(
-                              'до ${task.priceTo} ₽',
+                              'до ${task.priceTo} ',
                               maxLines: 1,
                               style: CustomTextStyle.black_14_w500_171716,
                             ),
