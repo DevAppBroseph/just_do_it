@@ -118,7 +118,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                     MaterialPageRoute(
                       builder: (context) {
                         return CeateTasks(
-                          customer: false,
+                          customer: widget.asCustomer,
                           doublePop: true,
                           currentPage: 2,
                         );

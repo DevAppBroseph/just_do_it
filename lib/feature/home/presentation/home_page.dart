@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                         this.page = page;
                         pageController.jumpToPage(this.page);
                       });
-                    },
+                    }, customer: 0,
                   ),
                   ChatPage(() {
                     pageController.jumpToPage(4);
