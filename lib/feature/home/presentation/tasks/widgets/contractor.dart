@@ -245,7 +245,7 @@ class _ContractorState extends State<Contractor> {
                   MaterialPageRoute(
                     builder: (context) {
                       return CeateTasks(
-                        customer: false,
+                        customer: true,
                         doublePop: true,
                         currentPage: 3,
                       );
