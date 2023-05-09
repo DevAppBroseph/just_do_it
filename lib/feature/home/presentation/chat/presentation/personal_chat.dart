@@ -20,12 +20,7 @@ class PersonalChat extends StatefulWidget {
   String idWithChat;
   String? image;
 
-  PersonalChat(
-    this.id,
-    this.name,
-    this.idWithChat,
-    this.image,
-  );
+  PersonalChat(this.id, this.name, this.idWithChat, this.image, {super.key});
   @override
   State<PersonalChat> createState() => _PersonalChatState();
 }
@@ -148,7 +143,6 @@ class _PersonalChatState extends State<PersonalChat> {
                 if (current is UpdateListMessageItemState) {
                   widget.id =
                       BlocProvider.of<ChatBloc>(context).idChat.toString();
-                  return true;
                 } else if (current is UpdateListPersonState) {
                   final access = BlocProvider.of<ProfileBloc>(context).access;
                   BlocProvider.of<ChatBloc>(context)
@@ -202,7 +196,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                   SizedBox(width: 8.h),
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Container(
+                                    child: SizedBox(
                                       width: 250.w,
                                       child: Column(
                                         crossAxisAlignment:

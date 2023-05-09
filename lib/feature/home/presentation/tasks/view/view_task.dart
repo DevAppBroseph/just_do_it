@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +228,7 @@ class _TaskViewState extends State<TaskView> {
                   style: CustomTextStyle.black_12_w400_292D32,
                 ),
                 if (!showMore) SizedBox(height: 8.h),
-                if (!showMore && widget.selectTask.description.length > 80)
+                if (!showMore && widget.selectTask.description.length > 105)
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -481,6 +483,7 @@ class _TaskViewState extends State<TaskView> {
               user.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () async {
+                log('message widget.selectTask.chatId ${widget.selectTask.chatId}');
                 final chatBloc = BlocProvider.of<ChatBloc>(context);
                 chatBloc.editShowPersonChat(false);
                 chatBloc.editChatId(widget.selectTask.chatId);
