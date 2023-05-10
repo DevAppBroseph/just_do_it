@@ -12,9 +12,17 @@ class Countries {
   });
 
   factory Countries.fromJson(Map<String, dynamic> json) {
+    List<Regions> regions = [];
+    if (json['regions'] != null) {
+      for (var element in json['regions']) {
+        regions.add(Regions.fromJson(element));
+      }
+    }
+
     return Countries(
       name: json['name'],
       id: json['id'],
+      region: regions,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -36,9 +44,16 @@ class Regions {
     this.town = const [],
   });
   factory Regions.fromJson(Map<String, dynamic> json) {
+    List<Town> towns = [];
+    if (json['towns'] != null) {
+      for (var element in json['towns']) {
+        towns.add(Town.fromJson(element));
+      }
+    }
     return Regions(
       name: json['name'],
       id: json['id'],
+      town: towns,
     );
   }
   Map<String, dynamic> toJson() => {

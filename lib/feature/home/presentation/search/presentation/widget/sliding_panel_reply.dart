@@ -7,7 +7,6 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/type_filter.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingPanelReply extends StatefulWidget {
@@ -339,7 +338,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                     selectCountries = value;
                     // regionController.text = '';
                     listRegions.clear();
-                    listRegions = await Repository().regions(selectCountries!);
+                    // listRegions = await Repository().regions(selectCountries!);
                     // user?.copyWith(country: countryController.text);
                     // setState(() {});
                   },
