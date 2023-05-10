@@ -101,10 +101,11 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      String? access = BlocProvider.of<ProfileBloc>(context).access;
-      if (access != null) {
+      String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
+      if (accessToken != null && accessToken.isNotEmpty) {
         timer.cancel();
-        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, access));
+        BlocProvider.of<ChatBloc>(context)
+            .add(StartSocket(context, accessToken));
       }
     });
 

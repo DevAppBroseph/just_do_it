@@ -619,7 +619,7 @@ class Repository {
 
   Future<List<Countries>> countries() async {
     final response = await dio.get(
-      '$server/countries/',
+      '$server/countries/tree',
       options: Options(validateStatus: ((status) => status! >= 200)),
     );
     if (response.statusCode == 200) {
@@ -641,43 +641,6 @@ class Repository {
           .toList();
     }
     return [];
-  }
-
-  Future<List<Regions>> allRegions(
-      String? access, List<Countries> countries) async {
-    List<Regions> regions = [];
-    for (var element in countries) {
-      final response = await dio.get(
-        '$server/countries/${element.id}',
-        options: Options(
-            validateStatus: ((status) => status! >= 200),
-            headers: {'Authorization': 'Bearer $access'}),
-      );
-      if (response.statusCode == 200) {
-        regions += response.data['regions']
-            .map<Regions>((article) => Regions.fromJson(article))
-            .toList();
-      }
-    }
-    return regions;
-  }
-
-  Future<List<Town>> allTowns(String? access, List<Regions> regions) async {
-    List<Town> towns = [];
-    for (var element in regions) {
-      final response = await dio.get(
-        '$server/countries/region/${element.id}',
-        options: Options(
-            validateStatus: ((status) => status! >= 200),
-            headers: {'Authorization': 'Bearer $access'}),
-      );
-      if (response.statusCode == 200) {
-        towns += response.data['towns']
-            .map<Town>((article) => Town.fromJson(article))
-            .toList();
-      }
-    }
-    return towns;
   }
 
   Future<List<Town>> towns(Regions regions) async {
