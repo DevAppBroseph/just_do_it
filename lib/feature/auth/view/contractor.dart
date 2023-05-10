@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -280,7 +279,6 @@ class _ContractorState extends State<Contractor> {
                   }
 
                   String email = emailController.text;
-                  log(emailController.text);
 
                   bool emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -834,7 +832,6 @@ class _ContractorState extends State<Contractor> {
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
-              log('message ${listRegions.length}');
               user.copyWith(country: countryController.text);
               setState(() {});
             },

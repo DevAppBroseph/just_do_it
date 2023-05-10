@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
     List<ChatMessage> reversedList = List.from(messages.reversed);
     messages = reversedList;
-    log('message me ${messages.length} $idChat');
     add(RefreshTripEvent());
   }
 
@@ -86,10 +84,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
-    log('socket connect');
     channel?.stream.listen(
       (event) async {
-        log('message $event');
         try {
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
@@ -117,16 +113,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           add(RefreshPersonChatEvent());
           add(GetListMessage());
-        } catch (e) {
-          log('socket catch $event');
-        }
+        } catch (e) {}
       },
-      onError: (e) {
-        log('socket onError $e');
-      },
-      onDone: () {
-        log('socket message onDone');
-      },
+      onError: (e) {},
+      onDone: () {},
       cancelOnError: false,
     );
   }

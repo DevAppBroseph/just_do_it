@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +47,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     user = event.newUser;
-    log('message1 ${user?.toJson()}');
     if (access != null) {
       UserRegModel? res = await Repository().updateUser(access!, user!);
       if (res != null) {
@@ -126,7 +124,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     access = accessToken;
     user = event.newUser;
 
-    log('message user send ${event.newUser?.toJson()}');
     if (access != null) {
       UserRegModel? res = await Repository().updateUser(access!, user!);
       if (res != null) {

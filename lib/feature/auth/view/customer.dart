@@ -336,7 +336,6 @@ class _CustomerState extends State<Customer> {
                     }
                     showAlertToast(error);
                   } else if (errorsFlag) {
-                    // log('message 1 $error');
                     showAlertToast(error);
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&

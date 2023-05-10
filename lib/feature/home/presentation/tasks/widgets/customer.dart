@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +39,8 @@ class _CustomerState extends State<Customer> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
+    List<Task> res = await Repository()
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -58,15 +57,15 @@ class _CustomerState extends State<Customer> {
         children: [
           GestureDetector(
             onTap: () async {
-              final res = await Navigator.of(context).pushNamed(AppRoute.allTasks, arguments: [false]);
+              final res = await Navigator.of(context)
+                  .pushNamed(AppRoute.allTasks, arguments: [false]);
               if (res != null) {
-                  if (res == true) {
-                    widget.callBacK(1);
-                  }
-                  else{
-                    widget.callBacK(0);
-                  }
+                if (res == true) {
+                  widget.callBacK(1);
+                } else {
+                  widget.callBacK(0);
                 }
+              }
               getListTask();
             },
             child: Container(
@@ -111,15 +110,15 @@ class _CustomerState extends State<Customer> {
           SizedBox(height: 16.h),
           GestureDetector(
             onTap: () async {
-              final res = await Navigator.of(context).pushNamed(AppRoute.archiveTasks, arguments: [false]);
+              final res = await Navigator.of(context)
+                  .pushNamed(AppRoute.archiveTasks, arguments: [false]);
               if (res != null) {
-                  if (res == true) {
-                    widget.callBacK(1);
-                  }
-                  else{
-                    widget.callBacK(0);
-                  }
+                if (res == true) {
+                  widget.callBacK(1);
+                } else {
+                  widget.callBacK(0);
                 }
+              }
               getListTask();
             },
             child: Container(
@@ -243,12 +242,10 @@ class _CustomerState extends State<Customer> {
                     },
                   ),
                 );
-                log('pop $res');
                 if (res != null) {
                   if (res == true) {
                     widget.callBacK(1);
-                  }
-                  else{
+                  } else {
                     widget.callBacK(0);
                   }
                 }

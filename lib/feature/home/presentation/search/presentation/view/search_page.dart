@@ -91,7 +91,6 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            passportAndCV: 0,
             access: access,
             query: searchController.text,
             dateEnd: null,

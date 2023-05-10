@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -830,7 +829,6 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   }
 
   fillData(UserRegModel? userRegModel) {
-    log('message ${userRegModel?.toJson()}');
     if (userRegModel == null) return;
     if (userRegModel.docType != null && userRegModel.docType!.isNotEmpty) {
       documentTypeController.text =

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -55,7 +53,6 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
-    log('message Task.fromJson $json');
     List<Regions> regions = [];
     for (var element in json['regions']) {
       regions.add(Regions.fromJson(element));
@@ -112,9 +109,7 @@ class Task {
     if (files != null) {
       List<MultipartFile> filesMultiDoc = [];
       for (var element in files!) {
-        log('message ${element.type} ${element.byte == null} ${element.id}');
         if (element.byte != null) {
-          log('message from byte');
           filesMultiDoc.add(
             MultipartFile.fromBytes(
               element.byte!,
@@ -122,7 +117,6 @@ class Task {
             ),
           );
         } else {
-          log('message from link id');
           filesMultiDoc.add(MultipartFile.fromString(element.id.toString()));
         }
       }

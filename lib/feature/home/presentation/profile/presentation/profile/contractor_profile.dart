@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -814,7 +813,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               groups: [4],
                             );
 
-                            log('message showIconModalCategories ${user?.toJson()}');
                             BlocProvider.of<ProfileBloc>(context)
                                 .add(UpdateProfileEvent(user));
 
