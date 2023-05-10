@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -423,8 +422,6 @@ class _EditTasksState extends State<EditTasks> {
                             coast: '',
                             currency: currency,
                           );
-
-                          log('message edit ${newTask.toJson()}');
 
                           final profileBloc =
                               BlocProvider.of<ProfileBloc>(context);

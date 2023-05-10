@@ -13,12 +13,12 @@ class GetTasksEvent extends TasksEvent {
   bool? customer;
   int? countFilter;
   int? currency;
-  int? passportAndCV;
   List<Countries> isSelectCountry;
   List<Regions> isSelectRegions;
   List<Town> isSelectTown;
+  bool? passport;
+  bool? cv;
   GetTasksEvent({
-    this.passportAndCV,
     this.currency,
     this.access,
     this.query,
@@ -32,5 +32,7 @@ class GetTasksEvent extends TasksEvent {
     this.subcategory = const [],
     this.countFilter,
     this.customer,
+    this.passport,
+    this.cv,
   });
 }

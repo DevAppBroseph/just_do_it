@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +53,6 @@ class _CategoryState extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
-    // log('message ${widget.selectCategory?.subcategory}');
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
@@ -343,7 +340,7 @@ class _CategoryState extends State<Category> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
-                autocorrect:  true,
+                autocorrect: true,
                 maxLines: 8,
                 onTap: () {
                   openSubCategory = false;
@@ -435,8 +432,6 @@ class _CategoryState extends State<Category> {
                     widget.document[index].type == 'docx') {
                   file = true;
                 }
-
-                log('message ${widget.document[index].linkUrl}---${widget.document[index].type}');
 
                 if (file) {
                   return SizedBox(

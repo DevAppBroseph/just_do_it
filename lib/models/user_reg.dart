@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -122,7 +121,6 @@ class UserRegModel {
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
-    log('message $data');
     String? email = data['email'];
     String? phoneNumber = data['phone_number'];
     String? firstname = data['firstname'];

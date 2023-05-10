@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -483,7 +481,6 @@ class _TaskViewState extends State<TaskView> {
               user.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () async {
-                log('message widget.selectTask.chatId ${widget.selectTask.chatId}');
                 final chatBloc = BlocProvider.of<ChatBloc>(context);
                 chatBloc.editShowPersonChat(false);
                 chatBloc.editChatId(widget.selectTask.chatId);

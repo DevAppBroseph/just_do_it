@@ -16,7 +16,7 @@ class ChatPage extends StatefulWidget {
   final Function()? onBackPressed;
   final Function(int) onSelect;
 
-  ChatPage(this.onBackPressed, this.onSelect);
+  const ChatPage(this.onBackPressed, this.onSelect, {super.key});
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -148,7 +148,7 @@ class _ChatPageState extends State<ChatPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100.r),
                             child: CachedNetworkImage(
-                              imageUrl: '$server/${chat.chatWith!.photo}',
+                              imageUrl: '$server${chat.chatWith!.photo}',
                               fit: BoxFit.cover,
                             ),
                           ),

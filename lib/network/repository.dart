@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -29,8 +28,6 @@ class Repository {
         // headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
-    log('message ${response.statusCode}');
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       return Owner.fromJson(response.data);
@@ -100,7 +97,8 @@ class Repository {
     List<int> countries,
     bool? customer,
     int? currency,
-    int? passportAndCV,
+    bool? passport,
+    bool? cv,
   ) async {
     Map<String, dynamic>? queryParameters = {
       if (query != null && query.isNotEmpty) "search": query,
@@ -109,16 +107,15 @@ class Repository {
       if (dateEnd != null) "date_end": dateEnd,
       if (dateStart != null) "date_start": dateStart,
       if (currency != null) "currency": currency,
-      if (passportAndCV != null && passportAndCV == 1)
-        "doc_info_not_empty": passportAndCV,
+      if (passport != null && passport) "doc_info_not_empty": passport,
       if (countries.isNotEmpty) "countries": countries,
       if (towns.isNotEmpty) "towns": towns,
       if (regions.isNotEmpty) "regions": regions,
       if (subcategory.isNotEmpty) "subcategory": subcategory,
+      if (cv != null && cv) "has_cv": cv,
       "as_customer": customer,
     };
 
-    log('message params\n$queryParameters');
     final response = await dio.get(
       '$server/orders/',
       queryParameters: queryParameters,
@@ -152,7 +149,6 @@ class Repository {
     );
 
     Task? task;
-    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       task = Task.fromJson(response.data);
       return task;
@@ -181,7 +177,6 @@ class Repository {
   Future<bool> editTask(String access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
-    log('message $map');
 
     final response = await dio.put(
       '$server/orders/${task.id}',
@@ -428,9 +423,7 @@ class Repository {
         await Storage().setAccessToken(accessToken);
         return response.data['access'];
       }
-    } catch (e) {
-      log('message $e');
-    }
+    } catch (e) {}
     return null;
   }
 
@@ -462,7 +455,6 @@ class Repository {
         "email": email,
       },
     );
-    log('message ${response.data}');
 
     if (response.statusCode == 200) {
       return null;
