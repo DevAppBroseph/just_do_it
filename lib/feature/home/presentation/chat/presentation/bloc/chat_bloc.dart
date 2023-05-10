@@ -116,14 +116,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           add(GetListMessage());
         } catch (e) {}
       },
-      onDone: _tryConnect,
-      onError: (dynamic error) => _tryConnect(),
+      onDone: () {
+        log('message onDone');
+        _tryConnect();
+      },
+      // onError: (dynamic error) {
+      //   log('message onError $error');
+      //   _tryConnect();
+      // },
       cancelOnError: false,
     );
   }
 
-  void _tryConnect() {
+  void _tryConnect() async {
     log('message _tryConnect');
+    await Future.delayed(const Duration(milliseconds: 1800));
     emit(ReconnectState());
   }
 
