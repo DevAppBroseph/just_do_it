@@ -4,6 +4,8 @@ class SearchState {}
 
 class InitialState extends SearchState {}
 
+class ClearFilterState extends SearchState {}
+
 class OpenSlidingPanelState extends SearchState {}
 
 class OpenSlidingPanelToState extends SearchState {

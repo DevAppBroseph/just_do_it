@@ -9,6 +9,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<CloseSlidingPanelEvent>(_closePanel);
     on<OpenSlidingPanelToEvent>(_openPanelTo);
     on<HideSlidingPanelEvent>(_hidePanel);
+    on<ClearFilterEvent>(_clearFilter);
+  }
+
+  void _clearFilter(ClearFilterEvent event, Emitter<SearchState> emit) async {
+    emit(ClearFilterState());
   }
 
   void _openPanel(
