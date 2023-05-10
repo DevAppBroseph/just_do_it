@@ -1054,10 +1054,11 @@ class _CustomerState extends State<Customer> {
               onChanged: (value) => documentEdit(),
             ),
           ),
-        Text(
-          checkExpireDate(dateTimeEnd) ?? '',
-          style: CustomTextStyle.red_11_w400_171716,
-        ),
+        if (checkExpireDate(dateTimeEnd) != null)
+          Text(
+            checkExpireDate(dateTimeEnd)!,
+            style: CustomTextStyle.red_11_w400_171716,
+          ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_do_it/constants/svg_and_images.dart';
-import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
@@ -83,8 +82,10 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                selectTask == null
-                    ? SizedBox(
+                Expanded(
+                  child: Stack(
+                    children: [
+                      SizedBox(
                         height: MediaQuery.of(context).size.height -
                             20.h -
                             10.h -
@@ -104,8 +105,11 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                             );
                           },
                         ),
-                      )
-                    : view()
+                      ),
+                      view(),
+                    ],
+                  ),
+                ),
               ],
             ),
           )
@@ -116,11 +120,14 @@ class _TaskAdditionalState extends State<TaskAdditional> {
 
   Widget view() {
     if (owner != null) {
-      return Expanded(child: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.whiteFFFFFF,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
-      return Expanded(
-        child: TaskView(
+      return Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
+        body: TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {
             this.owner = owner;

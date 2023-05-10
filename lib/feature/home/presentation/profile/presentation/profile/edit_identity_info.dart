@@ -624,10 +624,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onChanged: (value) => documentEdit(),
           ),
         ),
-        Text(
-          checkExpireDate(dateTimeEnd) ?? '',
-          style: CustomTextStyle.red_11_w400_171716,
-        ),
+        if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
+        if (checkExpireDate(dateTimeEnd) != null)
+          Text(
+            checkExpireDate(dateTimeEnd)!,
+            style: CustomTextStyle.red_11_w400_171716,
+          ),
         if (docType == 'Resident_ID')
           CustomTextField(
             hintText: 'Место выдачи',

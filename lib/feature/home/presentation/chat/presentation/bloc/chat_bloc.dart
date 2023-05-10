@@ -84,7 +84,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
-    log('socket connect1');
     final token = await Storage().getAccessToken();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     log('socket connect');

@@ -100,10 +100,11 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
     BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       String? access = BlocProvider.of<ProfileBloc>(context).access;
       if (access != null) {
-        BlocProvider.of<ChatBloc>(context).add(StartSocket(context));
+        timer.cancel();
+        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, access));
       }
     });
 
@@ -176,7 +177,8 @@ class _HomePageState extends State<HomePage> {
                         this.page = page;
                         pageController.jumpToPage(this.page);
                       });
-                    }, customer: 0,
+                    },
+                    customer: 0,
                   ),
                   ChatPage(() {
                     pageController.jumpToPage(4);

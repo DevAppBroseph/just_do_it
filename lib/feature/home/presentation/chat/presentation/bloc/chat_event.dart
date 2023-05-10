@@ -8,8 +8,9 @@ class CloseSlidingPanelEvent extends ChatEvent {}
 
 class StartSocket extends ChatEvent {
   BuildContext context;
+  String? access;
 
-  StartSocket(this.context);
+  StartSocket(this.context, this.access);
 }
 
 class SendMessageEvent extends ChatEvent {

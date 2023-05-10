@@ -82,8 +82,10 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                selectTask == null
-                    ? SizedBox(
+                Expanded(
+                  child: Stack(
+                    children: [
+                      SizedBox(
                         height: MediaQuery.of(context).size.height -
                             20.h -
                             10.h -
@@ -103,8 +105,11 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                             );
                           },
                         ),
-                      )
-                    : view(),
+                      ),
+                      view(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -141,11 +146,14 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
 
   Widget view() {
     if (owner != null) {
-      return Expanded(child: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.whiteFFFFFF,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
-      return Expanded(
-        child: TaskView(
+      return Scaffold(
+        backgroundColor: ColorStyles.whiteFFFFFF,
+        body: TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
