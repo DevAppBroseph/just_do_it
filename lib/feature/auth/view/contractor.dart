@@ -281,7 +281,13 @@ class _ContractorState extends State<Contractor> {
                   }
 
                   String email = emailController.text;
-
+                  bool passwordValid =RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
+                      .hasMatch(passwordController.text);
+                      if (!passwordValid && passwordController.text.isNotEmpty) {
+                    error += '\n- корректный пароль';
+                    errorsFlag = true;
+                  }
                   bool emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(email);
@@ -290,6 +296,7 @@ class _ContractorState extends State<Contractor> {
                     error += '\n- корректную почту';
                     errorsFlag = true;
                   }
+                  
                   if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=

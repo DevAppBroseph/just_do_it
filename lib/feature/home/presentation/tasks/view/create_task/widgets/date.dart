@@ -751,7 +751,7 @@ class _DatePickerState extends State<DatePicker> {
             height: openRegion
                 ? countRegion < 3
                     ? countRegion * 40.h
-                    : 120.h
+                    : 170.h
                 : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
@@ -917,7 +917,7 @@ class _DatePickerState extends State<DatePicker> {
             height: openTown
                 ? countTown < 3
                     ? countTown * 40.h
-                    : 120.h
+                    : 170.h
                 : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,
