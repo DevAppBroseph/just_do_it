@@ -15,7 +15,6 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -275,11 +274,11 @@ class _CustomerState extends State<Customer> {
                     error += '\n- регион';
                     errorsFlag = true;
                   }
-                   bool passwordValid =RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
                       .hasMatch(passwordController.text);
-                      if (!passwordValid && passwordController.text.isNotEmpty) {
-                    error += '\n- корректный пароль';
+                  if (!passwordValid && passwordController.text.isNotEmpty) {
+                    error +=
+                        '\n- корректный пароль (пароль должен содержать латинские символы и/или цифры)';
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
@@ -340,7 +339,7 @@ class _CustomerState extends State<Customer> {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
                       documentEdit();
-                   
+
                       BlocProvider.of<AuthBloc>(context)
                           .add(SendProfileEvent(user, token.toString()));
                     }
@@ -358,10 +357,10 @@ class _CustomerState extends State<Customer> {
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else {
-                     final token = await FirebaseMessaging.instance.getToken();
+                    final token = await FirebaseMessaging.instance.getToken();
                     showLoaderWrapper(context);
                     documentEdit();
-                    
+
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendProfileEvent(user, token.toString()));
                   }
@@ -1211,8 +1210,11 @@ class _CustomerState extends State<Customer> {
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
-                                docInfo:
-                                   serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                docInfo: serialDocController.text.isEmpty &&
+                                        numberDocController.text.isEmpty &&
+                                        dateDocController.text.isEmpty
+                                    ? ''
+                                    : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
@@ -1223,8 +1225,11 @@ class _CustomerState extends State<Customer> {
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
-                                docInfo:
-                                    serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' :'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                docInfo: serialDocController.text.isEmpty &&
+                                        numberDocController.text.isEmpty &&
+                                        dateDocController.text.isEmpty
+                                    ? ''
+                                    : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
                         }),
                   ),
@@ -1244,8 +1249,11 @@ class _CustomerState extends State<Customer> {
 
   void documentEdit() {
     user.copyWith(
-      docInfo:
-          serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
+      docInfo: serialDocController.text.isEmpty &&
+              numberDocController.text.isEmpty &&
+              dateDocController.text.isEmpty
+          ? ''
+          : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
   }
 }

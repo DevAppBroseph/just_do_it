@@ -157,7 +157,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         const Spacer(),
                         SizedBox(
-                          width: 240.w,
+                          width: 200.w,
                           height: 36.h,
                           child: CustomTextField(
                             fillColor: ColorStyles.greyF7F7F8,
