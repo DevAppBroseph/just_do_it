@@ -46,7 +46,7 @@ class _ScorePageState extends State<ScorePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 284.h,
+                        height: 300.h,
                         color: ColorStyles.purpleA401C4,
                         child: Stack(
                           children: [
@@ -57,16 +57,16 @@ class _ScorePageState extends State<ScorePage> {
                                   padding:
                                       EdgeInsets.only(left: 25.w, right: 28.w),
                                   child: SizedBox(
-                                    height: 24.h,
+                                    
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
                                         CustomIconButton(
-                                          onBackPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          icon: SvgImg.arrowRight,
-                                        ),
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: SvgImg.arrowRight,
+                          ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,

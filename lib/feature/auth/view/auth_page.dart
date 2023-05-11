@@ -12,6 +12,8 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
+import 'package:just_do_it/widget/back_icon_button_black.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -78,8 +80,8 @@ class _MainAuthPageState extends State<AuthPage> {
                   SizedBox(height: 50.h),
                   Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      CustomIconButtonBlack(
+                        onBackPressed: () {
                           if (forgotPassword) {
                             forgotPassword = !forgotPassword;
                             setState(() {});
@@ -87,7 +89,7 @@ class _MainAuthPageState extends State<AuthPage> {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: const Icon(Icons.arrow_back_ios_new_rounded),
+                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       ),
                     ],
                   ),

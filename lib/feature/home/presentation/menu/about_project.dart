@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:just_do_it/widget/back_icon_button_white.dart';
 import 'package:open_file/open_file.dart';
 
@@ -41,15 +42,15 @@ class _AboutProjectState extends State<AboutProject> {
               children: [
                 Column(
                   children: [
-                    SizedBox(height: 66.h),
+                    SizedBox(height: 80.h),
                     Padding(
                       padding: EdgeInsets.only(left: 25.w, right: 28.w),
                       child: SizedBox(
-                        height: 24.h,
+                        height: 35.h,
                         child: Stack(
                           alignment: Alignment.centerLeft,
                           children: [
-                            CustomIconButtonWhite(
+                            CustomIconButton(
                               onBackPressed: () {
                                 Navigator.of(context).pop();
                               },
