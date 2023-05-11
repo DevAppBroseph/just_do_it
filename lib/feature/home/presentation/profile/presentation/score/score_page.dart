@@ -57,16 +57,9 @@ class _ScorePageState extends State<ScorePage> {
                                   padding:
                                       EdgeInsets.only(left: 25.w, right: 28.w),
                                   child: SizedBox(
-                                    
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
-                                        CustomIconButton(
-                            onBackPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: SvgImg.arrowRight,
-                          ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -77,6 +70,12 @@ class _ScorePageState extends State<ScorePage> {
                                                   CustomTextStyle.white_22_w700,
                                             ),
                                           ],
+                                        ),
+                                        CustomIconButton(
+                                          onBackPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          icon: SvgImg.arrowRight,
                                         ),
                                       ],
                                     ),

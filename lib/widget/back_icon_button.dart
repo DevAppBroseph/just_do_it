@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,20 +10,27 @@ class CustomIconButton extends StatelessWidget {
   Color? color;
 
   CustomIconButton({
+    super.key,
     required this.onBackPressed,
     required this.icon,
     this.color,
   });
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40.h,
-      width: 40.w,
-      child: IconButton(
-        onPressed: () => onBackPressed(),
-        color: Colors.transparent,
-        alignment: Alignment.center,
-        icon: _icon(),
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(200.r),
+      clipBehavior: Clip.hardEdge,
+      child: SizedBox(
+        height: 40.h,
+        width: 40.w,
+        child: IconButton(
+          onPressed: () => onBackPressed(),
+          color: Colors.transparent,
+          focusColor: Colors.red,
+          alignment: Alignment.center,
+          icon: _icon(),
+        ),
       ),
     );
   }
