@@ -54,11 +54,11 @@ class _ReferalPageState extends State<ReferalPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 66.h),
+            SizedBox(height: 80.h),
             Padding(
               padding: EdgeInsets.only(left: 25.w, right: 28.w),
               child: SizedBox(
-                height: 24.h,
+                height: 35.h,
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
