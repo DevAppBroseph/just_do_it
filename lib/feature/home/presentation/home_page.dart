@@ -209,7 +209,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                   height: 96.h,
                   child: BlocBuilder<ChatBloc, ChatState>(
-                      builder: (context, snapshot) {
+                      buildWhen: (previous, current) {
+                    if (current is ReconnectState) {
+                      BlocProvider.of<ChatBloc>(context)
+                          .add(StartSocket(context, null));
+                    }
+                    if (current is UpdateListPersonState) {
+                      return false;
+                    }
+                    return true;
+                  }, builder: (context, snapshot) {
                     int undreadMessage = 0;
                     for (var element
                         in BlocProvider.of<ChatBloc>(context).chatList) {
@@ -303,6 +312,10 @@ class _HomePageState extends State<HomePage> {
               },
             ]);
           } else {
+            if (index == 1) {
+              BlocProvider.of<search.SearchBloc>(context)
+                  .add(search.ClearFilterEvent());
+            }
             pageController.jumpToPage(index);
             page = index;
             streamController.add(index);

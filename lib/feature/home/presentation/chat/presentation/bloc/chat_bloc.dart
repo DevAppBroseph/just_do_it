@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -73,16 +74,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     chatList.clear();
     final token = await Storage().getAccessToken();
-    if (token != null) {
-      final res = await Repository().getListMessage(token);
+    final res = await Repository().getListMessage(token ?? '');
 
-      chatList.addAll(res);
-    }
+    chatList.addAll(res);
+
     emit(UpdateListMessageState(idChat));
   }
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
+    log('message _startSocket');
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
@@ -115,10 +116,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           add(GetListMessage());
         } catch (e) {}
       },
-      onError: (e) {},
-      onDone: () {},
+      onDone: () {
+        log('message onDone');
+        _tryConnect();
+      },
+      // onError: (dynamic error) {
+      //   log('message onError $error');
+      //   _tryConnect();
+      // },
       cancelOnError: false,
     );
+  }
+
+  void _tryConnect() async {
+    log('message _tryConnect');
+    await Future.delayed(const Duration(milliseconds: 1800));
+    emit(ReconnectState());
   }
 
   void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>

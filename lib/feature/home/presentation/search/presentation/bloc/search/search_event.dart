@@ -8,6 +8,8 @@ class CloseSlidingPanelEvent extends SearchEvent {}
 
 class HideSlidingPanelEvent extends SearchEvent {}
 
+class ClearFilterEvent extends SearchEvent {}
+
 class OpenSlidingPanelToEvent extends SearchEvent {
   double height;
 

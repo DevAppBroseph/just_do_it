@@ -51,4 +51,6 @@ class CheckNewMessageSupport extends ChatEvent {}
 
 class RefreshTripEvent extends ChatEvent {}
 
+class ReconnectEvent extends ChatEvent {}
+
 class RefreshPersonChatEvent extends ChatEvent {}

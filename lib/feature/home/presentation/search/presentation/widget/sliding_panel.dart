@@ -15,7 +15,6 @@ import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.da
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
-import 'package:just_do_it/models/category_select.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/type_filter.dart';
@@ -61,6 +60,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   bool slide = false;
   DateTime? startDate;
   DateTime? endDate;
+  String date = '';
 
   TypeFilter typeFilter = TypeFilter.main;
 
@@ -94,6 +94,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
         return true;
+      } else if (current is ClearFilterState) {
+        clearFields();
       } else {
         heightPanel = 686.h;
       }
@@ -128,6 +130,43 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         );
       });
     });
+  }
+
+  void clearFields() {
+    for (var element in countries) {
+      element.select = false;
+      for (var element1 in element.region) {
+        element1.select = false;
+        for (var element2 in element1.town) {
+          element2.select = false;
+        }
+      }
+    }
+    currencyString = '';
+    endDate = null;
+    startDate = null;
+    date = '';
+    category = '';
+    coastMinController.text = '';
+    coastMaxController.text = '';
+    keyWordController.text = '';
+    selectSubCategory = [];
+    countryString = '';
+    strcat2 = '';
+    strcat = '';
+    allCategory = false;
+    passport = false;
+    cv = false;
+    selectCurrency = null;
+    for (int i = 0; i < activities.length; i++) {
+      for (int y = 0; y < activities[i].subcategory.length; y++) {
+        activities[i].subcategory[y].isSelect = false;
+      }
+      activities[i].isSelect = false;
+    }
+    customerFlag = true;
+    contractorFlag = true;
+    setState(() {});
   }
 
   Widget panel(BuildContext context) {
@@ -197,9 +236,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         if (keyWordController.text != '') {
                           countField++;
                         }
-                        if (selectSubCategory.isNotEmpty) {
-                          countField++;
-                        }
+
                         if (format1 != null || format2 != null) {
                           countField++;
                         }
@@ -247,6 +284,20 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           countField++;
                         }
                         if (cv) {
+                          countField++;
+                        }
+
+                        selectSubCategory.clear();
+
+                        for (var element in activities) {
+                          for (var element1 in element.subcategory) {
+                            if (element1.isSelect) {
+                              selectSubCategory.add(element1.id);
+                            }
+                          }
+                        }
+
+                        if (selectSubCategory.isNotEmpty) {
                           countField++;
                         }
 
@@ -339,7 +390,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget mainFilter() {
-    String date = '';
+    date = '';
     if (startDate == null && endDate == null) {
     } else {
       date =
@@ -384,43 +435,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      for (var element in countries) {
-                        element.select = false;
-                        for (var element1 in element.region) {
-                          element1.select = false;
-                          for (var element2 in element1.town) {
-                            element2.select = false;
-                          }
-                        }
-                      }
-                      currencyString = '';
-                      endDate = null;
-                      startDate = null;
-                      date = '';
-                      category = '';
-                      coastMinController.text = '';
-                      coastMaxController.text = '';
-                      keyWordController.text = '';
-                      selectSubCategory = [];
-                      countryString = '';
-                      strcat2 = '';
-                      strcat = '';
-                      allCategory = false;
-                      passport = false;
-                      cv = false;
-                      selectCurrency = null;
-                      for (int i = 0; i < activities.length; i++) {
-                        for (int y = 0;
-                            y < activities[i].subcategory.length;
-                            y++) {
-                          activities[i].subcategory[y].isSelect = false;
-                          selectSubCategory = [];
-                        }
-                        activities[i].isSelect = false;
-                      }
-                      customerFlag = true;
-                      contractorFlag = true;
-                      setState(() {});
+                      clearFields();
                     },
                     child: Text(
                       'Очистить',
@@ -1101,6 +1116,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   Widget categoryFirst() {
     activities.clear();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+
+    int countCategory = 0;
+    for (var element in activities) {
+      if (element.isSelect) {
+        countCategory += 1;
+      }
+    }
+
+    allCategory =
+        countCategory != 0 ? countCategory == activities.length : false;
     return ListView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -1160,32 +1185,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   value: allCategory,
                   onChanged: (value) {
                     allCategory = !allCategory;
+                    for (int i = 0; i < activities.length; i++) {
+                      for (int y = 0;
+                          y < activities[i].subcategory.length;
+                          y++) {
+                        activities[i].subcategory[y].isSelect = allCategory;
+                      }
+                      activities[i].isSelect = allCategory;
+                    }
+
                     setState(() {});
-                    if (allCategory == true) {
-                      for (int i = 0; i < activities.length; i++) {
-                        for (int y = 0;
-                            y < activities[i].subcategory.length;
-                            y++) {
-                          activities[i].subcategory[y].isSelect = true;
-                          selectSubCategory
-                              .add(activities[i].subcategory[y].id);
-                          strcat +=
-                              '${activities[i].subcategory[y].description!}, ';
-                        }
-                        activities[i].isSelect = true;
-                      }
-                    }
-                    if (allCategory == false) {
-                      for (int i = 0; i < activities.length; i++) {
-                        for (int y = 0;
-                            y < activities[i].subcategory.length;
-                            y++) {
-                          activities[i].subcategory[y].isSelect = false;
-                          selectSubCategory = [];
-                        }
-                        activities[i].isSelect = false;
-                      }
-                    }
                   },
                 ),
               ],
@@ -1285,6 +1294,17 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget categorySecond(Activities? selectActivity) {
+    int countSubcategory = 0;
+    for (var element in selectActivity!.subcategory) {
+      if (element.isSelect) {
+        countSubcategory += 1;
+      }
+    }
+
+    allSubCategory = countSubcategory != 0
+        ? countSubcategory == selectActivity.subcategory.length
+        : false;
+
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -1343,18 +1363,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 const Spacer(),
                 Switch.adaptive(
                   activeColor: ColorStyles.yellowFFD70B,
-                  value: selectActivities!.isSelect,
+                  value: allSubCategory,
                   onChanged: (value) {
-                    selectActivity?.isSelect = !selectActivity.isSelect;
-                    for (var element in selectActivity!.subcategory) {
-                      element.isSelect = value;
-
-                      if (element.isSelect == true) {
-                        selectSubCategory.add(element.id);
-                      }
-                      if (element.isSelect == false) {
-                        selectSubCategory.remove(element.id);
-                      } else {}
+                    selectActivity.isSelect = !selectActivity.isSelect;
+                    for (var element in selectActivity.subcategory) {
+                      element.isSelect = selectActivity.isSelect;
                     }
 
                     setState(() {});
@@ -1385,13 +1398,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         selectActivities!.subcategory[index].isSelect =
             !selectActivities!.subcategory[index].isSelect;
         setState(() {});
-        if (selectActivities!.subcategory[index].isSelect == true) {
-          selectSubCategory.add(selectActivities!.subcategory[index].id);
-        }
-        if (selectActivities!.subcategory[index].isSelect == false) {
-          selectSubCategory.remove(selectActivities!.subcategory[index].id);
-          allCategory = false;
-        }
       },
       child: Padding(
         padding: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -1418,39 +1424,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget itemCategory2(CategorySelect category) {
-    return GestureDetector(
-      onTap: () {},
-      child: SizedBox(
-        height: 62.h,
-        child: Column(
-          children: [
-            const Spacer(),
-            Row(
-              children: [
-                SizedBox(width: 12.w),
-                Text(
-                  category.title,
-                  style: CustomTextStyle.black_14_w500_171716,
-                ),
-                const Spacer(),
-                Switch.adaptive(
-                  activeColor: ColorStyles.yellowFFD70B,
-                  value: category.select,
-                  onChanged: (value) {
-                    category.select = !category.select;
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
-            const Divider()
-          ],
         ),
       ),
     );
@@ -2176,27 +2149,26 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     List<String> nameCategories = [];
     String categoriesName = '';
     int selectCount = 0;
-    if (selectActivities != null) {
-      for (var element in activities) {
-        for (int i = 0; i < element.subcategory.length; i++) {
-          if (element.subcategory[i].isSelect) {
-            selectCount += 1;
-            nameCategories.add('${element.subcategory[i].description}');
-          }
-        }
-      }
-
-      for (int i = 0; i < nameCategories.length; i++) {
-        if (i == nameCategories.length - 1) {
-          categoriesName += nameCategories[i];
-        } else {
-          categoriesName += '${nameCategories[i]}, ';
-        }
-        if (selectCount != 0 && selectCount == 1) {
-          categoriesName = categoriesName.replaceAll(',', '');
+    for (var element in activities) {
+      for (int i = 0; i < element.subcategory.length; i++) {
+        if (element.subcategory[i].isSelect) {
+          selectCount += 1;
+          nameCategories.add('${element.subcategory[i].description}');
         }
       }
     }
+
+    for (int i = 0; i < nameCategories.length; i++) {
+      if (i == nameCategories.length - 1) {
+        categoriesName += nameCategories[i];
+      } else {
+        categoriesName += '${nameCategories[i]}, ';
+      }
+      if (selectCount != 0 && selectCount == 1) {
+        categoriesName = categoriesName.replaceAll(',', '');
+      }
+    }
+
     return categoriesName;
   }
 }
