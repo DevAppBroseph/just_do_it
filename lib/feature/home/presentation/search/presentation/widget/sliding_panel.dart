@@ -1201,6 +1201,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               typeFilter = TypeFilter.category1;
             },
             child: Container(
+              height: 60,
               decoration: BoxDecoration(
                 color: ColorStyles.whiteFFFFFF,
                 borderRadius: BorderRadius.circular(10.r),

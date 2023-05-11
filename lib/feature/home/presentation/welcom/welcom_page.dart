@@ -510,7 +510,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     child: CupertinoCard(
                                       onPressed: (){
                                          Navigator.of(context).pushNamed(AppRoute.about);
-                                        scoreDialog(context, '50', 'создание заказа');
+             
                                       },
                                       radius: BorderRadius.circular(25.r),
                                       color: ColorStyles.yellowFFD70A,

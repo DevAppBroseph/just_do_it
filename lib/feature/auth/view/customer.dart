@@ -275,7 +275,13 @@ class _CustomerState extends State<Customer> {
                     error += '\n- регион';
                     errorsFlag = true;
                   }
-
+                   bool passwordValid =RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
+                      .hasMatch(passwordController.text);
+                      if (!passwordValid && passwordController.text.isNotEmpty) {
+                    error += '\n- корректный пароль';
+                    errorsFlag = true;
+                  }
                   if (passwordController.text.length < 6) {
                     error += '\nМинимальная длина пароля 6 символов';
                     errorsFlag = true;
