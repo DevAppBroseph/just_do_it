@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,7 @@ import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
-    as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -40,6 +41,7 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
+  String? idWithChat;
   GlobalKey globalKey = GlobalKey();
   bool showMore = false;
 
@@ -61,11 +63,7 @@ class _TaskViewState extends State<TaskView> {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () => taskMoreDialog(
-                    context,
-                    getWidgetPosition(globalKey),
-                    (index) {},
-                    widget.selectTask),
+                onTap: () => taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
                 child: SvgPicture.asset(
                   'assets/icons/more-circle.svg',
                   key: globalKey,
@@ -112,8 +110,7 @@ class _TaskViewState extends State<TaskView> {
                         builder: (context) {
                           return CupertinoAlertDialog(
                             title: const Text('Удалить'),
-                            content:
-                                const Text('Вы подтверждаете удаление заказа?'),
+                            content: const Text('Вы подтверждаете удаление заказа?'),
                             actions: [
                               CupertinoButton(
                                 child: const Text('Отмена'),
@@ -127,10 +124,8 @@ class _TaskViewState extends State<TaskView> {
                                   style: CustomTextStyle.red_16_w400,
                                 ),
                                 onPressed: () async {
-                                  final access =
-                                      await Storage().getAccessToken();
-                                  final res = await Repository()
-                                      .deleteTask(widget.selectTask, access!);
+                                  final access = await Storage().getAccessToken();
+                                  final res = await Repository().deleteTask(widget.selectTask, access!);
                                   if (res) Navigator.pop(context);
                                   Navigator.pop(context);
                                 },
@@ -142,8 +137,7 @@ class _TaskViewState extends State<TaskView> {
                     },
                     child: Text(
                       'Удалить',
-                      style: CustomTextStyle.black_12_w400
-                          .copyWith(color: Colors.red),
+                      style: CustomTextStyle.black_12_w400.copyWith(color: Colors.red),
                     ),
                   ),
                 ],
@@ -242,8 +236,7 @@ class _TaskViewState extends State<TaskView> {
             ),
           ),
           SizedBox(height: 15.h),
-          if (widget.selectTask.files != null &&
-              widget.selectTask.files!.isNotEmpty)
+          if (widget.selectTask.files != null && widget.selectTask.files!.isNotEmpty)
             SizedBox(
               height: 60.h,
               child: ListView.builder(
@@ -254,20 +247,14 @@ class _TaskViewState extends State<TaskView> {
                 itemBuilder: (context, index) {
                   bool file = false;
                   if (widget.selectTask.files![index].linkUrl != null &&
-                      (widget.selectTask.files![index].linkUrl!
-                              .contains('.png') ||
-                          widget.selectTask.files![index].linkUrl!
-                              .contains('.jpg') ||
-                          widget.selectTask.files![index].linkUrl!
-                              .contains('.jpeg'))) {
+                      (widget.selectTask.files![index].linkUrl!.contains('.png') ||
+                          widget.selectTask.files![index].linkUrl!.contains('.jpg') ||
+                          widget.selectTask.files![index].linkUrl!.contains('.jpeg'))) {
                     file = false;
                   } else if (widget.selectTask.files![index].linkUrl != null &&
-                      (widget.selectTask.files![index].linkUrl!
-                              .contains('.pdf') ||
-                          widget.selectTask.files![index].linkUrl!
-                              .contains('.doc') ||
-                          widget.selectTask.files![index].linkUrl!
-                              .contains('.docx'))) {
+                      (widget.selectTask.files![index].linkUrl!.contains('.pdf') ||
+                          widget.selectTask.files![index].linkUrl!.contains('.doc') ||
+                          widget.selectTask.files![index].linkUrl!.contains('.docx'))) {
                     file = true;
                   } else if (widget.selectTask.files![index].type == 'pdf' ||
                       widget.selectTask.files![index].type == 'doc' ||
@@ -284,17 +271,12 @@ class _TaskViewState extends State<TaskView> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              if (widget.selectTask.files![index].file !=
-                                  null) {
-                                OpenFile.open(
-                                    widget.selectTask.files![index].file!.path);
+                              if (widget.selectTask.files![index].file != null) {
+                                OpenFile.open(widget.selectTask.files![index].file!.path);
                               } else {
-                                launch(widget.selectTask.files![index].linkUrl!
-                                        .contains(server)
+                                launch(widget.selectTask.files![index].linkUrl!.contains(server)
                                     ? widget.selectTask.files![index].linkUrl!
-                                    : server +
-                                        widget
-                                            .selectTask.files![index].linkUrl!);
+                                    : server + widget.selectTask.files![index].linkUrl!);
                               }
                             },
                             child: Container(
@@ -302,9 +284,7 @@ class _TaskViewState extends State<TaskView> {
                               width: 50.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(color: Colors.black)
-                                  ],
+                                  boxShadow: const [BoxShadow(color: Colors.black)],
                                   borderRadius: BorderRadius.circular(10.r)),
                               child: Center(
                                 child: SvgPicture.asset(
@@ -321,14 +301,11 @@ class _TaskViewState extends State<TaskView> {
                   return GestureDetector(
                     onTap: () {
                       if (widget.selectTask.files![index].file != null) {
-                        OpenFile.open(
-                            widget.selectTask.files![index].file!.path);
+                        OpenFile.open(widget.selectTask.files![index].file!.path);
                       } else {
-                        launch(widget.selectTask.files![index].linkUrl!
-                                .contains(server)
+                        launch(widget.selectTask.files![index].linkUrl!.contains(server)
                             ? widget.selectTask.files![index].linkUrl!
-                            : server +
-                                widget.selectTask.files![index].linkUrl!);
+                            : server + widget.selectTask.files![index].linkUrl!);
                       }
                     },
                     child: SizedBox(
@@ -342,17 +319,15 @@ class _TaskViewState extends State<TaskView> {
                             width: 50.h,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.r),
-                              child:
-                                  widget.selectTask.files![index].byte != null
-                                      ? Image.memory(
-                                          widget.selectTask.files![index].byte!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : CachedNetworkImage(
-                                          imageUrl: widget.selectTask
-                                              .files![index].linkUrl!,
-                                          fit: BoxFit.cover,
-                                        ),
+                              child: widget.selectTask.files![index].byte != null
+                                  ? Image.memory(
+                                      widget.selectTask.files![index].byte!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: widget.selectTask.files![index].linkUrl!,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                         ],
@@ -394,9 +369,23 @@ class _TaskViewState extends State<TaskView> {
                       style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 6.h),
-                    Text(
-                      widget.selectTask.dateEnd,
-                      style: CustomTextStyle.black_12_w400_292D32,
+                    Row(
+                      children: [
+                        Text(
+                          _textData(widget.selectTask.dateStart),
+                          style: CustomTextStyle.black_12_w400_292D32,
+                        ),
+                        SizedBox(width: 2.h),
+                        Text(
+                          '-',
+                          style: CustomTextStyle.black_12_w400_292D32,
+                        ),
+                        SizedBox(width: 2.h),
+                        Text(
+                         _textData(widget.selectTask.dateEnd),
+                          style: CustomTextStyle.black_12_w400_292D32,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -406,7 +395,7 @@ class _TaskViewState extends State<TaskView> {
           SizedBox(height: 50.h),
           Text(
             widget.selectTask.asCustomer ?? false ? 'Заказчик' : 'Исполнитель',
-            style: CustomTextStyle.grey_14_w400,
+            style: CustomTextStyle.black_14_w400_000000,
           ),
           SizedBox(height: 6.h),
           ScaleButton(
@@ -476,16 +465,21 @@ class _TaskViewState extends State<TaskView> {
             ),
           ),
           SizedBox(height: 38.h),
-          if (user != null &&
-              widget.canSelect &&
-              user.id != widget.selectTask.owner?.id)
+          if (user != null && widget.canSelect && user.id != widget.selectTask.owner?.id)
             CustomButton(
               onTap: () async {
                 final chatBloc = BlocProvider.of<ChatBloc>(context);
                 chatBloc.editShowPersonChat(false);
                 chatBloc.editChatId(widget.selectTask.chatId);
+                log('feqfqefeqfeqfeqfqfqefqefeqfeq $idWithChat');
+                if (widget.selectTask.chatId == null) {
+                  if (idWithChat != null) {
+                    widget.selectTask.chatId = int.parse(idWithChat!);
+                  }
+                }
                 chatBloc.messages = [];
-                await Navigator.of(context).pushNamed(
+                log(widget.selectTask.chatId.toString());
+                final idChat = await Navigator.of(context).pushNamed(
                   AppRoute.personalChat,
                   arguments: [
                     '${widget.selectTask.chatId}',
@@ -494,6 +488,8 @@ class _TaskViewState extends State<TaskView> {
                     '${widget.selectTask.owner?.photo}',
                   ],
                 );
+                log('ddwdqwdwqdwq $idChat');
+                idWithChat = idChat.toString();
                 chatBloc.editShowPersonChat(true);
                 chatBloc.editChatId(null);
               },
@@ -514,8 +510,7 @@ class _TaskViewState extends State<TaskView> {
                         builder: (context) => const AuthPage(),
                       ));
                 } else {
-                  BlocProvider.of<rep.ReplyBloc>(context)
-                      .add(rep.OpenSlidingPanelEvent());
+                  BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
                 }
               },
               btnColor: ColorStyles.yellowFFD70A,
@@ -528,6 +523,21 @@ class _TaskViewState extends State<TaskView> {
         ],
       ),
     );
+  }
+
+  String _textData(String data){
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();   
+    day = parts[2].trim();   
+    month = parts[1].trim();
+    log(year);
+    text = '$day.$month.$year';
+    return text;
   }
 
   String _textCountry(Task task) {

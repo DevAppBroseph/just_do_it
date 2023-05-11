@@ -61,7 +61,7 @@ class _PersonalChatState extends State<PersonalChat> {
             child: Row(
               children: [
                 CustomIconButton(
-                  onBackPressed: () => Navigator.of(context).pop(),
+                  onBackPressed: () => Navigator.of(context).pop(widget.id),
                   icon: SvgImg.arrowRight,
                 ),
                 SizedBox(width: 8.w),

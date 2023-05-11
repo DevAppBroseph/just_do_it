@@ -5,6 +5,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -14,7 +15,8 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 class TaskAdditional extends StatefulWidget {
   String title;
   bool asCustomer;
-  TaskAdditional({super.key, required this.title, required this.asCustomer});
+  bool scoreTrue;
+  TaskAdditional({super.key, required this.title, required this.asCustomer, required this.scoreTrue});
 
   @override
   State<TaskAdditional> createState() => _TaskAdditionalState();
@@ -37,6 +39,10 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});
+    if(widget.scoreTrue){
+      scoreDialog(context, '10', 'создание заказа');
+      widget.scoreTrue = false;
+    }
   }
 
   @override

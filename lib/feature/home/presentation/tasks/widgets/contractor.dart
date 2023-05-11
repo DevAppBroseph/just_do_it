@@ -174,6 +174,7 @@ class _ContractorState extends State<Contractor> {
                       return TaskAdditional(
                         title: 'Выполняются',
                         asCustomer: true,
+                        scoreTrue: false
                       );
                     }),
                   );
@@ -203,6 +204,7 @@ class _ContractorState extends State<Contractor> {
                       return TaskAdditional(
                         title: 'Выполнены',
                         asCustomer: true,
+                        scoreTrue: false
                       );
                     }),
                   );
@@ -232,6 +234,7 @@ class _ContractorState extends State<Contractor> {
                       return TaskAdditional(
                         title: 'Ждут подтверждения',
                         asCustomer: true,
+                        scoreTrue: false
                       );
                     }),
                   );

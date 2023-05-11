@@ -8,6 +8,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -68,10 +69,13 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+            scoreDialog(context, '50', 'регистрацию');
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+            
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+           
           } else if (current is ConfirmCodeRegisterErrorState) {
             showAlertToast('Неверный код');
           } else if (current is ConfirmRestoreErrorState) {
@@ -173,6 +177,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             onTap: () {
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
+                                
                                 BlocProvider.of<AuthBloc>(context).add(
                                     ConfirmCodeEvent(
                                         widget.phone, codeController.text));

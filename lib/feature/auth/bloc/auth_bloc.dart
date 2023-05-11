@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void setRef(int? value) => refCode = value;
 
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
-    bool res = await Repository().editPassword(event.password, event.token);
+    bool res = await Repository().editPassword(event.password, event.token, event.fcmToken);
     if (res) {
       emit(EditPasswordSuccessState());
     } else {
@@ -56,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
     Map<String, dynamic>? res =
-        await Repository().confirmRegister(event.userRegModel);
+        await Repository().confirmRegister(event.userRegModel, event.token);
     if (res == null) {
       emit(SendProfileSuccessState());
     } else {
@@ -95,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _signIn(SignInEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository().signIn(event.phone, event.password);
+    String? res = await Repository().signIn(event.phone, event.password, event.token);
     if (res != null) {
       emit(SignInSuccessState(res));
     } else {

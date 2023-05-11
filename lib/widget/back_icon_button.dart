@@ -15,24 +15,26 @@ class CustomIconButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onBackPressed(),
-      child: Container(
+    return SizedBox(
+      height: 40.h,
+      width: 40.w,
+      child: IconButton(
+        onPressed: () => onBackPressed(),
         color: Colors.transparent,
-        height: 30.h,
-        width: 30.w,
-        child: Align(
-          alignment: Alignment.center,
-          child: Transform.rotate(
-            angle: pi,
-            child: SvgPicture.asset(
-              icon,
-              height: 20.h,
-              width: 20.w,
-              color: color,
-            ),
-          ),
-        ),
+        alignment: Alignment.center,
+        icon: _icon(),
+      ),
+    );
+  }
+
+  Widget _icon() {
+    return Transform.rotate(
+      angle: pi,
+      child: SvgPicture.asset(
+        icon,
+        height: 20.h,
+        width: 20.w,
+        color: color,
       ),
     );
   }

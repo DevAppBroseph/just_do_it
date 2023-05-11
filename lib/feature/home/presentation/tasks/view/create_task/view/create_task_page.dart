@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -425,7 +426,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
                             error +=
-                                '\n- слишком большая сумма у минимального бюджета';
+                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
                             errorsFlag = true;
                           }
                         }
@@ -433,7 +434,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                                '\n- слишком большая сумма у максимального бюджета';
+                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
                             errorsFlag = true;
                           }
                         }
@@ -514,17 +515,18 @@ class _CeateTasksState extends State<CeateTasks> {
                           }
                           if (widget.currentPage == 3 ||
                               widget.currentPage == 4) {
-                            if (res) Navigator.of(context).pop(widget.customer);
+                            if (res) Navigator.of(context).pop(widget.customer); 
                           }
 
                           Loader.hide();
-
+                          
                           if (widget.customer) {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
                                   title: 'Ждут подтверждения',
-                                  asCustomer: true,
+                                  asCustomer: true, scoreTrue: true,
+
                                 );
                               }),
                             );
@@ -533,7 +535,7 @@ class _CeateTasksState extends State<CeateTasks> {
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
                                   title: 'Открыты',
-                                  asCustomer: widget.customer,
+                                  asCustomer: widget.customer, scoreTrue: true
                                 );
                               }),
                             );

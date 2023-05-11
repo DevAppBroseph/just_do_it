@@ -348,7 +348,7 @@ class _EditTasksState extends State<EditTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
                             error +=
-                                '\n- слишком большая сумма у минимального бюджета';
+                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
                             errorsFlag = true;
                           }
                         }
@@ -356,7 +356,7 @@ class _EditTasksState extends State<EditTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                                '\n- слишком большая сумма у максимального бюджета';
+                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
                             errorsFlag = true;
                           }
                         }

@@ -181,6 +181,7 @@ class _CustomerState extends State<Customer> {
                       return TaskAdditional(
                         title: 'Открыты',
                         asCustomer: false,
+                        scoreTrue: false
                       );
                     }),
                   );
@@ -210,6 +211,7 @@ class _CustomerState extends State<Customer> {
                       return TaskAdditional(
                         title: 'Невыполненные',
                         asCustomer: false,
+                        scoreTrue: false
                       );
                     }),
                   );
