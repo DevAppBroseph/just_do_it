@@ -177,7 +177,7 @@ class _ReferalPageState extends State<ReferalPage> {
 
                   final res = await FirebaseDynamicLinksService()
                       .share(int.parse(code));
-                  if (res != null) Share.share('JobyFine - Приложение для поиска и выполнения работы\n $res');
+                  if (res != null) Share.share('JobyFine - Приложение для поиска и выполнения работы\n$res');
                 },
                 child: Container(
                   height: 55.h,

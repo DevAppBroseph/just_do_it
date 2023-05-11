@@ -17,7 +17,6 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -281,11 +280,11 @@ class _ContractorState extends State<Contractor> {
                   }
 
                   String email = emailController.text;
-                  bool passwordValid =RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]")
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
                       .hasMatch(passwordController.text);
-                      if (!passwordValid && passwordController.text.isNotEmpty) {
-                    error += '\n- корректный пароль';
+                  if (!passwordValid && passwordController.text.isNotEmpty) {
+                    error +=
+                        '\n- корректный пароль (пароль должен содержать латинские символы и/или цифры)';
                     errorsFlag = true;
                   }
                   bool emailValid = RegExp(
@@ -296,7 +295,7 @@ class _ContractorState extends State<Contractor> {
                     error += '\n- корректную почту';
                     errorsFlag = true;
                   }
-                  
+
                   if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
@@ -413,7 +412,7 @@ class _ContractorState extends State<Contractor> {
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
-                       final token = await FirebaseMessaging.instance.getToken();
+                      final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
                       BlocProvider.of<AuthBloc>(context)
                           .add(SendProfileEvent(user, token.toString()));
@@ -1612,8 +1611,11 @@ class _ContractorState extends State<Contractor> {
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
-                                docInfo:
-                                   serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                docInfo: serialDocController.text.isEmpty &&
+                                        numberDocController.text.isEmpty &&
+                                        dateDocController.text.isEmpty
+                                    ? ''
+                                    : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
@@ -1624,8 +1626,11 @@ class _ContractorState extends State<Contractor> {
                                   DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
-                                docInfo:
-                                   serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                docInfo: serialDocController.text.isEmpty &&
+                                        numberDocController.text.isEmpty &&
+                                        dateDocController.text.isEmpty
+                                    ? ''
+                                    : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
                         }),
                   ),
@@ -1645,8 +1650,11 @@ class _ContractorState extends State<Contractor> {
 
   void documentEdit() {
     user.copyWith(
-      docInfo:
-          serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' :'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
+      docInfo: serialDocController.text.isEmpty &&
+              numberDocController.text.isEmpty &&
+              dateDocController.text.isEmpty
+          ? ''
+          : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
   }
 }
