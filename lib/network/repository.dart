@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -210,15 +211,18 @@ class Repository {
   // регистрация профиля
   // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(
-      UserRegModel userRegModel) async {
+      UserRegModel userRegModel, String token) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
 
     final response = await dio.post(
       '$server/auth/',
-      data: data,
+      data: data ,
       options: Options(
         validateStatus: ((status) => status! >= 200),
+        headers: {
+          "fcm_token": token,
+        }
       ),
     );
 
@@ -406,8 +410,9 @@ class Repository {
   }
 
   // вход
-  Future<String?> signIn(String phone, String password) async {
+  Future<String?> signIn(String phone, String password, String token) async {
     try {
+      log(token);
       final response = await dio.post(
         '$server/auth/api/token/',
         options: Options(
@@ -416,8 +421,10 @@ class Repository {
         data: {
           "phone_number": phone,
           "password": password,
+          "fcm_token": token,
         },
       );
+      log(response.statusMessage.toString());
       if (response.statusCode == 200) {
         String? accessToken = response.data['access'];
         await Storage().setAccessToken(accessToken);
@@ -488,7 +495,7 @@ class Repository {
   }
 
   // новый пароль
-  Future<bool> editPassword(String password, String access) async {
+  Future<bool> editPassword(String password, String access, String token) async {
     final response = await dio.post(
       '$server/auth/reset_password_confirm',
       options: Options(
@@ -496,6 +503,7 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
       data: {
         "password": password,
+        "fcm_token": token,
       },
     );
 

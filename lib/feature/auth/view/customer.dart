@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -197,7 +199,7 @@ class _CustomerState extends State<Customer> {
                     : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
-              onTap: () {
+              onTap: () async {
                 if (page == 0) {
                   requestNextEmptyFocusStage1();
                   String error = 'Укажите:';
@@ -329,10 +331,12 @@ class _CustomerState extends State<Customer> {
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
                     } else {
+                      final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
                       documentEdit();
+                   
                       BlocProvider.of<AuthBloc>(context)
-                          .add(SendProfileEvent(user));
+                          .add(SendProfileEvent(user, token.toString()));
                     }
                     showAlertToast(error);
                   } else if (errorsFlag) {
@@ -348,10 +352,12 @@ class _CustomerState extends State<Customer> {
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else {
+                     final token = await FirebaseMessaging.instance.getToken();
                     showLoaderWrapper(context);
                     documentEdit();
+                    
                     BlocProvider.of<AuthBloc>(context)
-                        .add(SendProfileEvent(user));
+                        .add(SendProfileEvent(user, token.toString()));
                   }
                 }
               },
@@ -1200,7 +1206,7 @@ class _CustomerState extends State<Customer> {
                             }
                             user.copyWith(
                                 docInfo:
-                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                   serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
@@ -1212,7 +1218,7 @@ class _CustomerState extends State<Customer> {
                             }
                             user.copyWith(
                                 docInfo:
-                                    'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
+                                    serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' :'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           }
                         }),
                   ),
@@ -1233,7 +1239,7 @@ class _CustomerState extends State<Customer> {
   void documentEdit() {
     user.copyWith(
       docInfo:
-          'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
+          serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty ? '' : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
   }
 }

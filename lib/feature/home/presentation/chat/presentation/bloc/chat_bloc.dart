@@ -33,7 +33,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void editShowPersonChat(bool value) => showPersonChat = value;
 
-  void editChatId(int? value) => idChat = value;
+  void editChatId(int? value) {
+    idChat = value;
+  } 
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage = '{"message": "${event.message}", "to": "${event.id}"}';

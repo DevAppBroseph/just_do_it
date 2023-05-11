@@ -612,7 +612,7 @@ class _DatePickerState extends State<DatePicker> {
             height: openCountry
                 ? countCountry < 3
                     ? countCountry * 40
-                    : 120.h
+                    : 170.h
                 : 0.h,
             decoration: BoxDecoration(
               color: ColorStyles.whiteFFFFFF,

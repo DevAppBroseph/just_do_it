@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -507,6 +508,10 @@ class _WelcomPageState extends State<WelcomPage> {
                                   SizedBox(
                                     height: 69.h,
                                     child: CupertinoCard(
+                                      onPressed: (){
+                                         Navigator.of(context).pushNamed(AppRoute.about);
+                                        scoreDialog(context, '50', 'создание заказа');
+                                      },
                                       radius: BorderRadius.circular(25.r),
                                       color: ColorStyles.yellowFFD70A,
                                       margin: EdgeInsets.zero,

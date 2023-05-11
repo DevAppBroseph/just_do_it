@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -72,7 +73,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is EditPasswordErrorState) {
-            showAlertToast('Ошибка');
+            showAlertToast('Ошибка. Неправильный ввод пароля');
           } else if (current is ConfirmCodeResetSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             confirmCode = true;
@@ -98,7 +99,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                         children: [
                           SizedBox(height: 20.h),
                           CustomButton(
-                            onTap: () {
+                            onTap: () async {
                               if (!confirmCode) {
                                 if (codeController.text.isEmpty) {
                                   showAlertToast('Введите код');
@@ -126,12 +127,13 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                         passwordRepeatController.text)) {
                                   showAlertToast('Пароли не совпадают');
                                 } else {
+                                  final token = await FirebaseMessaging.instance.getToken();
                                   showLoaderWrapper(context);
                                   BlocProvider.of<AuthBloc>(context).add(
                                     EditPasswordEvent(
                                       passwordController.text,
                                       BlocProvider.of<ProfileBloc>(context)
-                                          .access!,
+                                          .access!, token.toString()
                                     ),
                                   );
                                 }

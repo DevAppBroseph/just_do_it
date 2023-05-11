@@ -79,7 +79,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                             ),
                             SizedBox(height: 5.h),
                             Text(
-                              task.dateStart,
+                              _textData(task.dateStart),
                               style: CustomTextStyle.grey_12_w400,
                             ),
                           ],
@@ -143,7 +143,20 @@ Widget itemTask(Task task, Function(Task) onSelect) {
     ),
   );
 }
-
+String _textData(String data){
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();   
+    day = parts[2].trim();   
+    month = parts[1].trim();
+   
+    text = '$day.$month.$year';
+    return text;
+  }
 String _textCountry(Task task) {
   var text = '';
   for (var country in task.countries) {

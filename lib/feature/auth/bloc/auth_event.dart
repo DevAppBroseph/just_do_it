@@ -4,8 +4,9 @@ class AuthEvent {}
 
 class SendProfileEvent extends AuthEvent {
   UserRegModel userRegModel;
+  String token;
 
-  SendProfileEvent(this.userRegModel);
+  SendProfileEvent(this.userRegModel, this.token);
 }
 
 class ConfirmCodeResetEvent extends AuthEvent {
@@ -27,8 +28,9 @@ class ConfirmCodeEvent extends AuthEvent {
 class EditPasswordEvent extends AuthEvent {
   String password;
   String token;
+  String fcmToken;
 
-  EditPasswordEvent(this.password, this.token);
+  EditPasswordEvent(this.password, this.token, this.fcmToken);
 }
 
 class RestoreCodeEvent extends AuthEvent {
@@ -50,8 +52,8 @@ class GetCategoriesEvent extends AuthEvent {}
 class SignInEvent extends AuthEvent {
   String phone;
   String password;
-
-  SignInEvent(this.phone, this.password);
+  String token;
+  SignInEvent(this.phone, this.password, this.token);
 }
 
 class CheckUserExistEvent extends AuthEvent {

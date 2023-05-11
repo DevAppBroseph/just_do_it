@@ -132,7 +132,7 @@ class _ReferalPageState extends State<ReferalPage> {
 
                   final res = await FirebaseDynamicLinksService()
                       .share(int.parse(code));
-                  Clipboard.setData(ClipboardData(text: res));
+                  Clipboard.setData(ClipboardData(text: 'JobyFine - Приложение для поиска и выполнения работы $res'));
 
                   const snackBar = SnackBar(
                     backgroundColor: ColorStyles.yellowFFCA0D,
@@ -177,7 +177,7 @@ class _ReferalPageState extends State<ReferalPage> {
 
                   final res = await FirebaseDynamicLinksService()
                       .share(int.parse(code));
-                  if (res != null) Share.share(res);
+                  if (res != null) Share.share('JobyFine - Приложение для поиска и выполнения работы $res');
                 },
                 child: Container(
                   height: 55.h,
