@@ -10,7 +10,11 @@ class UpdateListMessageState extends ChatState {
   UpdateListMessageState(this.chatId);
 }
 
-class UpdateListMessageItemState extends ChatState {}
+class UpdateListMessageItemState extends ChatState {
+  int? chatId;
+
+  UpdateListMessageItemState({this.chatId});
+}
 
 class ReconnectState extends ChatState {}
 

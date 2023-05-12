@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -109,19 +108,20 @@ class _MainAuthPageState extends State<AuthPage> {
                   Column(
                     children: [
                       CustomButton(
-                        onTap: () async{
+                        onTap: () async {
                           if (forgotPassword &&
                               loginController.text.isNotEmpty) {
                             showLoaderWrapper(context);
                             BlocProvider.of<AuthBloc>(context)
                                 .add(RestoreCodeEvent(loginController.text));
                           } else {
-                            final token = await FirebaseMessaging.instance.getToken();
+                            final token =
+                                await FirebaseMessaging.instance.getToken();
                             showLoaderWrapper(context);
-                            log(signinPasswordController.text);
                             BlocProvider.of<AuthBloc>(context).add(SignInEvent(
                                 signinLoginController.text,
-                                signinPasswordController.text, token.toString()));
+                                signinPasswordController.text,
+                                token.toString()));
                           }
                         },
                         textLabel: Text(

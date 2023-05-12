@@ -35,7 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void editChatId(int? value) {
     idChat = value;
-  } 
+  }
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage = '{"message": "${event.message}", "to": "${event.id}"}';
@@ -122,10 +122,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         log('message onDone');
         _tryConnect();
       },
-      // onError: (dynamic error) {
-      //   log('message onError $error');
-      //   _tryConnect();
-      // },
       cancelOnError: false,
     );
   }
@@ -137,7 +133,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
-      emit(UpdateListMessageItemState());
+      emit(UpdateListMessageItemState(chatId: idChat));
 
   void _refreshPersonChat(
           RefreshPersonChatEvent event, Emitter<ChatState> emit) =>

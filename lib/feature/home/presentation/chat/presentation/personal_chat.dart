@@ -327,6 +327,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                             onTap: () {
                                               if (textController
                                                   .text.isNotEmpty) {
+                                                // BlocProvider.of<ChatBloc>(context).messages.isEmpty
                                                 BlocProvider.of<ChatBloc>(context)
                                                     .add(
                                                   SendMessageEvent(
