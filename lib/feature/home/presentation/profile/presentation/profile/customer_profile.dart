@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,8 +56,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    var image = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
+                                    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
                                     if (image != null) {
                                       BlocProvider.of<ProfileBloc>(context).add(
                                         UpdateProfilePhotoEvent(photo: image),
@@ -72,15 +72,12 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                                 width: 60.h,
                                                 padding: EdgeInsets.all(10.h),
                                                 decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorStyles.shadowFC6554,
+                                                  color: ColorStyles.shadowFC6554,
                                                 ),
-                                                child: Image.asset(
-                                                    'assets/images/camera.png'),
+                                                child: Image.asset('assets/images/camera.png'),
                                               )
                                             : CachedNetworkImage(
-                                                imageUrl: user.photoLink!
-                                                        .contains(server)
+                                                imageUrl: user.photoLink!.contains(server)
                                                     ? user.photoLink!
                                                     : server + user.photoLink!,
                                                 fit: BoxFit.cover,
@@ -94,10 +91,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                       onTap: () {
                                         user.photo = null;
                                         user.photoLink = null;
-                                        BlocProvider.of<ProfileBloc>(context)
-                                            .setUser(user);
-                                        BlocProvider.of<ProfileBloc>(context)
-                                            .add(
+                                        BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                        BlocProvider.of<ProfileBloc>(context).add(
                                           UpdateProfilePhotoEvent(photo: null),
                                         );
                                         setState(() {});
@@ -106,11 +101,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                         height: 20.h,
                                         width: 20.h,
                                         decoration: BoxDecoration(
-                                          boxShadow: const [
-                                            BoxShadow(color: Colors.black)
-                                          ],
-                                          borderRadius:
-                                              BorderRadius.circular(100.r),
+                                          boxShadow: const [BoxShadow(color: Colors.black)],
+                                          borderRadius: BorderRadius.circular(100.r),
                                           color: Colors.white,
                                         ),
                                         child: Center(
@@ -157,9 +149,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 ),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  reviews?.ranking == null
-                                      ? '-'
-                                      : (reviews!.ranking!).toString(),
+                                  reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
                                   style: CustomTextStyle.black_20_w700_171716,
                                 ),
                               ],
@@ -193,8 +183,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () async {
-                      final code = await FirebaseDynamicLinksService()
-                          .shareUserProfile(int.parse(user.id.toString()));
+                      final code = await FirebaseDynamicLinksService().shareUserProfile(int.parse(user.id.toString()));
                       Share.share(code.toString());
                     },
                     child: SvgPicture.asset(
@@ -233,71 +222,48 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 SizedBox(height: 8.h),
                                 Row(
                                   children: [
-                                    BlocBuilder<ScoreBloc, ScoreState>(
-                                        builder: (context, state) {
+                                    BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                                       if (state is ScoreLoaded) {
                                         final levels = state.levels;
-                                        if (user.balance! <
-                                            levels![0].mustCoins!) {
+                                        if (user.balance! < levels![0].mustCoins!) {
                                           return Text(
                                             levels[0].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
 
-                                        if (user.balance! >=
-                                                levels[0].mustCoins! &&
-                                            user.balance! <
-                                                levels[1].mustCoins!) {
+                                        if (user.balance! >= levels[0].mustCoins! &&
+                                            user.balance! < levels[1].mustCoins!) {
                                           return Text(
                                             levels[0].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
-                                        if (user.balance! >=
-                                                levels[1].mustCoins! &&
-                                            user.balance! <
-                                                levels[2].mustCoins!) {
+                                        if (user.balance! >= levels[1].mustCoins! &&
+                                            user.balance! < levels[2].mustCoins!) {
                                           return Text(
                                             levels[1].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
-                                        if (user.balance! >=
-                                                levels[2].mustCoins! &&
-                                            user.balance! <
-                                                levels[3].mustCoins!) {
+                                        if (user.balance! >= levels[2].mustCoins! &&
+                                            user.balance! < levels[3].mustCoins!) {
                                           return Text(
                                             levels[2].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
-                                        if (user.balance! >=
-                                                levels[3].mustCoins! &&
-                                            user.balance! <
-                                                levels[4].mustCoins!) {
+                                        if (user.balance! >= levels[3].mustCoins! &&
+                                            user.balance! < levels[4].mustCoins!) {
                                           return Text(
                                             levels[3].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
-                                        if (user.balance! >=
-                                            levels[4].mustCoins!) {
+                                        if (user.balance! >= levels[4].mustCoins!) {
                                           return Text(
                                             levels[4].name!,
-                                            style: CustomTextStyle
-                                                .purple_20_w700
-                                                .copyWith(fontSize: 15),
+                                            style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                           );
                                         }
                                       }
@@ -308,64 +274,69 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               ],
                             ),
                             const Spacer(),
-                            BlocBuilder<ScoreBloc, ScoreState>(
-                                builder: (context, state) {
+                            BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                               if (state is ScoreLoaded) {
                                 final levels = state.levels;
                                 if (user.balance! < levels![0].mustCoins!) {
                                   return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
                                     imageUrl: '${levels[0].bwImage}',
                                     height: 42,
                                     width: 42,
                                   );
                                 }
 
-                                if (user.balance! >= levels[0].mustCoins! &&
-                                    user.balance! < levels[1].mustCoins!) {
-                                  return Image.network(
-                                    '${levels[0].image}',
+                                if (user.balance! >= levels[0].mustCoins! && user.balance! < levels[1].mustCoins!) {
+                                  return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    imageUrl: '${levels[0].image}',
                                     height: 42,
                                     width: 42,
                                   );
                                 }
-                                if (user.balance! >= levels[1].mustCoins! &&
-                                    user.balance! < levels[2].mustCoins!) {
-                                  return Image.network(
-                                    levels[1].image != null
-                                        ? '${levels[1].image}'
-                                        : '',
-                                    height: 42,
-                                    width: 42,
-                                    fit: BoxFit.fill,
-                                  );
-                                }
-                                if (user.balance! >= levels[2].mustCoins! &&
-                                    user.balance! < levels[3].mustCoins!) {
-                                  return Image.network(
-                                    levels[2].image != null
-                                        ? '${levels[2].image}'
-                                        : '',
+                                if (user.balance! >= levels[1].mustCoins! && user.balance! < levels[2].mustCoins!) {
+                                  return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    imageUrl: levels[1].image != null ? '${levels[1].image}' : '',
                                     height: 42,
                                     width: 42,
                                     fit: BoxFit.fill,
                                   );
                                 }
-                                if (user.balance! >= levels[3].mustCoins! &&
-                                    user.balance! < levels[4].mustCoins!) {
-                                  return Image.network(
-                                    levels[3].image != null
-                                        ? '${levels[3].image}'
-                                        : '',
+                                if (user.balance! >= levels[2].mustCoins! && user.balance! < levels[3].mustCoins!) {
+                                  return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    imageUrl: levels[2].image != null ? '${levels[2].image}' : '',
+                                    height: 42,
+                                    width: 42,
+                                    fit: BoxFit.fill,
+                                  );
+                                }
+                                if (user.balance! >= levels[3].mustCoins! && user.balance! < levels[4].mustCoins!) {
+                                  return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    imageUrl: levels[3].image != null ? '${levels[3].image}' : '',
                                     height: 42,
                                     width: 42,
                                     fit: BoxFit.fill,
                                   );
                                 }
                                 if (user.balance! >= levels[4].mustCoins!) {
-                                  return Image.network(
-                                    levels[4].image != null
-                                        ? '${levels[4].image}'
-                                        : '',
+                                  return CachedNetworkImage(
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    imageUrl: levels[4].image != null ? '${levels[4].image}' : '',
                                     height: 42,
                                     width: 42,
                                     fit: BoxFit.fill,
@@ -530,8 +501,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
               onTap: () {
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Container(
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -561,12 +531,10 @@ class _CustomerProfileState extends State<CustomerProfile> {
             SizedBox(height: 40.h),
             GestureDetector(
               onTap: () async {
-                await Repository().deleteProfile(
-                    BlocProvider.of<ProfileBloc>(context).access!);
+                await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Center(
                 child: Text(

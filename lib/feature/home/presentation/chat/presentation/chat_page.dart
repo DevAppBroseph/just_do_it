@@ -196,11 +196,12 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               const Spacer(),
                               Text(
-                                chat.lastMsg?.time
+                                _textData( chat.lastMsg?.time
                                         ?.toUtc()
                                         .toString()
                                         .substring(0, 10) ??
-                                    '-',
+                                    '-')
+                               ,
                                 style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -260,5 +261,19 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
     );
+  }
+  String _textData(String data){
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();   
+    day = parts[2].trim();   
+    month = parts[1].trim();
+   
+    text = '$day.$month.$year';
+    return text;
   }
 }
