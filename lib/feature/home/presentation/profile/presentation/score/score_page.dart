@@ -65,7 +65,7 @@ class _ScorePageState extends State<ScorePage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'Баллы',
+                                              'Грейды',
                                               style:
                                                   CustomTextStyle.white_22_w700,
                                             ),
