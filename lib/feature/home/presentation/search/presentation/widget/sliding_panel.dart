@@ -477,7 +477,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 2.w),
                   Text(
                     'Задания от заказчиков',
-                    style: CustomTextStyle.black_12_w400_515150,
+                    style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
                   ),
                   const Spacer(),
                   SizedBox(
@@ -499,7 +499,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 2.w),
                   Text(
                     'Офферы от исполнителей',
-                    style: CustomTextStyle.black_12_w400_515150,
+                    style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),

@@ -61,6 +61,8 @@ class _RatingPageState extends State<RatingPage> {
         }
         Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
         return SafeArea(
+          top: false,
+          bottom: false,
           child: MediaQuery(
             data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(

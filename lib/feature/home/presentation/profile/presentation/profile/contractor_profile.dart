@@ -577,7 +577,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           'assets/images/user-square.png',
                           height: 23.h,
                         ),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: 12.w),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -625,7 +625,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           'assets/images/shield-tick.png',
                           height: 23.h,
                         ),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: 12.w),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -657,7 +657,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 24.w),
-                    width: 185.w,
+                    width: 190.w,
                     child: Stack(
                       children: [
                         ScaleButton(
