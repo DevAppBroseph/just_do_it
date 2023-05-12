@@ -459,7 +459,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               Row(
                 children: [
                   SizedBox(
-                    width: 24.0,
+                    width: 22.0,
                     height: 24.0,
                     child: Checkbox(
                       shape: RoundedRectangleBorder(
@@ -481,7 +481,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   const Spacer(),
                   SizedBox(
-                    width: 24.0,
+                    width: 22.0,
                     height: 24.0,
                     child: Checkbox(
                       shape: RoundedRectangleBorder(
@@ -2070,7 +2070,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             _showDatePicker(context, 0);
           },
           child: Container(
-            height: 60.h,
+            height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: ColorStyles.greyF9F9F9,
@@ -2111,7 +2111,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             _showDatePicker(context, 1);
           },
           child: Container(
-            height: 60.h,
+            height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: ColorStyles.greyF9F9F9,

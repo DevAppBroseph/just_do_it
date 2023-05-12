@@ -657,7 +657,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 24.w),
-                    width: 180.w,
+                    width: 185.w,
                     child: Stack(
                       children: [
                         ScaleButton(

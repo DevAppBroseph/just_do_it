@@ -5,27 +5,27 @@ import 'package:just_do_it/constants/constants.dart';
 class CustomTextStyle {
   // white
   static TextStyle white_14_w400 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
 
   static TextStyle white_14 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
 
   static TextStyle white_10_w700 = TextStyle(
-    fontSize: 10.sp,
+    fontSize: 11.sp,
     fontWeight: FontWeight.w700,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
 
   static TextStyle white_12_w900 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w900,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
@@ -39,7 +39,7 @@ class CustomTextStyle {
   );
 
   static TextStyle white_16_w600 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
@@ -53,7 +53,7 @@ class CustomTextStyle {
   );
 
   static TextStyle white_11 = TextStyle(
-    fontSize: 11.sp,
+    fontSize: 12.sp,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
@@ -67,64 +67,64 @@ class CustomTextStyle {
   );
 
   static TextStyle black_11 = TextStyle(
-    fontSize: 11.sp,
+    fontSize: 12.sp,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_14_w300 = TextStyle(
     color: Colors.black,
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w300,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_15 = TextStyle(
-    fontSize: 15.sp,
+    fontSize: 16.sp,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_11_w400_171716 = TextStyle(
-    fontSize: 11.sp,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
   static TextStyle black_13_w400_171716 = TextStyle(
-    fontSize: 13.sp,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_16_w500_000000 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_13 = TextStyle(
-    fontSize: 13.sp,
+    fontSize: 14.sp,
     color: ColorStyles.black,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_14_w400_000000 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_12_w400_515150 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
   );
   static TextStyle black_13_w400_515150 = TextStyle(
-    fontSize: 13.sp,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
@@ -159,69 +159,69 @@ class CustomTextStyle {
   );
 
   static TextStyle black_18_w500_171716 = TextStyle(
-    fontSize: 18.sp,
+    fontSize: 19.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_14_w500_171716 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_12_w500_515150 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_11_w500_171716 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_12_w400_292D32 = TextStyle(
-    fontSize: 13.h,
+    fontSize: 14.h,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black292D32,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_13_w500_171716 = TextStyle(
-    fontSize: 13.h,
+    fontSize: 14.h,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_14_w400_292D32 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black292D32,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_18_w800 = TextStyle(
-    fontSize: 18.sp,
+    fontSize: 19.sp,
     fontWeight: FontWeight.w800,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
   static TextStyle black_17_w800 = TextStyle(
-    fontSize: 17.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w800,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_12_w400 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
@@ -235,48 +235,48 @@ class CustomTextStyle {
   );
 
   static TextStyle black_14_w400_515150 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
   );
   static TextStyle black_15_w600_171716 = TextStyle(
-    fontSize: 15.sp,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_16_w600_171716 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_16_w600_515150 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_14_w400_171716 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_16_w400_171716 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_16_w400_515150 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.black515150,
     fontFamily: 'SFPro',
@@ -311,28 +311,28 @@ class CustomTextStyle {
   );
 
   static TextStyle black_17_w500_171716 = TextStyle(
-    fontSize: 17.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w500,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_17_w600_171716 = TextStyle(
-    fontSize: 17.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_17_w800_171716 = TextStyle(
-    fontSize: 17.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w800,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
 
   static TextStyle black_12_ellipsis = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     color: Colors.black,
     overflow: TextOverflow.ellipsis,
     fontFamily: 'SFPro',
@@ -346,7 +346,7 @@ class CustomTextStyle {
 
   // Grey
   static TextStyle grey_12_w400 = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.greyBDBDBD,
     fontFamily: 'SFPro',
@@ -354,20 +354,20 @@ class CustomTextStyle {
 
   static TextStyle grey_14_w300 = TextStyle(
     color: Colors.grey[400],
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w300,
     fontFamily: 'SFPro',
   );
 
   static TextStyle grey_12_w400_DADADA = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.greyDADADA,
     fontFamily: 'SFPro',
   );
 
   static TextStyle grey_16_w400 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.greyDADADA,
     fontFamily: 'SFPro',
@@ -375,19 +375,19 @@ class CustomTextStyle {
 
   static TextStyle grey_14_w400_ellipsis = TextStyle(
     overflow: TextOverflow.ellipsis,
-    fontSize: 14,
+    fontSize: 15,
     color: Colors.grey[400],
     fontWeight: FontWeight.w400,
   );
 
   static TextStyle grey_14_w400 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.greyBDBDBD,
     fontFamily: 'SFPro',
   );
   static TextStyle grey_13_w400 = TextStyle(
-    fontSize: 13.sp,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.greyBDBDBD,
     fontFamily: 'SFPro',
@@ -402,14 +402,14 @@ class CustomTextStyle {
 
   // red
   static TextStyle red_16_w400 = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.redFF5151,
     fontFamily: 'SFPro',
   );
 
   static TextStyle red_11_w400_171716 = TextStyle(
-    fontSize: 11.sp,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.redFF5151,
     fontFamily: 'SFPro',
@@ -424,7 +424,7 @@ class CustomTextStyle {
   );
 
   static TextStyle purple_14_w600 = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.purpleA401C4,
     fontFamily: 'SFPro',
@@ -432,21 +432,21 @@ class CustomTextStyle {
 
   // blue
   static TextStyle blue_14_w400_336FEE = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.blue336FEE,
     fontFamily: 'SFPro',
   );
 
   static TextStyle blue_16_w400_336FEE = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.blue336FEE,
     fontFamily: 'SFPro',
   );
 
   static TextStyle blue_11_w400_336FEE = TextStyle(
-    fontSize: 11.sp,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.blue336FEE,
     fontFamily: 'SFPro',
@@ -464,6 +464,6 @@ class CustomTextStyle {
   );
 
   static TextStyle black_10 = TextStyle(
-    fontSize: 10.sp,
+    fontSize: 11.sp,
   );
 }

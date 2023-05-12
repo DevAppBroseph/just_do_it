@@ -259,7 +259,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 page = 1;
                                               },
                                               child: Container(
-                                                height: 29.h,
+                                                height: 31.h,
                                                 padding: EdgeInsets.symmetric(
                                                   horizontal: 12.w,
                                                   vertical: 8.h,
