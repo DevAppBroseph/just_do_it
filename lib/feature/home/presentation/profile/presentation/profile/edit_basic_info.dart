@@ -237,11 +237,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                 color: Colors.grey[200],
                 child: Row(
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     CupertinoButton(
                         child: Text(
                           'Готово',
-                          style: TextStyle(color: Colors.black),
+                          style: CustomTextStyle.black_empty,
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();

@@ -266,7 +266,7 @@ class _CreatePageState extends State<CreatePage> {
           child: ListView.builder(
             controller: scrollController,
             shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount: activities.length,
             itemBuilder: (context, index) {
               return Column(
@@ -380,6 +380,7 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   Widget info(List<Subcategory> list, bool open, int index) {
+    ScrollController controllerScroll = ScrollController();
     double height = 0;
     if (open) {
       if (list.length >= 5) {
@@ -411,16 +412,21 @@ class _CreatePageState extends State<CreatePage> {
           ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const ClampingScrollPhysics(),
-          children: list
-              .map((e) => item(
-                    e.description ?? '',
-                    index,
-                  ))
-              .toList(),
+        child: Scrollbar(
+          thumbVisibility: list.length > 5,
+          controller: controllerScroll,
+          child: ListView(
+            shrinkWrap: true,
+            controller: controllerScroll,
+            padding: EdgeInsets.zero,
+            physics: const BouncingScrollPhysics(),
+            children: list
+                .map((e) => item(
+                      e.description ?? '',
+                      index,
+                    ))
+                .toList(),
+          ),
         ),
       ),
     );

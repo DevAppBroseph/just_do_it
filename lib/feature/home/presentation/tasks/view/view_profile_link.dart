@@ -17,32 +17,35 @@ class ViewProfileLink extends StatefulWidget {
 class _ViewProfileLinkState extends State<ViewProfileLink> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 60.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Профиль',
-                    style: CustomTextStyle.black_22_w700,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(height: 60.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Профиль',
+                      style: CustomTextStyle.black_22_w700,
+                    ),
                   ),
-                ),
-                CustomIconButton(
-                  onBackPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: SvgImg.arrowRight,
-                ),
-              ],
+                  CustomIconButton(
+                    onBackPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: SvgImg.arrowRight,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(child: ProfileView(owner: widget.owner)),
-        ],
+            Expanded(child: ProfileView(owner: widget.owner)),
+          ],
+        ),
       ),
     );
   }

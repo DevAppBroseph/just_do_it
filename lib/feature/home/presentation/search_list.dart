@@ -18,41 +18,44 @@ class SearchList extends StatefulWidget {
 class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.heightScreen - 100.h - 220.h,
-      color: Colors.white,
-      child: ListView.builder(
-        itemCount: widget.array.length,
-        padding: EdgeInsets.only(bottom: 96.h),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-              widget.onSelect(widget.array[index]);
-            },
-            child: Container(
-              color: Colors.transparent,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
-                    child: Text(
-                      widget.array[index],
-                      style: CustomTextStyle.black_13_w500_171716,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Container(
+        height: widget.heightScreen - 100.h - 220.h,
+        color: Colors.white,
+        child: ListView.builder(
+          itemCount: widget.array.length,
+          padding: EdgeInsets.only(bottom: 96.h),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                widget.onSelect(widget.array[index]);
+              },
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.w, vertical: 18.h),
+                      child: Text(
+                        widget.array[index],
+                        style: CustomTextStyle.black_13_w500_171716,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: const Divider(),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: const Divider(),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

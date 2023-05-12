@@ -488,9 +488,9 @@ class _EditTasksState extends State<EditTasks> {
                       const Spacer(),
                       CupertinoButton(
                         onPressed: () => FocusScope.of(context).unfocus(),
-                        child: const Text(
+                        child: Text(
                           'Готово',
-                          style: TextStyle(color: Colors.black),
+                          style: CustomTextStyle.black_empty,
                         ),
                       ),
                     ],

@@ -106,7 +106,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                         height: 20.h,
                                         width: 20.h,
                                         decoration: BoxDecoration(
-                                          boxShadow: [
+                                          boxShadow: const [
                                             BoxShadow(color: Colors.black)
                                           ],
                                           borderRadius:
@@ -179,19 +179,18 @@ class _CustomerProfileState extends State<CustomerProfile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 25.w),
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: 240.w,
                     child: AutoSizeText(
                       '${user.firstname ?? ''} ${user.lastname ?? ''}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 30.sp, fontWeight: FontWeight.w800),
+                      style: CustomTextStyle.black_30_w800,
                       maxLines: 2,
                       softWrap: true,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () async {
                       final code = await FirebaseDynamicLinksService()
@@ -234,59 +233,81 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 SizedBox(height: 8.h),
                                 Row(
                                   children: [
-                                    BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                                        if (state is ScoreLoaded) {
-                                          final levels = state.levels;
-                                          if (user.balance! < levels![0].mustCoins!) {
-                                            return Text(
-                                              levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-
-                                          if (user.balance! >= levels[0].mustCoins! &&
-                                              user.balance! < levels[1].mustCoins!) {
-                                            return Text(
-                                              levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user.balance! >= levels[1].mustCoins! &&
-                                              user.balance! < levels[2].mustCoins!) {
-                                            return Text(
-                                              levels[1].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user.balance! >= levels[2].mustCoins! &&
-                                              user.balance! < levels[3].mustCoins!) {
-                                            return Text(
-                                              levels[2].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user.balance! >= levels[3].mustCoins! &&
-                                              user.balance! < levels[4].mustCoins!) {
-                                            return Text(
-                                              levels[3].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user.balance! >= levels[4].mustCoins!) {
-                                            return Text(
-                                              levels[4].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                    
+                                    BlocBuilder<ScoreBloc, ScoreState>(
+                                        builder: (context, state) {
+                                      if (state is ScoreLoaded) {
+                                        final levels = state.levels;
+                                        if (user.balance! <
+                                            levels![0].mustCoins!) {
+                                          return Text(
+                                            levels[0].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
                                         }
-                                        return Container();
-                                      }),
+
+                                        if (user.balance! >=
+                                                levels[0].mustCoins! &&
+                                            user.balance! <
+                                                levels[1].mustCoins!) {
+                                          return Text(
+                                            levels[0].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
+                                        }
+                                        if (user.balance! >=
+                                                levels[1].mustCoins! &&
+                                            user.balance! <
+                                                levels[2].mustCoins!) {
+                                          return Text(
+                                            levels[1].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
+                                        }
+                                        if (user.balance! >=
+                                                levels[2].mustCoins! &&
+                                            user.balance! <
+                                                levels[3].mustCoins!) {
+                                          return Text(
+                                            levels[2].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
+                                        }
+                                        if (user.balance! >=
+                                                levels[3].mustCoins! &&
+                                            user.balance! <
+                                                levels[4].mustCoins!) {
+                                          return Text(
+                                            levels[3].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
+                                        }
+                                        if (user.balance! >=
+                                            levels[4].mustCoins!) {
+                                          return Text(
+                                            levels[4].name!,
+                                            style: CustomTextStyle
+                                                .purple_20_w700
+                                                .copyWith(fontSize: 15),
+                                          );
+                                        }
+                                      }
+                                      return Container();
+                                    }),
                                   ],
                                 ),
                               ],
                             ),
-                            Spacer(),
+                            const Spacer(),
                             BlocBuilder<ScoreBloc, ScoreState>(
                                 builder: (context, state) {
                               if (state is ScoreLoaded) {
@@ -353,7 +374,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               }
                               return Container();
                             }),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                       ),

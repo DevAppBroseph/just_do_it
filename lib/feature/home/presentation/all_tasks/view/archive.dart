@@ -41,10 +41,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       alignment: Alignment.center,
                       child: Text(
                         'В архиве',
-                        style: TextStyle(
-                          fontSize: 21.sp,
-                          color: Colors.black,
-                        ),
+                        style: CustomTextStyle.black_21,
                       ),
                     )
                   ],

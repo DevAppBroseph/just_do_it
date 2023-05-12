@@ -43,6 +43,10 @@ class _DatePickerState extends State<DatePicker> {
   bool openRegion = false;
   bool openTown = false;
   ScrollController controller = ScrollController();
+  ScrollController countyController = ScrollController();
+  ScrollController regionController = ScrollController();
+  ScrollController townController = ScrollController();
+  ScrollController currecyController = ScrollController();
 
   void _showDatePicker(ctx, int index) {
     showCupertinoModalPopup(
@@ -66,8 +70,7 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'Готово',
-                            style:
-                                TextStyle(fontSize: 15.sp, color: Colors.black),
+                            style: CustomTextStyle.black_15,
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -155,20 +158,12 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     int countCountry = widget.allCountries.length;
-    // for (int i = 0; i < widget.allCountries.length; i++) {
-    // if (widget.allCountries[i].select) {
-    // }
-    // }
 
     int countRegion = 0;
     for (int i = 0; i < widget.allCountries.length; i++) {
       if (widget.allCountries[i].select) {
         for (int j = 0; j < widget.allCountries[i].region.length; j++) {
-          // if (widget.allCountries[i].region[j].select) {
-          // {
           countRegion += widget.allCountries[i].region.length;
-          // }
-          // }
         }
       }
     }
@@ -180,15 +175,145 @@ class _DatePickerState extends State<DatePicker> {
           if (widget.allCountries[i].region[j].select) {
             {
               countTown += widget.allCountries[i].region[j].town.length;
-              // for (int k = 0;
-              // k < widget.allCountries[i].region[j].town.length;
-              // k++) {
-              // if (widget.allCountries[i].region[j].town[k].select) {
-              // {
-              // countTown += 1;
-              // }
-              // }
-              // }
+            }
+          }
+        }
+      }
+    }
+
+    List<Widget> regionsListWidget = [];
+    if (openRegion) {
+      for (int i = 0; i < widget.allCountries.length; i++) {
+        if (widget.allCountries[i].select) {
+          for (int index = 0;
+              index < widget.allCountries[i].region.length;
+              index++) {
+            regionsListWidget.add(
+              Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                child: GestureDetector(
+                  onTap: () async {
+                    widget.allCountries[i].region[index].select =
+                        !widget.allCountries[i].region[index].select;
+                    if (widget.allCountries[i].region[index].select) {
+                      if (widget.allCountries[i].region[index].town.isEmpty) {
+                        widget.allCountries[i].region[index].town =
+                            await Repository()
+                                .towns(widget.allCountries[i].region[index]);
+                      }
+                    } else {
+                      widget.allCountries[i].region[index].select = false;
+                      for (var element1 in widget.allCountries[i].region) {
+                        if (!element1.select) {
+                          for (var element2 in element1.town) {
+                            element2.select = false;
+                          }
+                        }
+                      }
+                    }
+                    openCountry = false;
+                    openTown = false;
+                    widget.onEdit(
+                      widget.startDate,
+                      widget.endDate,
+                      widget.allCountries,
+                      widget.currecy,
+                    );
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 40.h,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 250.w,
+                              child: Text(
+                                widget.allCountries[i].region[index].name!,
+                                style: CustomTextStyle.black_14_w400_515150,
+                              ),
+                            ),
+                            const Spacer(),
+                            if (widget.allCountries[i].region[index].select)
+                              const Icon(Icons.check)
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+        }
+      }
+    }
+
+    // widget.allCountries[index1].region[index2].town.length,
+
+    List<Widget> townsListWidget = [];
+    if (openTown) {
+      for (int i = 0; i < widget.allCountries.length; i++) {
+        if (widget.allCountries[i].select) {
+          for (int index = 0;
+              index < widget.allCountries[i].region.length;
+              index++) {
+            if (widget.allCountries[i].region[index].select) {
+              for (int index3 = 0;
+                  index3 < widget.allCountries[i].region.length;
+                  index3++) {
+                townsListWidget.add(
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        widget.allCountries[i].region[index].town[index3]
+                                .select =
+                            !widget.allCountries[i].region[index].town[index3]
+                                .select;
+
+                        widget.onEdit(
+                          widget.startDate,
+                          widget.endDate,
+                          widget.allCountries,
+                          widget.currecy,
+                        );
+
+                        setState(() {});
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 40.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 250.w,
+                                  child: Text(
+                                    widget.allCountries[i].region[index]
+                                        .town[index3].name!,
+                                    style: CustomTextStyle.black_14_w400_515150,
+                                  ),
+                                ),
+                                const Spacer(),
+                                if (widget.allCountries[i].region[index]
+                                    .town[index3].select)
+                                  const Icon(Icons.check)
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
             }
           }
         }
@@ -201,7 +326,7 @@ class _DatePickerState extends State<DatePicker> {
         controller: controller,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         children: [
           ScaleButton(
             bound: 0.02,
@@ -339,59 +464,64 @@ class _DatePickerState extends State<DatePicker> {
                   ],
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const ClampingScrollPhysics(),
-                  children: currecy!
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (e.id == widget.currecy?.id) {
-                                widget.currecy = null;
-                              } else {
-                                widget.currecy = e;
-                              }
+                child: Scrollbar(
+                  controller: currecyController,
+                  trackVisibility: currecy!.length > 5,
+                  child: ListView(
+                    shrinkWrap: true,
+                    controller: currecyController,
+                    padding: EdgeInsets.zero,
+                    physics: const BouncingScrollPhysics(),
+                    children: currecy
+                        .map(
+                          (e) => Padding(
+                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (e.id == widget.currecy?.id) {
+                                  widget.currecy = null;
+                                } else {
+                                  widget.currecy = e;
+                                }
 
-                              widget.onEdit(
-                                widget.startDate,
-                                widget.endDate,
-                                widget.allCountries,
-                                widget.currecy,
-                              );
+                                widget.onEdit(
+                                  widget.startDate,
+                                  widget.endDate,
+                                  widget.allCountries,
+                                  widget.currecy,
+                                );
 
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
+                                setState(() {});
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 40.h,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 250.w,
+                                          child: Text(
+                                            e.name!,
+                                            style: CustomTextStyle
+                                                .black_14_w400_515150,
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      if (widget.currecy?.id == e.id)
-                                        const Icon(Icons.check)
-                                    ],
-                                  ),
-                                ],
+                                        const Spacer(),
+                                        if (widget.currecy?.id == e.id)
+                                          const Icon(Icons.check)
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        )
+                        .toList(),
+                  ),
                 ),
               );
             }
@@ -626,72 +756,78 @@ class _DatePickerState extends State<DatePicker> {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const ClampingScrollPhysics(),
-              children: widget.allCountries.map(
-                (e) {
-                  bool select = false;
-                  for (var element in widget.allCountries) {
-                    if (element.select && e.id == element.id) {
-                      select = true;
-                      break;
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: countyController,
+              child: ListView(
+                shrinkWrap: true,
+                controller: countyController,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                children: widget.allCountries.map(
+                  (e) {
+                    bool select = false;
+                    for (var element in widget.allCountries) {
+                      if (element.select && e.id == element.id) {
+                        select = true;
+                        break;
+                      }
                     }
-                  }
-                  return Padding(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: GestureDetector(
-                      onTap: () async {
-                        e.select = !e.select;
-                        if (e.select) {
-                          if (e.region.isEmpty) {
-                            e.region = await Repository().regions(e);
-                          }
-                        } else {
-                          for (var element2 in e.region) {
-                            element2.select = false;
-                            for (var element3 in element2.town) {
-                              element3.select = false;
+                    return Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: GestureDetector(
+                        onTap: () async {
+                          e.select = !e.select;
+                          if (e.select) {
+                            if (e.region.isEmpty) {
+                              e.region = await Repository().regions(e);
+                            }
+                          } else {
+                            for (var element2 in e.region) {
+                              element2.select = false;
+                              for (var element3 in element2.town) {
+                                element3.select = false;
+                              }
                             }
                           }
-                        }
 
-                        openRegion = false;
-                        openTown = false;
-                        widget.onEdit(
-                          widget.startDate,
-                          widget.endDate,
-                          widget.allCountries,
-                          widget.currecy,
-                        );
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 40.h,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 250.w,
-                                  child: Text(
-                                    e.name!,
-                                    style: CustomTextStyle.black_14_w400_515150,
+                          openRegion = false;
+                          openTown = false;
+                          widget.onEdit(
+                            widget.startDate,
+                            widget.endDate,
+                            widget.allCountries,
+                            widget.currecy,
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 40.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 250.w,
+                                    child: Text(
+                                      e.name!,
+                                      style:
+                                          CustomTextStyle.black_14_w400_515150,
+                                    ),
                                   ),
-                                ),
-                                const Spacer(),
-                                if (select) const Icon(Icons.check)
-                              ],
-                            ),
-                          ],
+                                  const Spacer(),
+                                  if (select) const Icon(Icons.check)
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ).toList(),
+                    );
+                  },
+                ).toList(),
+              ),
             ),
           ),
           SizedBox(height: 14.h),
@@ -765,84 +901,16 @@ class _DatePickerState extends State<DatePicker> {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.allCountries.length,
-              padding: EdgeInsets.zero,
-              physics: const ClampingScrollPhysics(),
-              itemBuilder: (context, i) {
-                if (!widget.allCountries[i].select) return Container();
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.allCountries[i].region.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                      child: GestureDetector(
-                        onTap: () async {
-                          widget.allCountries[i].region[index].select =
-                              !widget.allCountries[i].region[index].select;
-                          if (widget.allCountries[i].region[index].select) {
-                            if (widget
-                                .allCountries[i].region[index].town.isEmpty) {
-                              widget.allCountries[i].region[index].town =
-                                  await Repository().towns(
-                                      widget.allCountries[i].region[index]);
-                            }
-                          } else {
-                            widget.allCountries[i].region[index].select = false;
-                            for (var element1
-                                in widget.allCountries[i].region) {
-                              if (!element1.select) {
-                                for (var element2 in element1.town) {
-                                  element2.select = false;
-                                }
-                              }
-                            }
-                          }
-                          openCountry = false;
-                          openTown = false;
-                          widget.onEdit(
-                            widget.startDate,
-                            widget.endDate,
-                            widget.allCountries,
-                            widget.currecy,
-                          );
-
-                          setState(() {});
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          height: 40.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 250.w,
-                                    child: Text(
-                                      widget
-                                          .allCountries[i].region[index].name!,
-                                      style:
-                                          CustomTextStyle.black_14_w400_515150,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  if (widget
-                                      .allCountries[i].region[index].select)
-                                    const Icon(Icons.check)
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: regionController,
+              child: ListView(
+                shrinkWrap: true,
+                controller: regionController,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                children: regionsListWidget,
+              ),
             ),
           ),
           SizedBox(height: 14.h),
@@ -931,77 +999,16 @@ class _DatePickerState extends State<DatePicker> {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-            child: ListView.builder(
-              itemCount: widget.allCountries.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const ClampingScrollPhysics(),
-              itemBuilder: (context, index1) {
-                return ListView.builder(
-                  itemCount: widget.allCountries[index1].region.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index2) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget
-                          .allCountries[index1].region[index2].town.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index3) {
-                        return Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.allCountries[index1].region[index2]
-                                      .town[index3].select =
-                                  !widget.allCountries[index1].region[index2]
-                                      .town[index3].select;
-
-                              widget.onEdit(
-                                widget.startDate,
-                                widget.endDate,
-                                widget.allCountries,
-                                widget.currecy,
-                              );
-
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          widget
-                                              .allCountries[index1]
-                                              .region[index2]
-                                              .town[index3]
-                                              .name!,
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      if (widget.allCountries[index1]
-                                          .region[index2].town[index3].select)
-                                        const Icon(Icons.check)
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: townController,
+              child: ListView(
+                controller: townController,
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                children: townsListWidget,
+              ),
             ),
           ),
           Row(
@@ -1016,10 +1023,7 @@ class _DatePickerState extends State<DatePicker> {
             btnColor: ColorStyles.purpleA401C4,
             textLabel: Text(
               'Поднять объявление наверх',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
-              ),
+              style: CustomTextStyle.white_14,
             ),
           ),
           SizedBox(height: widget.bottomInsets),

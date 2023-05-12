@@ -130,163 +130,166 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          body: BlocBuilder<ProfileBloc, ProfileState>(
-            buildWhen: (previous, current) {
-              if (current is EditPageState) {
-                searchQuery = current.text;
-                page = current.page;
-                pageController.jumpToPage(page);
-                streamController.add(page);
-              }
-              return true;
-            },
-            builder: (context, snapshot) {
-              if (snapshot is LoadProfileState) {
-                return const CupertinoActivityIndicator();
-              }
-              return PageView(
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  CreatePage(
-                    onBackPressed: () {
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Stack(
+        children: [
+          Scaffold(
+            body: BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (previous, current) {
+                if (current is EditPageState) {
+                  searchQuery = current.text;
+                  page = current.page;
+                  pageController.jumpToPage(page);
+                  streamController.add(page);
+                }
+                return true;
+              },
+              builder: (context, snapshot) {
+                if (snapshot is LoadProfileState) {
+                  return const CupertinoActivityIndicator();
+                }
+                return PageView(
+                  controller: pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    CreatePage(
+                      onBackPressed: () {
+                        pageController.jumpToPage(4);
+                        page = 5;
+                        streamController.add(4);
+                      },
+                      onSelect: selectUser,
+                    ),
+                    SearchPage(
+                      taskId: idTask,
+                      text: searchQuery,
+                      onBackPressed: () {
+                        pageController.jumpToPage(4);
+                        page = 5;
+                        streamController.add(4);
+                      },
+                      clearId: () {
+                        idTask = null;
+                      },
+                      onSelect: selectUser,
+                    ),
+                    TasksPage(
+                      onSelect: (page) {
+                        setState(() {
+                          this.page = page;
+                          pageController.jumpToPage(this.page);
+                        });
+                      },
+                      customer: 0,
+                    ),
+                    ChatPage(() {
                       pageController.jumpToPage(4);
                       page = 5;
                       streamController.add(4);
-                    },
-                    onSelect: selectUser,
+                    }, selectUser),
+                    WelcomPage(selectUser)
+                  ],
+                );
+              },
+            ),
+            bottomNavigationBar: StreamBuilder<int>(
+              stream: streamController.stream,
+              builder: (context, snapshot) {
+                return MediaQuery(
+                  data: const MediaQueryData(textScaleFactor: 1.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorStyles.shadowFC6554,
+                          offset: const Offset(0, -4),
+                          blurRadius: 55.r,
+                        )
+                      ],
+                    ),
+                    height: 96.h,
+                    child: BlocBuilder<ChatBloc, ChatState>(
+                        buildWhen: (previous, current) {
+                      if (current is ReconnectState) {
+                        BlocProvider.of<ChatBloc>(context)
+                            .add(StartSocket(context, null));
+                      }
+                      if (current is UpdateListPersonState) {
+                        return false;
+                      }
+                      return true;
+                    }, builder: (context, snapshot) {
+                      int undreadMessage = 0;
+                      for (var element
+                          in BlocProvider.of<ChatBloc>(context).chatList) {
+                        undreadMessage += element.countUnreadMessage ?? 0;
+                      }
+                      return Padding(
+                        padding: EdgeInsets.only(top: 20.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            itemBottomNavigatorBar(
+                              'assets/icons/add.svg',
+                              'Создать',
+                              0,
+                            ),
+                            itemBottomNavigatorBar(
+                              'assets/icons/search.svg',
+                              'Найти',
+                              1,
+                            ),
+                            itemBottomNavigatorBar(
+                              'assets/icons/tasks.svg',
+                              'Задания',
+                              2,
+                            ),
+                            itemBottomNavigatorBar(
+                              'assets/icons/messages.svg',
+                              'Чат',
+                              3,
+                              counderMessage:
+                                  undreadMessage != 0 ? undreadMessage : null,
+                            ),
+                            itemBottomNavigatorBar(
+                              'assets/icons/profile.svg',
+                              'Кабинет',
+                              4,
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
-                  SearchPage(
-                    taskId: idTask,
-                    text: searchQuery,
-                    onBackPressed: () {
-                      pageController.jumpToPage(4);
-                      page = 5;
-                      streamController.add(4);
-                    },
-                    clearId: () {
-                      idTask = null;
-                    },
-                    onSelect: selectUser,
-                  ),
-                  TasksPage(
-                    onSelect: (page) {
-                      setState(() {
-                        this.page = page;
-                        pageController.jumpToPage(this.page);
-                      });
-                    },
-                    customer: 0,
-                  ),
-                  ChatPage(() {
-                    pageController.jumpToPage(4);
-                    page = 5;
-                    streamController.add(4);
-                  }, selectUser),
-                  WelcomPage(selectUser)
-                ],
-              );
-            },
+                );
+              },
+            ),
           ),
-          bottomNavigationBar: StreamBuilder<int>(
-            stream: streamController.stream,
+          BlocBuilder<search.SearchBloc, search.SearchState>(
             builder: (context, snapshot) {
-              return MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorStyles.shadowFC6554,
-                        offset: const Offset(0, -4),
-                        blurRadius: 55.r,
-                      )
-                    ],
-                  ),
-                  height: 96.h,
-                  child: BlocBuilder<ChatBloc, ChatState>(
-                      buildWhen: (previous, current) {
-                    if (current is ReconnectState) {
-                      BlocProvider.of<ChatBloc>(context)
-                          .add(StartSocket(context, null));
-                    }
-                    if (current is UpdateListPersonState) {
-                      return false;
-                    }
-                    return true;
-                  }, builder: (context, snapshot) {
-                    int undreadMessage = 0;
-                    for (var element
-                        in BlocProvider.of<ChatBloc>(context).chatList) {
-                      undreadMessage += element.countUnreadMessage ?? 0;
-                    }
-                    return Padding(
-                      padding: EdgeInsets.only(top: 20.h),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          itemBottomNavigatorBar(
-                            'assets/icons/add.svg',
-                            'Создать',
-                            0,
-                          ),
-                          itemBottomNavigatorBar(
-                            'assets/icons/search.svg',
-                            'Найти',
-                            1,
-                          ),
-                          itemBottomNavigatorBar(
-                            'assets/icons/tasks.svg',
-                            'Задания',
-                            2,
-                          ),
-                          itemBottomNavigatorBar(
-                            'assets/icons/messages.svg',
-                            'Чат',
-                            3,
-                            counderMessage:
-                                undreadMessage != 0 ? undreadMessage : null,
-                          ),
-                          itemBottomNavigatorBar(
-                            'assets/icons/profile.svg',
-                            'Кабинет',
-                            4,
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ),
-              );
+              if (snapshot is search.OpenSlidingPanelState) {
+                panelController.animatePanelToPosition(1.0);
+              } else if (snapshot is search.CloseSlidingPanelState) {
+                panelController.animatePanelToPosition(0.0);
+              }
+              return SlidingPanelSearch(panelController);
             },
           ),
-        ),
-        BlocBuilder<search.SearchBloc, search.SearchState>(
-          builder: (context, snapshot) {
-            if (snapshot is search.OpenSlidingPanelState) {
-              panelController.animatePanelToPosition(1.0);
-            } else if (snapshot is search.CloseSlidingPanelState) {
-              panelController.animatePanelToPosition(0.0);
-            }
-            return SlidingPanelSearch(panelController);
-          },
-        ),
-        BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
-          builder: (context, snapshot) {
-            if (snapshot is rep.OpenSlidingPanelState) {
-              panelControllerReply.animatePanelToPosition(1.0);
-            } else if (snapshot is rep.CloseSlidingPanelState) {
-              panelControllerReply.animatePanelToPosition(0.0);
-            }
-            return SlidingPanelReply(panelControllerReply);
-          },
-        ),
-      ],
+          BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
+            builder: (context, snapshot) {
+              if (snapshot is rep.OpenSlidingPanelState) {
+                panelControllerReply.animatePanelToPosition(1.0);
+              } else if (snapshot is rep.CloseSlidingPanelState) {
+                panelControllerReply.animatePanelToPosition(0.0);
+              }
+              return SlidingPanelReply(panelControllerReply);
+            },
+          ),
+        ],
+      ),
     );
   }
 

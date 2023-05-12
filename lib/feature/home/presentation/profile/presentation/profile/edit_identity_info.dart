@@ -716,8 +716,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'Готово',
-                                  style: TextStyle(
-                                      fontSize: 15.sp, color: Colors.black),
+                                  style: CustomTextStyle.black_15,
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

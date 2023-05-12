@@ -10,7 +10,6 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:just_do_it/widget/back_icon_button_white.dart';
 
 class RatingPage extends StatefulWidget {
   const RatingPage({super.key});
@@ -25,7 +24,7 @@ class _RatingPageState extends State<RatingPage> {
   PageController pageController = PageController();
   int stageRegistration = 1;
 
-  List<ReviewsDetail> _reviews = [
+  final List<ReviewsDetail> _reviews = [
     ReviewsDetail(
         id: 0,
         reviewerDetails: ReviewerDetails(
@@ -54,17 +53,16 @@ class _RatingPageState extends State<RatingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
-        body:
-            BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-          if (snapshot is LoadingRatingState) {
-            return const CupertinoActivityIndicator();
-          }
-          Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-          return SafeArea(
+    return Scaffold(
+      backgroundColor: ColorStyles.whiteFFFFFF,
+      body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+        if (snapshot is LoadingRatingState) {
+          return const CupertinoActivityIndicator();
+        }
+        Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
+        return SafeArea(
+          child: MediaQuery(
+            data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(
               children: [
                 header(reviews!),
@@ -80,8 +78,7 @@ class _RatingPageState extends State<RatingPage> {
                         SizedBox(height: 30.h),
                         Text(
                           'Отзывы о Вашей работе',
-                          style: TextStyle(
-                              fontSize: 17.sp, fontWeight: FontWeight.w800),
+                          style: CustomTextStyle.black_17_w800,
                         ),
                         SizedBox(height: 30.h),
                         //TODO Эта логика для сервера
@@ -111,9 +108,9 @@ class _RatingPageState extends State<RatingPage> {
                 ),
               ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -371,7 +368,8 @@ class _RatingPageState extends State<RatingPage> {
               ],
             ),
           ),
-          SizedBox(height: 8.h),
+          const Spacer(),
+          // SizedBox,(height: 8.h),
           Container(
             color: ColorStyles.yellowFFD70A,
             child: Column(

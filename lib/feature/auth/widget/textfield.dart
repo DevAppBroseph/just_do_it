@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
   final String? prefixText;
   final bool? enabled;
   final Color? fillColor;
-  final bool? autocorrect; 
+  final bool? autocorrect;
   double? height;
   double? width;
   TextStyle? hintStyle;
@@ -68,23 +68,20 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.height,
     this.width,
-    this.contentPadding = EdgeInsets.zero,  this.textCapitalization, this.autocorrect,
+    this.contentPadding = EdgeInsets.zero,
+    this.textCapitalization,
+    this.autocorrect,
   });
 
   @override
   Widget build(BuildContext context) {
     Color filColor = fillColor ?? ColorStyles.greyEAECEE;
-    Color hintTextColor = Colors.grey[400]!;
+    // Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
         CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis);
 
-    style = style ??
-        TextStyle(
-          fontSize: 12.sp,
-          color: Colors.black,
-          overflow: TextOverflow.ellipsis,
-        );
+    style = style ?? CustomTextStyle.black_12_ellipsis;
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
 
@@ -119,18 +116,10 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: const TextStyle(
-                  fontSize: 14.5,
-                  color: Colors.black,
-                  overflow: TextOverflow.ellipsis),
+              prefixStyle: CustomTextStyle.grey_14_w400_ellipsis,
               suffixIcon: suffixIcon,
-              suffixStyle: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                fontSize: 14,
-                color: hintTextColor,
-                fontWeight: FontWeight.w400,
-              ),
-              errorStyle: const TextStyle(fontSize: 10.0),
+              suffixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              errorStyle: CustomTextStyle.black_10,
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(
@@ -221,18 +210,10 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: const TextStyle(
-                  fontSize: 14.5,
-                  color: Colors.black,
-                  overflow: TextOverflow.ellipsis),
+              prefixStyle: CustomTextStyle.grey_14_w400_ellipsis,
               suffixIcon: suffixIcon,
-              suffixStyle: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                fontSize: 14,
-                color: hintTextColor,
-                fontWeight: FontWeight.w400,
-              ),
-              errorStyle: const TextStyle(fontSize: 11),
+              suffixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              errorStyle: CustomTextStyle.black_11,
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(

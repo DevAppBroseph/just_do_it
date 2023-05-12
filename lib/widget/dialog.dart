@@ -51,37 +51,40 @@ class MessageDialogs {
               ),
             ],
           ),
-          child: Card(
-            elevation: 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  minLeadingWidth: 10,
-                  leading: SvgPicture.asset(
-                    'assets/icons/chat.svg',
-                    color: ColorStyles.yellowFFCA0D,
-                    width: 30,
-                    height: 30,
+          child: MediaQuery(
+            data: const MediaQueryData(textScaleFactor: 1.0),
+            child: Card(
+              elevation: 0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    minLeadingWidth: 10,
+                    leading: SvgPicture.asset(
+                      'assets/icons/chat.svg',
+                      color: ColorStyles.yellowFFCA0D,
+                      width: 30,
+                      height: 30,
+                    ),
+                    title: Text(from),
+                    subtitle: Text(message),
                   ),
-                  title: Text(from),
-                  subtitle: Text(message),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset('assets/icons/translate.svg'),
-                      SizedBox(width: 8.h),
-                      Text(
-                        'Показать оригинал',
-                        style: CustomTextStyle.blue_14_w400_336FEE,
-                      )
-                    ],
-                  ),
-                )
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SvgPicture.asset('assets/icons/translate.svg'),
+                        SizedBox(width: 8.h),
+                        Text(
+                          'Показать оригинал',
+                          style: CustomTextStyle.blue_14_w400_336FEE,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

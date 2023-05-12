@@ -108,7 +108,6 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-   
 
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -157,7 +156,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         const Spacer(),
                         SizedBox(
-                          width: 200.w,
+                          width: 240.w,
                           height: 36.h,
                           child: CustomTextField(
                             fillColor: ColorStyles.greyF7F7F8,
