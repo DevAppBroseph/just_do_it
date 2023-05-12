@@ -16,7 +16,11 @@ class TaskAdditional extends StatefulWidget {
   String title;
   bool asCustomer;
   bool scoreTrue;
-  TaskAdditional({super.key, required this.title, required this.asCustomer, required this.scoreTrue});
+  TaskAdditional(
+      {super.key,
+      required this.title,
+      required this.asCustomer,
+      required this.scoreTrue});
 
   @override
   State<TaskAdditional> createState() => _TaskAdditionalState();
@@ -39,7 +43,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});
-    if(widget.scoreTrue){
+    if (widget.scoreTrue) {
       scoreDialog(context, '10', 'создание заказа');
       widget.scoreTrue = false;
     }
@@ -47,79 +51,82 @@ class _TaskAdditionalState extends State<TaskAdditional> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                SizedBox(height: 10.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomIconButton(
-                          onBackPressed: () {
-                            if (owner != null) {
-                              owner = null;
-                              setState(() {});
-                            } else if (selectTask != null) {
-                              selectTask = null;
-                              setState(() {});
-                            } else {
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          icon: SvgImg.arrowRight,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  SizedBox(height: 10.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomIconButton(
+                            onBackPressed: () {
+                              if (owner != null) {
+                                owner = null;
+                                setState(() {});
+                              } else if (selectTask != null) {
+                                selectTask = null;
+                                setState(() {});
+                              } else {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            icon: SvgImg.arrowRight,
+                          ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          widget.title,
-                          style: CustomTextStyle.black_22_w700_171716,
-                        ),
-                      )
-                    ],
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            widget.title,
+                            style: CustomTextStyle.black_22_w700_171716,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height -
-                            20.h -
-                            10.h -
-                            82.h,
-                        child: ListView.builder(
-                          itemCount: taskList.length,
-                          padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return itemTask(
-                              taskList[index],
-                              (task) {
-                                setState(() {
-                                  selectTask = task;
-                                });
-                              },
-                            );
-                          },
+                  SizedBox(height: 20.h),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height -
+                              20.h -
+                              10.h -
+                              82.h,
+                          child: ListView.builder(
+                            itemCount: taskList.length,
+                            padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return itemTask(
+                                taskList[index],
+                                (task) {
+                                  setState(() {
+                                    selectTask = task;
+                                  });
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      view(),
-                    ],
+                        view(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

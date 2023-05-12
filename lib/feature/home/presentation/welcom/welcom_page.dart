@@ -249,10 +249,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 SizedBox(height: 8.h),
                                                 AutoSizeText(
                                                   '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                                  style: TextStyle(
-                                                      fontSize: 33.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800),
+                                                  style:
+                                                      CustomTextStyle.black_33_w800,
                                                   maxLines: 2,
                                                 ),
                                               ],

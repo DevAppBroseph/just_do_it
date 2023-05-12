@@ -9,6 +9,8 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/profil
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -176,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           ContractorProfile(padding: insetsBottom),
-                          CustomerProfile(),
+                          const CustomerProfile(),
                         ],
                       ),
                     )
@@ -195,11 +197,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.grey[200],
               child: Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   CupertinoButton(
                       child: Text(
                         'Готово',
-                        style: TextStyle(color: Colors.black, fontSize: 13.sp),
+                        style: CustomTextStyle.black_13,
                       ),
                       onPressed: () {
                         var bloc = BlocProvider.of<ProfileBloc>(context);

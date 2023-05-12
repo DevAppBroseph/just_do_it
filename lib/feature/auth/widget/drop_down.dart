@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -35,6 +36,7 @@ void iconSelectModal(
       barrierColor: Colors.transparent,
       context: context,
       builder: (context) {
+        ScrollController scrollController = ScrollController();
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
@@ -78,11 +80,7 @@ void iconSelectModal(
                                   children: [
                                     Text(
                                       label,
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                      style: CustomTextStyle.grey_14_w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -101,51 +99,54 @@ void iconSelectModal(
                         children: [
                           SizedBox(
                             height: 140.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: list.length,
-                              padding: EdgeInsets.zero,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () => onTap(index),
-                                  style: ButtonStyle(
-                                      padding: const MaterialStatePropertyAll(
-                                          EdgeInsets.all(0)),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.white),
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      overlayColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.grey),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0.r)))),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 20.w),
-                                    child: SizedBox(
-                                      height: 50.h,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            list[index],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w300,
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: list.length,
+                                padding: EdgeInsets.zero,
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ElevatedButton(
+                                    onPressed: () => onTap(index),
+                                    style: ButtonStyle(
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const MaterialStatePropertyAll(0),
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.grey),
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20.w),
+                                      child: SizedBox(
+                                        height: 50.h,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              list[index],
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
                                             ),
-                                          ),
-                                          const Spacer(),
-                                        ],
+                                            const Spacer(),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -191,6 +192,7 @@ void iconSelectModalCategories(
     barrierColor: Colors.transparent,
     context: context,
     builder: (context) {
+      ScrollController scrollController = ScrollController();
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
@@ -235,11 +237,7 @@ void iconSelectModalCategories(
                                   children: [
                                     Text(
                                       label,
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                      style: CustomTextStyle.grey_14_w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -258,87 +256,90 @@ void iconSelectModalCategories(
                         children: [
                           SizedBox(
                             height: 140.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: list.length,
-                              padding: EdgeInsets.zero,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    if (selectCategories.length > 1) {
-                                      if (selectCategories.length < 3) {
-                                        if (selectCategories.contains(
-                                            list[index].description)) {
-                                          selectCategories.remove(
-                                              list[index].description ?? '');
-                                        } else {
-                                          selectCategories.add(
-                                              list[index].description ?? '');
-                                        }
-                                      } else {
-                                        if (selectCategories.contains(
-                                            list[index].description)) {
-                                          selectCategories
-                                              .remove(list[index].description);
-                                        }
-                                      }
-                                      onTap(selectCategories);
-                                    } else if (selectCategories.isEmpty ||
-                                        selectCategories.length == 1 &&
-                                            !selectCategories.contains(
-                                                list[index].description)) {
-                                      selectCategories
-                                          .add(list[index].description ?? '');
-                                      onTap(selectCategories);
-                                    }
-
-                                    setState((() {}));
-                                  },
-                                  style: ButtonStyle(
-                                      padding: const MaterialStatePropertyAll(
-                                          EdgeInsets.all(0)),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.white),
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      overlayColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.grey),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0.r)))),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 20.w, right: 20.w),
-                                    child: SizedBox(
-                                      height: 50.h,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            list[index].description!,
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w300,
-                                            ),
-                                          ),
-                                          const Spacer(),
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: list.length,
+                                padding: EdgeInsets.zero,
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      if (selectCategories.length > 1) {
+                                        if (selectCategories.length < 3) {
                                           if (selectCategories.contains(
-                                              list[index].description!))
-                                            const Icon(
-                                              Icons.check,
-                                              color: Colors.black,
-                                            )
-                                        ],
+                                              list[index].description)) {
+                                            selectCategories.remove(
+                                                list[index].description ?? '');
+                                          } else {
+                                            selectCategories.add(
+                                                list[index].description ?? '');
+                                          }
+                                        } else {
+                                          if (selectCategories.contains(
+                                              list[index].description)) {
+                                            selectCategories.remove(
+                                                list[index].description);
+                                          }
+                                        }
+                                        onTap(selectCategories);
+                                      } else if (selectCategories.isEmpty ||
+                                          selectCategories.length == 1 &&
+                                              !selectCategories.contains(
+                                                  list[index].description)) {
+                                        selectCategories
+                                            .add(list[index].description ?? '');
+                                        onTap(selectCategories);
+                                      }
+
+                                      setState((() {}));
+                                    },
+                                    style: ButtonStyle(
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const MaterialStatePropertyAll(0),
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.grey),
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
+                                      child: SizedBox(
+                                        height: 50.h,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              list[index].description!,
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
+                                            ),
+                                            const Spacer(),
+                                            if (selectCategories.contains(
+                                                list[index].description!))
+                                              const Icon(
+                                                Icons.check,
+                                                color: Colors.black,
+                                              )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -383,6 +384,7 @@ void showCountryWidget(
     barrierColor: Colors.transparent,
     context: context,
     builder: (context) {
+      ScrollController scrollController = ScrollController();
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
@@ -429,11 +431,7 @@ void showCountryWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                      style: CustomTextStyle.grey_14_w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -454,55 +452,58 @@ void showCountryWidget(
                             height: list.length < 3
                                 ? (list.isEmpty ? 1 : list.length) * 50.h
                                 : 150.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: list.length,
-                              padding: EdgeInsets.zero,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    onTap(list[index]);
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ButtonStyle(
-                                      padding: const MaterialStatePropertyAll(
-                                          EdgeInsets.all(0)),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.white),
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      overlayColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.grey),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0.r)))),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 20.w, right: 20.w),
-                                    child: SizedBox(
-                                      height: 50.h,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            list[index].name ?? "-",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w300,
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: list.length,
+                                padding: EdgeInsets.zero,
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      onTap(list[index]);
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ButtonStyle(
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const MaterialStatePropertyAll(0),
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.grey),
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
+                                      child: SizedBox(
+                                        height: 50.h,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              list[index].name ?? "-",
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
                                             ),
-                                          ),
-                                          const Spacer(),
-                                        ],
+                                            const Spacer(),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -547,6 +548,7 @@ void showRegionWidget(
     barrierColor: Colors.transparent,
     context: context,
     builder: (context) {
+      ScrollController scrollController = ScrollController();
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
@@ -593,11 +595,7 @@ void showRegionWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                      style: CustomTextStyle.grey_14_w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -618,59 +616,62 @@ void showRegionWidget(
                             height: list.length < 3
                                 ? (list.isEmpty ? 1 : list.length) * 50.h
                                 : 150.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: list.length,
-                              padding: EdgeInsets.zero,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    onTap(list[index]);
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ButtonStyle(
-                                      padding: const MaterialStatePropertyAll(
-                                          EdgeInsets.all(0)),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.white),
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      overlayColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.grey),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0.r)))),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 20.w, right: 20.w),
-                                    child: SizedBox(
-                                      height: 50.h,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 250.w,
-                                            child: Text(
-                                              list[index].name ?? '-',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w300,
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: list.length,
+                                padding: EdgeInsets.zero,
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      onTap(list[index]);
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ButtonStyle(
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const MaterialStatePropertyAll(0),
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.grey),
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
+                                      child: SizedBox(
+                                        height: 50.h,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 250.w,
+                                              child: Text(
+                                                list[index].name ?? '-',
+                                                style: CustomTextStyle
+                                                    .black_14_w300,
+                                                maxLines: null,
                                               ),
-                                              maxLines: null,
                                             ),
-                                          ),
-                                          const Spacer(),
-                                        ],
+                                            const Spacer(),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],

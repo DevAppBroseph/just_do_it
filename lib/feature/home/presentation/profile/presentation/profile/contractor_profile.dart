@@ -313,8 +313,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: AutoSizeText(
                         '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30.sp, fontWeight: FontWeight.w800),
+                        style: CustomTextStyle.black_30_w800,
                         maxLines: 2,
                         softWrap: true,
                       ),
@@ -1104,10 +1103,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: Center(
                               child: Text(
                                 user?.images?.length.toString() ?? '',
-                                style: TextStyle(
-                                  color: ColorStyles.whiteFFFFFF,
-                                  fontSize: 11.sp,
-                                ),
+                                style: CustomTextStyle.white_11,
                               ),
                             ),
                           ),

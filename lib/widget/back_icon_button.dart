@@ -21,15 +21,17 @@ class CustomIconButton extends StatelessWidget {
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(200.r),
       clipBehavior: Clip.hardEdge,
-      child: SizedBox(
-        height: 40.h,
-        width: 40.w,
-        child: IconButton(
-          onPressed: () => onBackPressed(),
-          color: Colors.transparent,
-          focusColor: Colors.red,
-          alignment: Alignment.center,
-          icon: _icon(),
+      child: MediaQuery(
+        data: const MediaQueryData(textScaleFactor: 1.0),
+        child: SizedBox(
+          height: 40.h,
+          width: 40.w,
+          child: IconButton(
+            onPressed: () => onBackPressed(),
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            icon: _icon(),
+          ),
         ),
       ),
     );

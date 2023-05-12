@@ -15,7 +15,6 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -515,18 +514,18 @@ class _CeateTasksState extends State<CeateTasks> {
                           }
                           if (widget.currentPage == 3 ||
                               widget.currentPage == 4) {
-                            if (res) Navigator.of(context).pop(widget.customer); 
+                            if (res) Navigator.of(context).pop(widget.customer);
                           }
 
                           Loader.hide();
-                          
+
                           if (widget.customer) {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
                                   title: 'Ждут подтверждения',
-                                  asCustomer: true, scoreTrue: true,
-
+                                  asCustomer: true,
+                                  scoreTrue: true,
                                 );
                               }),
                             );
@@ -534,9 +533,9 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
-                                  title: 'Открыты',
-                                  asCustomer: widget.customer, scoreTrue: true
-                                );
+                                    title: 'Открыты',
+                                    asCustomer: widget.customer,
+                                    scoreTrue: true);
                               }),
                             );
                           }
@@ -608,9 +607,9 @@ class _CeateTasksState extends State<CeateTasks> {
                       const Spacer(),
                       CupertinoButton(
                         onPressed: () => FocusScope.of(context).unfocus(),
-                        child: const Text(
+                        child: Text(
                           'Готово',
-                          style: TextStyle(color: Colors.black),
+                          style: CustomTextStyle.black_empty,
                         ),
                       ),
                     ],

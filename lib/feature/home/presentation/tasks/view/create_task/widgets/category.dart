@@ -45,6 +45,9 @@ class _CategoryState extends State<Category> {
   bool openCategory = false;
   bool openSubCategory = false;
 
+  final ScrollController _categoryController = ScrollController();
+  final ScrollController _subCategoryController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -57,7 +60,7 @@ class _CategoryState extends State<Category> {
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
         shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         children: [
           ScaleButton(
@@ -119,59 +122,64 @@ class _CategoryState extends State<Category> {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const ClampingScrollPhysics(),
-              children: activities
-                  .map(
-                    (e) => Padding(
-                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (e.id == widget.selectCategory?.id) {
-                            widget.selectCategory = null;
-                          } else {
-                            widget.selectCategory = e;
-                          }
-                          openSubCategory = false;
-                          widget.selectSubCategory = null;
-                          setState(() {});
-                          widget.onEdit(
-                            widget.selectCategory,
-                            widget.selectSubCategory,
-                            widget.titleController.text,
-                            widget.aboutController.text,
-                          );
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          height: 40.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 250.w,
-                                    child: Text(
-                                      e.description ?? '-',
-                                      style:
-                                          CustomTextStyle.black_14_w400_515150,
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: _categoryController,
+              child: ListView(
+                shrinkWrap: true,
+                controller: _categoryController,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                children: activities
+                    .map(
+                      (e) => Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (e.id == widget.selectCategory?.id) {
+                              widget.selectCategory = null;
+                            } else {
+                              widget.selectCategory = e;
+                            }
+                            openSubCategory = false;
+                            widget.selectSubCategory = null;
+                            setState(() {});
+                            widget.onEdit(
+                              widget.selectCategory,
+                              widget.selectSubCategory,
+                              widget.titleController.text,
+                              widget.aboutController.text,
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 40.h,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 250.w,
+                                      child: Text(
+                                        e.description ?? '-',
+                                        style: CustomTextStyle
+                                            .black_14_w400_515150,
+                                      ),
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  if (e.id == widget.selectCategory?.id)
-                                    const Icon(Icons.check)
-                                ],
-                              ),
-                            ],
+                                    const Spacer(),
+                                    if (e.id == widget.selectCategory?.id)
+                                      const Icon(Icons.check)
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
           ),
           SizedBox(height: 9.h),
@@ -240,58 +248,64 @@ class _CategoryState extends State<Category> {
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const ClampingScrollPhysics(),
-              children: widget.selectCategory?.subcategory
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (e.id == widget.selectSubCategory?.id) {
-                                widget.selectSubCategory = null;
-                              } else {
-                                widget.selectSubCategory = e;
-                              }
-                              setState(() {});
-                              widget.onEdit(
-                                widget.selectCategory,
-                                widget.selectSubCategory,
-                                widget.titleController.text,
-                                widget.aboutController.text,
-                              );
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 40.h,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 250.w,
-                                        child: Text(
-                                          e.description ?? '-',
-                                          style: CustomTextStyle
-                                              .black_14_w400_515150,
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: _subCategoryController,
+              child: ListView(
+                shrinkWrap: true,
+                controller: _subCategoryController,
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                children: widget.selectCategory?.subcategory
+                        .map(
+                          (e) => Padding(
+                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (e.id == widget.selectSubCategory?.id) {
+                                  widget.selectSubCategory = null;
+                                } else {
+                                  widget.selectSubCategory = e;
+                                }
+                                setState(() {});
+                                widget.onEdit(
+                                  widget.selectCategory,
+                                  widget.selectSubCategory,
+                                  widget.titleController.text,
+                                  widget.aboutController.text,
+                                );
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 40.h,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 250.w,
+                                          child: Text(
+                                            e.description ?? '-',
+                                            style: CustomTextStyle
+                                                .black_14_w400_515150,
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      if (e.id == widget.selectSubCategory?.id)
-                                        const Icon(Icons.check)
-                                    ],
-                                  ),
-                                ],
+                                        const Spacer(),
+                                        if (e.id ==
+                                            widget.selectSubCategory?.id)
+                                          const Icon(Icons.check)
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList() ??
-                  [],
+                        )
+                        .toList() ??
+                    [],
+              ),
             ),
           ),
           SizedBox(height: 9.h),
