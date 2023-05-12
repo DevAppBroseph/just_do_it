@@ -353,7 +353,7 @@ class _CreatePageState extends State<CreatePage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
-                    width: 70.w,
+                    width: 60.w,
                     child: Text(
                       selectWork,
                       style: CustomTextStyle.grey_14_w400,

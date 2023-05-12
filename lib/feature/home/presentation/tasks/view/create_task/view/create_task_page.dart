@@ -426,7 +426,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
                             error +=
-                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
@@ -434,7 +434,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                                '\n- максимальный бюджет не может/не должен превышать 1000000000';
+                               '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }

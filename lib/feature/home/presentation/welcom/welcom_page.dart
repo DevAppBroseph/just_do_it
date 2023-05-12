@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
@@ -35,6 +36,7 @@ class _WelcomPageState extends State<WelcomPage> {
   List<String> searchChoose = [];
 
   TextEditingController searchController = TextEditingController();
+   ScrollController controller = ScrollController();
 
   Future<void> notificationInit() async {
     await NotificationService().inject();
@@ -117,26 +119,19 @@ class _WelcomPageState extends State<WelcomPage> {
                               });
                               Storage().setListHistory(value);
                               FocusScope.of(context).unfocus();
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .add(EditPageSearchEvent(1, value));
+                              BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
                             },
                             onChanged: (value) {
                               if (value.isEmpty) {
                                 getHistoryList();
                               }
-                              List<Activities> activities =
-                                  BlocProvider.of<ProfileBloc>(context)
-                                      .activities;
+                              List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
                               searchChoose.clear();
                               if (value.isNotEmpty) {
                                 for (var element1 in activities) {
                                   for (var element2 in element1.subcategory) {
-                                    if (element2.description!
-                                            .toLowerCase()
-                                            .contains(value.toLowerCase()) &&
-                                        !searchChoose.contains(element2
-                                            .description!
-                                            .toLowerCase())) {
+                                    if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                        !searchChoose.contains(element2.description!.toLowerCase())) {
                                       searchChoose.add(element2.description!);
                                     }
                                   }
@@ -146,16 +141,14 @@ class _WelcomPageState extends State<WelcomPage> {
                             },
                             hintText: 'Поиск',
                             textEditingController: searchController,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 11.w, vertical: 11.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                           ),
                         ),
                         const Spacer(),
                         SizedBox(width: 23.w),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(AppRoute.menu, arguments: [
+                            Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
                               (page) {},
                               false,
                             ]).then((value) {
@@ -186,8 +179,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     bottomInsets,
                     (value) {
                       Storage().setListHistory(value);
-                      BlocProvider.of<ProfileBloc>(context)
-                          .add(EditPageSearchEvent(1, value));
+                      BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
                     },
                     searchChoose,
                   )
@@ -204,13 +196,11 @@ class _WelcomPageState extends State<WelcomPage> {
                               return Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 80.w),
                                 child: Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 40.h, bottom: 22.h),
+                                  padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
                                   child: Center(
                                     child: Text(
                                       'jobyfine'.toUpperCase(),
-                                      style:
-                                          CustomTextStyle.black_39_w900_171716,
+                                      style: CustomTextStyle.black_39_w900_171716,
                                     ),
                                   ),
                                 ),
@@ -223,8 +213,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 children: [
                                   SizedBox(height: 15.h),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        right: 24.w, left: 24.w),
+                                    padding: EdgeInsets.only(right: 24.w, left: 24.w),
                                     child: SizedBox(
                                       height: 112.h,
                                       child: Row(
@@ -233,38 +222,27 @@ class _WelcomPageState extends State<WelcomPage> {
                                             width: 190.w,
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
                                                   'Добро пожаловать,',
-                                                  style: CustomTextStyle
-                                                      .black_14_w400_515150,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  style: CustomTextStyle.black_14_w400_515150,
+                                                  overflow: TextOverflow.ellipsis,
                                                   maxLines: null,
                                                 ),
                                                 SizedBox(height: 8.h),
                                                 AutoSizeText(
                                                   '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                                  style: TextStyle(
-                                                      fontSize: 33.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800),
+                                                  style: TextStyle(fontSize: 33.sp, fontWeight: FontWeight.w800),
                                                   maxLines: 2,
                                                 ),
                                               ],
                                             ),
                                           ),
                                           const Spacer(),
-                                          BlocBuilder<RatingBloc, RatingState>(
-                                              builder: (context, snapshot) {
-                                            var reviews =
-                                                BlocProvider.of<RatingBloc>(
-                                                        context)
-                                                    .reviews;
+                                          BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+                                            var reviews = BlocProvider.of<RatingBloc>(context).reviews;
                                             return ScaleButton(
                                               bound: 0.02,
                                               child: Container(
@@ -278,20 +256,15 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: ColorStyles.greyF9F9F9,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
+                                                  borderRadius: BorderRadius.circular(10.r),
                                                 ),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       'Рейтинг',
-                                                      style: CustomTextStyle
-                                                          .grey_14_w400,
+                                                      style: CustomTextStyle.grey_14_w400,
                                                     ),
                                                     SizedBox(height: 6.h),
                                                     Row(
@@ -301,30 +274,20 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         ),
                                                         SizedBox(width: 4.w),
                                                         Text(
-                                                          reviews?.ranking ==
-                                                                  null
-                                                              ? '-'
-                                                              : reviews!
-                                                                  .ranking!
-                                                                  .toString(),
-                                                          style: CustomTextStyle
-                                                              .black_16_w600_171716,
+                                                          reviews?.ranking == null ? '-' : reviews!.ranking!.toString(),
+                                                          style: CustomTextStyle.black_16_w600_171716,
                                                         ),
                                                       ],
                                                     ),
                                                     SizedBox(height: 10.h),
                                                     Text(
                                                       'Баллы:',
-                                                      style: CustomTextStyle
-                                                          .grey_14_w400,
+                                                      style: CustomTextStyle.grey_14_w400,
                                                     ),
                                                     SizedBox(height: 4.h),
                                                     Text(
-                                                      bloc.user?.balance
-                                                              .toString() ??
-                                                          '0',
-                                                      style: CustomTextStyle
-                                                          .black_16_w600_171716,
+                                                      bloc.user?.balance.toString() ?? '0',
+                                                      style: CustomTextStyle.black_16_w600_171716,
                                                     ),
                                                   ],
                                                 ),
@@ -362,14 +325,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                 bound: 0.02,
                                 onTap: () => widget.onSelect(0),
                                 child: Container(
-                                  height: ((MediaQuery.of(context).size.width *
-                                              47) /
-                                          100) -
-                                      40.w,
-                                  width: ((MediaQuery.of(context).size.width *
-                                              47) /
-                                          100) -
-                                      25.w,
+                                  height: ((MediaQuery.of(context).size.width * 47) / 100) - 40.w,
+                                  width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.whiteFFFFFF,
                                     borderRadius: BorderRadius.circular(10.r),
@@ -394,21 +351,17 @@ class _WelcomPageState extends State<WelcomPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.w, vertical: 12.h),
+                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Заказчик',
-                                              style: CustomTextStyle
-                                                  .black_14_w400_171716,
+                                              style: CustomTextStyle.black_14_w400_171716,
                                             ),
                                             Text(
                                               'Размещай задания',
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ],
                                         ),
@@ -422,14 +375,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                 bound: 0.02,
                                 onTap: () => widget.onSelect(1),
                                 child: Container(
-                                  height: ((MediaQuery.of(context).size.width *
-                                              47) /
-                                          100) -
-                                      40.w,
-                                  width: ((MediaQuery.of(context).size.width *
-                                              47) /
-                                          100) -
-                                      25.w,
+                                  height: ((MediaQuery.of(context).size.width * 47) / 100) - 40.w,
+                                  width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.whiteFFFFFF,
                                     borderRadius: BorderRadius.circular(10.r),
@@ -454,21 +401,17 @@ class _WelcomPageState extends State<WelcomPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.w, vertical: 12.h),
+                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Исполнитель',
-                                              style: CustomTextStyle
-                                                  .black_14_w400_171716,
+                                              style: CustomTextStyle.black_14_w400_171716,
                                             ),
                                             Text(
                                               'Выполняй работу',
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ],
                                         ),
@@ -508,8 +451,14 @@ class _WelcomPageState extends State<WelcomPage> {
                                     height: 69.h,
                                     child: CupertinoCard(
                                       onPressed: () {
-                                        Navigator.of(context)
-                                            .pushNamed(AppRoute.about);
+                                        showLoaderWrapperWhite(context);
+                                        Navigator.of(context).pushNamed(AppRoute.about);
+                                        Future.delayed(const Duration(seconds: 1), () {
+                                         Loader.hide();
+                                        
+                                        });
+                                        
+                                        
                                       },
                                       radius: BorderRadius.circular(25.r),
                                       color: ColorStyles.yellowFFD70A,
@@ -526,19 +475,16 @@ class _WelcomPageState extends State<WelcomPage> {
                                         ],
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w),
+                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                                         child: Row(
                                           children: [
                                             const Spacer(),
                                             Text(
                                               'Узнай больше о проекте!',
-                                              style: CustomTextStyle
-                                                  .black_16_w600_171716,
+                                              style: CustomTextStyle.black_16_w600_171716,
                                             ),
                                             const Spacer(),
-                                            SvgPicture.asset(
-                                                'assets/icons/arrow-right1.svg')
+                                            SvgPicture.asset('assets/icons/arrow-right1.svg')
                                           ],
                                         ),
                                       ),
@@ -558,8 +504,7 @@ class _WelcomPageState extends State<WelcomPage> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex,
-      {String choice = ''}) {
+  Widget elementCategory(String icon, String title, int currentIndex, {String choice = ''}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: ScaleButton(

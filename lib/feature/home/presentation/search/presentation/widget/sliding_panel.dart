@@ -1180,60 +1180,71 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   }
 
   Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
-
-    for (var element in activities[currentIndex].subcategory)
-      {
-        if (element.isSelect){
-          activities[currentIndex].isSelect = true;
-          break;
-      }
-      else{
+    String selectWork = '';
+    for (var element in activities[currentIndex].subcategory) {
+      if (element.isSelect) {
+        activities[currentIndex].isSelect = true;
+        selectWork = element.description!;
+        break;
+      } else {
         activities[currentIndex].isSelect = false;
       }
-      
-      }
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.w),
-          child: GestureDetector(
-            onTap: () {
-              selectActivities = activities[currentIndex];
-              BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
-              typeFilter = TypeFilter.category1;
-            },
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: ColorStyles.shadowFC6554,
-                    offset: const Offset(0, -4),
-                    blurRadius: 55.r,
-                  )
-                ],
-              ),
-              margin: EdgeInsets.only(bottom: 10.h),
-              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
-              child: Row(
-                children: [
-                  if (icon != '')
-                    Image.network(
-                      server + icon,
-                      height: 20.h,
-                    ),
-                  SizedBox(width: 9.w),
-                  Text(
-                    title,
-                    style: CustomTextStyle.black_14_w400_171716,
-                  ),
-                  const Spacer(),
-                  if (activities[currentIndex].isSelect) const Icon(Icons.check)
-                ],
-              ),
-            ),
+    }
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0.w),
+      child: GestureDetector(
+        onTap: () {
+          selectActivities = activities[currentIndex];
+          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+          typeFilter = TypeFilter.category1;
+        },
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: ColorStyles.whiteFFFFFF,
+            borderRadius: BorderRadius.circular(10.r),
+            boxShadow: [
+              BoxShadow(
+                color: ColorStyles.shadowFC6554,
+                offset: const Offset(0, -4),
+                blurRadius: 55.r,
+              )
+            ],
           ),
-        );
+          margin: EdgeInsets.only(bottom: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
+          child: Row(
+            children: [
+              if (icon != '')
+                Image.network(
+                  server + icon,
+                  height: 20.h,
+                ),
+              SizedBox(width: 9.w),
+              Text(
+                title,
+                style: CustomTextStyle.black_14_w400_171716,
+              ),
+              if (activities[currentIndex].isSelect)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: SizedBox(
+                    width: 70.w,
+                    child: Text(
+                      '- $selectWork',
+                      style: CustomTextStyle.grey_14_w400,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+              const Spacer(),
+              if (activities[currentIndex].isSelect) const Icon(Icons.check)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget categorySecond(Activities? selectActivity) {
