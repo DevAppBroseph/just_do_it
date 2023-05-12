@@ -266,7 +266,7 @@ class _CreatePageState extends State<CreatePage> {
           child: ListView.builder(
             controller: scrollController,
             shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             itemCount: activities.length,
             itemBuilder: (context, index) {
               return Column(

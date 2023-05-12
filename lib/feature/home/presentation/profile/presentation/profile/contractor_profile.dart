@@ -1094,7 +1094,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
-                            height: 13.h,
+                            height: 16.h,
                             width: 13.h,
                             decoration: BoxDecoration(
                               color: Colors.green,

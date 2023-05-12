@@ -260,7 +260,7 @@ class _MainAuthPageState extends State<AuthPage> {
         SizedBox(
           height: 85.h,
           child: Text(
-            'Для сброса пароля, введите номер телефона или\nE-mail, который был указан при регистрации.',
+            'Для сброса пароля, введите номер телефона\nили E-mail, который был указан при регистрации.',
             style: CustomTextStyle.black_14_w400_515150,
           ),
         )

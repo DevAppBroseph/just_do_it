@@ -322,7 +322,7 @@ class Repository {
         validateStatus: ((status) => status! >= 200),
       ),
     );
-
+    log(response.statusCode.toString());
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       await Storage().setAccessToken(accessToken);
@@ -605,6 +605,7 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
+      log(response.data.toString());
       return response.data
           .map<Levels>((article) => Levels.fromJson(article))
           .toList();

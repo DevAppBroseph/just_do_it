@@ -65,7 +65,7 @@ class _ScorePageState extends State<ScorePage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'Баллы',
+                                              'Грейды',
                                               style:
                                                   CustomTextStyle.white_22_w700,
                                             ),
@@ -253,44 +253,8 @@ class _ScorePageState extends State<ScorePage> {
                                                                 .underline),
                                               ),
                                             ),
-                                            SizedBox(height: 12.h),
-                                            GestureDetector(
-                                              onTap: () {
-                                                page = 1;
-                                              },
-                                              child: Container(
-                                                height: 31.h,
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 12.w,
-                                                  vertical: 8.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
-                                                  color:
-                                                      ColorStyles.whiteFFFFFF,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'Поделиться статусом',
-                                                      style: CustomTextStyle
-                                                          .black_11_w500_171716,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 9,
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      'assets/icons/share.svg',
-                                                      color: ColorStyles.black,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                                            SizedBox(height: 60.h),
+                                            
                                           ],
                                         ),
                                       )
@@ -353,7 +317,7 @@ class _ScorePageState extends State<ScorePage> {
                                               firstPageItemScore(
                                                   user!.balance! >=
                                                           levels[2].mustCoins!
-                                                      ? '$server${levels[2].image}'
+                                                      ? '${levels[2].image}'
                                                       : '${levels[2].bwImage}',
                                                   levels[2].name ?? '',
                                                   user!.balance!,
@@ -520,9 +484,9 @@ class _ScorePageState extends State<ScorePage> {
         ),
         SizedBox(height: 4.h),
         SizedBox(
-          width: 25.w,
+          width: 40.w,
           child: Text(
-            score.toString(),
+            mustCoins.toString(),
             textAlign: TextAlign.center,
             style: CustomTextStyle.black_12_w400_515150,
           ),
@@ -533,7 +497,7 @@ class _ScorePageState extends State<ScorePage> {
 
   Widget itemScore(String icon, String title) {
     return Container(
-      height: 69.h,
+      height: 80.h,
       width: 372.w,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       margin: EdgeInsets.symmetric(horizontal: 24.w),

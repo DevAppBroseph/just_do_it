@@ -137,7 +137,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                'Баллы',
+                                'Грейды',
                                 style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),

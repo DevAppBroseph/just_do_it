@@ -307,7 +307,7 @@ class _EditTasksState extends State<EditTasks> {
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {

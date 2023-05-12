@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -79,6 +80,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   @override
   Widget build(BuildContext context) {
+    if(documentTypeController.text.isNotEmpty){
+      additionalInfo = true;
+      documentEdit();
+
+    }else{
+      additionalInfo = false;
+    }
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
 
     return MediaQuery(
@@ -121,9 +129,12 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       passwordController.text.isNotEmpty) {
                     showAlertToast('минимальная длина пароля 6 символов');
                   } else if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!)) {
+                      DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
                     showAlertToast('Ваш паспорт просрочен');
-                  } else if (checkExpireDate(dateTimeEnd) != null) {
+                  }else if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!) && docType == 'Resident_ID') {
+                    showAlertToast('Ваш документ просрочен');
+                  }  else if (checkExpireDate(dateTimeEnd) != null) {
                     showAlertToast(checkExpireDate(dateTimeEnd)!);
                   } else {
                     if (additionalInfo) {
@@ -165,6 +176,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                         showAlertToast(error);
                       }
                     } else {
+                      log(user!.docInfo.toString());
                       user!.copyWith(
                           docInfo: '',
                           region: regionController.text,
@@ -173,6 +185,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
                       Repository().updateUser(
                           BlocProvider.of<ProfileBloc>(context).access, user!);
+                          
                       Navigator.of(context).pop();
                     }
                   }
@@ -534,6 +547,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       curve: Curves.linear);
                 });
               },
+              
               width: docType != 'Resident_ID'
                   ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
                       6.w
@@ -623,12 +637,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onChanged: (value) => documentEdit(),
           ),
         ),
-        if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
+       
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
             style: CustomTextStyle.red_11_w400_171716,
           ),
+          if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
           CustomTextField(
             hintText: 'Место выдачи',
@@ -671,7 +686,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
                 dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+            : DateTime(DateTime.now().year , DateTime.now().month,
                 DateTime.now().day + 2)
         : dateTimeStart ??
             DateTime(DateTime.now().year, DateTime.now().month,

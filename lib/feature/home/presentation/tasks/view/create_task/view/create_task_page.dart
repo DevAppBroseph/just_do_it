@@ -599,7 +599,7 @@ class _CeateTasksState extends State<CeateTasks> {
               Positioned(
                 bottom: bottomInsets,
                 child: Container(
-                  height: 50.h,
+                  height: 60.h,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.grey[200],
                   child: Row(

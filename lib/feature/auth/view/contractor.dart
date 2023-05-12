@@ -1203,7 +1203,7 @@ class _ContractorState extends State<Contractor> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 9.h, vertical: 11.h),
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1261,7 +1261,7 @@ class _ContractorState extends State<Contractor> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 9.h, vertical: 11.h),
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
