@@ -345,7 +345,8 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 4.h),
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_292D32,
+                    style: CustomTextStyle.black_12_w400_292D32
+                        .copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),
