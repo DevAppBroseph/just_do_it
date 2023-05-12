@@ -11,7 +11,7 @@ Widget itemButton(String title, String subtitle, String icon, Function onTap) {
     child: Container(
       margin: EdgeInsets.symmetric(horizontal: 24.w),
       color: Colors.transparent,
-      height: 41.h,
+      height: 45.h,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

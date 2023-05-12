@@ -349,11 +349,24 @@ class _CreatePageState extends State<CreatePage> {
                 title,
                 style: CustomTextStyle.black_14_w400_171716,
               ),
-              if (choice.isNotEmpty)
+              if (choice.isNotEmpty && title.length < 20 )
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
-                    width: 60.w,
+                    width: 90.w,
+                    child: Text(
+                      selectWork,
+                      style: CustomTextStyle.grey_14_w400,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                 if (choice.isNotEmpty && title.length > 20 )
+                  Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: SizedBox(
+                    width: 20.w,
                     child: Text(
                       selectWork,
                       style: CustomTextStyle.grey_14_w400,

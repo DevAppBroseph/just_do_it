@@ -110,7 +110,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Установите приложение JOBYFINE и получите\nдополнительно 200 баллов на свой счет!',
+                    'Установите приложение JOBYFINE и \nполучите дополнительно 200 баллов\n на свой счет!',
                     style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ],

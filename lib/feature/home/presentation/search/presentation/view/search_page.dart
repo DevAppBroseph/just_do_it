@@ -278,7 +278,7 @@ class _SearchPageState extends State<SearchPage> {
                             },
                             child: SizedBox(
                               height: 40.h,
-                              width: 90.h,
+                              width: 95.h,
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
