@@ -43,8 +43,14 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     taskList.clear();
     taskList.addAll(res.reversed);
     setState(() {});
-    if (widget.scoreTrue) {
-      scoreDialog(context, '10', 'создание заказа');
+    if(widget.scoreTrue){
+      if(widget.asCustomer == true){
+scoreDialog(context, '10', 'создание заказа');
+      }
+      else{
+ scoreDialog(context, '10', 'создание предложения');
+      }
+     
       widget.scoreTrue = false;
     }
   }

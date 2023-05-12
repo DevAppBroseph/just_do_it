@@ -8,4 +8,12 @@ showLoaderWrapper(BuildContext context) {
     overlayColor: Colors.black.withOpacity(0.4),
     progressIndicator: const CupertinoActivityIndicator(),
   );
+
+}
+showLoaderWrapperWhite(BuildContext context) {
+  return Loader.show(
+    context,
+    overlayColor: Colors.white,
+    progressIndicator: const CupertinoActivityIndicator(),
+  );
 }

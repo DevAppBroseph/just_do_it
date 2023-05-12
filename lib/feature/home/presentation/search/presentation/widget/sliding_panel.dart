@@ -1226,11 +1226,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex,
-      {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+    String selectWork = '';
     for (var element in activities[currentIndex].subcategory) {
       if (element.isSelect) {
         activities[currentIndex].isSelect = true;
+        selectWork = element.description!;
         break;
       } else {
         activities[currentIndex].isSelect = false;
@@ -1241,8 +1242,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       child: GestureDetector(
         onTap: () {
           selectActivities = activities[currentIndex];
-          BlocProvider.of<SearchBloc>(context)
-              .add(OpenSlidingPanelToEvent(686.h));
+          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
           typeFilter = TypeFilter.category1;
         },
         child: Container(
@@ -1272,6 +1272,19 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 title,
                 style: CustomTextStyle.black_14_w400_171716,
               ),
+              if (activities[currentIndex].isSelect)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: SizedBox(
+                    width: 70.w,
+                    child: Text(
+                      '- $selectWork',
+                      style: CustomTextStyle.grey_14_w400,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
               const Spacer(),
               if (activities[currentIndex].isSelect) const Icon(Icons.check)
             ],
