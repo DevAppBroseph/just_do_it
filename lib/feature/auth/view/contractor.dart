@@ -708,6 +708,7 @@ class _ContractorState extends State<Contractor> {
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
+                      .copyWith(fontSize: 14.sp)
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -1276,7 +1277,8 @@ class _ContractorState extends State<Contractor> {
                               SizedBox(width: 4.w),
                               Text(
                                 'Загрузить резюме (10мб)',
-                                style: CustomTextStyle.black_12_w400,
+                                style: CustomTextStyle.black_12_w400
+                                    .copyWith(fontSize: 12.sp),
                               )
                             ],
                           ),
@@ -1503,7 +1505,7 @@ class _ContractorState extends State<Contractor> {
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
                 dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year , DateTime.now().month,
+            : DateTime(DateTime.now().year, DateTime.now().month,
                 DateTime.now().day + 2)
         : dateTimeStart ??
             DateTime(DateTime.now().year, DateTime.now().month,

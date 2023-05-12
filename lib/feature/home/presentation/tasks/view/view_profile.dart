@@ -156,15 +156,16 @@ class _ProfileViewState extends State<ProfileView> {
                               if (owner != null && owner!.isPassportExist != null && owner!.isPassportExist!)
                                 Container(
                                   height: 36.h,
-                                  width: 182.w,
+                                  // width: 182.w,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.greyF9F9F9,
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SvgPicture.asset('assets/icons/clipboard.svg'),
+                                      SizedBox(width: 3.w),
                                       Text(
                                         'Паспортные данные загружены',
                                         style: CustomTextStyle.black_11_w400_171716,

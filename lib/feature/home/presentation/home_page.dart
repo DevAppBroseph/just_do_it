@@ -328,7 +328,7 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(
-          width: 51.5.w,
+          width: 51.w,
           height: 46.w,
           color: Colors.transparent,
           child: Stack(
@@ -345,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 4.h),
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_292D32,
+                    style: CustomTextStyle.black_12_w400_292D32.copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -313,7 +312,7 @@ class _CustomerState extends State<Customer> {
                         errorsFlag = true;
                       }
                     }
-                    
+
                     if (dateDocController.text.isEmpty) {
                       if (user.docType == 'Resident_ID') {
                         error += '\n- место выдачи документа';
@@ -324,7 +323,6 @@ class _CustomerState extends State<Customer> {
                     }
 
                     if (errorsFlag) {
-                      
                       showAlertToast(error);
                     } else if (passwordController.text.length < 6) {
                       showAlertToast('- минимальная длина пароля 6 символов');
@@ -335,7 +333,6 @@ class _CustomerState extends State<Customer> {
                       showAlertToast('Пароли не совпадают');
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
-                      
                       showAlertToast('Ваш документ просрочен');
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       showAlertToast(checkExpireDate(dateTimeEnd)!);
@@ -347,9 +344,7 @@ class _CustomerState extends State<Customer> {
                       BlocProvider.of<AuthBloc>(context)
                           .add(SendProfileEvent(user, token.toString()));
                     }
-                   
                   } else if (errorsFlag) {
-                    
                     showAlertToast(error);
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
@@ -681,6 +676,7 @@ class _CustomerState extends State<Customer> {
                 child: Text(
                   'Согласен на обработку персональных данных и с пользовательским соглашением',
                   style: CustomTextStyle.black_14_w400_515150
+                      .copyWith(fontSize: 14.sp)
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -1108,7 +1104,7 @@ class _CustomerState extends State<Customer> {
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
                 dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year , DateTime.now().month,
+            : DateTime(DateTime.now().year, DateTime.now().month,
                 DateTime.now().day + 2)
         : dateTimeStart ??
             DateTime(DateTime.now().year, DateTime.now().month,

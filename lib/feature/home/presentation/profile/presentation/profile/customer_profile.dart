@@ -420,7 +420,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         'assets/images/user-square.png',
                         height: 23.h,
                       ),
-                      SizedBox(width: 16.w),
+                      SizedBox(width: 12.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,7 +468,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         'assets/images/shield-tick.png',
                         height: 23.h,
                       ),
-                      SizedBox(width: 16.w),
+                      SizedBox(width: 12.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
