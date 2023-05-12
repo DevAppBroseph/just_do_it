@@ -255,7 +255,7 @@ class _TaskViewState extends State<TaskView> {
                   shrinkWrap: true,
                   itemCount: widget.selectTask.files!.length,
                   scrollDirection: Axis.horizontal,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     bool file = false;
                     if (widget.selectTask.files![index].linkUrl != null &&
@@ -374,7 +374,7 @@ class _TaskViewState extends State<TaskView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 150.w,
+                  width: 140.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -392,7 +392,7 @@ class _TaskViewState extends State<TaskView> {
                 ),
                 const Spacer(),
                 SizedBox(
-                  width: 150.w,
+                  width: 165.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

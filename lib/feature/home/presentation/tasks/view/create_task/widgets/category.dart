@@ -325,6 +325,7 @@ class _CategoryState extends State<Category> {
                   openCategory = false;
                   setState(() {});
                 },
+                style: CustomTextStyle.black_14_w400_171716,
                 hintText: 'Название Вашей задачи',
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
@@ -362,6 +363,7 @@ class _CategoryState extends State<Category> {
                   setState(() {});
                 },
                 hintText: 'Описание задачи',
+                style: CustomTextStyle.black_14_w400_171716,
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
@@ -422,155 +424,157 @@ class _CategoryState extends State<Category> {
             ),
           ),
           SizedBox(height: 15.h),
-          SizedBox(
-            height: 60.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.document.length,
-              scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                bool file = false;
-                if (widget.document[index].linkUrl != null &&
-                    (widget.document[index].linkUrl!.contains('.png') ||
-                        widget.document[index].linkUrl!.contains('.jpg') ||
-                        widget.document[index].linkUrl!.contains('.jpeg'))) {
-                  file = false;
-                } else if (widget.document[index].linkUrl != null &&
-                    (widget.document[index].linkUrl!.contains('.pdf') ||
-                        widget.document[index].linkUrl!.contains('.doc') ||
-                        widget.document[index].linkUrl!.contains('.docx'))) {
-                  file = true;
-                } else if (widget.document[index].type == 'pdf' ||
-                    widget.document[index].type == 'doc' ||
-                    widget.document[index].type == 'docx') {
-                  file = true;
-                }
-
-                if (file) {
-                  return SizedBox(
-                    height: 60.h,
-                    width: 60.h,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (widget.document[index].file != null) {
-                              OpenFile.open(widget.document[index].file!.path);
-                            } else {
-                              launch(widget.document[index].linkUrl!
-                                      .contains(server)
-                                  ? widget.document[index].linkUrl!
-                                  : server + widget.document[index].linkUrl!);
-                            }
-                          },
-                          child: Container(
+          SingleChildScrollView(
+            child: SizedBox(
+              height: 60.h,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.document.length,
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  bool file = false;
+                  if (widget.document[index].linkUrl != null &&
+                      (widget.document[index].linkUrl!.contains('.png') ||
+                          widget.document[index].linkUrl!.contains('.jpg') ||
+                          widget.document[index].linkUrl!.contains('.jpeg'))) {
+                    file = false;
+                  } else if (widget.document[index].linkUrl != null &&
+                      (widget.document[index].linkUrl!.contains('.pdf') ||
+                          widget.document[index].linkUrl!.contains('.doc') ||
+                          widget.document[index].linkUrl!.contains('.docx'))) {
+                    file = true;
+                  } else if (widget.document[index].type == 'pdf' ||
+                      widget.document[index].type == 'doc' ||
+                      widget.document[index].type == 'docx') {
+                    file = true;
+                  }
+          
+                  if (file) {
+                    return SizedBox(
+                      height: 60.h,
+                      width: 60.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (widget.document[index].file != null) {
+                                OpenFile.open(widget.document[index].file!.path);
+                              } else {
+                                launch(widget.document[index].linkUrl!
+                                        .contains(server)
+                                    ? widget.document[index].linkUrl!
+                                    : server + widget.document[index].linkUrl!);
+                              }
+                            },
+                            child: Container(
+                              height: 50.h,
+                              width: 50.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
+                                  borderRadius: BorderRadius.circular(10.r)),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  SvgImg.documentText,
+                                  height: 25.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.removefiles(null, index);
+                              },
+                              child: Container(
+                                height: 15.h,
+                                width: 15.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
+                                    borderRadius: BorderRadius.circular(40.r)),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 10.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      if (widget.document[index].file != null) {
+                        OpenFile.open(widget.document[index].file!.path);
+                      } else {
+                        launch(widget.document[index].linkUrl!.contains(server)
+                            ? widget.document[index].linkUrl!
+                            : server + widget.document[index].linkUrl!);
+                      }
+                    },
+                    child: SizedBox(
+                      height: 60.h,
+                      width: 60.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
                             height: 50.h,
                             width: 50.h,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(color: Colors.black)
-                                ],
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                SvgImg.documentText,
-                                height: 25.h,
-                              ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: widget.document[index].byte != null
+                                  ? Image.memory(
+                                      widget.document[index].byte!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: widget.document[index].linkUrl!,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.removefiles(null, index);
-                            },
-                            child: Container(
-                              height: 15.h,
-                              width: 15.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(color: Colors.black)
-                                  ],
-                                  borderRadius: BorderRadius.circular(40.r)),
-                              child: Center(
-                                child: Icon(
-                                  Icons.close,
-                                  size: 10.h,
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.removefiles(index, null);
+                              },
+                              child: Container(
+                                height: 15.h,
+                                width: 15.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
+                                    borderRadius: BorderRadius.circular(40.r)),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 10.h,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
-                }
-                return GestureDetector(
-                  onTap: () {
-                    if (widget.document[index].file != null) {
-                      OpenFile.open(widget.document[index].file!.path);
-                    } else {
-                      launch(widget.document[index].linkUrl!.contains(server)
-                          ? widget.document[index].linkUrl!
-                          : server + widget.document[index].linkUrl!);
-                    }
-                  },
-                  child: SizedBox(
-                    height: 60.h,
-                    width: 60.h,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50.h,
-                          width: 50.h,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: widget.document[index].byte != null
-                                ? Image.memory(
-                                    widget.document[index].byte!,
-                                    fit: BoxFit.cover,
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl: widget.document[index].linkUrl!,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.removefiles(index, null);
-                            },
-                            child: Container(
-                              height: 15.h,
-                              width: 15.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(color: Colors.black)
-                                  ],
-                                  borderRadius: BorderRadius.circular(40.r)),
-                              child: Center(
-                                child: Icon(
-                                  Icons.close,
-                                  size: 10.h,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
           SizedBox(height: widget.bottomInsets)

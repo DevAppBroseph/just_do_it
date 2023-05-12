@@ -410,6 +410,9 @@ class _DatePickerState extends State<DatePicker> {
             onTap: () {
               setState(() {
                 openCurrency = !openCurrency;
+                 openRegion = false;
+                openTown = false;
+                openCountry = false;
               });
               FocusScope.of(context).unfocus();
 
@@ -533,7 +536,9 @@ class _DatePickerState extends State<DatePicker> {
               Expanded(
                 child: ScaleButton(
                   bound: 0.02,
-                  onTap: () {},
+                  onTap: () {
+                    
+                  },
                   child: Container(
                     height: 55.h,
                     padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -695,6 +700,7 @@ class _DatePickerState extends State<DatePicker> {
                 openCountry = !openCountry;
                 openRegion = false;
                 openTown = false;
+                openCurrency = false;
               });
               FocusScope.of(context).unfocus();
 
@@ -839,6 +845,7 @@ class _DatePickerState extends State<DatePicker> {
                       openCountry = false;
                       openTown = false;
                       openRegion = !openRegion;
+                      openCurrency = false;
                     });
                     FocusScope.of(context).unfocus();
 
@@ -936,6 +943,7 @@ class _DatePickerState extends State<DatePicker> {
                         openCountry = false;
                         openRegion = false;
                         openTown = !openTown;
+                        openCurrency = false;
                       });
                       FocusScope.of(context).unfocus();
 

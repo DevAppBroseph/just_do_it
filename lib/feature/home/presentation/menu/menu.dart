@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -50,8 +52,7 @@ class MenuPage extends StatelessWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  itemMenu('assets/icons/add_circle.svg', 'Создать задание',
-                      () {
+                  itemMenu('assets/icons/add_circle.svg', 'Создать задание', () {
                     Navigator.pop(context, 'create');
                   }),
                   itemMenu('assets/icons/search2.svg', 'Найти задания', () {
@@ -61,28 +62,26 @@ class MenuPage extends StatelessWidget {
                     if (inTask) {
                       Navigator.pop(context);
                     } else {
-                      Navigator.of(context)
-                          .pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                      Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
                     }
                   }),
                   itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
                     Navigator.pop(context, 'chat');
                   }),
-                  itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет',
-                      () {
+                  itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет', () {
                     Navigator.of(context).pushNamed(AppRoute.personalAccount);
                   }),
-                  itemMenu(
-                      'assets/icons/user_circle_add.svg', 'Реферальная система',
-                      () {
+                  itemMenu('assets/icons/user_circle_add.svg', 'Реферальная система', () {
                     Navigator.of(context).pushNamed(AppRoute.referal);
                   }),
                   itemMenu('assets/icons/mouse.svg', 'О проекте', () {
+                    showLoaderWrapperWhite(context);
                     Navigator.of(context).pushNamed(AppRoute.about);
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Loader.hide();
+                    });
                   }),
-                  itemMenu(
-                      'assets/icons/message-favorite.svg', 'Связаться с нами',
-                      () {
+                  itemMenu('assets/icons/message-favorite.svg', 'Связаться с нами', () {
                     Navigator.of(context).pushNamed(AppRoute.contactus);
                   }),
                   itemMenu('assets/icons/moon.svg', 'Темный режим', () {}),
@@ -93,8 +92,7 @@ class MenuPage extends StatelessWidget {
                       Container(
                         height: 36.h,
                         width: 102.h,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 6.h),
+                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF7F7F8,
                           borderRadius: BorderRadius.circular(10.r),
