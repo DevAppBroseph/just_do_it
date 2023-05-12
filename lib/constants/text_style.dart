@@ -4,8 +4,14 @@ import 'package:just_do_it/constants/constants.dart';
 
 class CustomTextStyle {
   // white
-  static TextStyle white_14_w400 = TextStyle(
+  static TextStyle white_15_w400 = TextStyle(
     fontSize: 15.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.whiteFFFFFF,
+    fontFamily: 'SFPro',
+  );
+  static TextStyle white_14_w400 = TextStyle(
+    fontSize: 14.5.sp,
     fontWeight: FontWeight.w400,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',

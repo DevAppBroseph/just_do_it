@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -79,6 +80,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
   @override
   Widget build(BuildContext context) {
+    if(documentTypeController.text.isNotEmpty){
+      additionalInfo = true;
+      documentEdit();
+
+    }else{
+      additionalInfo = false;
+    }
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
 
     return MediaQuery(
@@ -168,6 +176,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                         showAlertToast(error);
                       }
                     } else {
+                      log(user!.docInfo.toString());
                       user!.copyWith(
                           docInfo: '',
                           region: regionController.text,
@@ -176,6 +185,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
                       Repository().updateUser(
                           BlocProvider.of<ProfileBloc>(context).access, user!);
+                          
                       Navigator.of(context).pop();
                     }
                   }
@@ -627,13 +637,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onChanged: (value) => documentEdit(),
           ),
         ),
-        if (user?.docType == 'Resident_ID') SizedBox(height: 16.h),
+       
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
             style: CustomTextStyle.red_11_w400_171716,
           ),
-          SizedBox(height: 16.w),
+          if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
           CustomTextField(
             hintText: 'Место выдачи',

@@ -21,7 +21,7 @@ class _SearchListState extends State<SearchList> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Container(
-        height: widget.heightScreen - 100.h - 220.h,
+        height: widget.heightScreen - 152.h - 220.h,
         color: Colors.white,
         child: ListView.builder(
           itemCount: widget.array.length,
