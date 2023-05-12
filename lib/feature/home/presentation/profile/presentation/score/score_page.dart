@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,20 +56,17 @@ class _ScorePageState extends State<ScorePage> {
                               children: [
                                 SizedBox(height: 60.h),
                                 Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 25.w, right: 28.w),
+                                  padding: EdgeInsets.only(left: 25.w, right: 28.w),
                                   child: SizedBox(
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               'Грейды',
-                                              style:
-                                                  CustomTextStyle.white_22_w700,
+                                              style: CustomTextStyle.white_22_w700,
                                             ),
                                           ],
                                         ),
@@ -83,130 +82,105 @@ class _ScorePageState extends State<ScorePage> {
                                 ),
                                 SizedBox(height: 30.h),
                                 Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         children: [
-                                          if (user!.balance! <
-                                              levels[0].mustCoins!)
-                                            Image.network(
-                                              levels[0].bwImage != null
-                                                  ? '${levels[0].bwImage}'
-                                                  : '',
+                                          if (user!.balance! < levels[0].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[0].bwImage != null ? '${levels[0].bwImage}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[0].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[1].mustCoins!)
-                                            Image.network(
-                                              levels[0].image != null
-                                                  ? '${levels[0].image}'
-                                                  : '',
+                                          if (user!.balance! >= levels[0].mustCoins! &&
+                                              user!.balance! < levels[1].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[0].image != null ? '${levels[0].image}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[1].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[2].mustCoins!)
-                                            Image.network(
-                                              levels[1].image != null
-                                                  ? '${levels[1].image}'
-                                                  : '',
+                                          if (user!.balance! >= levels[1].mustCoins! &&
+                                              user!.balance! < levels[2].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[1].image != null ? '${levels[1].image}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[2].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[3].mustCoins!)
-                                            Image.network(
-                                              levels[2].image != null
-                                                  ? '${levels[2].image}'
-                                                  : '',
+                                          if (user!.balance! >= levels[2].mustCoins! &&
+                                              user!.balance! < levels[3].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[2].image != null ? '${levels[2].image}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[3].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[4].mustCoins!)
-                                            Image.network(
-                                              levels[3].image != null
-                                                  ? '${levels[3].image}'
-                                                  : '',
+                                          if (user!.balance! >= levels[3].mustCoins! &&
+                                              user!.balance! < levels[4].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[3].image != null ? '${levels[3].image}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
-                                          if (user!.balance! >=
-                                              levels[4].mustCoins!)
-                                            Image.network(
-                                              levels[4].image != null
-                                                  ? '${levels[4].image}'
-                                                  : '',
+                                          if (user!.balance! >= levels[4].mustCoins!)
+                                            CachedNetworkImage(
+                                              progressIndicatorBuilder: (context, url, progress) {
+                                                return const CupertinoActivityIndicator();
+                                              },
+                                              imageUrl: levels[4].image != null ? '${levels[4].image}' : '',
                                               height: 113,
                                               width: 113,
                                               fit: BoxFit.fill,
                                             ),
                                           SizedBox(height: 12.h),
-                                          if (user!.balance! >=
-                                                  levels[0].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[1].mustCoins!)
+                                          if (user!.balance! >= levels[0].mustCoins! &&
+                                              user!.balance! < levels[1].mustCoins!)
                                             Text(
-                                              levels[0].name?.toUpperCase() ??
-                                                  '',
-                                              style:
-                                                  CustomTextStyle.white_12_w900,
+                                              levels[0].name?.toUpperCase() ?? '',
+                                              style: CustomTextStyle.white_12_w900,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[1].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[2].mustCoins!)
+                                          if (user!.balance! >= levels[1].mustCoins! &&
+                                              user!.balance! < levels[2].mustCoins!)
                                             Text(
-                                              levels[1].name?.toUpperCase() ??
-                                                  '',
-                                              style:
-                                                  CustomTextStyle.white_12_w900,
+                                              levels[1].name?.toUpperCase() ?? '',
+                                              style: CustomTextStyle.white_12_w900,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[2].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[3].mustCoins!)
+                                          if (user!.balance! >= levels[2].mustCoins! &&
+                                              user!.balance! < levels[3].mustCoins!)
                                             Text(
-                                              levels[2].name?.toUpperCase() ??
-                                                  '',
-                                              style:
-                                                  CustomTextStyle.white_12_w900,
+                                              levels[2].name?.toUpperCase() ?? '',
+                                              style: CustomTextStyle.white_12_w900,
                                             ),
-                                          if (user!.balance! >=
-                                                  levels[3].mustCoins! &&
-                                              user!.balance! <
-                                                  levels[4].mustCoins!)
+                                          if (user!.balance! >= levels[3].mustCoins! &&
+                                              user!.balance! < levels[4].mustCoins!)
                                             Text(
-                                              levels[3].name?.toUpperCase() ??
-                                                  '',
-                                              style:
-                                                  CustomTextStyle.white_12_w900,
+                                              levels[3].name?.toUpperCase() ?? '',
+                                              style: CustomTextStyle.white_12_w900,
                                             ),
-                                          if (user!.balance! >=
-                                              levels[4].mustCoins!)
+                                          if (user!.balance! >= levels[4].mustCoins!)
                                             Text(
-                                              levels[4].name?.toUpperCase() ??
-                                                  '',
-                                              style:
-                                                  CustomTextStyle.white_12_w900,
+                                              levels[4].name?.toUpperCase() ?? '',
+                                              style: CustomTextStyle.white_12_w900,
                                             )
                                         ],
                                       ),
@@ -214,29 +188,24 @@ class _ScorePageState extends State<ScorePage> {
                                       SizedBox(
                                         height: 160.h,
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               user!.balance!.toString(),
-                                              style:
-                                                  CustomTextStyle.white_34_w800,
+                                              style: CustomTextStyle.white_34_w800,
                                             ),
                                             GestureDetector(
                                               onTap: () {
                                                 if (page == 0) {
                                                   page = 1;
                                                   _pageController.nextPage(
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
+                                                      duration: const Duration(milliseconds: 300),
                                                       curve: Curves.linear);
                                                 } else {
                                                   page = 0;
                                                   _pageController.previousPage(
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
+                                                      duration: const Duration(milliseconds: 300),
                                                       curve: Curves.linear);
                                                 }
                                                 setState(() {});
@@ -245,16 +214,11 @@ class _ScorePageState extends State<ScorePage> {
                                                 page == 1
                                                     ? 'Сколько уровней я могу\nдостичь?'
                                                     : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
-                                                style: CustomTextStyle
-                                                    .white_14_w400
-                                                    .copyWith(
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
+                                                style: CustomTextStyle.white_14_w400
+                                                    .copyWith(decoration: TextDecoration.underline),
                                               ),
                                             ),
                                             SizedBox(height: 60.h),
-                                            
                                           ],
                                         ),
                                       )
@@ -278,8 +242,7 @@ class _ScorePageState extends State<ScorePage> {
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w, vertical: 60.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Image.asset(
@@ -290,33 +253,28 @@ class _ScorePageState extends State<ScorePage> {
                                   Align(
                                     alignment: Alignment.topCenter,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w, vertical: 20.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[0].mustCoins!
+                                                  user!.balance! >= levels[0].mustCoins!
                                                       ? '${levels[0].image}'
                                                       : '${levels[0].bwImage}',
                                                   levels[0].name ?? '',
                                                   user!.balance!,
                                                   levels[0].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[1].mustCoins!
+                                                  user!.balance! >= levels[1].mustCoins!
                                                       ? '${levels[1].image}'
                                                       : '${levels[1].bwImage}',
                                                   levels[1].name ?? '',
                                                   user!.balance!,
                                                   levels[1].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[2].mustCoins!
+                                                  user!.balance! >= levels[2].mustCoins!
                                                       ? '${levels[2].image}'
                                                       : '${levels[2].bwImage}',
                                                   levels[2].name ?? '',
@@ -326,28 +284,24 @@ class _ScorePageState extends State<ScorePage> {
                                           ),
                                           SizedBox(height: 50.h),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[5].mustCoins!
+                                                  user!.balance! >= levels[5].mustCoins!
                                                       ? '${levels[5].image}'
                                                       : '${levels[5].bwImage}',
                                                   levels[5].name ?? '',
                                                   user!.balance!,
                                                   levels[5].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[4].mustCoins!
+                                                  user!.balance! >= levels[4].mustCoins!
                                                       ? '${levels[4].image}'
                                                       : '${levels[4].bwImage}',
                                                   levels[4].name ?? '',
                                                   user!.balance!,
                                                   levels[4].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >=
-                                                          levels[3].mustCoins!
+                                                  user!.balance! >= levels[3].mustCoins!
                                                       ? '${levels[3].image}'
                                                       : '${levels[3].bwImage}',
                                                   levels[3].name ?? '',
@@ -358,8 +312,7 @@ class _ScorePageState extends State<ScorePage> {
                                           SizedBox(height: 55.h),
                                           Center(
                                             child: firstPageItemScore(
-                                                user!.balance! >=
-                                                        levels[5].mustCoins!
+                                                user!.balance! >= levels[5].mustCoins!
                                                     ? '${levels[6].image}'
                                                     : '${levels[6].bwImage}',
                                                 levels[6].name ?? '',
@@ -377,26 +330,21 @@ class _ScorePageState extends State<ScorePage> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 24.w, vertical: 30.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
                                     child: Text(
                                       'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
-                                      style:
-                                          CustomTextStyle.black_14_w400_171716,
+                                      style: CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                   ListView.separated(
                                       physics: const ClampingScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: levels.length,
-                                      separatorBuilder: (_, __) =>
-                                          const Divider(),
+                                      separatorBuilder: (_, __) => const Divider(),
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         return itemScore(
-                                          levels[index].image != null
-                                              ? '${levels[index].image}'
-                                              : '',
+                                          levels[index].image != null ? '${levels[index].image}' : '',
                                           levels[index].name ?? '',
                                         );
                                       }),
@@ -427,8 +375,7 @@ class _ScorePageState extends State<ScorePage> {
     );
   }
 
-  Widget firstPageItemScore(
-      String icon, String title, int score, int mustCoins) {
+  Widget firstPageItemScore(String icon, String title, int score, int mustCoins) {
     double value = score / mustCoins;
     if (value >= 1 && value < 0) {
       value = 1;
@@ -472,8 +419,7 @@ class _ScorePageState extends State<ScorePage> {
             child: LinearProgressIndicator(
               value: value,
               backgroundColor: ColorStyles.greyBDBDBD,
-              valueColor:
-                  const AlwaysStoppedAnimation<Color>(ColorStyles.purpleA401C4),
+              valueColor: const AlwaysStoppedAnimation<Color>(ColorStyles.purpleA401C4),
             ),
           ),
         ),
@@ -514,8 +460,11 @@ class _ScorePageState extends State<ScorePage> {
       ),
       child: Row(
         children: [
-          Image.network(
-            icon,
+          CachedNetworkImage(
+            progressIndicatorBuilder: (context, url, progress) {
+              return const CupertinoActivityIndicator();
+            },
+            imageUrl: icon,
             height: 50.h,
             width: 50.h,
           ),
