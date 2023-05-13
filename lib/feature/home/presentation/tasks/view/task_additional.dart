@@ -41,16 +41,15 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     List<Task> res = await Repository().getMyTaskList(
         BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     taskList.clear();
-    taskList.addAll(res.reversed);
+    taskList.addAll(res);
     setState(() {});
-    if(widget.scoreTrue){
-      if(widget.asCustomer == true){
-scoreDialog(context, '10', 'создание заказа');
+    if (widget.scoreTrue) {
+      if (widget.asCustomer == true) {
+        scoreDialog(context, '10', 'создание заказа');
+      } else {
+        scoreDialog(context, '10', 'создание предложения');
       }
-      else{
- scoreDialog(context, '10', 'создание предложения');
-      }
-     
+
       widget.scoreTrue = false;
     }
   }

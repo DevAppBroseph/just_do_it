@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -296,6 +297,7 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
+    log('message ${response.statusCode} ${response.data}');
 
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);

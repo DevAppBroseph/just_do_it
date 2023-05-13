@@ -119,7 +119,6 @@ class _SearchPageState extends State<SearchPage> {
         resizeToAvoidBottomInset: false,
         body: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
           if (current is UpdateListMessageItemState) {
-            log('message chatIdchatId $current');
             if (current.chatId != null) {
               for (int i = 0; i < taskList.length; i++) {
                 if (taskList[i].id == selectTask!.id) {

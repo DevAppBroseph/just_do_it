@@ -203,7 +203,7 @@ class UserRegModel {
           files.add(
             MultipartFile.fromBytes(
               element.byte!,
-              filename: '${DateTime.now()}.jpg',
+              filename: '${DateTime.now()}.${element.type}',
             ),
           );
         } else {

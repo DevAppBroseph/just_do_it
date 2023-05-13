@@ -349,7 +349,7 @@ class _CreatePageState extends State<CreatePage> {
                 title,
                 style: CustomTextStyle.black_14_w400_171716,
               ),
-              if (choice.isNotEmpty && title.length < 20 )
+              if (choice.isNotEmpty && title.length < 20)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
@@ -362,8 +362,8 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                 ),
-                 if (choice.isNotEmpty && title.length > 20 )
-                  Padding(
+              if (choice.isNotEmpty && title.length > 20)
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
                     width: 20.w,
