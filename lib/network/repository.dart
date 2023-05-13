@@ -217,13 +217,10 @@ class Repository {
 
     final response = await dio.post(
       '$server/auth/',
-      data: data ,
-      options: Options(
-        validateStatus: ((status) => status! >= 200),
-        headers: {
-          "fcm_token": token,
-        }
-      ),
+      data: data,
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {
+        "fcm_token": token,
+      }),
     );
 
     if (response.statusCode == 201) {
@@ -300,6 +297,7 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
+    log('message ${response.statusCode} ${response.data}');
 
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
@@ -322,7 +320,6 @@ class Repository {
         validateStatus: ((status) => status! >= 200),
       ),
     );
-    log(response.statusCode.toString());
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       await Storage().setAccessToken(accessToken);
@@ -412,7 +409,6 @@ class Repository {
   // вход
   Future<String?> signIn(String phone, String password, String token) async {
     try {
-      log(token);
       final response = await dio.post(
         '$server/auth/api/token/',
         options: Options(
@@ -424,7 +420,6 @@ class Repository {
           "fcm_token": token,
         },
       );
-      log(response.statusMessage.toString());
       if (response.statusCode == 200) {
         String? accessToken = response.data['access'];
         await Storage().setAccessToken(accessToken);
@@ -495,7 +490,8 @@ class Repository {
   }
 
   // новый пароль
-  Future<bool> editPassword(String password, String access, String token) async {
+  Future<bool> editPassword(
+      String password, String access, String token) async {
     final response = await dio.post(
       '$server/auth/reset_password_confirm',
       options: Options(
@@ -605,7 +601,6 @@ class Repository {
           headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
-      log(response.data.toString());
       return response.data
           .map<Levels>((article) => Levels.fromJson(article))
           .toList();

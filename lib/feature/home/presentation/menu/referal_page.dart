@@ -93,7 +93,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'За каждого нового пользователя, кто установит приложение по Вашей ссылке, Вы получите от 100 баллов.',
+                'За каждого нового пользователя, кто установит\nприложение по Вашей ссылке, Вы получите от\n100 баллов.',
                 style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
@@ -110,7 +110,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Установите приложение JOBYFINE и \nполучите дополнительно 200 баллов\n на свой счет!',
+                    'Установите приложение JOBYFINE и \nполучите дополнительно 200 баллов\nна свой счет!',
                     style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ],

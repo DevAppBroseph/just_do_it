@@ -38,15 +38,15 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: owner == null
-            ? const Center(child: CupertinoActivityIndicator())
-            : SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: owner == null
+          ? const Center(child: CupertinoActivityIndicator())
+          : MediaQuery(
+              data: const MediaQueryData(textScaleFactor: 1.0),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
@@ -67,7 +67,8 @@ class _ProfileViewState extends State<ProfileView> {
                                       launch(owner!.photo!);
                                     },
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(1000.r),
+                                      borderRadius:
+                                          BorderRadius.circular(1000.r),
                                       child: Image.network(
                                         owner?.photo ?? '',
                                         height: 76.h,
@@ -79,11 +80,13 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(width: 17.w),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '${owner?.firstname ?? ''} ${owner?.lastname ?? ''}',
-                                        style: CustomTextStyle.black_17_w600_171716,
+                                        style: CustomTextStyle
+                                            .black_17_w600_171716,
                                         softWrap: true,
                                       ),
                                       const Spacer(),
@@ -94,11 +97,13 @@ class _ProfileViewState extends State<ProfileView> {
                                       SizedBox(height: 9.h),
                                       Row(
                                         children: [
-                                          SvgPicture.asset('assets/icons/star.svg'),
+                                          SvgPicture.asset(
+                                              'assets/icons/star.svg'),
                                           SizedBox(width: 4.w),
                                           Text(
                                             owner?.ranking ?? '-',
-                                            style: CustomTextStyle.black_13_w500_171716,
+                                            style: CustomTextStyle
+                                                .black_13_w500_171716,
                                           ),
                                         ],
                                       ),
@@ -123,7 +128,9 @@ class _ProfileViewState extends State<ProfileView> {
                           SizedBox(height: 18.h),
                           Row(
                             children: [
-                              if (owner != null && owner!.cv != null && owner!.cv!.isNotEmpty)
+                              if (owner != null &&
+                                  owner!.cv != null &&
+                                  owner!.cv!.isNotEmpty)
                                 Container(
                                   height: 36.h,
                                   width: 75.w,
@@ -132,7 +139,8 @@ class _ProfileViewState extends State<ProfileView> {
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SvgPicture.asset(
                                         'assets/icons/document_text.svg',
@@ -144,7 +152,9 @@ class _ProfileViewState extends State<ProfileView> {
                                         },
                                         child: Text(
                                           'Резюме',
-                                          style: CustomTextStyle.black_11_w400_171716.copyWith(
+                                          style: CustomTextStyle
+                                              .black_11_w400_171716
+                                              .copyWith(
                                             color: ColorStyles.blue336FEE,
                                           ),
                                         ),
@@ -152,8 +162,13 @@ class _ProfileViewState extends State<ProfileView> {
                                     ],
                                   ),
                                 ),
-                              if (owner != null && owner!.cv != null && owner!.cv!.isNotEmpty) SizedBox(width: 12.w),
-                              if (owner != null && owner!.isPassportExist != null && owner!.isPassportExist!)
+                              if (owner != null &&
+                                  owner!.cv != null &&
+                                  owner!.cv!.isNotEmpty)
+                                SizedBox(width: 12.w),
+                              if (owner != null &&
+                                  owner!.isPassportExist != null &&
+                                  owner!.isPassportExist!)
                                 Container(
                                   height: 36.h,
                                   // width: 182.w,
@@ -164,11 +179,13 @@ class _ProfileViewState extends State<ProfileView> {
                                   child: Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      SvgPicture.asset('assets/icons/clipboard.svg'),
+                                      SvgPicture.asset(
+                                          'assets/icons/clipboard.svg'),
                                       SizedBox(width: 3.w),
                                       Text(
                                         'Паспортные данные загружены',
-                                        style: CustomTextStyle.black_11_w400_171716,
+                                        style: CustomTextStyle
+                                            .black_11_w400_171716,
                                       ),
                                     ],
                                   ),
@@ -225,9 +242,11 @@ class _ProfileViewState extends State<ProfileView> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 7.h),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.h, vertical: 7.h),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Image.asset(
                                             'assets/images/build.png',
@@ -236,7 +255,8 @@ class _ProfileViewState extends State<ProfileView> {
                                           const Spacer(),
                                           Text(
                                             'Ремонт и строительство',
-                                            style: CustomTextStyle.black_11_w400_171716,
+                                            style: CustomTextStyle
+                                                .black_11_w400_171716,
                                           )
                                         ],
                                       ),
@@ -260,9 +280,11 @@ class _ProfileViewState extends State<ProfileView> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 7.h),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.h, vertical: 7.h),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Image.asset(
                                             'assets/images/soap.png',
@@ -271,7 +293,8 @@ class _ProfileViewState extends State<ProfileView> {
                                           const Spacer(),
                                           Text(
                                             'Красота\nи здоровье',
-                                            style: CustomTextStyle.black_11_w400_171716,
+                                            style: CustomTextStyle
+                                                .black_11_w400_171716,
                                           )
                                         ],
                                       ),
@@ -295,9 +318,11 @@ class _ProfileViewState extends State<ProfileView> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 7.h),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.h, vertical: 7.h),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Image.asset(
                                             'assets/images/book.png',
@@ -306,7 +331,8 @@ class _ProfileViewState extends State<ProfileView> {
                                           const Spacer(),
                                           Text(
                                             'Репетиторы\nи обучение',
-                                            style: CustomTextStyle.black_11_w400_171716,
+                                            style: CustomTextStyle
+                                                .black_11_w400_171716,
                                           )
                                         ],
                                       ),
@@ -334,18 +360,22 @@ class _ProfileViewState extends State<ProfileView> {
                                 )
                               ],
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 16.h),
                             child: SizedBox(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    owner != null && owner!.activity != null && owner!.activity!.isNotEmpty
+                                    owner != null &&
+                                            owner!.activity != null &&
+                                            owner!.activity!.isNotEmpty
                                         ? owner!.activity!
                                         : 'Опыт работы не указан.',
                                     style: CustomTextStyle.black_12_w400_292D32,
                                   ),
-                                  if (owner != null && owner!.listPhoto.isNotEmpty)
+                                  if (owner != null &&
+                                      owner!.listPhoto.isNotEmpty)
                                     Padding(
                                       padding: EdgeInsets.only(top: 18.h),
                                       child: SizedBox(
@@ -355,17 +385,24 @@ class _ProfileViewState extends State<ProfileView> {
                                           itemCount: owner!.listPhoto.length,
                                           itemBuilder: (context, index) {
                                             return Padding(
-                                              padding: EdgeInsets.only(right: 10.w),
+                                              padding:
+                                                  EdgeInsets.only(right: 10.w),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  launch(owner!.listPhoto[index]);
+                                                  launch(
+                                                      owner!.listPhoto[index]);
                                                 },
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(10.r),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                   child: CachedNetworkImage(
-                                                    imageUrl: owner!.listPhoto[index],
+                                                    imageUrl:
+                                                        owner!.listPhoto[index],
                                                     height: 66.h,
-                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                    progressIndicatorBuilder:
+                                                        (context, url,
+                                                            progress) {
                                                       return const CupertinoActivityIndicator();
                                                     },
                                                     width: 66.w,
@@ -384,23 +421,27 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: SizedBox(
                                       width: 229.w,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Container(
                                             height: 36.h,
                                             decoration: BoxDecoration(
                                               color: ColorStyles.whiteF5F5F5,
-                                              borderRadius: BorderRadius.circular(8.r),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
                                             ),
                                             child: Padding(
                                               padding: EdgeInsets.all(10.h),
                                               child: Row(
                                                 children: [
-                                                  SvgPicture.asset('assets/icons/translate.svg'),
+                                                  SvgPicture.asset(
+                                                      'assets/icons/translate.svg'),
                                                   SizedBox(width: 8.h),
                                                   Text(
                                                     'Перевод',
-                                                    style: CustomTextStyle.blue_14_w400_336FEE,
+                                                    style: CustomTextStyle
+                                                        .blue_14_w400_336FEE,
                                                   )
                                                 ],
                                               ),
@@ -419,8 +460,8 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ],
                 ),
+              ),
             ),
-      ),
     );
   }
 }

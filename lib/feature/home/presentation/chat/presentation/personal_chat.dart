@@ -48,11 +48,54 @@ class _PersonalChatState extends State<PersonalChat> {
     });
   }
 
+  void openProfile() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return Scaffold(
+          body: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 66.h),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                child: Row(
+                  children: [
+                    CustomIconButton(
+                      onBackPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgImg.arrowRight,
+                    ),
+                    const Spacer(),
+                    Text(
+                      'Профиль',
+                      style: CustomTextStyle.black_22_w700,
+                    ),
+                    const Spacer(),
+                    SizedBox(width: 30.w),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ProfileView(
+                    owner: Owner(
+                        id: int.parse(widget.idWithChat),
+                        firstname: null,
+                        lastname: null,
+                        photo: null)),
+              ),
+            ],
+          ),
+        );
+      },
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: Column(
@@ -69,51 +112,16 @@ class _PersonalChatState extends State<PersonalChat> {
                   SizedBox(width: 8.w),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) {
-                          return Scaffold(
-                            body: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: 66.h),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 25.w, right: 28.w),
-                                  child: Row(
-                                    children: [
-                                      CustomIconButton(
-                                        onBackPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        icon: SvgImg.arrowRight,
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        'Профиль',
-                                        style: CustomTextStyle.black_22_w700,
-                                      ),
-                                      const Spacer(),
-                                      SizedBox(width: 30.w),
-                                    ],
-                                  ),
-                                ),
-                                ProfileView(
-                                    owner: Owner(
-                                        id: int.parse(widget.idWithChat),
-                                        firstname: null,
-                                        lastname: null,
-                                        photo: null)),
-                              ],
-                            ),
-                          );
-                        },
-                      ));
+                      openProfile();
                     },
                     child: SizedBox(
                       width: 240.w,
                       child: AutoSizeText(
-                        widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
+                        widget.name.isEmpty
+                            ? 'Аккаунт удален'
+                            : widget.name,
                         style: CustomTextStyle.black_22_w700,
+                        overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                     ),
@@ -165,8 +173,8 @@ class _PersonalChatState extends State<PersonalChat> {
                       reverse: true,
                       controller: scrollController,
                       physics: const ClampingScrollPhysics(),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.w, vertical: 24.w),
                       itemBuilder: (context, index) {
                         if (user?.id != int.parse(messages[index].user.id)) {
                           return Padding(
@@ -176,23 +184,28 @@ class _PersonalChatState extends State<PersonalChat> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ClipOval(
-                                      child: Container(
-                                        height: 40.h,
-                                        width: 40.h,
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.greyE0E6EE,
-                                          borderRadius:
-                                              BorderRadius.circular(50.r),
+                                    GestureDetector(
+                                      onTap: () {
+                                        openProfile();
+                                      },
+                                      child: ClipOval(
+                                        child: Container(
+                                          height: 40.h,
+                                          width: 40.h,
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.greyE0E6EE,
+                                            borderRadius:
+                                                BorderRadius.circular(50.r),
+                                          ),
+                                          child: widget.image != null
+                                              ? widget.image != 'null'
+                                                  ? Image.network(
+                                                      server + widget.image!,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : null
+                                              : null,
                                         ),
-                                        child: widget.image != null
-                                            ? widget.image != 'null'
-                                                ? Image.network(
-                                                    server + widget.image!,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : null
-                                            : null,
                                       ),
                                     ),
                                     SizedBox(width: 8.h),
@@ -205,7 +218,8 @@ class _PersonalChatState extends State<PersonalChat> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             CupertinoCard(
-                                              radius: BorderRadius.circular(25.r),
+                                              radius:
+                                                  BorderRadius.circular(25.r),
                                               color: ColorStyles.greyF9F9F9,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
@@ -282,7 +296,7 @@ class _PersonalChatState extends State<PersonalChat> {
                         child: Padding(
                         padding: EdgeInsets.all(24.w),
                         child: Text(
-                          'Вы не можете написать собеседнику\nтак как он удалил свой акккаунт',
+                          'Вы не можете написать собеседнику,\nтак как он удалил свой аккаунт',
                           style: CustomTextStyle.black_14_w400_515150,
                           textAlign: TextAlign.center,
                         ),
@@ -327,7 +341,9 @@ class _PersonalChatState extends State<PersonalChat> {
                                             onTap: () {
                                               if (textController
                                                   .text.isNotEmpty) {
-                                                BlocProvider.of<ChatBloc>(context)
+                                                // BlocProvider.of<ChatBloc>(context).messages.isEmpty
+                                                BlocProvider.of<ChatBloc>(
+                                                        context)
                                                     .add(
                                                   SendMessageEvent(
                                                     textController.text,

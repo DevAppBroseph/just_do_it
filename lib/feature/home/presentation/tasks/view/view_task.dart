@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -507,14 +505,8 @@ class _TaskViewState extends State<TaskView> {
                   final chatBloc = BlocProvider.of<ChatBloc>(context);
                   chatBloc.editShowPersonChat(false);
                   chatBloc.editChatId(widget.selectTask.chatId);
-                  log('feqfqefeqfeqfeqfqfqefqefeqfeq $idWithChat');
-                  if (widget.selectTask.chatId == null) {
-                    if (idWithChat != null) {
-                      widget.selectTask.chatId = int.parse(idWithChat!);
-                    }
-                  }
+
                   chatBloc.messages = [];
-                  log(widget.selectTask.chatId.toString());
                   final idChat = await Navigator.of(context).pushNamed(
                     AppRoute.personalChat,
                     arguments: [
@@ -524,8 +516,6 @@ class _TaskViewState extends State<TaskView> {
                       '${widget.selectTask.owner?.photo}',
                     ],
                   );
-                  log('ddwdqwdwqdwq $idChat');
-                  idWithChat = idChat.toString();
                   chatBloc.editShowPersonChat(true);
                   chatBloc.editChatId(null);
                 },
@@ -573,7 +563,6 @@ class _TaskViewState extends State<TaskView> {
     year = parts[0].trim();
     day = parts[2].trim();
     month = parts[1].trim();
-    log(year);
     text = '$day.$month.$year';
     return text;
   }

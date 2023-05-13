@@ -216,9 +216,13 @@ class _CategoryState extends State<Category> {
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectSubCategory != null)
-                        Text(
-                          widget.selectSubCategory?.description ?? '-',
-                          style: CustomTextStyle.black_14_w400_171716,
+                        SizedBox(
+                          width: 240.w,
+                          child: Text(
+                            widget.selectSubCategory?.description ?? '-',
+                            style: CustomTextStyle.black_14_w400_171716,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                     ],
                   ),

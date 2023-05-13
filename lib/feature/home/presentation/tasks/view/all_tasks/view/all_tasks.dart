@@ -36,7 +36,7 @@ class _AllTasksViewState extends State<AllTasksView> {
     List<Task> res = await Repository().getMyTaskList(
         BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     taskList.clear();
-    taskList.addAll(res.reversed);
+    taskList.addAll(res);
     setState(() {});
   }
 

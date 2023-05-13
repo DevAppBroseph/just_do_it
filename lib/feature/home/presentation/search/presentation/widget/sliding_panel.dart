@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -252,7 +250,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
                         for (var element in countries) {
                           if (element.select) {
-                            log('message country ${element.name}');
                             country.add(element);
                           }
                         }
@@ -260,7 +257,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         for (var element in country) {
                           for (var element1 in element.region) {
                             if (element1.select) {
-                              log('message region ${element1.name}');
                               regions.add(element1);
                             }
                           }
@@ -269,7 +265,6 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         for (var element in regions) {
                           for (var element1 in element.town) {
                             if (element1.select) {
-                              log('message town ${element1.name}');
                               towns.add(element1);
                             }
                           }
@@ -477,7 +472,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 2.w),
                   Text(
                     'Задания от заказчиков',
-                    style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
+                    style: CustomTextStyle.black_12_w400_515150
+                        .copyWith(fontSize: 12.sp),
                   ),
                   const Spacer(),
                   SizedBox(
@@ -499,7 +495,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 2.w),
                   Text(
                     'Офферы от исполнителей',
-                    style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
+                    style: CustomTextStyle.black_12_w400_515150
+                        .copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),
@@ -1226,7 +1223,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex,
+      {List<String> choice = const []}) {
     String selectWork = '';
     for (var element in activities[currentIndex].subcategory) {
       if (element.isSelect) {
@@ -1242,7 +1240,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       child: GestureDetector(
         onTap: () {
           selectActivities = activities[currentIndex];
-          BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelToEvent(686.h));
+          BlocProvider.of<SearchBloc>(context)
+              .add(OpenSlidingPanelToEvent(686.h));
           typeFilter = TypeFilter.category1;
         },
         child: Container(
