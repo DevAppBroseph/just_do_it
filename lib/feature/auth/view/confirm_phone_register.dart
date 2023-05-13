@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -73,14 +73,13 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             scoreDialog(context, '50', 'регистрацию');
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
-            
+
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-           
           } else if (current is ConfirmCodeRegisterErrorState) {
-            showAlertToast('Неверный код');
+            CustomAlert().showMessage('Неверный код', context);
           } else if (current is ConfirmRestoreErrorState) {
-            showAlertToast('Неверный код');
+            CustomAlert().showMessage('Неверный код', context);
           }
           return false;
         },
@@ -178,12 +177,13 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             onTap: () {
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
-                                
+
                                 BlocProvider.of<AuthBloc>(context).add(
                                     ConfirmCodeEvent(
                                         widget.phone, codeController.text));
                               } else {
-                                showAlertToast('Введите код');
+                                CustomAlert()
+                                    .showMessage('Введите код', context);
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,

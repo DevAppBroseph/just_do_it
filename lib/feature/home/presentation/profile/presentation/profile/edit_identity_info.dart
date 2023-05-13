@@ -122,20 +122,23 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
-                    showAlertToast('Пароли не совпадают');
+                    CustomAlert().showMessage('Пароли не совпадают', context);
                   } else if (passwordController.text.length < 6 &&
                       passwordController.text.isNotEmpty) {
-                    showAlertToast('минимальная длина пароля 6 символов');
+                    CustomAlert().showMessage(
+                        'минимальная длина пароля 6 символов', context);
                   } else if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!) &&
                       docType != 'Resident_ID') {
-                    showAlertToast('Ваш паспорт просрочен');
+                    CustomAlert().showMessage('Ваш паспорт просрочен', context);
                   } else if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!) &&
                       docType == 'Resident_ID') {
-                    showAlertToast('Ваш документ просрочен');
+                    CustomAlert()
+                        .showMessage('Ваш документ просрочен', context);
                   } else if (checkExpireDate(dateTimeEnd) != null) {
-                    showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    CustomAlert()
+                        .showMessage(checkExpireDate(dateTimeEnd)!, context);
                   } else {
                     if (additionalInfo) {
                       additionalInfo = true;
@@ -173,7 +176,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                             user!);
                         Navigator.of(context).pop();
                       } else {
-                        showAlertToast(error);
+                        CustomAlert().showMessage(error, context);
                       }
                     } else {
                       user!.copyWith(
@@ -389,7 +392,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 'Выберите регион',
               );
             } else {
-              showAlertToast('Чтобы выбрать регион, сначала укажите страну');
+              CustomAlert().showMessage(
+                  'Чтобы выбрать регион, сначала укажите страну', context);
             }
           },
           child: CustomTextField(

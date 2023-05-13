@@ -152,8 +152,9 @@ class _CustomerState extends State<Customer> {
         Loader.hide();
         if (current is CheckUserState) {
           if (current.error != null) {
-            showAlertToast(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован');
+            CustomAlert().showMessage(
+                'Пользователь с такой почтой или номером телефона уже зарегистрирован',
+                context);
           } else {
             page = 1;
             widget.stage(2);
@@ -186,7 +187,7 @@ class _CustomerState extends State<Customer> {
               messageError = 'Введите корректный номер телефона';
             }
           }
-          showAlertToast(messageError);
+          CustomAlert().showMessage(messageError, context);
         }
         return false;
       }, builder: (context, snapshot) {
@@ -233,9 +234,10 @@ class _CustomerState extends State<Customer> {
                   }
 
                   if (errorsFlag) {
-                    showAlertToast(error);
+                    CustomAlert().showMessage(error, context);
                   } else if (!emailValid) {
-                    showAlertToast('Введите корректный адрес почты');
+                    CustomAlert()
+                        .showMessage('Введите корректный адрес почты', context);
                   } else if (emailController.text
                           .split('@')
                           .last
@@ -243,12 +245,15 @@ class _CustomerState extends State<Customer> {
                           .last
                           .length <
                       2) {
-                    showAlertToast('- Введите корректный адрес почты');
+                    CustomAlert().showMessage(
+                        '- Введите корректный адрес почты', context);
                   } else if (phoneController.text.length < 12) {
-                    showAlertToast('- Некорректный номер телефона.');
+                    CustomAlert()
+                        .showMessage('- Некорректный номер телефона.', context);
                   } else if (!confirmTermsPolicy) {
-                    showAlertToast(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение');
+                    CustomAlert().showMessage(
+                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение',
+                        context);
                   } else {
                     showLoaderWrapper(context);
                     BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
@@ -323,19 +328,22 @@ class _CustomerState extends State<Customer> {
                     }
 
                     if (errorsFlag) {
-                      showAlertToast(error);
+                      CustomAlert().showMessage(error, context);
                     } else if (passwordController.text.length < 6) {
-                      showAlertToast('- минимальная длина пароля 6 символов');
+                      CustomAlert().showMessage(
+                          '- минимальная длина пароля 6 символов', context);
                     } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      showAlertToast('Пароли не совпадают');
+                      CustomAlert().showMessage('Пароли не совпадают', context);
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
-                      showAlertToast('Ваш документ просрочен');
+                      CustomAlert()
+                          .showMessage('Ваш документ просрочен', context);
                     } else if (checkExpireDate(dateTimeEnd) != null) {
-                      showAlertToast(checkExpireDate(dateTimeEnd)!);
+                      CustomAlert()
+                          .showMessage(checkExpireDate(dateTimeEnd)!, context);
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
@@ -345,17 +353,18 @@ class _CustomerState extends State<Customer> {
                           .add(SendProfileEvent(user, token.toString()));
                     }
                   } else if (errorsFlag) {
-                    showAlertToast(error);
+                    CustomAlert().showMessage(error, context);
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
-                    showAlertToast('Пароли не совпадают');
+                    CustomAlert().showMessage('Пароли не совпадают', context);
                   } else if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!)) {
-                    showAlertToast('Ваш паспорт просрочен');
+                    CustomAlert().showMessage('Ваш паспорт просрочен', context);
                   } else if (checkExpireDate(dateTimeEnd) != null) {
-                    showAlertToast(checkExpireDate(dateTimeEnd)!);
+                    CustomAlert()
+                        .showMessage(checkExpireDate(dateTimeEnd)!, context);
                   } else {
                     final token = await FirebaseMessaging.instance.getToken();
                     showLoaderWrapper(context);
@@ -538,7 +547,9 @@ class _CustomerState extends State<Customer> {
             bool emailValid = RegExp(
                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(value);
-            if (!emailValid) showAlertToast('Почта указана неверно');
+            if (!emailValid) {
+              CustomAlert().showMessage('Почта указана неверно', context);
+            }
             if (emailValid) requestNextEmptyFocusStage1();
           },
           onTap: () {
@@ -823,7 +834,8 @@ class _CustomerState extends State<Customer> {
                 'Выберите регион',
               );
             } else {
-              showAlertToast('Чтобы выбрать регион, сначала укажите страну');
+              CustomAlert().showMessage(
+                  'Чтобы выбрать регион, сначала укажите страну', context);
             }
           },
           child: CustomTextField(
