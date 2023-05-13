@@ -403,7 +403,14 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        if (countries.isEmpty) {
+
+                        bool countriesIsSelect = false;
+                        for (var element in countries) {
+                          if (element.select) {
+                            countriesIsSelect = true;
+                          }
+                        }
+                        if (!countriesIsSelect) {
                           error += '\n- страну';
                           errorsFlag = true;
                         }
@@ -433,13 +440,14 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                               '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
 
                         if (errorsFlag) {
-                          showAlertToast(error);
+                          // showAlertToast(error);
+                          CustomAlert().showMessage(error, context);
                         } else {
                           showLoaderWrapper(context);
 
@@ -539,16 +547,6 @@ class _CeateTasksState extends State<CeateTasks> {
                               }),
                             );
                           }
-
-                          // if (res && widget.currentPage == 6) {
-                          //   Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
-                          // }
-                          // if (res && widget.currentPage == 2) {
-                          //   Navigator.of(context).pop();
-                          // }
-                          // if (res && widget.currentPage == 1) {
-                          //   Navigator.of(context).pop();
-                          // }
                         }
                       } else {
                         String error = 'Укажите:';
@@ -572,7 +570,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         }
 
                         if (errorsFlag) {
-                          showAlertToast(error);
+                          CustomAlert().showMessage(error, context);
                         } else {
                           pageController.animateToPage(
                             1,

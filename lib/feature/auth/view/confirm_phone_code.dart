@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,13 +74,14 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is EditPasswordErrorState) {
-            showAlertToast('Ошибка. Неправильный ввод пароля');
+            CustomAlert()
+                .showMessage('Ошибка. Неправильный ввод пароля', context);
           } else if (current is ConfirmCodeResetSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             confirmCode = true;
             return true;
           } else if (current is ConfirmCodeResetErrorState) {
-            showAlertToast('Неверный код');
+            CustomAlert().showMessage('Неверный код', context);
           }
           return false;
         },
@@ -102,7 +104,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             onTap: () async {
                               if (!confirmCode) {
                                 if (codeController.text.isEmpty) {
-                                  showAlertToast('Введите код');
+                                  CustomAlert()
+                                      .showMessage('Введите код', context);
                                 } else {
                                   showLoaderWrapper(context);
                                   BlocProvider.of<AuthBloc>(context).add(
@@ -115,26 +118,30 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                               } else {
                                 if (passwordController.text.isEmpty ||
                                     passwordRepeatController.text.isEmpty) {
-                                  showAlertToast('Укажите пароль');
+                                  CustomAlert()
+                                      .showMessage('Укажите пароль', context);
                                 } else if (passwordController.text.length < 6) {
-                                  showAlertToast(
-                                      'Минимальная длина пароля 6 символов');
+                                  CustomAlert().showMessage(
+                                      'Минимальная длина пароля 6 символов',
+                                      context);
                                 } else if ((passwordController
                                             .text.isNotEmpty &&
                                         passwordRepeatController
                                             .text.isNotEmpty) &&
                                     (passwordController.text !=
                                         passwordRepeatController.text)) {
-                                  showAlertToast('Пароли не совпадают');
+                                  CustomAlert().showMessage(
+                                      'Пароли не совпадают', context);
                                 } else {
-                                  final token = await FirebaseMessaging.instance.getToken();
+                                  final token = await FirebaseMessaging.instance
+                                      .getToken();
                                   showLoaderWrapper(context);
                                   BlocProvider.of<AuthBloc>(context).add(
                                     EditPasswordEvent(
-                                      passwordController.text,
-                                      BlocProvider.of<ProfileBloc>(context)
-                                          .access!, token.toString()
-                                    ),
+                                        passwordController.text,
+                                        BlocProvider.of<ProfileBloc>(context)
+                                            .access!,
+                                        token.toString()),
                                   );
                                 }
                               }

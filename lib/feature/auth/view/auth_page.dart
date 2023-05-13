@@ -58,13 +58,14 @@ class _MainAuthPageState extends State<AuthPage> {
           Navigator.of(context).pushNamed(AppRoute.confirmPhoneCode,
               arguments: [loginController.text]);
         } else if (current is ResetPasswordErrorState) {
-          showAlertToast('Пользователь не найден');
+          CustomAlert().showMessage('Пользователь не найден', context);
         } else if (current is SignInSuccessState) {
           BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
         } else if (current is SignInErrorState) {
-          showAlertToast('Введены неверные данные или пользователь не найден');
+          CustomAlert().showMessage(
+              'Введены неверные данные или пользователь не найден', context);
         }
         return false;
       }, builder: (context, snapshot) {

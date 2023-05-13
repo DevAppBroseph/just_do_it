@@ -330,10 +330,16 @@ class _EditTasksState extends State<EditTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        // if (region == null) {
-                        //   error += '\n- регион';
-                        //   errorsFlag = true;
-                        // }
+                        bool countriesIsSelect = false;
+                        for (var element in countries) {
+                          if (element.select) {
+                            countriesIsSelect = true;
+                          }
+                        }
+                        if (!countriesIsSelect) {
+                          error += '\n- страну';
+                          errorsFlag = true;
+                        }
 
                         if (coastMinController.text.isNotEmpty &&
                             coastMaxController.text.isNotEmpty) {
@@ -348,7 +354,7 @@ class _EditTasksState extends State<EditTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
                             error +=
-                               '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
@@ -356,13 +362,13 @@ class _EditTasksState extends State<EditTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                              '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
 
                         if (errorsFlag) {
-                          showAlertToast(error);
+                          CustomAlert().showMessage(error, context);
                         } else {
                           showLoaderWrapper(context);
 
@@ -457,7 +463,7 @@ class _EditTasksState extends State<EditTasks> {
                         }
 
                         if (errorsFlag) {
-                          showAlertToast(error);
+                          CustomAlert().showMessage(error, context);
                         } else {
                           pageController.animateToPage(
                             1,
