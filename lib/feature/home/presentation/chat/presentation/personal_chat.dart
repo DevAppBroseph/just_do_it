@@ -43,14 +43,12 @@ class _PersonalChatState extends State<PersonalChat> {
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
       BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-    }
-    else{
+    } else {
       Future.delayed(const Duration(milliseconds: 1000), () {
-      BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-      BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-    });
+        BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
+        BlocProvider.of<ChatBloc>(context).add(GetListMessage());
+      });
     }
-    
   }
 
   void openProfile() {
@@ -122,9 +120,7 @@ class _PersonalChatState extends State<PersonalChat> {
                     child: SizedBox(
                       width: 240.w,
                       child: AutoSizeText(
-                        widget.name.isEmpty
-                            ? 'Аккаунт удален'
-                            : widget.name,
+                        widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
                         style: CustomTextStyle.black_22_w700,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
