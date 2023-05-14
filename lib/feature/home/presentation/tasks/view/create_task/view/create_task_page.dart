@@ -404,16 +404,16 @@ class _CeateTasksState extends State<CeateTasks> {
                           errorsFlag = true;
                         }
 
-                        bool countriesIsSelect = false;
-                        for (var element in countries) {
-                          if (element.select) {
-                            countriesIsSelect = true;
-                          }
-                        }
-                        if (!countriesIsSelect) {
-                          error += '\n- страну';
-                          errorsFlag = true;
-                        }
+                        // bool countriesIsSelect = false;
+                        // for (var element in countries) {
+                        //   if (element.select) {
+                        //     countriesIsSelect = true;
+                        //   }
+                        // }
+                        // if (!countriesIsSelect) {
+                        //   error += '\n- страну';
+                        //   errorsFlag = true;
+                        // }
                         if (currency == null) {
                           error += '\n- валюту';
                           errorsFlag = true;
