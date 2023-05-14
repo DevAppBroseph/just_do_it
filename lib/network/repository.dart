@@ -520,7 +520,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
+  log('message');
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
       for (var element in response.data) {

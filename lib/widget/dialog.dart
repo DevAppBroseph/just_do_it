@@ -26,7 +26,7 @@ class MessageDialogs {
           if (id != null) {
             Navigator.push(
               context1,
-              MaterialPageRoute(
+               MaterialPageRoute(
                 builder: (context) => PersonalChat(
                   id,
                   name!,

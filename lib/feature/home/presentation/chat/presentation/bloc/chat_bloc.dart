@@ -58,6 +58,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
+
     messages.clear();
     for (var element in res) {
       messages.add(
@@ -91,12 +92,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
-          // log('message new $event');
+          log('message new $event');
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
+           
             var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
             if (showPersonChat) {
+              
               MessageDialogs().showMessage(
                 newMessage.fromName,
                 newMessage.message,
@@ -116,8 +119,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               ),
             );
           }
-          add(RefreshPersonChatEvent());
           add(GetListMessage());
+          add(RefreshPersonChatEvent());
+          
         } catch (e) {}
       },
       onDone: () {

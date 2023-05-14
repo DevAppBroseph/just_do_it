@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -103,6 +104,7 @@ class _HomePageState extends State<HomePage> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
       if (accessToken != null && accessToken.isNotEmpty) {
+        log('1');
         timer.cancel();
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken));
