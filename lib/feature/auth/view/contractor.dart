@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -1038,6 +1039,7 @@ class _ContractorState extends State<Contractor> {
                 child: SizedBox(
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
+                    
                     hintText: 'Описание своего опыта',
                     hintStyle: CustomTextStyle.grey_14_w400,
                     maxLines: 6,
@@ -1055,7 +1057,7 @@ class _ContractorState extends State<Contractor> {
                       user.copyWith(activity: value);
                       setState(() {});
                     },
-                    formatters: [LengthLimitingTextInputFormatter(500)],
+                    formatters: [LengthLimitingTextInputFormatter(500), UpperEveryTextInputFormatter()],
                     contentPadding: EdgeInsets.only(
                         left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),

@@ -192,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Positioned(
             bottom: insetsBottom,
             child: Container(
-              height: 50.h,
+              height: 60.h,
               width: MediaQuery.of(context).size.width,
               color: Colors.grey[200],
               child: Row(
