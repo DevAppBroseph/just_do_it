@@ -76,8 +76,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
     final res = await Repository().getListMessage(token ?? '');
-    chatList.clear();
+    // log('message ${res.length}');
 
+    chatList.clear();
     chatList.addAll(res);
 
     emit(UpdateListMessageState(idChat));
@@ -90,7 +91,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
-          log('message new $event');
+          // log('message new $event');
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
