@@ -6,6 +6,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/personal_chat.dart';
 
 class MessageDialogs {
+  int tap = 0;
   void showMessage(
     String from,
     String message,
@@ -23,10 +24,10 @@ class MessageDialogs {
       displayTime: const Duration(seconds: 3),
       builder: (context) => GestureDetector(
         onTap: () {
-          if (id != null) {
+          if (id != null && tap == 0) {
             Navigator.push(
               context1,
-              MaterialPageRoute(
+               MaterialPageRoute(
                 builder: (context) => PersonalChat(
                   id,
                   name!,
@@ -35,6 +36,7 @@ class MessageDialogs {
                 ),
               ),
             );
+            tap = 1;
           }
         },
         child: Container(

@@ -42,10 +42,15 @@ class _PersonalChatState extends State<PersonalChat> {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     if (widget.id != null) {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
+      BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     }
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    else{
+      Future.delayed(const Duration(milliseconds: 1000), () {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
+      BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     });
+    }
+    
   }
 
   void openProfile() {

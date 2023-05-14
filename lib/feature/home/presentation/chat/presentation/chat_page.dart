@@ -224,7 +224,7 @@ class _ChatPageState extends State<ChatPage> {
                               if (chat.lastMsg?.unread != null &&
                                   chat.lastMsg!.unread! &&
                                   (user != null &&
-                                      user.id != chat.lastMsg?.sender?.id))
+                                      user.id != chat.lastMsg?.sender?.id) && chat.countUnreadMessage != 0)
                                 Container(
                                   height: 15.h,
                                   width: 15.h,
