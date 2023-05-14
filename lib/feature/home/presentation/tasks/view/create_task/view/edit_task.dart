@@ -330,16 +330,16 @@ class _EditTasksState extends State<EditTasks> {
                           error += '\n- максимальную цену';
                           errorsFlag = true;
                         }
-                        bool countriesIsSelect = false;
-                        for (var element in countries) {
-                          if (element.select) {
-                            countriesIsSelect = true;
-                          }
-                        }
-                        if (!countriesIsSelect) {
-                          error += '\n- страну';
-                          errorsFlag = true;
-                        }
+                        // bool countriesIsSelect = false;
+                        // for (var element in countries) {
+                        //   if (element.select) {
+                        //     countriesIsSelect = true;
+                        //   }
+                        // }
+                        // if (!countriesIsSelect) {
+                        //   error += '\n- страну';
+                        //   errorsFlag = true;
+                        // }
 
                         if (coastMinController.text.isNotEmpty &&
                             coastMaxController.text.isNotEmpty) {
