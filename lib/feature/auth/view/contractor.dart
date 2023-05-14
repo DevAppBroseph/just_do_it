@@ -64,7 +64,8 @@ class _ContractorState extends State<Contractor> {
   TextEditingController regionController = TextEditingController();
   List<String> typeCategories = [];
   TextEditingController aboutMeController = TextEditingController();
-  File? image;
+  Uint8List? image;
+  String? imagePath;
   List<ArrayImages> photos = [];
   File? cv;
   bool confirmTermsPolicy = false;
@@ -107,8 +108,9 @@ class _ContractorState extends State<Contractor> {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
       File? file = File(getMedia.path);
-      image = file;
-      user.copyWith(photo: image?.readAsBytesSync());
+      imagePath = file.path;
+      image = file.readAsBytesSync();
+      user.copyWith(photo: image);
     }
     setState(() {});
   }
@@ -789,7 +791,7 @@ class _ContractorState extends State<Contractor> {
             children: [
               GestureDetector(
                 onTap: () {
-                  OpenFile.open(image?.path);
+                  OpenFile.open(imagePath);
                 },
                 child: SizedBox(
                   height: 60.h,
@@ -803,7 +805,7 @@ class _ContractorState extends State<Contractor> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.r),
                           child: Image.memory(
-                            image!.readAsBytesSync(),
+                            image!,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -1238,20 +1240,24 @@ class _ContractorState extends State<Contractor> {
                       ],
                     ),
                     if (photos.isNotEmpty)
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          height: 12.h,
-                          width: 12.h,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(40.r),
+                      SizedBox(
+                        width: 141.w,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            height: 16.h,
+                            width: 16.h,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(40.r),
+                            ),
+                            child: Center(
+                                child: Text(
+                              photos.length.toString(),
+                              style: CustomTextStyle.white_11
+                                  .copyWith(fontSize: 10.sp),
+                            )),
                           ),
-                          child: Center(
-                              child: Text(
-                            photos.length.toString(),
-                            style: CustomTextStyle.white_11,
-                          )),
                         ),
                       )
                   ],
