@@ -8,6 +8,7 @@ class ScoreLoading extends ScoreState {}
 
 class ScoreLoaded extends ScoreState {
   final List<Levels>? levels;
+  
 
   ScoreLoaded({required this.levels});
 }

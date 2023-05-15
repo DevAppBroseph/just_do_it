@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -50,9 +51,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<ScoreBloc>().add(GetScoreEvent(access));
-    widget.callBackFlag();
+    getScore();
+    log('message');
     List<int> activityIndexes = [];
 
     for (int i = 0; i < listCategories.length; i++) {
@@ -79,6 +79,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
         ),
       );
     }
+  }
+
+  void getScore() async {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
+    Future.delayed(const Duration(milliseconds: 250), () {
+      widget.callBackFlag();
+    });
   }
 
   Future<String> getFilePath(uniqueFileName) async {

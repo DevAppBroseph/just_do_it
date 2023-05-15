@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +19,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int type = 1;
-
+  bool customerFlag = false;
+  bool contractorFlag = false;
   bool state = false;
 
   PageController pageController = PageController();
@@ -25,8 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool customerFlag = false;
-    bool contractorFlag = false;
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double insetsBottom = MediaQuery.of(context).viewInsets.bottom;
     return Stack(
@@ -178,6 +179,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   setState(() {
                                     contractorFlag = true;
                                   });
+
+                                  log(contractorFlag.toString());
                                 },
                               ),
                             ],

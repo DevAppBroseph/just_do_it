@@ -31,11 +31,16 @@ class _CustomerProfileState extends State<CustomerProfile> {
   @override
   void initState() {
     super.initState();
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<ScoreBloc>().add(GetScoreEvent(access));
-    widget.callBackFlag();
+    getScore();
   }
-  
+
+  void getScore() async {
+     String? access = await BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
+    Future.delayed(const Duration(milliseconds: 500), () {
+      widget.callBackFlag();
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
