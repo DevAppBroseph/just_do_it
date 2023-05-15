@@ -131,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.transparent,
                               child: Center(
                                 child: Text(
-                                  'Исполнитель',
+                                  'Заказчик',
                                   style: state
                                       ? CustomTextStyle.black_14_w400_171716
                                       : CustomTextStyle.white_14_w400,
@@ -166,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.transparent,
                               child: Center(
                                 child: Text(
-                                  'Заказчик',
+                                  'Исполнитель',
                                   style: state
                                       ? CustomTextStyle.white_14_w400
                                       : CustomTextStyle.black_14_w400_171716,
@@ -188,9 +188,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: PageView(
                   controller: pageController,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    Contractor(stage),
+                  children: [ 
                     Customer(stage),
+                    Contractor(stage),
                   ],
                 ),
               ),

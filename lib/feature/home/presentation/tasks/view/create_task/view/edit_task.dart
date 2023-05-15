@@ -475,7 +475,7 @@ class _EditTasksState extends State<EditTasks> {
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
-                      page == 0 ? 'Далее' : 'Редактировать задание',
+                      page == 0 ? 'Далее' : widget.task.asCustomer! ?'Редактировать задание':'Редактировать оффер',
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
