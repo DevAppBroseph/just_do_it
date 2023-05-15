@@ -16,10 +16,12 @@ import 'package:just_do_it/network/repository.dart';
 
 class Customer extends StatefulWidget {
   Function(int) callBacK;
+  Function() callBackFlag;
   Customer({
     Key? key,
     required this.size,
     required this.callBacK,
+    required this.callBackFlag,
   }) : super(key: key);
 
   final Size size;
@@ -36,6 +38,7 @@ class _CustomerState extends State<Customer> {
   void initState() {
     super.initState();
     getListTask();
+    
   }
 
   void getListTask() async {
@@ -44,6 +47,7 @@ class _CustomerState extends State<Customer> {
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
+    widget.callBackFlag();
   }
 
   @override

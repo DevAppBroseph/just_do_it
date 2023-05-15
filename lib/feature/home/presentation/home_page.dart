@@ -302,7 +302,7 @@ class _HomePageState extends State<HomePage> {
           if (index == 4) {
             Navigator.of(context).pushNamed(AppRoute.personalAccount);
           } else if (index == 2) {
-            showLoaderWrapperWhite(context);
+            
             Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
               (page) {
                 setState(() {
@@ -311,9 +311,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ]);
-            Future.delayed(const Duration(milliseconds: 500), () {
-              Loader.hide();
-            });
+            
           } else {
             if (index == 1) {
               BlocProvider.of<search.SearchBloc>(context).add(search.ClearFilterEvent());
