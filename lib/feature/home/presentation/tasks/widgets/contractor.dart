@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
@@ -18,7 +19,8 @@ import '../../../../../network/repository.dart';
 class Contractor extends StatefulWidget {
   final Size size;
   Function(int) callBacK;
-  Contractor({super.key, required this.size, required this.callBacK});
+  Function() callBackFlag;
+  Contractor({super.key, required this.size, required this.callBacK, required this.callBackFlag});
 
   @override
   State<Contractor> createState() => _ContractorState();
@@ -29,9 +31,12 @@ class _ContractorState extends State<Contractor> {
   Task? selectTask;
   Owner? owner;
   @override
+
   void initState() {
     super.initState();
     getListTask();
+    
+    
   }
 
   void getListTask() async {
@@ -39,10 +44,13 @@ class _ContractorState extends State<Contractor> {
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
+  widget.callBackFlag();
+    
   }
 
   @override
   Widget build(BuildContext context) {
+  
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(

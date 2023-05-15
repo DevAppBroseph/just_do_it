@@ -76,8 +76,9 @@ class _AllTasksViewState extends State<AllTasksView> {
                         ),
                         Align(
                           alignment: Alignment.center,
+                          
                           child: Text(
-                            'Все задания',
+                            widget.asCustomer ?'Все задания':'Все офферы',
                             style: CustomTextStyle.black_22_w700_171716,
                           ),
                         )

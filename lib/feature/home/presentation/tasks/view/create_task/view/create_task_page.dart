@@ -169,9 +169,9 @@ class _CeateTasksState extends State<CeateTasks> {
   Widget build(BuildContext context) {
     if ((widget.currentPage == 2 ||
             widget.currentPage == 1 ||
-            widget.currentPage == 3) &&
+            widget.currentPage == 4) &&
         proverka == true) {
-      if (widget.customer == true) {
+      if (widget.customer == false) {
         type = 2;
         state = true;
       }
@@ -213,7 +213,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         ),
                       if (!widget.customer)
                         Text(
-                          'Создание предложения',
+                          'Создание оффера',
                           style: CustomTextStyle.black_22_w700,
                         ),
                       Text(
@@ -270,7 +270,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                         const Duration(milliseconds: 50),
                                         (() {
                                           setState(() {
-                                            widget.customer = false;
+                                            widget.customer = true;
                                             state = !state;
                                           });
                                         }),
@@ -282,7 +282,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('Как исполнитель',
+                                    child: Text('Как заказчик',
                                         style: CustomTextStyle
                                             .black_14_w400_171716),
                                   ),
@@ -298,7 +298,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                         const Duration(milliseconds: 50),
                                         (() {
                                           setState(() {
-                                            widget.customer = true;
+                                            widget.customer = false;
                                             state = !state;
                                           });
                                         }),
@@ -311,7 +311,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                   color: Colors.transparent,
                                   child: Center(
                                     child: Text(
-                                      'Как заказчик',
+                                      'Как исполнитель',
                                       style:
                                           CustomTextStyle.black_14_w400_171716,
                                     ),
@@ -586,7 +586,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           ? 'Далее'
                           : widget.customer
                               ? 'Создать заказ'
-                              : 'Создать предложение',
+                              : 'Создать оффер',
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),

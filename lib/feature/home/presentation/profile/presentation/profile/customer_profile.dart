@@ -19,17 +19,27 @@ import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CustomerProfile extends StatefulWidget {
-  const CustomerProfile({super.key});
+    Function() callBackFlag;
+   CustomerProfile({super.key, required this.callBackFlag});
 
   @override
   State<CustomerProfile> createState() => _CustomerProfileState();
 }
 
 class _CustomerProfileState extends State<CustomerProfile> {
+
+  @override
+  void initState() {
+    super.initState();
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
+    widget.callBackFlag();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
 
+    Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
     return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
       UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
       return MediaQuery(

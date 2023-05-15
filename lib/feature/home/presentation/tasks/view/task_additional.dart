@@ -47,7 +47,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
       if (widget.asCustomer == true) {
         scoreDialog(context, '10', 'создание заказа');
       } else {
-        scoreDialog(context, '10', 'создание предложения');
+        scoreDialog(context, '10', 'создание оффера');
       }
 
       widget.scoreTrue = false;
