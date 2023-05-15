@@ -96,11 +96,9 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          showLoaderWrapperWhite(context);
+                          
                           Navigator.of(context).pushNamed(AppRoute.profile);
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            Loader.hide();
-                          });
+                          
                         },
                         child: Container(
                           color: Colors.transparent,
