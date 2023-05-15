@@ -26,10 +26,18 @@ class CustomerProfile extends StatefulWidget {
 }
 
 class _CustomerProfileState extends State<CustomerProfile> {
+
+  @override
+  void initState() {
+    super.initState();
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
+  }
+  
   @override
   Widget build(BuildContext context) {
-    Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
 
+    Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
     return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
       UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
       return MediaQuery(

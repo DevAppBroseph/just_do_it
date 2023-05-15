@@ -47,8 +47,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
   void initState() {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<ScoreBloc>().add(GetScoreEvent(access));
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
 
     List<int> activityIndexes = [];

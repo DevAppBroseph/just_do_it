@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -26,9 +28,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     timer = Timer.periodic(
-        const Duration(seconds: 30),
-        (Timer t) => BlocProvider.of<RatingBloc>(context)
-            .add(UpdateRatingEvent(access)));
+        const Duration(seconds: 30), (Timer t) => BlocProvider.of<RatingBloc>(context).add(UpdateRatingEvent(access)));
   }
 
   @override
@@ -42,8 +42,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
-        body:
-            BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+        body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
           return SafeArea(
             child: Column(
               children: [
@@ -66,8 +65,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(AppRoute.notification);
+                          Navigator.of(context).pushNamed(AppRoute.notification);
                         },
                         child: Stack(
                           alignment: Alignment.topRight,
@@ -98,7 +96,11 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          showLoaderWrapperWhite(context);
                           Navigator.of(context).pushNamed(AppRoute.profile);
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            Loader.hide();
+                          });
                         },
                         child: Container(
                           color: Colors.transparent,
