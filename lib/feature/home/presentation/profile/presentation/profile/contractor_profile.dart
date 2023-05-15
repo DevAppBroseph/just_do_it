@@ -84,9 +84,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
   void getScore() async {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
-    Future.delayed(const Duration(milliseconds: 250), () {
-      widget.callBackFlag();
-    });
+  
   }
 
   Future<String> getFilePath(uniqueFileName) async {
@@ -356,6 +354,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     children: [
                                       BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                                         if (state is ScoreLoaded) {
+                                          Future.delayed(const Duration(milliseconds: 500), () {
+                                          widget.callBackFlag();
+                                        });
                                           final levels = state.levels;
                                           if (user!.balance! < levels![0].mustCoins!) {
                                             return Text(
