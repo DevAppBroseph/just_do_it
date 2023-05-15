@@ -83,7 +83,7 @@ class _ContractorState extends State<Contractor> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        taskCounts(taskList.length),
+                        contractorCountTask(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -135,7 +135,7 @@ class _ContractorState extends State<Contractor> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        taskCounts(taskList.length),
+                        contractorCountTask(taskList.length),
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
@@ -166,7 +166,7 @@ class _ContractorState extends State<Contractor> {
             children: [
               itemButton(
                 'Выполняются',
-                taskCounts(taskList.length),
+                contractorCountTask(taskList.length),
                 SvgImg.inProgress,
                 () async {
                   await Navigator.of(context).push(
@@ -196,7 +196,7 @@ class _ContractorState extends State<Contractor> {
               SizedBox(height: 18.h),
               itemButton(
                 'Выполненные',
-                taskCounts(taskList.length),
+                contractorCountTask(taskList.length),
                 SvgImg.complete,
                 () async {
                   await Navigator.of(context).push(
@@ -226,7 +226,7 @@ class _ContractorState extends State<Contractor> {
               SizedBox(height: 18.h),
               itemButton(
                 'Ждут подтверждения',
-                taskCounts(taskList.length),
+                contractorCountTask(taskList.length),
                 SvgImg.needSuccess,
                 () async {
                   await Navigator.of(context).push(
