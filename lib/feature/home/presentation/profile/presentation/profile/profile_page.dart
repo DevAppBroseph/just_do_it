@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: Container(
                                       color: Colors.transparent,
                                       child: Center(
-                                        child: Text('Как исполнитель',
+                                        child: Text('Как заказчик',
                                             style: CustomTextStyle
                                                 .black_14_w400_171716),
                                       ),
@@ -157,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.transparent,
                                       child: Center(
                                         child: Text(
-                                          'Как заказчик',
+                                          'Как исполнитель',
                                           style: CustomTextStyle
                                               .black_14_w400_171716,
                                         ),
@@ -177,8 +177,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         controller: pageController,
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
-                          ContractorProfile(padding: insetsBottom),
                           const CustomerProfile(),
+                          ContractorProfile(padding: insetsBottom),
                         ],
                       ),
                     )

@@ -93,7 +93,7 @@ class _CustomerState extends State<Customer> {
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                       Text(
-                        'Все задания',
+                        'Все офферы',
                         style: CustomTextStyle.black_14_w400_171716,
                       )
                     ],
