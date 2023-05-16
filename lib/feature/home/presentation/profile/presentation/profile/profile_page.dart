@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,8 +19,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int type = 1;
+  @override
+  void initState() {
+    super.initState();
+    getScore();
+  }
+  
+ void getScore() async {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
+  }
 
+  int type = 1;
+  bool customerFlag = false;
+  bool contractorFlag = false;
   bool state = false;
 
   PageController pageController = PageController();
@@ -25,8 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool customerFlag = false;
-    bool contractorFlag = false;
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double insetsBottom = MediaQuery.of(context).viewInsets.bottom;
     return Stack(
@@ -165,19 +178,24 @@ class _ProfilePageState extends State<ProfilePage> {
                             controller: pageController,
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              CustomerProfile(
-                                callBackFlag: () {
+                              CustomerProfile(callBackFlag: () {
+                                if (mounted) {
                                   setState(() {
                                     customerFlag = true;
                                   });
-                                },
-                              ),
+                               
+                                }
+                              }),
                               ContractorProfile(
                                 padding: insetsBottom,
                                 callBackFlag: () {
-                                  setState(() {
-                                    contractorFlag = true;
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      contractorFlag = true;
+                                    });
+
+                                  
+                                  }
                                 },
                               ),
                             ],

@@ -19,26 +19,22 @@ import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CustomerProfile extends StatefulWidget {
-    Function() callBackFlag;
-   CustomerProfile({super.key, required this.callBackFlag});
+  Function() callBackFlag;
+  CustomerProfile({super.key, required this.callBackFlag});
 
   @override
   State<CustomerProfile> createState() => _CustomerProfileState();
 }
 
 class _CustomerProfileState extends State<CustomerProfile> {
-
   @override
   void initState() {
     super.initState();
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<ScoreBloc>().add(GetScoreEvent(access));
-    widget.callBackFlag();
   }
-  
+
+  bool proverka = true;
   @override
   Widget build(BuildContext context) {
-
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
     return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
       UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
@@ -234,6 +230,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                   children: [
                                     BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                                       if (state is ScoreLoaded) {
+                                        if (proverka == true) {
+                                          proverka = false;
+                                          Future.delayed(const Duration(milliseconds: 500), () {
+                                            widget.callBackFlag();
+                                          });
+                                        }
+
                                         final levels = state.levels;
                                         if (user.balance! < levels![0].mustCoins!) {
                                           return Text(

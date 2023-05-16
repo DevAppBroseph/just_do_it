@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -50,9 +51,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<ScoreBloc>().add(GetScoreEvent(access));
-    widget.callBackFlag();
+
+    log('message');
     List<int> activityIndexes = [];
 
     for (int i = 0; i < listCategories.length; i++) {
@@ -80,6 +80,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       );
     }
   }
+
+ 
 
   Future<String> getFilePath(uniqueFileName) async {
     String path = '';
@@ -130,10 +132,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
       setState(() {});
     }
   }
-
+  bool proverka = true;
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
+    
     return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileSuccessState) {
@@ -348,6 +351,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     children: [
                                       BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                                         if (state is ScoreLoaded) {
+                                          if (proverka == true) {
+                                            proverka = false;
+                                            log(proverka.toString());
+                                            Future.delayed(const Duration(milliseconds: 500), () {
+                                              widget.callBackFlag();
+                                              
+                                            });
+                                          }
+
                                           final levels = state.levels;
                                           if (user!.balance! < levels![0].mustCoins!) {
                                             return Text(
