@@ -54,7 +54,7 @@ class _ContractorState extends State<Contractor> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
-        physics: const ClampingScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
@@ -165,7 +165,7 @@ class _ContractorState extends State<Contractor> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Text(
-              'Вас выбрали в ${contractorCountTask(taskList.length)}',
+              'Вас выбрали в ${contractorCountTaskYouChosen(taskList.length)}',
               style: CustomTextStyle.black_18_w500_171716,
             ),
           ),

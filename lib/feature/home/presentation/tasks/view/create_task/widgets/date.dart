@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,7 +77,9 @@ class _DatePickerState extends State<DatePicker> {
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
                               widget.startDate = DateTime.now();
-                            } else if (index == 1 && widget.endDate == null) {
+                            } else if (index == 1 && widget.endDate == null && widget.startDate != null) {
+                              widget.endDate = widget.startDate;
+                            } else if (index == 1 && widget.endDate == null && widget.startDate == null) {
                               widget.endDate = DateTime.now();
                             }
                             setState(() {});
@@ -139,6 +143,7 @@ class _DatePickerState extends State<DatePicker> {
                       widget.startDate = val;
                     } else if (index == 1) {
                       widget.endDate = val;
+                      log(widget.endDate.toString());
                     }
                     widget.onEdit(
                       widget.startDate,
@@ -257,48 +262,50 @@ class _DatePickerState extends State<DatePicker> {
           for (int index = 0; index < widget.allCountries[i].region.length; index++) {
             if (widget.allCountries[i].region[index].select) {
               for (int index3 = 0; index3 < widget.allCountries[i].region.length; index3++) {
-                townsListWidget.add(
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.allCountries[i].region[index].town[index3].select =
-                            !widget.allCountries[i].region[index].town[index3].select;
+                if (widget.allCountries[i].region[index].town.isNotEmpty) {
+                  townsListWidget.add(
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          widget.allCountries[i].region[index].town[index3].select =
+                              !widget.allCountries[i].region[index].town[index3].select;
 
-                        widget.onEdit(
-                          widget.startDate,
-                          widget.endDate,
-                          widget.allCountries,
-                          widget.currecy,
-                        );
+                          widget.onEdit(
+                            widget.startDate,
+                            widget.endDate,
+                            widget.allCountries,
+                            widget.currecy,
+                          );
 
-                        setState(() {});
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 40.h,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 250.w,
-                                  child: Text(
-                                    widget.allCountries[i].region[index].town[index3].name!,
-                                    style: CustomTextStyle.black_14_w400_515150,
+                          setState(() {});
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 40.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 250.w,
+                                    child: Text(
+                                      widget.allCountries[i].region[index].town[index3].name!,
+                                      style: CustomTextStyle.black_14_w400_515150,
+                                    ),
                                   ),
-                                ),
-                                const Spacer(),
-                                if (widget.allCountries[i].region[index].town[index3].select) const Icon(Icons.check)
-                              ],
-                            ),
-                          ],
+                                  const Spacer(),
+                                  if (widget.allCountries[i].region[index].town[index3].select) const Icon(Icons.check)
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               }
             }
           }
