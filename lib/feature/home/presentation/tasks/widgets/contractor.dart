@@ -54,7 +54,7 @@ class _ContractorState extends State<Contractor> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: ListView(
-        physics: const ClampingScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [

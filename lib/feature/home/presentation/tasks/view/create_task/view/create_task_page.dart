@@ -518,11 +518,11 @@ class _CeateTasksState extends State<CeateTasks> {
                           if (widget.currentPage == 1 ||
                               widget.currentPage == 2) {
                             if (res) Navigator.of(context).pop();
-                            if (res) Navigator.of(context).pop(widget.customer);
+                            if (res) Navigator.of(context).pop(!widget.customer);
                           }
                           if (widget.currentPage == 3 ||
                               widget.currentPage == 4) {
-                            if (res) Navigator.of(context).pop(widget.customer);
+                            if (res) Navigator.of(context).pop(!widget.customer);
                           }
 
                           Loader.hide();
