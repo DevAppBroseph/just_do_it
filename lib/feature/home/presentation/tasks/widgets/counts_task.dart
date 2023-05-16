@@ -22,7 +22,7 @@ String contractorCountTask(int count) {
       count != 14) {
     return '$count задания';
   } else {
-    return '$count заданиий';
+    return '$count заданий';
   }
 }
 
