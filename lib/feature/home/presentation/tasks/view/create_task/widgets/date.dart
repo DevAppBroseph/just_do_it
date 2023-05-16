@@ -77,7 +77,9 @@ class _DatePickerState extends State<DatePicker> {
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
                               widget.startDate = DateTime.now();
-                            } else if (index == 1 && widget.endDate == null) {
+                            } else if (index == 1 && widget.endDate == null && widget.startDate != null) {
+                              widget.endDate = widget.startDate;
+                            } else if (index == 1 && widget.endDate == null && widget.startDate == null) {
                               widget.endDate = DateTime.now();
                             }
                             setState(() {});
@@ -141,6 +143,7 @@ class _DatePickerState extends State<DatePicker> {
                       widget.startDate = val;
                     } else if (index == 1) {
                       widget.endDate = val;
+                      log(widget.endDate.toString());
                     }
                     widget.onEdit(
                       widget.startDate,

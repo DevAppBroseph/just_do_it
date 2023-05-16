@@ -25,3 +25,18 @@ String contractorCountTask(int count) {
     return '$count заданиях';
   }
 }
+
+
+String contractorCountTaskYouChosen(int count) {
+  if (count != 0 && (count == 1 || (count != 11 && count % 10 == 1))) {
+    return '$count задании';
+  } else if (count != 0 &&
+      (count % 10 == 2 || count % 10 == 3 || count % 10 == 4) &&
+      count != 12 &&
+      count != 13 &&
+      count != 14) {
+    return '$count заданияx';
+  } else {
+    return '$count заданиях';
+  }
+}
