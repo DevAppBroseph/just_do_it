@@ -253,7 +253,7 @@ class _ScorePageState extends State<ScorePage> {
                                   Align(
                                     alignment: Alignment.topCenter,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 25.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
@@ -280,12 +280,26 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[2].name ?? '',
                                                   user!.balance!,
                                                   levels[2].mustCoins!),
+                                                firstPageItemScore(
+                                                  user!.balance! >= levels[3].mustCoins!
+                                                      ? '${levels[3].image}'
+                                                      : '${levels[3].bwImage}',
+                                                  levels[3].name ?? '',
+                                                  user!.balance!,
+                                                  levels[3].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 50.h),
+                                          SizedBox(height: 25.h),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[5].mustCoins!
+                                                      ? '${levels[5].image}'
+                                                      : '${levels[5].bwImage}',
+                                                  levels[5].name ?? '',
+                                                  user!.balance!,
+                                                  levels[5].mustCoins!),
                                               firstPageItemScore(
                                                   user!.balance! >= levels[5].mustCoins!
                                                       ? '${levels[5].image}'
@@ -309,16 +323,41 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[3].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 55.h),
-                                          Center(
-                                            child: firstPageItemScore(
-                                                user!.balance! >= levels[5].mustCoins!
-                                                    ? '${levels[6].image}'
-                                                    : '${levels[6].bwImage}',
-                                                levels[6].name ?? '',
-                                                user!.balance!,
-                                                levels[6].mustCoins!),
-                                          )
+                                          SizedBox(height: 30.h),
+                                      Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[6].mustCoins!
+                                                      ? '${levels[6].image}'
+                                                      : '${levels[6].bwImage}',
+                                                  levels[6].name ?? '',
+                                                  user!.balance!,
+                                                  levels[6].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[5].mustCoins!
+                                                      ? '${levels[5].image}'
+                                                      : '${levels[5].bwImage}',
+                                                  levels[5].name ?? '',
+                                                  user!.balance!,
+                                                  levels[5].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[5].mustCoins!
+                                                      ? '${levels[5].image}'
+                                                      : '${levels[5].bwImage}',
+                                                  levels[5].name ?? '',
+                                                  user!.balance!,
+                                                  levels[5].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[5].mustCoins!
+                                                      ? '${levels[5].image}'
+                                                      : '${levels[5].bwImage}',
+                                                  levels[5].name ?? '',
+                                                  user!.balance!,
+                                                  levels[5].mustCoins!),
+                                            ],
+                                          ),
+                                   
                                         ],
                                       ),
                                     ),
@@ -384,14 +423,13 @@ class _ScorePageState extends State<ScorePage> {
       children: [
         Container(
           height: 70,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          margin: EdgeInsets.symmetric(horizontal: 19.w),
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
           child: Stack(alignment: Alignment.center, children: [
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.center,
               child: Container(
-                height: 60,
-                width: 60,
+                height: 53,
+                width: 53,
                 decoration: BoxDecoration(
                   color: ColorStyles.greyBDBDBD,
                   borderRadius: BorderRadius.circular(30),
@@ -401,8 +439,8 @@ class _ScorePageState extends State<ScorePage> {
             Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
-                height: 60,
-                width: 60,
+                height: 53,
+                width: 53,
                 child: Image.network(
                   icon,
                 ),
@@ -410,10 +448,10 @@ class _ScorePageState extends State<ScorePage> {
             ),
           ]),
         ),
-        SizedBox(width: 80.w, height: 10.h),
+        SizedBox(width: 75.w, height: 10.h),
         SizedBox(
           height: 5,
-          width: 60,
+          width: 53,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(3),
             child: LinearProgressIndicator(
@@ -426,7 +464,7 @@ class _ScorePageState extends State<ScorePage> {
         SizedBox(height: 4.h),
         Text(
           title,
-          style: CustomTextStyle.purple_14_w600,
+          style: CustomTextStyle.purple_13_w600,
         ),
         SizedBox(height: 4.h),
         SizedBox(

@@ -429,13 +429,24 @@ class CustomTextStyle {
     fontFamily: 'SFPro',
   );
 
-  static TextStyle purple_14_w600 = TextStyle(
+  static TextStyle purple_15_w600 = TextStyle(
     fontSize: 15.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.purpleA401C4,
     fontFamily: 'SFPro',
   );
-
+   static TextStyle purple_14_w600 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorStyles.purpleA401C4,
+    fontFamily: 'SFPro',
+  );
+ static TextStyle purple_13_w600 = TextStyle(
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorStyles.purpleA401C4,
+    fontFamily: 'SFPro',
+  );
   // blue
   static TextStyle blue_14_w400_336FEE = TextStyle(
     fontSize: 15.sp,
