@@ -16,6 +16,12 @@ class CustomTextStyle {
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
+  static TextStyle white_12_w400 = TextStyle(
+    fontSize: 12.5.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.whiteFFFFFF,
+    fontFamily: 'SFPro',
+  );
 
   static TextStyle white_14 = TextStyle(
     fontSize: 15.sp,
@@ -53,6 +59,12 @@ class CustomTextStyle {
 
   static TextStyle white_34_w800 = TextStyle(
     fontSize: 34.sp,
+    fontWeight: FontWeight.w800,
+    color: ColorStyles.whiteFFFFFF,
+    fontFamily: 'SFPro',
+  );
+    static TextStyle white_26_w800 = TextStyle(
+    fontSize: 26.sp,
     fontWeight: FontWeight.w800,
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
@@ -441,8 +453,8 @@ class CustomTextStyle {
     color: ColorStyles.purpleA401C4,
     fontFamily: 'SFPro',
   );
- static TextStyle purple_13_w600 = TextStyle(
-    fontSize: 13.sp,
+ static TextStyle purple_12_w600 = TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.purpleA401C4,
     fontFamily: 'SFPro',
