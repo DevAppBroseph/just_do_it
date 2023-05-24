@@ -1,15 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -36,7 +40,7 @@ class _WelcomPageState extends State<WelcomPage> {
   List<String> searchChoose = [];
 
   TextEditingController searchController = TextEditingController();
-   ScrollController controller = ScrollController();
+  ScrollController controller = ScrollController();
 
   Future<void> notificationInit() async {
     await NotificationService().inject();
@@ -49,6 +53,12 @@ class _WelcomPageState extends State<WelcomPage> {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     notificationInit();
+    getScore();
+  }
+
+  void getScore() async {
+    String? access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<ScoreBloc>().add(GetScoreEvent(access));
   }
 
   void getHistoryList() async {
@@ -74,7 +84,7 @@ class _WelcomPageState extends State<WelcomPage> {
             Container(
               height: 100.h,
               decoration: BoxDecoration(
-                color: ColorStyles.whiteFFFFFF,
+                color: ColorStyles.greyF9F9F9,
                 boxShadow: [
                   BoxShadow(
                     color: ColorStyles.shadowFC6554,
@@ -87,65 +97,131 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Container(
                     height: 60.h,
-                    color: ColorStyles.whiteFFFFFF,
+                    color: ColorStyles.greyF9F9F9,
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: Row(
                       children: [
-                        SizedBox(
-                          width: 270.w,
-                          height: 36.h,
-                          child: CustomTextField(
-                            onTap: () async {
-                              setState(() {
-                                searchList = true;
-                              });
-                              getHistoryList();
-                            },
-                            fillColor: ColorStyles.greyF7F7F8,
-                            prefixIcon: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/search1.svg',
-                                  height: 12.h,
+                        searchList
+                            ? const SizedBox()
+                            : Container(
+                                height: 36.h,
+                                width: 102.h,
+                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.whiteFFFFFF,
+                                  borderRadius: BorderRadius.circular(10.r),
                                 ),
-                              ],
-                            ),
-                            onFieldSubmitted: (value) {
-                              setState(() {
-                                searchList = false;
-                              });
-                              Storage().setListHistory(value);
-                              FocusScope.of(context).unfocus();
-                              BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
-                            },
-                            onChanged: (value) {
-                              if (value.isEmpty) {
-                                getHistoryList();
-                              }
-                              List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
-                              searchChoose.clear();
-                              if (value.isNotEmpty) {
-                                for (var element1 in activities) {
-                                  for (var element2 in element1.subcategory) {
-                                    if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
-                                        !searchChoose.contains(element2.description!.toLowerCase())) {
-                                      searchChoose.add(element2.description!);
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset('assets/icons/russia.svg'),
+                                    const Spacer(),
+                                    Text(
+                                      'Ru',
+                                      style: CustomTextStyle.black_16_w600_171716,
+                                    ),
+                                    Spacer(),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: ColorStyles.greyBDBDBD,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        searchList ? const SizedBox() : const Spacer(),
+                        user == null
+                            ? const SizedBox()
+                            : searchList
+                                ? const SizedBox()
+                                : Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(AppRoute.notification);
+                                        },
+                                        child: Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/notification_main.svg',
+                                            ),
+                                            Container(
+                                              height: 10.w,
+                                              width: 10.w,
+                                              decoration: BoxDecoration(
+                                                color: ColorStyles.yellowFFD70B,
+                                                borderRadius: BorderRadius.circular(20.r),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 12.w),
+                                    ],
+                                  ),
+                        searchList
+                            ? SizedBox(
+                                width: 270.w,
+                                height: 36.h,
+                                child: CustomTextField(
+                                  onTap: () async {
+                                    setState(() {
+                                      searchList = true;
+                                    });
+                                    getHistoryList();
+                                  },
+                                  fillColor: ColorStyles.greyF7F7F8,
+                                  prefixIcon: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/search1.svg',
+                                        height: 12.h,
+                                      ),
+                                    ],
+                                  ),
+                                  onFieldSubmitted: (value) {
+                                    setState(() {
+                                      searchList = false;
+                                    });
+                                    Storage().setListHistory(value);
+                                    FocusScope.of(context).unfocus();
+                                    BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
+                                  },
+                                  onChanged: (value) {
+                                    if (value.isEmpty) {
+                                      getHistoryList();
                                     }
-                                  }
-                                }
-                              }
-                              setState(() {});
-                            },
-                            hintText: 'Поиск',
-                            textEditingController: searchController,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
-                          ),
-                        ),
-                        const Spacer(),
-                        SizedBox(width: 23.w),
+                                    List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                    searchChoose.clear();
+                                    if (value.isNotEmpty) {
+                                      for (var element1 in activities) {
+                                        for (var element2 in element1.subcategory) {
+                                          if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                              !searchChoose.contains(element2.description!.toLowerCase())) {
+                                            searchChoose.add(element2.description!);
+                                          }
+                                        }
+                                      }
+                                    }
+                                    setState(() {});
+                                  },
+                                  hintText: 'Поиск',
+                                  textEditingController: searchController,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () async {
+                                  setState(() {
+                                    searchList = true;
+                                  });
+                                  getHistoryList();
+                                },
+                                child: SvgPicture.asset('assets/icons/search3.svg'),
+                              ),
+                        SizedBox(width: 12.w),
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
@@ -165,7 +241,7 @@ class _WelcomPageState extends State<WelcomPage> {
                               }
                             });
                           },
-                          child: SvgPicture.asset('assets/icons/category.svg'),
+                          child: SvgPicture.asset('assets/icons/category2.svg'),
                         ),
                       ],
                     ),
@@ -188,7 +264,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       children: [
-                        Container(height: 30.h, color: ColorStyles.whiteFFFFFF),
+                        Container(height: 30.h, color: ColorStyles.greyF7F7F8),
                         BlocBuilder<ProfileBloc, ProfileState>(
                           builder: (context, snapshot) {
                             final bloc = BlocProvider.of<ProfileBloc>(context);
@@ -199,108 +275,342 @@ class _WelcomPageState extends State<WelcomPage> {
                                   padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
                                   child: Center(
                                     child: Text(
-                                      'jobyfine'.toUpperCase(),
+                                      'justdoit'.toUpperCase(),
                                       style: CustomTextStyle.black_39_w900_171716,
                                     ),
                                   ),
                                 ),
                               );
                             }
-                            return Container(
-                              color: ColorStyles.whiteFFFFFF,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(height: 15.h),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 24.w, left: 24.w),
-                                    child: SizedBox(
-                                      height: 112.h,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 190.w,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Добро пожаловать,',
-                                                  style: CustomTextStyle.black_14_w400_515150,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: null,
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(AppRoute.profile);
+                                },
+                                child: Container(
+                                  height: 170,
+                                  decoration: BoxDecoration(
+                                    color: ColorStyles.whiteFFFFFF,
+                                    borderRadius: BorderRadius.circular(30.r),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                                        child: SizedBox(
+                                          height: 90.h,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 68.h,
+                                                width: 68.h,
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        var image =
+                                                            await ImagePicker().pickImage(source: ImageSource.gallery);
+                                                        if (image != null) {
+                                                          BlocProvider.of<ProfileBloc>(context).add(
+                                                            UpdateProfilePhotoEvent(photo: image),
+                                                          );
+                                                        }
+                                                      },
+                                                      child: ClipOval(
+                                                        child: SizedBox.fromSize(
+                                                            size: Size.fromRadius(30.r),
+                                                            child: user!.photoLink == null
+                                                                ? Container(
+                                                                    height: 60.h,
+                                                                    width: 60.h,
+                                                                    padding: EdgeInsets.all(10.h),
+                                                                    decoration: const BoxDecoration(
+                                                                      color: ColorStyles.shadowFC6554,
+                                                                    ),
+                                                                    child: Image.asset('assets/images/camera.png'),
+                                                                  )
+                                                                : CachedNetworkImage(
+                                                                    imageUrl: user!.photoLink!.contains(server)
+                                                                        ? user!.photoLink!
+                                                                        : server + user!.photoLink!,
+                                                                    fit: BoxFit.cover,
+                                                                  )),
+                                                      ),
+                                                    ),
+                                                    if (user!.photoLink != null)
+                                                      Align(
+                                                        alignment: Alignment.topRight,
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            user!.photo = null;
+                                                            user!.photoLink = null;
+                                                            BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                                            BlocProvider.of<ProfileBloc>(context).add(
+                                                              UpdateProfilePhotoEvent(photo: null),
+                                                            );
+                                                            setState(() {});
+                                                          },
+                                                          child: Container(
+                                                            height: 20.h,
+                                                            width: 20.h,
+                                                            decoration: BoxDecoration(
+                                                              boxShadow: const [BoxShadow(color: Colors.black)],
+                                                              borderRadius: BorderRadius.circular(100.r),
+                                                              color: Colors.white,
+                                                            ),
+                                                            child: Center(
+                                                              child: Icon(
+                                                                Icons.close,
+                                                                size: 10.h,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                  ],
                                                 ),
-                                                SizedBox(height: 8.h),
-                                                AutoSizeText(
-                                                  '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                                                  style:
-                                                      CustomTextStyle.black_33_w800,
-                                                  maxLines: 2,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-                                            var reviews = BlocProvider.of<RatingBloc>(context).reviews;
-                                            return ScaleButton(
-                                              bound: 0.02,
-                                              child: Container(
-                                                height: 112.h,
-                                                width: 121.h,
-                                                padding: EdgeInsets.only(
-                                                  left: 16.w,
-                                                  right: 16.w,
-                                                  top: 4.h,
-                                                  bottom: 4.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: ColorStyles.greyF9F9F9,
-                                                  borderRadius: BorderRadius.circular(10.r),
-                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: 190.w,
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  mainAxisSize: MainAxisSize.min,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'Рейтинг',
-                                                      style: CustomTextStyle.grey_14_w400,
+                                                      'С возвращением,',
+                                                      style: CustomTextStyle.grey_12_w400,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: null,
                                                     ),
-                                                    SizedBox(height: 6.h),
-                                                    Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          'assets/icons/star.svg',
-                                                        ),
-                                                        SizedBox(width: 4.w),
-                                                        Text(
-                                                          reviews?.ranking == null ? '-' : reviews!.ranking!.toString(),
-                                                          style: CustomTextStyle.black_16_w600_171716,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: 10.h),
-                                                    Text(
-                                                      'Баллы:',
-                                                      style: CustomTextStyle.grey_14_w400,
-                                                    ),
-                                                    SizedBox(height: 4.h),
-                                                    Text(
-                                                      bloc.user?.balance.toString() ?? '0',
-                                                      style: CustomTextStyle.black_16_w600_171716,
+                                                    SizedBox(height: 8.h),
+                                                    AutoSizeText(
+                                                      '${bloc.user?.firstname} ${bloc.user?.lastname}',
+                                                      style: CustomTextStyle.black_24_w800,
+                                                      maxLines: 2,
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                            );
-                                          }),
-                                        ],
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+                                        var reviews = BlocProvider.of<RatingBloc>(context).reviews;
+                                        return Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 25,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(AppRoute.score);
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  ScaleButton(
+                                                    onTap: () {
+                                                      Navigator.of(context).pushNamed(AppRoute.score);
+                                                    },
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 70.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles.greyF9F9F9,
+                                                        borderRadius: BorderRadius.circular(30.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Грейды',
+                                                          style: CustomTextStyle.purple_12_w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                                        if (state is ScoreLoaded) {
+                                                          final levels = state.levels;
+                                                          if (bloc.user!.balance! < levels![0].mustCoins!) {
+                                                            return CachedNetworkImage(
+                                                              progressIndicatorBuilder: (context, url, progress) {
+                                                                return const CupertinoActivityIndicator();
+                                                              },
+                                                              imageUrl: '${levels[0].bwImage}',
+                                                              height: 20,
+                                                              width: 20,
+                                                            );
+                                                          }
+                                                          for (int i = 0; i < levels.length; i++) {
+                                                            if (levels[i + 1].mustCoins == null) {
+                                                              return CachedNetworkImage(
+                                                                progressIndicatorBuilder: (context, url, progress) {
+                                                                  return const CupertinoActivityIndicator();
+                                                                },
+                                                                imageUrl: '${levels[i].image}',
+                                                                height: 30,
+                                                                width: 30,
+                                                              );
+                                                            } else {
+                                                              if (bloc.user!.balance! >= levels[i].mustCoins! &&
+                                                                  bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                                return CachedNetworkImage(
+                                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                                    return const CupertinoActivityIndicator();
+                                                                  },
+                                                                  imageUrl: '${levels[i].image}',
+                                                                  height: 30,
+                                                                  width: 30,
+                                                                );
+                                                              } else if (bloc.user!.balance! >= levels.last.mustCoins!) {
+                                                                return CachedNetworkImage(
+                                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                                    return const CupertinoActivityIndicator();
+                                                                  },
+                                                                  imageUrl: '${levels.last.image}',
+                                                                  height: 42,
+                                                                  width: 42,
+                                                                );
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                        return Container();
+                                                      }),
+                                                      const SizedBox(
+                                                        width: 4,
+                                                      ),
+                                                      Text(
+                                                        bloc.user?.balance.toString() ?? '0',
+                                                        style: CustomTextStyle.purple_15_w600,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(AppRoute.rating);
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  ScaleButton(
+                                                    onTap: () {
+                                                      Navigator.of(context).pushNamed(AppRoute.rating);
+                                                    },
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 90.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                                        borderRadius: BorderRadius.circular(30.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Text(
+                                                              'Рейтинг',
+                                                              style: CustomTextStyle.gold_12_w400,
+                                                            ),
+                                                            SizedBox(width: 3.h),
+                                                            Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 12,
+                                                                  height: 12,
+                                                                  child: SvgPicture.asset(
+                                                                    'assets/icons/star.svg',
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 55,
+                                                    child: Text(
+                                                      reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                                      style: CustomTextStyle.gold_16_w600_171716,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(AppRoute.rating);
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  ScaleButton(
+                                                    onTap: () {
+                                                      Navigator.of(context).pushNamed(AppRoute.rating);
+                                                    },
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 75.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                                        borderRadius: BorderRadius.circular(10.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Отзывы',
+                                                          style: CustomTextStyle.blue_12_w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 45,
+                                                    child: Text(
+                                                      '34',
+                                                      style: CustomTextStyle.blue_16_w600_171716,
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                    ],
                                   ),
-                                  SizedBox(height: 40.h),
-                                ],
+                                ),
                               ),
                             );
                           },
@@ -326,7 +636,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 bound: 0.02,
                                 onTap: () => widget.onSelect(0),
                                 child: Container(
-                                  height: ((MediaQuery.of(context).size.width * 47) / 100) - 40.w,
+                                  height: ((MediaQuery.of(context).size.width * 47) / 100),
                                   width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.whiteFFFFFF,
@@ -339,26 +649,39 @@ class _WelcomPageState extends State<WelcomPage> {
                                       )
                                     ],
                                   ),
-                                  child: Stack(
+                                  child: Column(
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(bottom: 15.h),
+                                        padding: EdgeInsets.only(bottom: 20.h, left: 20, top: 20),
                                         child: Align(
-                                          alignment: Alignment.bottomCenter,
+                                          alignment: Alignment.centerLeft,
                                           child: Image.asset(
-                                            'assets/images/contractor.png',
-                                            height: 70.h,
+                                            'assets/images/contractor1.png',
+                                            height: 90.h,
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                                        padding: const EdgeInsets.only(left: 20),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              'Заказчик',
-                                              style: CustomTextStyle.black_14_w400_171716,
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Заказчик',
+                                                  style: CustomTextStyle.black_15_bold,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10, top: 3),
+                                                  child: Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    color: ColorStyles.greyBDBDBD,
+                                                    size: 12.h,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                             Text(
                                               'Размещай задания',
@@ -376,7 +699,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                 bound: 0.02,
                                 onTap: () => widget.onSelect(1),
                                 child: Container(
-                                  height: ((MediaQuery.of(context).size.width * 47) / 100) - 40.w,
+                                  height: ((MediaQuery.of(context).size.width * 47) / 100),
                                   width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
                                   decoration: BoxDecoration(
                                     color: ColorStyles.whiteFFFFFF,
@@ -389,26 +712,39 @@ class _WelcomPageState extends State<WelcomPage> {
                                       )
                                     ],
                                   ),
-                                  child: Stack(
+                                  child: Column(
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(bottom: 15.h),
+                                        padding: EdgeInsets.only(bottom: 20.h, left: 20, top: 20),
                                         child: Align(
-                                          alignment: Alignment.bottomCenter,
+                                          alignment: Alignment.centerLeft,
                                           child: Image.asset(
-                                            'assets/images/customer.png',
-                                            height: 70.h,
+                                            'assets/images/customer1.png',
+                                            height: 90.h,
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                                        padding: const EdgeInsets.only(left: 20),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              'Исполнитель',
-                                              style: CustomTextStyle.black_14_w400_171716,
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Исполнитель',
+                                                  style: CustomTextStyle.black_15_bold,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10, top: 3),
+                                                  child: Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    color: ColorStyles.greyBDBDBD,
+                                                    size: 12.h,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                             Text(
                                               'Выполняй работу',
@@ -425,19 +761,6 @@ class _WelcomPageState extends State<WelcomPage> {
                           ),
                         ),
                         SizedBox(height: 30.h),
-                        elementCategory(
-                          'assets/images/language.png',
-                          'Русский',
-                          1,
-                          choice: choiceLanguage,
-                        ),
-                        info(
-                          [
-                            'Русский',
-                            'Английский',
-                          ],
-                          indexLanguage == 1,
-                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 25.w),
                           child: ScaleButton(
@@ -449,17 +772,14 @@ class _WelcomPageState extends State<WelcomPage> {
                                 alignment: Alignment.center,
                                 children: [
                                   SizedBox(
-                                    height: 69.h,
+                                    height: 60.h,
                                     child: CupertinoCard(
                                       onPressed: () {
                                         showLoaderWrapperWhite(context);
                                         Navigator.of(context).pushNamed(AppRoute.about);
                                         Future.delayed(const Duration(seconds: 1), () {
-                                         Loader.hide();
-                                        
+                                          Loader.hide();
                                         });
-                                        
-                                        
                                       },
                                       radius: BorderRadius.circular(25.r),
                                       color: ColorStyles.yellowFFD70A,
@@ -506,65 +826,69 @@ class _WelcomPageState extends State<WelcomPage> {
   }
 
   Widget elementCategory(String icon, String title, int currentIndex, {String choice = ''}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25.w),
-      child: ScaleButton(
-        bound: 0.02,
-        onTap: () => setState(() {
-          if (indexLanguage != currentIndex) {
-            indexLanguage = currentIndex;
-          } else {
-            indexLanguage = 0;
-          }
-        }),
-        child: Container(
-          decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
-            borderRadius: BorderRadius.circular(10.r),
-            boxShadow: [
-              BoxShadow(
-                color: ColorStyles.shadowFC6554,
-                offset: const Offset(0, -4),
-                blurRadius: 55.r,
-              )
-            ],
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
-          child: Row(
-            children: [
-              Image.asset(
-                icon,
-                height: 20.h,
-              ),
-              SizedBox(width: 9.w),
-              Text(
-                title,
-                style: CustomTextStyle.black_14_w400_515150,
-              ),
-              if (choice.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: SizedBox(
-                    width: 100.w,
-                    child: Text(
-                      '- $choice',
-                      style: CustomTextStyle.grey_14_w400,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+    return SizedBox(
+      height: 20,
+      width: 100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        child: ScaleButton(
+          bound: 0.02,
+          onTap: () => setState(() {
+            if (indexLanguage != currentIndex) {
+              indexLanguage = currentIndex;
+            } else {
+              indexLanguage = 0;
+            }
+          }),
+          child: Container(
+            decoration: BoxDecoration(
+              color: ColorStyles.whiteFFFFFF,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorStyles.shadowFC6554,
+                  offset: const Offset(0, -4),
+                  blurRadius: 55.r,
+                )
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
+            child: Row(
+              children: [
+                Image.asset(
+                  icon,
+                  height: 20.h,
+                ),
+                SizedBox(width: 9.w),
+                Text(
+                  title,
+                  style: CustomTextStyle.black_14_w400_515150,
+                ),
+                if (choice.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w),
+                    child: SizedBox(
+                      width: 100.w,
+                      child: Text(
+                        '- $choice',
+                        style: CustomTextStyle.grey_14_w400,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
                   ),
-                ),
-              const Spacer(),
-              index == currentIndex
-                  ? const Icon(
-                      Icons.keyboard_arrow_up,
-                      color: Colors.blue,
-                    )
-                  : Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Colors.grey[400],
-                    ),
-            ],
+                const Spacer(),
+                index == currentIndex
+                    ? const Icon(
+                        Icons.keyboard_arrow_up,
+                        color: Colors.blue,
+                      )
+                    : Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.grey[400],
+                      ),
+              ],
+            ),
           ),
         ),
       ),

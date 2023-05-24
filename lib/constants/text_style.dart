@@ -271,6 +271,18 @@ class CustomTextStyle {
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
+  static TextStyle gold_16_w600_171716 = TextStyle(
+    fontSize: 17.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorStyles.yellowFFCA0D,
+    fontFamily: 'SFPro',
+  );
+   static TextStyle blue_16_w600_171716 = TextStyle(
+    fontSize: 17.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorStyles.blue336FEE,
+    fontFamily: 'SFPro',
+  );
 
   static TextStyle black_16_w600_515150 = TextStyle(
     fontSize: 17.sp,
@@ -282,6 +294,12 @@ class CustomTextStyle {
   static TextStyle black_14_w400_171716 = TextStyle(
     fontSize: 15.sp,
     fontWeight: FontWeight.w400,
+    color: ColorStyles.black171716,
+    fontFamily: 'SFPro',
+  );
+   static TextStyle black_15_bold = TextStyle(
+    fontSize: 15.sp,
+    fontWeight: FontWeight.bold,
     color: ColorStyles.black171716,
     fontFamily: 'SFPro',
   );
@@ -369,6 +387,24 @@ class CustomTextStyle {
     color: ColorStyles.greyBDBDBD,
     fontFamily: 'SFPro',
   );
+   static TextStyle gold_12_w400 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.yellowFFCA0D,
+    fontFamily: 'SFPro',
+  );
+   static TextStyle blue_12_w400 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.blue336FEE,
+    fontFamily: 'SFPro',
+  );
+    static TextStyle purple_12_w400 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.purpleA401C4,
+    fontFamily: 'SFPro',
+  );
 
   static TextStyle grey_14_w300 = TextStyle(
     color: Colors.grey[400],
@@ -442,7 +478,7 @@ class CustomTextStyle {
   );
 
   static TextStyle purple_15_w600 = TextStyle(
-    fontSize: 15.sp,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     color: ColorStyles.purpleA401C4,
     fontFamily: 'SFPro',
@@ -485,6 +521,10 @@ class CustomTextStyle {
 
   static TextStyle black_33_w800 = TextStyle(
     fontSize: 33.sp,
+    fontWeight: FontWeight.w800,
+  );
+  static TextStyle black_24_w800 = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.w800,
   );
 

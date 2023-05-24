@@ -5,10 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
+import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -48,8 +49,8 @@ class _ScorePageState extends State<ScorePage> {
           }
         }
         for (int i = 0; i < levels.length; i++) {
-          if (user!.balance! >= levels[i].mustCoins! && levels[i+1].name != null) {
-            proverkaNext = levels[i+1].name;
+          if (user!.balance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
+            proverkaNext = levels[i + 1].name;
             log(proverkaNext.toString());
           }
         }
@@ -141,60 +142,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   width: 113,
                                                   fit: BoxFit.fill,
                                                 ),
-                                              if (user!.balance! >= levels[0].mustCoins! &&
-                                                  user!.balance! < levels[1].mustCoins!)
-                                                CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl: levels[0].image != null ? '${levels[0].image}' : '',
-                                                  height: 113,
-                                                  width: 113,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              if (user!.balance! >= levels[1].mustCoins! &&
-                                                  user!.balance! < levels[2].mustCoins!)
-                                                CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl: levels[1].image != null ? '${levels[1].image}' : '',
-                                                  height: 113,
-                                                  width: 113,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              if (user!.balance! >= levels[2].mustCoins! &&
-                                                  user!.balance! < levels[3].mustCoins!)
-                                                CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl: levels[2].image != null ? '${levels[2].image}' : '',
-                                                  height: 113,
-                                                  width: 113,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              if (user!.balance! >= levels[3].mustCoins! &&
-                                                  user!.balance! < levels[4].mustCoins!)
-                                                CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl: levels[3].image != null ? '${levels[3].image}' : '',
-                                                  height: 113,
-                                                  width: 113,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              if (user!.balance! >= levels[4].mustCoins!)
-                                                CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl: levels[4].image != null ? '${levels[4].image}' : '',
-                                                  height: 113,
-                                                  width: 113,
-                                                  fit: BoxFit.fill,
-                                                ),
+                                              _scorePicture(levels, user!.balance!),
                                               const SizedBox(
                                                 width: 25,
                                               ),
@@ -203,7 +151,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 SizedBox(
                                                   width: 60,
                                                   child: Text(
-                                                    levels[0].name?.toUpperCase() ?? '',
+                                                    levels[0].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
                                                   ),
@@ -213,7 +161,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 SizedBox(
                                                   width: 110,
                                                   child: Text(
-                                                    levels[1].name?.toUpperCase() ?? '',
+                                                    levels[1].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
                                                   ),
@@ -223,7 +171,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 SizedBox(
                                                   width: 110,
                                                   child: Text(
-                                                    levels[2].name?.toUpperCase() ?? '',
+                                                    levels[2].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
                                                   ),
@@ -233,16 +181,86 @@ class _ScorePageState extends State<ScorePage> {
                                                 SizedBox(
                                                   width: 110,
                                                   child: Text(
-                                                    levels[3].name?.toUpperCase() ?? '',
+                                                    levels[3].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[4].mustCoins!)
+                                              if (user!.balance! >= levels[4].mustCoins! &&
+                                                  user!.balance! < levels[5].mustCoins!)
                                                 SizedBox(
                                                   width: 110,
                                                   child: Text(
-                                                    levels[4].name?.toUpperCase() ?? '',
+                                                    levels[4].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[5].mustCoins! &&
+                                                  user!.balance! < levels[6].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[5].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[6].mustCoins! &&
+                                                  user!.balance! < levels[7].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[6].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[7].mustCoins! &&
+                                                  user!.balance! < levels[8].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[7].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[8].mustCoins! &&
+                                                  user!.balance! < levels[9].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[8].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[9].mustCoins! &&
+                                                  user!.balance! < levels[10].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[9].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[10].mustCoins! &&
+                                                  user!.balance! < levels[11].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[10].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              if (user!.balance! >= levels[11].mustCoins!)
+                                                SizedBox(
+                                                  width: 110,
+                                                  child: Text(
+                                                    levels[11].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
                                                   ),
@@ -252,7 +270,7 @@ class _ScorePageState extends State<ScorePage> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 25.h),
+                                    SizedBox(height: 30.h),
                                     GestureDetector(
                                       onTap: () {
                                         if (page == 0) {
@@ -268,10 +286,12 @@ class _ScorePageState extends State<ScorePage> {
                                       },
                                       child: Text(
                                         page == 1
-                                            ? 'Сколько уровней я могу\nдостичь?'
+                                            ? 'Сколько уровней я могу достичь?'
                                             : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
-                                        style: CustomTextStyle.white_12_w400
-                                            .copyWith(decoration: TextDecoration.underline),
+                                        style: CustomTextStyle.white_12_w400.copyWith(
+                                          decoration: TextDecoration.underline,
+                                          decorationStyle: TextDecorationStyle.dashed,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -309,28 +329,32 @@ class _ScorePageState extends State<ScorePage> {
                                           Row(
                                             children: [
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[0].mustCoins! || levels[0].name == proverkaNext
+                                                  user!.balance! >= levels[0].mustCoins! ||
+                                                          levels[0].name == proverkaNext
                                                       ? '${levels[0].image}'
                                                       : '${levels[0].bwImage}',
                                                   levels[0].name ?? '',
                                                   user!.balance!,
                                                   levels[0].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[1].mustCoins! || levels[1].name == proverkaNext
+                                                  user!.balance! >= levels[1].mustCoins! ||
+                                                          levels[1].name == proverkaNext
                                                       ? '${levels[1].image}'
                                                       : '${levels[1].bwImage}',
                                                   levels[1].name ?? '',
                                                   user!.balance!,
                                                   levels[1].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[2].mustCoins! || levels[2].name == proverkaNext
+                                                  user!.balance! >= levels[2].mustCoins! ||
+                                                          levels[2].name == proverkaNext
                                                       ? '${levels[2].image}'
                                                       : '${levels[2].bwImage}',
                                                   levels[2].name ?? '',
                                                   user!.balance!,
                                                   levels[2].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[3].mustCoins! || levels[3].name == proverkaNext
+                                                  user!.balance! >= levels[3].mustCoins! ||
+                                                          levels[3].name == proverkaNext
                                                       ? '${levels[3].image}'
                                                       : '${levels[3].bwImage}',
                                                   levels[3].name ?? '',
@@ -342,66 +366,74 @@ class _ScorePageState extends State<ScorePage> {
                                           Row(
                                             children: [
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[5].mustCoins! || levels[5].name == proverkaNext
-                                                      ? '${levels[5].image}'
-                                                      : '${levels[5].bwImage}',
-                                                  levels[5].name ?? '',
+                                                  user!.balance! >= levels[7].mustCoins! ||
+                                                          levels[7].name == proverkaNext
+                                                      ? '${levels[7].image}'
+                                                      : '${levels[7].bwImage}',
+                                                  levels[7].name ?? '',
                                                   user!.balance!,
-                                                  levels[5].mustCoins!),
+                                                  levels[7].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[5].mustCoins! || levels[5].name == proverkaNext
-                                                      ? '${levels[5].image}'
-                                                      : '${levels[5].bwImage}',
-                                                  levels[5].name ?? '',
-                                                  user!.balance!,
-                                                  levels[5].mustCoins!),
-                                              firstPageItemScore(
-                                                  user!.balance! >= levels[4].mustCoins! || levels[4].name == proverkaNext
-                                                      ? '${levels[4].image}'
-                                                      : '${levels[4].bwImage}',
-                                                  levels[4].name ?? '',
-                                                  user!.balance!,
-                                                  levels[4].mustCoins!),
-                                              firstPageItemScore(
-                                                  user!.balance! >= levels[3].mustCoins! || levels[6].name == proverkaNext
-                                                      ? '${levels[3].image}'
-                                                      : '${levels[3].bwImage}',
-                                                  levels[3].name ?? '',
-                                                  user!.balance!,
-                                                  levels[3].mustCoins!),
-                                            ],
-                                          ),
-                                          SizedBox(height: 30.h),
-                                          Row(
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >= levels[6].mustCoins! || levels[6].name == proverkaNext
+                                                  user!.balance! >= levels[6].mustCoins! ||
+                                                          levels[6].name == proverkaNext
                                                       ? '${levels[6].image}'
                                                       : '${levels[6].bwImage}',
                                                   levels[6].name ?? '',
                                                   user!.balance!,
                                                   levels[6].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[5].mustCoins! || levels[6].name == proverkaNext
+                                                  user!.balance! >= levels[5].mustCoins! ||
+                                                          levels[5].name == proverkaNext
                                                       ? '${levels[5].image}'
                                                       : '${levels[5].bwImage}',
                                                   levels[5].name ?? '',
                                                   user!.balance!,
                                                   levels[5].mustCoins!),
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[5].mustCoins! || levels[6].name == proverkaNext
-                                                      ? '${levels[5].image}'
-                                                      : '${levels[5].bwImage}',
-                                                  levels[5].name ?? '',
+                                                  user!.balance! >= levels[4].mustCoins! ||
+                                                          levels[4].name == proverkaNext
+                                                      ? '${levels[4].image}'
+                                                      : '${levels[4].bwImage}',
+                                                  levels[4].name ?? '',
                                                   user!.balance!,
-                                                  levels[5].mustCoins!),
+                                                  levels[4].mustCoins!),
+                                            ],
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          Row(
+                                            children: [
                                               firstPageItemScore(
-                                                  user!.balance! >= levels[5].mustCoins! || levels[6].name == proverkaNext
-                                                      ? '${levels[5].image}'
-                                                      : '${levels[5].bwImage}',
-                                                  levels[5].name ?? '',
+                                                  user!.balance! >= levels[8].mustCoins! ||
+                                                          levels[8].name == proverkaNext
+                                                      ? '${levels[8].image}'
+                                                      : '${levels[8].bwImage}',
+                                                  levels[8].name ?? '',
                                                   user!.balance!,
-                                                  levels[5].mustCoins!),
+                                                  levels[8].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[9].mustCoins! ||
+                                                          levels[9].name == proverkaNext
+                                                      ? '${levels[9].image}'
+                                                      : '${levels[9].bwImage}',
+                                                  levels[9].name ?? '',
+                                                  user!.balance!,
+                                                  levels[9].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[10].mustCoins! ||
+                                                          levels[10].name == proverkaNext
+                                                      ? '${levels[10].image}'
+                                                      : '${levels[10].bwImage}',
+                                                  levels[10].name ?? '',
+                                                  user!.balance!,
+                                                  levels[10].mustCoins!),
+                                              firstPageItemScore(
+                                                  user!.balance! >= levels[11].mustCoins! ||
+                                                          levels[11].name == proverkaNext
+                                                      ? '${levels[11].image}'
+                                                      : '${levels[11].bwImage}',
+                                                  levels[11].name ?? '',
+                                                  user!.balance!,
+                                                  levels[11].mustCoins!),
                                             ],
                                           ),
                                         ],
@@ -450,6 +482,44 @@ class _ScorePageState extends State<ScorePage> {
     });
   }
 
+  Widget _scorePicture(List<Levels>? levels, int balance) {
+    for (int i = 0; i < levels!.length; i++) {
+      if (levels[i + 1].mustCoins == null) {
+        return CachedNetworkImage(
+          progressIndicatorBuilder: (context, url, progress) {
+            return const CupertinoActivityIndicator();
+          },
+          imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
+          height: 113,
+          width: 113,
+          fit: BoxFit.fill,
+        );
+      } else {
+        if (balance >= levels[i].mustCoins! && balance < levels[i + 1].mustCoins!) {
+          return CachedNetworkImage(
+            progressIndicatorBuilder: (context, url, progress) {
+              return const CupertinoActivityIndicator();
+            },
+            imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
+            height: 113,
+            width: 113,
+            fit: BoxFit.fill,
+          );
+        } else if (balance >= levels.last.mustCoins!) {
+          return CachedNetworkImage(
+            progressIndicatorBuilder: (context, url, progress) {
+              return const CupertinoActivityIndicator();
+            },
+            imageUrl: '${levels.last.image}',
+            height: 42,
+            width: 42,
+          );
+        }
+      }
+    }
+    return const CupertinoActivityIndicator();
+  }
+
   Widget _loadingindicator() {
     return Container(
       color: Colors.white,
@@ -472,6 +542,10 @@ class _ScorePageState extends State<ScorePage> {
       width: 91.5,
       child: Column(
         children: [
+          if (title.length > 12)
+            const SizedBox(
+              height: 15,
+            ),
           SizedBox(
             height: 70,
             child: Stack(alignment: Alignment.center, children: [
@@ -498,7 +572,7 @@ class _ScorePageState extends State<ScorePage> {
               ),
             ]),
           ),
-          SizedBox(width: 75.w, height: 10.h),
+          SizedBox(width: 60.w, height: 5.h),
           SizedBox(
             height: 5,
             width: 53,
@@ -518,7 +592,9 @@ class _ScorePageState extends State<ScorePage> {
               child: Text(
                 textAlign: TextAlign.center,
                 title,
-                style: score >= mustCoins || title == proverkaNext ? CustomTextStyle.purple_12_w600 : CustomTextStyle.grey_12_w400,
+                style: score >= mustCoins || title == proverkaNext
+                    ? CustomTextStyle.purple_12_w600
+                    : CustomTextStyle.grey_12_w400,
               ),
             ),
           ),
