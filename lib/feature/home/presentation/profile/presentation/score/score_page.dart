@@ -133,7 +133,7 @@ class _ScorePageState extends State<ScorePage> {
                                       height: 10,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                      padding: EdgeInsets.symmetric(horizontal: 18.w),
                                       child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
@@ -143,7 +143,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 child: Column(
                                                   children: [
                                                     AutoSizeText(
-                                                      '${user!.balance!.toString()}\nГрейдов',
+                                                      '${user!.balance!.toString()}\nБаллов',
                                                       style: CustomTextStyle.white_26_w800,
                                                       textAlign: TextAlign.end,
                                                     ),
@@ -200,7 +200,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[2].mustCoins! &&
                                                   user!.balance! < levels[3].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 75.w,
                                                   child: AutoSizeText(
                                                     levels[2].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,

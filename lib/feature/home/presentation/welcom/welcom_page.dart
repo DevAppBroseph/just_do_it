@@ -168,8 +168,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                   CustomIconButton(
                                     onBackPressed: () {
                                       setState(() {
-                                          searchList = false;
-                                        });
+                                        searchList = false;
+                                      });
                                     },
                                     icon: SvgImg.arrowRight,
                                   ),
@@ -275,7 +275,7 @@ class _WelcomPageState extends State<WelcomPage> {
                   )
                 : Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric( vertical: 10.h),
+                      padding: EdgeInsets.symmetric(vertical: 0.h),
                       child: ListView(
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
@@ -299,13 +299,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                 );
                               }
                               return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pushNamed(AppRoute.profile);
                                   },
                                   child: Container(
-                                    height: 190.h,
+                                    height: 200.h,
                                     decoration: BoxDecoration(
                                       color: ColorStyles.whiteFFFFFF,
                                       borderRadius: BorderRadius.circular(30.r),
@@ -314,21 +314,21 @@ class _WelcomPageState extends State<WelcomPage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.only(right: 10.w, left: 10.w, top: 15),
+                                          padding: EdgeInsets.only(right: 10.w, left: 40.w, top: 15),
                                           child: SizedBox(
-                                            height: 90.h,
+                                            height: 100.h,
                                             child: Row(
                                               children: [
                                                 SizedBox(
-                                                  height: 68.h,
-                                                  width: 68.h,
+                                                  height: 70.h,
+                                                  width: 70.h,
                                                   child: Stack(
                                                     alignment: Alignment.center,
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () async {
-                                                          var image =
-                                                              await ImagePicker().pickImage(source: ImageSource.gallery);
+                                                          var image = await ImagePicker()
+                                                              .pickImage(source: ImageSource.gallery);
                                                           if (image != null) {
                                                             BlocProvider.of<ProfileBloc>(context).add(
                                                               UpdateProfilePhotoEvent(photo: image),
@@ -337,7 +337,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         },
                                                         child: ClipOval(
                                                           child: SizedBox.fromSize(
-                                                              size: Size.fromRadius(30.r),
+                                                              size: Size.fromRadius(40.r),
                                                               child: user!.photoLink == null
                                                                   ? Container(
                                                                       height: 60.h,
@@ -389,29 +389,29 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     ],
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                SizedBox(
-                                                  width: 190.w,
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text(
-                                                        'С возвращением,',
-                                                        style: CustomTextStyle.grey_12_w400,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: null,
-                                                      ),
-                                                      SizedBox(height: 8.h),
-                                                      AutoSizeText(
-                                                        '${bloc.user?.firstname} ${bloc.user?.lastname}',
-                                                        style: CustomTextStyle.black_24_w800,
-                                                        maxLines: 2,
-                                                      ),
-                                                    ],
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 20.w),
+                                                  child: SizedBox(
+                                                    width: 190.w,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          'С возвращением,',
+                                                          style: CustomTextStyle.grey_12_w400,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: null,
+                                                        ),
+                                                        SizedBox(height: 8.h),
+                                                        AutoSizeText(
+                                                          '${bloc.user?.firstname} ${bloc.user?.lastname}',
+                                                          style: CustomTextStyle.black_24_w800,
+                                                          maxLines: 2,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -421,38 +421,40 @@ class _WelcomPageState extends State<WelcomPage> {
                                         BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
                                           var reviews = BlocProvider.of<RatingBloc>(context).reviews;
                                           return Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              const SizedBox(
-                                                width: 25,
-                                              ),
                                               GestureDetector(
                                                 onTap: () {
                                                   Navigator.of(context).pushNamed(AppRoute.score);
                                                 },
                                                 child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    ScaleButton(
-                                                      onTap: () {
-                                                        Navigator.of(context).pushNamed(AppRoute.score);
-                                                      },
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 70.h,
-                                                        decoration: BoxDecoration(
-                                                          color: ColorStyles.greyF9F9F9,
-                                                          borderRadius: BorderRadius.circular(30.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Грейды',
-                                                            style: CustomTextStyle.purple_12_w400,
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(bottom: 3.h),
+                                                      child: ScaleButton(
+                                                        onTap: () {
+                                                          Navigator.of(context).pushNamed(AppRoute.score);
+                                                        },
+                                                        bound: 0.02,
+                                                        child: Container(
+                                                          height: 25.h,
+                                                          width: 70.h,
+                                                          decoration: BoxDecoration(
+                                                            color: ColorStyles.greyEAECEE,
+                                                            borderRadius: BorderRadius.circular(30.r),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Грейды',
+                                                              style: CustomTextStyle.purple_12_w400,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                    const SizedBox(
-                                                      height: 5,
+                                                     SizedBox(
+                                                      height: 10.h,
                                                     ),
                                                     Row(
                                                       children: [
@@ -465,8 +467,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   return const CupertinoActivityIndicator();
                                                                 },
                                                                 imageUrl: '${levels[0].bwImage}',
-                                                                height: 20,
-                                                                width: 20,
+                                                                height: 30,
+                                                                width: 30,
                                                               );
                                                             }
                                                             for (int i = 0; i < levels.length; i++) {
@@ -497,8 +499,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       return const CupertinoActivityIndicator();
                                                                     },
                                                                     imageUrl: '${levels.last.image}',
-                                                                    height: 42,
-                                                                    width: 42,
+                                                                    height: 30,
+                                                                    width: 30,
                                                                   );
                                                                 }
                                                               }
@@ -518,8 +520,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   ],
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                width: 10,
+                                              SizedBox(
+                                                width: 20.w,
                                               ),
                                               GestureDetector(
                                                 onTap: () {
@@ -528,39 +530,42 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    ScaleButton(
-                                                      onTap: () {
-                                                        Navigator.of(context).pushNamed(AppRoute.rating);
-                                                      },
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 90.h,
-                                                        decoration: BoxDecoration(
-                                                          color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                                          borderRadius: BorderRadius.circular(30.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              Text(
-                                                                'Рейтинг',
-                                                                style: CustomTextStyle.gold_12_w400,
-                                                              ),
-                                                              SizedBox(width: 3.h),
-                                                              Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 12,
-                                                                    height: 12,
-                                                                    child: SvgPicture.asset(
-                                                                      'assets/icons/star.svg',
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(bottom: 7.5.h),
+                                                      child: ScaleButton(
+                                                        onTap: () {
+                                                          Navigator.of(context).pushNamed(AppRoute.rating);
+                                                        },
+                                                        bound: 0.02,
+                                                        child: Container(
+                                                          height: 25.h,
+                                                          width: 90.h,
+                                                          decoration: BoxDecoration(
+                                                            color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                                            borderRadius: BorderRadius.circular(30.r),
+                                                          ),
+                                                          child: Center(
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              children: [
+                                                                Text(
+                                                                  'Рейтинг',
+                                                                  style: CustomTextStyle.gold_12_w400,
+                                                                ),
+                                                                SizedBox(width: 3.h),
+                                                                Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 12,
+                                                                      height: 12,
+                                                                      child: SvgPicture.asset(
+                                                                        'assets/icons/star.svg',
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -568,18 +573,20 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     const SizedBox(
                                                       height: 10,
                                                     ),
-                                                    SizedBox(
-                                               
-                                                      child: Text(
-                                                        reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
-                                                        style: CustomTextStyle.gold_16_w600_171716,
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(bottom: 4.h),
+                                                      child: SizedBox(
+                                                        child: Text(
+                                                          reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                                          style: CustomTextStyle.gold_16_w600_171716,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                width: 10,
+                                              SizedBox(
+                                                width: 20.w,
                                               ),
                                               GestureDetector(
                                                 onTap: () {
@@ -588,34 +595,37 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    ScaleButton(
-                                                      onTap: () {
-                                                        Navigator.of(context).pushNamed(AppRoute.rating);
-                                                      },
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 75.h,
-                                                        decoration: BoxDecoration(
-                                                          color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                                          borderRadius: BorderRadius.circular(10.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Отзывы',
-                                                            style: CustomTextStyle.blue_12_w400,
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(bottom: 17.h),
+                                                      child: ScaleButton(
+                                                        onTap: () {
+                                                          Navigator.of(context).pushNamed(AppRoute.rating);
+                                                        },
+                                                        bound: 0.02,
+                                                        child: Container(
+                                                          height: 25.h,
+                                                          width: 75.h,
+                                                          decoration: BoxDecoration(
+                                                            color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                                            borderRadius: BorderRadius.circular(30.r),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Отзывы',
+                                                              style: CustomTextStyle.blue_12_w400,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      child: Text(
-                                                        '34',
-                                                        style: CustomTextStyle.blue_16_w600_171716,
-                                                        textAlign: TextAlign.left,
+                                                    Padding(
+                                                      padding:  EdgeInsets.only(bottom: 4.5.h),
+                                                      child: SizedBox(
+                                                        child: Text(
+                                                          '34',
+                                                          style: CustomTextStyle.blue_16_w600_171716,
+                                                          textAlign: TextAlign.left,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -642,7 +652,7 @@ class _WelcomPageState extends State<WelcomPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 15.h),
+                          SizedBox(height: 20.h),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),
                             child: Row(
@@ -775,7 +785,7 @@ class _WelcomPageState extends State<WelcomPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 20.h),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),
                             child: ScaleButton(
