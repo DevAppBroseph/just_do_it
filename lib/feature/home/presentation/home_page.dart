@@ -325,7 +325,7 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(
-          width: 51.w,
+          width: 50.5.w,
           height: 46.w,
           color: Colors.transparent,
           child: Stack(

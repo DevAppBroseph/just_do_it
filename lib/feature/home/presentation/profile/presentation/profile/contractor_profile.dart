@@ -81,8 +81,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }
   }
 
- 
-
   Future<String> getFilePath(uniqueFileName) async {
     String path = '';
 
@@ -132,11 +130,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
       setState(() {});
     }
   }
+
   bool proverka = true;
   @override
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-    
+
     return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileSuccessState) {
@@ -356,7 +355,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             log(proverka.toString());
                                             Future.delayed(const Duration(milliseconds: 500), () {
                                               widget.callBackFlag();
-                                              
                                             });
                                           }
 
@@ -367,40 +365,30 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
                                             );
                                           }
-
-                                          if (user!.balance! >= levels[0].mustCoins! &&
-                                              user!.balance! < levels[1].mustCoins!) {
-                                            return Text(
-                                              levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user!.balance! >= levels[1].mustCoins! &&
-                                              user!.balance! < levels[2].mustCoins!) {
-                                            return Text(
-                                              levels[1].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user!.balance! >= levels[2].mustCoins! &&
-                                              user!.balance! < levels[3].mustCoins!) {
-                                            return Text(
-                                              levels[2].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user!.balance! >= levels[3].mustCoins! &&
-                                              user!.balance! < levels[4].mustCoins!) {
-                                            return Text(
-                                              levels[3].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          if (user!.balance! >= levels[4].mustCoins!) {
-                                            return Text(
-                                              levels[4].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
+                                          for (int i = 0; i < levels.length; i++) {
+                                            if (levels[i + 1].mustCoins == null) {
+                                              return Text(
+                                                levels[i].name!,
+                                                style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                              );
+                                            } else {
+                                              if (user!.balance! >= levels[i].mustCoins! &&
+                                                  user!.balance! < levels[i + 1].mustCoins!) {
+                                                return Text(
+                                                  levels[i].name!,
+                                                  style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                                );
+                                              } else if (user!.balance! >= levels.last.mustCoins!) {
+                                                return CachedNetworkImage(
+                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                    return const CupertinoActivityIndicator();
+                                                  },
+                                                  imageUrl: '${levels.last.image}',
+                                                  height: 42,
+                                                  width: 42,
+                                                );
+                                              }
+                                            }
                                           }
                                         }
                                         return Container();
@@ -423,60 +411,38 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       width: 42,
                                     );
                                   }
-
-                                  if (user!.balance! >= levels[0].mustCoins! && user!.balance! < levels[1].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: '${levels[0].image}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[1].mustCoins! && user!.balance! < levels[2].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: levels[1].image != null ? '${levels[1].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[2].mustCoins! && user!.balance! < levels[3].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: levels[2].image != null ? '${levels[2].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[3].mustCoins! && user!.balance! < levels[4].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: levels[3].image != null ? '${levels[3].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
-                                  }
-                                  if (user!.balance! >= levels[4].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: levels[4].image != null ? '${levels[4].image}' : '',
-                                      height: 42,
-                                      width: 42,
-                                      fit: BoxFit.fill,
-                                    );
+                                  for (int i = 0; i < levels.length; i++) {
+                                    if (levels[i + 1].mustCoins == null) {
+                                      return CachedNetworkImage(
+                                        progressIndicatorBuilder: (context, url, progress) {
+                                          return const CupertinoActivityIndicator();
+                                        },
+                                        imageUrl: '${levels[i].image}',
+                                        height: 42,
+                                        width: 42,
+                                      );
+                                    } else {
+                                      if (user!.balance! >= levels[i].mustCoins! &&
+                                          user!.balance! < levels[i + 1].mustCoins!) {
+                                        return CachedNetworkImage(
+                                          progressIndicatorBuilder: (context, url, progress) {
+                                            return const CupertinoActivityIndicator();
+                                          },
+                                          imageUrl: '${levels[i].image}',
+                                          height: 42,
+                                          width: 42,
+                                        );
+                                      } else if (user!.balance! >= levels.last.mustCoins!) {
+                                        return CachedNetworkImage(
+                                          progressIndicatorBuilder: (context, url, progress) {
+                                            return const CupertinoActivityIndicator();
+                                          },
+                                          imageUrl: '${levels.last.image}',
+                                          height: 42,
+                                          width: 42,
+                                        );
+                                      }
+                                    }
                                   }
                                 }
                                 return Container();

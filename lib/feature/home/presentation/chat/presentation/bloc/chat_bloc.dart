@@ -87,7 +87,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
-    log('message _startSocket');
+    
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
@@ -125,7 +125,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } catch (e) {}
       },
       onDone: () {
-        log('message onDone');
+   
         _tryConnect();
       },
       cancelOnError: false,
@@ -133,7 +133,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _tryConnect() async {
-    log('message _tryConnect');
+
     await Future.delayed(const Duration(milliseconds: 1800));
     emit(ReconnectState());
   }
