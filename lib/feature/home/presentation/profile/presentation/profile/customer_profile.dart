@@ -280,7 +280,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                             BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
                               if (state is ScoreLoaded) {
                                 final levels = state.levels;
-                                if (1100 < levels![0].mustCoins!) {
+                                if (user.balance! < levels![0].mustCoins!) {
                                   return CachedNetworkImage(
                                     progressIndicatorBuilder: (context, url, progress) {
                                       return const CupertinoActivityIndicator();

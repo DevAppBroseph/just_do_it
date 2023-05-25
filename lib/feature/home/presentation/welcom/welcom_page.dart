@@ -19,6 +19,7 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
+import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
@@ -59,6 +60,7 @@ class _WelcomPageState extends State<WelcomPage> {
   void getScore() async {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
+    BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
   }
 
   void getHistoryList() async {
@@ -161,56 +163,68 @@ class _WelcomPageState extends State<WelcomPage> {
                                     ],
                                   ),
                         searchList
-                            ? SizedBox(
-                                width: 270.w,
-                                height: 36.h,
-                                child: CustomTextField(
-                                  onTap: () async {
-                                    setState(() {
-                                      searchList = true;
-                                    });
-                                    getHistoryList();
-                                  },
-                                  fillColor: ColorStyles.greyF7F7F8,
-                                  prefixIcon: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/icons/search1.svg',
-                                        height: 12.h,
-                                      ),
-                                    ],
+                            ? Row(
+                                children: [
+                                  CustomIconButton(
+                                    onBackPressed: () {
+                                      setState(() {
+                                          searchList = false;
+                                        });
+                                    },
+                                    icon: SvgImg.arrowRight,
                                   ),
-                                  onFieldSubmitted: (value) {
-                                    setState(() {
-                                      searchList = false;
-                                    });
-                                    Storage().setListHistory(value);
-                                    FocusScope.of(context).unfocus();
-                                    BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
-                                  },
-                                  onChanged: (value) {
-                                    if (value.isEmpty) {
-                                      getHistoryList();
-                                    }
-                                    List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
-                                    searchChoose.clear();
-                                    if (value.isNotEmpty) {
-                                      for (var element1 in activities) {
-                                        for (var element2 in element1.subcategory) {
-                                          if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
-                                              !searchChoose.contains(element2.description!.toLowerCase())) {
-                                            searchChoose.add(element2.description!);
+                                  SizedBox(
+                                    width: 230.w,
+                                    height: 36.h,
+                                    child: CustomTextField(
+                                      onTap: () async {
+                                        setState(() {
+                                          searchList = true;
+                                        });
+                                        getHistoryList();
+                                      },
+                                      fillColor: ColorStyles.greyF7F7F8,
+                                      prefixIcon: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/search1.svg',
+                                            height: 12.h,
+                                          ),
+                                        ],
+                                      ),
+                                      onFieldSubmitted: (value) {
+                                        setState(() {
+                                          searchList = false;
+                                        });
+                                        Storage().setListHistory(value);
+                                        FocusScope.of(context).unfocus();
+                                        BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
+                                      },
+                                      onChanged: (value) {
+                                        if (value.isEmpty) {
+                                          getHistoryList();
+                                        }
+                                        List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                        searchChoose.clear();
+                                        if (value.isNotEmpty) {
+                                          for (var element1 in activities) {
+                                            for (var element2 in element1.subcategory) {
+                                              if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                                  !searchChoose.contains(element2.description!.toLowerCase())) {
+                                                searchChoose.add(element2.description!);
+                                              }
+                                            }
                                           }
                                         }
-                                      }
-                                    }
-                                    setState(() {});
-                                  },
-                                  hintText: 'Поиск',
-                                  textEditingController: searchController,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
-                                ),
+                                        setState(() {});
+                                      },
+                                      hintText: 'Поиск',
+                                      textEditingController: searchController,
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                                    ),
+                                  ),
+                                ],
                               )
                             : GestureDetector(
                                 onTap: () async {
@@ -260,212 +274,203 @@ class _WelcomPageState extends State<WelcomPage> {
                     searchChoose,
                   )
                 : Expanded(
-                    child: ListView(
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        Container(height: 30.h, color: ColorStyles.greyF7F7F8),
-                        BlocBuilder<ProfileBloc, ProfileState>(
-                          builder: (context, snapshot) {
-                            final bloc = BlocProvider.of<ProfileBloc>(context);
-                            if (bloc.user == null) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 80.w),
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
-                                  child: Center(
-                                    child: Text(
-                                      'justdoit'.toUpperCase(),
-                                      style: CustomTextStyle.black_39_w900_171716,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric( vertical: 10.h),
+                      child: ListView(
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          Container(height: 30.h, color: ColorStyles.greyF7F7F8),
+                          BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, snapshot) {
+                              final bloc = BlocProvider.of<ProfileBloc>(context);
+                              if (bloc.user == null) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 40.h, bottom: 22.h),
+                                    child: Center(
+                                      child: Text(
+                                        'justdoit'.toUpperCase(),
+                                        style: CustomTextStyle.black_39_w900_171716,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(AppRoute.profile);
-                                },
-                                child: Container(
-                                  height: 170,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteFFFFFF,
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 10.w, left: 10.w),
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 68.h,
-                                                width: 68.h,
-                                                child: Stack(
-                                                  alignment: Alignment.center,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        var image =
-                                                            await ImagePicker().pickImage(source: ImageSource.gallery);
-                                                        if (image != null) {
-                                                          BlocProvider.of<ProfileBloc>(context).add(
-                                                            UpdateProfilePhotoEvent(photo: image),
-                                                          );
-                                                        }
-                                                      },
-                                                      child: ClipOval(
-                                                        child: SizedBox.fromSize(
-                                                            size: Size.fromRadius(30.r),
-                                                            child: user!.photoLink == null
-                                                                ? Container(
-                                                                    height: 60.h,
-                                                                    width: 60.h,
-                                                                    padding: EdgeInsets.all(10.h),
-                                                                    decoration: const BoxDecoration(
-                                                                      color: ColorStyles.shadowFC6554,
-                                                                    ),
-                                                                    child: Image.asset('assets/images/camera.png'),
-                                                                  )
-                                                                : CachedNetworkImage(
-                                                                    imageUrl: user!.photoLink!.contains(server)
-                                                                        ? user!.photoLink!
-                                                                        : server + user!.photoLink!,
-                                                                    fit: BoxFit.cover,
-                                                                  )),
-                                                      ),
-                                                    ),
-                                                    if (user!.photoLink != null)
-                                                      Align(
-                                                        alignment: Alignment.topRight,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            user!.photo = null;
-                                                            user!.photoLink = null;
-                                                            BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                );
+                              }
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(AppRoute.profile);
+                                  },
+                                  child: Container(
+                                    height: 190.h,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.whiteFFFFFF,
+                                      borderRadius: BorderRadius.circular(30.r),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10.w, left: 10.w, top: 15),
+                                          child: SizedBox(
+                                            height: 90.h,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 68.h,
+                                                  width: 68.h,
+                                                  child: Stack(
+                                                    alignment: Alignment.center,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () async {
+                                                          var image =
+                                                              await ImagePicker().pickImage(source: ImageSource.gallery);
+                                                          if (image != null) {
                                                             BlocProvider.of<ProfileBloc>(context).add(
-                                                              UpdateProfilePhotoEvent(photo: null),
+                                                              UpdateProfilePhotoEvent(photo: image),
                                                             );
-                                                            setState(() {});
-                                                          },
-                                                          child: Container(
-                                                            height: 20.h,
-                                                            width: 20.h,
-                                                            decoration: BoxDecoration(
-                                                              boxShadow: const [BoxShadow(color: Colors.black)],
-                                                              borderRadius: BorderRadius.circular(100.r),
-                                                              color: Colors.white,
-                                                            ),
-                                                            child: Center(
-                                                              child: Icon(
-                                                                Icons.close,
-                                                                size: 10.h,
+                                                          }
+                                                        },
+                                                        child: ClipOval(
+                                                          child: SizedBox.fromSize(
+                                                              size: Size.fromRadius(30.r),
+                                                              child: user!.photoLink == null
+                                                                  ? Container(
+                                                                      height: 60.h,
+                                                                      width: 60.h,
+                                                                      padding: EdgeInsets.all(10.h),
+                                                                      decoration: const BoxDecoration(
+                                                                        color: ColorStyles.shadowFC6554,
+                                                                      ),
+                                                                      child: Image.asset('assets/images/camera.png'),
+                                                                    )
+                                                                  : CachedNetworkImage(
+                                                                      imageUrl: user!.photoLink!.contains(server)
+                                                                          ? user!.photoLink!
+                                                                          : server + user!.photoLink!,
+                                                                      fit: BoxFit.cover,
+                                                                    )),
+                                                        ),
+                                                      ),
+                                                      if (user!.photoLink != null)
+                                                        Align(
+                                                          alignment: Alignment.topRight,
+                                                          child: GestureDetector(
+                                                            onTap: () {
+                                                              user!.photo = null;
+                                                              user!.photoLink = null;
+                                                              BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                                              BlocProvider.of<ProfileBloc>(context).add(
+                                                                UpdateProfilePhotoEvent(photo: null),
+                                                              );
+                                                              setState(() {});
+                                                            },
+                                                            child: Container(
+                                                              height: 20.h,
+                                                              width: 20.h,
+                                                              decoration: BoxDecoration(
+                                                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                                                borderRadius: BorderRadius.circular(100.r),
+                                                                color: Colors.white,
+                                                              ),
+                                                              child: Center(
+                                                                child: Icon(
+                                                                  Icons.close,
+                                                                  size: 10.h,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      )
-                                                  ],
+                                                        )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              SizedBox(
-                                                width: 190.w,
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'С возвращением,',
-                                                      style: CustomTextStyle.grey_12_w400,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: null,
-                                                    ),
-                                                    SizedBox(height: 8.h),
-                                                    AutoSizeText(
-                                                      '${bloc.user?.firstname} ${bloc.user?.lastname}',
-                                                      style: CustomTextStyle.black_24_w800,
-                                                      maxLines: 2,
-                                                    ),
-                                                  ],
+                                                const SizedBox(
+                                                  width: 5,
                                                 ),
-                                              ),
-                                            ],
+                                                SizedBox(
+                                                  width: 190.w,
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        'С возвращением,',
+                                                        style: CustomTextStyle.grey_12_w400,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: null,
+                                                      ),
+                                                      SizedBox(height: 8.h),
+                                                      AutoSizeText(
+                                                        '${bloc.user?.firstname} ${bloc.user?.lastname}',
+                                                        style: CustomTextStyle.black_24_w800,
+                                                        maxLines: 2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-                                        var reviews = BlocProvider.of<RatingBloc>(context).reviews;
-                                        return Row(
-                                          children: [
-                                            const SizedBox(
-                                              width: 25,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(AppRoute.score);
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  ScaleButton(
-                                                    onTap: () {
-                                                      Navigator.of(context).pushNamed(AppRoute.score);
-                                                    },
-                                                    bound: 0.02,
-                                                    child: Container(
-                                                      height: 25.h,
-                                                      width: 70.h,
-                                                      decoration: BoxDecoration(
-                                                        color: ColorStyles.greyF9F9F9,
-                                                        borderRadius: BorderRadius.circular(30.r),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Грейды',
-                                                          style: CustomTextStyle.purple_12_w400,
+                                        BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+                                          var reviews = BlocProvider.of<RatingBloc>(context).reviews;
+                                          return Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 25,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).pushNamed(AppRoute.score);
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    ScaleButton(
+                                                      onTap: () {
+                                                        Navigator.of(context).pushNamed(AppRoute.score);
+                                                      },
+                                                      bound: 0.02,
+                                                      child: Container(
+                                                        height: 25.h,
+                                                        width: 70.h,
+                                                        decoration: BoxDecoration(
+                                                          color: ColorStyles.greyF9F9F9,
+                                                          borderRadius: BorderRadius.circular(30.r),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Грейды',
+                                                            style: CustomTextStyle.purple_12_w400,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                                                        if (state is ScoreLoaded) {
-                                                          final levels = state.levels;
-                                                          if (bloc.user!.balance! < levels![0].mustCoins!) {
-                                                            return CachedNetworkImage(
-                                                              progressIndicatorBuilder: (context, url, progress) {
-                                                                return const CupertinoActivityIndicator();
-                                                              },
-                                                              imageUrl: '${levels[0].bwImage}',
-                                                              height: 20,
-                                                              width: 20,
-                                                            );
-                                                          }
-                                                          for (int i = 0; i < levels.length; i++) {
-                                                            if (levels[i + 1].mustCoins == null) {
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                                          if (state is ScoreLoaded) {
+                                                            final levels = state.levels;
+                                                            if (bloc.user!.balance! < levels![0].mustCoins!) {
                                                               return CachedNetworkImage(
                                                                 progressIndicatorBuilder: (context, url, progress) {
                                                                   return const CupertinoActivityIndicator();
                                                                 },
-                                                                imageUrl: '${levels[i].image}',
-                                                                height: 30,
-                                                                width: 30,
+                                                                imageUrl: '${levels[0].bwImage}',
+                                                                height: 20,
+                                                                width: 20,
                                                               );
-                                                            } else {
-                                                              if (bloc.user!.balance! >= levels[i].mustCoins! &&
-                                                                  bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                            }
+                                                            for (int i = 0; i < levels.length; i++) {
+                                                              if (levels[i + 1].mustCoins == null) {
                                                                 return CachedNetworkImage(
                                                                   progressIndicatorBuilder: (context, url, progress) {
                                                                     return const CupertinoActivityIndicator();
@@ -474,349 +479,360 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   height: 30,
                                                                   width: 30,
                                                                 );
-                                                              } else if (bloc.user!.balance! >= levels.last.mustCoins!) {
-                                                                return CachedNetworkImage(
-                                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                                    return const CupertinoActivityIndicator();
-                                                                  },
-                                                                  imageUrl: '${levels.last.image}',
-                                                                  height: 42,
-                                                                  width: 42,
-                                                                );
+                                                              } else {
+                                                                if (bloc.user!.balance! >= levels[i].mustCoins! &&
+                                                                    bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                                  return CachedNetworkImage(
+                                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                                      return const CupertinoActivityIndicator();
+                                                                    },
+                                                                    imageUrl: '${levels[i].image}',
+                                                                    height: 30,
+                                                                    width: 30,
+                                                                  );
+                                                                } else if (bloc.user!.balance! >=
+                                                                    levels.last.mustCoins!) {
+                                                                  return CachedNetworkImage(
+                                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                                      return const CupertinoActivityIndicator();
+                                                                    },
+                                                                    imageUrl: '${levels.last.image}',
+                                                                    height: 42,
+                                                                    width: 42,
+                                                                  );
+                                                                }
                                                               }
                                                             }
                                                           }
-                                                        }
-                                                        return Container();
-                                                      }),
-                                                      const SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                        bloc.user?.balance.toString() ?? '0',
-                                                        style: CustomTextStyle.purple_15_w600,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                          return Container();
+                                                        }),
+                                                        const SizedBox(
+                                                          width: 4,
+                                                        ),
+                                                        Text(
+                                                          bloc.user?.balance.toString() ?? '0',
+                                                          style: CustomTextStyle.purple_15_w600,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(AppRoute.rating);
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  ScaleButton(
-                                                    onTap: () {
-                                                      Navigator.of(context).pushNamed(AppRoute.rating);
-                                                    },
-                                                    bound: 0.02,
-                                                    child: Container(
-                                                      height: 25.h,
-                                                      width: 90.h,
-                                                      decoration: BoxDecoration(
-                                                        color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                                        borderRadius: BorderRadius.circular(30.r),
-                                                      ),
-                                                      child: Center(
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            Text(
-                                                              'Рейтинг',
-                                                              style: CustomTextStyle.gold_12_w400,
-                                                            ),
-                                                            SizedBox(width: 3.h),
-                                                            Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: 12,
-                                                                  height: 12,
-                                                                  child: SvgPicture.asset(
-                                                                    'assets/icons/star.svg',
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                                },
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    ScaleButton(
+                                                      onTap: () {
+                                                        Navigator.of(context).pushNamed(AppRoute.rating);
+                                                      },
+                                                      bound: 0.02,
+                                                      child: Container(
+                                                        height: 25.h,
+                                                        width: 90.h,
+                                                        decoration: BoxDecoration(
+                                                          color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                                          borderRadius: BorderRadius.circular(30.r),
+                                                        ),
+                                                        child: Center(
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Text(
+                                                                'Рейтинг',
+                                                                style: CustomTextStyle.gold_12_w400,
+                                                              ),
+                                                              SizedBox(width: 3.h),
+                                                              Row(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    width: 12,
+                                                                    height: 12,
+                                                                    child: SvgPicture.asset(
+                                                                      'assets/icons/star.svg',
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 55,
-                                                    child: Text(
-                                                      reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
-                                                      style: CustomTextStyle.gold_16_w600_171716,
+                                                    const SizedBox(
+                                                      height: 10,
                                                     ),
-                                                  ),
-                                                ],
+                                                    SizedBox(
+                                               
+                                                      child: Text(
+                                                        reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                                        style: CustomTextStyle.gold_16_w600_171716,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                                },
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    ScaleButton(
+                                                      onTap: () {
+                                                        Navigator.of(context).pushNamed(AppRoute.rating);
+                                                      },
+                                                      bound: 0.02,
+                                                      child: Container(
+                                                        height: 25.h,
+                                                        width: 75.h,
+                                                        decoration: BoxDecoration(
+                                                          color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                                          borderRadius: BorderRadius.circular(10.r),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Отзывы',
+                                                            style: CustomTextStyle.blue_12_w400,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      child: Text(
+                                                        '34',
+                                                        style: CustomTextStyle.blue_16_w600_171716,
+                                                        textAlign: TextAlign.left,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 24.w),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Посмотреть как:',
+                                  style: CustomTextStyle.black_18_w800,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 15.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 25.w),
+                            child: Row(
+                              children: [
+                                ScaleButton(
+                                  bound: 0.02,
+                                  onTap: () => widget.onSelect(0),
+                                  child: Container(
+                                    height: ((MediaQuery.of(context).size.width * 47) / 100),
+                                    width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.whiteFFFFFF,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: ColorStyles.shadowFC6554,
+                                          offset: const Offset(0, 4),
+                                          blurRadius: 45.r,
+                                        )
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 20.h, left: 43, top: 20),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Image.asset(
+                                              'assets/images/contractor1.png',
+                                              height: 90.h,
                                             ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(AppRoute.rating);
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 20),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  ScaleButton(
-                                                    onTap: () {
-                                                      Navigator.of(context).pushNamed(AppRoute.rating);
-                                                    },
-                                                    bound: 0.02,
-                                                    child: Container(
-                                                      height: 25.h,
-                                                      width: 75.h,
-                                                      decoration: BoxDecoration(
-                                                        color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                                        borderRadius: BorderRadius.circular(10.r),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Отзывы',
-                                                          style: CustomTextStyle.blue_12_w400,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                  Text(
+                                                    'Заказчик',
+                                                    style: CustomTextStyle.black_15_bold,
                                                   ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 45,
-                                                    child: Text(
-                                                      '34',
-                                                      style: CustomTextStyle.blue_16_w600_171716,
-                                                      textAlign: TextAlign.left,
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 10, top: 3),
+                                                    child: Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      color: ColorStyles.greyBDBDBD,
+                                                      size: 12.h,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      }),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 18.h),
-                        Padding(
-                          padding: EdgeInsets.only(left: 24.w),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Посмотреть как:',
-                                style: CustomTextStyle.black_18_w800,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.w),
-                          child: Row(
-                            children: [
-                              ScaleButton(
-                                bound: 0.02,
-                                onTap: () => widget.onSelect(0),
-                                child: Container(
-                                  height: ((MediaQuery.of(context).size.width * 47) / 100),
-                                  width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteFFFFFF,
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ColorStyles.shadowFC6554,
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 45.r,
-                                      )
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(bottom: 20.h, left: 20, top: 20),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Image.asset(
-                                            'assets/images/contractor1.png',
-                                            height: 90.h,
+                                              Text(
+                                                'Размещай задания',
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 20),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Заказчик',
-                                                  style: CustomTextStyle.black_15_bold,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 10, top: 3),
-                                                  child: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    color: ColorStyles.greyBDBDBD,
-                                                    size: 12.h,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              'Размещай задания',
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              ScaleButton(
-                                bound: 0.02,
-                                onTap: () => widget.onSelect(1),
-                                child: Container(
-                                  height: ((MediaQuery.of(context).size.width * 47) / 100),
-                                  width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteFFFFFF,
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ColorStyles.shadowFC6554,
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 45.r,
-                                      )
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(bottom: 20.h, left: 20, top: 20),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Image.asset(
-                                            'assets/images/customer1.png',
-                                            height: 90.h,
+                                const Spacer(),
+                                ScaleButton(
+                                  bound: 0.02,
+                                  onTap: () => widget.onSelect(1),
+                                  child: Container(
+                                    height: ((MediaQuery.of(context).size.width * 47) / 100),
+                                    width: ((MediaQuery.of(context).size.width * 47) / 100) - 25.w,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.whiteFFFFFF,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: ColorStyles.shadowFC6554,
+                                          offset: const Offset(0, 4),
+                                          blurRadius: 45.r,
+                                        )
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 20.h, left: 33, top: 20),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Image.asset(
+                                              'assets/images/customer1.png',
+                                              height: 90.h,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 20),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Исполнитель',
-                                                  style: CustomTextStyle.black_15_bold,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 10, top: 3),
-                                                  child: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    color: ColorStyles.greyBDBDBD,
-                                                    size: 12.h,
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 20),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Исполнитель',
+                                                    style: CustomTextStyle.black_15_bold,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              'Выполняй работу',
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ],
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 10, top: 3),
+                                                    child: Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      color: ColorStyles.greyBDBDBD,
+                                                      size: 12.h,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                'Выполняй работу',
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 30.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.w),
-                          child: ScaleButton(
-                            duration: const Duration(milliseconds: 50),
-                            bound: 0.01,
-                            child: SizedBox(
-                              height: 85.h,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 60.h,
-                                    child: CupertinoCard(
-                                      onPressed: () {
-                                        showLoaderWrapperWhite(context);
-                                        Navigator.of(context).pushNamed(AppRoute.about);
-                                        Future.delayed(const Duration(seconds: 1), () {
-                                          Loader.hide();
-                                        });
-                                      },
-                                      radius: BorderRadius.circular(25.r),
-                                      color: ColorStyles.yellowFFD70A,
-                                      margin: EdgeInsets.zero,
-                                      elevation: 0,
-                                      decoration: BoxDecoration(
+                          SizedBox(height: 10.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 25.w),
+                            child: ScaleButton(
+                              duration: const Duration(milliseconds: 50),
+                              bound: 0.01,
+                              child: SizedBox(
+                                height: 65.h,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 45.h,
+                                      child: CupertinoCard(
+                                        onPressed: () {
+                                          showLoaderWrapperWhite(context);
+                                          Navigator.of(context).pushNamed(AppRoute.about);
+                                          Future.delayed(const Duration(seconds: 1), () {
+                                            Loader.hide();
+                                          });
+                                        },
+                                        radius: BorderRadius.circular(25.r),
                                         color: ColorStyles.yellowFFD70A,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: ColorStyles.shadowFC6554,
-                                            offset: const Offset(0, -4),
-                                            blurRadius: 55.r,
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                        child: Row(
-                                          children: [
-                                            const Spacer(),
-                                            Text(
-                                              'Узнай больше о проекте!',
-                                              style: CustomTextStyle.black_16_w600_171716,
-                                            ),
-                                            const Spacer(),
-                                            SvgPicture.asset('assets/icons/arrow-right1.svg')
+                                        margin: EdgeInsets.zero,
+                                        elevation: 0,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.yellowFFD70A,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: ColorStyles.shadowFC6554,
+                                              offset: const Offset(0, -4),
+                                              blurRadius: 55.r,
+                                            )
                                           ],
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                          child: Row(
+                                            children: [
+                                              const Spacer(),
+                                              Text(
+                                                'Узнай больше о проекте!',
+                                                style: CustomTextStyle.black_16_w600_171716,
+                                              ),
+                                              const Spacer(),
+                                              SvgPicture.asset('assets/icons/arrow-right1.svg')
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   )
           ],
