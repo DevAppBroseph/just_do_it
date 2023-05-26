@@ -677,7 +677,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     child: Column(
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.only(bottom: 20.h, left: 43, top: 20),
+                                          padding: EdgeInsets.only(bottom: 20.h, left: 40, top: 20),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Image.asset(
@@ -740,7 +740,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     child: Column(
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.only(bottom: 20.h, left: 33, top: 20),
+                                          padding: EdgeInsets.only(bottom: 20.h, left: 30, top: 20),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Image.asset(
