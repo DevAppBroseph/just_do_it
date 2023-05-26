@@ -467,8 +467,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   return const CupertinoActivityIndicator();
                                                                 },
                                                                 imageUrl: '${levels[0].bwImage}',
-                                                                height: 30,
-                                                                width: 30,
+                                                                height: 30.h,
+                                                                width: 30.w,
                                                               );
                                                             }
                                                             for (int i = 0; i < levels.length; i++) {
@@ -478,8 +478,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                     return const CupertinoActivityIndicator();
                                                                   },
                                                                   imageUrl: '${levels[i].image}',
-                                                                  height: 30,
-                                                                  width: 30,
+                                                                  height: 30.h,
+                                                                  width: 30.w,
                                                                 );
                                                               } else {
                                                                 if (bloc.user!.balance! >= levels[i].mustCoins! &&
@@ -489,8 +489,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       return const CupertinoActivityIndicator();
                                                                     },
                                                                     imageUrl: '${levels[i].image}',
-                                                                    height: 30,
-                                                                    width: 30,
+                                                                    height: 30.h,
+                                                                    width: 30.w,
                                                                   );
                                                                 } else if (bloc.user!.balance! >=
                                                                     levels.last.mustCoins!) {
@@ -499,8 +499,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       return const CupertinoActivityIndicator();
                                                                     },
                                                                     imageUrl: '${levels.last.image}',
-                                                                    height: 30,
-                                                                    width: 30,
+                                                                    height: 30.h,
+                                                                    width: 30.w,
                                                                   );
                                                                 }
                                                               }
