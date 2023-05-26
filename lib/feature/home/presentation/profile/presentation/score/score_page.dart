@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +34,8 @@ class _ScorePageState extends State<ScorePage> {
     super.initState();
   }
 
-  String? proverka;
-  String? proverkaNext;
+  String? proverka = '';
+  String? proverkaNext = '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +43,34 @@ class _ScorePageState extends State<ScorePage> {
     return BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
       if (state is ScoreLoaded) {
         final levels = state.levels;
-        for (var element in levels!) {
-          if (user!.balance! >= element.mustCoins!) {
-            proverka = element.name;
+        for (int i = 0; i < levels!.length; i++) {
+          if (user!.balance! >= levels[i].mustCoins!) {
+            proverka = levels[i].name;
             log(proverka.toString());
+          } else if (user!.balance! <= levels[0].mustCoins!) {
+            proverka = levels[0].name;
+            log(proverka.toString());
+            break;
           }
         }
         for (int i = 0; i < levels.length; i++) {
-          if (user!.balance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
+          if (user!.balance! >= levels.last.mustCoins!) {
+            proverkaNext = levels.last.name;
+            log(proverka.toString());
+            break;
+          }
+          else if (1300 <= levels[0].mustCoins!) {
+            proverkaNext = levels[0].name;
+            log(proverka.toString());
+            break;
+          }else if (user!.balance! >= levels.last.mustCoins!) {
+            proverkaNext = levels.last.name;
+            log(proverka.toString());
+            break;
+          } else if (user!.balance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
             proverkaNext = levels[i + 1].name;
             log(proverkaNext.toString());
-          }
+          } 
         }
         return user?.balance != null
             ? MediaQuery(
@@ -72,7 +90,7 @@ class _ScorePageState extends State<ScorePage> {
                             Stack(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 34.w, right: 28.w),
+                                  padding: EdgeInsets.only(left: 0.w, right: 35.w),
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Image.asset(
@@ -84,7 +102,7 @@ class _ScorePageState extends State<ScorePage> {
                                   children: [
                                     SizedBox(height: 60.h),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 35.w, right: 28.w),
+                                      padding: EdgeInsets.only(left: 0.w, right: 30.w),
                                       child: SizedBox(
                                         child: Stack(
                                           alignment: Alignment.centerLeft,
@@ -98,11 +116,14 @@ class _ScorePageState extends State<ScorePage> {
                                                 ),
                                               ],
                                             ),
-                                            CustomIconButton(
-                                              onBackPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              icon: SvgImg.arrowRight,
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 20.w),
+                                              child: CustomIconButton(
+                                                onBackPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                icon: SvgImg.arrowRight,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -112,7 +133,7 @@ class _ScorePageState extends State<ScorePage> {
                                       height: 10,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                      padding: EdgeInsets.symmetric(horizontal: 18.w),
                                       child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
@@ -121,16 +142,16 @@ class _ScorePageState extends State<ScorePage> {
                                               SizedBox(
                                                 child: Column(
                                                   children: [
-                                                    Text(
-                                                      '${user!.balance!.toString()}\nГрейдов',
+                                                    AutoSizeText(
+                                                      '${user!.balance!.toString()}\nБаллов',
                                                       style: CustomTextStyle.white_26_w800,
                                                       textAlign: TextAlign.end,
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                width: 25,
+                                              SizedBox(
+                                                width: 15.w,
                                               ),
                                               if (user!.balance! < levels[0].mustCoins!)
                                                 CachedNetworkImage(
@@ -138,19 +159,29 @@ class _ScorePageState extends State<ScorePage> {
                                                     return const CupertinoActivityIndicator();
                                                   },
                                                   imageUrl: levels[0].bwImage != null ? '${levels[0].bwImage}' : '',
-                                                  height: 113,
-                                                  width: 113,
+                                                  height: 113.h,
+                                                  width: 113.w,
                                                   fit: BoxFit.fill,
                                                 ),
+                                              if (user!.balance! >= levels[0].mustCoins!)
                                               _scorePicture(levels, user!.balance!),
-                                              const SizedBox(
-                                                width: 25,
+                                              SizedBox(
+                                                width: 15.w,
                                               ),
+                                              if (user!.balance! < levels[0].mustCoins!)
+                                                SizedBox(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
+                                                    levels[0].name ?? '',
+                                                    style: CustomTextStyle.white_26_w800,
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
                                               if (user!.balance! >= levels[0].mustCoins! &&
                                                   user!.balance! < levels[1].mustCoins!)
                                                 SizedBox(
-                                                  width: 60,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[0].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -159,8 +190,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[1].mustCoins! &&
                                                   user!.balance! < levels[2].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[1].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -169,8 +200,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[2].mustCoins! &&
                                                   user!.balance! < levels[3].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 75.w,
+                                                  child: AutoSizeText(
                                                     levels[2].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -179,8 +210,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[3].mustCoins! &&
                                                   user!.balance! < levels[4].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[3].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -189,8 +220,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[4].mustCoins! &&
                                                   user!.balance! < levels[5].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[4].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -199,8 +230,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[5].mustCoins! &&
                                                   user!.balance! < levels[6].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[5].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -209,8 +240,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[6].mustCoins! &&
                                                   user!.balance! < levels[7].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[6].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -219,8 +250,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[7].mustCoins! &&
                                                   user!.balance! < levels[8].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[7].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -229,8 +260,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[8].mustCoins! &&
                                                   user!.balance! < levels[9].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[8].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -239,8 +270,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[9].mustCoins! &&
                                                   user!.balance! < levels[10].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[9].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -249,8 +280,8 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[10].mustCoins! &&
                                                   user!.balance! < levels[11].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[10].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -258,8 +289,8 @@ class _ScorePageState extends State<ScorePage> {
                                                 ),
                                               if (user!.balance! >= levels[11].mustCoins!)
                                                 SizedBox(
-                                                  width: 110,
-                                                  child: Text(
+                                                  width: 113.w,
+                                                  child: AutoSizeText(
                                                     levels[11].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
                                                     textAlign: TextAlign.start,
@@ -288,7 +319,7 @@ class _ScorePageState extends State<ScorePage> {
                                         page == 1
                                             ? 'Сколько уровней я могу достичь?'
                                             : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
-                                        style: CustomTextStyle.white_12_w400.copyWith(
+                                        style: CustomTextStyle.white_14_w400.copyWith(
                                           decoration: TextDecoration.underline,
                                           decorationStyle: TextDecorationStyle.dashed,
                                         ),
@@ -315,7 +346,7 @@ class _ScorePageState extends State<ScorePage> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
                                     child: Align(
-                                      alignment: Alignment.bottomCenter,
+                                      alignment: Alignment.center,
                                       child: Image.asset(
                                         'assets/images/group.png',
                                       ),
@@ -399,7 +430,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[4].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 30.h),
+                                          SizedBox(height: 20.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -484,25 +515,15 @@ class _ScorePageState extends State<ScorePage> {
 
   Widget _scorePicture(List<Levels>? levels, int balance) {
     for (int i = 0; i < levels!.length; i++) {
-      if (levels[i + 1].mustCoins == null) {
-        return CachedNetworkImage(
-          progressIndicatorBuilder: (context, url, progress) {
-            return const CupertinoActivityIndicator();
-          },
-          imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
-          height: 113,
-          width: 113,
-          fit: BoxFit.fill,
-        );
-      } else {
+      if (levels[i].mustCoins != null) {
         if (balance >= levels[i].mustCoins! && balance < levels[i + 1].mustCoins!) {
           return CachedNetworkImage(
             progressIndicatorBuilder: (context, url, progress) {
               return const CupertinoActivityIndicator();
             },
             imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
-            height: 113,
-            width: 113,
+            height: 113.h,
+            width: 113.w,
             fit: BoxFit.fill,
           );
         } else if (balance >= levels.last.mustCoins!) {
@@ -511,10 +532,21 @@ class _ScorePageState extends State<ScorePage> {
               return const CupertinoActivityIndicator();
             },
             imageUrl: '${levels.last.image}',
-            height: 42,
-            width: 42,
+            height: 113.h,
+            width: 113.w,
+            fit: BoxFit.fill,
           );
         }
+      } else {
+        return CachedNetworkImage(
+          progressIndicatorBuilder: (context, url, progress) {
+            return const CupertinoActivityIndicator();
+          },
+          imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
+          height: 113.h,
+          width: 113.w,
+          fit: BoxFit.fill,
+        );
       }
     }
     return const CupertinoActivityIndicator();
@@ -539,21 +571,21 @@ class _ScorePageState extends State<ScorePage> {
       }
     }
     return SizedBox(
-      width: 91.5,
+      width: 83.5.w,
       child: Column(
         children: [
           if (title.length > 12)
-            const SizedBox(
-              height: 15,
+            SizedBox(
+              height: 15.h,
             ),
           SizedBox(
-            height: 70,
+            height: 70.h,
             child: Stack(alignment: Alignment.center, children: [
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  height: 57,
-                  width: 57,
+                  height: 57.h,
+                  width: 57.w,
                   decoration: BoxDecoration(
                     color: colorBoxDecoration(score, mustCoins, title),
                     borderRadius: BorderRadius.circular(30),
@@ -563,8 +595,8 @@ class _ScorePageState extends State<ScorePage> {
               Align(
                 alignment: Alignment.topCenter,
                 child: SizedBox(
-                  height: 55,
-                  width: 55,
+                  height: 55.h,
+                  width: 55.w,
                   child: Image.network(
                     icon,
                   ),
@@ -574,8 +606,8 @@ class _ScorePageState extends State<ScorePage> {
           ),
           SizedBox(width: 60.w, height: 5.h),
           SizedBox(
-            height: 5,
-            width: 53,
+            height: 5.h,
+            width: 53.w,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: LinearProgressIndicator(
