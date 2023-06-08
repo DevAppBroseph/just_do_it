@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
@@ -88,14 +90,11 @@ class _AboutProjectState extends State<AboutProject> {
                             Column(
                               children: [
                                 Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 50.w),
+                                  padding: EdgeInsets.symmetric(horizontal: 50.w),
                                   child: Center(
                                     child: Text(
                                       'jobyfine'.toUpperCase(),
-                                      style: CustomTextStyle
-                                          .black_39_w900_171716
-                                          .copyWith(color: ColorStyles.black),
+                                      style: CustomTextStyle.black_39_w900_171716.copyWith(color: ColorStyles.black),
                                     ),
                                   ),
                                 ),
@@ -143,14 +142,12 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            final res = await Repository()
-                                .getFile(about?.confidence ?? '');
+                            final res = await Repository().getFile(about?.confidence ?? '');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(
                             "Пользовательское соглашение",
-                            style: CustomTextStyle.blue_16_w400_336FEE
-                                .copyWith(decoration: TextDecoration.underline),
+                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
@@ -159,14 +156,12 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            final res = await Repository()
-                                .getFile(about?.agreement ?? '');
+                            final res = await Repository().getFile(about?.agreement ?? '');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(
                             "Согласие на обработку персональных данных",
-                            style: CustomTextStyle.blue_16_w400_336FEE
-                                .copyWith(decoration: TextDecoration.underline),
+                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
@@ -183,6 +178,7 @@ class _AboutProjectState extends State<AboutProject> {
   }
 
   List<Widget> itemQuestion(int index, String question, String answer) {
+    log(question);
     return [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.w),
@@ -223,7 +219,11 @@ class _AboutProjectState extends State<AboutProject> {
       AnimatedContainer(
         height: selectIndex != null
             ? selectIndex == index
-                ? 60.h
+                ? answer.length > 200
+                    ? question != 'Для кого это приложение?'
+                        ? 187.h
+                        : 160.h
+                    : 120.h
                 : 0
             : 0,
         padding: EdgeInsets.symmetric(horizontal: 40.w),

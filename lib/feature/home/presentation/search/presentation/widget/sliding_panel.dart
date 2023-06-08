@@ -227,6 +227,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     if (format1 != null || format2 != null) {
                       countField++;
                     }
+                    if (contractorFlag != false || customerFlag != false) {
+                      countField++;
+                    }
 
                     if (currencyString != null && currencyString!.isNotEmpty) {
                       countField++;
@@ -1261,7 +1264,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: SizedBox(
-                    width: 70.w,
+                    width: title.length > 27? 20.w:70.w,
                     child: Text(
                       '- $selectWork',
                       style: CustomTextStyle.grey_14_w400,

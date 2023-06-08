@@ -60,12 +60,8 @@ class _HomePageState extends State<HomePage> {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
       final owner = await Repository().getRanking(
-        Owner(
-          id: int.parse(userProfile),
-          firstname: '',
-          lastname: '',
-          photo: '',
-        ),
+        int.parse(userProfile),
+        access
       );
       if (owner != null) {
         Navigator.push(
@@ -302,7 +298,6 @@ class _HomePageState extends State<HomePage> {
           if (index == 4) {
             Navigator.of(context).pushNamed(AppRoute.personalAccount);
           } else if (index == 2) {
-            
             Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
               (page) {
                 setState(() {
@@ -311,7 +306,6 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ]);
-            
           } else {
             if (index == 1) {
               BlocProvider.of<search.SearchBloc>(context).add(search.ClearFilterEvent());

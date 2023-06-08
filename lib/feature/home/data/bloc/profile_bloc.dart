@@ -83,7 +83,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfilePhotoEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(LoadProfileState());
+    // emit(LoadProfileState());
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     if (access != null) {

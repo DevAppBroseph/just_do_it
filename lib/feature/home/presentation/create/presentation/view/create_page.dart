@@ -35,6 +35,7 @@ class _CreatePageState extends State<CreatePage> {
   Activities? selectCategory;
   ScrollController scrollController = ScrollController();
   bool searchList = false;
+  bool searchListEnable = false;
   List<String> searchChoose = [];
   TextEditingController searchController = TextEditingController();
 
@@ -66,101 +67,133 @@ class _CreatePageState extends State<CreatePage> {
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: Scaffold(
-          backgroundColor: ColorStyles.whiteFFFFFF,
+          backgroundColor: ColorStyles.greyEAECEE,
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Container(
                 height: 130.h,
-                decoration: BoxDecoration(
-                  color: ColorStyles.whiteFFFFFF,
+                decoration: const BoxDecoration(
+                  color: ColorStyles.greyEAECEE,
                   boxShadow: [
-                    BoxShadow(
-                      color: ColorStyles.shadowFC6554,
-                      offset: const Offset(0, -4),
-                      blurRadius: 55.r,
-                    )
+                   
                   ],
                 ),
                 child: Column(
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
+                      padding: EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
                       child: Row(
                         children: [
-                          CustomIconButton(
-                            onBackPressed: widget.onBackPressed,
-                            icon: SvgImg.arrowRight,
-                          ),
+                          searchListEnable
+                              ? CustomIconButton(
+                                  onBackPressed: () {
+                                    setState(() {
+                                      searchListEnable = false;
+                                      searchList = false;
+                                      
+                                    });
+                                  },
+                                  icon: SvgImg.arrowRight,
+                                )
+                              : CustomIconButton(
+                                  onBackPressed: widget.onBackPressed,
+                                  icon: SvgImg.arrowRight,
+                                ),
                           const Spacer(),
-                          SizedBox(
-                            width: 240.w,
-                            height: 36.h,
-                            child: CustomTextField(
-                              fillColor: ColorStyles.greyF7F7F8,
-                              prefixIcon: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/search1.svg',
-                                    height: 12.h,
-                                  ),
-                                ],
-                              ),
-                              onTap: () async {
-                                setState(() {
-                                  searchList = true;
-                                });
-                                getHistoryList();
-                              },
-                              onFieldSubmitted: (value) {
-                                setState(() {
-                                  searchList = false;
-                                });
-                                Storage().setListHistory(value);
-                                FocusScope.of(context).unfocus();
-                                BlocProvider.of<ProfileBloc>(context)
-                                    .add(EditPageSearchEvent(1, value));
-                              },
-                              onChanged: (value) {
-                                if (value.isEmpty) {
-                                  getHistoryList();
-                                }
-                                List<Activities> activities =
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .activities;
-                                searchChoose.clear();
-                                if (value.isNotEmpty) {
-                                  for (var element1 in activities) {
-                                    for (var element2 in element1.subcategory) {
-                                      if (element2.description!
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) &&
-                                          !searchChoose.contains(element2
-                                              .description!
-                                              .toLowerCase())) {
-                                        searchChoose.add(element2.description!);
+                          searchListEnable
+                              ? SizedBox(
+                                  width: 240.w,
+                                  height: 36.h,
+                                  child: CustomTextField(
+                                    fillColor: ColorStyles.greyF7F7F8,
+                                    prefixIcon: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/search1.svg',
+                                          height: 12.h,
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      setState(() {
+                                        searchList = true;
+                                      });
+                                      getHistoryList();
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      setState(() {
+                                        searchList = false;
+                                      });
+                                      Storage().setListHistory(value);
+                                      FocusScope.of(context).unfocus();
+                                      BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
+                                    },
+                                    onChanged: (value) {
+                                      if (value.isEmpty) {
+                                        getHistoryList();
                                       }
-                                    }
-                                  }
-                                }
-                                setState(() {});
-                              },
-                              hintText: 'Поиск',
-                              hintStyle: CustomTextStyle.grey_14_w400
-                                  .copyWith(overflow: TextOverflow.ellipsis),
-                              textEditingController: searchController,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 11.w, vertical: 11.h),
-                            ),
-                          ),
-                          const Spacer(),
-                          SizedBox(width: 23.w),
+                                      List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                      searchChoose.clear();
+                                      if (value.isNotEmpty) {
+                                        for (var element1 in activities) {
+                                          for (var element2 in element1.subcategory) {
+                                            if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                                !searchChoose.contains(element2.description!.toLowerCase())) {
+                                              searchChoose.add(element2.description!);
+                                            }
+                                          }
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                    hintText: 'Поиск',
+                                    hintStyle: CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis),
+                                    textEditingController: searchController,
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                                  ),
+                                )
+                              : Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(AppRoute.notification);
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/notification_main.svg',
+                                          ),
+                                          Container(
+                                            height: 10.w,
+                                            width: 10.w,
+                                            decoration: BoxDecoration(
+                                              color: ColorStyles.yellowFFD70B,
+                                              borderRadius: BorderRadius.circular(20.r),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 12.w),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        setState(() {
+                                          searchListEnable = true;
+                                        });
+                                      },
+                                      child: SvgPicture.asset('assets/icons/search3.svg'),
+                                    ),
+                                  ],
+                                ),
+                    
+                          SizedBox(width: 10.w),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.menu,
-                                  arguments: [(page) {}, false]).then((value) {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
                                 if (value != null) {
                                   if (value == 'create') {
                                     widget.onSelect(0);
@@ -174,8 +207,7 @@ class _CreatePageState extends State<CreatePage> {
                                 }
                               });
                             },
-                            child:
-                                SvgPicture.asset('assets/icons/category.svg'),
+                            child: SvgPicture.asset('assets/icons/category2.svg'),
                           ),
                         ],
                       ),
@@ -190,8 +222,7 @@ class _CreatePageState extends State<CreatePage> {
                       bottomInsets,
                       (value) {
                         Storage().setListHistory(value);
-                        BlocProvider.of<ProfileBloc>(context)
-                            .add(EditPageSearchEvent(1, value));
+                        BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
                       },
                       searchChoose,
                     )
@@ -199,30 +230,30 @@ class _CreatePageState extends State<CreatePage> {
                       child: Stack(
                         alignment: Alignment.topCenter,
                         children: [
-                          ListView(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const ClampingScrollPhysics(),
-                            children: [firstStage()],
+                          ScrollConfiguration(
+                            behavior: const ScrollBehavior(),
+                            child: ListView(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              physics: const ClampingScrollPhysics(),
+                              children: [firstStage()],
+                            ),
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.h, vertical: 20.h),
+                              padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
                               child: CustomButton(
                                 onTap: () async {
-                                  final bloc =
-                                      BlocProvider.of<ProfileBloc>(context);
+                                  final bloc = BlocProvider.of<ProfileBloc>(context);
                                   if (bloc.user == null) {
-                                    Navigator.of(context)
-                                        .pushNamed(AppRoute.auth);
+                                    Navigator.of(context).pushNamed(AppRoute.auth);
                                   } else {
                                     await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
                                           return CeateTasks(
-                                            customer: false,
+                                            customer: true,
                                             selectCategory: selectCategory,
                                             currentPage: 6,
                                           );
@@ -282,6 +313,7 @@ class _CreatePageState extends State<CreatePage> {
                     index == openCategory,
                     index,
                   ),
+                   activities[index] ==activities.last ? SizedBox(height: 20.h,):SizedBox(height: 0.h,),
                 ],
               );
             },
@@ -292,8 +324,7 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex,
-      {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
     String selectWork = '';
     if (choice.isNotEmpty) {
       selectWork = '- ${choice.first}';
@@ -310,10 +341,10 @@ class _CreatePageState extends State<CreatePage> {
         onTap: () => setState(() {
           if (openCategory != currentIndex) {
             openCategory = currentIndex;
-            Future.delayed(const Duration(milliseconds: 300), () {
+            Future.delayed(const Duration(milliseconds: 500), () {
               scrollController.animateTo(
-                65.h * currentIndex,
-                duration: const Duration(milliseconds: 300),
+                70.h * currentIndex,
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.linear,
               );
             });
@@ -404,6 +435,8 @@ class _CreatePageState extends State<CreatePage> {
         height = 120.h;
       } else if (list.length == 2) {
         height = 80.h;
+      }else if (list.length == 1) {
+        height = 40.h;
       }
     } else {
       height = 0;
@@ -481,10 +514,10 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                   const Spacer(),
-                  if (activities[index].selectSubcategory.contains(label))
-                    const Icon(Icons.check)
+                  if (activities[index].selectSubcategory.contains(label)) const Icon(Icons.check)
                 ],
               ),
+              
             ],
           ),
         ),

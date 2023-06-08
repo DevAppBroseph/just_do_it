@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ScorePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _ScorePageState extends State<ScorePage> {
   int page = 0;
 
   @override
-  void initState() {
+  void initState()  {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     user = BlocProvider.of<ProfileBloc>(context).user;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
@@ -90,7 +91,7 @@ class _ScorePageState extends State<ScorePage> {
                             Stack(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 0.w, right: 35.w),
+                                  padding: EdgeInsets.only(left: 0.w, right: 12.w),
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Image.asset(
@@ -102,7 +103,7 @@ class _ScorePageState extends State<ScorePage> {
                                   children: [
                                     SizedBox(height: 60.h),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 0.w, right: 30.w),
+                                      padding: EdgeInsets.only(left: 0.w, right: 12.w),
                                       child: SizedBox(
                                         child: Stack(
                                           alignment: Alignment.centerLeft,
@@ -133,7 +134,7 @@ class _ScorePageState extends State<ScorePage> {
                                       height: 10,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 18.w),
+                                      padding: EdgeInsets.symmetric(horizontal: 33.w),
                                       child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
@@ -170,7 +171,7 @@ class _ScorePageState extends State<ScorePage> {
                                               ),
                                               if (user!.balance! < levels[0].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[0].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -180,7 +181,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[0].mustCoins! &&
                                                   user!.balance! < levels[1].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[0].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -190,7 +191,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[1].mustCoins! &&
                                                   user!.balance! < levels[2].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[1].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -210,7 +211,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[3].mustCoins! &&
                                                   user!.balance! < levels[4].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[3].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -220,7 +221,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[4].mustCoins! &&
                                                   user!.balance! < levels[5].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[4].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -230,7 +231,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[5].mustCoins! &&
                                                   user!.balance! < levels[6].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[5].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -240,7 +241,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[6].mustCoins! &&
                                                   user!.balance! < levels[7].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[6].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -250,7 +251,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[7].mustCoins! &&
                                                   user!.balance! < levels[8].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[7].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -260,7 +261,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[8].mustCoins! &&
                                                   user!.balance! < levels[9].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[8].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -270,7 +271,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[9].mustCoins! &&
                                                   user!.balance! < levels[10].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[9].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -280,7 +281,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >= levels[10].mustCoins! &&
                                                   user!.balance! < levels[11].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[10].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,
@@ -289,7 +290,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 ),
                                               if (user!.balance! >= levels[11].mustCoins!)
                                                 SizedBox(
-                                                  width: 113.w,
+                                                  width: 88.w,
                                                   child: AutoSizeText(
                                                     levels[11].name ?? '',
                                                     style: CustomTextStyle.white_26_w800,

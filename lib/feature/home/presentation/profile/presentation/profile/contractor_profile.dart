@@ -51,7 +51,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
-
+    
     log('message');
     List<int> activityIndexes = [];
 
@@ -131,6 +131,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }
   }
 
+  int? proverkaBalance;
+  bool change = false;
+  bool openImages = false;
+
   bool proverka = true;
   @override
   Widget build(BuildContext context) {
@@ -162,447 +166,746 @@ class _ContractorProfileState extends State<ContractorProfile> {
             shrinkWrap: true,
             padding: MediaQuery.of(context).viewInsets,
             children: [
-              SizedBox(width: 25.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 21.w),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              height: 68.h,
-                              width: 68.h,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                      if (image != null) {
-                                        BlocProvider.of<ProfileBloc>(context).add(
-                                          UpdateProfilePhotoEvent(photo: image),
-                                        );
-                                      }
-                                    },
-                                    child: ClipOval(
-                                      child: SizedBox.fromSize(
-                                          size: Size.fromRadius(30.r),
-                                          child: user!.photoLink == null
-                                              ? Container(
-                                                  height: 60.h,
-                                                  width: 60.h,
-                                                  padding: EdgeInsets.all(10.h),
-                                                  decoration: const BoxDecoration(
-                                                    color: ColorStyles.shadowFC6554,
-                                                  ),
-                                                  child: Image.asset('assets/images/camera.png'),
-                                                )
-                                              : CachedNetworkImage(
-                                                  imageUrl: user!.photoLink!.contains(server)
-                                                      ? user!.photoLink!
-                                                      : server + user!.photoLink!,
-                                                  fit: BoxFit.cover,
-                                                )),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 270.h,
+                    decoration: BoxDecoration(
+                      color: ColorStyles.whiteFFFFFF,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.w, left: 24.w, top: 23.h, bottom: 5.h),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 80.h,
+                                  width: 80.h,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                          if (image != null) {
+                                            BlocProvider.of<ProfileBloc>(context).add(
+                                              UpdateProfilePhotoEvent(photo: image),
+                                            );
+                                          }
+                                        },
+                                        child: ClipOval(
+                                          child: SizedBox.fromSize(
+                                              size: Size.fromRadius(40.r),
+                                              child: user!.photoLink == null
+                                                  ? Container(
+                                                      height: 60.h,
+                                                      width: 60.h,
+                                                      padding: EdgeInsets.all(10.h),
+                                                      decoration: const BoxDecoration(
+                                                        color: ColorStyles.shadowFC6554,
+                                                      ),
+                                                      child: Image.asset('assets/images/camera.png'),
+                                                    )
+                                                  : CachedNetworkImage(
+                                                      imageUrl: user!.photoLink!.contains(server)
+                                                          ? user!.photoLink!
+                                                          : server + user!.photoLink!,
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                        ),
+                                      ),
+                                      if (user!.photoLink != null)
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              user!.photo = null;
+                                              user!.photoLink = null;
+                                              BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                              BlocProvider.of<ProfileBloc>(context).add(
+                                                UpdateProfilePhotoEvent(photo: null),
+                                              );
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              height: 20.h,
+                                              width: 20.h,
+                                              decoration: BoxDecoration(
+                                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                                borderRadius: BorderRadius.circular(100.r),
+                                                color: Colors.white,
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 10.h,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 17.w),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 10.w,
+                                      top: 25.h,
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              '${user!.firstname ?? ''}\n${user!.lastname ?? ''}',
+                                              style: CustomTextStyle.black_18_w800,
+                                              softWrap: true,
+                                            ),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final code = await FirebaseDynamicLinksService()
+                                                .shareUserProfile(int.parse(user!.id.toString()));
+                                            Share.share(code.toString());
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/share.svg',
+                                            height: 20.h,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  if (user?.photoLink != null)
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: GestureDetector(
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+                          var reviews = BlocProvider.of<RatingBloc>(context).reviews;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(AppRoute.score);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 2.8.h),
+                                      child: ScaleButton(
                                         onTap: () {
-                                          user?.photo = null;
-                                          user?.photoLink = null;
-                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                          BlocProvider.of<ProfileBloc>(context).add(
-                                            UpdateProfilePhotoEvent(photo: null),
-                                          );
-                                          setState(() {});
+                                          Navigator.of(context).pushNamed(AppRoute.score);
                                         },
+                                        bound: 0.02,
                                         child: Container(
-                                          height: 20.h,
-                                          width: 20.h,
+                                          height: 25.h,
+                                          width: 70.h,
                                           decoration: BoxDecoration(
-                                            boxShadow: const [BoxShadow(color: Colors.black)],
-                                            borderRadius: BorderRadius.circular(100.r),
-                                            color: Colors.white,
+                                            color: ColorStyles.greyEAECEE,
+                                            borderRadius: BorderRadius.circular(30.r),
                                           ),
                                           child: Center(
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 10.h,
+                                            child: Text(
+                                              'Грейды',
+                                              style: CustomTextStyle.purple_12_w400,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 21.w),
-                    Expanded(
-                      child: ScaleButton(
-                        bound: 0.02,
-                        child: Container(
-                          height: 68.h,
-                          padding: EdgeInsets.only(left: 16.w),
-                          decoration: BoxDecoration(
-                            color: ColorStyles.yellowFFD70A,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Ваш рейтинг',
-                                style: CustomTextStyle.black_12_w500_515150,
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/star.svg',
-                                    color: ColorStyles.black,
-                                  ),
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    reviews?.ranking == null ? '-' : (reviews!.ranking!).toString(),
-                                    style: CustomTextStyle.black_20_w700_171716,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 25.w),
-                    const Spacer(),
-                    SizedBox(
-                      width: 240.w,
-                      child: AutoSizeText(
-                        '${user?.firstname ?? ''} ${user?.lastname ?? ''}',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.black_30_w800,
-                        maxLines: 2,
-                        softWrap: true,
-                      ),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () async {
-                        final code =
-                            await FirebaseDynamicLinksService().shareUserProfile(int.parse(user!.id.toString()));
-                        Share.share(code.toString());
-                      },
-                      child: SvgPicture.asset(
-                        'assets/icons/share.svg',
-                        height: 25.h,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 18.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ScaleButton(
-                        bound: 0.02,
-                        child: Container(
-                          height: 68.h,
-                          padding: EdgeInsets.only(left: 16.w),
-                          decoration: BoxDecoration(
-                            color: ColorStyles.yellowFFD70A,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: Row(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Ваш грейд',
-                                    style: CustomTextStyle.black_12_w500_515150,
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                                        if (state is ScoreLoaded) {
-                                          if (proverka == true) {
-                                            proverka = false;
-                                            log(proverka.toString());
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Row(
+                                      children: [
+                                        BlocBuilder<ScoreBloc, ScoreState>(buildWhen: (previous, current) {
+                                          if (user!.balance! == proverkaBalance) {
+                                            return false;
+                                          }
+                                          return true;
+                                        }, builder: (context, state) {
+                                          if (state is ScoreLoaded) {
                                             Future.delayed(const Duration(milliseconds: 500), () {
                                               widget.callBackFlag();
                                             });
-                                          }
-
-                                          final levels = state.levels;
-                                          if (user!.balance! < levels![0].mustCoins!) {
-                                            return Text(
-                                              levels[0].name!,
-                                              style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                            );
-                                          }
-                                          for (int i = 0; i < levels.length; i++) {
-                                            if (levels[i + 1].mustCoins == null) {
-                                              return Text(
-                                                levels[i].name!,
-                                                style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
+                                            proverkaBalance = user!.balance!;
+                                            final levels = state.levels;
+                                            if (user!.balance! < levels![0].mustCoins!) {
+                                              return CachedNetworkImage(
+                                                progressIndicatorBuilder: (context, url, progress) {
+                                                  return const CupertinoActivityIndicator();
+                                                },
+                                                imageUrl: '${levels[0].bwImage}',
+                                                height: 30.h,
+                                                width: 30.w,
                                               );
-                                            } else {
-                                              if (user!.balance! >= levels[i].mustCoins! &&
-                                                  user!.balance! < levels[i + 1].mustCoins!) {
-                                                return Text(
-                                                  levels[i].name!,
-                                                  style: CustomTextStyle.purple_20_w700.copyWith(fontSize: 15),
-                                                );
-                                              } else if (user!.balance! >= levels.last.mustCoins!) {
+                                            }
+                                            for (int i = 0; i < levels.length; i++) {
+                                              if (levels[i + 1].mustCoins == null) {
                                                 return CachedNetworkImage(
                                                   progressIndicatorBuilder: (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
                                                   },
-                                                  imageUrl: '${levels.last.image}',
-                                                  height: 42,
-                                                  width: 42,
+                                                  imageUrl: '${levels[i].image}',
+                                                  height: 30.h,
+                                                  width: 30.w,
                                                 );
+                                              } else {
+                                                if (user!.balance! >= levels[i].mustCoins! &&
+                                                    user!.balance! < levels[i + 1].mustCoins!) {
+                                                  return CachedNetworkImage(
+                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                      return const CupertinoActivityIndicator();
+                                                    },
+                                                    imageUrl: '${levels[i].image}',
+                                                    height: 30.h,
+                                                    width: 30.w,
+                                                  );
+                                                } else if (user!.balance! >= levels.last.mustCoins!) {
+                                                  return CachedNetworkImage(
+                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                      return const CupertinoActivityIndicator();
+                                                    },
+                                                    imageUrl: '${levels.last.image}',
+                                                    height: 30.h,
+                                                    width: 30.w,
+                                                  );
+                                                }
                                               }
                                             }
                                           }
-                                        }
-                                        return Container();
-                                      }),
-                                    ],
-                                  ),
-                                ],
+                                          return Container();
+                                        }),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 2.h),
+                                          child: Text(
+                                            user!.balance.toString(),
+                                            style: CustomTextStyle.purple_15_w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const Spacer(),
-                              BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
-                                if (state is ScoreLoaded) {
-                                  final levels = state.levels;
-                                  if (user!.balance! < levels![0].mustCoins!) {
-                                    return CachedNetworkImage(
-                                      progressIndicatorBuilder: (context, url, progress) {
-                                        return const CupertinoActivityIndicator();
-                                      },
-                                      imageUrl: '${levels[0].bwImage}',
-                                      height: 42,
-                                      width: 42,
-                                    );
-                                  }
-                                  for (int i = 0; i < levels.length; i++) {
-                                    if (levels[i + 1].mustCoins == null) {
-                                      return CachedNetworkImage(
-                                        progressIndicatorBuilder: (context, url, progress) {
-                                          return const CupertinoActivityIndicator();
+                              SizedBox(
+                                width: 30.w,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 7.5.h),
+                                      child: ScaleButton(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(AppRoute.rating);
                                         },
-                                        imageUrl: '${levels[i].image}',
-                                        height: 42,
-                                        width: 42,
-                                      );
-                                    } else {
-                                      if (user!.balance! >= levels[i].mustCoins! &&
-                                          user!.balance! < levels[i + 1].mustCoins!) {
-                                        return CachedNetworkImage(
-                                          progressIndicatorBuilder: (context, url, progress) {
-                                            return const CupertinoActivityIndicator();
-                                          },
-                                          imageUrl: '${levels[i].image}',
-                                          height: 42,
-                                          width: 42,
-                                        );
-                                      } else if (user!.balance! >= levels.last.mustCoins!) {
-                                        return CachedNetworkImage(
-                                          progressIndicatorBuilder: (context, url, progress) {
-                                            return const CupertinoActivityIndicator();
-                                          },
-                                          imageUrl: '${levels.last.image}',
-                                          height: 42,
-                                          width: 42,
-                                        );
-                                      }
-                                    }
-                                  }
-                                }
-                                return Container();
-                              }),
-                              const Spacer(),
+                                        bound: 0.02,
+                                        child: Container(
+                                          height: 25.h,
+                                          width: 90.h,
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(30.r),
+                                          ),
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Рейтинг',
+                                                  style: CustomTextStyle.gold_12_w400,
+                                                ),
+                                                SizedBox(width: 3.h),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 12,
+                                                      height: 12,
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/star.svg',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 4.h),
+                                      child: SizedBox(
+                                        child: Text(
+                                          reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                          style: CustomTextStyle.gold_16_w600_171716,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30.w,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 12.h),
+                                      child: ScaleButton(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(AppRoute.rating);
+                                        },
+                                        bound: 0.02,
+                                        child: Container(
+                                          height: 25.h,
+                                          width: 75.h,
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(30.r),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Отзывы',
+                                              style: CustomTextStyle.blue_12_w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 4.0.h),
+                                      child: SizedBox(
+                                        child: Text(
+                                          '34',
+                                          style: CustomTextStyle.blue_16_w600_171716,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 21.w),
-                    Expanded(
-                      child: ScaleButton(
-                        bound: 0.02,
-                        child: Container(
-                          height: 68.h,
-                          padding: EdgeInsets.only(left: 16.w),
-                          decoration: BoxDecoration(
-                            color: ColorStyles.yellowFFD70A,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
+                          );
+                        }),
+                        SizedBox(height: 20.h),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.h),
                           child: Row(
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Ваши баллы',
-                                    style: CustomTextStyle.black_12_w500_515150,
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        user?.balance.toString() ?? '0',
-                                        style: CustomTextStyle.purple_20_w700,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              Text(
+                                'Создано заданий:',
+                                style: CustomTextStyle.grey_12_w400,
+                              ),
+                              Text(
+                                ' 40',
+                                style: CustomTextStyle.black_13_w500_171716,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.h),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Выполнено заданий:',
+                                style: CustomTextStyle.grey_12_w400,
+                              ),
+                              Text(
+                                ' 40',
+                                style: CustomTextStyle.black_13_w500_171716,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 15.h),
+                child: Container(
+                  height: 225.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.whiteFFFFFF,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                        child: Text(
+                          'Основная информация',
+                          style: CustomTextStyle.black_16_w600_515150,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/user-square.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Ваше Имя',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить имя профиля',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 50.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Text(
-                  'Общие настройки профиля',
-                  style: CustomTextStyle.grey_14_w400,
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: ScaleButton(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
-                  },
-                  bound: 0.02,
-                  child: Container(
-                    height: 68.h,
-                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyF9F9F9,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/user-square.png',
-                          height: 23.h,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/call.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Телефон',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить номер телефона',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(width: 12.w),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Основная информация',
-                              style: CustomTextStyle.grey_12_w400,
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              'Имя, Телефон и E-mail',
-                              style: CustomTextStyle.black_14_w400_171716,
-                            ),
-                          ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/sms-notification.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'E-mail',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить электронную почту',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        const Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: ColorStyles.greyBDBDBD,
-                          size: 16.h,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 18.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: ScaleButton(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
-                  },
-                  bound: 0.02,
-                  child: Container(
-                    height: 68.h,
-                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyF9F9F9,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/shield-tick.png',
-                          height: 23.h,
+                padding: EdgeInsets.only(left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
+                child: Container(
+                  height: 225.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.whiteFFFFFF,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                        child: Text(
+                          'Безопасность',
+                          style: CustomTextStyle.black_16_w600_515150,
                         ),
-                        SizedBox(width: 12.w),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Безопасность',
-                              style: CustomTextStyle.grey_12_w400,
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              'Пароль, паспортные данные, регион',
-                              style: CustomTextStyle.black_14_w400_171716,
-                            ),
-                          ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/password-check.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Пароль',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить пароль учетной записи',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        const Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: ColorStyles.greyBDBDBD,
-                          size: 16.h,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/finger-scan.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Паспортные данные',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить Ваши личные данные',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/location1.svg',
+                                color: ColorStyles.yellowFFCA0D,
+                              ),
+                              SizedBox(width: 3.w),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Регион',
+                                          style: CustomTextStyle.black_13_w400_171716,
+                                        ),
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'Изменить регион',
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorStyles.greyBDBDBD,
+                                      size: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 18.h),
               Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 24.w),
-                    width: 190.w,
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    width: 335.w,
+                    decoration: BoxDecoration(
+                      color: ColorStyles.whiteFFFFFF,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
                     child: Stack(
                       children: [
                         ScaleButton(
@@ -610,25 +913,34 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           bound: 0.01,
                           onTap: _selectCV,
                           child: Container(
-                            height: 40.h,
+                            height: 50.h,
                             padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
-                            decoration: BoxDecoration(
-                              color: ColorStyles.greyF9F9F9,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
+                                      width: 3.h,
+                                    ),
+                                SizedBox(
                                   height: 14.h,
                                   width: 14.h,
-                                  child: SvgPicture.asset(SvgImg.documentText),
+                                  child: SvgPicture.asset(
+                                    SvgImg.documentText,
+                                    color: ColorStyles.blue336FEE,
+                                  ),
                                 ),
                                 SizedBox(width: 9.17.w),
                                 Text(
                                   'Загрузить резюме (10мб)',
-                                  style: CustomTextStyle.black_12_w400,
-                                )
+                                  style: CustomTextStyle.blue_12_w400,
+                                ),
+                                SizedBox(
+                                  width: 100.h,
+                                ),
+                                Text(
+                                  '.doc, .pdf',
+                                  style: CustomTextStyle.grey_12_w400,
+                                ),
                               ],
                             ),
                           ),
@@ -653,12 +965,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
               if (user?.cvLink != null) SizedBox(height: 8.h),
               if (user?.cvLink != null)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
                     children: [
                       SizedBox(
                         height: 60.h,
-                        width: 60.h,
+                        width: 120.h,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -669,16 +981,28 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               },
                               child: Container(
                                 height: 50.h,
-                                width: 50.h,
+                                width: 120.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     boxShadow: const [BoxShadow(color: Colors.black)],
                                     borderRadius: BorderRadius.circular(10.r)),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    SvgImg.documentText,
-                                    height: 25.h,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10.h,
+                                    ),
+                                    SvgPicture.asset(
+                                      SvgImg.documentText,
+                                      height: 25.h,
+                                    ),
+                                    SizedBox(
+                                      width: 10.h,
+                                    ),
+                                    Text(
+                                      'Rezume.pdf',
+                                      style: CustomTextStyle.black_11_w400_171716,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -719,93 +1043,122 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     ],
                   ),
                 ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 15.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Row(
-                  children: [
-                    Text(
-                      'Ваши категории',
-                      style: CustomTextStyle.grey_14_w400,
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        showIconModalCategories(
-                          context,
-                          _categoryButtonKey,
-                          (value) {
-                            List<int> activityIndexes = [];
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Container(
+                  height: user != null && typeCategories.isEmpty
+                      ? 120.h
+                      : typeCategories.length == 3
+                          ? 260.h
+                          : typeCategories.length == 2
+                              ? 200.h
+                              : 160.h,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.whiteFFFFFF,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.h, left: 20.w),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Ваши категории',
+                              style: CustomTextStyle.black_16_w600_171716,
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: EdgeInsets.only(right: 25.w),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: CustomTextStyle.blue_14_w400_336FEE,
+                                ),
+                                onPressed: () {
+                                  showIconModalCategories(
+                                    context,
+                                    _categoryButtonKey,
+                                    (value) {
+                                      List<int> activityIndexes = [];
 
-                            for (var element in typeCategories) {
-                              activityIndexes
-                                  .add(listCategories.firstWhere((element2) => element2.description == element).id);
-                            }
-                            user?.copyWith(
-                              activitiesDocument: activityIndexes,
-                              groups: [4],
-                            );
+                                      for (var element in typeCategories) {
+                                        activityIndexes.add(listCategories
+                                            .firstWhere((element2) => element2.description == element)
+                                            .id);
+                                      }
+                                      user?.copyWith(
+                                        activitiesDocument: activityIndexes,
+                                        groups: [4],
+                                      );
 
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                            setState(() {});
-                          },
-                          listCategories,
-                          'Выбор до 3х категорий*',
-                          typeCategories,
-                        );
-                      },
-                      child: Text(
-                        'Изменить',
-                        key: _categoryButtonKey,
-                        style: CustomTextStyle.blue_14_w400_336FEE,
+                                      setState(() {});
+                                    },
+                                    listCategories,
+                                    'Выбор до 3х категорий*',
+                                    typeCategories,
+                                  );
+                                },
+                                key: _categoryButtonKey,
+                                child: const Text('Изменить'),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 12.h),
-              if (user != null && typeCategories.isEmpty)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Text(
-                    'Вы не выбрали ни одной категории',
-                    style: CustomTextStyle.black_14_w400_515150,
-                  ),
-                ),
-              if (user != null && typeCategories.isNotEmpty)
-                SizedBox(
-                  height: 90.h,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(left: 24.w, right: 18.w),
-                    itemCount: typeCategories.length,
-                    itemBuilder: (context, index) {
-                      var category =
-                          listCategories.firstWhere((element) => element.description == typeCategories[index]);
+                      SizedBox(height: 6.h),
+                      if (user != null && typeCategories.isEmpty) SizedBox(height: 6.h),
+                      if (user != null && typeCategories.isEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: Text(
+                            'Вы не выбрали ни одной категории',
+                            style: CustomTextStyle.grey_14_w400,
+                          ),
+                        ),
+                      if (user != null && typeCategories.isNotEmpty)
+                        SizedBox(
+                          height: typeCategories.length == 3
+                              ? 180.h
+                              : typeCategories.length == 2
+                                  ? 130
+                                  : 80,
+                          width: double.infinity,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            padding: EdgeInsets.only(left: 24.w, right: 18.w),
+                            itemCount: typeCategories.length,
+                            itemBuilder: (context, index) {
+                              var category =
+                                  listCategories.firstWhere((element) => element.description == typeCategories[index]);
 
-                      return _categoryItem(category, index);
-                    },
+                              return _categoryItem(category, index);
+                            },
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-              SizedBox(height: 50.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Text(
-                  'Описание Вашего опыта',
-                  style: CustomTextStyle.grey_14_w400,
-                ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 15.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: AnimatedContainer(
-                  height: user?.images?.isEmpty ?? true ? 170.h : 220.h,
+                  height: user?.images?.isEmpty ?? true
+                      ? change
+                          ? 270.h
+                          : 235.h
+                      : change
+                          ? 374.h
+                          : 324.h,
                   width: 327.w,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(20.r),
                     color: ColorStyles.whiteFFFFFF,
                     boxShadow: [
                       BoxShadow(
@@ -819,10 +1172,38 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   child: Padding(
                     padding: EdgeInsets.all(16.h),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Ваш опыт работы',
+                                style: CustomTextStyle.black_16_w600_171716,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 10.w),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: CustomTextStyle.blue_14_w400_336FEE,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      change = true;
+                                    });
+                                  },
+                                  child: const Text('Изменить'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         SizedBox(
-                          height: 90.h,
+                          height: 130.h,
                           child: TextFormField(
+                            enabled: change,
                             autocorrect: true,
                             onTap: () {
                               if (user!.activity != experienceController.text) {
@@ -837,11 +1218,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             decoration: InputDecoration.collapsed(
                               hintText: "Опишите свой опыт работы и прикрепите изображения",
                               border: InputBorder.none,
-                              hintStyle: CustomTextStyle.black_14_w400_515150,
+                              hintStyle: CustomTextStyle.grey_14_w400,
                             ),
                             controller: experienceController,
                             style: CustomTextStyle.black_14_w400_515150,
-                            maxLines: null,
+                            maxLines: 2,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
                                 user!.copyWith(activity: experienceController.text);
@@ -850,7 +1231,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 );
                               }
                             },
-                            inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                            inputFormatters: [LengthLimitingTextInputFormatter(250)],
                             onChanged: (String value) {
                               BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
 
@@ -858,101 +1239,181 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             },
                           ),
                         ),
-                        if (user!.images!.isNotEmpty) const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '${experienceController.text.length}/250',
+                              style: CustomTextStyle.grey_12_w400,
+                            )
+                          ],
+                        ),
+                        if (user!.images!.isNotEmpty && change)
+                          SizedBox(
+                            width: 400.w,
+                            child: const Divider(
+                              color: ColorStyles.greyD9D9D9,
+                              thickness: 1,
+                            ),
+                          ),
                         if (user!.images!.isNotEmpty)
                           SizedBox(
-                            height: user!.images!.isEmpty ? 0 : 75.h,
-                            width: double.infinity,
+                            height: 5.h,
+                          ),
+                        if (user!.images!.isNotEmpty)
+                          SizedBox(
+                            height: user!.images!.isEmpty ? 0 : 82.h,
+                            width: !change ? 300.w :double.infinity,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
+                              physics:
+                                  openImages ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    launch(user!.images![index].linkUrl!.contains(server)
-                                        ? user!.images![index].linkUrl!
-                                        : server + user!.images![index].linkUrl!);
-                                  },
-                                  child: SizedBox(
-                                    width: 80.h,
-                                    height: 65.h,
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 5.w, left: 5.w),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10.r),
-                                            child: SizedBox(
-                                              width: 65.h,
-                                              height: 65.h,
-                                              child: user!.images![index].byte != null
-                                                  ? Image.memory(
-                                                      user!.images![index].byte!,
-                                                      width: 65.h,
+                                return Column(
+                                  children: [
+                                    if (change)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          user!.images!.removeAt(index);
+
+                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
+
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          setState(() {});
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 60.w),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/x-circle.svg',
+                                            height: 15.h,
+                                            width: 15.w,
+                                            color: ColorStyles.redFC6554,
+                                          ),
+                                        ),
+                                      ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        launch(user!.images![index].linkUrl!.contains(server)
+                                            ? user!.images![index].linkUrl!
+                                            : server + user!.images![index].linkUrl!);
+                                      },
+                                      child: SizedBox(
+                                        width: 80.h,
+                                        height: 65.h,
+                                        child: Stack(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(right: 5.w, left: 7.w),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(10.r),
+                                                child: SizedBox(
+                                                  width: 65.h,
+                                                  height: 65.h,
+                                                  child: user!.images![index].byte != null
+                                                      ? Image.memory(
+                                                          user!.images![index].byte!,
+                                                          width: 65.h,
+                                                          height: 65.h,
+                                                          fit: BoxFit.cover,
+                                                          frameBuilder:
+                                                              (context, child, frame, wasSynchronouslyLoaded) {
+                                                            return const CupertinoActivityIndicator();
+                                                          },
+                                                        )
+                                                      : CachedNetworkImage(
+                                                          imageUrl: user!.images![index].linkUrl!.contains(server)
+                                                              ? user!.images![index].linkUrl!
+                                                              : '$server${user!.images![index].linkUrl}',
+                                                          progressIndicatorBuilder: (context, url, progress) {
+                                                            return const CupertinoActivityIndicator();
+                                                          },
+                                                          width: 65.h,
+                                                          height: 65.h,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                ),
+                                              ),
+                                            ),
+                                            if (index == 3 && !openImages && user!.images!.length > 4)
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    openImages = true;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:  EdgeInsets.only(right: 5.w, left: 7.w),
+                                                  child: Align(
+                                                    alignment: Alignment.center,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10.r),
+                                                      child: Container(
+                                                        width: 65.h,
                                                       height: 65.h,
-                                                      fit: BoxFit.cover,
-                                                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                                        return const CupertinoActivityIndicator();
-                                                      },
-                                                    )
-                                                  : CachedNetworkImage(
-                                                      imageUrl: user!.images![index].linkUrl!.contains(server)
-                                                          ? user!.images![index].linkUrl!
-                                                          : '$server${user!.images![index].linkUrl}',
-                                                      progressIndicatorBuilder: (context, url, progress) {
-                                                        return const CupertinoActivityIndicator();
-                                                      },
-                                                      width: 65.h,
-                                                      height: 65.h,
-                                                      fit: BoxFit.cover,
+                                                        decoration:  BoxDecoration(
+                                                          color: ColorStyles.black.withOpacity(0.4),
+                                                          
+                                                        ),
+                                                        child: Center(child: Text('+ ${user!.images!.length - 4}', style: CustomTextStyle.white_16_w600)),
+                                                      ),
                                                     ),
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            user!.images!.removeAt(index);
-
-                                            BlocProvider.of<ProfileBloc>(context).setUser(user);
-
-                                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                            setState(() {});
-                                          },
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                              width: 20.w,
-                                              height: 20.h,
-                                              margin: EdgeInsets.only(right: 10.w),
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.circle,
+                                                  ),
+                                                ),
                                               ),
-                                              alignment: Alignment.center,
-                                              child: Icon(
-                                                Icons.close,
-                                                color: Colors.black,
-                                                size: 10.h,
-                                              ),
-                                            ),
-                                          ),
+                                            // if (change)
+                                            //   GestureDetector(
+                                            //     onTap: () async {
+                                            //       user!.images!.removeAt(index);
+
+                                            //       BlocProvider.of<ProfileBloc>(context).setUser(user);
+
+                                            //       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                            //       setState(() {});
+                                            //     },
+                                            //     child: Align(
+                                            //       alignment: Alignment.topRight,
+                                            //       child: Container(
+                                            //         width: 20.w,
+                                            //         height: 20.h,
+                                            //         margin: EdgeInsets.only(right: 10.w),
+                                            //         decoration: const BoxDecoration(
+                                            //           color: Colors.white,
+                                            //           shape: BoxShape.circle,
+                                            //         ),
+                                            //         alignment: Alignment.center,
+                                            //         child: Icon(
+                                            //           Icons.close,
+                                            //           color: Colors.black,
+                                            //           size: 10.h,
+                                            //         ),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 );
                               },
                               itemCount: user!.images!.length,
                             ),
                           ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${experienceController.text.length}/500',
-                              style: CustomTextStyle.grey_12_w400,
-                            )
-                          ],
-                        )
+                        if (change)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                change = false;
+                              });
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10.w, top: 15),
+                              child: Text(
+                                'Сохранить',
+                                style: CustomTextStyle.blue_14_w400_336FEE,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -960,7 +1421,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
               ),
               SizedBox(height: 18.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Stack(
                   children: [
                     ScaleButton(
@@ -969,10 +1430,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         _selectImages();
                       },
                       child: Container(
-                        height: 36.h,
+                        height: 45.h,
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color: ColorStyles.whiteFFFFFF,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Row(
@@ -981,12 +1442,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             SizedBox(
                               height: 14.h,
                               width: 14.h,
-                              child: SvgPicture.asset(SvgImg.addCircle),
+                              child: SvgPicture.asset(
+                                SvgImg.addCircle,
+                                color: ColorStyles.blue336FEE,
+                              ),
                             ),
                             SizedBox(width: 9.17.w),
                             Text(
                               'Изображения',
-                              style: CustomTextStyle.black_12_w400,
+                              style: CustomTextStyle.blue_12_w400,
                             ),
                           ],
                         ),
@@ -1027,14 +1491,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: ColorStyles.whiteFFFFFF,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 24.w),
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Container(
                     color: Colors.transparent,
                     height: 50.h,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
                           'assets/icons/logout_account.svg',
@@ -1049,18 +1514,27 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   ),
                 ),
               ),
-              SizedBox(height: 60.h),
-              GestureDetector(
-                onTap: () async {
-                  await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
-                  BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                  BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
-                },
-                child: Center(
-                  child: Text(
-                    'Удалить аккаунт',
-                    style: CustomTextStyle.black_14_w500_171716,
+              SizedBox(height: 15.h),
+              Container(
+                height: 50.h,
+                padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                decoration: BoxDecoration(
+                  color: ColorStyles.whiteFFFFFF,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
+                child: GestureDetector(
+                  onTap: () async {
+                    await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                    BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                    BlocProvider.of<ProfileBloc>(context).setUser(null);
+                    Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  },
+                  child: Center(
+                    child: Text(
+                      'Удалить аккаунт',
+                      style: CustomTextStyle.black_14_w500_171716,
+                    ),
                   ),
                 ),
               ),
@@ -1074,9 +1548,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
   Widget _categoryItem(Activities activitiy, int index) {
     return Container(
-      height: 90.h,
+      height: 50.h,
       width: 115.w,
-      margin: const EdgeInsets.only(right: 6),
+      margin: EdgeInsets.only(right: 6.w, top: 10.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: index == 0
@@ -1087,8 +1561,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (activitiy.photo != null)
               Image.network(
@@ -1096,7 +1570,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 width: 24.w,
                 height: 24.h,
               ),
-            const Spacer(),
+            SizedBox(width: 10.w),
             Text(
               activitiy.description ?? '',
               style: CustomTextStyle.black_11_w400_171716,
