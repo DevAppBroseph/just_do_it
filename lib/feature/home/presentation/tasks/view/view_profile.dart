@@ -88,6 +88,7 @@ class _ProfileViewState extends State<ProfileView> {
 
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
+      
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())

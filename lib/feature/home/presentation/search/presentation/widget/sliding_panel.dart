@@ -227,7 +227,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     if (format1 != null || format2 != null) {
                       countField++;
                     }
-                    if (contractorFlag != false || customerFlag != false) {
+                    if (contractorFlag != true && customerFlag != true) {
+                      countField++;
+                    }
+                      if (contractorFlag != true || customerFlag != true) {
                       countField++;
                     }
 
