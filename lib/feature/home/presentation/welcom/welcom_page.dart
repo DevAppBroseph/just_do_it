@@ -430,109 +430,115 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(AppRoute.score);
                                                   },
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(bottom: 2.8.h),
-                                                        child: ScaleButton(
-                                                          onTap: () {
-                                                            Navigator.of(context).pushNamed(AppRoute.score);
-                                                          },
-                                                          bound: 0.02,
-                                                          child: Container(
-                                                            height: 25.h,
-                                                            width: 70.w,
-                                                            decoration: BoxDecoration(
-                                                              color: ColorStyles.greyEAECEE,
-                                                              borderRadius: BorderRadius.circular(30.r),
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                'Грейды',
-                                                                style: CustomTextStyle.purple_12_w400,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(top: 0.5.h),
+                                                    child: SizedBox(
+                                                      height: 68.h,
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Padding(
+                                                            padding: EdgeInsets.only(bottom: 2.8.h),
+                                                            child: ScaleButton(
+                                                              onTap: () {
+                                                                Navigator.of(context).pushNamed(AppRoute.score);
+                                                              },
+                                                              bound: 0.02.r,
+                                                              child: Container(
+                                                                height: 25.h,
+                                                                width: 70.w,
+                                                                decoration: BoxDecoration(
+                                                                  color: ColorStyles.greyEAECEE,
+                                                                  borderRadius: BorderRadius.circular(30.r),
+                                                                ),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    'Грейды',
+                                                                    style: CustomTextStyle.purple_12_w400,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10.h,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          BlocBuilder<ScoreBloc, ScoreState>(
-                                                              buildWhen: (previous, current) {
-                                                            if (user!.balance! == proverkaBalance) {
-                                                              return false;
-                                                            }
-                                                            return true;
-                                                          }, builder: (context, state) {
-                                                            if (state is ScoreLoaded) {
-                                                              proverkaBalance = bloc.user!.balance!;
-                                                              final levels = state.levels;
-                                                              if (bloc.user!.balance! < levels![0].mustCoins!) {
-                                                                return CachedNetworkImage(
-                                                                  progressIndicatorBuilder: (context, url, progress) {
-                                                                    return const CupertinoActivityIndicator();
-                                                                  },
-                                                                  imageUrl: '${levels[0].bwImage}',
-                                                                  height: 30.h,
-                                                                  width: 30.w,
-                                                                );
-                                                              }
-                                                              for (int i = 0; i < levels.length; i++) {
-                                                                if (levels[i + 1].mustCoins == null) {
-                                                                  return CachedNetworkImage(
-                                                                    progressIndicatorBuilder: (context, url, progress) {
-                                                                      return const CupertinoActivityIndicator();
-                                                                    },
-                                                                    imageUrl: '${levels[i].image}',
-                                                                    height: 30.h,
-                                                                    width: 30.w,
-                                                                  );
-                                                                } else {
-                                                                  if (bloc.user!.balance! >= levels[i].mustCoins! &&
-                                                                      bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                          SizedBox(
+                                                            height: 10.h,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              BlocBuilder<ScoreBloc, ScoreState>(
+                                                                  buildWhen: (previous, current) {
+                                                                if (user!.balance! == proverkaBalance) {
+                                                                  return false;
+                                                                }
+                                                                return true;
+                                                              }, builder: (context, state) {
+                                                                if (state is ScoreLoaded) {
+                                                                  proverkaBalance = bloc.user!.balance!;
+                                                                  final levels = state.levels;
+                                                                  if (bloc.user!.balance! < levels![0].mustCoins!) {
                                                                     return CachedNetworkImage(
-                                                                      progressIndicatorBuilder:
-                                                                          (context, url, progress) {
+                                                                      progressIndicatorBuilder: (context, url, progress) {
                                                                         return const CupertinoActivityIndicator();
                                                                       },
-                                                                      imageUrl: '${levels[i].image}',
-                                                                      height: 30.h,
-                                                                      width: 30.w,
-                                                                    );
-                                                                  } else if (bloc.user!.balance! >=
-                                                                      levels.last.mustCoins!) {
-                                                                    return CachedNetworkImage(
-                                                                      progressIndicatorBuilder:
-                                                                          (context, url, progress) {
-                                                                        return const CupertinoActivityIndicator();
-                                                                      },
-                                                                      imageUrl: '${levels.last.image}',
+                                                                      imageUrl: '${levels[0].bwImage}',
                                                                       height: 30.h,
                                                                       width: 30.w,
                                                                     );
                                                                   }
+                                                                  for (int i = 0; i < levels.length; i++) {
+                                                                    if (levels[i + 1].mustCoins == null) {
+                                                                      return CachedNetworkImage(
+                                                                        progressIndicatorBuilder: (context, url, progress) {
+                                                                          return const CupertinoActivityIndicator();
+                                                                        },
+                                                                        imageUrl: '${levels[i].image}',
+                                                                        height: 30.h,
+                                                                        width: 30.w,
+                                                                      );
+                                                                    } else {
+                                                                      if (bloc.user!.balance! >= levels[i].mustCoins! &&
+                                                                          bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                                        return CachedNetworkImage(
+                                                                          progressIndicatorBuilder:
+                                                                              (context, url, progress) {
+                                                                            return const CupertinoActivityIndicator();
+                                                                          },
+                                                                          imageUrl: '${levels[i].image}',
+                                                                          height: 30.h,
+                                                                          width: 30.w,
+                                                                        );
+                                                                      } else if (bloc.user!.balance! >=
+                                                                          levels.last.mustCoins!) {
+                                                                        return CachedNetworkImage(
+                                                                          progressIndicatorBuilder:
+                                                                              (context, url, progress) {
+                                                                            return const CupertinoActivityIndicator();
+                                                                          },
+                                                                          imageUrl: '${levels.last.image}',
+                                                                          height: 30.h,
+                                                                          width: 30.w,
+                                                                        );
+                                                                      }
+                                                                    }
+                                                                  }
                                                                 }
-                                                              }
-                                                            }
-                                                            return Container();
-                                                          }),
-                                                          SizedBox(
-                                                            width: 4.w,
-                                                          ),
-                                                          Padding(
-                                                            padding: EdgeInsets.only(bottom: 0.5.h),
-                                                            child: Text(
-                                                              bloc.user?.balance.toString() ?? '0',
-                                                              style: CustomTextStyle.purple_15_w600,
-                                                            ),
+                                                                return Container();
+                                                              }),
+                                                              SizedBox(
+                                                                width: 4.w,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets.only(bottom: 0.5.h),
+                                                                child: Text(
+                                                                  bloc.user?.balance.toString() ?? '0',
+                                                                  style: CustomTextStyle.purple_15_w600,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -542,64 +548,67 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(AppRoute.rating);
                                                   },
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(bottom: 7.5.h),
-                                                        child: ScaleButton(
-                                                          onTap: () {
-                                                            Navigator.of(context).pushNamed(AppRoute.rating);
-                                                          },
-                                                          bound: 0.02,
-                                                          child: Container(
-                                                            height: 25.h,
-                                                            width: 90.w,
-                                                            decoration: BoxDecoration(
-                                                              color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                                              borderRadius: BorderRadius.circular(30.r),
-                                                            ),
-                                                            child: Center(
-                                                              child: Row(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: [
-                                                                  Text(
-                                                                    'Рейтинг',
-                                                                    style: CustomTextStyle.gold_12_w400,
-                                                                  ),
-                                                                  SizedBox(width: 3.w),
-                                                                  Row(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        width: 12.w,
-                                                                        height: 12.h,
-                                                                        child: SvgPicture.asset(
-                                                                          'assets/icons/star.svg',
+                                                  child: SizedBox(
+                                                    height: 69.h,
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 7.5.h),
+                                                          child: ScaleButton(
+                                                            onTap: () {
+                                                              Navigator.of(context).pushNamed(AppRoute.rating);
+                                                            },
+                                                            bound: 0.02,
+                                                            child: Container(
+                                                              height: 25.h,
+                                                              width: 90.w,
+                                                              decoration: BoxDecoration(
+                                                                color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                                                borderRadius: BorderRadius.circular(30.r),
+                                                              ),
+                                                              child: Center(
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Text(
+                                                                      'Рейтинг',
+                                                                      style: CustomTextStyle.gold_12_w400,
+                                                                    ),
+                                                                    SizedBox(width: 3.w),
+                                                                    Row(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          width: 12.w,
+                                                                          height: 12.h,
+                                                                          child: SvgPicture.asset(
+                                                                            'assets/icons/star.svg',
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10.h,
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets.only(bottom: 4.h),
-                                                        child: SizedBox(
-                                                          child: Text(
-                                                            reviews?.ranking == null
-                                                                ? '3.4'
-                                                                : reviews!.ranking!.toString(),
-                                                            style: CustomTextStyle.gold_16_w600_171716,
+                                                        SizedBox(
+                                                          height: 10.h,
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 4.h),
+                                                          child: SizedBox(
+                                                            child: Text(
+                                                              reviews?.ranking == null
+                                                                  ? '3.4'
+                                                                  : reviews!.ranking!.toString(),
+                                                              style: CustomTextStyle.gold_16_w600_171716,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -609,43 +618,46 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(AppRoute.rating);
                                                   },
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(bottom: 17.h),
-                                                        child: ScaleButton(
-                                                          onTap: () {
-                                                            Navigator.of(context).pushNamed(AppRoute.rating);
-                                                          },
-                                                          bound: 0.02,
-                                                          child: Container(
-                                                            height: 25.h,
-                                                            width: 75.w,
-                                                            decoration: BoxDecoration(
-                                                              color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                                              borderRadius: BorderRadius.circular(30.r),
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                'Отзывы',
-                                                                style: CustomTextStyle.blue_12_w400,
+                                                  child: SizedBox(
+                                                    height: 69.h,
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 17.h),
+                                                          child: ScaleButton(
+                                                            onTap: () {
+                                                              Navigator.of(context).pushNamed(AppRoute.rating);
+                                                            },
+                                                            bound: 0.02,
+                                                            child: Container(
+                                                              height: 25.h,
+                                                              width: 75.w,
+                                                              decoration: BoxDecoration(
+                                                                color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                                                borderRadius: BorderRadius.circular(30.r),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'Отзывы',
+                                                                  style: CustomTextStyle.blue_12_w400,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets.only(bottom: 4.0.h),
-                                                        child: SizedBox(
-                                                          child: Text(
-                                                            '34',
-                                                            style: CustomTextStyle.blue_16_w600_171716,
-                                                            textAlign: TextAlign.left,
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 4.0.h),
+                                                          child: SizedBox(
+                                                            child: Text(
+                                                              '34',
+                                                              style: CustomTextStyle.blue_16_w600_171716,
+                                                              textAlign: TextAlign.left,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],

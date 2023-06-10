@@ -51,7 +51,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
-    
+
     log('message');
     List<int> activityIndexes = [];
 
@@ -303,72 +303,63 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 onTap: () {
                                   Navigator.of(context).pushNamed(AppRoute.score);
                                 },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 2.8.h),
-                                      child: ScaleButton(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(AppRoute.score);
-                                        },
-                                        bound: 0.02,
-                                        child: Container(
-                                          height: 25.h,
-                                          width: 70.h,
-                                          decoration: BoxDecoration(
-                                            color: ColorStyles.greyEAECEE,
-                                            borderRadius: BorderRadius.circular(30.r),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              'Грейды',
-                                              style: CustomTextStyle.purple_12_w400,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 0.5.h),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(bottom: 2.8.h),
+                                        child: ScaleButton(
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(AppRoute.score);
+                                          },
+                                          bound: 0.02,
+                                          child: Container(
+                                            height: 25.h,
+                                            width: 70.h,
+                                            decoration: BoxDecoration(
+                                              color: ColorStyles.greyEAECEE,
+                                              borderRadius: BorderRadius.circular(30.r),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'Грейды',
+                                                style: CustomTextStyle.purple_12_w400,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    Row(
-                                      children: [
-                                        BlocBuilder<ScoreBloc, ScoreState>(buildWhen: (previous, current) {
-                                          if (user!.balance! == proverkaBalance) {
-                                            return false;
-                                          }
-                                          return true;
-                                        }, builder: (context, state) {
-                                          if (state is ScoreLoaded) {
-                                            Future.delayed(const Duration(milliseconds: 500), () {
-                                              widget.callBackFlag();
-                                            });
-                                            proverkaBalance = user!.balance!;
-                                            final levels = state.levels;
-                                            if (user!.balance! < levels![0].mustCoins!) {
-                                              return CachedNetworkImage(
-                                                progressIndicatorBuilder: (context, url, progress) {
-                                                  return const CupertinoActivityIndicator();
-                                                },
-                                                imageUrl: '${levels[0].bwImage}',
-                                                height: 30.h,
-                                                width: 30.w,
-                                              );
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          BlocBuilder<ScoreBloc, ScoreState>(buildWhen: (previous, current) {
+                                            if (user!.balance! == proverkaBalance) {
+                                              return false;
                                             }
-                                            for (int i = 0; i < levels.length; i++) {
-                                              if (levels[i + 1].mustCoins == null) {
+                                            return true;
+                                          }, builder: (context, state) {
+                                            if (state is ScoreLoaded) {
+                                              Future.delayed(const Duration(milliseconds: 500), () {
+                                                widget.callBackFlag();
+                                              });
+                                              proverkaBalance = user!.balance!;
+                                              final levels = state.levels;
+                                              if (user!.balance! < levels![0].mustCoins!) {
                                                 return CachedNetworkImage(
                                                   progressIndicatorBuilder: (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
                                                   },
-                                                  imageUrl: '${levels[i].image}',
+                                                  imageUrl: '${levels[0].bwImage}',
                                                   height: 30.h,
                                                   width: 30.w,
                                                 );
-                                              } else {
-                                                if (user!.balance! >= levels[i].mustCoins! &&
-                                                    user!.balance! < levels[i + 1].mustCoins!) {
+                                              }
+                                              for (int i = 0; i < levels.length; i++) {
+                                                if (levels[i + 1].mustCoins == null) {
                                                   return CachedNetworkImage(
                                                     progressIndicatorBuilder: (context, url, progress) {
                                                       return const CupertinoActivityIndicator();
@@ -377,34 +368,46 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                     height: 30.h,
                                                     width: 30.w,
                                                   );
-                                                } else if (user!.balance! >= levels.last.mustCoins!) {
-                                                  return CachedNetworkImage(
-                                                    progressIndicatorBuilder: (context, url, progress) {
-                                                      return const CupertinoActivityIndicator();
-                                                    },
-                                                    imageUrl: '${levels.last.image}',
-                                                    height: 30.h,
-                                                    width: 30.w,
-                                                  );
+                                                } else {
+                                                  if (user!.balance! >= levels[i].mustCoins! &&
+                                                      user!.balance! < levels[i + 1].mustCoins!) {
+                                                    return CachedNetworkImage(
+                                                      progressIndicatorBuilder: (context, url, progress) {
+                                                        return const CupertinoActivityIndicator();
+                                                      },
+                                                      imageUrl: '${levels[i].image}',
+                                                      height: 30.h,
+                                                      width: 30.w,
+                                                    );
+                                                  } else if (user!.balance! >= levels.last.mustCoins!) {
+                                                    return CachedNetworkImage(
+                                                      progressIndicatorBuilder: (context, url, progress) {
+                                                        return const CupertinoActivityIndicator();
+                                                      },
+                                                      imageUrl: '${levels.last.image}',
+                                                      height: 30.h,
+                                                      width: 30.w,
+                                                    );
+                                                  }
                                                 }
                                               }
                                             }
-                                          }
-                                          return Container();
-                                        }),
-                                        const SizedBox(
-                                          width: 4,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 2.h),
-                                          child: Text(
-                                            user!.balance.toString(),
-                                            style: CustomTextStyle.purple_15_w600,
+                                            return Container();
+                                          }),
+                                          const SizedBox(
+                                            width: 4,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 2.h),
+                                            child: Text(
+                                              user!.balance.toString(),
+                                              style: CustomTextStyle.purple_15_w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -919,8 +922,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                      width: 3.h,
-                                    ),
+                                  width: 3.h,
+                                ),
                                 SizedBox(
                                   height: 14.h,
                                   width: 14.h,
@@ -1263,7 +1266,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         if (user!.images!.isNotEmpty)
                           SizedBox(
                             height: user!.images!.isEmpty ? 0 : 82.h,
-                            width: !change ? 300.w :double.infinity,
+                            width: !change ? 300.w : double.infinity,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               physics:
@@ -1342,19 +1345,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   });
                                                 },
                                                 child: Padding(
-                                                  padding:  EdgeInsets.only(right: 5.w, left: 7.w),
+                                                  padding: EdgeInsets.only(right: 5.w, left: 7.w),
                                                   child: Align(
                                                     alignment: Alignment.center,
                                                     child: ClipRRect(
                                                       borderRadius: BorderRadius.circular(10.r),
                                                       child: Container(
                                                         width: 65.h,
-                                                      height: 65.h,
-                                                        decoration:  BoxDecoration(
+                                                        height: 65.h,
+                                                        decoration: BoxDecoration(
                                                           color: ColorStyles.black.withOpacity(0.4),
-                                                          
                                                         ),
-                                                        child: Center(child: Text('+ ${user!.images!.length - 4}', style: CustomTextStyle.white_16_w600)),
+                                                        child: Center(
+                                                            child: Text('+ ${user!.images!.length - 4}',
+                                                                style: CustomTextStyle.white_16_w600)),
                                                       ),
                                                     ),
                                                   ),

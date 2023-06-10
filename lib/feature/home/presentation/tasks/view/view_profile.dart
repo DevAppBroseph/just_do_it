@@ -424,7 +424,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           ],
                                         );
                                       }),
-                                      SizedBox(height: 12.h),
+                                      SizedBox(height: 15.h),
                                       Padding(
                                         padding: EdgeInsets.only(left: 15.h),
                                         child: Row(
@@ -469,10 +469,11 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: ColorStyles.whiteFFFFFF,
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
+                                
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                                      padding: EdgeInsets.only(top: 23.h, left: 20.w),
                                       child: Row(
                                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
