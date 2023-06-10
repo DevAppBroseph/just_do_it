@@ -139,12 +139,12 @@ class _TaskAdditionalState extends State<TaskAdditional> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.whiteFFFFFF,
+          backgroundColor: ColorStyles.greyEAECEE,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.greyEAECEE,
         body: TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {

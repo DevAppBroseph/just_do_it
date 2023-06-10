@@ -1,6 +1,8 @@
 part of 'score_bloc.dart';
 
-class ScoreState {}
+class ScoreState {
+  
+}
 
 class ScoreEmpty extends ScoreState {}
 

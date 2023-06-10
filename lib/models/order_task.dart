@@ -1,3 +1,5 @@
+import 'package:just_do_it/models/user_reg.dart';
+
 class OrderTask {
   int? id;
   int? chatId;
@@ -35,12 +37,10 @@ class Currency {
   String? name;
   String? shortName;
 
-  Currency(this.isSelect,
-      {required this.id, required this.name, required this.shortName});
+  Currency(this.isSelect, {required this.id, required this.name, required this.shortName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(false,
-        id: json['id'], name: json['name'], shortName: json['short_name']);
+    return Currency(false, id: json['id'], name: json['name'], shortName: json['short_name']);
   }
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -55,22 +55,28 @@ class Owner {
   String? lastname;
   String? photo;
   String? cv;
+  int? isLiked;
   String? ranking;
   bool? isPassportExist;
   int? countOrdersCreate;
   String? activity;
   List<String> listPhoto;
+  int? balance;
+  List<ownerActivities>? activities;
 
   Owner({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
+    this.balance,
     this.cv,
     this.ranking,
+    this.activities,
     this.isPassportExist,
     this.countOrdersCreate,
     this.activity,
+    this.isLiked,
     this.listPhoto = const [],
   });
 
@@ -81,13 +87,22 @@ class Owner {
         listPhoto.add(element['image']);
       }
     }
+    List<ownerActivities> activities = [];
+    if (json['activities'] != null) {
+      for (var element in json['activities']) {
+        activities.add(ownerActivities.fromJson(element));
+      }
+    }
     return Owner(
       id: json["id"],
       firstname: json["firstname"],
       lastname: json["lastname"],
       photo: json["photo"],
       cv: json["CV"],
+      activities: activities,
+      balance: json["balance"],
       ranking: json["ranking"],
+      isLiked: json["is_liked"],
       isPassportExist: json["is_passport_exist"],
       countOrdersCreate: json["count_orders_create"],
       activity: json["activity"],
@@ -100,5 +115,44 @@ class Owner {
         "firstname": firstname,
         "lastname": lastname,
         "photo": photo,
+        "is_liked": isLiked,
       };
+}
+
+class ownerActivities {
+  bool isSelect;
+  int id;
+  String? description;
+  String? photo;
+  List<ownerSubcategory> subcategory;
+  List<String> selectSubcategory = [];
+
+  ownerActivities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
+
+  factory ownerActivities.fromJson(Map<String, dynamic> data) {
+    int id = data['id'];
+    String? description = data['description'];
+    String? photo = data['photo'];
+    List<ownerSubcategory> subcategory = [];
+    if (data['subcategories'] != null) {
+      for (var element in data['subcategories']) {
+        subcategory.add(ownerSubcategory.fromJson(element));
+      }
+    }
+    return ownerActivities(false, id, description, photo, subcategory);
+  }
+}
+
+class ownerSubcategory {
+  bool isSelect;
+  int id;
+  String? description;
+
+  ownerSubcategory(this.isSelect, {required this.id, required this.description});
+
+  factory ownerSubcategory.fromJson(Map<String, dynamic> data) {
+    int id = data['id'];
+    String? description = data['description'];
+    return ownerSubcategory(false, id: id, description: description);
+  }
 }

@@ -1,4 +1,4 @@
-import 'dart:ui';
+  import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
+            BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
             BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
             BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),

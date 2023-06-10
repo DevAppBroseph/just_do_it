@@ -31,7 +31,7 @@ class _TasksPageState extends State<TasksPage> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.greyEAECEE,
         body: StreamBuilder<int>(
           stream: streamController.stream,
           initialData: widget.customer,
@@ -83,12 +83,12 @@ class _TasksPageState extends State<TasksPage> {
                                     }
                                   });
                                 },
-                                child: SvgPicture.asset('assets/icons/category.svg')),
+                                child: SvgPicture.asset('assets/icons/category2.svg')),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: 30.h),
                     Row(
                       children: [
                         const Spacer(),
@@ -101,7 +101,7 @@ class _TasksPageState extends State<TasksPage> {
                             width: 150.w,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: snapshot.data! == 1 ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
+                              color: snapshot.data! == 1 ? ColorStyles.whiteFFFFFF : ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.r),
                                 bottomLeft: Radius.circular(20.r),
@@ -119,7 +119,7 @@ class _TasksPageState extends State<TasksPage> {
                             width: 150.w,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: snapshot.data! == 0 ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
+                              color: snapshot.data! == 0 ? ColorStyles.whiteFFFFFF : ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20.r),
                                 bottomRight: Radius.circular(20.r),
@@ -133,7 +133,7 @@ class _TasksPageState extends State<TasksPage> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 50),
+                        padding: const EdgeInsets.only(top: 20),
                         child: Stack(
                           children: [
                             PageView(

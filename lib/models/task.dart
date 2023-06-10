@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -6,6 +8,7 @@ import 'package:just_do_it/models/user_reg.dart';
 class Task {
   int? id;
   bool? asCustomer;
+  int? isLiked;
   Owner? owner;
   int? chatId;
   String name;
@@ -31,6 +34,7 @@ class Task {
     this.id,
     this.owner,
     this.asCustomer,
+    this.isLiked,
     this.chatId,
     this.currency,
     required this.name,
@@ -54,26 +58,37 @@ class Task {
 
   factory Task.fromJson(Map<String, dynamic> json) {
     List<Regions> regions = [];
-    for (var element in json['regions']) {
-      regions.add(Regions.fromJson(element));
+    if (json['regions'] != null) {
+      for (var element in json['regions']) {
+        regions.add(Regions.fromJson(element));
+      }
     }
     List<Countries> countries = [];
-    for (var element in json['countries']) {
-      countries.add(Countries.fromJson(element));
+    if (json['countries'] != null) {
+      for (var element in json['countries']) {
+        countries.add(Countries.fromJson(element));
+      }
     }
+
     List<Town> towns = [];
-    for (var element in json['towns']) {
-      towns.add(Town.fromJson(element));
+    if (json['towns'] != null) {
+      for (var element in json['towns']) {
+        towns.add(Town.fromJson(element));
+      }
     }
 
     List<ArrayImages> files = [];
-    for (var element in json['files']) {
-      files.add(ArrayImages(element['file'], null, id: element['id']));
+    if (json['files'] != null) {
+      for (var element in json['files']) {
+        files.add(ArrayImages(element['file'], null, id: element['id']));
+      }
     }
+  
 
     return Task(
         id: json["id"],
         owner: Owner.fromJson(json["owner"]),
+        isLiked: json["is_liked"],
         currency: Currency.fromJson(json['currency']),
         name: json["name"],
         description: json["description"],
@@ -99,6 +114,7 @@ class Task {
     data['date_start'] = dateStart;
     data['date_end'] = dateEnd;
     data['price_from'] = priceFrom;
+    data['is_liked'] = isLiked;
     data['price_to'] = priceTo;
     data['regions'] = regions.map((e) => e.id).toList();
     data['as_customer'] = asCustomer;

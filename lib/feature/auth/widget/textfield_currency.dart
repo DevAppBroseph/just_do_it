@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFieldCurrency extends StatelessWidget {
   final Function? onTap;
   final bool? readOnly;
   final FocusNode? focusNode;
@@ -38,7 +38,7 @@ class CustomTextField extends StatelessWidget {
   bool dismissTap;
   bool actionButton;
   TextDirection? textDirection;
-  CustomTextField({
+  CustomTextFieldCurrency({
     super.key,
     this.dismissTap = false,
     this.actionButton = true,

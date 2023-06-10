@@ -1,14 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/favourites_info.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemTask(Task task, Function(Task) onSelect) {
+Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelect) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
     child: ScaleButton(
@@ -37,15 +34,15 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                 height: 50.h,
                 child: Column(
                   children: [
-                    if (task.activities != null)
+                    if (task.order != null)
                       Row(
                         children: [
-                          if (task.activities?.photo != null)
-                            Image.network(
-                              server + task.activities!.photo!,
-                              height: 34.h,
-                              width: 34.h,
-                            ),
+                          if(task.order?.category?.photo != null)
+                          Image.network(
+                            server + task.order!.category!.photo!,
+                            height: 34.h,
+                            width: 34.h,
+                          ),
                         ],
                       ),
                   ],
@@ -58,7 +55,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                   SizedBox(
                     width: 245.w,
                     child: Text(
-                      task.name,
+                      task.order!.name!,
                       style: CustomTextStyle.black_14_w500_171716,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -83,7 +80,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                             ),
                             SizedBox(height: 5.h),
                             Text(
-                              _textData(task.dateStart),
+                              _textData(task.order!.dateStart!),
                               style: CustomTextStyle.grey_12_w400,
                             ),
                           ],
@@ -97,36 +94,36 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                     child: Row(
                       children: [
                         const Spacer(),
-                        if (task.currency?.name == null)
+                        if (task.order?.currency?.name == null)
                           SizedBox(
                             width: 245.w,
                             child: Text(
-                              'до ${_textCurrency(task.priceTo)} ',
+                              'до ${task.order?.priceTo} ',
                               maxLines: 1,
                               style: CustomTextStyle.black_14_w500_171716,
                             ),
                           ),
-                        if (task.currency?.name == 'Дирхам')
+                        if (task.order?.currency?.name == 'Дирхам')
                           Text(
-                            'до ${_textCurrency(task.priceTo)} AED',
+                            'до ${task.order?.priceTo} AED',
                             maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                        if (task.currency?.name == 'Российский рубль')
+                        if (task.order?.currency?.name == 'Российский рубль')
                           Text(
-                            'до ${_textCurrency(task.priceTo)}  ₽',
+                            'до ${task.order?.priceTo}  ₽',
                             maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                        if (task.currency?.name == 'Доллар США')
+                        if (task.order?.currency?.name == 'Доллар США')
                           Text(
-                            'до ${_textCurrency(task.priceTo)} \$',
+                            'до ${task.order?.priceTo} \$',
                             maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
-                        if (task.currency?.name == 'Евро')
+                        if (task.order?.currency?.name == 'Евро')
                           Text(
-                            'до ${_textCurrency(task.priceTo)} €',
+                            'до ${task.order?.priceTo} €',
                             maxLines: 1,
                             style: CustomTextStyle.black_14_w500_171716,
                           ),
@@ -147,41 +144,29 @@ Widget itemTask(Task task, Function(Task) onSelect) {
     ),
   );
 }
-
-String _textCurrency(int data) {
-  if (data >= 1000) {
-    var formatter = NumberFormat('#,###');
-
-    return formatter.format(data).replaceAll(',', ' ');
-  } else {
-    return data.toString();
+String _textData(String data){
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();   
+    day = parts[2].trim();   
+    month = parts[1].trim();
+   
+    text = '$day.$month.$year';
+    return text;
   }
-}
-
-String _textData(String data) {
-  String text = '';
-  String day = '';
-  String month = '';
-  String year = '';
-  List<String> parts = [];
-  parts = data.split('-');
-  year = parts[0].trim();
-  day = parts[2].trim();
-  month = parts[1].trim();
-
-  text = '$day.$month.$year';
-  return text;
-}
-
-String _textCountry(Task task) {
+String _textCountry(FavouriteOffers task) {
   var text = '';
-  for (var country in task.countries) {
+  for (var country in task.order!.countries!) {
     text += '${country.name}, ';
   }
-  for (var region in task.regions) {
+  for (var region in task.order!.regions!) {
     text += '${region.name}, ';
   }
-  for (var town in task.towns) {
+  for (var town in task.order!.towns!) {
     text += '${town.name}, ';
   }
   if (text.isNotEmpty) text = text.substring(0, text.length - 2);

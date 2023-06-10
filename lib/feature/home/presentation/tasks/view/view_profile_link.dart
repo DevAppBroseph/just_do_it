@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
@@ -20,6 +21,7 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
+        backgroundColor:  ColorStyles.greyEAECEE,
         body: Column(
           children: [
             SizedBox(height: 60.h),

@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
@@ -56,7 +57,7 @@ class _SearchPageState extends State<SearchPage> {
 
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-
+  bool searchListEnable = false;
   bool searchList = false;
   List<String> searchChoose = [];
 
@@ -69,13 +70,18 @@ class _SearchPageState extends State<SearchPage> {
     initFunc();
     getTaskList();
     if (widget.taskId != null) getTask();
+    final access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
+    
   }
 
   void getTask() async {
-    final task = await Repository().getTaskById(widget.taskId!);
+    final access = BlocProvider.of<ProfileBloc>(context).access;
+    final task = await Repository().getTaskById(widget.taskId!, access);
     widget.clearId();
     setState(() {
       selectTask = task;
+      log(selectTask!.isLiked.toString());
     });
   }
 
@@ -115,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.greyEAECEE,
         resizeToAvoidBottomInset: false,
         body: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
           if (current is UpdateListMessageItemState) {
@@ -136,113 +142,140 @@ class _SearchPageState extends State<SearchPage> {
           return Column(
             children: [
               Container(
-                height: searchList ? 100.h : 130.h,
-                decoration: BoxDecoration(
-                  color: ColorStyles.whiteFFFFFF,
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorStyles.shadowFC6554,
-                      offset: const Offset(0, -4),
-                      blurRadius: 55.r,
-                    )
-                  ],
+                height: searchList ? 100.h : 120.h,
+                decoration: const BoxDecoration(
+                  color: ColorStyles.greyEAECEE,
                 ),
                 child: Column(
                   children: [
                     Container(
                       height: 60.h,
-                      color: ColorStyles.whiteFFFFFF,
+                      color: ColorStyles.greyEAECEE,
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 15.w, right: 28.w),
                       child: Row(
                         children: [
-                          CustomIconButton(
-                            onBackPressed: () {
-                              if (owner != null) {
-                                setState(() {
-                                  owner = null;
-                                });
-                              } else if (selectTask != null) {
-                                setState(() {
-                                  selectTask = null;
-                                });
-                              } else {
-                                widget.onBackPressed();
-                              }
-                            },
-                            icon: SvgImg.arrowRight,
-                          ),
-                          const Spacer(),
-                          SizedBox(
-                            width: 240.w,
-                            height: 36.h,
-                            child: CustomTextField(
-                              fillColor: ColorStyles.greyF7F7F8,
-                              prefixIcon: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/search1.svg',
-                                    height: 12.h,
-                                  ),
-                                ],
-                              ),
-                              hintText: 'Поиск',
-                              textEditingController: searchController,
-                              onTap: () async {
-                                owner = null;
-                                selectTask = null;
-                                searchList = true;
-                                setState(() {});
-                                getHistoryList();
-                              },
-                              onFieldSubmitted: (value) {
-                                setState(() {
-                                  searchList = false;
-                                });
-                                FocusScope.of(context).unfocus();
-                                searchController.text = value;
-                                Storage().setListHistory(value);
-                                getTaskList();
-                              },
-                              onChanged: (value) async {
-                                if (value.isEmpty) {
-                                  getHistoryList();
-                                }
-                                List<Activities> activities =
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .activities;
-                                searchChoose.clear();
-                                if (value.isNotEmpty) {
-                                  for (var element1 in activities) {
-                                    for (var element2 in element1.subcategory) {
-                                      if (element2.description!
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) &&
-                                          !searchChoose.contains(element2
-                                              .description!
-                                              .toLowerCase())) {
-                                        searchChoose.add(element2.description!);
-                                      }
+                          searchListEnable
+                              ? CustomIconButton(
+                                  onBackPressed: () {
+                                    setState(() {
+                                      searchListEnable = false;
+                                      searchList = false;
+                                    });
+                                  },
+                                  icon: SvgImg.arrowRight,
+                                )
+                              : CustomIconButton(
+                                  onBackPressed: () {
+                                    if (owner != null) {
+                                      setState(() {
+                                        owner = null;
+                                      });
+                                    } else if (selectTask != null) {
+                                      setState(() {
+                                        selectTask = null;
+                                      });
+                                    } else {
+                                      widget.onBackPressed();
                                     }
-                                  }
-                                }
-                                setState(() {});
-                              },
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 11.w, vertical: 11.h),
-                            ),
-                          ),
+                                  },
+                                  icon: SvgImg.arrowRight,
+                                ),
                           const Spacer(),
-                          SizedBox(width: 23.w),
+                          searchListEnable
+                              ? SizedBox(
+                                  width: 240.w,
+                                  height: 36.h,
+                                  child: CustomTextField(
+                                    fillColor: ColorStyles.greyF7F7F8,
+                                    prefixIcon: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/search1.svg',
+                                          height: 12.h,
+                                        ),
+                                      ],
+                                    ),
+                                    hintText: 'Поиск',
+                                    textEditingController: searchController,
+                                    onTap: () async {
+                                      owner = null;
+                                      selectTask = null;
+                                      searchList = true;
+                                      setState(() {});
+                                      getHistoryList();
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      setState(() {
+                                        searchList = false;
+                                      });
+                                      FocusScope.of(context).unfocus();
+                                      searchController.text = value;
+                                      Storage().setListHistory(value);
+                                      getTaskList();
+                                    },
+                                    onChanged: (value) async {
+                                      if (value.isEmpty) {
+                                        getHistoryList();
+                                      }
+                                      List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                      searchChoose.clear();
+                                      if (value.isNotEmpty) {
+                                        for (var element1 in activities) {
+                                          for (var element2 in element1.subcategory) {
+                                            if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
+                                                !searchChoose.contains(element2.description!.toLowerCase())) {
+                                              searchChoose.add(element2.description!);
+                                            }
+                                          }
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                                  ),
+                                )
+                              : Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(AppRoute.notification);
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/notification_main.svg',
+                                          ),
+                                          Container(
+                                            height: 10.w,
+                                            width: 10.w,
+                                            decoration: BoxDecoration(
+                                              color: ColorStyles.yellowFFD70B,
+                                              borderRadius: BorderRadius.circular(20.r),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 12.w),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        setState(() {
+                                          searchListEnable = true;
+                                        });
+                                      },
+                                      child: SvgPicture.asset('assets/icons/search3.svg'),
+                                    ),
+                                  ],
+                                ),
+                          SizedBox(width: 10.w),
                           GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushNamed(AppRoute.menu,
-                                    arguments: [
-                                      (page) {},
-                                      false
-                                    ]).then((value) {
+                                Navigator.of(context)
+                                    .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
                                   if (value != null) {
                                     if (value == 'create') {
                                       widget.onSelect(0);
@@ -256,16 +289,14 @@ class _SearchPageState extends State<SearchPage> {
                                   }
                                 });
                               },
-                              child: SvgPicture.asset(
-                                  'assets/icons/category.svg')),
+                              child: SvgPicture.asset('assets/icons/category2.svg')),
                         ],
                       ),
                     ),
-                    if (!searchList) Container(height: 30.h),
                   ],
                 ),
               ),
-              if (selectTask == null && !searchList) SizedBox(height: 16.h),
+
               if (selectTask == null)
                 searchList
                     ? SearchList(
@@ -295,8 +326,7 @@ class _SearchPageState extends State<SearchPage> {
                             ScaleButton(
                               bound: 0.01,
                               onTap: () {
-                                BlocProvider.of<SearchBloc>(context)
-                                    .add(OpenSlidingPanelEvent());
+                                BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent());
                               },
                               child: SizedBox(
                                 height: 40.h,
@@ -309,12 +339,10 @@ class _SearchPageState extends State<SearchPage> {
                                       width: 100.h,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.greyF7F7F8,
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
+                                        borderRadius: BorderRadius.circular(10.r),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10.h),
+                                        padding: EdgeInsets.symmetric(horizontal: 10.h),
                                         child: Row(
                                           children: [
                                             SvgPicture.asset(
@@ -325,8 +353,7 @@ class _SearchPageState extends State<SearchPage> {
                                             SizedBox(width: 4.w),
                                             Text(
                                               'Фильтр',
-                                              style: CustomTextStyle
-                                                  .black_14_w400_171716,
+                                              style: CustomTextStyle.black_14_w400_171716,
                                             ),
                                           ],
                                         ),
@@ -338,30 +365,22 @@ class _SearchPageState extends State<SearchPage> {
                                         height: 15.h,
                                         width: 15.h,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(369.r),
+                                          borderRadius: BorderRadius.circular(369.r),
                                           color: ColorStyles.black171716,
                                         ),
                                         child: Center(
-                                          child: BlocBuilder<TasksBloc,
-                                                  TasksState>(
-                                              builder: (context, state) {
+                                          child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
                                             if (state is TasksLoaded) {
                                               return Text(
-                                                state.countFilter != 0 &&
-                                                        state.countFilter !=
-                                                            null
-                                                    ? state.countFilter
-                                                        .toString()
+                                                state.countFilter != 0 && state.countFilter != null
+                                                    ? state.countFilter.toString()
                                                     : '0',
-                                                style: CustomTextStyle
-                                                    .white_10_w700,
+                                                style: CustomTextStyle.white_10_w700,
                                               );
                                             } else {
                                               return Text(
                                                 '',
-                                                style: CustomTextStyle
-                                                    .white_10_w700,
+                                                style: CustomTextStyle.white_10_w700,
                                               );
                                             }
                                           }),
@@ -389,8 +408,7 @@ class _SearchPageState extends State<SearchPage> {
                             baseColor: ColorStyles.whiteFFFFFF,
                             highlightColor: ColorStyles.greyF3F3F3,
                             builder: Container(
-                              margin: EdgeInsets.only(
-                                  left: 24.w, right: 24.w, bottom: 24.w),
+                              margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
                               height: 100.h,
                               decoration: BoxDecoration(
                                 color: ColorStyles.whiteFFFFFF,
@@ -417,6 +435,7 @@ class _SearchPageState extends State<SearchPage> {
                               .map((e) => itemTask(e, (task) {
                                     setState(() {
                                       selectTask = task;
+                                      log(selectTask!.isLiked.toString());
                                       lastPosition = scrollController.offset;
                                     });
                                   }))
@@ -438,15 +457,14 @@ class _SearchPageState extends State<SearchPage> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.greyEAECEE,
         body: ProfileView(owner: owner!),
       );
     }
 
     if (selectTask != null) {
-      log('message ${selectTask?.chatId}');
       return Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.greyEAECEE,
         body: TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {
