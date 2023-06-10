@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +15,8 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class AllTasksView extends StatefulWidget {
-  bool asCustomer;
-  AllTasksView({super.key, required this.asCustomer});
+  final bool asCustomer;
+  const AllTasksView({super.key, required this.asCustomer});
 
   @override
   State<AllTasksView> createState() => _AllTasksViewState();

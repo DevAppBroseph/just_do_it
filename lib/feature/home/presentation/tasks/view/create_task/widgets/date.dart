@@ -2,16 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/widget/formatter_currency.dart';
+import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
+
 import 'package:scale_button/scale_button.dart';
 
 class DatePicker extends StatefulWidget {
@@ -579,7 +583,7 @@ class _DatePickerState extends State<DatePicker> {
                         SizedBox(height: 3.h),
                         Row(
                           children: [
-                            CustomTextField(
+                            CustomTextFieldCurrency(
                               height: 20.h,
                               width: 80.w,
                               textInputType: TextInputType.number,
@@ -599,6 +603,7 @@ class _DatePickerState extends State<DatePicker> {
                               onFieldSubmitted: (value) {
                                 setState(() {});
                               },
+                              formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
                               contentPadding: EdgeInsets.zero,
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
@@ -662,7 +667,7 @@ class _DatePickerState extends State<DatePicker> {
                         SizedBox(height: 3.h),
                         Row(
                           children: [
-                            CustomTextField(
+                            CustomTextFieldCurrency(
                               height: 20.h,
                               width: 80.w,
                               actionButton: false,
@@ -682,6 +687,10 @@ class _DatePickerState extends State<DatePicker> {
                               onFieldSubmitted: (value) {
                                 setState(() {});
                               },
+                              formatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                FormatterCurrency(),
+                              ],
                               contentPadding: EdgeInsets.zero,
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
