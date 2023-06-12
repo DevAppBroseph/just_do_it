@@ -223,52 +223,50 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 style: CustomTextStyle.black_22_w700_171716,
               ),
               SizedBox(height: 30.h),
-              Expanded(
-                child: ScaleButton(
-                  bound: 0.02,
-                  onTap: () {},
-                  child: Container(
-                    height: 55.h,
-                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                    decoration: BoxDecoration(
-                      color: ColorStyles.greyF9F9F9,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Бюджет от ',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                        SizedBox(height: 3.h),
-                        Row(
-                          children: [
-                            CustomTextFieldCurrency(
-                              height: 20.h,
-                              width: 80.w,
-                              textInputType: TextInputType.number,
-                              actionButton: false,
-                              onTap: () {
-                                setState(() {});
-                              },
-                              onChanged: (value) {},
-                              onFieldSubmitted: (value) {
-                                setState(() {});
-                              },
-                              formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
-                              contentPadding: EdgeInsets.zero,
-                              hintText: '',
-                              fillColor: ColorStyles.greyF9F9F9,
-                              maxLines: null,
-                              style: CustomTextStyle.black_14_w400_171716,
-                              textEditingController: coastController,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+              ScaleButton(
+                bound: 0.02,
+                onTap: () {},
+                child: Container(
+                  height: 55.h,
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.greyF9F9F9,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Бюджет от ',
+                        style: CustomTextStyle.grey_14_w400,
+                      ),
+                      SizedBox(height: 3.h),
+                      Row(
+                        children: [
+                          CustomTextFieldCurrency(
+                            height: 20.h,
+                            width: 80.w,
+                            textInputType: TextInputType.number,
+                            actionButton: false,
+                            onTap: () {
+                              setState(() {});
+                            },
+                            onChanged: (value) {},
+                            onFieldSubmitted: (value) {
+                              setState(() {});
+                            },
+                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
+                            contentPadding: EdgeInsets.zero,
+                            hintText: '',
+                            fillColor: ColorStyles.greyF9F9F9,
+                            maxLines: null,
+                            style: CustomTextStyle.black_14_w400_171716,
+                            textEditingController: coastController,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

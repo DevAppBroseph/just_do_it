@@ -7,9 +7,11 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
@@ -37,6 +39,19 @@ class _ContractorState extends State<Contractor> {
     getListTask();
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
+     context.read<TasksBloc>().add(
+          GetTasksEvent(
+            access: access,
+            query: null,
+            dateEnd: null,
+            dateStart: null,
+            priceFrom: null,
+            priceTo: null,
+            subcategory: [],
+            countFilter: null,
+            customer: null,
+          ),
+        );
   }
 
   void getListTask() async {
@@ -275,7 +290,15 @@ class _ContractorState extends State<Contractor> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                          onTap: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const ResponseTasksView(
+                                title: 'Принятые офферы', asCustomer: false,
+                              );
+                            }),
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Row(

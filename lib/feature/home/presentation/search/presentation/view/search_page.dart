@@ -435,7 +435,7 @@ class _SearchPageState extends State<SearchPage> {
                               .map((e) => itemTask(e, (task) {
                                     setState(() {
                                       selectTask = task;
-                                      log(selectTask!.isLiked.toString());
+                                    
                                       lastPosition = scrollController.offset;
                                     });
                                   }))

@@ -18,6 +18,7 @@ class Task {
   String dateEnd;
   int priceFrom;
   int priceTo;
+  Answers? isAnswered;
   List<Countries> countries;
   List<Regions> regions;
   List<ArrayImages>? files;
@@ -49,6 +50,7 @@ class Task {
       this.towns = const [],
       this.countries = const [],
       this.files,
+      this.isAnswered,
       this.icon,
       this.task,
       this.typeLocation,
@@ -90,6 +92,10 @@ class Task {
         files.add(ArrayImages(element['file'], null, id: element['id']));
       }
     }
+    Answers? isAnswered;
+    if (json["is_answered"] != null) {
+      isAnswered = Answers.fromJson(json["is_answered"]);
+    }
 
     return Task(
         id: json["id"],
@@ -110,7 +116,8 @@ class Task {
         regions: regions,
         files: files,
         towns: towns,
-        answers: answers);
+        answers: answers,
+        isAnswered: isAnswered);
   }
 
   Map<String, dynamic> toJson() {

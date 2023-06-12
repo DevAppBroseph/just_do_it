@@ -20,12 +20,14 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
+  
   bool customerFlag = false;
   bool contractorFlag = false;
   final streamController = StreamController<int>();
   final PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
+    
     Size size = MediaQuery.of(context).size;
 
     return MediaQuery(

@@ -9,15 +9,16 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/favour
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 
 class Customer extends StatefulWidget {
-  Function(int) callBacK;
-  Function() callBackFlag;
-  Customer({
+  final Function(int) callBacK;
+  final Function() callBackFlag;
+  const Customer({
     Key? key,
     required this.size,
     required this.callBacK,
@@ -82,7 +83,15 @@ class _CustomerState extends State<Customer> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const ResponseTasksView(
+                                title: 'Все отклики', asCustomer: true,
+                              );
+                            }),
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Row(
@@ -449,7 +458,7 @@ class _CustomerState extends State<Customer> {
                         onTap: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
-                              return FavouriteTasks(
+                              return const FavouriteTasks(
                                 title: 'Избранные задачи',
                                 asCustomer: true,
                               );
@@ -559,169 +568,7 @@ class _CustomerState extends State<Customer> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () async {
-              //     final res = await Navigator.of(context).pushNamed(AppRoute.allTasks, arguments: [false]);
-              //     if (res != null) {
-              //       if (res == true) {
-              //         widget.callBacK(1);
-              //       } else {
-              //         widget.callBacK(0);
-              //       }
-              //     }
-              //     getListTask();
-              //   },
-              //   child: Container(
-              //     height: 55.h,
-              //     width: widget.size.width,
-              //     margin: EdgeInsets.symmetric(horizontal: 24.w),
-              //     padding: EdgeInsets.symmetric(horizontal: 12.w),
-              //     decoration: BoxDecoration(
-              //       color: ColorStyles.yellowFFD70A,
-              //       borderRadius: BorderRadius.circular(10.r),
-              //     ),
-              //     child: Row(
-              //       children: [
-              //         SvgPicture.asset(
-              //           SvgImg.task,
-              //           color: ColorStyles.black,
-              //         ),
-              //         SizedBox(width: 16.w),
-              //         Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               taskCounts(taskList.length),
-              //               style: CustomTextStyle.black_14_w400_171716,
-              //             ),
-              //             Text(
-              //               'Все офферы',
-              //               style: CustomTextStyle.black_14_w400_171716,
-              //             )
-              //           ],
-              //         ),
-              //         const Spacer(),
-              //         const Icon(
-              //           Icons.keyboard_arrow_right_rounded,
-              //           color: ColorStyles.whiteFFFFFF,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(height: 16.h),
-              // GestureDetector(
-              //   onTap: () async {
-              //     final res = await Navigator.of(context).pushNamed(AppRoute.archiveTasks, arguments: [false]);
-              //     if (res != null) {
-              //       if (res == true) {
-              //         widget.callBacK(1);
-              //       } else {
-              //         widget.callBacK(0);
-              //       }
-              //     }
-              //     getListTask();
-              //   },
-              //   child: Container(
-              //     height: 55.h,
-              //     width: widget.size.width,
-              //     margin: EdgeInsets.symmetric(horizontal: 24.w),
-              //     padding: EdgeInsets.symmetric(horizontal: 12.w),
-              //     decoration: BoxDecoration(
-              //       color: ColorStyles.yellowFFD70A,
-              //       borderRadius: BorderRadius.circular(10.r),
-              //     ),
-              //     child: Row(
-              //       children: [
-              //         SvgPicture.asset(
-              //           SvgImg.archive,
-              //           color: ColorStyles.black,
-              //         ),
-              //         SizedBox(width: 16.w),
-              //         Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               taskCounts(taskList.length),
-              //               style: CustomTextStyle.black_14_w400_171716,
-              //             ),
-              //             Text(
-              //               'В архиве',
-              //               style: CustomTextStyle.black_14_w400_171716,
-              //             )
-              //           ],
-              //         ),
-              //         const Spacer(),
-              //         const Icon(
-              //           Icons.keyboard_arrow_right_rounded,
-              //           color: ColorStyles.whiteFFFFFF,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(height: 50.h),
-              // Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 24.w),
-              //   child: Text(
-              //     'Вы создали ${taskCounts(taskList.length)}',
-              //     style: CustomTextStyle.black_18_w500_171716,
-              //   ),
-              // ),
-              // SizedBox(height: 30.h),
-              // Column(
-              //   children: [
-              //     itemButton(
-              //       'Открыты',
-              //       taskCounts(taskList.length),
-              //       SvgImg.inProgress,
-              //       () async {
-              //         await Navigator.of(context).push(
-              //           MaterialPageRoute(builder: (context) {
-              //             return TaskAdditional(title: 'Открыты', asCustomer: false, scoreTrue: false);
-              //           }),
-              //         );
-              //         getListTask();
-              //       },
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.only(top: 18.h),
-              //       child: const Divider(
-              //         height: 1,
-              //         indent: 20,
-              //         endIndent: 20,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // Column(
-              //   children: [
-              //     SizedBox(height: 18.h),
-              //     itemButton(
-              //       'Невыполненные',
-              //       taskCounts(taskList.length),
-              //       SvgImg.close,
-              //       () async {
-              //         await Navigator.of(context).push(
-              //           MaterialPageRoute(builder: (context) {
-              //             return TaskAdditional(title: 'Невыполненные', asCustomer: false, scoreTrue: false);
-              //           }),
-              //         );
-              //         getListTask();
-              //       },
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.only(top: 18.h),
-              //       child: const Divider(
-              //         height: 1,
-              //         indent: 20,
-              //         endIndent: 20,
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              
               SizedBox(
                 height: 100.h,
               )
