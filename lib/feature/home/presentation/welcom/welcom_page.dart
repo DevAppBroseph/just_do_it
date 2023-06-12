@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
@@ -76,7 +78,6 @@ class _WelcomPageState extends State<WelcomPage> {
     user = BlocProvider.of<ProfileBloc>(context).user;
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -477,7 +478,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   final levels = state.levels;
                                                                   if (bloc.user!.balance! < levels![0].mustCoins!) {
                                                                     return CachedNetworkImage(
-                                                                      progressIndicatorBuilder: (context, url, progress) {
+                                                                      progressIndicatorBuilder:
+                                                                          (context, url, progress) {
                                                                         return const CupertinoActivityIndicator();
                                                                       },
                                                                       imageUrl: '${levels[0].bwImage}',
@@ -488,7 +490,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   for (int i = 0; i < levels.length; i++) {
                                                                     if (levels[i + 1].mustCoins == null) {
                                                                       return CachedNetworkImage(
-                                                                        progressIndicatorBuilder: (context, url, progress) {
+                                                                        progressIndicatorBuilder:
+                                                                            (context, url, progress) {
                                                                           return const CupertinoActivityIndicator();
                                                                         },
                                                                         imageUrl: '${levels[i].image}',
@@ -497,7 +500,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       );
                                                                     } else {
                                                                       if (bloc.user!.balance! >= levels[i].mustCoins! &&
-                                                                          bloc.user!.balance! < levels[i + 1].mustCoins!) {
+                                                                          bloc.user!.balance! <
+                                                                              levels[i + 1].mustCoins!) {
                                                                         return CachedNetworkImage(
                                                                           progressIndicatorBuilder:
                                                                               (context, url, progress) {

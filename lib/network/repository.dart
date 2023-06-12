@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/answers.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/favourites_info.dart';
@@ -178,6 +178,24 @@ class Repository {
       return true;
     }
     return false;
+  }
+
+   Future<Answers?> createAnswer(int id, String? access, int price, String description) async {
+    final response = await dio.post(
+      '$server/answers/',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      data: {
+        "order": id,
+        "price": price,
+        "description": description,
+      },
+    );
+    log(id.toString());
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      
+      return Answers.fromJson(response.data);
+    }
+    return null;
   }
 
   Future<bool> editTask(String access, Task task) async {
@@ -408,6 +426,7 @@ class Repository {
           "fcm_token": token,
         },
       );
+      log(response.data.toString());
       if (response.statusCode == 200) {
         String? accessToken = response.data['access'];
         await Storage().setAccessToken(accessToken);

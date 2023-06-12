@@ -1,4 +1,4 @@
-import 'package:just_do_it/models/user_reg.dart';
+
 
 class OrderTask {
   int? id;
@@ -63,6 +63,7 @@ class Owner {
   List<String> listPhoto;
   int? balance;
   List<ownerActivities>? activities;
+  int? countOrdersComplete;
 
   Owner({
     required this.id,
@@ -78,6 +79,7 @@ class Owner {
     this.activity,
     this.isLiked,
     this.listPhoto = const [],
+    this.countOrdersComplete,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) {
@@ -106,6 +108,7 @@ class Owner {
       isPassportExist: json["is_passport_exist"],
       countOrdersCreate: json["count_orders_create"],
       activity: json["activity"],
+      countOrdersComplete: json["count_orders_complete"],
       listPhoto: listPhoto,
     );
   }

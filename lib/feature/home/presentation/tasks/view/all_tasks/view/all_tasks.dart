@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,6 +101,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
+                                log(taskList[index].id.toString());
                                 return itemTask(
                                   taskList[index],
                                   (task) {

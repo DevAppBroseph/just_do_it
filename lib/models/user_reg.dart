@@ -39,6 +39,7 @@ class UserRegModel {
   List<ActivitiesInfo>? activitiesInfo;
   int? balance;
   String? link;
+  int? countOrderComplete;
 
   UserRegModel({
     this.phoneNumber,
@@ -66,6 +67,7 @@ class UserRegModel {
     this.activitiesInfo,
     this.balance,
     this.link,
+    this.countOrderComplete,
   });
 
   void copyWith({
@@ -91,6 +93,7 @@ class UserRegModel {
     String? photoLink,
     String? cvLink,
     int? id,
+    int? countOrderComplete,
     List<ActivitiesInfo>? activitiesInfo,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
@@ -116,12 +119,14 @@ class UserRegModel {
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
     this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
+    this.countOrderComplete = countOrderComplete ?? this.countOrderComplete;
     balance = balance ?? balance;
     link = link ?? link;
   }
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
+    int? countOrderComplete = data['count_orders_complete'];
     String? phoneNumber = data['phone_number'];
     String? firstname = data['firstname'];
     String? lastname = data['lastname'];
@@ -151,6 +156,7 @@ class UserRegModel {
       }
     }
     return UserRegModel(
+      countOrderComplete: countOrderComplete,
       email: email,
       phoneNumber: phoneNumber,
       firstname: firstname,
@@ -180,6 +186,7 @@ class UserRegModel {
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['password'] = password;
+    data['count_orders_complete'] = countOrderComplete;
     if (photo != null) {
       data['photo'] = MultipartFile.fromBytes(
         photo!,
@@ -251,8 +258,7 @@ class Activities {
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(
-      this.isSelect, this.id, this.description, this.photo, this.subcategory);
+  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
@@ -284,17 +290,15 @@ class Subcategory {
 
 class DocumentInfo {
   String? serial, documentNumber, whoGiveDocument, documentData;
-  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument,
-      this.documentData);
+  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument, this.documentData);
   factory DocumentInfo.fromJson(String data) {
     List<String> list = data.split('\n');
     list.map((e) => e.split(' ').length > 1 ? e.split(' ')[1] : e);
 
     String? serial = list[0].split(':').last.replaceAll(' ', '');
     String? documentNumber = list[1].split(':').last.replaceAll(' ', '');
-    String? whoGiveDocument = list[2].split(':').last != ' '
-        ? list[2].split(':').last.substring(1, list[2].split(':').last.length)
-        : '';
+    String? whoGiveDocument =
+        list[2].split(':').last != ' ' ? list[2].split(':').last.substring(1, list[2].split(':').last.length) : '';
 
     String? documentData = list[3].split(':').last.replaceAll(' ', '');
     return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);

@@ -16,9 +16,9 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class FavouriteTasks extends StatefulWidget {
-  String title;
-  bool asCustomer;
-  FavouriteTasks({super.key, required this.title, required this.asCustomer});
+  final String title;
+  final bool asCustomer;
+  const FavouriteTasks({super.key, required this.title, required this.asCustomer});
 
   @override
   State<FavouriteTasks> createState() => _FavouriteTasksState();

@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as res;
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
@@ -127,7 +128,7 @@ class _TaskViewState extends State<TaskView> {
                               } else {
                                 proverka = true;
                                 final access = await Storage().getAccessToken();
-    
+
                                 if (selectTask?.id != null) {
                                   await Repository().addLikeOrder(selectTask!.id!, access!);
                                 }
@@ -356,7 +357,7 @@ class _TaskViewState extends State<TaskView> {
                                   widget.selectTask.files![index].type == 'docx') {
                                 file = true;
                               }
-    
+
                               if (file) {
                                 return SizedBox(
                                   height: 60.h,
@@ -583,7 +584,7 @@ class _TaskViewState extends State<TaskView> {
                     final chatBloc = BlocProvider.of<ChatBloc>(context);
                     chatBloc.editShowPersonChat(false);
                     chatBloc.editChatId(widget.selectTask.chatId);
-    
+
                     chatBloc.messages = [];
                     final idChat = await Navigator.of(context).pushNamed(
                       AppRoute.personalChat,
@@ -606,7 +607,7 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(height: 18.h),
               if (widget.canSelect && user?.id != widget.selectTask.owner?.id)
                 CustomButton(
-                  onTap: () {
+                  onTap: () async {
                     if (user == null) {
                       Navigator.push(
                           context,
@@ -614,7 +615,12 @@ class _TaskViewState extends State<TaskView> {
                             builder: (context) => const AuthPage(),
                           ));
                     } else {
-                      BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
+                      log(user.docInfo.toString());
+                      if (user.docInfo == '') {
+                        BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
+                      } else {
+                        BlocProvider.of<res.ResponseBloc>(context).add(res.OpenSlidingPanelEvent(selectTask: selectTask));
+                      }
                     }
                   },
                   btnColor: ColorStyles.yellowFFD70A,
@@ -630,16 +636,16 @@ class _TaskViewState extends State<TaskView> {
       ),
     );
   }
+
   String _textCurrency(int data) {
-  if (data >= 1000) {
-    var formatter = NumberFormat('#,###');
+    if (data >= 1000) {
+      var formatter = NumberFormat('#,###');
 
-    return formatter.format(data).replaceAll(',', ' ');
-  } else {
-    return data.toString();
+      return formatter.format(data).replaceAll(',', ' ');
+    } else {
+      return data.toString();
+    }
   }
-}
-
 
   String _textData(String data) {
     String text = '';
