@@ -1,49 +1,48 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
-import 'package:just_do_it/network/repository.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class AllTasksView extends StatefulWidget {
+class ResponseTasksInProgressViewAsCustomer extends StatefulWidget {
   final bool asCustomer;
-  const AllTasksView({super.key, required this.asCustomer});
+  final String title;
+  const ResponseTasksInProgressViewAsCustomer({super.key, required this.asCustomer, required this.title});
 
   @override
-  State<AllTasksView> createState() => _AllTasksViewState();
+  State<ResponseTasksInProgressViewAsCustomer> createState() => _ResponseTasksInProgressViewAsCustomerState();
 }
 
-class _AllTasksViewState extends State<AllTasksView> {
+class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInProgressViewAsCustomer> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
-
+  late UserRegModel? user;
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     getListTask();
   }
 
   void getListTask() async {
-    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
-    taskList.clear();
-    taskList.addAll(res);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    taskList = BlocProvider.of<TasksBloc>(context).tasks;
+    log(taskList.length.toString());
     return Scaffold(
       body: Stack(
         children: [
@@ -83,7 +82,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                           Align(
                             alignment: Alignment.center,
                             child: Text(
-                              widget.asCustomer ? 'Все задания' : 'Все офферы',
+                              widget.title,
                               style: CustomTextStyle.black_22_w700_171716,
                             ),
                           )
@@ -97,19 +96,22 @@ class _AllTasksViewState extends State<AllTasksView> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: taskList.length,
+                              itemCount: user?.ordersInProgressAsCustomer?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                log(taskList[index].id.toString());
-                                return itemTask(
-                                  taskList[index],
-                                  (task) {
-                                    setState(() {
-                                      selectTask = task;
-                                    });
-                                  },
-                                );
+                                if (user?.ordersInProgressAsCustomer != []) {
+                                  
+                                  return itemTask(
+                                    user!.ordersInProgressAsCustomer![index],
+                                    (task) {
+                                      setState(() {
+                                        selectTask = task;
+                                      });
+                                    },
+                                  );
+                                }
+                                return Container();
                               },
                             ),
                           ),
@@ -122,7 +124,6 @@ class _AllTasksViewState extends State<AllTasksView> {
               ),
             ),
           ),
-         
         ],
       ),
     );
@@ -141,7 +142,7 @@ class _AllTasksViewState extends State<AllTasksView> {
             this.owner = owner;
             setState(() {});
           },
-          canEdit: true,
+          canEdit: false,
           canSelect: true,
         ),
       );

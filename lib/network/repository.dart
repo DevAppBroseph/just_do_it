@@ -40,6 +40,21 @@ class Repository {
 
     return null;
   }
+  Future<Reviews?> getRankingReview(int? id, String? access) async {
+    final response = await dio.get(
+      '$server/ranking/$id',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(response.data.toString());
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return Reviews.fromJson(response.data);
+    }
+
+    return null;
+  }
 
   Future<bool> deleteTask(Task task, String access) async {
     final res = await dio.delete(
@@ -180,7 +195,26 @@ class Repository {
     return false;
   }
 
-   Future<Answers?> createAnswer(int id, String? access, int price, String description) async {
+  Future<bool> addReviewsDetail(String? access, int? receiver, String? message, int? mark) async {
+    final response = await dio.post(
+      '$server/ranking/',
+      data: {
+        "receiver": receiver,
+        "message": message,
+        "mark": mark,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<Answers?> createAnswer(int id, String? access, int price, String description) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
@@ -192,13 +226,12 @@ class Repository {
     );
     log(id.toString());
     if (response.statusCode == 200 || response.statusCode == 201) {
-      
       return Answers.fromJson(response.data);
     }
     return null;
   }
 
-  Future<bool> editTask(String access, Task task) async {
+  Future<bool> editTask(String? access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -210,7 +243,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
+    log(response.statusCode.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
@@ -315,6 +348,22 @@ class Repository {
 
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Answers?> updateStatusResponse(String? access, int id, String status) async {
+    final response = await dio.patch(
+      '$server/answers/$id',
+      data: {
+        "status": status,
+      },
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      return Answers.fromJson(response.data);
     } else {
       return null;
     }
@@ -615,7 +664,6 @@ class Repository {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-   
       return FavouritesOrder.fromJson(response.data);
     }
     return null;
@@ -631,7 +679,6 @@ class Repository {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-  
       return FavouritesUser.fromJson(response.data);
     }
     return null;

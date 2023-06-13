@@ -42,7 +42,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                         children: [
                           if (task.activities?.photo != null)
                             Image.network(
-                              server + task.activities!.photo!,
+                              task.activities!.photo!,
                               height: 34.h,
                               width: 34.h,
                             ),

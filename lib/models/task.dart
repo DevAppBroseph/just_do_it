@@ -17,6 +17,7 @@ class Task {
   String dateStart;
   String dateEnd;
   int priceFrom;
+  String? status;
   int priceTo;
   Answers? isAnswered;
   List<Countries> countries;
@@ -50,6 +51,7 @@ class Task {
       this.towns = const [],
       this.countries = const [],
       this.files,
+      this.status,
       this.isAnswered,
       this.icon,
       this.task,
@@ -112,6 +114,7 @@ class Task {
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
         asCustomer: json['as_customer'],
+        status: json['status'],
         countries: countries,
         regions: regions,
         files: files,
@@ -128,6 +131,7 @@ class Task {
     data['date_start'] = dateStart;
     data['date_end'] = dateEnd;
     data['price_from'] = priceFrom;
+    data['status'] = status;
     data['is_liked'] = isLiked;
     data['price_to'] = priceTo;
     data['regions'] = regions.map((e) => e.id).toList();

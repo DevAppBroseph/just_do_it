@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:just_do_it/models/task.dart';
 
 class ArrayImages {
   int? id;
@@ -35,11 +36,20 @@ class UserRegModel {
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
+  List<Task>? ordersInProgressAsCustomer;
+  List<Task>? ordersCompleteAsCustomer;
+  List<Task>? myAnswersSelectedAsExecutor;
+  List<Task>? ordersCompleteAsExecutor;
   int? id;
   List<ActivitiesInfo>? activitiesInfo;
+  int? countMyAnswersAsExecutor;
+  int? countOrdersInProgressAsCustomer;
+  int? countOrdersCompleteACustomer;
   int? balance;
   String? link;
   int? countOrderComplete;
+  int? countMyAnswersSelectedAsExecutor;
+  int? countOrdersCompleteAsExecutor;
 
   UserRegModel({
     this.phoneNumber,
@@ -55,10 +65,19 @@ class UserRegModel {
     this.photoLink,
     this.cvLink,
     this.photo,
+    this.ordersCompleteAsExecutor,
+    this.countOrdersCompleteAsExecutor,
+    this.myAnswersSelectedAsExecutor,
     this.sex,
     this.isEntity,
     this.images,
     this.cv,
+    this.countMyAnswersAsExecutor,
+    this.countOrdersInProgressAsCustomer,
+    this.ordersInProgressAsCustomer,
+    this.ordersCompleteAsCustomer,
+    this.countOrdersCompleteACustomer,
+    this.countMyAnswersSelectedAsExecutor,
     this.cvType,
     this.groups,
     this.activities,
@@ -80,19 +99,28 @@ class UserRegModel {
     bool? sex,
     String? docType,
     String? docInfo,
+    int? countOrdersCompleteAsExecutor,
+    int? countMyAnswersSelectedAsExecutor,
+    int? countMyAnswersAsExecutor,
     bool? isEntity,
     String? activity,
     List<ArrayImages>? images,
     Uint8List? cv,
     String? cvType,
+    List<Task>? ordersCompleteAsExecutor,
+    List<Task>? ordersInProgressAsCustomer,
+    List<Task>? ordersCompleteAsCustomer,
     List<dynamic>? groups,
+    List<Task>? myAnswersSelectedAsExecutor,
     List<Activities>? activities,
     List<int>? activitiesDocument,
+    int? countOrdersCompleteACustomer,
     String? region,
     String? country,
     String? photoLink,
     String? cvLink,
     int? id,
+    int? countOrdersInProgressAsCustomer,
     int? countOrderComplete,
     List<ActivitiesInfo>? activitiesInfo,
   }) {
@@ -108,7 +136,15 @@ class UserRegModel {
     this.isEntity = isEntity ?? this.isEntity;
     this.activity = activity ?? this.activity;
     this.images = images ?? this.images;
+    this.ordersCompleteAsExecutor = ordersCompleteAsExecutor ?? this.ordersCompleteAsExecutor;
     this.cv = cv ?? this.cv;
+    this.countMyAnswersAsExecutor = countMyAnswersAsExecutor ?? this.countMyAnswersAsExecutor;
+    this.countOrdersCompleteAsExecutor = countOrdersCompleteAsExecutor ?? this.countOrdersCompleteAsExecutor;
+    this.myAnswersSelectedAsExecutor = myAnswersSelectedAsExecutor ?? this.myAnswersSelectedAsExecutor;
+    this.countOrdersCompleteACustomer = countOrdersCompleteACustomer ?? this.countOrdersCompleteACustomer;
+    this.ordersInProgressAsCustomer = ordersInProgressAsCustomer ?? this.ordersInProgressAsCustomer;
+    this.countMyAnswersSelectedAsExecutor = countMyAnswersSelectedAsExecutor ?? this.countMyAnswersSelectedAsExecutor;
+    this.ordersCompleteAsCustomer = ordersCompleteAsCustomer ?? this.ordersCompleteAsCustomer;
     this.cvType = cvType ?? this.cvType;
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
@@ -126,6 +162,11 @@ class UserRegModel {
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
+    int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
+    int? countOrdersCompleteAsExecutor = data['count_orders_complete_as_executor'];
+    int? countOrdersInProgressAsCustomer = data['count_orders_in_progress_as_customer'];
+    int? countMyAnswersSelectedAsExecutor = data['count_my_answers_selected_as_executor'];
+    int? countOrdersCompleteACustomer = data['count_orders_complete_as_customer'];
     int? countOrderComplete = data['count_orders_complete'];
     String? phoneNumber = data['phone_number'];
     String? firstname = data['firstname'];
@@ -149,6 +190,30 @@ class UserRegModel {
         list.add(ActivitiesInfo.fromJson(element));
       }
     }
+    List<Task> listTaskOrdersInProgressAsCustomer = [];
+    if (data['orders_in_progress_as_customer'] != null) {
+      for (var element in data['orders_in_progress_as_customer']) {
+        listTaskOrdersInProgressAsCustomer.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listTaskOrdersCompleteAsCustomer = [];
+    if (data['orders_complete_as_customer'] != null) {
+      for (var element in data['orders_complete_as_customer']) {
+        listTaskOrdersCompleteAsCustomer.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listMyAnswersSelectedAsExecutor = [];
+    if (data['my_answers_selected_as_executor'] != null) {
+      for (var element in data['my_answers_selected_as_executor']) {
+        listMyAnswersSelectedAsExecutor.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listOrdersCompleteAsExecutor = [];
+    if (data['orders_complete_as_executor'] != null) {
+      for (var element in data['orders_complete_as_executor']) {
+        listOrdersCompleteAsExecutor.add(Task.fromJson(element));
+      }
+    }
     List<ArrayImages> listImages = [];
     if (data['images'] != null) {
       for (var element in data['images']) {
@@ -158,12 +223,20 @@ class UserRegModel {
     return UserRegModel(
       countOrderComplete: countOrderComplete,
       email: email,
+      countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
+      countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
       phoneNumber: phoneNumber,
       firstname: firstname,
       lastname: lastname,
       groups: groups,
       photoLink: photoLink,
       sex: sex,
+      ordersCompleteAsExecutor: listOrdersCompleteAsExecutor,
+      countOrdersCompleteAsExecutor: countOrdersCompleteAsExecutor,
+      myAnswersSelectedAsExecutor: listMyAnswersSelectedAsExecutor,
+      countOrdersCompleteACustomer: countOrdersCompleteACustomer,
+      ordersInProgressAsCustomer: listTaskOrdersInProgressAsCustomer,
+      ordersCompleteAsCustomer: listTaskOrdersCompleteAsCustomer,
       region: region,
       docType: docType,
       docInfo: docInfo,
@@ -174,6 +247,7 @@ class UserRegModel {
       id: id,
       activitiesInfo: list,
       images: listImages,
+      countMyAnswersAsExecutor: countMyAnswersAsExecutor,
       balance: balance,
       link: link,
     );

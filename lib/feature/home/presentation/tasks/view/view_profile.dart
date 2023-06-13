@@ -35,12 +35,20 @@ class _ProfileViewState extends State<ProfileView> {
   Owner? owner;
   GlobalKey globalKey = GlobalKey();
   List<String> typeCategories = [];
-
+  Reviews? reviews;
   @override
   void initState() {
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     super.initState();
     getProfile();
+    // getReview();
+  }
+
+  void getReview() async {
+    reviews = await Repository().getRankingReview(
+      widget.owner.id,
+      BlocProvider.of<ProfileBloc>(context).access,
+    );
   }
 
   void getProfile() async {
@@ -55,28 +63,6 @@ class _ProfileViewState extends State<ProfileView> {
     setState(() {});
   }
 
-  final List<ReviewsDetail> _reviews = [
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-  ];
   List<FavoriteCustomers>? favouritesUsers;
   @override
   Widget build(BuildContext context) {
@@ -88,7 +74,6 @@ class _ProfileViewState extends State<ProfileView> {
 
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())
@@ -469,7 +454,6 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: ColorStyles.whiteFFFFFF,
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
-                                
                                 child: Column(
                                   children: [
                                     Padding(
@@ -734,39 +718,34 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                             SizedBox(height: 30.h),
+                             if (reviews != null)
                             Text(
                               'Отзывы',
                               style: CustomTextStyle.black_17_w800,
                             ),
                             SizedBox(height: 15.h),
-                            BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-                              if (snapshot is LoadingRatingState) {
-                                return const CupertinoActivityIndicator();
-                              }
-                              Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-                              return Container(
-                                child: ListView.builder(
-                                  //TODO Эта логика для сервера
+                            if (reviews != null)
+                              BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+                                if (snapshot is LoadingRatingState) {
+                                  return const CupertinoActivityIndicator();
+                                }
 
-                                  // ListView.builder(
-                                  //   physics: const NeverScrollableScrollPhysics(),
-                                  //   shrinkWrap: true,
-                                  //   itemCount: reviews.reviewsDetail.length,
-                                  //   itemBuilder: ((context, index) {
-                                  //     return itemComment(reviews.reviewsDetail[index]);
-                                  //   }),
+                                return Container(
+                                  child:
+                                      //TODO Эта логика для сервера
 
-                                  //TODO Эта логика для сервера
+                                      ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: reviews!.reviewsDetail.length,
+                                    itemBuilder: ((context, index) {
+                                      return itemCommentNew(reviews!.reviewsDetail[index]);
+                                    }),
 
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: _reviews.length,
-                                  itemBuilder: ((context, index) {
-                                    return itemCommentNew(_reviews[index]);
-                                  }),
-                                ),
-                              );
-                            }),
+                                    //TODO Эта логика для сервера
+                                  ),
+                                );
+                              }),
                           ],
                         ),
                       ),
@@ -820,10 +799,11 @@ class _ProfileViewState extends State<ProfileView> {
                       '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
-                    Text(
-                      '01.04.2023',
-                      style: CustomTextStyle.grey_12_w400,
-                    ),
+                    if (review.date != '')
+                      Text(
+                        _textData(review.date),
+                        style: CustomTextStyle.grey_12_w400,
+                      ),
                   ],
                 ),
               ),
@@ -879,11 +859,27 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                 ),
               ),
+              SizedBox(height: 20.h),
             ],
           )
         ],
       ),
     );
+    
+  }
+
+  String _textData(String data) {
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();
+    day = parts[2].trim();
+    month = parts[1].trim();
+    text = '$day.$month.$year';
+    return text;
   }
 
   Widget _categoryItemOwner(ownerActivities activitiy, int index) {

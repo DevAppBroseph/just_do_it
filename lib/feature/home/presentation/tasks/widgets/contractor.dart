@@ -11,10 +11,13 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_complete_view_as_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_in_progress_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 
 import '../../../../../models/order_task.dart';
 import '../../../../../network/repository.dart';
@@ -32,14 +35,16 @@ class Contractor extends StatefulWidget {
 class _ContractorState extends State<Contractor> {
   List<Task> taskList = [];
   Task? selectTask;
+  late UserRegModel? user;
   Owner? owner;
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     getListTask();
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-     context.read<TasksBloc>().add(
+    context.read<TasksBloc>().add(
           GetTasksEvent(
             access: access,
             query: null,
@@ -156,7 +161,16 @@ class _ContractorState extends State<Contractor> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const ResponseTasksInProgressViewAsCustomer(
+                                title: 'Выполняемые',
+                                asCustomer: false,
+                              );
+                            }),
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Row(
@@ -187,17 +201,18 @@ class _ContractorState extends State<Contractor> {
                                         ),
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 6.w),
-                                      child: SizedBox(
-                                        width: 35.w,
-                                        child: Text(
-                                          '1200',
-                                          style: CustomTextStyle.black_13_w400_171716,
-                                          textAlign: TextAlign.end,
+                                    if (user?.countOrdersInProgressAsCustomer != null)
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 6.w),
+                                        child: SizedBox(
+                                          width: 35.w,
+                                          child: Text(
+                                            user!.countOrdersInProgressAsCustomer.toString(),
+                                            style: CustomTextStyle.black_13_w400_171716,
+                                            textAlign: TextAlign.end,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -209,10 +224,12 @@ class _ContractorState extends State<Contractor> {
                         onTap: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
-                              return TaskAdditional(title: 'Выполнены', asCustomer: true, scoreTrue: false);
+                              return const ResponseTasksCompleteViewAsCustomer(
+                                title: 'Закрытые',
+                                asCustomer: false,
+                              );
                             }),
                           );
-                          getListTask();
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -244,17 +261,18 @@ class _ContractorState extends State<Contractor> {
                                         ),
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 6.w),
-                                      child: SizedBox(
-                                        width: 35.w,
-                                        child: Text(
-                                          '120',
-                                          style: CustomTextStyle.black_13_w400_171716,
-                                          textAlign: TextAlign.end,
+                                    if (user?.countOrdersCompleteACustomer != null)
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 6.w),
+                                        child: SizedBox(
+                                          width: 35.w,
+                                          child: Text(
+                                            user!.countOrdersCompleteACustomer.toString(),
+                                            style: CustomTextStyle.black_13_w400_171716,
+                                            textAlign: TextAlign.end,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -290,11 +308,12 @@ class _ContractorState extends State<Contractor> {
                         ),
                       ),
                       GestureDetector(
-                          onTap: () async {
+                        onTap: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
                               return const ResponseTasksView(
-                                title: 'Принятые офферы', asCustomer: false,
+                                title: 'Принятые офферы',
+                                asCustomer: false,
                               );
                             }),
                           );

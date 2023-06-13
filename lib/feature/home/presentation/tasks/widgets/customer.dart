@@ -9,10 +9,13 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/favour
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/my_answers_selected_as_executor_view.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/orders_complete_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
 class Customer extends StatefulWidget {
@@ -33,11 +36,13 @@ class Customer extends StatefulWidget {
 
 class _CustomerState extends State<Customer> {
   List<Task> taskList = [];
+  late UserRegModel? user;
   Task? selectTask;
   Owner? owner;
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     getListTask();
   }
 
@@ -87,7 +92,8 @@ class _CustomerState extends State<Customer> {
                           await Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
                               return const ResponseTasksView(
-                                title: 'Все отклики', asCustomer: true,
+                                title: 'Все отклики',
+                                asCustomer: true,
                               );
                             }),
                           );
@@ -127,7 +133,9 @@ class _CustomerState extends State<Customer> {
                                       child: SizedBox(
                                         width: 35.w,
                                         child: Text(
-                                          232.toString(),
+                                          user?.countMyAnswersAsExecutor != null
+                                              ? user!.countMyAnswersAsExecutor.toString()
+                                              : '0',
                                           style: CustomTextStyle.black_13_w400_171716,
                                           textAlign: TextAlign.end,
                                         ),
@@ -141,7 +149,16 @@ class _CustomerState extends State<Customer> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                         onTap: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const MyAnswersSelectedAsExecutorView(
+                                title: 'Подтвержденные',
+                                asCustomer: true,
+                              );
+                            }),
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Row(
@@ -177,7 +194,9 @@ class _CustomerState extends State<Customer> {
                                       child: SizedBox(
                                         width: 35.w,
                                         child: Text(
-                                          133.toString(),
+                                          user?.countMyAnswersSelectedAsExecutor != null
+                                              ? user!.countMyAnswersSelectedAsExecutor.toString()
+                                              : '0',
                                           style: CustomTextStyle.black_13_w400_171716,
                                           textAlign: TextAlign.end,
                                         ),
@@ -191,7 +210,16 @@ class _CustomerState extends State<Customer> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                         onTap: () async {
+                          await Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const OrdersCompleteAsExecutorView(
+                                title: 'Закрытые',
+                                asCustomer: true,
+                              );
+                            }),
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Row(
@@ -227,7 +255,9 @@ class _CustomerState extends State<Customer> {
                                       child: SizedBox(
                                         width: 35.w,
                                         child: Text(
-                                          400.toString(),
+                                          user?.countOrdersCompleteAsExecutor != null
+                                              ? user!.countOrdersCompleteAsExecutor.toString()
+                                              : '0',
                                           style: CustomTextStyle.black_13_w400_171716,
                                           textAlign: TextAlign.end,
                                         ),
@@ -568,7 +598,6 @@ class _CustomerState extends State<Customer> {
                   ),
                 ),
               ),
-              
               SizedBox(
                 height: 100.h,
               )

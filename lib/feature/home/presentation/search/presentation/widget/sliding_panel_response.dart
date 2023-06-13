@@ -11,6 +11,7 @@ import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task.dart';
@@ -68,6 +69,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
 
   bool customerFlag = true;
   bool contractorFlag = true;
+  void getProfile() {
+    context.read<ProfileBloc>().add(GetProfileEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,12 +140,15 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     child: CustomButton(
                       onTap: () async {
                         final access = await Storage().getAccessToken();
+
                         if (widget.selectTask != null) {
-                          await Repository().createAnswer(widget.selectTask!.id!, access,
-                              int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text);
                           widget.panelController.animatePanelToPosition(0);
+                          Repository().createAnswer(widget.selectTask!.id!, access,
+                              int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text);
                           coastController.clear();
                           descriptionTextController.clear();
+                          getProfile();
+                          setState(() {});
                         }
                       },
                       btnColor: ColorStyles.yellowFFD70A,

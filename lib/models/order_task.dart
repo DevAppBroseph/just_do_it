@@ -56,7 +56,7 @@ class Owner {
   String? photo;
   String? cv;
   int? isLiked;
-  String? ranking;
+  double? ranking;
   bool? isPassportExist;
   int? countOrdersCreate;
   String? activity;
