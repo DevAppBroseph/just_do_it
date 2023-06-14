@@ -6,12 +6,10 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
-import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -31,12 +29,9 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_lin
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
-import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   PageController pageController = PageController(initialPage: 4);
   PanelController panelController = PanelController();
   PanelController panelControllerReply = PanelController();
-   PanelController panelControllerResponse = PanelController();
+  PanelController panelControllerResponse = PanelController();
   final streamController = StreamController<int>();
   int page = 5;
   int? idTask;
@@ -65,10 +60,7 @@ class _HomePageState extends State<HomePage> {
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
-      final owner = await Repository().getRanking(
-        int.parse(userProfile),
-        access
-      );
+      final owner = await Repository().getRanking(int.parse(userProfile), access);
       if (owner != null) {
         Navigator.push(
           context,

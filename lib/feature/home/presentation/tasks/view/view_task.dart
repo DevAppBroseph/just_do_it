@@ -17,7 +17,9 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart' as repf;
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as res;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart' as resf;
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
@@ -36,12 +38,14 @@ class TaskView extends StatefulWidget {
   final Function(Owner?) openOwner;
   final bool canSelect;
   final bool canEdit;
+  final bool fromFav;
   TaskView({
     super.key,
     required this.selectTask,
     required this.openOwner,
     this.canSelect = false,
     this.canEdit = false,
+    this.fromFav = false,
   });
 
   @override
@@ -653,10 +657,20 @@ class _TaskViewState extends State<TaskView> {
                     } else {
                       log(user.docInfo.toString());
                       if (user.docInfo == '') {
-                        BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
+                        if (widget.fromFav) {
+                          BlocProvider.of<repf.ReplyFromFavBloc>(context).add(repf.OpenSlidingPanelEvent());
+                        } else {
+                          BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
+                        }
                       } else {
-                        BlocProvider.of<res.ResponseBloc>(context)
-                            .add(res.OpenSlidingPanelEvent(selectTask: widget.selectTask));
+                        if (widget.fromFav) {
+                           BlocProvider.of<resf.ResponseBlocFromFav>(context)
+                              .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
+                        } else {
+                          log(widget.selectTask.toString());
+                          BlocProvider.of<res.ResponseBloc>(context)
+                              .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
+                        }
                       }
                     }
                   },

@@ -1,4 +1,4 @@
-  import 'dart:ui';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,9 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/favour
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -39,7 +41,9 @@ class MyApp extends StatelessWidget {
             BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
             BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
-             BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
+            BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),
+            BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
+            BlocProvider<ResponseBlocFromFav>(create: (context) => ResponseBlocFromFav()),
             BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
             BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
             BlocProvider<TasksBloc>(create: (context) => TasksBloc()),

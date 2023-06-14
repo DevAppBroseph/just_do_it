@@ -10,7 +10,7 @@ import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/countries.dart';
@@ -21,17 +21,17 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class SlidingPanelResponse extends StatefulWidget {
+class SlidingPanelResponseFromFav extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask});
+  const SlidingPanelResponseFromFav(this.panelController, {super.key, required this.selectTask});
 
   @override
-  State<SlidingPanelResponse> createState() => _SlidingPanelResponseState();
+  State<SlidingPanelResponseFromFav> createState() => _SlidingPanelResponseFromFavState();
 }
 
-class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
+class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFav> {
   double heightPanel = 637.h;
   bool slide = false;
   TextEditingController descriptionTextController = TextEditingController();
@@ -77,7 +77,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
 
-    return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
+    return BlocBuilder<ResponseBlocFromFav, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -93,7 +93,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
-            BlocProvider.of<ResponseBloc>(context).add(HideSlidingPanelEvent());
+            BlocProvider.of<ResponseBlocFromFav>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
           }
