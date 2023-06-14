@@ -656,7 +656,7 @@ class _TaskViewState extends State<TaskView> {
                           ));
                     } else {
                       log(user.docInfo.toString());
-                      if (user.docInfo == '') {
+                      if (user.docInfo == '' || user.docInfo == null) {
                         if (widget.fromFav) {
                           BlocProvider.of<repf.ReplyFromFavBloc>(context).add(repf.OpenSlidingPanelEvent());
                         } else {
