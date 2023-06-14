@@ -4,31 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class ResponseTasksView extends StatefulWidget {
+class SelectedOffersAsCustomer extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const ResponseTasksView({super.key, required this.asCustomer, required this.title});
+  const SelectedOffersAsCustomer({super.key, required this.asCustomer, required this.title});
 
   @override
-  State<ResponseTasksView> createState() => _ResponseTasksViewState();
+  State<SelectedOffersAsCustomer> createState() => _SelectedOffersAsCustomerState();
 }
 
-class _ResponseTasksViewState extends State<ResponseTasksView> {
+class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
-
+  late UserRegModel? user;
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     getListTask();
   }
 
@@ -93,14 +96,14 @@ class _ResponseTasksViewState extends State<ResponseTasksView> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: taskList.length,
+                              itemCount: user?.ordersInProgressAsCustomer?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                if (taskList[index].isAnswered != null && taskList[index].asCustomer == widget.asCustomer) {
-                                  log(taskList[index].isAnswered!.owner!.firstname.toString());
+                                if (user?.ordersInProgressAsCustomer != []) {
+                                  
                                   return itemTask(
-                                    taskList[index],
+                                    user!.ordersInProgressAsCustomer![index],
                                     (task) {
                                       setState(() {
                                         selectTask = task;

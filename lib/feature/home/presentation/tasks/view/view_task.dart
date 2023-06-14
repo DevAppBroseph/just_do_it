@@ -233,8 +233,11 @@ class _TaskViewState extends State<TaskView> {
                                     onPressed: () async {
                                       final access = await Storage().getAccessToken();
                                       final res = await Repository().deleteTask(widget.selectTask, access!);
+                                       context.read<TasksBloc>().add(UpdateTaskEvent());
+                                       context.read<ProfileBloc>().add(UpdateProfileTaskEvent());
                                       if (res) Navigator.pop(context);
                                       Navigator.pop(context);
+                                      
                                     },
                                   )
                                 ],

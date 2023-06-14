@@ -14,16 +14,16 @@ import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class OrdersCreateAsCustomerView extends StatefulWidget {
+class FinishedOffers extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const OrdersCreateAsCustomerView({super.key, required this.asCustomer, required this.title});
+  const FinishedOffers({super.key, required this.asCustomer, required this.title});
 
   @override
-  State<OrdersCreateAsCustomerView> createState() => _OrdersCreateAsCustomerViewState();
+  State<FinishedOffers> createState() => _FinishedOffersState();
 }
 
-class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView> {
+class _FinishedOffersState extends State<FinishedOffers> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
@@ -96,13 +96,13 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: user?.ordersCreateAsCustomer?.length,
+                              itemCount: user?.finishedOffers?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                if (user?.ordersCreateAsCustomer != []) {
+                                if (user?.finishedOffers != []) {
                                   return itemTask(
-                                    user!.ordersCreateAsCustomer![index],
+                                    user!.finishedOffers![index],
                                     (task) {
                                       setState(() {
                                         selectTask = task;

@@ -9,10 +9,13 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/favour
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/finished_offers_view.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/my_answers_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/my_answers_selected_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/open_offers_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/orders_complete_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/selected_offers_view.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -101,7 +104,7 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const ResponseTasksView(
+                                return const MyAnswersAsExecutorView(
                                   title: 'Все отклики',
                                   asCustomer: true,
                                 );
@@ -367,7 +370,16 @@ class _CustomerState extends State<Customer> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                           onTap: () async {
+                               await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return const SelectedOffersView(
+                                  title: 'Принятые',
+                                  asCustomer: true,
+                                );
+                              }),
+                            );
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Row(
@@ -403,7 +415,9 @@ class _CustomerState extends State<Customer> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                            '343',
+                                             user?.selectedOffers != null
+                                                  ? user!.selectedOffers!.length.toString()
+                                                  : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),
@@ -417,7 +431,16 @@ class _CustomerState extends State<Customer> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                               await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return const FinishedOffers(
+                                  title: 'Закрытые',
+                                  asCustomer: true,
+                                );
+                              }),
+                            );
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Row(
@@ -453,7 +476,9 @@ class _CustomerState extends State<Customer> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                            '5',
+                                            user?.finishedOffers != null
+                                                  ? user!.finishedOffers!.length.toString()
+                                                  : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),

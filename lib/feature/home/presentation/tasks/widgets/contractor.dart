@@ -11,6 +11,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/finished_offers_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/orders_create_as_customer_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_complete_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_in_progress_view_as_customer.dart';
@@ -321,7 +322,7 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const ResponseTasksView(
+                                return const SelectedOffersAsCustomer(
                                   title: 'Принятые офферы',
                                   asCustomer: false,
                                 );
@@ -358,12 +359,13 @@ class _ContractorState extends State<Contractor> {
                                           ),
                                         ],
                                       ),
+                                        if (user?.selectedOffersAsCustomer != null)
                                       Padding(
                                         padding: EdgeInsets.only(right: 6.w),
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                            '12',
+                                            user!.selectedOffersAsCustomer!.length.toString(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),
@@ -377,7 +379,16 @@ class _ContractorState extends State<Contractor> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                            onTap: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return const FinishedOffersViewAsCustomer(
+                                  title: 'Закрытые офферы',
+                                  asCustomer: false,
+                                );
+                              }),
+                            );
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Row(
@@ -413,7 +424,9 @@ class _ContractorState extends State<Contractor> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                            '120',
+                                          user?.finishedOffersAsCustomer != null
+                                                  ? user!.finishedOffersAsCustomer!.length.toString()
+                                                  : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),

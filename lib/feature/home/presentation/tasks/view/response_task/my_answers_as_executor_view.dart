@@ -14,16 +14,16 @@ import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class OrdersCreateAsCustomerView extends StatefulWidget {
+class MyAnswersAsExecutorView extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const OrdersCreateAsCustomerView({super.key, required this.asCustomer, required this.title});
+  const MyAnswersAsExecutorView({super.key, required this.asCustomer, required this.title});
 
   @override
-  State<OrdersCreateAsCustomerView> createState() => _OrdersCreateAsCustomerViewState();
+  State<MyAnswersAsExecutorView> createState() => _MyAnswersAsExecutorViewState();
 }
 
-class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView> {
+class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
@@ -96,13 +96,13 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: user?.ordersCreateAsCustomer?.length,
+                              itemCount: user?.selectedOffersAsCustomer?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                if (user?.ordersCreateAsCustomer != []) {
+                                if (user?.selectedOffersAsCustomer != []) {
                                   return itemTask(
-                                    user!.ordersCreateAsCustomer![index],
+                                    user!.selectedOffersAsCustomer![index],
                                     (task) {
                                       setState(() {
                                         selectTask = task;
@@ -141,7 +141,7 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
             this.owner = owner;
             setState(() {});
           },
-          canEdit: true,
+          canEdit: false,
           canSelect: true,
         ),
       );

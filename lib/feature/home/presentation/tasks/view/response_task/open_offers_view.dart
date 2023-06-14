@@ -141,7 +141,7 @@ class _OpenOffersState extends State<OpenOffers> {
             this.owner = owner;
             setState(() {});
           },
-          canEdit: false,
+          canEdit: true,
           canSelect: true,
         ),
       );

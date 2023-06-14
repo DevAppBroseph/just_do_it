@@ -53,9 +53,19 @@ class UserRegModel {
   int? countOrdersCreateAsCustomer;
   List<Task>? ordersCreateAsCustomer;
   List<Task>? openOffers;
+  List<Task>? selectedOffers;
+  List<Task>? finishedOffers;
+  List<Task>? selectedOffersAsCustomer;
+  List<Task>? finishedOffersAsCustomer;
+   List<Task>? myAnswersAsExecutor;
 
   UserRegModel({
     this.countOrdersCreateAsCustomer,
+    this.selectedOffers,
+    this.myAnswersAsExecutor,
+    this.finishedOffers,
+    this.selectedOffersAsCustomer,
+    this.finishedOffersAsCustomer,
     this.openOffers,
     this.ordersCreateAsCustomer,
     this.phoneNumber,
@@ -101,6 +111,11 @@ class UserRegModel {
     String? firstname,
     String? lastname,
     String? password,
+    List<Task>? selectedOffers,
+    List<Task>? finishedOffers,
+    List<Task>? selectedOffersAsCustomerk,
+     List<Task>? myAnswersAsExecutor,
+    List<Task>? finishedOffersAsCustomer,
     int? countOrdersCreateAsCustomer,
     List<Task>? ordersCreateAsCustomer,
     List<Task>? openOffers,
@@ -134,6 +149,12 @@ class UserRegModel {
     List<ActivitiesInfo>? activitiesInfo,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
+    this.selectedOffers = selectedOffers ?? this.selectedOffers;
+    this.finishedOffers = finishedOffers ?? this.finishedOffers;
+    this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
+
+    this.selectedOffersAsCustomer = selectedOffersAsCustomer ?? this.selectedOffersAsCustomer;
+    this.finishedOffersAsCustomer = finishedOffersAsCustomer ?? this.finishedOffersAsCustomer;
     this.countOrdersCreateAsCustomer = countOrdersCreateAsCustomer ?? this.countOrdersCreateAsCustomer;
     this.openOffers = openOffers ?? this.openOffers;
     this.ordersCreateAsCustomer = ordersCreateAsCustomer ?? this.ordersCreateAsCustomer;
@@ -209,7 +230,37 @@ class UserRegModel {
         listTaskOrdersInProgressAsCustomer.add(Task.fromJson(element));
       }
     }
-      List<Task> listOpenOffers = [];
+    List<Task> listMyAnswersAsExecutor = [];
+    if (data['my_answers_as_executor'] != null) {
+      for (var element in data['my_answers_as_executor']) {
+        listMyAnswersAsExecutor.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listSelectedOffers = [];
+    if (data['selected_offers'] != null) {
+      for (var element in data['selected_offers']) {
+        listSelectedOffers.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listFinishedOffers = [];
+    if (data['finished_offers'] != null) {
+      for (var element in data['finished_offers']) {
+        listFinishedOffers.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listSelectedOffersAsCustomer = [];
+    if (data['orders_in_progress_as_customer'] != null) {
+      for (var element in data['orders_in_progress_as_customer']) {
+        listSelectedOffersAsCustomer.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listFinishedOffersAsCustomer = [];
+    if (data['finished_offers_as_customer'] != null) {
+      for (var element in data['finished_offers_as_customer']) {
+        listFinishedOffersAsCustomer.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listOpenOffers = [];
     if (data['open_offers'] != null) {
       for (var element in data['open_offers']) {
         listOpenOffers.add(Task.fromJson(element));
@@ -248,7 +299,12 @@ class UserRegModel {
     return UserRegModel(
       openOffers: listOpenOffers,
       countOrderComplete: countOrderComplete,
+      selectedOffersAsCustomer: listSelectedOffersAsCustomer,
+      selectedOffers: listSelectedOffers,
+      finishedOffers: listFinishedOffers,
+      finishedOffersAsCustomer: listFinishedOffersAsCustomer,
       email: email,
+      myAnswersAsExecutor: listMyAnswersAsExecutor,
       countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
       countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
       phoneNumber: phoneNumber,
