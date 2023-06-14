@@ -1,4 +1,4 @@
-
+import 'package:just_do_it/models/review.dart';
 
 class OrderTask {
   int? id;
@@ -64,6 +64,7 @@ class Owner {
   int? balance;
   List<ownerActivities>? activities;
   int? countOrdersComplete;
+  List<ReviewsDetail>? reviews;
 
   Owner({
     required this.id,
@@ -80,6 +81,7 @@ class Owner {
     this.isLiked,
     this.listPhoto = const [],
     this.countOrdersComplete,
+    this.reviews,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) {
@@ -93,6 +95,12 @@ class Owner {
     if (json['activities'] != null) {
       for (var element in json['activities']) {
         activities.add(ownerActivities.fromJson(element));
+      }
+    }
+    List<ReviewsDetail> reviews = [];
+    if (json['reviews'] != null) {
+      for (var element in json['reviews']) {
+        reviews.add(ReviewsDetail.fromJson(element));
       }
     }
     return Owner(
@@ -110,6 +118,7 @@ class Owner {
       activity: json["activity"],
       countOrdersComplete: json["count_orders_complete"],
       listPhoto: listPhoto,
+      reviews: reviews,
     );
   }
 

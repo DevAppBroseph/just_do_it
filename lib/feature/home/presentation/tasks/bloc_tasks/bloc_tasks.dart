@@ -9,8 +9,13 @@ part 'state_tasks.dart';
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   TasksBloc() : super(TasksLoading()) {
     on<GetTasksEvent>(_getAllTasks);
+    on<UpdateTaskEvent>(_updateTask);
   }
   List<Task> tasks = [];
+
+  void _updateTask(UpdateTaskEvent event, Emitter<TasksState> emit) async {
+    emit(UpdateTask());
+  }
 
   void _getAllTasks(GetTasksEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());

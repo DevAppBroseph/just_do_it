@@ -32,11 +32,11 @@ import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TaskView extends StatefulWidget {
-  final Task selectTask;
+  Task selectTask;
   final Function(Owner?) openOwner;
   final bool canSelect;
   final bool canEdit;
-  const TaskView({
+  TaskView({
     super.key,
     required this.selectTask,
     required this.openOwner,
@@ -55,13 +55,24 @@ class _TaskViewState extends State<TaskView> {
   void initState() {
     super.initState();
     getTask();
+    selectTask = widget.selectTask;
   }
 
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    selectTask = await Repository().getTaskById(widget.selectTask.id!, access);
+    widget.selectTask = (await Repository().getTaskById(widget.selectTask.id!, access))!;
 
     setState(() {});
+  }
+
+  void getTaskList() {
+    final access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<TasksBloc>().add(
+          GetTasksEvent(
+            access: access,
+          ),
+        );
+    context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
   }
 
   TextEditingController descriptionTextController = TextEditingController();
@@ -74,16 +85,7 @@ class _TaskViewState extends State<TaskView> {
   FavouriteOffers? selectFavouriteTask;
   @override
   Widget build(BuildContext context) {
-    void getTaskList() {
-      final access = BlocProvider.of<ProfileBloc>(context).access;
-      context.read<TasksBloc>().add(
-            GetTasksEvent(
-              access: access,
-            ),
-          );
-      context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-    }
-
+    log(' (${widget.canSelect} ffh ${widget.selectTask.owner?.id} && ${widget.selectTask.isAnswered == null})');
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Container(
       color: ColorStyles.greyEAECEE,
@@ -105,6 +107,10 @@ class _TaskViewState extends State<TaskView> {
                   const Spacer(),
                   if (user?.id != selectTask?.owner?.id)
                     BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+                      if (current is UpdateTask) {
+                        getTask();
+                        return true;
+                      }
                       if (previous != current) {
                         return true;
                       }
@@ -612,8 +618,8 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(height: 18.h),
               if (widget.canSelect &&
                   user?.id != widget.selectTask.owner?.id &&
-                  selectTask?.isAnswered != null &&
-                  selectTask?.isAnswered?.status == 'Progress')
+                  widget.selectTask.isAnswered != null &&
+                  widget.selectTask.isAnswered?.status == 'Progress')
                 CustomButton(
                   onTap: () async {},
                   btnColor: ColorStyles.yellowFFD70A,
@@ -624,17 +630,18 @@ class _TaskViewState extends State<TaskView> {
                 ),
               if (widget.canSelect &&
                   user?.id != widget.selectTask.owner?.id &&
-                  selectTask?.isAnswered != null &&
-                  selectTask?.isAnswered?.status == 'Selected')
+                  widget.selectTask.isAnswered != null &&
+                  widget.selectTask.isAnswered?.status == 'Selected' &&
+                  widget.selectTask.asCustomer!)
                 CustomButton(
                   onTap: () async {},
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text(
-                    widget.selectTask.asCustomer ?? false ? 'Вас выбрали' : 'Вас выбрали',
+                    'Вас выбрали',
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-              if (widget.canSelect && user?.id != widget.selectTask.owner?.id && selectTask?.isAnswered == null)
+              if (widget.canSelect && user?.id != widget.selectTask.owner?.id && widget.selectTask.isAnswered == null)
                 CustomButton(
                   onTap: () async {
                     if (user == null) {
@@ -649,7 +656,7 @@ class _TaskViewState extends State<TaskView> {
                         BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
                       } else {
                         BlocProvider.of<res.ResponseBloc>(context)
-                            .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
+                            .add(res.OpenSlidingPanelEvent(selectTask: widget.selectTask));
                       }
                     }
                   },
@@ -659,32 +666,36 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-              if (widget.canEdit && user?.id == widget.selectTask.owner?.id && selectTask?.answers != [])
+              if (widget.selectTask.answers.isNotEmpty &&
+                  !widget.selectTask.asCustomer! &&
+                  (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
+                      user?.id == widget.selectTask.owner?.id))
                 Text(
                   'Отклики',
                   style: CustomTextStyle.black_17_w800,
                 ),
-              if (selectTask != null &&
-                  widget.canEdit &&
-                  user?.id == widget.selectTask.owner?.id &&
-                  selectTask?.answers != [])
+              if (widget.selectTask.answers.isNotEmpty &&
+                  !widget.selectTask.asCustomer! &&
+                  (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
+                      user?.id == widget.selectTask.owner?.id))
                 SizedBox(
-                  height: selectTask?.status == 'Completed' ? 600.h : 300.h * selectTask!.answers.length,
+                  height: widget.selectTask.status == 'Completed' ? 600.h : 300.h * widget.selectTask.answers.length,
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: selectTask?.answers.length,
+                    itemCount: widget.selectTask.answers.length,
                     itemBuilder: (context, index) {
-                      if (selectTask!.answers.any((element) => element.status != 'Selected')) {
+                      if (widget.selectTask.answers.any((element) => element.status != 'Selected') &&
+                          user?.id == widget.selectTask.owner?.id) {
                         return SizedBox(
-                          height: 200.h,
+                          height: 205.h,
                           child: Padding(
                             padding: EdgeInsets.only(top: 15.h),
                             child: ScaleButton(
                               bound: 0.02,
                               onTap: () async {
-                                final owner = await Repository().getRanking(
-                                    selectTask?.answers[index].owner?.id, BlocProvider.of<ProfileBloc>(context).access);
+                                final owner = await Repository().getRanking(widget.selectTask.answers[index].owner?.id,
+                                    BlocProvider.of<ProfileBloc>(context).access);
                                 widget.openOwner(owner);
                               },
                               child: Container(
@@ -705,11 +716,11 @@ class _TaskViewState extends State<TaskView> {
                                   children: [
                                     Row(
                                       children: [
-                                        if (selectTask?.answers[index].owner?.photo != null)
+                                        if (widget.selectTask.answers[index].owner?.photo != null)
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(1000.r),
                                             child: Image.network(
-                                              selectTask!.answers[index].owner!.photo!,
+                                              widget.selectTask.answers[index].owner!.photo!,
                                               height: 48.h,
                                               width: 48.w,
                                               fit: BoxFit.cover,
@@ -725,42 +736,42 @@ class _TaskViewState extends State<TaskView> {
                                                 child: Row(
                                                   children: [
                                                     SizedBox(
-                                                      width: 190.w,
+                                                      width: 150.w,
                                                       child: Text(
-                                                        '${selectTask?.answers[index].owner?.firstname ?? '-'} ${selectTask?.answers[index].owner?.lastname ?? '-'}',
+                                                        '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                         softWrap: true,
                                                       ),
                                                     ),
                                                     const Spacer(),
                                                     if (widget.selectTask.currency?.name == null &&
-                                                        selectTask?.answers[index].price != null)
+                                                        widget.selectTask.answers[index].price != null)
                                                       Text(
-                                                        'до ${_textCurrency(selectTask!.answers[index].price!)} ',
+                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                       ),
                                                     if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                        selectTask?.answers[index].price != null)
+                                                        widget.selectTask.answers[index].price != null)
                                                       Text(
-                                                        'до ${_textCurrency(selectTask!.answers[index].price!)} AED',
+                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                       ),
                                                     if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                        selectTask?.answers[index].price != null)
+                                                        widget.selectTask.answers[index].price != null)
                                                       Text(
-                                                        'до ${_textCurrency(selectTask!.answers[index].price!)}  ₽',
+                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                       ),
                                                     if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                        selectTask?.answers[index].price != null)
+                                                        widget.selectTask.answers[index].price != null)
                                                       Text(
-                                                        'до ${_textCurrency(selectTask!.answers[index].price!)} \$',
+                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                       ),
                                                     if (widget.selectTask.currency?.name == 'Евро' &&
-                                                        selectTask?.answers[index].price != null)
+                                                        widget.selectTask.answers[index].price != null)
                                                       Text(
-                                                        'до ${_textCurrency(selectTask!.answers[index].price!)} €',
+                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
                                                         style: CustomTextStyle.black_15_w600_171716,
                                                       ),
                                                   ],
@@ -813,10 +824,10 @@ class _TaskViewState extends State<TaskView> {
                                               final idChat = await Navigator.of(context).pushNamed(
                                                 AppRoute.personalChat,
                                                 arguments: [
-                                                  '${widget.selectTask.chatId}',
-                                                  '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
-                                                  '${widget.selectTask.owner?.id}',
-                                                  '${widget.selectTask.owner?.photo}',
+                                                  '${widget.selectTask.answers[index].chatId}',
+                                                  '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                  '${widget.selectTask.answers[index].owner?.id}',
+                                                  '${widget.selectTask.answers[index].owner?.photo}',
                                                 ],
                                               );
                                               chatBloc.editShowPersonChat(true);
@@ -861,8 +872,8 @@ class _TaskViewState extends State<TaskView> {
                           ),
                         );
                       } else {
-                        if (selectTask?.answers[index].status == 'Selected') {
-                          if (selectTask?.status == 'Completed') {
+                        if (widget.selectTask.answers[index].status == 'Selected') {
+                          if (widget.selectTask.status == 'Completed') {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -874,7 +885,7 @@ class _TaskViewState extends State<TaskView> {
                                       bound: 0.02,
                                       onTap: () async {
                                         final owner = await Repository().getRanking(
-                                            selectTask?.answers[index].owner?.id,
+                                            widget.selectTask.answers[index].owner?.id,
                                             BlocProvider.of<ProfileBloc>(context).access);
                                         widget.openOwner(owner);
                                       },
@@ -896,11 +907,11 @@ class _TaskViewState extends State<TaskView> {
                                           children: [
                                             Row(
                                               children: [
-                                                if (selectTask?.answers[index].owner?.photo != null)
+                                                if (widget.selectTask.answers[index].owner?.photo != null)
                                                   ClipRRect(
                                                     borderRadius: BorderRadius.circular(1000.r),
                                                     child: Image.network(
-                                                      selectTask!.answers[index].owner!.photo!,
+                                                      widget.selectTask.answers[index].owner!.photo!,
                                                       height: 48.h,
                                                       width: 48.w,
                                                       fit: BoxFit.cover,
@@ -918,7 +929,7 @@ class _TaskViewState extends State<TaskView> {
                                                             SizedBox(
                                                               width: 190.w,
                                                               child: Text(
-                                                                '${selectTask?.answers[index].owner?.firstname ?? '-'} ${selectTask?.answers[index].owner?.lastname ?? '-'}',
+                                                                '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                                 style: CustomTextStyle.black_15_w600_171716,
                                                                 softWrap: true,
                                                               ),
@@ -1072,8 +1083,11 @@ class _TaskViewState extends State<TaskView> {
                                     if (reviewRating == 5.0) {
                                       rating = 10;
                                     }
-                                    Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                                        selectTask?.answers[index].owner?.id, descriptionTextController.text, rating);
+                                    Repository().addReviewsDetail(
+                                        BlocProvider.of<ProfileBloc>(context).access,
+                                        widget.selectTask.answers[index].owner?.id,
+                                        descriptionTextController.text,
+                                        rating);
                                   },
                                   btnColor: ColorStyles.yellowFFD70A,
                                   textLabel: Text(
@@ -1085,13 +1099,14 @@ class _TaskViewState extends State<TaskView> {
                             );
                           } else {
                             return SizedBox(
-                              height: 200.h,
+                              height: 205.h,
                               child: Padding(
                                 padding: EdgeInsets.only(top: 15.h),
                                 child: ScaleButton(
                                   bound: 0.02,
                                   onTap: () async {
-                                    final owner = await Repository().getRanking(selectTask?.answers[index].owner?.id,
+                                    final owner = await Repository().getRanking(
+                                        widget.selectTask.answers[index].owner?.id,
                                         BlocProvider.of<ProfileBloc>(context).access);
                                     widget.openOwner(owner);
                                   },
@@ -1113,11 +1128,11 @@ class _TaskViewState extends State<TaskView> {
                                       children: [
                                         Row(
                                           children: [
-                                            if (selectTask?.answers[index].owner?.photo != null)
+                                            if (widget.selectTask.answers[index].owner?.photo != null)
                                               ClipRRect(
                                                 borderRadius: BorderRadius.circular(1000.r),
                                                 child: Image.network(
-                                                  selectTask!.answers[index].owner!.photo!,
+                                                  widget.selectTask.answers[index].owner!.photo!,
                                                   height: 48.h,
                                                   width: 48.w,
                                                   fit: BoxFit.cover,
@@ -1133,42 +1148,42 @@ class _TaskViewState extends State<TaskView> {
                                                     child: Row(
                                                       children: [
                                                         SizedBox(
-                                                          width: 190.w,
+                                                          width: 150.w,
                                                           child: Text(
-                                                            '${selectTask?.answers[index].owner?.firstname ?? '-'} ${selectTask?.answers[index].owner?.lastname ?? '-'}',
+                                                            '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                             softWrap: true,
                                                           ),
                                                         ),
                                                         const Spacer(),
                                                         if (widget.selectTask.currency?.name == null &&
-                                                            selectTask?.answers[index].price != null)
+                                                            widget.selectTask.answers[index].price != null)
                                                           Text(
-                                                            'до ${_textCurrency(selectTask!.answers[index].price!)} ',
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                           ),
                                                         if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                            selectTask?.answers[index].price != null)
+                                                            widget.selectTask.answers[index].price != null)
                                                           Text(
-                                                            'до ${_textCurrency(selectTask!.answers[index].price!)} AED',
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                           ),
                                                         if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                            selectTask?.answers[index].price != null)
+                                                            widget.selectTask.answers[index].price != null)
                                                           Text(
-                                                            'до ${_textCurrency(selectTask!.answers[index].price!)}  ₽',
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                           ),
                                                         if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                            selectTask?.answers[index].price != null)
+                                                            widget.selectTask.answers[index].price != null)
                                                           Text(
-                                                            'до ${_textCurrency(selectTask!.answers[index].price!)} \$',
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                           ),
                                                         if (widget.selectTask.currency?.name == 'Евро' &&
-                                                            selectTask?.answers[index].price != null)
+                                                            widget.selectTask.answers[index].price != null)
                                                           Text(
-                                                            'до ${_textCurrency(selectTask!.answers[index].price!)} €',
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
                                                             style: CustomTextStyle.black_15_w600_171716,
                                                           ),
                                                       ],
@@ -1221,10 +1236,10 @@ class _TaskViewState extends State<TaskView> {
                                                   final idChat = await Navigator.of(context).pushNamed(
                                                     AppRoute.personalChat,
                                                     arguments: [
-                                                      '${widget.selectTask.chatId}',
-                                                      '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
-                                                      '${widget.selectTask.owner?.id}',
-                                                      '${widget.selectTask.owner?.photo}',
+                                                      '${widget.selectTask.answers[index].chatId}',
+                                                      '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                      '${widget.selectTask.answers[index].owner?.id}',
+                                                      '${widget.selectTask.answers[index].owner?.photo}',
                                                     ],
                                                   );
                                                   chatBloc.editShowPersonChat(true);
@@ -1249,14 +1264,14 @@ class _TaskViewState extends State<TaskView> {
                                               child: CustomButton(
                                                 onTap: () {
                                                   log(widget.selectTask.answers[index].id!.toString());
-                                                  selectTask?.status = 'Completed';
+                                                  widget.selectTask.status = 'Completed';
                                                   Repository().editTask(
-                                                      BlocProvider.of<ProfileBloc>(context).access, selectTask!);
+                                                      BlocProvider.of<ProfileBloc>(context).access, widget.selectTask);
                                                   getTaskList();
                                                 },
                                                 btnColor: ColorStyles.yellowFFD70A,
                                                 textLabel: Text(
-                                                  'Подтвердить',
+                                                  'Выполнено',
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 12.sp,
@@ -1277,6 +1292,7 @@ class _TaskViewState extends State<TaskView> {
                           Container();
                         }
                       }
+                      return null;
                     },
                   ),
                 ),

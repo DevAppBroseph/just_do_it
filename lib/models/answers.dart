@@ -6,31 +6,31 @@ class Answers {
   String? status;
   int? price;
   OwnerOrder? owner;
+  int? chatId;
 
-  Answers({
-    required this.description,
-    required this.id,
-    required this.status,
-    required this.price,
-    this.owner,
-  });
+  Answers(
+      {required this.description,
+      required this.id,
+      required this.status,
+      required this.price,
+      this.owner,
+      this.chatId});
 
   factory Answers.fromJson(Map<String, dynamic> json) {
-    
     return Answers(
       description: json['description'],
       id: json['id'],
       status: json['status'],
+      chatId: json['chat_id'],
       price: json['price'],
-      owner: OwnerOrder.fromJson(json['owner']),
+      owner: json['owner'] == null ? null : OwnerOrder.fromJson(json['owner']),
     );
   }
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "description": description,
         "id": id,
         'status': status,
         'price': price,
         // 'owner': owner,
-
       };
 }

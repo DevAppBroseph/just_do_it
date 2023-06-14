@@ -6,6 +6,8 @@ class TasksEmpty extends TasksState {}
 
 class TasksLoading extends TasksState {}
 
+class UpdateTask extends TasksState {}
+
 class TasksLoaded extends TasksState {
   final List<Task>? tasks;
   final int? countFilter;

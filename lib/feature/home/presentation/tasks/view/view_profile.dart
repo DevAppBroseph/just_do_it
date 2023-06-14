@@ -41,15 +41,10 @@ class _ProfileViewState extends State<ProfileView> {
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
     super.initState();
     getProfile();
-    // getReview();
+
   }
 
-  void getReview() async {
-    reviews = await Repository().getRankingReview(
-      widget.owner.id,
-      BlocProvider.of<ProfileBloc>(context).access,
-    );
-  }
+ 
 
   void getProfile() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
@@ -718,13 +713,13 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                             SizedBox(height: 30.h),
-                             if (reviews != null)
-                            Text(
-                              'Отзывы',
-                              style: CustomTextStyle.black_17_w800,
-                            ),
+                            if (owner?.reviews != [])
+                              Text(
+                                'Отзывы',
+                                style: CustomTextStyle.black_17_w800,
+                              ),
                             SizedBox(height: 15.h),
-                            if (reviews != null)
+                            if (owner?.reviews != [])
                               BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
                                 if (snapshot is LoadingRatingState) {
                                   return const CupertinoActivityIndicator();
@@ -737,9 +732,9 @@ class _ProfileViewState extends State<ProfileView> {
                                       ListView.builder(
                                     physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: reviews!.reviewsDetail.length,
+                                    itemCount: owner?.reviews?.length,
                                     itemBuilder: ((context, index) {
-                                      return itemCommentNew(reviews!.reviewsDetail[index]);
+                                      return itemCommentNew(owner!.reviews![index]);
                                     }),
 
                                     //TODO Эта логика для сервера
@@ -865,7 +860,6 @@ class _ProfileViewState extends State<ProfileView> {
         ],
       ),
     );
-    
   }
 
   String _textData(String data) {

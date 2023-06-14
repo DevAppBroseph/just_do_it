@@ -147,7 +147,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text);
                           coastController.clear();
                           descriptionTextController.clear();
-                          getProfile();
+                          context.read<TasksBloc>().add(UpdateTaskEvent());
                           setState(() {});
                         }
                       },
