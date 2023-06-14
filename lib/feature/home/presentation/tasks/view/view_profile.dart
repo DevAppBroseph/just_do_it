@@ -351,7 +351,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                     padding: EdgeInsets.only(bottom: 4.h),
                                                     child: SizedBox(
                                                       child: Text(
-                                                        reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                                        owner?.ranking == null ? '0' : owner!.ranking.toString(),
                                                         style: CustomTextStyle.gold_16_w600_171716,
                                                       ),
                                                     ),
@@ -392,7 +392,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                     padding: EdgeInsets.only(bottom: 4.0.h),
                                                     child: SizedBox(
                                                       child: Text(
-                                                        '34',
+                                                        owner!.reviews?.length.toString() ?? '0',
                                                         style: CustomTextStyle.blue_16_w600_171716,
                                                         textAlign: TextAlign.left,
                                                       ),
@@ -414,7 +414,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                             Text(
-                                              ' 40',
+                                              owner!.countOrdersCreate.toString(),
                                               style: CustomTextStyle.black_13_w500_171716,
                                             ),
                                           ],
@@ -429,7 +429,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                             Text(
-                                              ' 40',
+                                              owner!.countOrdersComplete.toString(),
                                               style: CustomTextStyle.black_13_w500_171716,
                                             ),
                                           ],

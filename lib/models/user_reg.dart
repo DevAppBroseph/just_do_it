@@ -50,8 +50,14 @@ class UserRegModel {
   int? countOrderComplete;
   int? countMyAnswersSelectedAsExecutor;
   int? countOrdersCompleteAsExecutor;
+  int? countOrdersCreateAsCustomer;
+  List<Task>? ordersCreateAsCustomer;
+  List<Task>? openOffers;
 
   UserRegModel({
+    this.countOrdersCreateAsCustomer,
+    this.openOffers,
+    this.ordersCreateAsCustomer,
     this.phoneNumber,
     this.email,
     this.firstname,
@@ -95,6 +101,9 @@ class UserRegModel {
     String? firstname,
     String? lastname,
     String? password,
+    int? countOrdersCreateAsCustomer,
+    List<Task>? ordersCreateAsCustomer,
+    List<Task>? openOffers,
     Uint8List? photo,
     bool? sex,
     String? docType,
@@ -125,6 +134,9 @@ class UserRegModel {
     List<ActivitiesInfo>? activitiesInfo,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
+    this.countOrdersCreateAsCustomer = countOrdersCreateAsCustomer ?? this.countOrdersCreateAsCustomer;
+    this.openOffers = openOffers ?? this.openOffers;
+    this.ordersCreateAsCustomer = ordersCreateAsCustomer ?? this.ordersCreateAsCustomer;
     this.email = email ?? this.email;
     this.firstname = firstname ?? this.firstname;
     this.lastname = lastname ?? this.lastname;
@@ -162,6 +174,7 @@ class UserRegModel {
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
+    int? countOrdersCreateAsCustomer = data['count_orders_create_as_customer'];
     int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
     int? countOrdersCompleteAsExecutor = data['count_orders_complete_as_executor'];
     int? countOrdersInProgressAsCustomer = data['count_orders_in_progress_as_customer'];
@@ -196,6 +209,18 @@ class UserRegModel {
         listTaskOrdersInProgressAsCustomer.add(Task.fromJson(element));
       }
     }
+      List<Task> listOpenOffers = [];
+    if (data['open_offers'] != null) {
+      for (var element in data['open_offers']) {
+        listOpenOffers.add(Task.fromJson(element));
+      }
+    }
+    List<Task> listOrdersCreateAsCustomer = [];
+    if (data['orders_create_as_customer'] != null) {
+      for (var element in data['orders_create_as_customer']) {
+        listOrdersCreateAsCustomer.add(Task.fromJson(element));
+      }
+    }
     List<Task> listTaskOrdersCompleteAsCustomer = [];
     if (data['orders_complete_as_customer'] != null) {
       for (var element in data['orders_complete_as_customer']) {
@@ -221,6 +246,7 @@ class UserRegModel {
       }
     }
     return UserRegModel(
+      openOffers: listOpenOffers,
       countOrderComplete: countOrderComplete,
       email: email,
       countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
@@ -231,6 +257,8 @@ class UserRegModel {
       groups: groups,
       photoLink: photoLink,
       sex: sex,
+      countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
+      ordersCreateAsCustomer: listOrdersCreateAsCustomer,
       ordersCompleteAsExecutor: listOrdersCompleteAsExecutor,
       countOrdersCompleteAsExecutor: countOrdersCompleteAsExecutor,
       myAnswersSelectedAsExecutor: listMyAnswersSelectedAsExecutor,

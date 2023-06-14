@@ -654,7 +654,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           padding: EdgeInsets.only(bottom: 4.0.h),
                                                           child: SizedBox(
                                                             child: Text(
-                                                              '34',
+                                                              reviews?.reviewsDetail == null ? '' : reviews!.reviewsDetail.length.toString(),
                                                               style: CustomTextStyle.blue_16_w600_171716,
                                                               textAlign: TextAlign.left,
                                                             ),

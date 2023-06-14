@@ -17,9 +17,11 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart' as repf;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart'
+    as repf;
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as res;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart' as resf;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart'
+    as resf;
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/edit_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
@@ -580,7 +582,9 @@ class _TaskViewState extends State<TaskView> {
                                 SvgPicture.asset('assets/icons/star.svg'),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  '-',
+                                  widget.selectTask.owner?.ranking == null
+                                      ? '0'
+                                      : widget.selectTask.owner!.ranking.toString(),
                                   style: CustomTextStyle.black_13_w500_171716,
                                 ),
                               ],
@@ -664,7 +668,7 @@ class _TaskViewState extends State<TaskView> {
                         }
                       } else {
                         if (widget.fromFav) {
-                           BlocProvider.of<resf.ResponseBlocFromFav>(context)
+                          BlocProvider.of<resf.ResponseBlocFromFav>(context)
                               .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
                         } else {
                           log(widget.selectTask.toString());
@@ -681,7 +685,7 @@ class _TaskViewState extends State<TaskView> {
                   ),
                 ),
               if (widget.selectTask.answers.isNotEmpty &&
-                  !widget.selectTask.asCustomer! &&
+                  (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
                       user?.id == widget.selectTask.owner?.id))
                 Text(
@@ -689,626 +693,655 @@ class _TaskViewState extends State<TaskView> {
                   style: CustomTextStyle.black_17_w800,
                 ),
               if (widget.selectTask.answers.isNotEmpty &&
-                  !widget.selectTask.asCustomer! &&
+                  (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
                       user?.id == widget.selectTask.owner?.id))
                 SizedBox(
-                  height: widget.selectTask.status == 'Completed' ? 600.h : 300.h * widget.selectTask.answers.length,
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: widget.selectTask.answers.length,
-                    itemBuilder: (context, index) {
-                      if (widget.selectTask.answers.any((element) => element.status != 'Selected') &&
-                          user?.id == widget.selectTask.owner?.id) {
-                        return SizedBox(
-                          height: 205.h,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 15.h),
-                            child: ScaleButton(
-                              bound: 0.02,
-                              onTap: () async {
-                                final owner = await Repository().getRanking(widget.selectTask.answers[index].owner?.id,
-                                    BlocProvider.of<ProfileBloc>(context).access);
-                                widget.openOwner(owner);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: ColorStyles.whiteFFFFFF,
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorStyles.shadowFC6554,
-                                      offset: const Offset(0, 4),
-                                      blurRadius: 45.r,
-                                    )
-                                  ],
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        if (widget.selectTask.answers[index].owner?.photo != null)
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(1000.r),
-                                            child: Image.network(
-                                              widget.selectTask.answers[index].owner!.photo!,
-                                              height: 48.h,
-                                              width: 48.w,
-                                              fit: BoxFit.cover,
+                  height: widget.selectTask.status == 'Completed'
+                      ? 600.h
+                      : widget.selectTask.answers.every((element) => element.status != 'Selected')
+                          ? 300.h * widget.selectTask.answers.length
+                          : 300.h,
+                  child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+                    if (current is UpdateTask) {
+                      getTask();
+                      return true;
+                    }
+                    if (previous != current) {
+                      return true;
+                    }
+                    return false;
+                  }, builder: (context, state) {
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: widget.selectTask.answers.length,
+                      itemBuilder: (context, index) {
+                        log((widget.selectTask.answers.every((element) => element.status != 'Selected').toString()));
+                        if (widget.selectTask.answers.every((element) => element.status != 'Selected') &&
+                            user?.id == widget.selectTask.owner?.id) {
+                          return SizedBox(
+                            height: 205.h,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 15.h),
+                              child: ScaleButton(
+                                bound: 0.02,
+                                onTap: () async {
+                                  final owner = await Repository().getRanking(
+                                      widget.selectTask.answers[index].owner?.id,
+                                      BlocProvider.of<ProfileBloc>(context).access);
+                                  widget.openOwner(owner);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: ColorStyles.whiteFFFFFF,
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ColorStyles.shadowFC6554,
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 45.r,
+                                      )
+                                    ],
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          if (widget.selectTask.answers[index].owner?.photo != null)
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(1000.r),
+                                              child: Image.network(
+                                                widget.selectTask.answers[index].owner!.photo!,
+                                                height: 48.h,
+                                                width: 48.w,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          SizedBox(width: 15.w),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: 300.w,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 150.w,
+                                                        child: Text(
+                                                          '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                          softWrap: true,
+                                                        ),
+                                                      ),
+                                                      const Spacer(),
+                                                      if (widget.selectTask.currency?.name == null &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Евро' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 6.h),
+                                                Row(
+                                                  children: [
+                                                    SvgPicture.asset('assets/icons/star.svg'),
+                                                    SizedBox(width: 4.w),
+                                                    Text(
+                                                      widget.selectTask.answers[index].owner?.ranking == null
+                                                          ? '0'
+                                                          : widget.selectTask.answers[index].owner!.ranking.toString(),
+                                                      style: CustomTextStyle.black_13_w500_171716,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        SizedBox(width: 15.w),
-                                        Expanded(
+                                        ],
+                                      ),
+                                      if (widget.selectTask.answers[index].description != null)
+                                        SizedBox(
+                                          height: 15.h,
+                                        ),
+                                      if (widget.selectTask.answers[index].description != null)
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          child: Text(
+                                            widget.selectTask.answers[index].description!,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                            style: CustomTextStyle.black_12_w400_292D32,
+                                          ),
+                                        ),
+                                      SizedBox(
+                                        height: 30.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 50.h,
+                                            width: 140.w,
+                                            child: CustomButton(
+                                              onTap: () async {
+                                                final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                chatBloc.editShowPersonChat(false);
+                                                chatBloc.editChatId(widget.selectTask.chatId);
+                                                chatBloc.messages = [];
+                                                final idChat = await Navigator.of(context).pushNamed(
+                                                  AppRoute.personalChat,
+                                                  arguments: [
+                                                    '${widget.selectTask.answers[index].chatId}',
+                                                    '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                    '${widget.selectTask.answers[index].owner?.id}',
+                                                    '${widget.selectTask.answers[index].owner?.photo}',
+                                                  ],
+                                                );
+                                                chatBloc.editShowPersonChat(true);
+                                                chatBloc.editChatId(null);
+                                              },
+                                              btnColor: ColorStyles.greyDADADA,
+                                              textLabel: Text(
+                                                'Написать в чат',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10.w,
+                                          ),
+                                          SizedBox(
+                                            height: 50.h,
+                                            width: 140.w,
+                                            child: CustomButton(
+                                              onTap: () async {
+                                                log(widget.selectTask.answers[index].id!.toString());
+                                                Repository().updateStatusResponse(
+                                                    BlocProvider.of<ProfileBloc>(context).access,
+                                                    widget.selectTask.answers[index].id!,
+                                                    'Selected');
+                                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                context.read<ProfileBloc>().add(UpdateProfileTaskEvent());
+                                              },
+                                              btnColor: ColorStyles.yellowFFD70A,
+                                              textLabel: Text(
+                                                'Выбрать исполнителя',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w700),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          if (widget.selectTask.answers[index].status == 'Selected') {
+                            if (widget.selectTask.status == 'Completed') {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 90.h,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 15.h),
+                                      child: ScaleButton(
+                                        bound: 0.02,
+                                        onTap: () async {
+                                          final owner = await Repository().getRanking(
+                                              widget.selectTask.answers[index].owner?.id,
+                                              BlocProvider.of<ProfileBloc>(context).access);
+                                          widget.openOwner(owner);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.whiteFFFFFF,
+                                            borderRadius: BorderRadius.circular(20.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ColorStyles.shadowFC6554,
+                                                offset: const Offset(0, 4),
+                                                blurRadius: 45.r,
+                                              )
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
-                                                width: 300.w,
-                                                child: Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 150.w,
-                                                      child: Text(
-                                                        '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                        softWrap: true,
-                                                      ),
-                                                    ),
-                                                    const Spacer(),
-                                                    if (widget.selectTask.currency?.name == null &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Евро' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(height: 6.h),
                                               Row(
                                                 children: [
-                                                  SvgPicture.asset('assets/icons/star.svg'),
-                                                  SizedBox(width: 4.w),
-                                                  Text(
-                                                    '-',
-                                                    style: CustomTextStyle.black_13_w500_171716,
+                                                  if (widget.selectTask.answers[index].owner?.photo != null)
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(1000.r),
+                                                      child: Image.network(
+                                                        widget.selectTask.answers[index].owner!.photo!,
+                                                        height: 48.h,
+                                                        width: 48.w,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  SizedBox(width: 15.w),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 300.w,
+                                                          child: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 190.w,
+                                                                child: Text(
+                                                                  '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                  softWrap: true,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 6.h),
+                                                        Row(
+                                                          children: [
+                                                            SvgPicture.asset('assets/icons/star.svg'),
+                                                            SizedBox(width: 4.w),
+                                                            Text(
+                                                              widget.selectTask.answers[index].owner?.ranking == null
+                                                                  ? '0'
+                                                                  : widget.selectTask.answers[index].owner!.ranking
+                                                                      .toString(),
+                                                              style: CustomTextStyle.black_13_w500_171716,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    if (widget.selectTask.answers[index].description != null)
-                                      SizedBox(
-                                        height: 15.h,
                                       ),
-                                    if (widget.selectTask.answers[index].description != null)
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10.w),
-                                        child: Text(
-                                          widget.selectTask.answers[index].description!,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,
-                                          style: CustomTextStyle.black_12_w400_292D32,
-                                        ),
-                                      ),
-                                    SizedBox(
-                                      height: 30.h,
                                     ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 50.h,
-                                          width: 140.w,
-                                          child: CustomButton(
-                                            onTap: () async {
-                                              final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                              chatBloc.editShowPersonChat(false);
-                                              chatBloc.editChatId(widget.selectTask.chatId);
-                                              chatBloc.messages = [];
-                                              final idChat = await Navigator.of(context).pushNamed(
-                                                AppRoute.personalChat,
-                                                arguments: [
-                                                  '${widget.selectTask.answers[index].chatId}',
-                                                  '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                  '${widget.selectTask.answers[index].owner?.id}',
-                                                  '${widget.selectTask.answers[index].owner?.photo}',
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  Text(
+                                    'Оставьте отзыв',
+                                    style: CustomTextStyle.black_17_w800,
+                                  ),
+                                  SizedBox(height: 15.h),
+                                  Text(
+                                    'За оставленные отзывы и рейтинг начисляются баллы на Ваш аккаунт!',
+                                    style: CustomTextStyle.black_14_w500_171716,
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  ScaleButton(
+                                    onTap: () {},
+                                    bound: 0.02,
+                                    child: Container(
+                                      height: 150.h,
+                                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                                      decoration: BoxDecoration(
+                                        color: ColorStyles.greyF9F9F9,
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Произвольный текст',
+                                            style: CustomTextStyle.grey_14_w400,
+                                          ),
+                                          SizedBox(height: 3.h),
+                                          Row(
+                                            children: [
+                                              CustomTextField(
+                                                height: 90.h,
+                                                width: 285.w,
+                                                autocorrect: true,
+                                                maxLines: 8,
+                                                onTap: () {
+                                                  setState(() {});
+                                                },
+                                                style: CustomTextStyle.black_14_w400_171716,
+                                                textEditingController: descriptionTextController,
+                                                fillColor: ColorStyles.greyF9F9F9,
+                                                onChanged: (value) {},
+                                                formatters: [
+                                                  UpperEveryTextInputFormatter(),
                                                 ],
-                                              );
-                                              chatBloc.editShowPersonChat(true);
-                                              chatBloc.editChatId(null);
-                                            },
-                                            btnColor: ColorStyles.greyDADADA,
-                                            textLabel: Text(
-                                              'Написать в чат',
-                                              style: TextStyle(
-                                                  color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),
-                                            ),
+                                                hintText: '',
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        SizedBox(
-                                          height: 50.h,
-                                          width: 140.w,
-                                          child: CustomButton(
-                                            onTap: () async {
-                                              log(widget.selectTask.answers[index].id!.toString());
-                                              Repository().updateStatusResponse(
-                                                  BlocProvider.of<ProfileBloc>(context).access,
-                                                  widget.selectTask.answers[index].id!,
-                                                  'Selected');
-                                            },
-                                            btnColor: ColorStyles.yellowFFD70A,
-                                            textLabel: Text(
-                                              'Выбрать исполнителя',
-                                              style: TextStyle(
-                                                  color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w700),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        if (widget.selectTask.answers[index].status == 'Selected') {
-                          if (widget.selectTask.status == 'Completed') {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 90.h,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 15.h),
-                                    child: ScaleButton(
-                                      bound: 0.02,
-                                      onTap: () async {
-                                        final owner = await Repository().getRanking(
-                                            widget.selectTask.answers[index].owner?.id,
-                                            BlocProvider.of<ProfileBloc>(context).access);
-                                        widget.openOwner(owner);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.whiteFFFFFF,
-                                          borderRadius: BorderRadius.circular(20.r),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ColorStyles.shadowFC6554,
-                                              offset: const Offset(0, 4),
-                                              blurRadius: 45.r,
-                                            )
-                                          ],
-                                        ),
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                if (widget.selectTask.answers[index].owner?.photo != null)
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(1000.r),
-                                                    child: Image.network(
-                                                      widget.selectTask.answers[index].owner!.photo!,
-                                                      height: 48.h,
-                                                      width: 48.w,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Оцените исполнителя',
+                                        style: CustomTextStyle.black_17_w800,
+                                      ),
+                                      SizedBox(width: 15.h),
+                                      SvgPicture.asset(
+                                        SvgImg.help,
+                                        color: Colors.black,
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 15.h),
+                                  RatingBar.builder(
+                                    initialRating: 3,
+                                    minRating: 0,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: ColorStyles.yellowFFCA0D,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      reviewRating = rating;
+                                    },
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  CustomButton(
+                                    onTap: () {
+                                      int rating = 0;
+                                      if (reviewRating == 0.0) {
+                                        rating = 0;
+                                      }
+                                      if (reviewRating == 0.5) {
+                                        rating = 1;
+                                      }
+                                      if (reviewRating == 1.0) {
+                                        rating = 2;
+                                      }
+                                      if (reviewRating == 1.5) {
+                                        rating = 3;
+                                      }
+                                      if (reviewRating == 2.0) {
+                                        rating = 4;
+                                      }
+                                      if (reviewRating == 2.5) {
+                                        rating = 5;
+                                      }
+                                      if (reviewRating == 3.0) {
+                                        rating = 6;
+                                      }
+                                      if (reviewRating == 3.5) {
+                                        rating = 7;
+                                      }
+                                      if (reviewRating == 4.0) {
+                                        rating = 8;
+                                      }
+                                      if (reviewRating == 4.5) {
+                                        rating = 9;
+                                      }
+                                      if (reviewRating == 5.0) {
+                                        rating = 10;
+                                      }
+                                      Repository().addReviewsDetail(
+                                          BlocProvider.of<ProfileBloc>(context).access,
+                                          widget.selectTask.answers[index].owner?.id,
+                                          descriptionTextController.text,
+                                          rating);
+                                    },
+                                    btnColor: ColorStyles.yellowFFD70A,
+                                    textLabel: Text(
+                                      'Отправить отзыв',
+                                      style: CustomTextStyle.black_16_w600_171716,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return SizedBox(
+                                height: 205.h,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 15.h),
+                                  child: ScaleButton(
+                                    bound: 0.02,
+                                    onTap: () async {
+                                      final owner = await Repository().getRanking(
+                                          widget.selectTask.answers[index].owner?.id,
+                                          BlocProvider.of<ProfileBloc>(context).access);
+                                      widget.openOwner(owner);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: ColorStyles.whiteFFFFFF,
+                                        borderRadius: BorderRadius.circular(20.r),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: ColorStyles.shadowFC6554,
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 45.r,
+                                          )
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              if (widget.selectTask.answers[index].owner?.photo != null)
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(1000.r),
+                                                  child: Image.network(
+                                                    widget.selectTask.answers[index].owner!.photo!,
+                                                    height: 48.h,
+                                                    width: 48.w,
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                SizedBox(width: 15.w),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 300.w,
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 190.w,
-                                                              child: Text(
-                                                                '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                style: CustomTextStyle.black_15_w600_171716,
-                                                                softWrap: true,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 6.h),
-                                                      Row(
+                                                ),
+                                              SizedBox(width: 15.w),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 300.w,
+                                                      child: Row(
                                                         children: [
-                                                          SvgPicture.asset('assets/icons/star.svg'),
-                                                          SizedBox(width: 4.w),
-                                                          Text(
-                                                            '-',
-                                                            style: CustomTextStyle.black_13_w500_171716,
+                                                          SizedBox(
+                                                            width: 150.w,
+                                                            child: Text(
+                                                              '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                              softWrap: true,
+                                                            ),
                                                           ),
+                                                          const Spacer(),
+                                                          if (widget.selectTask.currency?.name == null &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Евро' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
+                                                    SizedBox(height: 6.h),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset('assets/icons/star.svg'),
+                                                        SizedBox(width: 4.w),
+                                                        Text(
+                                                          widget.selectTask.answers[index].owner?.ranking == null
+                                                              ? '0'
+                                                              : widget.selectTask.answers[index].owner!.ranking
+                                                                  .toString(),
+                                                          style: CustomTextStyle.black_13_w500_171716,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          if (widget.selectTask.answers[index].description != null)
+                                            SizedBox(
+                                              height: 15.h,
+                                            ),
+                                          if (widget.selectTask.answers[index].description != null)
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 10.w),
+                                              child: Text(
+                                                widget.selectTask.answers[index].description!,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                                style: CustomTextStyle.black_12_w400_292D32,
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: 30.h,
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 50.h,
+                                                width: 140.w,
+                                                child: CustomButton(
+                                                  onTap: () async {
+                                                    final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                    chatBloc.editShowPersonChat(false);
+                                                    chatBloc.editChatId(widget.selectTask.chatId);
+                                                    chatBloc.messages = [];
+                                                    final idChat = await Navigator.of(context).pushNamed(
+                                                      AppRoute.personalChat,
+                                                      arguments: [
+                                                        '${widget.selectTask.answers[index].chatId}',
+                                                        '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                        '${widget.selectTask.answers[index].owner?.id}',
+                                                        '${widget.selectTask.answers[index].owner?.photo}',
+                                                      ],
+                                                    );
+                                                    chatBloc.editShowPersonChat(true);
+                                                    chatBloc.editChatId(null);
+                                                  },
+                                                  btnColor: ColorStyles.greyDADADA,
+                                                  textLabel: Text(
+                                                    'Написать в чат',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w500),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              SizedBox(
+                                                height: 50.h,
+                                                width: 140.w,
+                                                child: CustomButton(
+                                                  onTap: () {
+                                                    log(widget.selectTask.answers[index].id!.toString());
+                                                    widget.selectTask.status = 'Completed';
+                                                    Repository().editTask(BlocProvider.of<ProfileBloc>(context).access,
+                                                        widget.selectTask);
+                                                    getTaskList();
+                                                    context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                    context.read<ProfileBloc>().add(UpdateProfileTaskEvent());
+                                                  },
+                                                  btnColor: ColorStyles.yellowFFD70A,
+                                                  textLabel: Text(
+                                                    'Выполнено',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 30.h),
-                                Text(
-                                  'Оставьте отзыв',
-                                  style: CustomTextStyle.black_17_w800,
-                                ),
-                                SizedBox(height: 15.h),
-                                Text(
-                                  'За оставленные отзывы и рейтинг начисляются баллы на Ваш аккаунт!',
-                                  style: CustomTextStyle.black_14_w500_171716,
-                                ),
-                                SizedBox(height: 30.h),
-                                ScaleButton(
-                                  onTap: () {},
-                                  bound: 0.02,
-                                  child: Container(
-                                    height: 150.h,
-                                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
-                                    decoration: BoxDecoration(
-                                      color: ColorStyles.greyF9F9F9,
-                                      borderRadius: BorderRadius.circular(10.r),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Произвольный текст',
-                                          style: CustomTextStyle.grey_14_w400,
-                                        ),
-                                        SizedBox(height: 3.h),
-                                        Row(
-                                          children: [
-                                            CustomTextField(
-                                              height: 90.h,
-                                              width: 285.w,
-                                              autocorrect: true,
-                                              maxLines: 8,
-                                              onTap: () {
-                                                setState(() {});
-                                              },
-                                              style: CustomTextStyle.black_14_w400_171716,
-                                              textEditingController: descriptionTextController,
-                                              fillColor: ColorStyles.greyF9F9F9,
-                                              onChanged: (value) {},
-                                              formatters: [
-                                                UpperEveryTextInputFormatter(),
-                                              ],
-                                              hintText: '',
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 30.h),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Оцените исполнителя',
-                                      style: CustomTextStyle.black_17_w800,
-                                    ),
-                                    SizedBox(width: 15.h),
-                                    SvgPicture.asset(
-                                      SvgImg.help,
-                                      color: Colors.black,
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 15.h),
-                                RatingBar.builder(
-                                  initialRating: 3,
-                                  minRating: 0,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: ColorStyles.yellowFFCA0D,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    reviewRating = rating;
-                                  },
-                                ),
-                                SizedBox(height: 30.h),
-                                CustomButton(
-                                  onTap: () {
-                                    int rating = 0;
-                                    if (reviewRating == 0.0) {
-                                      rating = 0;
-                                    }
-                                    if (reviewRating == 0.5) {
-                                      rating = 1;
-                                    }
-                                    if (reviewRating == 1.0) {
-                                      rating = 2;
-                                    }
-                                    if (reviewRating == 1.5) {
-                                      rating = 3;
-                                    }
-                                    if (reviewRating == 2.0) {
-                                      rating = 4;
-                                    }
-                                    if (reviewRating == 2.5) {
-                                      rating = 5;
-                                    }
-                                    if (reviewRating == 3.0) {
-                                      rating = 6;
-                                    }
-                                    if (reviewRating == 3.5) {
-                                      rating = 7;
-                                    }
-                                    if (reviewRating == 4.0) {
-                                      rating = 8;
-                                    }
-                                    if (reviewRating == 4.5) {
-                                      rating = 9;
-                                    }
-                                    if (reviewRating == 5.0) {
-                                      rating = 10;
-                                    }
-                                    Repository().addReviewsDetail(
-                                        BlocProvider.of<ProfileBloc>(context).access,
-                                        widget.selectTask.answers[index].owner?.id,
-                                        descriptionTextController.text,
-                                        rating);
-                                  },
-                                  btnColor: ColorStyles.yellowFFD70A,
-                                  textLabel: Text(
-                                    'Отправить отзыв',
-                                    style: CustomTextStyle.black_16_w600_171716,
-                                  ),
-                                ),
-                              ],
-                            );
+                              );
+                            }
                           } else {
-                            return SizedBox(
-                              height: 205.h,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 15.h),
-                                child: ScaleButton(
-                                  bound: 0.02,
-                                  onTap: () async {
-                                    final owner = await Repository().getRanking(
-                                        widget.selectTask.answers[index].owner?.id,
-                                        BlocProvider.of<ProfileBloc>(context).access);
-                                    widget.openOwner(owner);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: ColorStyles.whiteFFFFFF,
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: ColorStyles.shadowFC6554,
-                                          offset: const Offset(0, 4),
-                                          blurRadius: 45.r,
-                                        )
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            if (widget.selectTask.answers[index].owner?.photo != null)
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(1000.r),
-                                                child: Image.network(
-                                                  widget.selectTask.answers[index].owner!.photo!,
-                                                  height: 48.h,
-                                                  width: 48.w,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            SizedBox(width: 15.w),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 300.w,
-                                                    child: Row(
-                                                      children: [
-                                                        SizedBox(
-                                                          width: 150.w,
-                                                          child: Text(
-                                                            '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                            softWrap: true,
-                                                          ),
-                                                        ),
-                                                        const Spacer(),
-                                                        if (widget.selectTask.currency?.name == null &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Евро' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 6.h),
-                                                  Row(
-                                                    children: [
-                                                      SvgPicture.asset('assets/icons/star.svg'),
-                                                      SizedBox(width: 4.w),
-                                                      Text(
-                                                        '-',
-                                                        style: CustomTextStyle.black_13_w500_171716,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (widget.selectTask.answers[index].description != null)
-                                          SizedBox(
-                                            height: 15.h,
-                                          ),
-                                        if (widget.selectTask.answers[index].description != null)
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10.w),
-                                            child: Text(
-                                              widget.selectTask.answers[index].description!,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                              style: CustomTextStyle.black_12_w400_292D32,
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          height: 30.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 50.h,
-                                              width: 140.w,
-                                              child: CustomButton(
-                                                onTap: () async {
-                                                  final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                  chatBloc.editShowPersonChat(false);
-                                                  chatBloc.editChatId(widget.selectTask.chatId);
-                                                  chatBloc.messages = [];
-                                                  final idChat = await Navigator.of(context).pushNamed(
-                                                    AppRoute.personalChat,
-                                                    arguments: [
-                                                      '${widget.selectTask.answers[index].chatId}',
-                                                      '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                      '${widget.selectTask.answers[index].owner?.id}',
-                                                      '${widget.selectTask.answers[index].owner?.photo}',
-                                                    ],
-                                                  );
-                                                  chatBloc.editShowPersonChat(true);
-                                                  chatBloc.editChatId(null);
-                                                },
-                                                btnColor: ColorStyles.greyDADADA,
-                                                textLabel: Text(
-                                                  'Написать в чат',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12.sp,
-                                                      fontWeight: FontWeight.w500),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10.w,
-                                            ),
-                                            SizedBox(
-                                              height: 50.h,
-                                              width: 140.w,
-                                              child: CustomButton(
-                                                onTap: () {
-                                                  log(widget.selectTask.answers[index].id!.toString());
-                                                  widget.selectTask.status = 'Completed';
-                                                  Repository().editTask(
-                                                      BlocProvider.of<ProfileBloc>(context).access, widget.selectTask);
-                                                  getTaskList();
-                                                },
-                                                btnColor: ColorStyles.yellowFFD70A,
-                                                textLabel: Text(
-                                                  'Выполнено',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12.sp,
-                                                      fontWeight: FontWeight.w700),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            Container();
                           }
-                        } else {
-                          Container();
                         }
-                      }
-                      return null;
-                    },
-                  ),
+                        return null;
+                      },
+                    );
+                  }),
                 ),
             ],
           ),

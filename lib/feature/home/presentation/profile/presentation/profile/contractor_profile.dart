@@ -512,7 +512,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 4.0.h),
                                       child: SizedBox(
                                         child: Text(
-                                          '34',
+                                          reviews?.reviewsDetail == null
+                                              ? ''
+                                              : reviews!.reviewsDetail.length.toString(),
                                           style: CustomTextStyle.blue_16_w600_171716,
                                           textAlign: TextAlign.left,
                                         ),
@@ -534,7 +536,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
-                                ' 40',
+                                user?.countOrdersCreateAsCustomer == null
+                                    ? '0'
+                                    : user!.countOrdersCreateAsCustomer.toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],
@@ -549,7 +553,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
-                                ' 40',
+                                user?.countOrderComplete == null ? '0' : user!.countOrderComplete.toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],

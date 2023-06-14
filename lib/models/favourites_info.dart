@@ -208,17 +208,20 @@ class OwnerOrder {
   String? lastname;
   String? photo;
   int? countOrdersComplete;
+  double? ranking;
 
   OwnerOrder({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
+    this.ranking,
     this.countOrdersComplete,
   });
 
   factory OwnerOrder.fromJson(Map<String, dynamic> json) {
     return OwnerOrder(
+      ranking: json['ranking'],
       id: json['id'],
       firstname: json['firstname'],
       lastname: json['lastname'],

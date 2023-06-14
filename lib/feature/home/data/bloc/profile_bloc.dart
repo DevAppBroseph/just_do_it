@@ -13,6 +13,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitState()) {
     on<GetProfileEvent>(_getProfile);
     on<UpdateProfileEvent>(_updateProfile);
+    on<UpdateProfileTaskEvent>(_updateProfileTask);
     on<UpdateProfileWithoutUserEvent>(_updateProfileWithoutUser);
     on<UpdateProfilePhotoEvent>(_updateProfilePhoto);
     on<UpdateProfileCvEvent>(_updateProfileCv);
@@ -37,6 +38,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) {
     emit(EditPageState(event.page, event.text));
+  }
+
+  void _updateProfileTask(
+    UpdateProfileTaskEvent event,
+    Emitter<ProfileState> emit,
+  ) {
+    emit(UpdateProfileTaskState());
   }
 
   void _updateProfile(
@@ -72,8 +80,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  void _getCategories(
-      GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
+  void _getCategories(GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
     List<Activities>? res = await Repository().getCategories();
     activities = res;
     emit(GetCategoriesProfileState(activities: res));
@@ -87,8 +94,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
-      UserRegModel? res =
-          await Repository().updateUserPhoto(access!, event.photo);
+      UserRegModel? res = await Repository().updateUserPhoto(access!, event.photo);
       if (res != null) {
         user?.copyWith(photoLink: res.photoLink);
         emit(UpdateProfileSuccessState());
