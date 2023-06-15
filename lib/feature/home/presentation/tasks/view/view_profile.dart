@@ -816,6 +816,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               SizedBox(height: 12.h),
               SizedBox(
+                width: 200.w,
                 child: Text(
                   review.message,
                   style: CustomTextStyle.black_12_w400_515150,

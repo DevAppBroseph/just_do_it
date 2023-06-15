@@ -214,7 +214,7 @@ class Repository {
     return false;
   }
 
-  Future<Answers?> createAnswer(int id, String? access, int price, String description) async {
+  Future<Answers?> createAnswer(int id, String? access, int price, String description, String status) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),

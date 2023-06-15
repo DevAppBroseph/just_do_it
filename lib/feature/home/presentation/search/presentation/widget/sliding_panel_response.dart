@@ -142,8 +142,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         final access = await Storage().getAccessToken();
                         if (widget.selectTask != null) {
                           widget.panelController.animatePanelToPosition(0);
-                          Repository().createAnswer(widget.selectTask!.id!, access,
-                              int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text);
+                          if (!widget.selectTask!.asCustomer!) {
+                            Repository().createAnswer(widget.selectTask!.id!, access,
+                                int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text, 'Progress');
+                          } else {
+                            Repository().createAnswer(widget.selectTask!.id!, access,
+                                int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text, 'Selected');
+                          }
+
                           coastController.clear();
                           descriptionTextController.clear();
                           context.read<TasksBloc>().add(UpdateTaskEvent());

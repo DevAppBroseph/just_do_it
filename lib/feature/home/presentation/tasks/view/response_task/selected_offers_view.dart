@@ -141,7 +141,7 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
             this.owner = owner;
             setState(() {});
           },
-          canEdit: false,
+          canEdit: true,
           canSelect: true,
         ),
       );
