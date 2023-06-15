@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +48,9 @@ class _CustomerState extends State<Customer> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     user = BlocProvider.of<ProfileBloc>(context).user;
+
     getListTask();
   }
 
@@ -65,13 +69,15 @@ class _CustomerState extends State<Customer> {
       child: Stack(
         children: [
           BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-            if (current is UpdateProfileEvent) {
+            if (current is UpdateProfileSuccessState) {
+              user = BlocProvider.of<ProfileBloc>(context).user;
+              log('UpdateProfileSuccessState');
               return true;
             }
             if (previous != current) {
               return true;
             }
-            return false;
+            return true;
           }, builder: (context, data) {
             return ListView(
               physics: const BouncingScrollPhysics(),
@@ -312,7 +318,7 @@ class _CustomerState extends State<Customer> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                               await Navigator.of(context).push(
+                            await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return const OpenOffers(
                                   title: 'Открытые',
@@ -370,8 +376,8 @@ class _CustomerState extends State<Customer> {
                           ),
                         ),
                         GestureDetector(
-                           onTap: () async {
-                               await Navigator.of(context).push(
+                          onTap: () async {
+                            await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return const SelectedOffersView(
                                   title: 'Принятые',
@@ -415,9 +421,9 @@ class _CustomerState extends State<Customer> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                             user?.selectedOffers != null
-                                                  ? user!.selectedOffers!.length.toString()
-                                                  : '0',
+                                            user?.selectedOffers != null
+                                                ? user!.selectedOffers!.length.toString()
+                                                : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),
@@ -432,7 +438,7 @@ class _CustomerState extends State<Customer> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                               await Navigator.of(context).push(
+                            await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return const FinishedOffers(
                                   title: 'Закрытые',
@@ -477,8 +483,8 @@ class _CustomerState extends State<Customer> {
                                           width: 35.w,
                                           child: Text(
                                             user?.finishedOffers != null
-                                                  ? user!.finishedOffers!.length.toString()
-                                                  : '0',
+                                                ? user!.finishedOffers!.length.toString()
+                                                : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),

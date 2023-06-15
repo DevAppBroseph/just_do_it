@@ -142,7 +142,7 @@ class _ResponseTasksCompleteViewAsCustomerState extends State<ResponseTasksCompl
             this.owner = owner;
             setState(() {});
           },
-          canEdit: false,
+          canEdit: true,
           canSelect: true,
         ),
       );

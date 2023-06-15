@@ -135,34 +135,43 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: CustomButton(
-                      onTap: () async {
-                        final access = await Storage().getAccessToken();
-                        if (widget.selectTask != null) {
-                          widget.panelController.animatePanelToPosition(0);
-                          if (!widget.selectTask!.asCustomer!) {
-                            Repository().createAnswer(widget.selectTask!.id!, access,
-                                int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text, 'Progress');
-                          } else {
-                            Repository().createAnswer(widget.selectTask!.id!, access,
-                                int.parse(coastController.text.replaceAll(' ', '')), descriptionTextController.text, 'Selected');
+                  if (widget.selectTask?.asCustomer != null)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: CustomButton(
+                        onTap: () async {
+                          final access = await Storage().getAccessToken();
+                          if (widget.selectTask != null) {
+                            widget.panelController.animatePanelToPosition(0);
+                            if (widget.selectTask!.asCustomer!) {
+                              Repository().createAnswer(
+                                  widget.selectTask!.id!,
+                                  access,
+                                  int.parse(coastController.text.replaceAll(' ', '')),
+                                  descriptionTextController.text,
+                                  'Progress');
+                            } else {
+                              Repository().createAnswer(
+                                  widget.selectTask!.id!,
+                                  access,
+                                  int.parse(coastController.text.replaceAll(' ', '')),
+                                  descriptionTextController.text,
+                                  'Selected');
+                            }
+                            coastController.clear();
+                            descriptionTextController.clear();
+                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            setState(() {});
                           }
-
-                          coastController.clear();
-                          descriptionTextController.clear();
-                          context.read<TasksBloc>().add(UpdateTaskEvent());
-                          setState(() {});
-                        }
-                      },
-                      btnColor: ColorStyles.yellowFFD70A,
-                      textLabel: Text(
-                        'Откликнуться',
-                        style: CustomTextStyle.black_16_w600_171716,
+                        },
+                        btnColor: ColorStyles.yellowFFD70A,
+                        textLabel: Text(
+                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
+                          style: CustomTextStyle.black_16_w600_171716,
+                        ),
                       ),
                     ),
-                  ),
                   SizedBox(height: 10.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -249,10 +258,31 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Бюджет от ',
-                        style: CustomTextStyle.grey_14_w400,
-                      ),
+                      if (widget.selectTask?.currency?.name == null)
+                        Text(
+                          'Бюджет от ',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Российский рубль')
+                        Text(
+                          'Бюджет от ₽',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Доллар США')
+                        Text(
+                          'Бюджет от \$',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Евро')
+                        Text(
+                          'Бюджет от €',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Дирхам')
+                        Text(
+                          'Бюджет от AED',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
                       SizedBox(height: 3.h),
                       Row(
                         children: [

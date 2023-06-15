@@ -142,7 +142,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
-      if (current is UpdateProfileSuccessState) {
+      if (current is UpdateProfileTaskState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
         if (user!.images != null) {
           photos.clear();

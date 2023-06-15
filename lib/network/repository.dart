@@ -222,6 +222,7 @@ class Repository {
         "order": id,
         "price": price,
         "description": description,
+        "status": status,
       },
     );
     log(id.toString());
@@ -361,7 +362,7 @@ class Repository {
       data: data,
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-
+    log(response.statusMessage.toString());
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {

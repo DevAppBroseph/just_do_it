@@ -15,7 +15,6 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart'
     as repf;
@@ -67,9 +66,10 @@ class _TaskViewState extends State<TaskView> {
 
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    widget.selectTask = (await Repository().getTaskById(widget.selectTask.id!, access))!;
-
-    setState(() {});
+    if (await Repository().getTaskById(widget.selectTask.id!, access) != null) {
+      widget.selectTask = (await Repository().getTaskById(widget.selectTask.id!, access))!;
+     
+    }
   }
 
   void getTaskList() {
@@ -90,6 +90,16 @@ class _TaskViewState extends State<TaskView> {
   bool proverka = false;
   List<FavouriteOffers>? favouritesOrders;
   FavouriteOffers? selectFavouriteTask;
+
+  getPersonAndTask(bool res, UserRegModel? user) {
+    context.read<TasksBloc>().add(UpdateTaskEvent());
+
+    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
+    if (res) Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     log(' (${widget.canSelect} ffh ${widget.selectTask.owner?.id} && ${widget.selectTask.isAnswered == null})');
@@ -234,9 +244,7 @@ class _TaskViewState extends State<TaskView> {
                                     onPressed: () async {
                                       final access = await Storage().getAccessToken();
                                       final res = await Repository().deleteTask(widget.selectTask, access!);
-                                      context.read<TasksBloc>().add(UpdateTaskEvent());
-                                      if (res) Navigator.pop(context);
-                                      Navigator.pop(context);
+                                      getPersonAndTask(res, user);
                                     },
                                   )
                                 ],
@@ -1130,7 +1138,7 @@ class _TaskViewState extends State<TaskView> {
                                                       'Selected');
                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
                                                   user = BlocProvider.of<ProfileBloc>(context).user;
-                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                   BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                                 },
                                                 btnColor: ColorStyles.yellowFFD70A,
                                                 textLabel: Text(
@@ -2075,7 +2083,7 @@ class _TaskViewState extends State<TaskView> {
                                                       child: Row(
                                                         children: [
                                                           SizedBox(
-                                                            width: 150.w,
+                                                            width: 110.w,
                                                             child: Text(
                                                               '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                               style: CustomTextStyle.black_15_w600_171716,
@@ -2200,8 +2208,7 @@ class _TaskViewState extends State<TaskView> {
                                                         widget.selectTask);
                                                     getTaskList();
                                                     context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
-                                                    user = BlocProvider.of<ProfileBloc>(context).user;
+                                                    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                                   },
                                                   btnColor: ColorStyles.yellowFFD70A,
                                                   textLabel: Text(

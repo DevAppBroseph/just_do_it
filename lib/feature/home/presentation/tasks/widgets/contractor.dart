@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -42,7 +44,7 @@ class _ContractorState extends State<Contractor> {
   @override
   void initState() {
     super.initState();
-    user = BlocProvider.of<ProfileBloc>(context).user;
+    BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     getListTask();
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
@@ -71,12 +73,15 @@ class _ContractorState extends State<Contractor> {
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Stack(
         children: [
           BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-            if (current is UpdateProfileTaskState) {
+            if (current is UpdateProfileSuccessState) {
+              user = BlocProvider.of<ProfileBloc>(context).user;
+              log('UpdateProfileSuccessState');
               return true;
             }
             if (previous != current) {
@@ -359,18 +364,18 @@ class _ContractorState extends State<Contractor> {
                                           ),
                                         ],
                                       ),
-                                        if (user?.selectedOffersAsCustomer != null)
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user!.selectedOffersAsCustomer!.length.toString(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
+                                      if (user?.selectedOffersAsCustomer != null)
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user!.selectedOffersAsCustomer!.length.toString(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
                                           ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -379,7 +384,7 @@ class _ContractorState extends State<Contractor> {
                           ),
                         ),
                         GestureDetector(
-                            onTap: () async {
+                          onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return const FinishedOffersViewAsCustomer(
@@ -424,9 +429,9 @@ class _ContractorState extends State<Contractor> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                          user?.finishedOffersAsCustomer != null
-                                                  ? user!.finishedOffersAsCustomer!.length.toString()
-                                                  : '0',
+                                            user?.finishedOffersAsCustomer != null
+                                                ? user!.finishedOffersAsCustomer!.length.toString()
+                                                : '0',
                                             style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),
