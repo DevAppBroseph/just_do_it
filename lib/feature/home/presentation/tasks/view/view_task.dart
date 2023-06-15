@@ -234,7 +234,10 @@ class _TaskViewState extends State<TaskView> {
                                       final access = await Storage().getAccessToken();
                                       final res = await Repository().deleteTask(widget.selectTask, access!);
                                       context.read<TasksBloc>().add(UpdateTaskEvent());
-                                      context.read<ProfileBloc>().add(UpdateProfileTaskEvent());
+
+                                      final user = BlocProvider.of<ProfileBloc>(context).user;
+
+                                      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                       if (res) Navigator.pop(context);
                                       Navigator.pop(context);
                                     },
@@ -642,7 +645,8 @@ class _TaskViewState extends State<TaskView> {
                   user?.id != widget.selectTask.owner?.id &&
                   widget.selectTask.isAnswered != null &&
                   widget.selectTask.isAnswered?.status == 'Selected' &&
-                  widget.selectTask.asCustomer!)
+                  widget.selectTask.asCustomer! &&
+                  widget.selectTask.status != 'Completed')
                 CustomButton(
                   onTap: () async {},
                   btnColor: ColorStyles.yellowFFD70A,
@@ -651,6 +655,7 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
+
               if (widget.canSelect && user?.id != widget.selectTask.owner?.id && widget.selectTask.isAnswered == null)
                 CustomButton(
                   onTap: () async {
@@ -686,6 +691,237 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
+              //отзыв за исполнителя
+              if (widget.canSelect &&
+                  user?.id != widget.selectTask.owner?.id &&
+                  widget.selectTask.isAnswered != null &&
+                  widget.selectTask.status == 'Completed' &&
+                  widget.selectTask.asCustomer!)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 90.h,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 15.h),
+                        child: ScaleButton(
+                          bound: 0.02,
+                          onTap: () async {
+                            final owner = await Repository()
+                                .getRanking(widget.selectTask.owner?.id, BlocProvider.of<ProfileBloc>(context).access);
+                            widget.openOwner(owner);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: ColorStyles.whiteFFFFFF,
+                              borderRadius: BorderRadius.circular(20.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorStyles.shadowFC6554,
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 45.r,
+                                )
+                              ],
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    if (widget.selectTask.isAnswered?.owner?.photo != null)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(1000.r),
+                                        child: Image.network(
+                                          widget.selectTask.isAnswered!.owner!.photo!,
+                                          height: 48.h,
+                                          width: 48.w,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    SizedBox(width: 15.w),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 300.w,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 190.w,
+                                                  child: Text(
+                                                    '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
+                                                    style: CustomTextStyle.black_15_w600_171716,
+                                                    softWrap: true,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 6.h),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset('assets/icons/star.svg'),
+                                              SizedBox(width: 4.w),
+                                              Text(
+                                                widget.selectTask.isAnswered?.owner?.ranking == null
+                                                    ? '0'
+                                                    : widget.selectTask.isAnswered!.owner!.ranking.toString(),
+                                                style: CustomTextStyle.black_13_w500_171716,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30.h),
+                    Text(
+                      'Оставьте отзыв',
+                      style: CustomTextStyle.black_17_w800,
+                    ),
+                    SizedBox(height: 15.h),
+                    Text(
+                      'За оставленные отзывы и рейтинг начисляются баллы на Ваш аккаунт!',
+                      style: CustomTextStyle.black_14_w500_171716,
+                    ),
+                    SizedBox(height: 30.h),
+                    ScaleButton(
+                      onTap: () {},
+                      bound: 0.02,
+                      child: Container(
+                        height: 150.h,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.greyF9F9F9,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Произвольный текст',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
+                            SizedBox(height: 3.h),
+                            Row(
+                              children: [
+                                CustomTextField(
+                                  height: 90.h,
+                                  width: 285.w,
+                                  autocorrect: true,
+                                  maxLines: 8,
+                                  onTap: () {
+                                    setState(() {});
+                                  },
+                                  style: CustomTextStyle.black_14_w400_171716,
+                                  textEditingController: descriptionTextController,
+                                  fillColor: ColorStyles.greyF9F9F9,
+                                  onChanged: (value) {},
+                                  formatters: [
+                                    UpperEveryTextInputFormatter(),
+                                  ],
+                                  hintText: '',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30.h),
+                    Row(
+                      children: [
+                        Text(
+                          'Оцените заказчика',
+                          style: CustomTextStyle.black_17_w800,
+                        ),
+                        SizedBox(width: 15.h),
+                        SvgPicture.asset(
+                          SvgImg.help,
+                          color: Colors.black,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15.h),
+                    RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: ColorStyles.yellowFFCA0D,
+                      ),
+                      onRatingUpdate: (rating) {
+                        reviewRating = rating;
+                      },
+                    ),
+                    SizedBox(height: 30.h),
+                    CustomButton(
+                      onTap: () {
+                        int rating = 0;
+                        if (reviewRating == 0.0) {
+                          rating = 0;
+                        }
+                        if (reviewRating == 0.5) {
+                          rating = 1;
+                        }
+                        if (reviewRating == 1.0) {
+                          rating = 2;
+                        }
+                        if (reviewRating == 1.5) {
+                          rating = 3;
+                        }
+                        if (reviewRating == 2.0) {
+                          rating = 4;
+                        }
+                        if (reviewRating == 2.5) {
+                          rating = 5;
+                        }
+                        if (reviewRating == 3.0) {
+                          rating = 6;
+                        }
+                        if (reviewRating == 3.5) {
+                          rating = 7;
+                        }
+                        if (reviewRating == 4.0) {
+                          rating = 8;
+                        }
+                        if (reviewRating == 4.5) {
+                          rating = 9;
+                        }
+                        if (reviewRating == 5.0) {
+                          rating = 10;
+                        }
+                        Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                            widget.selectTask.owner?.id, descriptionTextController.text, rating);
+                      },
+                      btnColor: ColorStyles.yellowFFD70A,
+                      textLabel: Text(
+                        'Отправить отзыв',
+                        style: CustomTextStyle.black_16_w600_171716,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    )
+                  ],
+                ),
+
               if (widget.selectTask.answers.isNotEmpty &&
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
@@ -914,6 +1150,7 @@ class _TaskViewState extends State<TaskView> {
                         } else {
                           if (widget.selectTask.answers[index].status == 'Selected') {
                             if (widget.selectTask.status == 'Completed') {
+                              //отзыв за заказчика
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

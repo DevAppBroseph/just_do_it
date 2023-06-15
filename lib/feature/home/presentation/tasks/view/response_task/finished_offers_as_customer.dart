@@ -101,7 +101,6 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.finishedOffersAsCustomer != []) {
-                                  
                                   return itemTask(
                                     user!.finishedOffersAsCustomer![index],
                                     (task) {

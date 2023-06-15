@@ -65,7 +65,7 @@ class _CustomerState extends State<Customer> {
       child: Stack(
         children: [
           BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-            if (current is UpdateProfileTaskState) {
+            if (current is UpdateProfileEvent) {
               return true;
             }
             if (previous != current) {
