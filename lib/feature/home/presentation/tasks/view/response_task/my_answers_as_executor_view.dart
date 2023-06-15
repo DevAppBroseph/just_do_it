@@ -96,13 +96,15 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: user?.selectedOffersAsCustomer?.length,
+                              
+                              itemCount: user?.myAnswersAsExecutor?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                if (user?.selectedOffersAsCustomer != []) {
+                               
+                                if (user?.myAnswersAsExecutor != []) {
                                   return itemTask(
-                                    user!.selectedOffersAsCustomer![index],
+                                    user!.myAnswersAsExecutor![index],
                                     (task) {
                                       setState(() {
                                         selectTask = task;

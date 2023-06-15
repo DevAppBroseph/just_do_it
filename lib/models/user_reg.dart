@@ -152,7 +152,6 @@ class UserRegModel {
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
     this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
-
     this.selectedOffersAsCustomer = selectedOffersAsCustomer ?? this.selectedOffersAsCustomer;
     this.finishedOffersAsCustomer = finishedOffersAsCustomer ?? this.finishedOffersAsCustomer;
     this.countOrdersCreateAsCustomer = countOrdersCreateAsCustomer ?? this.countOrdersCreateAsCustomer;
@@ -249,8 +248,8 @@ class UserRegModel {
       }
     }
     List<Task> listSelectedOffersAsCustomer = [];
-    if (data['orders_in_progress_as_customer'] != null) {
-      for (var element in data['orders_in_progress_as_customer']) {
+    if (data['selected_offers_as_customer'] != null) {
+      for (var element in data['selected_offers_as_customer']) {
         listSelectedOffersAsCustomer.add(Task.fromJson(element));
       }
     }

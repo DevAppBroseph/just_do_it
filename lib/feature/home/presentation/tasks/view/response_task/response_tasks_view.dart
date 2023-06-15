@@ -96,14 +96,14 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
                             child: ListView.builder(
-                              itemCount: user?.ordersInProgressAsCustomer?.length,
+                              itemCount: user?.selectedOffersAsCustomer?.length,
                               padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                if (user?.ordersInProgressAsCustomer != []) {
+                                if (user?.selectedOffersAsCustomer != []) {
                                   
                                   return itemTask(
-                                    user!.ordersInProgressAsCustomer![index],
+                                    user!.selectedOffersAsCustomer![index],
                                     (task) {
                                       setState(() {
                                         selectTask = task;
