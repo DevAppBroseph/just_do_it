@@ -76,7 +76,7 @@ class _ContractorState extends State<Contractor> {
       child: Stack(
         children: [
           BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-            if (current is UpdateProfileEvent) {
+            if (current is UpdateProfileTaskState) {
               return true;
             }
             if (previous != current) {

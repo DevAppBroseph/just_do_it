@@ -249,7 +249,23 @@ class Repository {
     }
     return false;
   }
-
+ Future<bool> editTaskPatch(String? access, Task task) async {
+    final response = await dio.patch(
+      '$server/orders/${task.id}',
+      data: {
+        'status': task.status,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
   Future<Uint8List?> downloadFile(String url) async {
     try {
       final response = await dio.get(
