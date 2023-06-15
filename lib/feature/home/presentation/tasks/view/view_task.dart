@@ -68,7 +68,6 @@ class _TaskViewState extends State<TaskView> {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     if (await Repository().getTaskById(widget.selectTask.id!, access) != null) {
       widget.selectTask = (await Repository().getTaskById(widget.selectTask.id!, access))!;
-     
     }
   }
 
@@ -938,23 +937,23 @@ class _TaskViewState extends State<TaskView> {
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
                       user?.id == widget.selectTask.owner?.id))
-                SizedBox(
-                  height: widget.selectTask.status == 'Completed'
-                      ? 600.h
-                      : widget.selectTask.answers.every((element) => element.status != 'Selected')
-                          ? 300.h * widget.selectTask.answers.length
-                          : 300.h,
-                  child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
-                    if (current is UpdateTask) {
-                      getTask();
-                      return true;
-                    }
-                    if (previous != current) {
-                      return true;
-                    }
-                    return false;
-                  }, builder: (context, state) {
-                    return ListView.builder(
+                BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+                  if (current is UpdateTask) {
+                    getTask();
+                    return true;
+                  }
+                  if (previous != current) {
+                    return true;
+                  }
+                  return false;
+                }, builder: (context, state) {
+                  return SizedBox(
+                    height: widget.selectTask.status == 'Completed'
+                        ? 600.h
+                        : widget.selectTask.answers.every((element) => element.status != 'Selected')
+                            ? 300.h * widget.selectTask.answers.length
+                            : 300.h,
+                    child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: widget.selectTask.answers.length,
@@ -1138,7 +1137,7 @@ class _TaskViewState extends State<TaskView> {
                                                       'Selected');
                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
                                                   user = BlocProvider.of<ProfileBloc>(context).user;
-                                                   BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                                 },
                                                 btnColor: ColorStyles.yellowFFD70A,
                                                 textLabel: Text(
@@ -1425,7 +1424,8 @@ class _TaskViewState extends State<TaskView> {
                                                                   widget.selectTask.answers[index].owner?.ranking ==
                                                                           null
                                                                       ? '0'
-                                                                      : widget.selectTask.answers[index].owner!.ranking
+                                                                      : widget
+                                                                          .selectTask.answers[index].owner!.ranking
                                                                           .toString(),
                                                                   style: CustomTextStyle.black_13_w500_171716,
                                                                 ),
@@ -1877,7 +1877,8 @@ class _TaskViewState extends State<TaskView> {
                                                               SvgPicture.asset('assets/icons/star.svg'),
                                                               SizedBox(width: 4.w),
                                                               Text(
-                                                                widget.selectTask.answers[index].owner?.ranking == null
+                                                                widget.selectTask.answers[index].owner?.ranking ==
+                                                                        null
                                                                     ? '0'
                                                                     : widget.selectTask.answers[index].owner!.ranking
                                                                         .toString(),
@@ -2103,7 +2104,8 @@ class _TaskViewState extends State<TaskView> {
                                                               'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
                                                               style: CustomTextStyle.black_15_w600_171716,
                                                             ),
-                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                          if (widget.selectTask.currency?.name ==
+                                                                  'Российский рубль' &&
                                                               widget.selectTask.answers[index].price != null)
                                                             Text(
                                                               'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
@@ -2208,7 +2210,8 @@ class _TaskViewState extends State<TaskView> {
                                                         widget.selectTask);
                                                     getTaskList();
                                                     context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                    BlocProvider.of<ProfileBloc>(context)
+                                                        .add(UpdateProfileEvent(user));
                                                   },
                                                   btnColor: ColorStyles.yellowFFD70A,
                                                   textLabel: Text(
@@ -2235,9 +2238,9 @@ class _TaskViewState extends State<TaskView> {
                         }
                         return null;
                       },
-                    );
-                  }),
-                ),
+                    ),
+                  );
+                }),
             ],
           ),
         ),
