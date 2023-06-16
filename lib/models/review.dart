@@ -29,18 +29,24 @@ class ReviewerDetails {
     required this.firstname,
     required this.lastname,
     required this.photo,
+    required this.ranking,
+    required this.countOrdersComplete,
   });
 
   int id;
   String firstname;
   String lastname;
   String? photo;
+  double? ranking;
+  int? countOrdersComplete;
 
   factory ReviewerDetails.fromJson(Map<String, dynamic> json) => ReviewerDetails(
         id: json["id"],
         firstname: json["firstname"],
         lastname: json["lastname"],
         photo: json["photo"],
+        ranking: json["ranking"],
+        countOrdersComplete: json["count_orders_complete"],
       );
 
   Map<String, dynamic> toJson() => {

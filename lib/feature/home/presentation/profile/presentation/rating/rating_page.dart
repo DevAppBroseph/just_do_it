@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +25,6 @@ class _RatingPageState extends State<RatingPage> {
   bool state = false;
   PageController pageController = PageController();
   int stageRegistration = 1;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +200,7 @@ class _RatingPageState extends State<RatingPage> {
   }
 
   Widget itemComment(ReviewsDetail review) {
+    log('${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}');
     double width = MediaQuery.of(context).size.width - (24 * 2);
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
@@ -235,9 +236,21 @@ class _RatingPageState extends State<RatingPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                    style: CustomTextStyle.black_14_w500_171716,
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 150.w,
+                        child: Text(
+                          '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
+                          style: CustomTextStyle.black_14_w500_171716,
+                        ),
+                      ),
+                  
+                      Text(
+                        _textData(review.date),
+                        style: CustomTextStyle.grey_12_w400,
+                      ),
+                    ],
                   ),
                   SizedBox(height: 12.h),
                   Row(
@@ -277,7 +290,9 @@ class _RatingPageState extends State<RatingPage> {
                             child: Row(
                               children: [
                                 SvgPicture.asset('assets/icons/translate.svg'),
-                                SizedBox(width: 9.w,),
+                                SizedBox(
+                                  width: 9.w,
+                                ),
                                 SizedBox(
                                   height: 25.h,
                                   child: Text(
@@ -293,22 +308,6 @@ class _RatingPageState extends State<RatingPage> {
                     ),
                   )
                 ],
-              ),
-              SizedBox(
-                width: width - (66 + 55),
-                child: Row(
-                  children: [
-                    Text(
-                      '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                      style: CustomTextStyle.black_14_w500_171716,
-                    ),
-                    const Spacer(),
-                    Text(
-                      '01.04.2023',
-                      style: CustomTextStyle.grey_12_w400,
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
@@ -421,4 +420,18 @@ class _RatingPageState extends State<RatingPage> {
       ),
     );
   }
+    String _textData(String data) {
+    String text = '';
+    String day = '';
+    String month = '';
+    String year = '';
+    List<String> parts = [];
+    parts = data.split('-');
+    year = parts[0].trim();
+    day = parts[2].trim();
+    month = parts[1].trim();
+    text = '$day.$month.$year';
+    return text;
+  }
+
 }

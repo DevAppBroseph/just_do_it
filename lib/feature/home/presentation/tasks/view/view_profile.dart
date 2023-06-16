@@ -790,9 +790,12 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                      style: CustomTextStyle.black_14_w500_171716,
+                    SizedBox(
+                      width: 150.w,
+                      child: Text(
+                        '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
+                        style: CustomTextStyle.black_14_w500_171716,
+                      ),
                     ),
                     if (review.date != '')
                       Text(
