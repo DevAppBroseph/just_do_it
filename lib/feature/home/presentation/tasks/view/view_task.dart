@@ -82,6 +82,9 @@ class _TaskViewState extends State<TaskView> {
   }
 
   TextEditingController descriptionTextController = TextEditingController();
+  TextEditingController descriptionTextController1 = TextEditingController();
+  TextEditingController descriptionTextController2 = TextEditingController();
+  TextEditingController descriptionTextController3 = TextEditingController();
   bool? isLiked;
   String? idWithChat;
   GlobalKey globalKey = GlobalKey();
@@ -910,6 +913,7 @@ class _TaskViewState extends State<TaskView> {
                         if (reviewRating == 5.0) {
                           rating = 10;
                         }
+
                         Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
                             widget.selectTask.owner?.id, descriptionTextController.text, rating);
                       },
@@ -1138,6 +1142,9 @@ class _TaskViewState extends State<TaskView> {
                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
                                                   user = BlocProvider.of<ProfileBloc>(context).user;
                                                   BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                  if (widget.canEdit) {
+                                                    Navigator.pop(context);
+                                                  }
                                                 },
                                                 btnColor: ColorStyles.yellowFFD70A,
                                                 textLabel: Text(
@@ -1424,8 +1431,7 @@ class _TaskViewState extends State<TaskView> {
                                                                   widget.selectTask.answers[index].owner?.ranking ==
                                                                           null
                                                                       ? '0'
-                                                                      : widget
-                                                                          .selectTask.answers[index].owner!.ranking
+                                                                      : widget.selectTask.answers[index].owner!.ranking
                                                                           .toString(),
                                                                   style: CustomTextStyle.black_13_w500_171716,
                                                                 ),
@@ -1483,7 +1489,7 @@ class _TaskViewState extends State<TaskView> {
                                                       setState(() {});
                                                     },
                                                     style: CustomTextStyle.black_14_w400_171716,
-                                                    textEditingController: descriptionTextController,
+                                                    textEditingController: descriptionTextController1,
                                                     fillColor: ColorStyles.greyF9F9F9,
                                                     onChanged: (value) {},
                                                     formatters: [
@@ -1709,7 +1715,7 @@ class _TaskViewState extends State<TaskView> {
                                                       setState(() {});
                                                     },
                                                     style: CustomTextStyle.black_14_w400_171716,
-                                                    textEditingController: descriptionTextController,
+                                                    textEditingController: descriptionTextController2,
                                                     fillColor: ColorStyles.greyF9F9F9,
                                                     onChanged: (value) {},
                                                     formatters: [
@@ -1877,8 +1883,7 @@ class _TaskViewState extends State<TaskView> {
                                                               SvgPicture.asset('assets/icons/star.svg'),
                                                               SizedBox(width: 4.w),
                                                               Text(
-                                                                widget.selectTask.answers[index].owner?.ranking ==
-                                                                        null
+                                                                widget.selectTask.answers[index].owner?.ranking == null
                                                                     ? '0'
                                                                     : widget.selectTask.answers[index].owner!.ranking
                                                                         .toString(),
@@ -1938,7 +1943,7 @@ class _TaskViewState extends State<TaskView> {
                                                     setState(() {});
                                                   },
                                                   style: CustomTextStyle.black_14_w400_171716,
-                                                  textEditingController: descriptionTextController,
+                                                  textEditingController: descriptionTextController3,
                                                   fillColor: ColorStyles.greyF9F9F9,
                                                   onChanged: (value) {},
                                                   formatters: [
@@ -2084,7 +2089,7 @@ class _TaskViewState extends State<TaskView> {
                                                       child: Row(
                                                         children: [
                                                           SizedBox(
-                                                            width: 110.w,
+                                                            width: 150.w,
                                                             child: Text(
                                                               '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                               style: CustomTextStyle.black_15_w600_171716,
@@ -2104,8 +2109,7 @@ class _TaskViewState extends State<TaskView> {
                                                               'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
                                                               style: CustomTextStyle.black_15_w600_171716,
                                                             ),
-                                                          if (widget.selectTask.currency?.name ==
-                                                                  'Российский рубль' &&
+                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
                                                               widget.selectTask.answers[index].price != null)
                                                             Text(
                                                               'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
@@ -2208,10 +2212,10 @@ class _TaskViewState extends State<TaskView> {
                                                     Repository().editTaskPatch(
                                                         BlocProvider.of<ProfileBloc>(context).access,
                                                         widget.selectTask);
-                                                    getTaskList();
+
                                                     context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                    BlocProvider.of<ProfileBloc>(context)
-                                                        .add(UpdateProfileEvent(user));
+                                                    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                    Navigator.pop(context);
                                                   },
                                                   btnColor: ColorStyles.yellowFFD70A,
                                                   textLabel: Text(
