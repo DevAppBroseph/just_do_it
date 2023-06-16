@@ -394,7 +394,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[3].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 25.h),
+                                          SizedBox(height: 30.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -431,7 +431,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[4].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 20.h),
+                                          SizedBox(height: 25.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
