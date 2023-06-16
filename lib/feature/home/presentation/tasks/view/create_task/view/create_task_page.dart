@@ -63,7 +63,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   List<Countries> countries = [];
   Currency? currency;
-
+  late UserRegModel? user;
   Activities? selectCategory;
   Subcategory? selectSubCategory;
 
@@ -165,6 +165,7 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
+     user = BlocProvider.of<ProfileBloc>(context).user;
     if ((widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 4) && proverka == true) {
       if (widget.customer == false) {
         type = 2;
@@ -477,7 +478,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coast: '',
                             currency: currency,
                           );
-
+                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);
                           bool res = await Repository().createTask(profileBloc.access!, newTask);
                           if (widget.currentPage == 6) {

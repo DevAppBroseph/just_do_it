@@ -135,6 +135,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                       ],
                     ),
                   ),
+                  if(widget.selectTask?.asCustomer != null)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
