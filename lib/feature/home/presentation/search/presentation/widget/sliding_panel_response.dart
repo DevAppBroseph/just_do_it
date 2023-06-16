@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,21 +78,23 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
-
+  double bottomInsets = MediaQuery.of(context).viewInsets.bottom; 
+  log(bottomInsets.toString());
     return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
-        heightPanel = current.height;
+        heightPanel = current.height ;
         widget.panelController.animatePanelToPosition(1);
         return true;
       } else {
-        heightPanel = 500.h;
+   
+        heightPanel = 500.h ;
       }
       return true;
     }, builder: (context, snapshot) {
       return SlidingUpPanel(
         controller: widget.panelController,
         renderPanelSheet: false,
-        panel: panel(context),
+        panel: panel(context, bottomInsets),
         onPanelSlide: (position) {
           if (position == 0) {
             BlocProvider.of<ResponseBloc>(context).add(HideSlidingPanelEvent());
@@ -108,7 +112,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
     });
   }
 
-  Widget panel(BuildContext context) {
+  Widget panel(BuildContext context, double bottomInsets) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -131,7 +135,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        mainFilter(heightKeyBoard),
+                        mainFilter(heightKeyBoard, bottomInsets),
+                         
                       ],
                     ),
                   ),
@@ -158,6 +163,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                   descriptionTextController.text,
                                   'Selected');
                             }
+
                             coastController.clear();
                             descriptionTextController.clear();
                             context.read<TasksBloc>().add(UpdateTaskEvent());
@@ -201,7 +207,32 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     ),
                   ),
                   SizedBox(height: 30.h),
+                  
                 ],
+              ),
+              if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
+              Positioned(
+                bottom: bottomInsets,
+                child: Container(
+                  height: 60.h,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[200],
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      CupertinoButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                             context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
+                        } ,
+                        child: Text(
+                          'Готово',
+                          style: CustomTextStyle.black_empty,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -210,11 +241,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
     );
   }
 
-  Widget mainFilter(double heightKeyBoard) {
+  Widget mainFilter(double heightKeyBoard, double bottomInsets) {
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       children: [
         SizedBox(height: 8.h),
         Stack(
@@ -236,7 +267,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
           child: ListView(
             shrinkWrap: true,
             controller: mainScrollController,
-            physics: const ClampingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
@@ -292,9 +323,12 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             textInputType: TextInputType.number,
                             actionButton: false,
                             onTap: () {
+                                context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                             
+                            },
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
@@ -340,6 +374,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             autocorrect: true,
                             maxLines: 8,
                             onTap: () {
+                              log(bottomInsets.toString());
+                                context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,
@@ -358,9 +394,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 ),
               ),
               SizedBox(height: 18.h),
+              SizedBox(height: bottomInsets)
             ],
           ),
         ),
+           
       ],
     );
   }

@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,8 +110,10 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
     });
   }
 
-  Widget panel(BuildContext context) {
+  Widget panel(BuildContext context,) {
+    double   bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -131,47 +135,49 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        mainFilter(heightKeyBoard),
+                        mainFilter(heightKeyBoard, bottomInsets),
+                         
                       ],
                     ),
                   ),
-                  if(widget.selectTask?.asCustomer != null)
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: CustomButton(
-                      onTap: () async {
-                        final access = await Storage().getAccessToken();
-                        if (widget.selectTask != null) {
-                          widget.panelController.animatePanelToPosition(0);
-                          if (widget.selectTask!.asCustomer!) {
-                            Repository().createAnswer(
-                                widget.selectTask!.id!,
-                                access,
-                                int.parse(coastController.text.replaceAll(' ', '')),
-                                descriptionTextController.text,
-                                'Progress');
-                          } else {
-                            Repository().createAnswer(
-                                widget.selectTask!.id!,
-                                access,
-                                int.parse(coastController.text.replaceAll(' ', '')),
-                                descriptionTextController.text,
-                                'Selected');
+                  if (widget.selectTask?.asCustomer != null)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: CustomButton(
+                        onTap: () async {
+                          final access = await Storage().getAccessToken();
+                          if (widget.selectTask != null) {
+                            widget.panelController.animatePanelToPosition(0);
+                            if (widget.selectTask!.asCustomer!) {
+                              Repository().createAnswer(
+                                  widget.selectTask!.id!,
+                                  access,
+                                  int.parse(coastController.text.replaceAll(' ', '')),
+                                  descriptionTextController.text,
+                                  'Progress');
+                            } else {
+                              Repository().createAnswer(
+                                  widget.selectTask!.id!,
+                                  access,
+                                  int.parse(coastController.text.replaceAll(' ', '')),
+                                  descriptionTextController.text,
+                                  'Selected');
+                            }
+
+                            coastController.clear();
+                            descriptionTextController.clear();
+                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            setState(() {});
                           }
-                          coastController.clear();
-                          descriptionTextController.clear();
-                          context.read<TasksBloc>().add(UpdateTaskEvent());
-                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          setState(() {});
-                        }
-                      },
-                      btnColor: ColorStyles.yellowFFD70A,
-                      textLabel: Text(
-                       widget.selectTask!.asCustomer! ?'Откликнуться' :'Принять оффер' ,
-                        style: CustomTextStyle.black_16_w600_171716,
+                        },
+                        btnColor: ColorStyles.yellowFFD70A,
+                        textLabel: Text(
+                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
+                          style: CustomTextStyle.black_16_w600_171716,
+                        ),
                       ),
                     ),
-                  ),
                   SizedBox(height: 10.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -201,7 +207,32 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                     ),
                   ),
                   SizedBox(height: 30.h),
+                  
                 ],
+              ),
+              if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
+              Positioned(
+                bottom: bottomInsets,
+                child: Container(
+                  height: 60.h,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[200],
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      CupertinoButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                             context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(500.h));
+                        } ,
+                        child: Text(
+                          'Готово',
+                          style: CustomTextStyle.black_empty,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -210,11 +241,11 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
     );
   }
 
-  Widget mainFilter(double heightKeyBoard) {
+  Widget mainFilter(double heightKeyBoard, double bottomInsets) {
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       children: [
         SizedBox(height: 8.h),
         Stack(
@@ -236,7 +267,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
           child: ListView(
             shrinkWrap: true,
             controller: mainScrollController,
-            physics: const ClampingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
@@ -258,31 +289,31 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        if (widget.selectTask?.currency?.name == null)
-                          Text(
-                            'Бюджет от ',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.selectTask?.currency?.name == 'Российский рубль')
-                          Text(
-                            'Бюджет от ₽',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.selectTask?.currency?.name == 'Доллар США')
-                          Text(
-                            'Бюджет от \$',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.selectTask?.currency?.name == 'Евро')
-                          Text(
-                            'Бюджет от €',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.selectTask?.currency?.name == 'Дирхам')
-                          Text(
-                            'Бюджет от AED',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
+                      if (widget.selectTask?.currency?.name == null)
+                        Text(
+                          'Бюджет от ',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Российский рубль')
+                        Text(
+                          'Бюджет от ₽',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Доллар США')
+                        Text(
+                          'Бюджет от \$',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Евро')
+                        Text(
+                          'Бюджет от €',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
+                      if (widget.selectTask?.currency?.name == 'Дирхам')
+                        Text(
+                          'Бюджет от AED',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
                       SizedBox(height: 3.h),
                       Row(
                         children: [
@@ -292,9 +323,12 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             textInputType: TextInputType.number,
                             actionButton: false,
                             onTap: () {
+                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                             
+                            },
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
@@ -340,6 +374,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             autocorrect: true,
                             maxLines: 8,
                             onTap: () {
+                                context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,
@@ -358,9 +393,11 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                 ),
               ),
               SizedBox(height: 18.h),
+         
             ],
           ),
         ),
+           
       ],
     );
   }
