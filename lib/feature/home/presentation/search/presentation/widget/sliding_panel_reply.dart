@@ -212,13 +212,37 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
-                        'Готово',
+                        'Готово', 
                         style: CustomTextStyle.black_16_w600_171716,
                       ),
                     ),
                   ),
                   SizedBox(height: 30.h),
                 ],
+              ),
+              if (heightKeyBoard > MediaQuery.of(context).size.height / 3)
+              Positioned(
+                bottom: heightKeyBoard,
+                child: Container(
+                  height: 60.h,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[200],
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      CupertinoButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                             context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(200.h));
+                        } ,
+                        child: Text(
+                          'Готово',
+                          style: CustomTextStyle.black_empty,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
