@@ -1,4 +1,4 @@
-import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/models/review.dart';
 
 class OrderTask {
   int? id;
@@ -56,13 +56,15 @@ class Owner {
   String? photo;
   String? cv;
   int? isLiked;
-  String? ranking;
+  double? ranking;
   bool? isPassportExist;
   int? countOrdersCreate;
   String? activity;
   List<String> listPhoto;
   int? balance;
   List<ownerActivities>? activities;
+  int? countOrdersComplete;
+  List<ReviewsDetail>? reviews;
 
   Owner({
     required this.id,
@@ -78,6 +80,8 @@ class Owner {
     this.activity,
     this.isLiked,
     this.listPhoto = const [],
+    this.countOrdersComplete,
+    this.reviews,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) {
@@ -93,6 +97,12 @@ class Owner {
         activities.add(ownerActivities.fromJson(element));
       }
     }
+    List<ReviewsDetail> reviews = [];
+    if (json['reviews'] != null) {
+      for (var element in json['reviews']) {
+        reviews.add(ReviewsDetail.fromJson(element));
+      }
+    }
     return Owner(
       id: json["id"],
       firstname: json["firstname"],
@@ -106,7 +116,9 @@ class Owner {
       isPassportExist: json["is_passport_exist"],
       countOrdersCreate: json["count_orders_create"],
       activity: json["activity"],
+      countOrdersComplete: json["count_orders_complete"],
       listPhoto: listPhoto,
+      reviews: reviews,
     );
   }
 

@@ -12,23 +12,23 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class SlidingPanelReply extends StatefulWidget {
+class SlidingPanelReplyFromFav extends StatefulWidget {
   final PanelController panelController;
 
-  const SlidingPanelReply(this.panelController, {super.key});
+  const SlidingPanelReplyFromFav(this.panelController, {super.key});
 
   @override
-  State<SlidingPanelReply> createState() => _SlidingPanelReplyState();
+  State<SlidingPanelReplyFromFav> createState() => _SlidingPanelReplyFromFavState();
 }
 
-class _SlidingPanelReplyState extends State<SlidingPanelReply> {
+class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   double heightPanel = 637.h;
   List<Countries> countries = [];
   bool slide = false;
@@ -101,7 +101,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
       additionalInfo = false;
     }
 
-    return BlocBuilder<ReplyBloc, ReplyState>(buildWhen: (previous, current) {
+    return BlocBuilder<ReplyFromFavBloc, ReplyState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -117,7 +117,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
-            BlocProvider.of<ReplyBloc>(context).add(HideSlidingPanelEvent());
+            BlocProvider.of<ReplyFromFavBloc>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
           }

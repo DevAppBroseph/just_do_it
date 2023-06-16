@@ -4,7 +4,6 @@ import 'package:just_do_it/models/user_reg.dart';
 
 class Favourites {
   List<FavoriteCustomers>? favoriteUsers;
-
   List<FavouriteOffers>? favouriteOffers;
   List<FavouriteOffers>? favouriteOrder;
 
@@ -12,7 +11,6 @@ class Favourites {
     this.favoriteUsers = const [],
     this.favouriteOffers = const [],
     this.favouriteOrder = const [],
-  
   });
 
   factory Favourites.fromJson(Map<String, dynamic> json) {
@@ -34,12 +32,11 @@ class Favourites {
         favouriteOrders.add(FavouriteOffers.fromJson(element));
       }
     }
-  
+
     return Favourites(
       favoriteUsers: favoriteUsers,
       favouriteOffers: favouriteOffers,
       favouriteOrder: favouriteOrders,
-     
     );
   }
 }
@@ -210,20 +207,26 @@ class OwnerOrder {
   String? firstname;
   String? lastname;
   String? photo;
+  int? countOrdersComplete;
+  double? ranking;
 
   OwnerOrder({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
+    this.ranking,
+    this.countOrdersComplete,
   });
 
   factory OwnerOrder.fromJson(Map<String, dynamic> json) {
     return OwnerOrder(
+      ranking: json['ranking'],
       id: json['id'],
       firstname: json['firstname'],
       lastname: json['lastname'],
       photo: json['photo'],
+      countOrdersComplete: json['count_orders_complete'],
     );
   }
 }
@@ -233,12 +236,14 @@ class User {
   String? firstname;
   String? lastname;
   String? photo;
+  int? countOrdersComplete;
 
   User({
     required this.id,
     required this.firstname,
     required this.lastname,
     required this.photo,
+    this.countOrdersComplete,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -247,6 +252,7 @@ class User {
       firstname: json['firstname'],
       lastname: json['lastname'],
       photo: json['photo'],
+      countOrdersComplete: json['count_orders_complete'],
     );
   }
 }

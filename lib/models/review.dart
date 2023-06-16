@@ -7,22 +7,19 @@ class Reviews {
   List<ReviewsDetail> reviewsDetail;
   double? ranking;
 
-  factory Reviews.fromJson(Map<String, dynamic> json) => Reviews(
-        reviewsDetail: List<ReviewsDetail>.from(
-            json["reviews_detail"].map((x) => ReviewsDetail.fromJson(x))),
-        ranking: json["ranking"],
-      );
+  factory Reviews.fromJson(Map<String, dynamic> json) {
+    return Reviews(
+      reviewsDetail: List<ReviewsDetail>.from(json["reviews_detail"].map((x) => ReviewsDetail.fromJson(x))),
+      ranking: json["ranking"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-        "reviews_detail":
-            List<dynamic>.from(reviewsDetail.map((x) => x.toJson())),
+        "reviews_detail": List<dynamic>.from(reviewsDetail.map((x) => x.toJson())),
         "ranking": ranking,
       };
   bool needsToGetUpdated(Reviews reviews) {
-    return reviews.ranking != ranking ||
-            reviews.reviewsDetail.length != reviewsDetail.length
-        ? true
-        : false;
+    return reviews.ranking != ranking || reviews.reviewsDetail.length != reviewsDetail.length ? true : false;
   }
 }
 
@@ -39,8 +36,7 @@ class ReviewerDetails {
   String lastname;
   String? photo;
 
-  factory ReviewerDetails.fromJson(Map<String, dynamic> json) =>
-      ReviewerDetails(
+  factory ReviewerDetails.fromJson(Map<String, dynamic> json) => ReviewerDetails(
         id: json["id"],
         firstname: json["firstname"],
         lastname: json["lastname"],
@@ -58,6 +54,7 @@ class ReviewerDetails {
 class ReviewsDetail {
   ReviewsDetail({
     required this.id,
+    required this.date,
     required this.reviewerDetails,
     required this.message,
     required this.mark,
@@ -67,12 +64,14 @@ class ReviewsDetail {
   ReviewerDetails reviewerDetails;
   String message;
   int mark;
+  String date;
 
   factory ReviewsDetail.fromJson(Map<String, dynamic> json) => ReviewsDetail(
         id: json["id"],
         reviewerDetails: ReviewerDetails.fromJson(json["reviewer_details"]),
         message: json["message"],
         mark: json["mark"],
+        date: json["date"],
       );
 
   Map<String, dynamic> toJson() => {

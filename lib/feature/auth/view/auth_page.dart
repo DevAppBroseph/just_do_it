@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,7 @@ class _MainAuthPageState extends State<AuthPage> {
         } else if (current is ResetPasswordErrorState) {
           CustomAlert().showMessage('Пользователь не найден', context);
         } else if (current is SignInSuccessState) {
+          
           BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));

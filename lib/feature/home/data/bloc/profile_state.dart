@@ -11,6 +11,7 @@ class EditPageState extends ProfileState {
 class ProfileInitState extends ProfileState {}
 
 class LoadProfileState extends ProfileState {}
+class UpdateProfileTaskState extends ProfileState {}
 
 class UpdateProfileSuccessState extends ProfileState {}
 

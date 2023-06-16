@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/answers.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/favourites_info.dart';
@@ -36,6 +36,21 @@ class Repository {
     // log(response.statusMessage.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return Owner.fromJson(response.data);
+    }
+
+    return null;
+  }
+  Future<Reviews?> getRankingReview(int? id, String? access) async {
+    final response = await dio.get(
+      '$server/ranking/$id',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(response.data.toString());
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return Reviews.fromJson(response.data);
     }
 
     return null;
@@ -130,7 +145,7 @@ class Repository {
 
     List<Task> tasks = [];
 
-
+    // log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       for (var element in response.data) {
         final task = Task.fromJson(element);
@@ -180,7 +195,44 @@ class Repository {
     return false;
   }
 
-  Future<bool> editTask(String access, Task task) async {
+  Future<bool> addReviewsDetail(String? access, int? receiver, String? message, int? mark) async {
+    final response = await dio.post(
+      '$server/ranking/',
+      data: {
+        "receiver": receiver,
+        "message": message,
+        "mark": mark,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<Answers?> createAnswer(int id, String? access, int price, String description, String status) async {
+    final response = await dio.post(
+      '$server/answers/',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+      data: {
+        "order": id,
+        "price": price,
+        "description": description,
+        "status": status,
+      },
+    );
+    log(id.toString());
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return Answers.fromJson(response.data);
+    }
+    return null;
+  }
+
+  Future<bool> editTask(String? access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
 
@@ -192,13 +244,29 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
+    log(response.statusCode.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
     return false;
   }
-
+ Future<bool> editTaskPatch(String? access, Task task) async {
+    final response = await dio.patch(
+      '$server/orders/${task.id}',
+      data: {
+        'status': task.status,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
   Future<Uint8List?> downloadFile(String url) async {
     try {
       final response = await dio.get(
@@ -294,9 +362,25 @@ class Repository {
       data: data,
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-
+    log(response.statusMessage.toString());
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Answers?> updateStatusResponse(String? access, int id, String status) async {
+    final response = await dio.patch(
+      '$server/answers/$id',
+      data: {
+        "status": status,
+      },
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      return Answers.fromJson(response.data);
     } else {
       return null;
     }
@@ -408,6 +492,7 @@ class Repository {
           "fcm_token": token,
         },
       );
+      log(response.data.toString());
       if (response.statusCode == 200) {
         String? accessToken = response.data['access'];
         await Storage().setAccessToken(accessToken);
@@ -596,7 +681,6 @@ class Repository {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-   
       return FavouritesOrder.fromJson(response.data);
     }
     return null;
@@ -612,7 +696,6 @@ class Repository {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-  
       return FavouritesUser.fromJson(response.data);
     }
     return null;

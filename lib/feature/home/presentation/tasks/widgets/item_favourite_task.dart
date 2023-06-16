@@ -39,7 +39,7 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
                         children: [
                           if(task.order?.category?.photo != null)
                           Image.network(
-                            server + task.order!.category!.photo!,
+                            task.order!.category!.photo!,
                             height: 34.h,
                             width: 34.h,
                           ),

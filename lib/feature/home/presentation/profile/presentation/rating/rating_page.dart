@@ -24,32 +24,7 @@ class _RatingPageState extends State<RatingPage> {
   PageController pageController = PageController();
   int stageRegistration = 1;
 
-  final List<ReviewsDetail> _reviews = [
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(
-            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(
-            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(
-            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-    ReviewsDetail(
-        id: 0,
-        reviewerDetails: ReviewerDetails(
-            id: 0, firstname: 'Максим', lastname: 'Яковлев', photo: null),
-        message: 'Задача выполнена на 5+! Спасибо!',
-        mark: 5),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,23 +60,23 @@ class _RatingPageState extends State<RatingPage> {
                         SizedBox(height: 30.h),
                         //TODO Эта логика для сервера
 
-                        // ListView.builder(
-                        //   physics: const NeverScrollableScrollPhysics(),
-                        //   shrinkWrap: true,
-                        //   itemCount: reviews.reviewsDetail.length,
-                        //   itemBuilder: ((context, index) {
-                        //     return itemComment(reviews.reviewsDetail[index]);
-                        //   }),
-
-                        //TODO Эта логика для сервера
-
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: _reviews.length,
+                          itemCount: reviews.reviewsDetail.length,
                           itemBuilder: ((context, index) {
-                            return itemCommentNew(_reviews[index]);
+                            return itemComment(reviews.reviewsDetail[index]);
                           }),
+
+                          //TODO Эта логика для сервера
+
+                          // ListView.builder(
+                          //   physics: const NeverScrollableScrollPhysics(),
+                          //   shrinkWrap: true,
+                          //   itemCount: _reviews.length,
+                          //   itemBuilder: ((context, index) {
+                          //     return itemCommentNew(_reviews[index]);
+                          //   }),
                         ),
                         SizedBox(height: 50.h),
                       ],
@@ -135,8 +110,7 @@ class _RatingPageState extends State<RatingPage> {
                   ? Container(
                       height: 34.h,
                       width: 34.h,
-                      decoration:
-                          const BoxDecoration(color: ColorStyles.shadowFC6554),
+                      decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -230,8 +204,7 @@ class _RatingPageState extends State<RatingPage> {
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
       width: width.w,
-      padding:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: ColorStyles.whiteFFFFFF,
@@ -246,8 +219,7 @@ class _RatingPageState extends State<RatingPage> {
                     ? Container(
                         height: 34.h,
                         width: 34.h,
-                        decoration: const BoxDecoration(
-                            color: ColorStyles.shadowFC6554),
+                        decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
                       )
                     : CachedNetworkImage(
                         height: 34.h,
@@ -290,12 +262,12 @@ class _RatingPageState extends State<RatingPage> {
                   ),
                   SizedBox(height: 18.h),
                   SizedBox(
-                    width: width - (66 + 40),
+                    width: width - (66 + 55),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          height: 36.h,
+                          height: 38.h,
                           decoration: BoxDecoration(
                             color: ColorStyles.whiteF5F5F5,
                             borderRadius: BorderRadius.circular(8.r),
@@ -305,10 +277,13 @@ class _RatingPageState extends State<RatingPage> {
                             child: Row(
                               children: [
                                 SvgPicture.asset('assets/icons/translate.svg'),
-                                SizedBox(width: 8.h),
-                                Text(
-                                  'Перевод',
-                                  style: CustomTextStyle.blue_14_w400_336FEE,
+                                SizedBox(width: 9.w,),
+                                SizedBox(
+                                  height: 25.h,
+                                  child: Text(
+                                    'Перевод',
+                                    style: CustomTextStyle.blue_14_w400_336FEE,
+                                  ),
                                 )
                               ],
                             ),
@@ -320,7 +295,7 @@ class _RatingPageState extends State<RatingPage> {
                 ],
               ),
               SizedBox(
-                width: width - (66 + 50),
+                width: width - (66 + 55),
                 child: Row(
                   children: [
                     Text(
@@ -394,8 +369,7 @@ class _RatingPageState extends State<RatingPage> {
                       Container(
                         height: 76.h,
                         width: 130.h,
-                        padding: EdgeInsets.only(
-                            left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF3F3F3,
                           borderRadius: BorderRadius.only(
@@ -417,9 +391,7 @@ class _RatingPageState extends State<RatingPage> {
                                 SvgPicture.asset('assets/icons/star.svg'),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  reviews.ranking == null
-                                      ? '-'
-                                      : (reviews.ranking!).toString(),
+                                  reviews.ranking == null ? '-' : (reviews.ranking!).toString(),
                                   style: CustomTextStyle.black_20_w600,
                                 ),
                               ],
