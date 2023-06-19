@@ -264,15 +264,19 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             physics: const ClampingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
-              Text(
-                'Станьте исполнителем',
-                style: CustomTextStyle.black_22_w700_171716,
-              ),
+              if (widget.selectTask != null)
+                Text(
+                  widget.selectTask!.asCustomer! ? 'Станьте исполнителем' : 'Станьте заказчиком ',
+                  style: CustomTextStyle.black_22_w700_171716,
+                ),
               SizedBox(height: 12.h),
-              Text(
-                'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
-                style: CustomTextStyle.black_13_w400_515150,
-              ),
+              if (widget.selectTask != null)
+                Text(
+                  !widget.selectTask!.asCustomer!
+                      ? 'Чтобы принять оффер, Вам необходимо дозаполнить информацию о себе.'
+                      : 'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
+                  style: CustomTextStyle.black_13_w400_515150,
+                ),
               SizedBox(height: 30.h),
               GestureDetector(
                 onTap: () => showIconModal(

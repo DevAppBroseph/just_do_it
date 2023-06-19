@@ -89,7 +89,6 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
 
   @override
   Widget build(BuildContext context) {
-   
     user = BlocProvider.of<ProfileBloc>(context).user;
 
     fillData(user);
@@ -292,10 +291,13 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   style: CustomTextStyle.black_22_w700_171716,
                 ),
               SizedBox(height: 12.h),
-              Text(
-                'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
-                style: CustomTextStyle.black_13_w400_515150,
-              ),
+              if (widget.selectTask != null)
+                Text(
+                  !widget.selectTask!.asCustomer!
+                      ? 'Чтобы принять оффер, Вам необходимо дозаполнить информацию о себе.'
+                      : 'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
+                  style: CustomTextStyle.black_13_w400_515150,
+                ),
               SizedBox(height: 30.h),
               GestureDetector(
                 onTap: () => showIconModal(
@@ -691,9 +693,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
 
     if (userRegModel.docInfo != null && userRegModel.docInfo!.isNotEmpty) {
       additionalInfo = true;
-      serialDocumentController.text =  '';
+      serialDocumentController.text = '';
       numberDocumentController.text = '';
-      whoGiveDocumentController.text =  '';
+      whoGiveDocumentController.text = '';
       dateDocumentController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
     }
 
