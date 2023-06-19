@@ -346,7 +346,7 @@ class _ScorePageState extends State<ScorePage> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 35.h),
                                     child: SizedBox(
-                                      
+                                      height: 600.h,
                                       child: Image.asset(
                                         'assets/images/group.png',
                                       ),
