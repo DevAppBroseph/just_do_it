@@ -357,7 +357,7 @@ class _ScorePageState extends State<ScorePage> {
                                   ),
                                   Align(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 25.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 35.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
@@ -433,7 +433,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[4].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 15.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -507,7 +507,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[12].mustCoins!),
                                             ],
                                           ),
-                                         
+                                          SizedBox(height: 5.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
