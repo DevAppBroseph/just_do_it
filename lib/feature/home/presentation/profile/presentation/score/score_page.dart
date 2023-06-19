@@ -74,7 +74,7 @@ class _ScorePageState extends State<ScorePage> {
         }
         return user?.balance != null
             ? MediaQuery(
-                data:  MediaQuery.of(context).copyWith(devicePixelRatio: 1920*1080),
+                data:  MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: Scaffold(
                   backgroundColor: ColorStyles.whiteFFFFFF,
                   resizeToAvoidBottomInset: false,

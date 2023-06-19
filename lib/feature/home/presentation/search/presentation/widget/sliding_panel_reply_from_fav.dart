@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -21,8 +22,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingPanelReplyFromFav extends StatefulWidget {
   final PanelController panelController;
-
-  const SlidingPanelReplyFromFav(this.panelController, {super.key});
+  final Task? selectTask;
+  const SlidingPanelReplyFromFav(this.panelController, {super.key, this.selectTask});
 
   @override
   State<SlidingPanelReplyFromFav> createState() => _SlidingPanelReplyFromFavState();

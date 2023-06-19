@@ -155,11 +155,12 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
               BlocBuilder<rep.ReplyFromFavBloc, rep.ReplyState>(
                 builder: (context, snapshot) {
                   if (snapshot is rep.OpenSlidingPanelState) {
+                    selectTask = snapshot.selectTask;
                     panelControllerReplyFromFav.animatePanelToPosition(1.0);
                   } else if (snapshot is rep.CloseSlidingPanelState) {
                     panelControllerReplyFromFav.animatePanelToPosition(0.0);
                   }
-                  return SlidingPanelReplyFromFav(panelControllerReplyFromFav);
+                  return SlidingPanelReplyFromFav(panelControllerReplyFromFav, selectTask: selectTask);
                 },
               ),
             ],
