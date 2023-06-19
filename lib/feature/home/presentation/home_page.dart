@@ -273,11 +273,12 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<rep.ReplyBloc, rep.ReplyState>(
             builder: (context, snapshot) {
               if (snapshot is rep.OpenSlidingPanelState) {
+                selectTask = snapshot.selectTask;
                 panelControllerReply.animatePanelToPosition(1.0);
               } else if (snapshot is rep.CloseSlidingPanelState) {
                 panelControllerReply.animatePanelToPosition(0.0);
               }
-              return SlidingPanelReply(panelControllerReply);
+              return SlidingPanelReply(panelControllerReply, selectTask: selectTask,);
             },
           ),
           BlocBuilder<res.ResponseBloc, res.ResponseState>(

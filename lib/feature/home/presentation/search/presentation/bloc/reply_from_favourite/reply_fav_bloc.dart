@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/models/task.dart';
 
 part 'reply_fav_event.dart';
 part 'reply_fav_state.dart';
@@ -12,7 +13,7 @@ class ReplyFromFavBloc extends Bloc<ReplyEvent, ReplyState> {
   }
 
   void _openPanel(OpenSlidingPanelEvent event, Emitter<ReplyState> emit) async {
-    emit(OpenSlidingPanelState());
+       emit(OpenSlidingPanelState(selectTask: event.selectTask));
   }
 
   void _openPanelTo(

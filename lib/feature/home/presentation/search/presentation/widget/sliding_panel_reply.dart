@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -21,8 +22,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingPanelReply extends StatefulWidget {
   final PanelController panelController;
-
-  const SlidingPanelReply(this.panelController, {super.key});
+  final Task? selectTask;
+  const SlidingPanelReply(this.panelController, {super.key, this.selectTask});
 
   @override
   State<SlidingPanelReply> createState() => _SlidingPanelReplyState();
@@ -41,15 +42,12 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
   bool additionalInfo = false;
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController repeatPasswordController = TextEditingController();
-  TextEditingController serialDocController = TextEditingController();
-  TextEditingController numberDocController = TextEditingController();
-  TextEditingController whoGiveDocController = TextEditingController();
-  TextEditingController dateDocController = TextEditingController();
-  TextEditingController documentTypeController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController regionController = TextEditingController();
+
+  TextEditingController serialDocumentController = TextEditingController();
+  TextEditingController numberDocumentController = TextEditingController();
+  TextEditingController whoGiveDocumentController = TextEditingController();
+  TextEditingController dateDocumentController = TextEditingController();
+  TextEditingController typeDocumentController = TextEditingController();
   List<String> typeDocument = [];
   List<String> typeWork = [];
   TextEditingController aboutMeController = TextEditingController();
@@ -91,10 +89,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
 
   @override
   Widget build(BuildContext context) {
+   
     user = BlocProvider.of<ProfileBloc>(context).user;
 
     fillData(user);
-    if (documentTypeController.text.isNotEmpty) {
+    if (typeDocumentController.text.isNotEmpty) {
       additionalInfo = true;
       documentEdit();
     } else {
@@ -175,13 +174,13 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           if (additionalInfo) {
                             additionalInfo = true;
                             String error = 'Укажите:';
-                            if (docType != 'Resident_ID' && serialDocController.text.isEmpty) {
+                            if (docType != 'Resident_ID' && serialDocumentController.text.isEmpty) {
                               error += '\n- серию документа';
                             }
-                            if (numberDocController.text.isEmpty) {
+                            if (numberDocumentController.text.isEmpty) {
                               error += '\n- номер документа';
                             }
-                            if (whoGiveDocController.text.isEmpty) {
+                            if (whoGiveDocumentController.text.isEmpty) {
                               if (docType == 'Passport') {
                                 error += '\n- кем выдан документ';
                               } else if (docType == 'Resident_ID') {
@@ -190,11 +189,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                 error += '\n- дату выдачи документа';
                               }
                             }
-                            if (dateDocController.text.isEmpty) {
+                            if (dateDocumentController.text.isEmpty) {
                               error += '\n- срок действия документа';
                             }
                             if (error == 'Укажите:') {
-                              user?.copyWith(docInfo: docinfo, docType: mapDocumentType(documentTypeController.text));
+                              user?.copyWith(docInfo: docinfo, docType: mapDocumentType(typeDocumentController.text));
                               BlocProvider.of<ProfileBloc>(context).setUser(user);
                               log(user.toString());
                               Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
@@ -212,7 +211,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
-                        'Готово', 
+                        'Готово',
                         style: CustomTextStyle.black_16_w600_171716,
                       ),
                     ),
@@ -221,29 +220,29 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 ],
               ),
               if (heightKeyBoard > MediaQuery.of(context).size.height / 3)
-              Positioned(
-                bottom: heightKeyBoard,
-                child: Container(
-                  height: 60.h,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey[200],
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      CupertinoButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                             context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(200.h));
-                        } ,
-                        child: Text(
-                          'Готово',
-                          style: CustomTextStyle.black_empty,
+                Positioned(
+                  bottom: heightKeyBoard,
+                  child: Container(
+                    height: 60.h,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey[200],
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        CupertinoButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(200.h));
+                          },
+                          child: Text(
+                            'Готово',
+                            style: CustomTextStyle.black_empty,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -287,10 +286,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             physics: const ClampingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
-              Text(
-                'Станьте исполнителем',
-                style: CustomTextStyle.black_22_w700_171716,
-              ),
+              if (widget.selectTask != null)
+                Text(
+                  widget.selectTask!.asCustomer! ? 'Станьте исполнителем' : 'Станьте заказчиком ',
+                  style: CustomTextStyle.black_22_w700_171716,
+                ),
               SizedBox(height: 12.h),
               Text(
                 'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
@@ -302,7 +302,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   context,
                   _documentKey,
                   (value) {
-                    documentTypeController.text = value;
+                    typeDocumentController.text = value;
                     additionalInfo = true;
                     docType = mapDocumentType(value);
                     setState(() {});
@@ -322,7 +322,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       enabled: false,
                       onTap: () {},
                       fillColor: Colors.grey[200],
-                      textEditingController: documentTypeController,
+                      textEditingController: typeDocumentController,
                       contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                     ),
                     Padding(
@@ -330,15 +330,15 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          documentTypeController.text.isNotEmpty
+                          typeDocumentController.text.isNotEmpty
                               ? GestureDetector(
                                   onTap: () {
                                     additionalInfo = false;
-                                    documentTypeController.text = '';
-                                    serialDocController.text = '';
-                                    numberDocController.text = '';
-                                    whoGiveDocController.text = '';
-                                    dateDocController.text = '';
+                                    typeDocumentController.text = '';
+                                    serialDocumentController.text = '';
+                                    numberDocumentController.text = '';
+                                    whoGiveDocumentController.text = '';
+                                    dateDocumentController.text = '';
                                     dateTimeStart = null;
                                     dateTimeEnd = null;
                                     docinfo = '';
@@ -396,7 +396,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 ],
                 textInputType: TextInputType.number,
                 width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
-                textEditingController: serialDocController,
+                textEditingController: serialDocumentController,
                 contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
@@ -421,7 +421,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               width: docType != 'Resident_ID'
                   ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w
                   : MediaQuery.of(context).size.width - 48.w,
-              textEditingController: numberDocController,
+              textEditingController: numberDocumentController,
               contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
@@ -442,7 +442,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               LengthLimitingTextInputFormatter(35),
             ],
             height: 50.h,
-            textEditingController: whoGiveDocController,
+            textEditingController: whoGiveDocumentController,
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
@@ -465,7 +465,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
-              textEditingController: whoGiveDocController,
+              textEditingController: whoGiveDocumentController,
               contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               formatters: [
                 LengthLimitingTextInputFormatter(15),
@@ -492,7 +492,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             enabled: false,
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
-            textEditingController: dateDocController,
+            textEditingController: dateDocumentController,
             contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             formatters: [
               LengthLimitingTextInputFormatter(15),
@@ -520,7 +520,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               LengthLimitingTextInputFormatter(35),
             ],
             height: 50.h,
-            textEditingController: whoGiveDocController,
+            textEditingController: whoGiveDocumentController,
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
@@ -578,18 +578,20 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocumentController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocumentController.text =
+                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocumentController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocumentController.text =
+                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   }
@@ -617,24 +619,24 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
-                                'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+                                'Серия: ${serialDocumentController.text}\nНомер: ${numberDocumentController.text}\nКем выдан: ${whoGiveDocumentController.text}\nДата выдачи: ${dateDocumentController.text}';
                             // user!.copyWith(
                             // docInfo:
                             // 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
-                                'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+                                'Серия: ${serialDocumentController.text}\nНомер: ${numberDocumentController.text}\nКем выдан: ${whoGiveDocumentController.text}\nДата выдачи: ${dateDocumentController.text}';
                             // user!.copyWith(
                             //     docInfo:
                             //         'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}');
@@ -648,7 +650,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
 
   void documentEdit() {
     docinfo =
-        'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
+        'Серия: ${serialDocumentController.text}\nНомер: ${numberDocumentController.text}\nКем выдан: ${whoGiveDocumentController.text}\nДата выдачи: ${dateDocumentController.text}';
     // user!.copyWith(
     // docInfo:
     // 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
@@ -666,13 +668,13 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
 
   void requestNextEmptyFocusStage2() {
     if (additionalInfo) {
-      if (serialDocController.text.isEmpty) {
+      if (serialDocumentController.text.isEmpty) {
         focusNodeSerial.requestFocus();
         scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
-      } else if (numberDocController.text.isEmpty) {
+      } else if (numberDocumentController.text.isEmpty) {
         focusNodeNumber.requestFocus();
         scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
-      } else if (whoGiveDocController.text.isEmpty) {
+      } else if (whoGiveDocumentController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
         scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
@@ -683,31 +685,25 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     if (userRegModel == null) return;
 
     if (userRegModel.docType != null && userRegModel.docType!.isNotEmpty) {
-      documentTypeController.text = reverseMapDocumentType(userRegModel.docType!);
+      typeDocumentController.text = '';
       docType = userRegModel.docType!;
-    }
-    if (userRegModel.region != null) {
-      regionController.text = userRegModel.region!;
-    }
-    if (userRegModel.country != null) {
-      countryController.text = userRegModel.country!;
     }
 
     if (userRegModel.docInfo != null && userRegModel.docInfo!.isNotEmpty) {
       additionalInfo = true;
-      serialDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-      numberDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
-      whoGiveDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
-      dateDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+      serialDocumentController.text =  '';
+      numberDocumentController.text = '';
+      whoGiveDocumentController.text =  '';
+      dateDocumentController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
     }
 
-    final start = dateDocController.text.split('.');
+    final start = dateDocumentController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
-    if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
+    if (start.isNotEmpty && regDate.hasMatch(dateDocumentController.text)) {
       dateTimeStart = DateTime(int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
     }
 
-    final end = whoGiveDocController.text.split('.');
+    final end = whoGiveDocumentController.text.split('.');
     if (end.isNotEmpty) {}
   }
 }

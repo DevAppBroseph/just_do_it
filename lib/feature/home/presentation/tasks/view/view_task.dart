@@ -675,9 +675,9 @@ class _TaskViewState extends State<TaskView> {
                     } else {
                       if (user?.docInfo == '' || user?.docInfo == null) {
                         if (widget.fromFav) {
-                          BlocProvider.of<repf.ReplyFromFavBloc>(context).add(repf.OpenSlidingPanelEvent());
+                          BlocProvider.of<repf.ReplyFromFavBloc>(context).add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
                         } else {
-                          BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent());
+                          BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent(selectTask: selectTask));
                         }
                       } else {
                         if (widget.fromFav) {
@@ -967,7 +967,7 @@ class _TaskViewState extends State<TaskView> {
                             user?.id == widget.selectTask.owner?.id) {
                           if (widget.selectTask.asCustomer!) {
                             return SizedBox(
-                              height: 205.h,
+                              height:  widget.selectTask.answers[index].owner!.firstname!.length +  widget.selectTask.answers[index].owner!.lastname!.length > 16?230.h: 205.h,
                               child: Padding(
                                 padding: EdgeInsets.only(top: 15.h),
                                 child: ScaleButton(
@@ -2040,7 +2040,7 @@ class _TaskViewState extends State<TaskView> {
                               }
                             } else {
                               return SizedBox(
-                                height: 205.h,
+                                height: widget.selectTask.answers[index].owner!.firstname!.length +  widget.selectTask.answers[index].owner!.lastname!.length > 16?230.h: 205.h,
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 15.h),
                                   child: ScaleButton(

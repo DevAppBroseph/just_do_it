@@ -2,7 +2,10 @@ part of 'reply_bloc.dart';
 
 class ReplyEvent {}
 
-class OpenSlidingPanelEvent extends ReplyEvent {}
+class OpenSlidingPanelEvent extends ReplyEvent {
+  Task? selectTask;
+  OpenSlidingPanelEvent({required this.selectTask});
+}
 
 class CloseSlidingPanelEvent extends ReplyEvent {}
 
