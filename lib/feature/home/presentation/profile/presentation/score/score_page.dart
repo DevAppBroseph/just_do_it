@@ -344,7 +344,7 @@ class _ScorePageState extends State<ScorePage> {
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 35.h),
                                     child: SizedBox(
                                       
                                       child: Image.asset(
@@ -354,7 +354,7 @@ class _ScorePageState extends State<ScorePage> {
                                   ),
                                   Align(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 30.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 12.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
@@ -467,7 +467,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[11].mustCoins!),
                                             ],
                                           ),
-                                      
+                                       SizedBox(height: 10.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
