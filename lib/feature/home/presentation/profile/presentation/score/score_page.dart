@@ -347,17 +347,14 @@ class _ScorePageState extends State<ScorePage> {
                                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
                                     child: SizedBox(
                                       
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Image.asset(
-                                          'assets/images/group.png',
-                                        ),
+                                      child: Image.asset(
+                                        'assets/images/group.png',
                                       ),
                                     ),
                                   ),
                                   Align(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 35.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 30.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
@@ -470,7 +467,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[11].mustCoins!),
                                             ],
                                           ),
-                                         SizedBox(height: 10.h),
+                                      
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -507,7 +504,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[12].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 5.h),
+                                          
                                           Row(
                                             children: [
                                               firstPageItemScore(
