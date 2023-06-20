@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:just_do_it/helpers/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -58,6 +60,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.home,
             onGenerateRoute: AppRoute.onGenerateRoute,
+            // localizationsDelegates: context.localizationDelegates,
+            // supportedLocales: context.supportedLocales,
+            // locale: context.locale,
           ),
         );
       },
