@@ -344,20 +344,17 @@ class _ScorePageState extends State<ScorePage> {
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 60.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 35.h),
                                     child: SizedBox(
-                                      height: 620.h,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Image.asset(
-                                          'assets/images/group.png',
-                                        ),
+                                      height: 600.h,
+                                      child: Image.asset(
+                                        'assets/images/group.png',
                                       ),
                                     ),
                                   ),
                                   Align(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 25.h),
+                                      padding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 12.h),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
@@ -396,7 +393,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[3].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 35.h),
+                                          SizedBox(height: 25.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -433,7 +430,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[4].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 25.h),
+                                          SizedBox(height: 15.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -470,7 +467,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[11].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 15.h),
+                                       SizedBox(height: 10.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -507,7 +504,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[12].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(height: 10.h),
+                                          
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -754,7 +751,7 @@ class _ScorePageState extends State<ScorePage> {
             },
             imageUrl: icon,
             height: 50.h,
-            width: 50.h,
+            width: 50.w,
           ),
           SizedBox(width: 14.w),
           Column(

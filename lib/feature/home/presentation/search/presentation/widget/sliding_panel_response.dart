@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_currency.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
@@ -78,16 +79,15 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
-  double bottomInsets = MediaQuery.of(context).viewInsets.bottom; 
-  log(bottomInsets.toString());
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+    log(bottomInsets.toString());
     return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
-        heightPanel = current.height ;
+        heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
         return true;
       } else {
-   
-        heightPanel = 500.h ;
+        heightPanel = 500.h;
       }
       return true;
     }, builder: (context, snapshot) {
@@ -136,7 +136,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         mainFilter(heightKeyBoard, bottomInsets),
-                         
                       ],
                     ),
                   ),
@@ -147,28 +146,42 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         onTap: () async {
                           final access = await Storage().getAccessToken();
                           if (widget.selectTask != null) {
-                            widget.panelController.animatePanelToPosition(0);
-                            if (widget.selectTask!.asCustomer!) {
-                              Repository().createAnswer(
-                                  widget.selectTask!.id!,
-                                  access,
-                                  int.parse(coastController.text.replaceAll(' ', '')),
-                                  descriptionTextController.text,
-                                  'Progress');
-                            } else {
-                              Repository().createAnswer(
-                                  widget.selectTask!.id!,
-                                  access,
-                                  int.parse(coastController.text.replaceAll(' ', '')),
-                                  descriptionTextController.text,
-                                  'Selected');
+                            String error = 'Укажите:';
+                            bool errorsFlag = false;
+                            if (coastController.text.isEmpty) {
+                              error += '\nСумму';
+                              errorsFlag = true;
                             }
+                            if (descriptionTextController.text.isEmpty) {
+                              error += '\nОписание';
+                              errorsFlag = true;
+                            }
+                            if (errorsFlag == true) {
+                              CustomAlert().showMessage(error, context);
+                            } else {
+                              widget.panelController.animatePanelToPosition(0);
+                              if (widget.selectTask!.asCustomer!) {
+                                Repository().createAnswer(
+                                    widget.selectTask!.id!,
+                                    access,
+                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    descriptionTextController.text,
+                                    'Progress');
+                              } else {
+                                Repository().createAnswer(
+                                    widget.selectTask!.id!,
+                                    access,
+                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    descriptionTextController.text,
+                                    'Selected');
+                              }
 
-                            coastController.clear();
-                            descriptionTextController.clear();
-                            context.read<TasksBloc>().add(UpdateTaskEvent());
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                            setState(() {});
+                              coastController.clear();
+                              descriptionTextController.clear();
+                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                              setState(() {});
+                            }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
@@ -207,33 +220,32 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     ),
                   ),
                   SizedBox(height: 30.h),
-                  
                 ],
               ),
               if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
-              Positioned(
-                bottom: bottomInsets,
-                child: Container(
-                  height: 60.h,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey[200],
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      CupertinoButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                             context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
-                        } ,
-                        child: Text(
-                          'Готово',
-                          style: CustomTextStyle.black_empty,
+                Positioned(
+                  bottom: bottomInsets,
+                  child: Container(
+                    height: 60.h,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey[200],
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        CupertinoButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
+                          },
+                          child: Text(
+                            'Готово',
+                            style: CustomTextStyle.black_empty,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -323,12 +335,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             textInputType: TextInputType.number,
                             actionButton: false,
                             onTap: () {
-                                context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
+                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
-                            onChanged: (value) {
-                             
-                            },
+                            onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
@@ -375,7 +385,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             maxLines: 8,
                             onTap: () {
                               log(bottomInsets.toString());
-                                context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
+                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,
@@ -398,7 +408,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
             ],
           ),
         ),
-           
       ],
     );
   }

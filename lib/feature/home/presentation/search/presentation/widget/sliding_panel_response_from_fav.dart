@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_currency.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
@@ -110,8 +111,10 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
     });
   }
 
-  Widget panel(BuildContext context,) {
-    double   bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+  Widget panel(
+    BuildContext context,
+  ) {
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
 
     return MediaQuery(
@@ -136,7 +139,6 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         mainFilter(heightKeyBoard, bottomInsets),
-                         
                       ],
                     ),
                   ),
@@ -147,28 +149,42 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                         onTap: () async {
                           final access = await Storage().getAccessToken();
                           if (widget.selectTask != null) {
-                            widget.panelController.animatePanelToPosition(0);
-                            if (widget.selectTask!.asCustomer!) {
-                              Repository().createAnswer(
-                                  widget.selectTask!.id!,
-                                  access,
-                                  int.parse(coastController.text.replaceAll(' ', '')),
-                                  descriptionTextController.text,
-                                  'Progress');
-                            } else {
-                              Repository().createAnswer(
-                                  widget.selectTask!.id!,
-                                  access,
-                                  int.parse(coastController.text.replaceAll(' ', '')),
-                                  descriptionTextController.text,
-                                  'Selected');
+                            String error = 'Укажите:';
+                            bool errorsFlag = false;
+                            if (coastController.text.isEmpty) {
+                              error += '\nСумму';
+                              errorsFlag = true;
                             }
+                            if (descriptionTextController.text.isEmpty) {
+                              error += '\nОписание';
+                              errorsFlag = true;
+                            }
+                            if (errorsFlag == true) {
+                              CustomAlert().showMessage(error, context);
+                            } else {
+                              widget.panelController.animatePanelToPosition(0);
+                              if (widget.selectTask!.asCustomer!) {
+                                Repository().createAnswer(
+                                    widget.selectTask!.id!,
+                                    access,
+                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    descriptionTextController.text,
+                                    'Progress');
+                              } else {
+                                Repository().createAnswer(
+                                    widget.selectTask!.id!,
+                                    access,
+                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    descriptionTextController.text,
+                                    'Selected');
+                              }
 
-                            coastController.clear();
-                            descriptionTextController.clear();
-                            context.read<TasksBloc>().add(UpdateTaskEvent());
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                            setState(() {});
+                              coastController.clear();
+                              descriptionTextController.clear();
+                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                              setState(() {});
+                            }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
@@ -207,33 +223,32 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                     ),
                   ),
                   SizedBox(height: 30.h),
-                  
                 ],
               ),
               if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
-              Positioned(
-                bottom: bottomInsets,
-                child: Container(
-                  height: 60.h,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey[200],
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      CupertinoButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                             context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(500.h));
-                        } ,
-                        child: Text(
-                          'Готово',
-                          style: CustomTextStyle.black_empty,
+                Positioned(
+                  bottom: bottomInsets,
+                  child: Container(
+                    height: 60.h,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey[200],
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        CupertinoButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(500.h));
+                          },
+                          child: Text(
+                            'Готово',
+                            style: CustomTextStyle.black_empty,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -326,9 +341,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                               context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
-                            onChanged: (value) {
-                             
-                            },
+                            onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
@@ -374,7 +387,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             autocorrect: true,
                             maxLines: 8,
                             onTap: () {
-                                context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
+                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,
@@ -393,11 +406,9 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                 ),
               ),
               SizedBox(height: 18.h),
-         
             ],
           ),
         ),
-           
       ],
     );
   }

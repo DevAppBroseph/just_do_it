@@ -884,7 +884,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       height: 90.h,
       width: 115.w,
-      margin: const EdgeInsets.only(right: 6),
+      margin: const EdgeInsets.only(right: 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: index == 0
