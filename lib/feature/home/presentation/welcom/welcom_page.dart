@@ -682,6 +682,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                     'Посмотреть как:',
                                     style: CustomTextStyle.black_18_w800,
                                   ),
+                                
                                 ],
                               ),
                             ),
