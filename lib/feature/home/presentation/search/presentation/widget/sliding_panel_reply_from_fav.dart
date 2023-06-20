@@ -134,7 +134,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   }
 
   Widget panel(BuildContext context) {
-    double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -156,7 +156,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        mainFilter(heightKeyBoard),
+                        mainFilter(),
                       ],
                     ),
                   ),
@@ -221,6 +221,30 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   SizedBox(height: 30.h),
                 ],
               ),
+               if (bottomInsets > MediaQuery.of(context).size.height / 4)
+                Positioned(
+                  bottom: bottomInsets,
+                  child: Container(
+                    height: 60.h,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey[200],
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        CupertinoButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            context.read<ReplyFromFavBloc>().add(OpenSlidingPanelToEvent(637.h));
+                          },
+                          child: Text(
+                            'Готово',
+                            style: CustomTextStyle.black_empty,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -228,7 +252,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     );
   }
 
-  Widget mainFilter(double heightKeyBoard) {
+  Widget mainFilter() {
     String date = '';
     if (startDate == null && endDate == null) {
     } else {
@@ -340,7 +364,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                 ),
               ),
               if (additionalInfo) additionalInfoWidget(),
-              SizedBox(height: heightKeyBoard / 2),
+             
             ],
           ),
         ),
@@ -491,9 +515,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
           CustomTextField(
             hintText: 'Место выдачи',
             onTap: () {
-              Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
-              });
+             context.read<ReplyFromFavBloc>().add(OpenSlidingPanelToEvent(720.h));
             },
             focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_14_w400,
@@ -676,10 +698,10 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
 
     if (userRegModel.docInfo != null && userRegModel.docInfo!.isNotEmpty) {
       additionalInfo = true;
-      serialDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-      numberDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
-      whoGiveDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
-      dateDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+      serialDocController.text =  '';
+      numberDocController.text =  '';
+      whoGiveDocController.text =  '';
+      dateDocController.text =  '';
     }
 
     final start = dateDocController.text.split('.');

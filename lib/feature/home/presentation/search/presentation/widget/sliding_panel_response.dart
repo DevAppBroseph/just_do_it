@@ -222,7 +222,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                   SizedBox(height: 30.h),
                 ],
               ),
-              if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
+              if (bottomInsets > MediaQuery.of(context).size.height / 3.7)
                 Positioned(
                   bottom: bottomInsets,
                   child: Container(
@@ -372,7 +372,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Произвольный текст',
+                        'Сопроводительное письмо',
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
@@ -382,7 +382,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
-                            maxLines: 8,
+                            maxLines:  2,
                             onTap: () {
                               log(bottomInsets.toString());
                               context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
@@ -394,6 +394,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             onChanged: (value) {},
                             formatters: [
                               UpperEveryTextInputFormatter(),
+                                LengthLimitingTextInputFormatter(100),
                             ],
                             hintText: '',
                           ),

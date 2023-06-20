@@ -30,7 +30,7 @@ class NewMessageAnswer {
   factory NewMessageAnswer.fromJson(Map<String, dynamic> json) =>
       NewMessageAnswer(
         from: json["from"].toString(),
-        fromName: json["from_name"],
+        fromName: json["from_name"] ,
         message: json["message"],
         id: json["id"] != null ? json["id"].toString() : null,
         idWithChat: json["id_with_chat"],

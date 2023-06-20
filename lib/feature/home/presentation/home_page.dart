@@ -24,6 +24,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/view/se
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
               },
               builder: (context, snapshot) {
                 if (snapshot is LoadProfileState) {
-                  return const CupertinoActivityIndicator();
+                  // return const CupertinoActivityIndicator();
                 }
                 return PageView(
                   controller: pageController,
@@ -207,6 +208,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                     height: 96.h,
                     child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
+                       log('$current');
+                      if(current is UpdateProfileChatState){
+                       
+                         context.read<TasksBloc>().add(UpdateTaskEvent());
+                         BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+                         return false;
+                      }
                       if (current is ReconnectState) {
                         BlocProvider.of<ChatBloc>(context).add(StartSocket(context, null));
                       }

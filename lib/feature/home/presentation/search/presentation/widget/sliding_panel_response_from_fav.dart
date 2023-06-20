@@ -225,7 +225,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                   SizedBox(height: 30.h),
                 ],
               ),
-              if (bottomInsets > MediaQuery.of(context).size.height / 3.5)
+              if (bottomInsets > MediaQuery.of(context).size.height / 3.7)
                 Positioned(
                   bottom: bottomInsets,
                   child: Container(
@@ -375,17 +375,18 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Произвольный текст',
+                        'Сопроводительное письмо',
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
                       Row(
                         children: [
                           CustomTextField(
+                           
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
-                            maxLines: 8,
+                            maxLines: 2,
                             onTap: () {
                               context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
@@ -393,8 +394,10 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             style: CustomTextStyle.black_14_w400_171716,
                             textEditingController: descriptionTextController,
                             fillColor: ColorStyles.greyF9F9F9,
+                            
                             onChanged: (value) {},
                             formatters: [
+                              LengthLimitingTextInputFormatter(100),
                               UpperEveryTextInputFormatter(),
                             ],
                             hintText: '',
