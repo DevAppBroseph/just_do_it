@@ -131,7 +131,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
   }
 
   Widget panel(BuildContext context) {
-        double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -222,7 +222,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 Positioned(
                   bottom: bottomInsets,
                   child: Container(
-                    height: 50.h,
+                    height: 60.h,
                     width: MediaQuery.of(context).size.width,
                     color: Colors.grey[200],
                     child: Row(
@@ -323,7 +323,6 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       height: 50.h,
                       enabled: false,
                       onTap: () {},
-                     
                       textEditingController: typeDocumentController,
                       contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                     ),
@@ -361,7 +360,6 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 ),
               ),
               if (additionalInfo) additionalInfoWidget(),
-         
             ],
           ),
         ),
@@ -382,6 +380,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               CustomTextField(
                 hintText: 'Серия',
                 hintStyle: CustomTextStyle.grey_14_w400,
+                actionButton: false,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -405,6 +404,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
               hintText: docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
+              actionButton: false,
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
@@ -565,7 +565,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                     children: [
                       Expanded(
                         child: Container(
-                          height: 40.h,
+                          height: 60.h,
                           color: Colors.white,
                           child: Row(
                             children: [
@@ -698,7 +698,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
       serialDocumentController.text = '';
       numberDocumentController.text = '';
       whoGiveDocumentController.text = '';
-      dateDocumentController.text =  '';
+      dateDocumentController.text = '';
     }
 
     final start = dateDocumentController.text.split('.');
@@ -708,6 +708,6 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     }
 
     final end = whoGiveDocumentController.text.split('.');
-    if (end.isNotEmpty) {}  
+    if (end.isNotEmpty) {}
   }
 }

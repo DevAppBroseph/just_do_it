@@ -152,11 +152,11 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             String error = 'Укажите:';
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
-                              error += '\nСумму';
+                              error += '\n -сумму';
                               errorsFlag = true;
                             }
                             if (descriptionTextController.text.isEmpty) {
-                              error += '\nОписание';
+                              error += '\n -описание';
                               errorsFlag = true;
                             }
                             if (errorsFlag == true) {
@@ -386,7 +386,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
-                            maxLines: 2,
+                            maxLines: 3,
                             onTap: () {
                               context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});

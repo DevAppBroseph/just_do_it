@@ -497,7 +497,7 @@ class _CreatePageState extends State<CreatePage> {
         setState(() {});
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+        padding: EdgeInsets.only(left: 20.w, top: activities[index].subcategory[0].description == label && label.length> 32 ? 10.h: 0.h, right: 20.w),
         child: Container(
           color: Colors.transparent,
           height: 40.h,

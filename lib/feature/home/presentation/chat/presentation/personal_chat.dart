@@ -55,39 +55,47 @@ class _PersonalChatState extends State<PersonalChat> {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return Scaffold(
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 66.h),
-              Padding(
-                padding: EdgeInsets.only(left: 25.w, right: 28.w),
-                child: Row(
-                  children: [
-                    CustomIconButton(
-                      onBackPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: SvgImg.arrowRight,
+          
+          body: Container(
+            color: ColorStyles.greyEAECEE,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(color: ColorStyles.greyEAECEE, child: SizedBox(height: 66.h)),
+                Container(
+                  color: ColorStyles.greyEAECEE,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    child: Row(
+                      children: [
+                        CustomIconButton(
+                          onBackPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: SvgImg.arrowRight,
+                        ),
+                        const Spacer(),
+                        Text(
+                          'Профиль',
+                          style: CustomTextStyle.black_22_w700,
+                        ),
+                        const Spacer(),
+                        SizedBox(width: 30.w),
+                      ],
                     ),
-                    const Spacer(),
-                    Text(
-                      'Профиль',
-                      style: CustomTextStyle.black_22_w700,
-                    ),
-                    const Spacer(),
-                    SizedBox(width: 30.w),
-                  ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ProfileView(
-                    owner: Owner(
-                        id: int.parse(widget.idWithChat),
-                        firstname: null,
-                        lastname: null,
-                        photo: null)),
-              ),
-            ],
+                SizedBox(height: 10.h,),
+                Expanded(
+                  child: ProfileView(
+                      owner: Owner(
+                          id: int.parse(widget.idWithChat),
+                          firstname: null,
+                          lastname: null,
+                          photo: null)),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -100,7 +108,7 @@ class _PersonalChatState extends State<PersonalChat> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor:ColorStyles.whiteFFFFFF,
         body: Column(
           children: [
             SizedBox(height: 66.h),
