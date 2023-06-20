@@ -20,6 +20,8 @@ class SendMessageEvent extends ChatEvent {
 
 class GetListMessage extends ChatEvent {}
 
+class UpdateProfileChatEvent extends ChatEvent {}
+
 class GetListMessageItem extends ChatEvent {
   String access;
   GetListMessageItem(this.access);

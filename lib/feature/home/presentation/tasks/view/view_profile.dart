@@ -713,7 +713,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                             SizedBox(height: 30.h),
-                            if (owner?.reviews != [])
+                            if (owner?.reviews == [] && owner!.reviews!.isEmpty )
                               Text(
                                 'Отзывы',
                                 style: CustomTextStyle.black_17_w800,

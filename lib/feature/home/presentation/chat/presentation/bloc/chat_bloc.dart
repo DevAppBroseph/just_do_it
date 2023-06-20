@@ -18,6 +18,7 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(InitialState()) {
     on<StartSocket>(_startSocket);
+    on<UpdateProfileChatEvent>(_updateprofile);
     on<GetListMessage>(_getListMessage);
     on<GetListMessageItem>(_getListMessageItem);
     on<SendMessageEvent>(_sendMessage);
@@ -55,8 +56,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     add(RefreshTripEvent());
   }
 
-  void _getListMessageItem(
-      GetListMessageItem event, Emitter<ChatState> emit) async {
+  void _getListMessageItem(GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
 
     messages.clear();
@@ -85,21 +85,25 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(UpdateListMessageState(idChat));
   }
 
+  void _updateprofile(UpdateProfileChatEvent eventBloc, Emitter<ChatState> emit) async {
+    emit(UpdateProfileChatState());
+  }
+
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
-    
+
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
         try {
+          add(UpdateProfileChatEvent());
           log('message new $event');
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
-           
             var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
+
             if (showPersonChat) {
-              
               MessageDialogs().showMessage(
                 newMessage.fromName,
                 newMessage.message,
@@ -122,10 +126,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           add(GetListMessage());
           add(RefreshPersonChatEvent());
           
-        } catch (e) {}
+        } catch (e) {
+          log('$e');
+        }
       },
       onDone: () {
-   
         _tryConnect();
       },
       cancelOnError: false,
@@ -133,15 +138,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _tryConnect() async {
-
     await Future.delayed(const Duration(milliseconds: 1800));
     emit(ReconnectState());
   }
 
-  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
-      emit(UpdateListMessageItemState(chatId: idChat));
+  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) => emit(UpdateListMessageItemState(chatId: idChat));
 
-  void _refreshPersonChat(
-          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
-      emit(UpdateListPersonState());
+  void _refreshPersonChat(RefreshPersonChatEvent event, Emitter<ChatState> emit) => emit(UpdateListPersonState());
 }

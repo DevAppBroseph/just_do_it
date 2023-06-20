@@ -196,6 +196,9 @@ class Repository {
   }
 
   Future<bool> addReviewsDetail(String? access, int? receiver, String? message, int? mark) async {
+    log(receiver.toString());
+    log(mark.toString());
+     log(message.toString());
     final response = await dio.post(
       '$server/ranking/',
       data: {
@@ -208,6 +211,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
+   
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }

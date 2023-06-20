@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -539,6 +540,7 @@ class _TaskViewState extends State<TaskView> {
               ScaleButton(
                 bound: 0.02,
                 onTap: () {
+                  log(widget.selectTask.owner.toString());
                   widget.openOwner(widget.selectTask.owner);
                 },
                 child: Container(
@@ -675,9 +677,11 @@ class _TaskViewState extends State<TaskView> {
                     } else {
                       if (user?.docInfo == '' || user?.docInfo == null) {
                         if (widget.fromFav) {
-                          BlocProvider.of<repf.ReplyFromFavBloc>(context).add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
+                          BlocProvider.of<repf.ReplyFromFavBloc>(context)
+                              .add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
                         } else {
-                          BlocProvider.of<rep.ReplyBloc>(context).add(rep.OpenSlidingPanelEvent(selectTask: selectTask));
+                          BlocProvider.of<rep.ReplyBloc>(context)
+                              .add(rep.OpenSlidingPanelEvent(selectTask: selectTask));
                         }
                       } else {
                         if (widget.fromFav) {
@@ -967,7 +971,12 @@ class _TaskViewState extends State<TaskView> {
                             user?.id == widget.selectTask.owner?.id) {
                           if (widget.selectTask.asCustomer!) {
                             return SizedBox(
-                              height:  widget.selectTask.answers[index].owner!.firstname!.length +  widget.selectTask.answers[index].owner!.lastname!.length > 16?230.h: 205.h,
+                              height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                          widget.selectTask.answers[index].owner!.lastname!.length >
+                                      16  ||
+                                        widget.selectTask.answers[index].description!.length > 40
+                                  ? 240.h
+                                  : 220.h,
                               child: Padding(
                                 padding: EdgeInsets.only(top: 15.h),
                                 child: ScaleButton(
@@ -1016,59 +1025,102 @@ class _TaskViewState extends State<TaskView> {
                                                     child: Row(
                                                       children: [
                                                         SizedBox(
-                                                          width: 150.w,
-                                                          child: Text(
-                                                            '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                            softWrap: true,
+                                                          width: 180.w,
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                                style: CustomTextStyle.black_15_w600_171716,
+                                                                text:
+                                                                    '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                children: [
+                                                                  WidgetSpan(
+                                                                    child: SizedBox(
+                                                                      width: 10.w,
+                                                                    ),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(bottom: 3.h),
+                                                                      child: SvgPicture.asset('assets/icons/star.svg'),
+                                                                    ),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: SizedBox(width: 4.w),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(bottom: 1.h),
+                                                                      child: Text(
+                                                                        widget.selectTask.answers[index].owner
+                                                                                    ?.ranking ==
+                                                                                null
+                                                                            ? '0'
+                                                                            : widget.selectTask.answers[index].owner!
+                                                                                .ranking
+                                                                                .toString(),
+                                                                        style: CustomTextStyle.black_13_w500_171716,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ]),
                                                           ),
                                                         ),
                                                         const Spacer(),
-                                                        if (widget.selectTask.currency?.name == null &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Евро' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
+                                                        Text(
+                                                          'до',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
                                                   SizedBox(height: 6.h),
                                                   Row(
                                                     children: [
-                                                      SvgPicture.asset('assets/icons/star.svg'),
-                                                      SizedBox(width: 4.w),
+                                                      const Spacer(),
+                                                      if (widget.selectTask.currency?.name == null &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Евро' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
                                                       Text(
-                                                        widget.selectTask.answers[index].owner?.ranking == null
-                                                            ? '0'
-                                                            : widget.selectTask.answers[index].owner!.ranking
-                                                                .toString(),
-                                                        style: CustomTextStyle.black_13_w500_171716,
+                                                        'Выполнено заданий:',
+                                                        style: CustomTextStyle.grey_12_w400,
                                                       ),
+                                                      SizedBox(width: 4.w),
+                                                      if (widget.selectTask.answers[index].owner != null)
+                                                        Text(
+                                                          widget.selectTask.answers[index].owner!.countOrdersComplete
+                                                              .toString(),
+                                                          style: CustomTextStyle.black_12_w400,
+                                                        ),
                                                     ],
                                                   ),
                                                 ],
@@ -1152,7 +1204,7 @@ class _TaskViewState extends State<TaskView> {
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.w700),
+                                                      fontWeight: FontWeight.w500),
                                                 ),
                                               ),
                                             ),
@@ -1521,7 +1573,7 @@ class _TaskViewState extends State<TaskView> {
                                       ),
                                       SizedBox(height: 15.h),
                                       RatingBar.builder(
-                                        initialRating: 3,
+                                        initialRating: 0,
                                         minRating: 0,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
@@ -1538,6 +1590,9 @@ class _TaskViewState extends State<TaskView> {
                                       SizedBox(height: 30.h),
                                       CustomButton(
                                         onTap: () {
+                                          // if (user?.id == widget.selectTask.owner?.lastReviews?.reviewerDetails.id) {
+                                          //   CustomAlert().showMessage('Вы уже оставляли отзыв', context);
+                                          // } else {
                                           int rating = 0;
                                           if (reviewRating == 0.0) {
                                             rating = 0;
@@ -1572,10 +1627,11 @@ class _TaskViewState extends State<TaskView> {
                                           if (reviewRating == 5.0) {
                                             rating = 10;
                                           }
+                                          print(descriptionTextController1.text);
                                           Repository().addReviewsDetail(
                                               BlocProvider.of<ProfileBloc>(context).access,
                                               widget.selectTask.answers[index].owner?.id,
-                                              descriptionTextController.text,
+                                              descriptionTextController1.text,
                                               rating);
                                         },
                                         btnColor: ColorStyles.yellowFFD70A,
@@ -1764,42 +1820,46 @@ class _TaskViewState extends State<TaskView> {
                                       SizedBox(height: 30.h),
                                       CustomButton(
                                         onTap: () {
-                                          int rating = 0;
-                                          if (reviewRating == 0.0) {
-                                            rating = 0;
+                                          if (user?.id == widget.selectTask.owner?.lastReviews?.reviewerDetails.id) {
+                                            CustomAlert().showMessage('Вы уже оставляли отзыв', context);
+                                          } else {
+                                            int rating = 0;
+                                            if (reviewRating == 0.0) {
+                                              rating = 0;
+                                            }
+                                            if (reviewRating == 0.5) {
+                                              rating = 1;
+                                            }
+                                            if (reviewRating == 1.0) {
+                                              rating = 2;
+                                            }
+                                            if (reviewRating == 1.5) {
+                                              rating = 3;
+                                            }
+                                            if (reviewRating == 2.0) {
+                                              rating = 4;
+                                            }
+                                            if (reviewRating == 2.5) {
+                                              rating = 5;
+                                            }
+                                            if (reviewRating == 3.0) {
+                                              rating = 6;
+                                            }
+                                            if (reviewRating == 3.5) {
+                                              rating = 7;
+                                            }
+                                            if (reviewRating == 4.0) {
+                                              rating = 8;
+                                            }
+                                            if (reviewRating == 4.5) {
+                                              rating = 9;
+                                            }
+                                            if (reviewRating == 5.0) {
+                                              rating = 10;
+                                            }
+                                            Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                                                widget.selectTask.owner?.id, descriptionTextController2.text, rating);
                                           }
-                                          if (reviewRating == 0.5) {
-                                            rating = 1;
-                                          }
-                                          if (reviewRating == 1.0) {
-                                            rating = 2;
-                                          }
-                                          if (reviewRating == 1.5) {
-                                            rating = 3;
-                                          }
-                                          if (reviewRating == 2.0) {
-                                            rating = 4;
-                                          }
-                                          if (reviewRating == 2.5) {
-                                            rating = 5;
-                                          }
-                                          if (reviewRating == 3.0) {
-                                            rating = 6;
-                                          }
-                                          if (reviewRating == 3.5) {
-                                            rating = 7;
-                                          }
-                                          if (reviewRating == 4.0) {
-                                            rating = 8;
-                                          }
-                                          if (reviewRating == 4.5) {
-                                            rating = 9;
-                                          }
-                                          if (reviewRating == 5.0) {
-                                            rating = 10;
-                                          }
-                                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                                              widget.selectTask.owner?.id, descriptionTextController.text, rating);
                                         },
                                         btnColor: ColorStyles.yellowFFD70A,
                                         textLabel: Text(
@@ -1992,42 +2052,46 @@ class _TaskViewState extends State<TaskView> {
                                     SizedBox(height: 30.h),
                                     CustomButton(
                                       onTap: () {
-                                        int rating = 0;
-                                        if (reviewRating == 0.0) {
-                                          rating = 0;
+                                        if (user?.id == widget.selectTask.owner?.lastReviews?.reviewerDetails.id) {
+                                          CustomAlert().showMessage('Вы уже оставляли отзыв', context);
+                                        } else {
+                                          int rating = 0;
+                                          if (reviewRating == 0.0) {
+                                            rating = 0;
+                                          }
+                                          if (reviewRating == 0.5) {
+                                            rating = 1;
+                                          }
+                                          if (reviewRating == 1.0) {
+                                            rating = 2;
+                                          }
+                                          if (reviewRating == 1.5) {
+                                            rating = 3;
+                                          }
+                                          if (reviewRating == 2.0) {
+                                            rating = 4;
+                                          }
+                                          if (reviewRating == 2.5) {
+                                            rating = 5;
+                                          }
+                                          if (reviewRating == 3.0) {
+                                            rating = 6;
+                                          }
+                                          if (reviewRating == 3.5) {
+                                            rating = 7;
+                                          }
+                                          if (reviewRating == 4.0) {
+                                            rating = 8;
+                                          }
+                                          if (reviewRating == 4.5) {
+                                            rating = 9;
+                                          }
+                                          if (reviewRating == 5.0) {
+                                            rating = 10;
+                                          }
+                                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                                              widget.selectTask.owner?.id, descriptionTextController3.text, rating);
                                         }
-                                        if (reviewRating == 0.5) {
-                                          rating = 1;
-                                        }
-                                        if (reviewRating == 1.0) {
-                                          rating = 2;
-                                        }
-                                        if (reviewRating == 1.5) {
-                                          rating = 3;
-                                        }
-                                        if (reviewRating == 2.0) {
-                                          rating = 4;
-                                        }
-                                        if (reviewRating == 2.5) {
-                                          rating = 5;
-                                        }
-                                        if (reviewRating == 3.0) {
-                                          rating = 6;
-                                        }
-                                        if (reviewRating == 3.5) {
-                                          rating = 7;
-                                        }
-                                        if (reviewRating == 4.0) {
-                                          rating = 8;
-                                        }
-                                        if (reviewRating == 4.5) {
-                                          rating = 9;
-                                        }
-                                        if (reviewRating == 5.0) {
-                                          rating = 10;
-                                        }
-                                        Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                                            widget.selectTask.owner?.id, descriptionTextController.text, rating);
                                       },
                                       btnColor: ColorStyles.yellowFFD70A,
                                       textLabel: Text(
@@ -2040,7 +2104,12 @@ class _TaskViewState extends State<TaskView> {
                               }
                             } else {
                               return SizedBox(
-                                height: widget.selectTask.answers[index].owner!.firstname!.length +  widget.selectTask.answers[index].owner!.lastname!.length > 16?230.h: 205.h,
+                                height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                widget.selectTask.answers[index].owner!.lastname!.length >
+                                            16 ||
+                                        widget.selectTask.answers[index].description!.length > 40
+                                    ? 240.h
+                                    : 220.h,
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 15.h),
                                   child: ScaleButton(
@@ -2089,59 +2158,103 @@ class _TaskViewState extends State<TaskView> {
                                                       child: Row(
                                                         children: [
                                                           SizedBox(
-                                                            width: 150.w,
-                                                            child: Text(
-                                                              '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                              softWrap: true,
+                                                            width: 180.w,
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                  text:
+                                                                      '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                  children: [
+                                                                    WidgetSpan(
+                                                                      child: SizedBox(
+                                                                        width: 10.w,
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Padding(
+                                                                        padding: EdgeInsets.only(bottom: 3.h),
+                                                                        child:
+                                                                            SvgPicture.asset('assets/icons/star.svg'),
+                                                                      ),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: SizedBox(width: 4.w),
+                                                                    ),
+                                                                    WidgetSpan(
+                                                                      child: Padding(
+                                                                        padding: EdgeInsets.only(bottom: 1.h),
+                                                                        child: Text(
+                                                                          widget.selectTask.answers[index].owner
+                                                                                      ?.ranking ==
+                                                                                  null
+                                                                              ? '0'
+                                                                              : widget.selectTask.answers[index].owner!
+                                                                                  .ranking
+                                                                                  .toString(),
+                                                                          style: CustomTextStyle.black_13_w500_171716,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ]),
                                                             ),
                                                           ),
                                                           const Spacer(),
-                                                          if (widget.selectTask.currency?.name == null &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Евро' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
+                                                          Text(
+                                                            'до',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
                                                     SizedBox(height: 6.h),
                                                     Row(
                                                       children: [
-                                                        SvgPicture.asset('assets/icons/star.svg'),
-                                                        SizedBox(width: 4.w),
+                                                        const Spacer(),
+                                                        if (widget.selectTask.currency?.name == null &&
+                                                            widget.selectTask.answers[index].price != null)
+                                                          Text(
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
+                                                        if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                            widget.selectTask.answers[index].price != null)
+                                                          Text(
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
+                                                        if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                            widget.selectTask.answers[index].price != null)
+                                                          Text(
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
+                                                        if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                            widget.selectTask.answers[index].price != null)
+                                                          Text(
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
+                                                        if (widget.selectTask.currency?.name == 'Евро' &&
+                                                            widget.selectTask.answers[index].price != null)
+                                                          Text(
+                                                            'до ${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                            style: CustomTextStyle.black_15_w600_171716,
+                                                          ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
                                                         Text(
-                                                          widget.selectTask.answers[index].owner?.ranking == null
-                                                              ? '0'
-                                                              : widget.selectTask.answers[index].owner!.ranking
-                                                                  .toString(),
-                                                          style: CustomTextStyle.black_13_w500_171716,
+                                                          'Выполнено заданий:',
+                                                          style: CustomTextStyle.grey_12_w400,
                                                         ),
+                                                        SizedBox(width: 4.w),
+                                                        if (widget.selectTask.answers[index].owner != null)
+                                                          Text(
+                                                            widget.selectTask.answers[index].owner!.countOrdersComplete
+                                                                .toString(),
+                                                            style: CustomTextStyle.black_12_w400,
+                                                          ),
                                                       ],
                                                     ),
                                                   ],
@@ -2159,7 +2272,7 @@ class _TaskViewState extends State<TaskView> {
                                               child: Text(
                                                 widget.selectTask.answers[index].description!,
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
+                                                maxLines: 2,
                                                 style: CustomTextStyle.black_12_w400_292D32,
                                               ),
                                             ),
@@ -2223,7 +2336,7 @@ class _TaskViewState extends State<TaskView> {
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 12.sp,
-                                                        fontWeight: FontWeight.w700),
+                                                        fontWeight: FontWeight.w500),
                                                   ),
                                                 ),
                                               ),

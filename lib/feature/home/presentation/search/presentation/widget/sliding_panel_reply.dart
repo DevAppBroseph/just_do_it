@@ -131,7 +131,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
   }
 
   Widget panel(BuildContext context) {
-    double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
+        double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Material(
@@ -153,7 +153,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        mainFilter(heightKeyBoard),
+                        mainFilter(),
                       ],
                     ),
                   ),
@@ -218,11 +218,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   SizedBox(height: 30.h),
                 ],
               ),
-              if (heightKeyBoard > MediaQuery.of(context).size.height / 3)
+              if (bottomInsets > MediaQuery.of(context).size.height / 4)
                 Positioned(
-                  bottom: heightKeyBoard,
+                  bottom: bottomInsets,
                   child: Container(
-                    height: 60.h,
+                    height: 50.h,
                     width: MediaQuery.of(context).size.width,
                     color: Colors.grey[200],
                     child: Row(
@@ -231,7 +231,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(200.h));
+                            context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(637.h));
                           },
                           child: Text(
                             'Готово',
@@ -249,7 +249,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     );
   }
 
-  Widget mainFilter(double heightKeyBoard) {
+  Widget mainFilter() {
     String date = '';
     if (startDate == null && endDate == null) {
     } else {
@@ -323,7 +323,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       height: 50.h,
                       enabled: false,
                       onTap: () {},
-                      fillColor: Colors.grey[200],
+                     
                       textEditingController: typeDocumentController,
                       contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                     ),
@@ -361,7 +361,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 ),
               ),
               if (additionalInfo) additionalInfoWidget(),
-              SizedBox(height: heightKeyBoard / 2),
+         
             ],
           ),
         ),
@@ -417,7 +417,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  // scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
                 });
               },
               width: docType != 'Resident_ID'
@@ -512,10 +512,12 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
           CustomTextField(
             hintText: 'Место выдачи',
             onTap: () {
-              Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
-              });
+              // Future.delayed(const Duration(milliseconds: 300), () {
+              //   scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+              // });
+              context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(720.h));
             },
+            actionButton: false,
             focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_14_w400,
             formatters: [
@@ -696,7 +698,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
       serialDocumentController.text = '';
       numberDocumentController.text = '';
       whoGiveDocumentController.text = '';
-      dateDocumentController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+      dateDocumentController.text =  '';
     }
 
     final start = dateDocumentController.text.split('.');
@@ -706,6 +708,6 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     }
 
     final end = whoGiveDocumentController.text.split('.');
-    if (end.isNotEmpty) {}
+    if (end.isNotEmpty) {}  
   }
 }

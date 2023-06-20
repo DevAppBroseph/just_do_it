@@ -106,7 +106,7 @@ class Owner {
       }
     }
     return Owner(
-      lastReviews: json['last_review'],
+      lastReviews: json['last_review'] == null ? null : ReviewsDetail.fromJson(json['last_review']),
       id: json["id"],
       firstname: json["firstname"],
       lastname: json["lastname"],
