@@ -21,13 +21,21 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/services/language/main_config_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(  EasyLocalization(
+        supportedLocales: MainConfigApp.languages
+            .map((e) => Locale(e.langCode, e.langCountryCode))
+            .toList(),
+        path: 'assets/translations',
+        fallbackLocale: const Locale('ru', 'Ru'),
+        child: const MyApp(),
+      ),);
 }
 
 class MyApp extends StatelessWidget {
@@ -60,9 +68,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoute.home,
             onGenerateRoute: AppRoute.onGenerateRoute,
-            // localizationsDelegates: context.localizationDelegates,
-            // supportedLocales: context.supportedLocales,
-            // locale: context.locale,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
           ),
         );
       },

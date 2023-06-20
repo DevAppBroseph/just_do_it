@@ -4,8 +4,8 @@ class MainConfigApp {
   static String fontSegoe = 'SegoeUI';
 
   static List<Language> languages = [
-    Language(langCode: 'en', langName: 'English', langCountryCode: 'US'),
     Language(langCode: 'ru', langName: 'Russian', langCountryCode: 'RU'),
+    Language(langCode: 'en', langName: 'English', langCountryCode: 'US'),
   ];
 }
 

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -679,7 +680,7 @@ class _WelcomPageState extends State<WelcomPage> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Посмотреть как:',
+                                    'see_how'.tr(),
                                     style: CustomTextStyle.black_18_w800,
                                   ),
                                 
