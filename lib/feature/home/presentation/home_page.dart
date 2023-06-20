@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
               },
               builder: (context, snapshot) {
                 if (snapshot is LoadProfileState) {
-                  // return const CupertinoActivityIndicator();
+                  return const CupertinoActivityIndicator();
                 }
                 return PageView(
                   controller: pageController,

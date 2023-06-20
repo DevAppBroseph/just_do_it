@@ -42,7 +42,8 @@ class _RatingPageState extends State<RatingPage> {
             data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(
               children: [
-                header(reviews!),
+                if(reviews != null)
+                header(reviews),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -63,9 +64,12 @@ class _RatingPageState extends State<RatingPage> {
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: reviews.reviewsDetail.length,
+                          itemCount: reviews?.reviewsDetail.length,
                           itemBuilder: ((context, index) {
-                            return itemComment(reviews.reviewsDetail[index]);
+                            if(reviews != null) {
+                              return itemComment(reviews.reviewsDetail[index]);
+                            }
+                            return null;
                           }),
 
                           //TODO Эта логика для сервера
