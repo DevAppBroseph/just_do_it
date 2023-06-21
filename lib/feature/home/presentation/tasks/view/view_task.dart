@@ -2341,7 +2341,7 @@ class _TaskViewState extends State<TaskView> {
                                 );
                               }
                             } else {
-                              if (widget.selectTask.asCustomer == true) {
+                              if (widget.selectTask.asCustomer == true || widget.selectTask.answers[index].owner?.id == user?.id) {
                                 return SizedBox(
                                   height: widget.selectTask.answers[index].owner!.firstname!.length +
                                                   widget.selectTask.answers[index].owner!.lastname!.length >
@@ -2761,7 +2761,7 @@ class _TaskViewState extends State<TaskView> {
                                                     onTap: () async {},
                                                     btnColor: ColorStyles.yellowFFD70A,
                                                     textLabel: Text(
-                                                      'Вас выбрал',
+                                                      'Вас выбрали',
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 12.sp,
