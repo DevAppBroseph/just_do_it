@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +64,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           ),
                           SizedBox(width: 12.w),
                           Text(
-                            'Основная информация',
+                            'basic_information'.tr(),
                             style: CustomTextStyle.black_22_w700,
                           ),
                         ],
@@ -80,7 +81,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            hintText: 'Ваше имя',
+                            hintText: 'your_name'.tr(),
                             height: 50,
                             textEditingController: firstnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
@@ -99,7 +100,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            hintText: 'Ваша фамилия',
+                            hintText: 'your_last_name'.tr(),
                             height: 50.h,
                             textEditingController: lastnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
@@ -118,7 +119,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
-                            'Изменить E-mail',
+                            'edit_email'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                         ),
@@ -127,7 +128,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
                             readOnly: true,
-                            hintText: 'Номер телефона',
+                            hintText: 'phone_number'.tr(),
                             height: 50.h,
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
@@ -195,7 +196,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               ),
                               Flexible(
                                 child: Text(
-                                  'Представитель юридического лица',
+                                  'representative_of_a_legal_entity'.tr(),
                                   textAlign: TextAlign.justify,
                                   style: CustomTextStyle.black_14_w400_515150,
                                 ),
@@ -217,7 +218,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         },
                         btnColor: ColorStyles.yellowFFD70B,
                         textLabel: Text(
-                          'Сохранить',
+                          'save'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),

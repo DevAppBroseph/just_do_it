@@ -43,8 +43,7 @@ class _RatingPageState extends State<RatingPage> {
             data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(
               children: [
-                if(reviews != null)
-                header(reviews),
+                if (reviews != null) header(reviews),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -56,7 +55,7 @@ class _RatingPageState extends State<RatingPage> {
                       children: [
                         SizedBox(height: 30.h),
                         Text(
-                          'Отзывы о Вашей работе',
+                          'reviews_of_your_work'.tr(),
                           style: CustomTextStyle.black_17_w800,
                         ),
                         SizedBox(height: 30.h),
@@ -67,7 +66,7 @@ class _RatingPageState extends State<RatingPage> {
                           shrinkWrap: true,
                           itemCount: reviews?.reviewsDetail.length,
                           itemBuilder: ((context, index) {
-                            if(reviews != null) {
+                            if (reviews != null) {
                               return itemComment(reviews.reviewsDetail[index]);
                             }
                             return null;
@@ -115,7 +114,8 @@ class _RatingPageState extends State<RatingPage> {
                   ? Container(
                       height: 34.h,
                       width: 34.h,
-                      decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
+                      decoration:
+                          const BoxDecoration(color: ColorStyles.shadowFC6554),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -210,7 +210,8 @@ class _RatingPageState extends State<RatingPage> {
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
       width: width.w,
-      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
+      padding:
+          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: ColorStyles.whiteFFFFFF,
@@ -225,7 +226,8 @@ class _RatingPageState extends State<RatingPage> {
                     ? Container(
                         height: 34.h,
                         width: 34.h,
-                        decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
+                        decoration: const BoxDecoration(
+                            color: ColorStyles.shadowFC6554),
                       )
                     : CachedNetworkImage(
                         height: 34.h,
@@ -250,7 +252,6 @@ class _RatingPageState extends State<RatingPage> {
                           style: CustomTextStyle.black_14_w500_171716,
                         ),
                       ),
-                  
                       Text(
                         _textData(review.date),
                         style: CustomTextStyle.grey_12_w400,
@@ -373,7 +374,8 @@ class _RatingPageState extends State<RatingPage> {
                       Container(
                         height: 76.h,
                         width: 130.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                        padding: EdgeInsets.only(
+                            left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF3F3F3,
                           borderRadius: BorderRadius.only(
@@ -395,7 +397,9 @@ class _RatingPageState extends State<RatingPage> {
                                 SvgPicture.asset('assets/icons/star.svg'),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  reviews.ranking == null ? '-' : (reviews.ranking!).toString(),
+                                  reviews.ranking == null
+                                      ? '-'
+                                      : (reviews.ranking!).toString(),
                                   style: CustomTextStyle.black_20_w600,
                                 ),
                               ],
@@ -425,7 +429,8 @@ class _RatingPageState extends State<RatingPage> {
       ),
     );
   }
-    String _textData(String data) {
+
+  String _textData(String data) {
     String text = '';
     String day = '';
     String month = '';
@@ -438,5 +443,4 @@ class _RatingPageState extends State<RatingPage> {
     text = '$day.$month.$year';
     return text;
   }
-
 }

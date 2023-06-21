@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -76,7 +74,8 @@ class _CeateTasksState extends State<CeateTasks> {
     if (getMedia.isNotEmpty) {
       for (var element in getMedia) {
         final byte = await element.readAsBytes();
-        documents.add(ArrayImages(null, byte, file: File(element.path), type: element.path.split('.').last));
+        documents.add(ArrayImages(null, byte,
+            file: File(element.path), type: element.path.split('.').last));
       }
     }
     setState(() {});
@@ -90,7 +89,8 @@ class _CeateTasksState extends State<CeateTasks> {
     );
     if (result != null) {
       for (var element in result.files) {
-        documents.add(ArrayImages(null, element.bytes, file: File(element.path!), type: element.path?.split('.').last));
+        documents.add(ArrayImages(null, element.bytes,
+            file: File(element.path!), type: element.path?.split('.').last));
       }
       setState(() {});
     }
@@ -129,7 +129,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   ),
                   ListTile(
                     title: Text(
-                      'Документ',
+                      'document'.tr(),
                       style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
@@ -152,7 +152,8 @@ class _CeateTasksState extends State<CeateTasks> {
     selectCategory = widget.selectCategory;
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory.contains(element.description)) {
+        if (widget.selectCategory!.selectSubcategory
+            .contains(element.description)) {
           selectSubCategory = element;
         }
       }
@@ -166,8 +167,11 @@ class _CeateTasksState extends State<CeateTasks> {
 
   @override
   Widget build(BuildContext context) {
-     user = BlocProvider.of<ProfileBloc>(context).user;
-    if ((widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 4) && proverka == true) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
+    if ((widget.currentPage == 2 ||
+            widget.currentPage == 1 ||
+            widget.currentPage == 4) &&
+        proverka == true) {
       if (widget.customer == false) {
         type = 2;
         state = true;
@@ -196,7 +200,8 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600),
+                                curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -232,17 +237,25 @@ class _CeateTasksState extends State<CeateTasks> {
                       children: [
                         AnimatedAlign(
                           duration: const Duration(milliseconds: 100),
-                          alignment: type == 1 ? Alignment.centerLeft : Alignment.centerRight,
+                          alignment: type == 1
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
                           child: Container(
                             height: 40.h,
                             width: widthTabBarItem,
                             decoration: BoxDecoration(
                               color: ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
-                                topLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                bottomLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                topRight: state ? Radius.circular(20.r) : Radius.zero,
-                                bottomRight: state ? Radius.circular(20.r) : Radius.zero,
+                                topLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                bottomLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                topRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
+                                bottomRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
                               ),
                             ),
                           ),
@@ -270,7 +283,9 @@ class _CeateTasksState extends State<CeateTasks> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('as_a_customer'.tr(), style: CustomTextStyle.black_14_w400_171716),
+                                    child: Text('as_a_customer'.tr(),
+                                        style: CustomTextStyle
+                                            .black_14_w400_171716),
                                   ),
                                 ),
                               ),
@@ -298,7 +313,8 @@ class _CeateTasksState extends State<CeateTasks> {
                                   child: Center(
                                     child: Text(
                                       'as_an_executor'.tr(),
-                                      style: CustomTextStyle.black_14_w400_171716,
+                                      style:
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                 ),
@@ -364,7 +380,8 @@ class _CeateTasksState extends State<CeateTasks> {
                 ),
                 SizedBox(height: 20.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
+                  padding:
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -402,23 +419,32 @@ class _CeateTasksState extends State<CeateTasks> {
                           error += '\n- валюту';
                           errorsFlag = true;
                         }
-                        coastMaxController.text = coastMaxController.text.replaceAll(' ', '');
-                        coastMinController.text = coastMinController.text.replaceAll(' ', '');
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-                            error += '\n- минимальный бюджет должен быть меньше максимального';
+                        coastMaxController.text =
+                            coastMaxController.text.replaceAll(' ', '');
+                        coastMinController.text =
+                            coastMinController.text.replaceAll(' ', '');
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) >
+                              int.parse(coastMaxController.text)) {
+                            error +=
+                                '\n- минимальный бюджет должен быть меньше максимального';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
-                            error += '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                            error +=
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty &&
+                            coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
-                            error += '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                            error +=
+                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
                             errorsFlag = true;
                           }
                         }
@@ -460,13 +486,18 @@ class _CeateTasksState extends State<CeateTasks> {
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
-                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateStart:
+                                DateFormat('yyyy-MM-dd').format(startDate!),
                             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
-                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+                              coastMinController.text.isEmpty
+                                  ? '0'
+                                  : coastMinController.text,
                             ),
                             priceTo: int.parse(
-                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+                              coastMaxController.text.isEmpty
+                                  ? '0'
+                                  : coastMaxController.text,
                             ),
                             regions: regions,
                             countries: country,
@@ -479,19 +510,28 @@ class _CeateTasksState extends State<CeateTasks> {
                             coast: '',
                             currency: currency,
                           );
-                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository().createTask(profileBloc.access!, newTask);
+                          BlocProvider.of<ProfileBloc>(context)
+                              .add(UpdateProfileEvent(user));
+                          final profileBloc =
+                              BlocProvider.of<ProfileBloc>(context);
+                          bool res = await Repository()
+                              .createTask(profileBloc.access!, newTask);
                           if (widget.currentPage == 6) {
                             if (res) Navigator.of(context).pop();
                           }
 
-                          if (widget.currentPage == 1 || widget.currentPage == 2) {
+                          if (widget.currentPage == 1 ||
+                              widget.currentPage == 2) {
                             if (res) Navigator.of(context).pop();
-                            if (res) Navigator.of(context).pop(!widget.customer);
+                            if (res) {
+                              Navigator.of(context).pop(!widget.customer);
+                            }
                           }
-                          if (widget.currentPage == 3 || widget.currentPage == 4) {
-                            if (res) Navigator.of(context).pop(!widget.customer);
+                          if (widget.currentPage == 3 ||
+                              widget.currentPage == 4) {
+                            if (res) {
+                              Navigator.of(context).pop(!widget.customer);
+                            }
                           }
 
                           Loader.hide();
@@ -509,7 +549,10 @@ class _CeateTasksState extends State<CeateTasks> {
                           } else {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return TaskAdditional(title: 'Открыты', asCustomer: widget.customer, scoreTrue: true);
+                                return TaskAdditional(
+                                    title: 'Открыты',
+                                    asCustomer: widget.customer,
+                                    scoreTrue: true);
                               }),
                             );
                           }
@@ -549,7 +592,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
                       page == 0
-                          ? 'Далее'
+                          ? 'further'.tr()
                           : widget.customer
                               ? 'Создать заказ'
                               : 'Создать оффер',

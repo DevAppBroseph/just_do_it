@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +61,6 @@ class _MainAuthPageState extends State<AuthPage> {
         } else if (current is ResetPasswordErrorState) {
           CustomAlert().showMessage('Пользователь не найден', context);
         } else if (current is SignInSuccessState) {
-          
           BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
@@ -128,7 +127,7 @@ class _MainAuthPageState extends State<AuthPage> {
                           }
                         },
                         textLabel: Text(
-                          forgotPassword ? 'Отправить' : 'Войти',
+                          forgotPassword ? 'send'.tr() : 'sign_in'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                         btnColor: ColorStyles.yellowFFD70A,
@@ -146,7 +145,7 @@ class _MainAuthPageState extends State<AuthPage> {
                           }
                         },
                         textLabel: Text(
-                          forgotPassword ? 'Назад' : 'Регистрация',
+                          forgotPassword ? 'back'.tr() : 'registration'.tr(),
                           style: CustomTextStyle.black_16_w600_515150,
                         ),
                         btnColor: ColorStyles.greyE0E6EE,
@@ -168,12 +167,12 @@ class _MainAuthPageState extends State<AuthPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Вход',
+          'entrance'.tr(),
           style: CustomTextStyle.black_22_w700,
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: 'Телефон или E-mail',
+          hintText: 'phone_or_mail'.tr(),
           height: 50.h,
           focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
@@ -186,7 +185,7 @@ class _MainAuthPageState extends State<AuthPage> {
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: 'Пароль',
+          hintText: 'password'.tr(),
           height: 50.h,
           focusNode: focusNodePassword,
           obscureText: !visiblePassword,
@@ -226,7 +225,7 @@ class _MainAuthPageState extends State<AuthPage> {
                 });
               },
               child: Text(
-                'Забыли пароль?',
+                '${'forgot_your_password'.tr()}?',
                 style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
@@ -244,14 +243,14 @@ class _MainAuthPageState extends State<AuthPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'Восстановление доступа',
+              'restoring_access'.tr(),
               style: CustomTextStyle.black_22_w700,
             ),
           ],
         ),
         SizedBox(height: 18.h),
         CustomTextField(
-          hintText: 'Телефон или E-mail',
+          hintText: 'phone_or_mail'.tr(),
           height: 50.h,
           focusNode: focusNodeResetLogin,
           textEditingController: loginController,
@@ -263,7 +262,7 @@ class _MainAuthPageState extends State<AuthPage> {
         SizedBox(
           height: 85.h,
           child: Text(
-            'Для сброса пароля, введите номер телефона\nили E-mail, который был указан при регистрации.',
+            'to_reset_the_password_enter_the_phone_number_or_mail'.tr(),
             style: CustomTextStyle.black_14_w400_515150,
           ),
         )

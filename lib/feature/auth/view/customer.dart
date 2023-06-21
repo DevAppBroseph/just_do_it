@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
@@ -267,7 +267,7 @@ class _CustomerState extends State<Customer> {
 
                   if (passwordController.text.isEmpty ||
                       repeatPasswordController.text.isEmpty) {
-                    error += '\n- пароль';
+                    error += '\n- ${'password'.tr()}';
                     errorsFlag = true;
                   }
 
@@ -276,7 +276,7 @@ class _CustomerState extends State<Customer> {
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
-                    error += '\n- регион';
+                    error += '\n- ${'region'.tr().toLowerCase()}';
                     errorsFlag = true;
                   }
                   bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
@@ -386,7 +386,7 @@ class _CustomerState extends State<Customer> {
                       ? ColorStyles.yellowFFD70A
                       : ColorStyles.greyE0E6EE,
               textLabel: Text(
-                page == 0 ? 'Далее' : 'Зарегистрироваться',
+                page == 0 ? 'further'.tr() : 'register'.tr(),
                 style: CustomTextStyle.black_16_w600_171716,
               ),
             ),
@@ -402,7 +402,7 @@ class _CustomerState extends State<Customer> {
               },
               btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
-                'Назад',
+                'back'.tr(),
                 style: CustomTextStyle.black_16_w600_515150,
               ),
             ),
@@ -422,7 +422,7 @@ class _CustomerState extends State<Customer> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: 'Ваше имя*',
+          hintText: '${'your_name'.tr()}*',
           focusNode: focusNodeName,
           hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
@@ -442,7 +442,7 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: 'Ваша фамилия*',
+          hintText: '${'your_last_name'.tr()}*',
           focusNode: focusNodeLastName,
           hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
@@ -464,7 +464,7 @@ class _CustomerState extends State<Customer> {
         Row(
           children: [
             Text(
-              'Ваш пол',
+              'your_gender'.tr(),
               style: CustomTextStyle.black_14_w400_171716,
             ),
             const Spacer(),
@@ -477,7 +477,7 @@ class _CustomerState extends State<Customer> {
                 });
               },
               child: CustomCircleRadioButtonItem(
-                label: 'Муж.',
+                label: 'male'.tr(),
                 value: 0,
                 groupValue: groupValue,
               ),
@@ -492,7 +492,7 @@ class _CustomerState extends State<Customer> {
                 });
               },
               child: CustomCircleRadioButtonItem(
-                label: 'Жен.',
+                label: 'female'.tr(),
                 value: 1,
                 groupValue: groupValue,
               ),
@@ -501,7 +501,7 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 30.h),
         CustomTextField(
-          hintText: 'Номер телефона*',
+          hintText: '${'phone_number'.tr()}*',
           hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePhone,
@@ -564,7 +564,7 @@ class _CustomerState extends State<Customer> {
         GestureDetector(
           onTap: _selectImage,
           child: CustomTextField(
-            hintText: 'Добавить фото',
+            hintText: 'add_a_photo'.tr(),
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
@@ -661,7 +661,7 @@ class _CustomerState extends State<Customer> {
           ),
         SizedBox(height: 10.h),
         Text(
-          '* - обязательные поля для заполнения',
+          '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
           style: CustomTextStyle.black_14_w400_515150,
         ),
@@ -685,7 +685,7 @@ class _CustomerState extends State<Customer> {
               child: GestureDetector(
                 onTap: () {},
                 child: Text(
-                  'Согласен на обработку персональных данных и с пользовательским соглашением',
+                  'agree_to_the_processing'.tr(),
                   style: CustomTextStyle.black_14_w400_515150
                       .copyWith(fontSize: 14.sp)
                       .copyWith(decoration: TextDecoration.underline),
@@ -712,7 +712,7 @@ class _CustomerState extends State<Customer> {
       shrinkWrap: true,
       children: [
         CustomTextField(
-          hintText: 'Пароль*',
+          hintText: '${'password'.tr()}*',
           hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword1,
@@ -753,7 +753,7 @@ class _CustomerState extends State<Customer> {
         ),
         SizedBox(height: 16.h),
         CustomTextField(
-          hintText: 'Повторите пароль*',
+          hintText: '${'repeat_the_password'.tr()}*',
           hintStyle: CustomTextStyle.grey_14_w400,
           height: 50.h,
           focusNode: focusNodePassword2,
@@ -807,7 +807,7 @@ class _CustomerState extends State<Customer> {
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страна*',
+            hintText: '${'country'.tr()}*',
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
@@ -839,7 +839,7 @@ class _CustomerState extends State<Customer> {
             }
           },
           child: CustomTextField(
-            hintText: 'Регион*',
+            hintText: '${'region'.tr()}*',
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
@@ -867,14 +867,14 @@ class _CustomerState extends State<Customer> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Документ',
+            'document'.tr(),
           ),
           child: Stack(
             key: key1,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Документ',
+                hintText: 'document'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 enabled: false,
@@ -917,7 +917,7 @@ class _CustomerState extends State<Customer> {
         if (additionalInfo) additionalInfoWidget(),
         SizedBox(height: 10.h),
         Text(
-          '* - обязательные поля для заполнения',
+          '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
           style: CustomTextStyle.black_14_w400_515150,
         ),
@@ -939,7 +939,7 @@ class _CustomerState extends State<Customer> {
             ),
             Flexible(
               child: Text(
-                'Представитель юридического лица',
+                'representative_of_a_legal_entity'.tr(),
                 textAlign: TextAlign.justify,
                 style: CustomTextStyle.black_14_w400_515150,
               ),

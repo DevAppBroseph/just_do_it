@@ -1,5 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -306,27 +305,27 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                     children: [
                       if (widget.selectTask?.currency?.name == null)
                         Text(
-                          'Бюджет от ',
+                          '${'budget_from'.tr()} ',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Российский рубль')
                         Text(
-                          'Бюджет от ₽',
+                          '${'budget_from'.tr()} ₽',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Доллар США')
                         Text(
-                          'Бюджет от \$',
+                          '${'budget_from'.tr()} \$',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Евро')
                         Text(
-                          'Бюджет от €',
+                          '${'budget_from'.tr()} €',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Дирхам')
                         Text(
-                          'Бюджет от AED',
+                          '${'budget_from'.tr()} AED',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       SizedBox(height: 3.h),

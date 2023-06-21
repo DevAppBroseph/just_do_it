@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
@@ -6,6 +7,8 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ContactUs extends StatefulWidget {
+  const ContactUs({super.key});
+
   @override
   State<ContactUs> createState() => _ContactUsState();
 }
@@ -46,7 +49,7 @@ class _ContactUsState extends State<ContactUs> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Связаться с нами',
+                              'contact_us'.tr(),
                               style: CustomTextStyle.black_22_w700,
                             ),
                           ],
@@ -61,7 +64,7 @@ class _ContactUsState extends State<ContactUs> {
                   child: CustomTextField(
                     height: 50.h,
                     width: 327.w,
-                    hintText: 'Контактный E-mail',
+                    hintText: 'contact_email'.tr(),
                     textEditingController: controllerEmail,
                     fillColor: ColorStyles.greyF9F9F9,
                     contentPadding: EdgeInsets.all(18.h),
@@ -73,10 +76,8 @@ class _ContactUsState extends State<ContactUs> {
                   child: CustomTextField(
                     height: 50.h,
                     width: 327.w,
-                    hintText: 'Тема обращения',
-                     formatters: [
-                            UpperEveryTextInputFormatter()
-                          ],
+                    hintText: 'subject_appeal'.tr(),
+                    formatters: [UpperEveryTextInputFormatter()],
                     textEditingController: controllerTheme,
                     fillColor: ColorStyles.greyF9F9F9,
                     contentPadding: EdgeInsets.all(18.h),
@@ -95,10 +96,8 @@ class _ContactUsState extends State<ContactUs> {
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: CustomTextField(
-                          hintText: 'Ваше сообщение',
-                          formatters: [
-                            UpperEveryTextInputFormatter()
-                          ],
+                          hintText: 'your_message'.tr(),
+                          formatters: [UpperEveryTextInputFormatter()],
                           textEditingController: controllerMessage,
                           fillColor: ColorStyles.greyF9F9F9,
                           contentPadding: EdgeInsets.all(18.h),
@@ -115,7 +114,7 @@ class _ContactUsState extends State<ContactUs> {
                     onTap: () {},
                     btnColor: ColorStyles.yellowFFD70B,
                     textLabel: Text(
-                      'Отправить',
+                      'send'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),

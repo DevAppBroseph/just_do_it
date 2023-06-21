@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
@@ -31,7 +30,8 @@ import 'package:url_launcher/url_launcher.dart';
 class ContractorProfile extends StatefulWidget {
   double padding;
   Function() callBackFlag;
-  ContractorProfile({super.key, required this.padding, required this.callBackFlag});
+  ContractorProfile(
+      {super.key, required this.padding, required this.callBackFlag});
 
   @override
   State<ContractorProfile> createState() => _ContractorProfileState();
@@ -58,7 +58,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     for (int i = 0; i < listCategories.length; i++) {
       for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description == user!.activitiesInfo?[j].description) {
+        if (listCategories[i].description ==
+            user!.activitiesInfo?[j].description) {
           typeCategories.add(listCategories[i].description!);
           activityIndexes.add(user!.activitiesInfo![j].id!);
         }
@@ -74,7 +75,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
     for (var element in user!.images!) {
       photos.add(
         ArrayImages(
-          element.linkUrl!.contains(server) ? element.linkUrl : server + element.linkUrl!,
+          element.linkUrl!.contains(server)
+              ? element.linkUrl
+              : server + element.linkUrl!,
           null,
           id: element.id,
         ),
@@ -87,7 +90,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }
@@ -103,7 +108,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync(), file: file, type: file.path.split('.').last));
+        files.add(ArrayImages(null, file.readAsBytesSync(),
+            file: file, type: file.path.split('.').last));
       }
       for (var element in files) {
         if (photos.length < 10) {
@@ -141,7 +147,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
   Widget build(BuildContext context) {
     Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
 
-    return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        buildWhen: (previous, current) {
       Loader.hide();
       if (current is UpdateProfileTaskState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
@@ -160,7 +167,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
             if (focusNode.hasFocus) {
               focusNode.unfocus();
               user!.copyWith(activity: experienceController.text);
-              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(UpdateProfileEvent(user));
             }
           },
           child: ListView(
@@ -181,7 +189,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(right: 10.w, left: 24.w, top: 23.h, bottom: 5.h),
+                          padding: EdgeInsets.only(
+                              right: 10.w, left: 24.w, top: 23.h, bottom: 5.h),
                           child: SizedBox(
                             height: 100.h,
                             child: Row(
@@ -195,10 +204,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     children: [
                                       GestureDetector(
                                         onTap: () async {
-                                          var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                          var image = await ImagePicker()
+                                              .pickImage(
+                                                  source: ImageSource.gallery);
                                           if (image != null) {
-                                            BlocProvider.of<ProfileBloc>(context).add(
-                                              UpdateProfilePhotoEvent(photo: image),
+                                            BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .add(
+                                              UpdateProfilePhotoEvent(
+                                                  photo: image),
                                             );
                                           }
                                         },
@@ -209,16 +223,22 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   ? Container(
                                                       height: 60.h,
                                                       width: 60.h,
-                                                      padding: EdgeInsets.all(10.h),
-                                                      decoration: const BoxDecoration(
-                                                        color: ColorStyles.shadowFC6554,
+                                                      padding:
+                                                          EdgeInsets.all(10.h),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: ColorStyles
+                                                            .shadowFC6554,
                                                       ),
-                                                      child: Image.asset('assets/images/camera.png'),
+                                                      child: Image.asset(
+                                                          'assets/images/camera.png'),
                                                     )
                                                   : CachedNetworkImage(
-                                                      imageUrl: user!.photoLink!.contains(server)
+                                                      imageUrl: user!.photoLink!
+                                                              .contains(server)
                                                           ? user!.photoLink!
-                                                          : server + user!.photoLink!,
+                                                          : server +
+                                                              user!.photoLink!,
                                                       fit: BoxFit.cover,
                                                     )),
                                         ),
@@ -230,9 +250,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             onTap: () {
                                               user!.photo = null;
                                               user!.photoLink = null;
-                                              BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                              BlocProvider.of<ProfileBloc>(context).add(
-                                                UpdateProfilePhotoEvent(photo: null),
+                                              BlocProvider.of<ProfileBloc>(
+                                                      context)
+                                                  .setUser(user);
+                                              BlocProvider.of<ProfileBloc>(
+                                                      context)
+                                                  .add(
+                                                UpdateProfilePhotoEvent(
+                                                    photo: null),
                                               );
                                               setState(() {});
                                             },
@@ -240,8 +265,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               height: 20.h,
                                               width: 20.h,
                                               decoration: BoxDecoration(
-                                                boxShadow: const [BoxShadow(color: Colors.black)],
-                                                borderRadius: BorderRadius.circular(100.r),
+                                                boxShadow: const [
+                                                  BoxShadow(color: Colors.black)
+                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        100.r),
                                                 color: Colors.white,
                                               ),
                                               child: Center(
@@ -264,13 +293,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       top: 25.h,
                                     ),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Column(
                                           children: [
                                             Text(
                                               '${user!.firstname ?? ''}\n${user!.lastname ?? ''}',
-                                              style: CustomTextStyle.black_18_w800,
+                                              style:
+                                                  CustomTextStyle.black_18_w800,
                                               softWrap: true,
                                             ),
                                           ],
@@ -278,8 +309,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         const Spacer(),
                                         GestureDetector(
                                           onTap: () async {
-                                            final code = await FirebaseDynamicLinksService()
-                                                .shareUserProfile(int.parse(user!.id.toString()));
+                                            final code =
+                                                await FirebaseDynamicLinksService()
+                                                    .shareUserProfile(int.parse(
+                                                        user!.id.toString()));
                                             Share.share(code.toString());
                                           },
                                           child: SvgPicture.asset(
@@ -295,14 +328,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             ),
                           ),
                         ),
-                        BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-                          var reviews = BlocProvider.of<RatingBloc>(context).reviews;
+                        BlocBuilder<RatingBloc, RatingState>(
+                            builder: (context, snapshot) {
+                          var reviews =
+                              BlocProvider.of<RatingBloc>(context).reviews;
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(AppRoute.score);
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoute.score);
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 0.5.h),
@@ -313,7 +349,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         padding: EdgeInsets.only(bottom: 2.8.h),
                                         child: ScaleButton(
                                           onTap: () {
-                                            Navigator.of(context).pushNamed(AppRoute.score);
+                                            Navigator.of(context)
+                                                .pushNamed(AppRoute.score);
                                           },
                                           bound: 0.02,
                                           child: Container(
@@ -321,12 +358,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             width: 70.h,
                                             decoration: BoxDecoration(
                                               color: ColorStyles.greyEAECEE,
-                                              borderRadius: BorderRadius.circular(30.r),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.r),
                                             ),
                                             child: Center(
                                               child: Text(
                                                 'grades'.tr(),
-                                                style: CustomTextStyle.purple_12_w400,
+                                                style: CustomTextStyle
+                                                    .purple_12_w400,
                                               ),
                                             ),
                                           ),
@@ -337,55 +376,79 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       ),
                                       Row(
                                         children: [
-                                          BlocBuilder<ScoreBloc, ScoreState>(buildWhen: (previous, current) {
-                                            if (user!.balance! == proverkaBalance) {
+                                          BlocBuilder<ScoreBloc, ScoreState>(
+                                              buildWhen: (previous, current) {
+                                            if (user!.balance! ==
+                                                proverkaBalance) {
                                               return false;
                                             }
                                             return true;
                                           }, builder: (context, state) {
                                             if (state is ScoreLoaded) {
-                                              Future.delayed(const Duration(milliseconds: 500), () {
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500), () {
                                                 widget.callBackFlag();
                                               });
                                               proverkaBalance = user!.balance!;
                                               final levels = state.levels;
-                                              if (user!.balance! < levels![0].mustCoins!) {
+                                              if (user!.balance! <
+                                                  levels![0].mustCoins!) {
                                                 return CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                  progressIndicatorBuilder:
+                                                      (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
                                                   },
-                                                  imageUrl: '${levels[0].bwImage}',
+                                                  imageUrl:
+                                                      '${levels[0].bwImage}',
                                                   height: 30.h,
                                                   width: 30.w,
                                                 );
                                               }
-                                              for (int i = 0; i < levels.length; i++) {
-                                                if (levels[i + 1].mustCoins == null) {
+                                              for (int i = 0;
+                                                  i < levels.length;
+                                                  i++) {
+                                                if (levels[i + 1].mustCoins ==
+                                                    null) {
                                                   return CachedNetworkImage(
-                                                    progressIndicatorBuilder: (context, url, progress) {
+                                                    progressIndicatorBuilder:
+                                                        (context, url,
+                                                            progress) {
                                                       return const CupertinoActivityIndicator();
                                                     },
-                                                    imageUrl: '${levels[i].image}',
+                                                    imageUrl:
+                                                        '${levels[i].image}',
                                                     height: 30.h,
                                                     width: 30.w,
                                                   );
                                                 } else {
-                                                  if (user!.balance! >= levels[i].mustCoins! &&
-                                                      user!.balance! < levels[i + 1].mustCoins!) {
+                                                  if (user!.balance! >=
+                                                          levels[i]
+                                                              .mustCoins! &&
+                                                      user!.balance! <
+                                                          levels[i + 1]
+                                                              .mustCoins!) {
                                                     return CachedNetworkImage(
-                                                      progressIndicatorBuilder: (context, url, progress) {
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                              progress) {
                                                         return const CupertinoActivityIndicator();
                                                       },
-                                                      imageUrl: '${levels[i].image}',
+                                                      imageUrl:
+                                                          '${levels[i].image}',
                                                       height: 30.h,
                                                       width: 30.w,
                                                     );
-                                                  } else if (user!.balance! >= levels.last.mustCoins!) {
+                                                  } else if (user!.balance! >=
+                                                      levels.last.mustCoins!) {
                                                     return CachedNetworkImage(
-                                                      progressIndicatorBuilder: (context, url, progress) {
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                              progress) {
                                                         return const CupertinoActivityIndicator();
                                                       },
-                                                      imageUrl: '${levels.last.image}',
+                                                      imageUrl:
+                                                          '${levels.last.image}',
                                                       height: 30.h,
                                                       width: 30.w,
                                                     );
@@ -402,7 +465,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             padding: EdgeInsets.only(top: 2.h),
                                             child: Text(
                                               user!.balance.toString(),
-                                              style: CustomTextStyle.purple_15_w600,
+                                              style: CustomTextStyle
+                                                  .purple_15_w600,
                                             ),
                                           ),
                                         ],
@@ -416,7 +480,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoute.rating);
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -425,23 +490,28 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 7.5.h),
                                       child: ScaleButton(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(AppRoute.rating);
+                                          Navigator.of(context)
+                                              .pushNamed(AppRoute.rating);
                                         },
                                         bound: 0.02,
                                         child: Container(
                                           height: 25.h,
                                           width: 90.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(30.r),
+                                            color: ColorStyles.yellowFFCA0D
+                                                .withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(30.r),
                                           ),
                                           child: Center(
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 Text(
                                                   'rating'.tr(),
-                                                  style: CustomTextStyle.gold_12_w400,
+                                                  style: CustomTextStyle
+                                                      .gold_12_w400,
                                                 ),
                                                 SizedBox(width: 3.h),
                                                 Row(
@@ -468,8 +538,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 4.h),
                                       child: SizedBox(
                                         child: Text(
-                                          reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
-                                          style: CustomTextStyle.gold_16_w600_171716,
+                                          reviews?.ranking == null
+                                              ? '3.4'
+                                              : reviews!.ranking!.toString(),
+                                          style: CustomTextStyle
+                                              .gold_16_w600_171716,
                                         ),
                                       ),
                                     ),
@@ -481,7 +554,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(AppRoute.rating);
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoute.rating);
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -490,20 +564,24 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 12.h),
                                       child: ScaleButton(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(AppRoute.rating);
+                                          Navigator.of(context)
+                                              .pushNamed(AppRoute.rating);
                                         },
                                         bound: 0.02,
                                         child: Container(
                                           height: 25.h,
                                           width: 75.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(30.r),
+                                            color: ColorStyles.blue336FEE
+                                                .withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(30.r),
                                           ),
                                           child: Center(
                                             child: Text(
                                               'reviews'.tr(),
-                                              style: CustomTextStyle.blue_12_w400,
+                                              style:
+                                                  CustomTextStyle.blue_12_w400,
                                             ),
                                           ),
                                         ),
@@ -515,8 +593,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         child: Text(
                                           reviews?.reviewsDetail == null
                                               ? ''
-                                              : reviews!.reviewsDetail.length.toString(),
-                                          style: CustomTextStyle.blue_16_w600_171716,
+                                              : reviews!.reviewsDetail.length
+                                                  .toString(),
+                                          style: CustomTextStyle
+                                              .blue_16_w600_171716,
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
@@ -539,7 +619,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               Text(
                                 user?.countOrdersCreateAsCustomer == null
                                     ? '0'
-                                    : user!.countOrdersCreateAsCustomer.toString(),
+                                    : user!.countOrdersCreateAsCustomer
+                                        .toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],
@@ -554,7 +635,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
-                                user?.countOrderComplete == null ? '0' : user!.countOrderComplete.toString(),
+                                user?.countOrderComplete == null
+                                    ? '0'
+                                    : user!.countOrderComplete.toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],
@@ -586,7 +669,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editBasicInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -603,11 +687,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'your_name'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -635,7 +721,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editBasicInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -652,11 +739,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'telephone'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -684,7 +773,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editBasicInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -701,11 +791,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'E-mail',
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -736,7 +828,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
+                padding: EdgeInsets.only(
+                    left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
                 child: Container(
                   height: 225.h,
                   width: 100.w,
@@ -756,7 +849,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editIdentityInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -773,11 +867,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'password'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -805,7 +901,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editIdentityInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -822,11 +919,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'passport_data'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -854,7 +953,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.editIdentityInfo);
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -871,11 +971,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'region'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
+                                          style: CustomTextStyle
+                                              .black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
@@ -922,7 +1024,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           onTap: _selectCV,
                           child: Container(
                             height: 50.h,
-                            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.h, vertical: 11.h),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -985,14 +1088,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             GestureDetector(
                               onTap: () {
                                 // OpenFile.open(cv!.path);
-                                launch(user!.cvLink!.contains(server) ? user!.cvLink! : server + user!.cvLink!);
+                                launch(user!.cvLink!.contains(server)
+                                    ? user!.cvLink!
+                                    : server + user!.cvLink!);
                               },
                               child: Container(
                                 height: 50.h,
                                 width: 120.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(10.r)),
                                 child: Row(
                                   children: [
@@ -1008,7 +1115,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     ),
                                     Text(
                                       'Rezume.pdf',
-                                      style: CustomTextStyle.black_11_w400_171716,
+                                      style:
+                                          CustomTextStyle.black_11_w400_171716,
                                     ),
                                   ],
                                 ),
@@ -1023,7 +1131,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   user?.cv = null;
                                   user?.cvLink = null;
                                   user?.cvType = null;
-                                  BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                  BlocProvider.of<ProfileBloc>(context)
+                                      .setUser(user);
                                   BlocProvider.of<ProfileBloc>(context).add(
                                     UpdateProfileCvEvent(file: null),
                                   );
@@ -1034,8 +1143,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   width: 15.h,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      boxShadow: const [BoxShadow(color: Colors.black)],
-                                      borderRadius: BorderRadius.circular(40.r)),
+                                      boxShadow: const [
+                                        BoxShadow(color: Colors.black)
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.circular(40.r)),
                                   child: Center(
                                     child: Icon(
                                       Icons.close,
@@ -1082,7 +1194,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               padding: EdgeInsets.only(right: 25.w),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  textStyle: CustomTextStyle.blue_14_w400_336FEE,
+                                  textStyle:
+                                      CustomTextStyle.blue_14_w400_336FEE,
                                 ),
                                 onPressed: () {
                                   showIconModalCategories(
@@ -1093,7 +1206,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
                                       for (var element in typeCategories) {
                                         activityIndexes.add(listCategories
-                                            .firstWhere((element2) => element2.description == element)
+                                            .firstWhere((element2) =>
+                                                element2.description == element)
                                             .id);
                                       }
                                       user?.copyWith(
@@ -1101,7 +1215,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         groups: [4],
                                       );
 
-                                      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .add(UpdateProfileEvent(user));
 
                                       setState(() {});
                                     },
@@ -1118,7 +1233,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         ),
                       ),
                       SizedBox(height: 6.h),
-                      if (user != null && typeCategories.isEmpty) SizedBox(height: 6.h),
+                      if (user != null && typeCategories.isEmpty)
+                        SizedBox(height: 6.h),
                       if (user != null && typeCategories.isEmpty)
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -1142,8 +1258,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             padding: EdgeInsets.only(left: 24.w, right: 18.w),
                             itemCount: typeCategories.length,
                             itemBuilder: (context, index) {
-                              var category =
-                                  listCategories.firstWhere((element) => element.description == typeCategories[index]);
+                              var category = listCategories.firstWhere(
+                                  (element) =>
+                                      element.description ==
+                                      typeCategories[index]);
 
                               return _categoryItem(category, index);
                             },
@@ -1195,7 +1313,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 padding: EdgeInsets.only(right: 10.w),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
-                                    textStyle: CustomTextStyle.blue_14_w400_336FEE,
+                                    textStyle:
+                                        CustomTextStyle.blue_14_w400_336FEE,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -1215,7 +1334,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             autocorrect: true,
                             onTap: () {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
@@ -1224,7 +1344,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             textCapitalization: TextCapitalization.sentences,
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText: "describe_your_work_experience_and_attach_images".tr(),
+                              hintText:
+                                  "describe_your_work_experience_and_attach_images"
+                                      .tr(),
                               border: InputBorder.none,
                               hintStyle: CustomTextStyle.grey_14_w400,
                             ),
@@ -1233,15 +1355,21 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             maxLines: 3,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
-                                user!.copyWith(activity: experienceController.text);
+                                user!.copyWith(
+                                    activity: experienceController.text);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileWithoutLoadingEvent(user),
                                 );
                               }
                             },
-                            inputFormatters: [LengthLimitingTextInputFormatter(250)],
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(250)
+                            ],
                             onChanged: (String value) {
-                              BlocProvider.of<ProfileBloc>(context).user!.copyWith(activity: experienceController.text);
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .user!
+                                  .copyWith(
+                                      activity: experienceController.text);
 
                               setState(() {});
                             },
@@ -1274,8 +1402,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             width: !change ? 300.w : double.infinity,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              physics:
-                                  openImages ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
+                              physics: openImages
+                                  ? const ClampingScrollPhysics()
+                                  : const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return Column(
                                   children: [
@@ -1284,9 +1413,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         onTap: () async {
                                           user!.images!.removeAt(index);
 
-                                          BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .setUser(user);
 
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(UpdateProfileEvent(user));
                                           setState(() {});
                                         },
                                         child: Padding(
@@ -1301,9 +1432,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       ),
                                     GestureDetector(
                                       onTap: () {
-                                        launch(user!.images![index].linkUrl!.contains(server)
+                                        launch(user!.images![index].linkUrl!
+                                                .contains(server)
                                             ? user!.images![index].linkUrl!
-                                            : server + user!.images![index].linkUrl!);
+                                            : server +
+                                                user!.images![index].linkUrl!);
                                       },
                                       child: SizedBox(
                                         width: 80.h,
@@ -1311,28 +1444,45 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         child: Stack(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.only(right: 5.w, left: 7.w),
+                                              padding: EdgeInsets.only(
+                                                  right: 5.w, left: 7.w),
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10.r),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
                                                 child: SizedBox(
                                                   width: 65.h,
                                                   height: 65.h,
-                                                  child: user!.images![index].byte != null
+                                                  child: user!.images![index]
+                                                              .byte !=
+                                                          null
                                                       ? Image.memory(
-                                                          user!.images![index].byte!,
+                                                          user!.images![index]
+                                                              .byte!,
                                                           width: 65.h,
                                                           height: 65.h,
                                                           fit: BoxFit.cover,
-                                                          frameBuilder:
-                                                              (context, child, frame, wasSynchronouslyLoaded) {
+                                                          frameBuilder: (context,
+                                                              child,
+                                                              frame,
+                                                              wasSynchronouslyLoaded) {
                                                             return const CupertinoActivityIndicator();
                                                           },
                                                         )
                                                       : CachedNetworkImage(
-                                                          imageUrl: user!.images![index].linkUrl!.contains(server)
-                                                              ? user!.images![index].linkUrl!
+                                                          imageUrl: user!
+                                                                  .images![
+                                                                      index]
+                                                                  .linkUrl!
+                                                                  .contains(
+                                                                      server)
+                                                              ? user!
+                                                                  .images![
+                                                                      index]
+                                                                  .linkUrl!
                                                               : '$server${user!.images![index].linkUrl}',
-                                                          progressIndicatorBuilder: (context, url, progress) {
+                                                          progressIndicatorBuilder:
+                                                              (context, url,
+                                                                  progress) {
                                                             return const CupertinoActivityIndicator();
                                                           },
                                                           width: 65.h,
@@ -1342,7 +1492,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 ),
                                               ),
                                             ),
-                                            if (index == 3 && !openImages && user!.images!.length > 4)
+                                            if (index == 3 &&
+                                                !openImages &&
+                                                user!.images!.length > 4)
                                               GestureDetector(
                                                 onTap: () {
                                                   setState(() {
@@ -1350,20 +1502,28 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   });
                                                 },
                                                 child: Padding(
-                                                  padding: EdgeInsets.only(right: 5.w, left: 7.w),
+                                                  padding: EdgeInsets.only(
+                                                      right: 5.w, left: 7.w),
                                                   child: Align(
                                                     alignment: Alignment.center,
                                                     child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(10.r),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.r),
                                                       child: Container(
                                                         width: 65.h,
                                                         height: 65.h,
-                                                        decoration: BoxDecoration(
-                                                          color: ColorStyles.black.withOpacity(0.4),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: ColorStyles
+                                                              .black
+                                                              .withOpacity(0.4),
                                                         ),
                                                         child: Center(
-                                                            child: Text('+ ${user!.images!.length - 4}',
-                                                                style: CustomTextStyle.white_16_w600)),
+                                                            child: Text(
+                                                                '+ ${user!.images!.length - 4}',
+                                                                style: CustomTextStyle
+                                                                    .white_16_w600)),
                                                       ),
                                                     ),
                                                   ),
@@ -1480,7 +1640,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: Center(
                               child: Text(
                                 user?.images?.length.toString() ?? '',
-                                style: CustomTextStyle.white_11.copyWith(fontSize: 10.sp),
+                                style: CustomTextStyle.white_11
+                                    .copyWith(fontSize: 10.sp),
                               ),
                             ),
                           ),
@@ -1495,7 +1656,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -1534,10 +1696,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
                 child: GestureDetector(
                   onTap: () async {
-                    await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                    await Repository().deleteProfile(
+                        BlocProvider.of<ProfileBloc>(context).access!);
                     BlocProvider.of<ProfileBloc>(context).setAccess(null);
                     BlocProvider.of<ProfileBloc>(context).setUser(null);
-                    Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoute.home, (route) => false);
                   },
                   child: Center(
                     child: Text(

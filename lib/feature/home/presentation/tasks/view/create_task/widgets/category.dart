@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,7 +86,7 @@ class _CategoryState extends State<Category> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Категория',
+                        'category'.tr(),
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
@@ -211,7 +212,7 @@ class _CategoryState extends State<Category> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Подкатегория',
+                        'subcategory'.tr(),
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
@@ -330,7 +331,7 @@ class _CategoryState extends State<Category> {
                   setState(() {});
                 },
                 style: CustomTextStyle.black_14_w400_171716,
-                hintText: 'Название Вашей задачи',
+                hintText: 'task_name'.tr(),
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
@@ -366,7 +367,7 @@ class _CategoryState extends State<Category> {
                   openCategory = false;
                   setState(() {});
                 },
-                hintText: 'Описание задачи',
+                hintText: 'description_task'.tr(),
                 style: CustomTextStyle.black_14_w400_171716,
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,
@@ -389,7 +390,7 @@ class _CategoryState extends State<Category> {
             onTap: () => widget.onAttach(),
             child: CustomTextField(
               fillColor: ColorStyles.greyF9F9F9,
-              hintText: 'Прикрепите фото или документ',
+              hintText: 'attach_doc'.tr(),
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               enabled: false,
@@ -453,7 +454,7 @@ class _CategoryState extends State<Category> {
                       widget.document[index].type == 'docx') {
                     file = true;
                   }
-          
+
                   if (file) {
                     return SizedBox(
                       height: 60.h,
@@ -464,7 +465,8 @@ class _CategoryState extends State<Category> {
                           GestureDetector(
                             onTap: () {
                               if (widget.document[index].file != null) {
-                                OpenFile.open(widget.document[index].file!.path);
+                                OpenFile.open(
+                                    widget.document[index].file!.path);
                               } else {
                                 launch(widget.document[index].linkUrl!
                                         .contains(server)

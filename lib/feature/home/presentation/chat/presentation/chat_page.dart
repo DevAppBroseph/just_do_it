@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
                   if (widget.onBackPressed != null) SizedBox(width: 15.w),
                   const Spacer(),
                   Text(
-                    'Сообщения',
+                    'message'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
@@ -199,12 +200,11 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               const Spacer(),
                               Text(
-                                _textData( chat.lastMsg?.time
+                                _textData(chat.lastMsg?.time
                                         ?.toUtc()
                                         .toString()
                                         .substring(0, 10) ??
-                                    '-')
-                               ,
+                                    '-'),
                                 style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -224,7 +224,8 @@ class _ChatPageState extends State<ChatPage> {
                               if (chat.lastMsg?.unread != null &&
                                   chat.lastMsg!.unread! &&
                                   (user != null &&
-                                      user.id != chat.lastMsg?.sender?.id) && chat.countUnreadMessage != 0)
+                                      user.id != chat.lastMsg?.sender?.id) &&
+                                  chat.countUnreadMessage != 0)
                                 Container(
                                   height: 15.h,
                                   width: 15.h,
@@ -265,17 +266,18 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  String _textData(String data){
+
+  String _textData(String data) {
     String text = '';
     String day = '';
     String month = '';
     String year = '';
     List<String> parts = [];
     parts = data.split('-');
-    year = parts[0].trim();   
-    day = parts[2].trim();   
+    year = parts[0].trim();
+    day = parts[2].trim();
     month = parts[1].trim();
-   
+
     text = '$day.$month.$year';
     return text;
   }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'Регистрация ',
+                          text: '${'registration'.tr()} ',
                           style: CustomTextStyle.black_22_w700,
                         ),
                         TextSpan(
@@ -131,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.transparent,
                               child: Center(
                                 child: Text(
-                                  'Заказчик',
+                                  'customer'.tr(),
                                   style: state
                                       ? CustomTextStyle.black_14_w400_171716
                                       : CustomTextStyle.white_14_w400,
@@ -166,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.transparent,
                               child: Center(
                                 child: Text(
-                                  'Исполнитель',
+                                  'executor'.tr(),
                                   style: state
                                       ? CustomTextStyle.white_14_w400
                                       : CustomTextStyle.black_14_w400_171716,
@@ -188,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: PageView(
                   controller: pageController,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: [ 
+                  children: [
                     Customer(stage),
                     Contractor(stage),
                   ],

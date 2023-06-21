@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -106,7 +106,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   ),
                   SizedBox(width: 12.w),
                   Text(
-                    'Безопасность',
+                    'security'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                 ],
@@ -194,7 +194,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 },
                 btnColor: ColorStyles.yellowFFD70B,
                 textLabel: Text(
-                  'Сохранить',
+                  'save'.tr(),
                   style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),
@@ -249,7 +249,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               Padding(
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
-                  'Новый пароль',
+                  'new_password'.tr(),
                   style: CustomTextStyle.grey_12_w400,
                 ),
               ),
@@ -315,7 +315,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               Padding(
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
-                  'Повторите пароль',
+                  'repeat_the_password'.tr(),
                   style: CustomTextStyle.grey_12_w400,
                 ),
               ),
@@ -364,7 +364,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             'Выберите страну',
           ),
           child: CustomTextField(
-            hintText: 'Страна',
+            hintText: 'country'.tr(),
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
@@ -397,7 +397,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             }
           },
           child: CustomTextField(
-            hintText: 'Регион',
+            hintText: 'region'.tr(),
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
@@ -420,14 +420,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               setState(() {});
             },
             ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-            'Документ',
+            'document'.tr(),
           ),
           child: Stack(
             key: _documentKey,
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                hintText: 'Документ',
+                hintText: 'document'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 enabled: false,

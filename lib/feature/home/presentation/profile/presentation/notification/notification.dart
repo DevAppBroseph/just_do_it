@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
@@ -13,6 +14,8 @@ class NotificationPage extends StatelessWidget {
     notifModel.Notification(title: 'У Вас новый отклик', date: '22.02.2022'),
     notifModel.Notification(title: 'У Вас новый отклик', date: '14:32'),
   ];
+
+  NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +37,12 @@ class NotificationPage extends StatelessWidget {
                       },
                       icon: SvgImg.arrowRight,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
-                      'Уведомления',
+                      'notifications'.tr(),
                       style: CustomTextStyle.black_22_w700,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(width: 12.w)
                   ],
                 ),
@@ -93,7 +96,7 @@ class NotificationPage extends StatelessWidget {
                   onTap: () {},
                   btnColor: ColorStyles.greyE0E6EE,
                   textLabel: Text(
-                    'Очистить',
+                    'clear'.tr(),
                     style: CustomTextStyle.black_16_w600_515150,
                   ),
                 ),

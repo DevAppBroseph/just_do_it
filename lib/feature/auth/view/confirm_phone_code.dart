@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,7 +149,9 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             },
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
-                              confirmCode ? 'Изменить пароль' : 'Подтвердить',
+                              confirmCode
+                                  ? 'change_password'.tr()
+                                  : 'confirm'.tr(),
                               style: CustomTextStyle.black_16_w600_171716,
                             ),
                           ),
@@ -166,7 +169,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             },
                             btnColor: ColorStyles.greyE0E6EE,
                             textLabel: Text(
-                              'Назад',
+                              'back'.tr(),
                               style: CustomTextStyle.black_16_w600_515150,
                             ),
                           ),
@@ -235,7 +238,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Подтверждение телефона ',
+                '${'confrim_phone'.tr()} ',
                 style: CustomTextStyle.black_22_w700,
               )
             ],
@@ -250,7 +253,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   textAlign: TextAlign.center,
                   text: TextSpan(children: [
                     TextSpan(
-                      text: 'Код подтверждения отправлен на\n',
+                      text: '${'code_confirm_sent'.tr()}\n',
                       style: CustomTextStyle.black_16_w400_515150,
                     ),
                     TextSpan(
@@ -292,11 +295,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Повторно отправить код ',
+                      text: '${'resend_code'.tr()} ',
                       style: CustomTextStyle.grey_16_w400,
                     ),
                     TextSpan(
-                      text: '$currentSecond сек.',
+                      text: '$currentSecond ${'sec'.tr()}.',
                       style: CustomTextStyle.black_16_w400_171716,
                     ),
                   ],
@@ -334,8 +337,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          'Придумайте новый пароль и никому\nне сообщайте его',
+                      text: 'enter_new_password'.tr(),
                       style: CustomTextStyle.black_16_w400_515150,
                     ),
                   ],
@@ -343,7 +345,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
               ),
               SizedBox(height: 40.h),
               CustomTextField(
-                hintText: 'Новый пароль',
+                hintText: 'new_password'.tr(),
                 height: 50.h,
                 obscureText: true,
                 focusNode: focusNodePassword,
@@ -354,7 +356,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
               ),
               SizedBox(height: 18.h),
               CustomTextField(
-                hintText: 'Новый пароль повторно',
+                hintText: 'new_password_repeat'.tr(),
                 height: 50.h,
                 obscureText: true,
                 focusNode: focusNodePasswordRepeat,

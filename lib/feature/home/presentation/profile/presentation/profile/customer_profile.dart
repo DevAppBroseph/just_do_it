@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +49,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
       groups: [4],
     );
 
-    experienceController.text = userFile?.activity == null ? '' : userFile!.activity!;
+    experienceController.text =
+        userFile?.activity == null ? '' : userFile!.activity!;
     for (var element in userFile!.images!) {
       photos.add(
         ArrayImages(
-          element.linkUrl!.contains(server) ? element.linkUrl : server + element.linkUrl!,
+          element.linkUrl!.contains(server)
+              ? element.linkUrl
+              : server + element.linkUrl!,
           null,
           id: element.id,
         ),
@@ -66,7 +69,9 @@ class _CustomerProfileState extends State<CustomerProfile> {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      dir = (await getExternalStorageDirectories(
+              type: StorageDirectory.downloads))
+          ?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }
@@ -82,7 +87,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync(), file: file, type: file.path.split('.').last));
+        files.add(ArrayImages(null, file.readAsBytesSync(),
+            file: file, type: file.path.split('.').last));
       }
       for (var element in files) {
         if (photos.length < 10) {
@@ -91,7 +97,9 @@ class _CustomerProfileState extends State<CustomerProfile> {
       }
       userFile?.copyWith(images: photos);
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(userFile));
-      setState(() {userFile;});
+      setState(() {
+        userFile;
+      });
     }
   }
 
@@ -140,7 +148,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(right: 10.w, left: 24.w, top: 23.h, bottom: 5.h),
+                        padding: EdgeInsets.only(
+                            right: 10.w, left: 24.w, top: 23.h, bottom: 5.h),
                         child: SizedBox(
                           height: 100.h,
                           child: Row(
@@ -152,10 +161,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                        var image = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
                                         if (image != null) {
-                                          BlocProvider.of<ProfileBloc>(context).add(
-                                            UpdateProfilePhotoEvent(photo: image),
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .add(
+                                            UpdateProfilePhotoEvent(
+                                                photo: image),
                                           );
                                         }
                                       },
@@ -166,16 +179,22 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                                 ? Container(
                                                     height: 60.h,
                                                     width: 60.h,
-                                                    padding: EdgeInsets.all(10.h),
-                                                    decoration: const BoxDecoration(
-                                                      color: ColorStyles.shadowFC6554,
+                                                    padding:
+                                                        EdgeInsets.all(10.h),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: ColorStyles
+                                                          .shadowFC6554,
                                                     ),
-                                                    child: Image.asset('assets/images/camera.png'),
+                                                    child: Image.asset(
+                                                        'assets/images/camera.png'),
                                                   )
                                                 : CachedNetworkImage(
-                                                    imageUrl: user.photoLink!.contains(server)
+                                                    imageUrl: user.photoLink!
+                                                            .contains(server)
                                                         ? user.photoLink!
-                                                        : server + user.photoLink!,
+                                                        : server +
+                                                            user.photoLink!,
                                                     fit: BoxFit.cover,
                                                   )),
                                       ),
@@ -187,9 +206,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                           onTap: () {
                                             user.photo = null;
                                             user.photoLink = null;
-                                            BlocProvider.of<ProfileBloc>(context).setUser(user);
-                                            BlocProvider.of<ProfileBloc>(context).add(
-                                              UpdateProfilePhotoEvent(photo: null),
+                                            BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .setUser(user);
+                                            BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .add(
+                                              UpdateProfilePhotoEvent(
+                                                  photo: null),
                                             );
                                             setState(() {});
                                           },
@@ -197,8 +221,11 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                             height: 20.h,
                                             width: 20.h,
                                             decoration: BoxDecoration(
-                                              boxShadow: const [BoxShadow(color: Colors.black)],
-                                              borderRadius: BorderRadius.circular(100.r),
+                                              boxShadow: const [
+                                                BoxShadow(color: Colors.black)
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(100.r),
                                               color: Colors.white,
                                             ),
                                             child: Center(
@@ -221,13 +248,15 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     top: 25.h,
                                   ),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         children: [
                                           Text(
                                             '${user.firstname ?? ''}\n${user.lastname ?? ''}',
-                                            style: CustomTextStyle.black_17_w600_171716,
+                                            style: CustomTextStyle
+                                                .black_17_w600_171716,
                                             softWrap: true,
                                           ),
                                         ],
@@ -235,8 +264,10 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                       const Spacer(),
                                       GestureDetector(
                                         onTap: () async {
-                                          final code = await FirebaseDynamicLinksService()
-                                              .shareUserProfile(int.parse(user.id.toString()));
+                                          final code =
+                                              await FirebaseDynamicLinksService()
+                                                  .shareUserProfile(int.parse(
+                                                      user.id.toString()));
                                           Share.share(code.toString());
                                         },
                                         child: SvgPicture.asset(
@@ -252,8 +283,10 @@ class _CustomerProfileState extends State<CustomerProfile> {
                           ),
                         ),
                       ),
-                      BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-                        var reviews = BlocProvider.of<RatingBloc>(context).reviews;
+                      BlocBuilder<RatingBloc, RatingState>(
+                          builder: (context, snapshot) {
+                        var reviews =
+                            BlocProvider.of<RatingBloc>(context).reviews;
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -268,7 +301,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     padding: EdgeInsets.only(bottom: 2.8.h),
                                     child: ScaleButton(
                                       onTap: () {
-                                        Navigator.of(context).pushNamed(AppRoute.score);
+                                        Navigator.of(context)
+                                            .pushNamed(AppRoute.score);
                                       },
                                       bound: 0.02,
                                       child: Container(
@@ -276,12 +310,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                         width: 70.h,
                                         decoration: BoxDecoration(
                                           color: ColorStyles.greyEAECEE,
-                                          borderRadius: BorderRadius.circular(30.r),
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
                                           child: Text(
                                             'Грейды',
-                                            style: CustomTextStyle.purple_12_w400,
+                                            style:
+                                                CustomTextStyle.purple_12_w400,
                                           ),
                                         ),
                                       ),
@@ -292,15 +328,20 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                   ),
                                   Row(
                                     children: [
-                                      BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
+                                      BlocBuilder<ScoreBloc, ScoreState>(
+                                          builder: (context, state) {
                                         if (state is ScoreLoaded) {
-                                          Future.delayed(const Duration(milliseconds: 500), () {
+                                          Future.delayed(
+                                              const Duration(milliseconds: 500),
+                                              () {
                                             widget.callBackFlag();
                                           });
                                           final levels = state.levels;
-                                          if (user.balance! < levels![0].mustCoins!) {
+                                          if (user.balance! <
+                                              levels![0].mustCoins!) {
                                             return CachedNetworkImage(
-                                              progressIndicatorBuilder: (context, url, progress) {
+                                              progressIndicatorBuilder:
+                                                  (context, url, progress) {
                                                 return const CupertinoActivityIndicator();
                                               },
                                               imageUrl: '${levels[0].bwImage}',
@@ -308,10 +349,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                               width: 30.w,
                                             );
                                           }
-                                          for (int i = 0; i < levels.length; i++) {
-                                            if (levels[i + 1].mustCoins == null) {
+                                          for (int i = 0;
+                                              i < levels.length;
+                                              i++) {
+                                            if (levels[i + 1].mustCoins ==
+                                                null) {
                                               return CachedNetworkImage(
-                                                progressIndicatorBuilder: (context, url, progress) {
+                                                progressIndicatorBuilder:
+                                                    (context, url, progress) {
                                                   return const CupertinoActivityIndicator();
                                                 },
                                                 imageUrl: '${levels[i].image}',
@@ -319,22 +364,30 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                                 width: 30.w,
                                               );
                                             } else {
-                                              if (user.balance! >= levels[i].mustCoins! &&
-                                                  user.balance! < levels[i + 1].mustCoins!) {
+                                              if (user.balance! >=
+                                                      levels[i].mustCoins! &&
+                                                  user.balance! <
+                                                      levels[i + 1]
+                                                          .mustCoins!) {
                                                 return CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                  progressIndicatorBuilder:
+                                                      (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
                                                   },
-                                                  imageUrl: '${levels[i].image}',
+                                                  imageUrl:
+                                                      '${levels[i].image}',
                                                   height: 30.h,
                                                   width: 30.w,
                                                 );
-                                              } else if (user.balance! >= levels.last.mustCoins!) {
+                                              } else if (user.balance! >=
+                                                  levels.last.mustCoins!) {
                                                 return CachedNetworkImage(
-                                                  progressIndicatorBuilder: (context, url, progress) {
+                                                  progressIndicatorBuilder:
+                                                      (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
                                                   },
-                                                  imageUrl: '${levels.last.image}',
+                                                  imageUrl:
+                                                      '${levels.last.image}',
                                                   height: 30.h,
                                                   width: 30.w,
                                                 );
@@ -364,7 +417,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushNamed(AppRoute.rating);
+                                Navigator.of(context)
+                                    .pushNamed(AppRoute.rating);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -373,23 +427,28 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     padding: EdgeInsets.only(bottom: 7.5.h),
                                     child: ScaleButton(
                                       onTap: () {
-                                        Navigator.of(context).pushNamed(AppRoute.rating);
+                                        Navigator.of(context)
+                                            .pushNamed(AppRoute.rating);
                                       },
                                       bound: 0.02,
                                       child: Container(
                                         height: 25.h,
                                         width: 90.h,
                                         decoration: BoxDecoration(
-                                          color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(30.r),
+                                          color: ColorStyles.yellowFFCA0D
+                                              .withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 'Рейтинг',
-                                                style: CustomTextStyle.gold_12_w400,
+                                                style: CustomTextStyle
+                                                    .gold_12_w400,
                                               ),
                                               SizedBox(width: 3.h),
                                               Row(
@@ -416,8 +475,11 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     padding: EdgeInsets.only(bottom: 4.h),
                                     child: SizedBox(
                                       child: Text(
-                                        reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
-                                        style: CustomTextStyle.gold_16_w600_171716,
+                                        reviews?.ranking == null
+                                            ? '3.4'
+                                            : reviews!.ranking!.toString(),
+                                        style:
+                                            CustomTextStyle.gold_16_w600_171716,
                                       ),
                                     ),
                                   ),
@@ -429,7 +491,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushNamed(AppRoute.rating);
+                                Navigator.of(context)
+                                    .pushNamed(AppRoute.rating);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -438,19 +501,22 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     padding: EdgeInsets.only(bottom: 12.h),
                                     child: ScaleButton(
                                       onTap: () {
-                                        Navigator.of(context).pushNamed(AppRoute.rating);
+                                        Navigator.of(context)
+                                            .pushNamed(AppRoute.rating);
                                       },
                                       bound: 0.02,
                                       child: Container(
                                         height: 25.h,
                                         width: 75.h,
                                         decoration: BoxDecoration(
-                                          color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(30.r),
+                                          color: ColorStyles.blue336FEE
+                                              .withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'Отзывы',
+                                            'reviews'.tr(),
                                             style: CustomTextStyle.blue_12_w400,
                                           ),
                                         ),
@@ -462,7 +528,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     child: SizedBox(
                                       child: Text(
                                         '34',
-                                        style: CustomTextStyle.blue_16_w600_171716,
+                                        style:
+                                            CustomTextStyle.blue_16_w600_171716,
                                         textAlign: TextAlign.left,
                                       ),
                                     ),
@@ -524,7 +591,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     Padding(
                       padding: EdgeInsets.only(top: 20.h, left: 20.w),
                       child: Text(
-                        'Основная информация',
+                        'basic_information'.tr(),
                         style: CustomTextStyle.black_16_w600_515150,
                       ),
                     ),
@@ -547,11 +614,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Ваше Имя',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        'your_name'.tr(),
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -596,11 +665,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Телефон',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -645,11 +716,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'E-mail',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -680,7 +753,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
+              padding: EdgeInsets.only(
+                  left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
               child: Container(
                 height: 230.h,
                 width: 100.w,
@@ -694,13 +768,14 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     Padding(
                       padding: EdgeInsets.only(top: 20.h, left: 20.w),
                       child: Text(
-                        'Безопасность',
+                        'security'.tr(),
                         style: CustomTextStyle.black_16_w600_515150,
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        Navigator.of(context)
+                            .pushNamed(AppRoute.editIdentityInfo);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -717,11 +792,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Пароль',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        'password'.tr(),
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -749,7 +826,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        Navigator.of(context)
+                            .pushNamed(AppRoute.editIdentityInfo);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -766,11 +844,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Паспортные данные',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -798,7 +878,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
+                        Navigator.of(context)
+                            .pushNamed(AppRoute.editIdentityInfo);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
@@ -815,11 +896,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Регион',
-                                        style: CustomTextStyle.black_13_w400_171716,
+                                        'region'.tr(),
+                                        style: CustomTextStyle
+                                            .black_13_w400_171716,
                                       ),
                                       SizedBox(
                                         width: 235.w,
@@ -867,18 +950,20 @@ class _CustomerProfileState extends State<CustomerProfile> {
                         child: Container(
                           height: 60.h,
                           width: 190.w,
-                          padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.h, vertical: 11.h),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
                                 height: 14.h,
                                 width: 14.h,
-                                child: SvgPicture.asset(SvgImg.documentText, color: ColorStyles.blue336FEE),
+                                child: SvgPicture.asset(SvgImg.documentText,
+                                    color: ColorStyles.blue336FEE),
                               ),
                               SizedBox(width: 9.17.w),
                               Text(
-                                'Загрузить резюме (10мб)',
+                                'upload_a_resume'.tr(),
                                 style: CustomTextStyle.blue_12_w400,
                               )
                             ],
@@ -917,15 +1002,18 @@ class _CustomerProfileState extends State<CustomerProfile> {
                           GestureDetector(
                             onTap: () {
                               // OpenFile.open(cv!.path);
-                              launch(
-                                  userFile!.cvLink!.contains(server) ? userFile!.cvLink! : server + userFile!.cvLink!);
+                              launch(userFile!.cvLink!.contains(server)
+                                  ? userFile!.cvLink!
+                                  : server + userFile!.cvLink!);
                             },
                             child: Container(
                               height: 50.h,
                               width: 50.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [BoxShadow(color: Colors.black)],
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
                                   borderRadius: BorderRadius.circular(10.r)),
                               child: Center(
                                 child: SvgPicture.asset(
@@ -944,7 +1032,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 userFile?.cv = null;
                                 userFile?.cvLink = null;
                                 userFile?.cvType = null;
-                                BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .setUser(user);
                                 BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfileCvEvent(file: null),
                                 );
@@ -955,7 +1044,9 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                 width: 15.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(40.r)),
                                 child: Center(
                                   child: Icon(
@@ -978,7 +1069,8 @@ class _CustomerProfileState extends State<CustomerProfile> {
               onTap: () {
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Container(
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -1008,10 +1100,12 @@ class _CustomerProfileState extends State<CustomerProfile> {
             SizedBox(height: 40.h),
             GestureDetector(
               onTap: () async {
-                await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                await Repository().deleteProfile(
+                    BlocProvider.of<ProfileBloc>(context).access!);
                 BlocProvider.of<ProfileBloc>(context).setAccess(null);
                 BlocProvider.of<ProfileBloc>(context).setUser(null);
-                Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
               },
               child: Center(
                 child: Text(
