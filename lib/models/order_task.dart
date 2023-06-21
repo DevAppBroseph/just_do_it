@@ -66,6 +66,7 @@ class Owner {
   int? countOrdersComplete;
   List<ReviewsDetail>? reviews;
   ReviewsDetail? lastReviews;
+  bool? hasReview;
   Owner({
     required this.id,
     required this.firstname,
@@ -78,12 +79,12 @@ class Owner {
     this.isPassportExist,
     this.countOrdersCreate,
     this.activity,
+    this.hasReview,
     this.isLiked,
     this.listPhoto = const [],
     this.countOrdersComplete,
     this.reviews,
     this.lastReviews,
-
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) {
@@ -112,6 +113,7 @@ class Owner {
       lastname: json["lastname"],
       photo: json["photo"],
       cv: json["CV"],
+      hasReview: json['has_review'],
       activities: activities,
       balance: json["balance"],
       ranking: json["ranking"],

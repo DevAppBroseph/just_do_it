@@ -416,7 +416,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                                     padding: EdgeInsets.only(bottom: 4.h),
                                     child: SizedBox(
                                       child: Text(
-                                        reviews?.ranking == null ? '3.4' : reviews!.ranking!.toString(),
+                                        reviews?.ranking == null ? '0' : reviews!.ranking!.toString(),
                                         style: CustomTextStyle.gold_16_w600_171716,
                                       ),
                                     ),

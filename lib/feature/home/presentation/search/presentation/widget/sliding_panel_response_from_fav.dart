@@ -45,7 +45,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
   bool additionalInfo = false;
-
+  FocusNode focusNodeDiscription = FocusNode();
+  FocusNode focusCoastMax = FocusNode();
   bool confirmTermsPolicy = false;
   DateTime? dateTimeStart;
   DateTime? dateTimeEnd;
@@ -99,6 +100,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
             BlocProvider.of<ResponseBlocFromFav>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
+            focusNodeDiscription.unfocus();
+            focusCoastMax.unfocus();
           }
         },
         maxHeight: heightPanel,
@@ -337,6 +340,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             width: 80.w,
                             textInputType: TextInputType.number,
                             actionButton: false,
+                            focusNode: focusCoastMax,
                             onTap: () {
                               context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
@@ -383,6 +387,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                         children: [
                           CustomTextField(
                             height: 90.h,
+                            focusNode: focusNodeDiscription,
                             width: 285.w,
                             autocorrect: true,
                             maxLines: 3,
