@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -334,7 +335,7 @@ class _RatingPageState extends State<RatingPage> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'Рейтинг',
+                    'rating'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                 ),
@@ -385,7 +386,7 @@ class _RatingPageState extends State<RatingPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Ваш рейтинг',
+                              'your_rating'.tr(),
                               style: CustomTextStyle.black_14_w400_515150,
                             ),
                             SizedBox(height: 6.h),
@@ -411,7 +412,7 @@ class _RatingPageState extends State<RatingPage> {
                     children: [
                       SizedBox(width: 24.w),
                       Text(
-                        'Вы выполнили ${reviews.reviewsDetail.length} заданий',
+                        '${'you_have_completed'.tr()} ${reviews.reviewsDetail.length} ${'taskss'.tr()}',
                         style: CustomTextStyle.black_14_w400_515150,
                       ),
                     ],

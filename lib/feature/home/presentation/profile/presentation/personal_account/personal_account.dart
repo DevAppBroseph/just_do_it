@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       ),
                       const Spacer(),
                       Text(
-                        'Личный кабинет',
+                        'personal_account'.tr(),
                         style: CustomTextStyle.black_22_w700,
                       ),
                       const Spacer(),
@@ -108,7 +109,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                'Профиль',
+                                'profile'.tr(),
                                 style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
@@ -135,7 +136,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                'Грейды',
+                                'grades'.tr(),
                                 style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),
@@ -162,7 +163,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                'Рейтинг и отзывы',
+                                'rating_and_reviews'.tr(),
                                 style: CustomTextStyle.black_18_w500_171716,
                               ),
                               const Spacer(),

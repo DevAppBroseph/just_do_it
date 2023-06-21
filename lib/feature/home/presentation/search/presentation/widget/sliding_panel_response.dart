@@ -37,6 +37,7 @@ class SlidingPanelResponse extends StatefulWidget {
 class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   double heightPanel = 637.h;
   bool slide = false;
+  FocusNode focusNode = FocusNode();
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController coastController = TextEditingController();
   TypeFilter typeFilter = TypeFilter.main;
@@ -361,7 +362,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 onTap: () {},
                 bound: 0.02,
                 child: Container(
-                  height: 150.h,
+                  height: 165.h,
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
@@ -382,7 +383,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
-                            maxLines:  3,
+                            maxLines: 3,
                             onTap: () {
                               log(bottomInsets.toString());
                               context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
@@ -391,13 +392,24 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             style: CustomTextStyle.black_14_w400_171716,
                             textEditingController: descriptionTextController,
                             fillColor: ColorStyles.greyF9F9F9,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              setState(() {});
+                            },
                             formatters: [
                               UpperEveryTextInputFormatter(),
-                                LengthLimitingTextInputFormatter(100),
+                              LengthLimitingTextInputFormatter(100),
                             ],
                             hintText: '',
                           ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${descriptionTextController.text.length}/100',
+                            style: CustomTextStyle.grey_12_w400,
+                          )
                         ],
                       ),
                     ],

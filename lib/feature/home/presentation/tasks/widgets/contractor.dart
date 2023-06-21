@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -112,7 +113,7 @@ class _ContractorState extends State<Contractor> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Все задания',
+                            'my_tasks'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -120,8 +121,8 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const OrdersCreateAsCustomerView(
-                                  title: 'Мои задания',
+                                return OrdersCreateAsCustomerView(
+                                  title: 'my_task'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -145,13 +146,13 @@ class _ContractorState extends State<Contractor> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Мои задания',
+                                            'my_task'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Созданные мной в качестве заказчика',
+                                              'created_by_me_as_a_customer'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -180,8 +181,8 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const ResponseTasksInProgressViewAsCustomer(
-                                  title: 'Выполняемые',
+                                return ResponseTasksInProgressViewAsCustomer(
+                                  title: 'performed'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -205,13 +206,13 @@ class _ContractorState extends State<Contractor> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Выполняемые',
+                                            'performed'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Задания, на которые получены отклики и подтверждение выбора исполнителя',
+                                              'tasks_for_which_responses'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -240,8 +241,8 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const ResponseTasksCompleteViewAsCustomer(
-                                  title: 'Закрытые',
+                                return  ResponseTasksCompleteViewAsCustomer(
+                                  title: 'closed'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -265,13 +266,13 @@ class _ContractorState extends State<Contractor> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Закрытые',
+                                            'closed'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Выполненные задания',
+                                              'completed_task'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -319,7 +320,7 @@ class _ContractorState extends State<Contractor> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Отклики на офферы',
+                            'responses_to_offers'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -327,8 +328,8 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const SelectedOffersAsCustomer(
-                                  title: 'Принятые офферы',
+                                return  SelectedOffersAsCustomer(
+                                  title: 'accepted_offers'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -352,13 +353,13 @@ class _ContractorState extends State<Contractor> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Принятые офферы',
+                                            'accepted_offers'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Я сделал отклик на оффер',
+                                              'i_made_a_response_to_the_offer'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -387,8 +388,8 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const FinishedOffersViewAsCustomer(
-                                  title: 'Закрытые офферы',
+                                return  FinishedOffersViewAsCustomer(
+                                  title: 'closed_offers'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -412,13 +413,13 @@ class _ContractorState extends State<Contractor> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Закрытые офферы',
+                                            'closed_offers'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Выполненные задания',
+                                              'completed_task'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -467,7 +468,7 @@ class _ContractorState extends State<Contractor> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Избранное',
+                            'favourites'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -476,7 +477,7 @@ class _ContractorState extends State<Contractor> {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return FavouriteTasks(
-                                  title: 'Избранные офферы',
+                                  title: 'selected_offers'.tr(),
                                   asCustomer: false,
                                 );
                               }),
@@ -499,7 +500,7 @@ class _ContractorState extends State<Contractor> {
                                       SizedBox(
                                         width: 235.w,
                                         child: Text(
-                                          'Офферы',
+                                          'offers'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),
@@ -532,7 +533,7 @@ class _ContractorState extends State<Contractor> {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return FavouriteCustomer(
-                                  title: 'Избранные исполнители',
+                                  title: 'selected_executors'.tr(),
                                 );
                               }),
                             );
@@ -553,7 +554,7 @@ class _ContractorState extends State<Contractor> {
                                       SizedBox(
                                         width: 235.w,
                                         child: Text(
-                                          'Исполнители',
+                                          'executors'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),
@@ -797,7 +798,7 @@ class _ContractorState extends State<Contractor> {
                 },
                 btnColor: ColorStyles.yellowFFD70A,
                 textLabel: Text(
-                  'Создать задание',
+                  'сreate_a_task'.tr(),
                   style: CustomTextStyle.black_16_w600_171716,
                 ),
               ),

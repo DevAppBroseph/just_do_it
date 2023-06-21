@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -203,12 +204,12 @@ class _CeateTasksState extends State<CeateTasks> {
                       SizedBox(width: 12.w),
                       if (widget.customer)
                         Text(
-                          'Создание задания',
+                          'creating_a_task'.tr(),
                           style: CustomTextStyle.black_22_w700,
                         ),
                       if (!widget.customer)
                         Text(
-                          'Создание оффера',
+                          'creating_an_offer'.tr(),
                           style: CustomTextStyle.black_22_w700,
                         ),
                       Text(
@@ -269,7 +270,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('Как заказчик', style: CustomTextStyle.black_14_w400_171716),
+                                    child: Text('as_a_customer'.tr(), style: CustomTextStyle.black_14_w400_171716),
                                   ),
                                 ),
                               ),
@@ -296,7 +297,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                   color: Colors.transparent,
                                   child: Center(
                                     child: Text(
-                                      'Как исполнитель',
+                                      'as_an_executor'.tr(),
                                       style: CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),

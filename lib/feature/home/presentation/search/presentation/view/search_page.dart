@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -319,7 +320,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: Row(
                           children: [
                             Text(
-                              'Все задачи',
+                              'all_tasks'.tr(),
                               style: CustomTextStyle.black_18_w800,
                             ),
                             const Spacer(),
@@ -352,7 +353,7 @@ class _SearchPageState extends State<SearchPage> {
                                             ),
                                             SizedBox(width: 4.w),
                                             Text(
-                                              'Фильтр',
+                                              'filter'.tr(),
                                               style: CustomTextStyle.black_14_w400_171716,
                                             ),
                                           ],

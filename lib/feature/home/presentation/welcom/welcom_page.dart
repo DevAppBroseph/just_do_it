@@ -48,6 +48,7 @@ class _WelcomPageState extends State<WelcomPage> {
     Language(icon: 'assets/icons/russia.svg', title: 'RU', id: 1),
     Language(icon: 'assets/images/england.png', title: 'EN', id: 2)
   ];
+  String selectLanguage = 'RU';
   Language? selectLenguage;
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
@@ -130,7 +131,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
-                                            value: listLanguage.first.title,
+                                            value: selectLanguage,
                                             icon: Padding(
                                               padding: EdgeInsets.only(left: 5.w),
                                               child: const Icon(
@@ -138,7 +139,18 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 color: ColorStyles.greyBDBDBD,
                                               ),
                                             ),
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              log(value.toString());
+                                              if (value == 'RU') {
+                                                context.setLocale(const Locale('ru', 'RU'));
+                                              }
+                                              if (value == 'EN') {
+                                                context.setLocale(const Locale('en', 'US'));
+                                              }
+                                              setState(() {
+                                                selectLanguage = value!;
+                                              });
+                                            },
                                             items: listLanguage.map<DropdownMenuItem<String>>((e) {
                                               return DropdownMenuItem<String>(
                                                   value: e.title,
@@ -151,8 +163,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                             ? Image.asset(e.icon)
                                                             : SvgPicture.asset(e.icon),
                                                       ),
-                                                      Padding( 
-                                                        padding:  EdgeInsets.only(left: 5.w),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(left: 5.w),
                                                         child: Text(e.title),
                                                       ),
                                                     ],
@@ -537,7 +549,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           Text(
-                                                            'С возвращением,',
+                                                            'welcome_back'.tr(),
                                                             style: CustomTextStyle.grey_12_w400,
                                                             overflow: TextOverflow.ellipsis,
                                                             maxLines: null,
@@ -588,7 +600,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 ),
                                                                 child: Center(
                                                                   child: Text(
-                                                                    'Грейды',
+                                                                    'grades'.tr(),
                                                                     style: CustomTextStyle.purple_12_w400,
                                                                   ),
                                                                 ),
@@ -710,7 +722,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
                                                                     Text(
-                                                                      'Рейтинг',
+                                                                      'rating'.tr(),
                                                                       style: CustomTextStyle.gold_12_w400,
                                                                     ),
                                                                     SizedBox(width: 3.w),
@@ -777,7 +789,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                               ),
                                                               child: Center(
                                                                 child: Text(
-                                                                  'Отзывы',
+                                                                  'reviews'.tr(),
                                                                   style: CustomTextStyle.blue_12_w400,
                                                                 ),
                                                               ),
@@ -864,7 +876,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'Заказчик',
+                                                      'customer'.tr(),
                                                       style: CustomTextStyle.black_15_bold,
                                                     ),
                                                     Padding(
@@ -878,7 +890,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   ],
                                                 ),
                                                 Text(
-                                                  'Размещай задания',
+                                                  'post_the_task'.tr(),
                                                   style: CustomTextStyle.grey_12_w400,
                                                 ),
                                               ],
@@ -927,7 +939,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'Исполнитель',
+                                                      'executor'.tr(),
                                                       style: CustomTextStyle.black_15_bold,
                                                     ),
                                                     Padding(
@@ -941,7 +953,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   ],
                                                 ),
                                                 Text(
-                                                  'Выполняй работу',
+                                                  'get_the_job_done'.tr(),
                                                   style: CustomTextStyle.grey_12_w400,
                                                 ),
                                               ],
@@ -995,7 +1007,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                               children: [
                                                 const Spacer(),
                                                 Text(
-                                                  'Узнай больше о проекте!',
+                                                  'find_out_more_about_the_project'.tr(),
                                                   style: CustomTextStyle.black_16_w600_171716,
                                                 ),
                                                 const Spacer(),

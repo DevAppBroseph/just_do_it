@@ -382,7 +382,6 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                       Row(
                         children: [
                           CustomTextField(
-                           
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
@@ -394,14 +393,24 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             style: CustomTextStyle.black_14_w400_171716,
                             textEditingController: descriptionTextController,
                             fillColor: ColorStyles.greyF9F9F9,
-                            
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              setState(() {});
+                            },
                             formatters: [
                               LengthLimitingTextInputFormatter(100),
                               UpperEveryTextInputFormatter(),
                             ],
                             hintText: '',
                           ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${descriptionTextController.text.length}/100',
+                            style: CustomTextStyle.grey_12_w400,
+                          )
                         ],
                       ),
                     ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -318,7 +319,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   },
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text(
-                    'Показать задания',
+                    'show_tasks'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
@@ -356,7 +357,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                         vertical: 9.0,
                                         horizontal: 12.0,
                                       ),
-                                      child: const Text('Готово')),
+                                      child: Text('done'.tr())),
                                 ),
                               ),
                             ),
@@ -408,7 +409,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               Row(
                 children: [
                   Text(
-                    'Фильтры',
+                    'filters'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
@@ -417,7 +418,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       clearFields();
                     },
                     child: Text(
-                      'Очистить',
+                      'clear'.tr(),
                       style: CustomTextStyle.red_16_w400,
                     ),
                   ),
@@ -453,7 +454,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   SizedBox(width: 2.w),
                   Text(
-                    'Задания от заказчиков',
+                    'tasks_from_the_customer'.tr(),
                     style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
                   ),
                   const Spacer(),
@@ -474,7 +475,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   SizedBox(width: 2.w),
                   Text(
-                    'Офферы от исполнителей',
+                    'offers_from_executors'.tr(),
                     style: CustomTextStyle.black_12_w400_515150.copyWith(fontSize: 12.sp),
                   ),
                 ],
@@ -502,14 +503,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Категории',
+                            'categories'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              category != null && category!.isNotEmpty ? category! : 'Категории не выбраны',
+                              category != null && category!.isNotEmpty ? category! : 'no_categories_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -550,7 +551,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Страны',
+                            'countries'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),
@@ -598,7 +599,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Даты начала и окончания',
+                            'start_and_end_dates'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),
@@ -641,7 +642,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Валюта',
+                            'currency'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                           SizedBox(height: 3.h),
@@ -650,7 +651,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             child: Text(
                               currencyString != null && currencyString!.isNotEmpty
                                   ? currencyString!
-                                  : 'Валюта не выбрана',
+                                  : 'currency_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -691,27 +692,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             if (currencyString == '' || currencyString == null)
                               Text(
-                                'Бюджет от ',
+                                '${'budget_from'.tr()} ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Российский рубль')
                               Text(
-                                'Бюджет от ₽',
+                                '${'budget_from'.tr()} ₽',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Доллар США')
                               Text(
-                                'Бюджет от \$',
+                                '${'budget_from'.tr()} \$',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Евро')
                               Text(
-                                'Бюджет от €',
+                                '${'budget_from'.tr()} €',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Дирхам')
                               Text(
-                                'Бюджет от AED',
+                                '${'budget_from'.tr()} AED',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             SizedBox(height: 3.h),
@@ -773,27 +774,27 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             if (currencyString == '' || currencyString == null)
                               Text(
-                                'Бюджет до ',
+                                '${'budget_up_to'.tr()} ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Российский рубль')
                               Text(
-                                'Бюджет до ₽',
+                                '${'budget_up_to'.tr()} ₽',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Доллар США')
                               Text(
-                                'Бюджет до \$',
+                                '${'budget_up_to'.tr()} \$',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Евро')
                               Text(
-                                'Бюджет до €',
+                                '${'budget_up_to'.tr()} €',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             if (currencyString == 'Дирхам')
                               Text(
-                                'Бюджет до AED',
+                                '${'budget_up_to'.tr()} AED',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
                             SizedBox(height: 3.h),
@@ -864,7 +865,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Ключевые слова',
+                                      'keywords'.tr(),
                                       style: CustomTextStyle.grey_14_w400,
                                     ),
                                     Row(
@@ -892,7 +893,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                             setState(() {});
                                           },
                                           contentPadding: EdgeInsets.zero,
-                                          hintText: 'Например, покупка апельсинов..',
+                                          hintText: 'for_example_buying_oranges'.tr(),
                                           fillColor: ColorStyles.greyF9F9F9,
                                           maxLines: 4,
                                           style: CustomTextStyle.black_14_w400_171716,
@@ -918,7 +919,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Паспортные данные загружены',
+                          'passport_data_uploaded'.tr(),
                           style: CustomTextStyle.black_14_w400_171716,
                         ),
                       ),
@@ -936,7 +937,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Есть резюме',
+                          'there_is_a_resume'.tr(),
                           style: CustomTextStyle.black_14_w400_171716,
                         ),
                       ),
@@ -999,7 +1000,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   ),
                   SizedBox(width: 12.h),
                   Text(
-                    'Валюта',
+                    'currency'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                 ],
@@ -1117,7 +1118,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ),
               SizedBox(width: 12.h),
               Text(
-                'Категории',
+                'categories'.tr(),
                 style: CustomTextStyle.black_22_w700,
               ),
             ],
@@ -1138,7 +1139,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               child: Row(
                 children: [
                   Text(
-                    'Все категории',
+                    'all_categories'.tr(),
                     style: CustomTextStyle.black_14_w400_171716,
                   ),
                   const Spacer(),
@@ -1315,7 +1316,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               child: Row(
                 children: [
                   Text(
-                    'Все подкатегории',
+                    'all_subcategories'.tr(),
                     style: CustomTextStyle.black_14_w400_171716,
                   ),
                   const Spacer(),
@@ -1427,7 +1428,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(width: 12.h),
             Text(
-              'Страны',
+              'countries'.tr(),
               style: CustomTextStyle.black_22_w700,
             ),
           ],
@@ -1445,7 +1446,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             child: Row(
               children: [
                 Text(
-                  'Все страны',
+                  'all_countries'.tr(),
                   style: CustomTextStyle.black_14_w400_171716,
                 ),
                 const Spacer(),
@@ -1617,7 +1618,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(width: 12.h),
             Text(
-              'Регионы',
+              'regions'.tr(),
               style: CustomTextStyle.black_22_w700,
             ),
           ],
@@ -1635,7 +1636,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             child: Row(
               children: [
                 Text(
-                  'Все регионы',
+                  'all_regions'.tr(),
                   style: CustomTextStyle.black_14_w400_171716,
                 ),
                 const Spacer(),
@@ -1792,7 +1793,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               ),
               SizedBox(width: 12.h),
               Text(
-                'Районы',
+                'districts'.tr(),
                 style: CustomTextStyle.black_22_w700,
               ),
             ],
@@ -1810,7 +1811,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               child: Row(
                 children: [
                   Text(
-                    'Все районы',
+                    'all_districts'.tr(),
                     style: CustomTextStyle.black_14_w400_171716,
                   ),
                   const Spacer(),
@@ -1949,7 +1950,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             ),
             SizedBox(width: 12.h),
             Text(
-              'Даты начала и окончания',
+              'start_and_end_dates'.tr(),
               style: CustomTextStyle.black_22_w700,
             ),
           ],
@@ -1973,14 +1974,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Дата начала',
+                      'start_date'.tr(),
                       style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       startDate != null
                           ? DateFormat('dd.MM.yyyy').format(startDate!)
-                          : 'Выберите дату начала выполнения',
+                          : 'select_the_start_date_of_the_execution'.tr(),
                       style: CustomTextStyle.black_14_w400_171716,
                     ),
                   ],
@@ -2014,12 +2015,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Дата завершения',
+                      'completion_date'.tr(),
                       style: CustomTextStyle.grey_14_w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : 'Выберите дату завершения задачи',
+                      endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : 'select_the_task_completion_date'.tr(),
                       style: CustomTextStyle.black_14_w400_171716,
                     ),
                   ],
@@ -2054,7 +2055,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
-                                  'Готово',
+                                  'done'.tr(),
                                   style: CustomTextStyle.black_15,
                                 ),
                                 onPressed: () {
