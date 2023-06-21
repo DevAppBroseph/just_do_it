@@ -209,6 +209,7 @@ class OwnerOrder {
   String? photo;
   int? countOrdersComplete;
   double? ranking;
+  bool? hasReview;
 
   OwnerOrder({
     required this.id,
@@ -216,11 +217,13 @@ class OwnerOrder {
     required this.lastname,
     required this.photo,
     this.ranking,
+    this.hasReview,
     this.countOrdersComplete,
   });
 
   factory OwnerOrder.fromJson(Map<String, dynamic> json) {
     return OwnerOrder(
+      hasReview: json['has_review'],
       ranking: json['ranking'],
       id: json['id'],
       firstname: json['firstname'],

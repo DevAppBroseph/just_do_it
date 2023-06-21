@@ -671,9 +671,7 @@ class _TaskViewState extends State<TaskView> {
                 ),
               ),
               SizedBox(height: 20.h),
-              if (user != null &&
-                  widget.canSelect &&
-                  user.id != widget.selectTask.owner?.id)
+              if (user != null && widget.canSelect && user.id != widget.selectTask.owner?.id)
                 CustomButton(
                   onTap: () async {
                     final chatBloc = BlocProvider.of<ChatBloc>(context);
@@ -957,7 +955,7 @@ class _TaskViewState extends State<TaskView> {
                     ),
                     SizedBox(height: 15.h),
                     RatingBar.builder(
-                      initialRating: 3,
+                      initialRating: 0,
                       minRating: 0,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
@@ -974,46 +972,50 @@ class _TaskViewState extends State<TaskView> {
                     SizedBox(height: 30.h),
                     CustomButton(
                       onTap: () {
-                        int rating = 0;
-                        if (reviewRating == 0.0) {
-                          rating = 0;
-                        }
-                        if (reviewRating == 0.5) {
-                          rating = 1;
-                        }
-                        if (reviewRating == 1.0) {
-                          rating = 2;
-                        }
-                        if (reviewRating == 1.5) {
-                          rating = 3;
-                        }
-                        if (reviewRating == 2.0) {
-                          rating = 4;
-                        }
-                        if (reviewRating == 2.5) {
-                          rating = 5;
-                        }
-                        if (reviewRating == 3.0) {
-                          rating = 6;
-                        }
-                        if (reviewRating == 3.5) {
-                          rating = 7;
-                        }
-                        if (reviewRating == 4.0) {
-                          rating = 8;
-                        }
-                        if (reviewRating == 4.5) {
-                          rating = 9;
-                        }
-                        if (reviewRating == 5.0) {
-                          rating = 10;
-                        }
+                        if (widget.selectTask.owner!.hasReview!) {
+                          CustomAlert().showMessage('Вы уже оставляли отзыв', context);
+                        } else {
+                          int rating = 0;
+                          if (reviewRating == 0.0) {
+                            rating = 0;
+                          }
+                          if (reviewRating == 0.5) {
+                            rating = 1;
+                          }
+                          if (reviewRating == 1.0) {
+                            rating = 2;
+                          }
+                          if (reviewRating == 1.5) {
+                            rating = 3;
+                          }
+                          if (reviewRating == 2.0) {
+                            rating = 4;
+                          }
+                          if (reviewRating == 2.5) {
+                            rating = 5;
+                          }
+                          if (reviewRating == 3.0) {
+                            rating = 6;
+                          }
+                          if (reviewRating == 3.5) {
+                            rating = 7;
+                          }
+                          if (reviewRating == 4.0) {
+                            rating = 8;
+                          }
+                          if (reviewRating == 4.5) {
+                            rating = 9;
+                          }
+                          if (reviewRating == 5.0) {
+                            rating = 10;
+                          }
 
-                        Repository().addReviewsDetail(
-                            BlocProvider.of<ProfileBloc>(context).access,
-                            widget.selectTask.owner?.id,
-                            descriptionTextController.text,
-                            rating);
+                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                              widget.selectTask.owner?.id, descriptionTextController.text, rating);
+                          context.read<TasksBloc>().add(UpdateTaskEvent());
+                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                          Navigator.pop(context);
+                        }
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
@@ -1965,53 +1967,54 @@ class _TaskViewState extends State<TaskView> {
                                       SizedBox(height: 30.h),
                                       CustomButton(
                                         onTap: () {
-                                          // if (user?.id == widget.selectTask.owner?.lastReviews?.reviewerDetails.id) {
-                                          //   CustomAlert().showMessage('Вы уже оставляли отзыв', context);
-                                          // } else {
-                                          int rating = 0;
-                                          if (reviewRating == 0.0) {
-                                            rating = 0;
+                                          if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                            CustomAlert().showMessage('Вы уже оставляли отзыв', context);
+                                          } else {
+                                            int rating = 0;
+                                            if (reviewRating == 0.0) {
+                                              rating = 0;
+                                            }
+                                            if (reviewRating == 0.5) {
+                                              rating = 1;
+                                            }
+                                            if (reviewRating == 1.0) {
+                                              rating = 2;
+                                            }
+                                            if (reviewRating == 1.5) {
+                                              rating = 3;
+                                            }
+                                            if (reviewRating == 2.0) {
+                                              rating = 4;
+                                            }
+                                            if (reviewRating == 2.5) {
+                                              rating = 5;
+                                            }
+                                            if (reviewRating == 3.0) {
+                                              rating = 6;
+                                            }
+                                            if (reviewRating == 3.5) {
+                                              rating = 7;
+                                            }
+                                            if (reviewRating == 4.0) {
+                                              rating = 8;
+                                            }
+                                            if (reviewRating == 4.5) {
+                                              rating = 9;
+                                            }
+                                            if (reviewRating == 5.0) {
+                                              rating = 10;
+                                            }
+                                            print(descriptionTextController1.text);
+
+                                            Repository().addReviewsDetail(
+                                                BlocProvider.of<ProfileBloc>(context).access,
+                                                widget.selectTask.answers[index].owner?.id,
+                                                descriptionTextController1.text,
+                                                rating);
+                                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                            Navigator.pop(context);
                                           }
-                                          if (reviewRating == 0.5) {
-                                            rating = 1;
-                                          }
-                                          if (reviewRating == 1.0) {
-                                            rating = 2;
-                                          }
-                                          if (reviewRating == 1.5) {
-                                            rating = 3;
-                                          }
-                                          if (reviewRating == 2.0) {
-                                            rating = 4;
-                                          }
-                                          if (reviewRating == 2.5) {
-                                            rating = 5;
-                                          }
-                                          if (reviewRating == 3.0) {
-                                            rating = 6;
-                                          }
-                                          if (reviewRating == 3.5) {
-                                            rating = 7;
-                                          }
-                                          if (reviewRating == 4.0) {
-                                            rating = 8;
-                                          }
-                                          if (reviewRating == 4.5) {
-                                            rating = 9;
-                                          }
-                                          if (reviewRating == 5.0) {
-                                            rating = 10;
-                                          }
-                                          print(
-                                              descriptionTextController1.text);
-                                          Repository().addReviewsDetail(
-                                              BlocProvider.of<ProfileBloc>(
-                                                      context)
-                                                  .access,
-                                              widget.selectTask.answers[index]
-                                                  .owner?.id,
-                                              descriptionTextController1.text,
-                                              rating);
                                         },
                                         btnColor: ColorStyles.yellowFFD70A,
                                         textLabel: Text(
@@ -2241,7 +2244,7 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                                         SizedBox(height: 15.h),
                                         RatingBar.builder(
-                                          initialRating: 3,
+                                          initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
                                           allowHalfRating: true,
@@ -2261,16 +2264,8 @@ class _TaskViewState extends State<TaskView> {
                                         SizedBox(height: 30.h),
                                         CustomButton(
                                           onTap: () {
-                                            if (user?.id ==
-                                                widget
-                                                    .selectTask
-                                                    .owner
-                                                    ?.lastReviews
-                                                    ?.reviewerDetails
-                                                    .id) {
-                                              CustomAlert().showMessage(
-                                                  'Вы уже оставляли отзыв',
-                                                  context);
+                                            if (widget.selectTask.owner!.hasReview!) {
+                                              CustomAlert().showMessage('Вы уже оставляли отзыв', context);
                                             } else {
                                               int rating = 0;
                                               if (reviewRating == 0.0) {
@@ -2314,6 +2309,9 @@ class _TaskViewState extends State<TaskView> {
                                                   descriptionTextController2
                                                       .text,
                                                   rating);
+                                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                              Navigator.pop(context);
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -2548,7 +2546,7 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                                         SizedBox(height: 15.h),
                                         RatingBar.builder(
-                                          initialRating: 3,
+                                          initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
                                           allowHalfRating: true,
@@ -2568,16 +2566,8 @@ class _TaskViewState extends State<TaskView> {
                                         SizedBox(height: 30.h),
                                         CustomButton(
                                           onTap: () {
-                                            if (user?.id ==
-                                                widget
-                                                    .selectTask
-                                                    .owner
-                                                    ?.lastReviews
-                                                    ?.reviewerDetails
-                                                    .id) {
-                                              CustomAlert().showMessage(
-                                                  'Вы уже оставляли отзыв',
-                                                  context);
+                                            if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                              CustomAlert().showMessage('Вы уже оставляли отзыв', context);
                                             } else {
                                               int rating = 0;
                                               if (reviewRating == 0.0) {
@@ -2621,6 +2611,9 @@ class _TaskViewState extends State<TaskView> {
                                                   descriptionTextController3
                                                       .text,
                                                   rating);
+                                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                              Navigator.pop(context);
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -2848,7 +2841,7 @@ class _TaskViewState extends State<TaskView> {
                                     ),
                                     SizedBox(height: 15.h),
                                     RatingBar.builder(
-                                      initialRating: 3,
+                                      initialRating: 0,
                                       minRating: 0,
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
@@ -2866,12 +2859,8 @@ class _TaskViewState extends State<TaskView> {
                                     SizedBox(height: 30.h),
                                     CustomButton(
                                       onTap: () {
-                                        if (user?.id ==
-                                            widget.selectTask.owner?.lastReviews
-                                                ?.reviewerDetails.id) {
-                                          CustomAlert().showMessage(
-                                              'Вы уже оставляли отзыв',
-                                              context);
+                                        if (widget.selectTask.owner!.hasReview!) {
+                                          CustomAlert().showMessage('Вы уже оставляли отзыв', context);
                                         } else {
                                           int rating = 0;
                                           if (reviewRating == 0.0) {
@@ -2907,13 +2896,11 @@ class _TaskViewState extends State<TaskView> {
                                           if (reviewRating == 5.0) {
                                             rating = 10;
                                           }
-                                          Repository().addReviewsDetail(
-                                              BlocProvider.of<ProfileBloc>(
-                                                      context)
-                                                  .access,
-                                              widget.selectTask.owner?.id,
-                                              descriptionTextController3.text,
-                                              rating);
+                                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                                              widget.selectTask.owner?.id, descriptionTextController3.text, rating);
+                                          context.read<TasksBloc>().add(UpdateTaskEvent());
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          Navigator.pop(context);
                                         }
                                       },
                                       btnColor: ColorStyles.yellowFFD70A,
@@ -2928,8 +2915,7 @@ class _TaskViewState extends State<TaskView> {
                               }
                             } else {
                               if (widget.selectTask.asCustomer == true ||
-                                  widget.selectTask.answers[index].owner?.id ==
-                                      user?.id) {
+                                  widget.selectTask.answers[index].owner?.id == user?.id) {
                                 return SizedBox(
                                   height: widget
                                                       .selectTask

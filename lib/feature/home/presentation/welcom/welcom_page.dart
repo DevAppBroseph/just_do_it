@@ -751,7 +751,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           child: SizedBox(
                                                             child: Text(
                                                               reviews?.ranking == null
-                                                                  ? '3.4'
+                                                                  ? '0'
                                                                   : reviews!.ranking!.toString(),
                                                               style: CustomTextStyle.gold_16_w600_171716,
                                                             ),

@@ -39,7 +39,8 @@ class SlidingPanelResponse extends StatefulWidget {
 class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   double heightPanel = 637.h;
   bool slide = false;
-  FocusNode focusNode = FocusNode();
+  FocusNode focusNodeDiscription = FocusNode();
+  FocusNode focusCoastMax = FocusNode();
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController coastController = TextEditingController();
   TypeFilter typeFilter = TypeFilter.main;
@@ -104,6 +105,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
             BlocProvider.of<ResponseBloc>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
+            focusNodeDiscription.unfocus();
+            focusCoastMax.unfocus();
           }
         },
         maxHeight: heightPanel,
@@ -346,6 +349,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             width: 80.w,
                             textInputType: TextInputType.number,
                             actionButton: false,
+                            focusNode: focusCoastMax,
                             onTap: () {
                               context
                                   .read<ResponseBloc>()
@@ -400,6 +404,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
+                            actionButton: false,
+                            focusNode: focusNodeDiscription,
                             maxLines: 3,
                             onTap: () {
                               log(bottomInsets.toString());

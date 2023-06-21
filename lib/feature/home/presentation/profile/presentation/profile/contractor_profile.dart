@@ -538,11 +538,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 4.h),
                                       child: SizedBox(
                                         child: Text(
-                                          reviews?.ranking == null
-                                              ? '3.4'
-                                              : reviews!.ranking!.toString(),
-                                          style: CustomTextStyle
-                                              .gold_16_w600_171716,
+                                          reviews?.ranking == null ? '0' : reviews!.ranking!.toString(),
+                                          style: CustomTextStyle.gold_16_w600_171716,
                                         ),
                                       ),
                                     ),
@@ -635,9 +632,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
-                                user?.countOrderComplete == null
-                                    ? '0'
-                                    : user!.countOrderComplete.toString(),
+                                user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],
