@@ -1229,7 +1229,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             ),
                             controller: experienceController,
                             style: CustomTextStyle.black_14_w400_515150,
-                            maxLines: 2,
+                            maxLines: 3,
                             onFieldSubmitted: (value) {
                               if (user!.activity != experienceController.text) {
                                 user!.copyWith(activity: experienceController.text);

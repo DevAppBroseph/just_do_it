@@ -20,6 +20,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/score/
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -42,7 +43,12 @@ class _WelcomPageState extends State<WelcomPage> {
   String choiceLanguage = '';
   bool searchList = false;
   List<String> searchChoose = [];
-
+  bool openLanguage = false;
+  List<Language> listLanguage = [
+    Language(icon: 'assets/icons/russia.svg', title: 'RU', id: 1),
+    Language(icon: 'assets/images/england.png', title: 'EN', id: 2)
+  ];
+  Language? selectLenguage;
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
 
@@ -110,30 +116,157 @@ class _WelcomPageState extends State<WelcomPage> {
                       children: [
                         searchList
                             ? const SizedBox()
-                            : Container(
-                                height: 36.h,
-                                width: 102.w,
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                                decoration: BoxDecoration(
-                                  color: ColorStyles.whiteFFFFFF,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset('assets/icons/russia.svg'),
-                                    const Spacer(),
-                                    Text(
-                                      'Ru',
-                                      style: CustomTextStyle.black_16_w600_171716,
-                                    ),
-                                    const Spacer(),
-                                    const Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      color: ColorStyles.greyBDBDBD,
-                                    ),
-                                  ],
+                            : SizedBox(
+                                width: 87,
+                                height: 40,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: ColorStyles.whiteFFFFFF,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton(
+                                            value: listLanguage.first.title,
+                                            icon: Padding(
+                                              padding: EdgeInsets.only(left: 5.w),
+                                              child: const Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: ColorStyles.greyBDBDBD,
+                                              ),
+                                            ),
+                                            onChanged: (value) {},
+                                            items: listLanguage.map<DropdownMenuItem<String>>((e) {
+                                              return DropdownMenuItem<String>(
+                                                  value: e.title,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 20,
+                                                        width: 25,
+                                                        child: e.title == 'EN'
+                                                            ? Image.asset(e.icon)
+                                                            : SvgPicture.asset(e.icon),
+                                                      ),
+                                                      Padding( 
+                                                        padding:  EdgeInsets.only(left: 5.w),
+                                                        child: Text(e.title),
+                                                      ),
+                                                    ],
+                                                  ));
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+                        // SizedBox(
+                        //     height: 40,
+                        //     width: 102.w,
+                        //     child: Column(
+                        //       children: [
+                        //         ScaleButton(
+                        //           onTap: () {
+                        //             setState(() {
+                        //               openLanguage = true;
+                        //             });
+                        //           },
+                        //           child: Container(
+                        //             height: 36.h,
+                        //             width: 102.w,
+                        //             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        //             decoration: BoxDecoration(
+                        //               color: ColorStyles.whiteFFFFFF,
+                        //               borderRadius: BorderRadius.circular(10.r),
+                        //             ),
+                        //             child: Row(
+                        //               children: [
+                        //                 SvgPicture.asset(listLanguage.first.icon),
+                        //                 const Spacer(),
+                        //                 Text(
+                        //                   listLanguage.first.title,
+                        //                   style: CustomTextStyle.black_16_w600_171716,
+                        //                 ),
+                        //                 const Spacer(),
+                        //                 const Icon(
+                        //                   Icons.keyboard_arrow_down_rounded,
+                        //                   color: ColorStyles.greyBDBDBD,
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+
+                        // if (openLanguage)
+                        //   AnimatedContainer(
+                        //     duration: const Duration(milliseconds: 300),
+                        //     height: openLanguage ? 50 : 0.h,
+                        //     decoration: BoxDecoration(
+                        //       color: ColorStyles.whiteFFFFFF,
+                        //       borderRadius: BorderRadius.circular(10.r),
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           color: ColorStyles.shadowFC6554,
+                        //           offset: const Offset(0, -4),
+                        //           blurRadius: 55.r,
+                        //         )
+                        //       ],
+                        //     ),
+                        //     padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
+                        //     child: Scrollbar(
+                        //       thumbVisibility: true,
+                        //       controller: _languageController,
+                        //       child: Column(
+                        //         children: listLanguage
+                        //             .map(
+                        //               (e) => Padding(
+                        //                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        //                 child: GestureDetector(
+                        //                   onTap: () {
+                        //                     if (e.id == selectLenguage?.id) {
+                        //                       selectLenguage = null;
+                        //                     } else {
+                        //                       selectLenguage = e;
+                        //                     }
+                        //                     openLanguage = false;
+
+                        //                     setState(() {});
+                        //                   },
+                        //                   child: Container(
+                        //                     color: Colors.transparent,
+                        //                     height: 20.h,
+                        //                     child: Column(
+                        //                       mainAxisAlignment: MainAxisAlignment.center,
+                        //                       children: [
+                        //                         Row(
+                        //                           children: [
+                        //                             SizedBox(
+                        //                               width: 250.w,
+                        //                               child: Text(
+                        //                                 e.title,
+                        //                                 style: CustomTextStyle.black_14_w400_515150,
+                        //                               ),
+                        //                             ),
+                        //                           ],
+                        //                         ),
+                        //                       ],
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             )
+                        //             .toList(),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //     ],
+                        //   ),
+                        // ),
                         searchList ? const SizedBox() : const Spacer(),
                         user == null
                             ? const SizedBox()
@@ -655,7 +788,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           padding: EdgeInsets.only(bottom: 4.0.h),
                                                           child: SizedBox(
                                                             child: Text(
-                                                              reviews?.reviewsDetail == null ? '' : reviews!.reviewsDetail.length.toString(),
+                                                              reviews?.reviewsDetail == null
+                                                                  ? ''
+                                                                  : reviews!.reviewsDetail.length.toString(),
                                                               style: CustomTextStyle.blue_16_w600_171716,
                                                               textAlign: TextAlign.left,
                                                             ),
@@ -683,7 +818,6 @@ class _WelcomPageState extends State<WelcomPage> {
                                     'see_how'.tr(),
                                     style: CustomTextStyle.black_18_w800,
                                   ),
-                                
                                 ],
                               ),
                             ),

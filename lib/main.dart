@@ -33,7 +33,7 @@ void main() async {
             .map((e) => Locale(e.langCode, e.langCountryCode))
             .toList(),
         path: 'assets/translations',
-        fallbackLocale: const Locale('ru', 'Ru'),
+        fallbackLocale: const Locale('ru', 'RU'),
         child: const MyApp(),
       ),);
 }

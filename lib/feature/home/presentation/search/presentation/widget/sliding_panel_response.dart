@@ -149,11 +149,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             String error = 'Укажите:';
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
-                              error += '\nСумму';
+                              error += '\n -сумму';
                               errorsFlag = true;
                             }
                             if (descriptionTextController.text.isEmpty) {
-                              error += '\nОписание';
+                              error += '\n -описание';
                               errorsFlag = true;
                             }
                             if (errorsFlag == true) {
@@ -382,7 +382,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             height: 90.h,
                             width: 285.w,
                             autocorrect: true,
-                            maxLines:  2,
+                            maxLines:  3,
                             onTap: () {
                               log(bottomInsets.toString());
                               context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
