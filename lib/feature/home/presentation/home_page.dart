@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -235,28 +236,28 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             itemBottomNavigatorBar(
                               'assets/icons/add.svg',
-                              'Создать',
+                              'create'.tr(),
                               0,
                             ),
                             itemBottomNavigatorBar(
                               'assets/icons/search.svg',
-                              'Найти',
+                              'find'.tr(),
                               1,
                             ),
                             itemBottomNavigatorBar(
                               'assets/icons/tasks.svg',
-                              'Задания',
+                              'tasks'.tr(),
                               2,
                             ),
                             itemBottomNavigatorBar(
                               'assets/icons/messages.svg',
-                              'Чат',
+                              'chat'.tr(),
                               3,
                               counderMessage: undreadMessage != 0 ? undreadMessage : null,
                             ),
                             itemBottomNavigatorBar(
                               'assets/icons/profile.svg',
-                              'Кабинет',
+                              'office'.tr(),
                               4,
                             ),
                           ],

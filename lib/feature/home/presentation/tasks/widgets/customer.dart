@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -102,7 +103,7 @@ class _CustomerState extends State<Customer> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Все задания',
+                            'my_tasks'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -110,8 +111,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const MyAnswersAsExecutorView(
-                                  title: 'Все отклики',
+                                return MyAnswersAsExecutorView(
+                                  title: 'all_responses'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -135,13 +136,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Все отклики',
+                                            'all_responses'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Задания, на которые я откликнулся',
+                                              'tasks_that_i_have_responded_to'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -171,8 +172,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const MyAnswersSelectedAsExecutorView(
-                                  title: 'Подтвержденные',
+                                return  MyAnswersSelectedAsExecutorView(
+                                  title: 'confirmed'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -196,13 +197,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Подтвержденные',
+                                            'confirmed'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Меня выбрали исполнителем',
+                                              'i_was_chosen_as_a_performer'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -232,8 +233,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const OrdersCompleteAsExecutorView(
-                                  title: 'Закрытые',
+                                return  OrdersCompleteAsExecutorView(
+                                  title: 'closed'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -257,13 +258,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Закрытые',
+                                            'closed'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Задания, которые были выполнены мной',
+                                              'tasks_that_were_completed_by_me'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -312,7 +313,7 @@ class _CustomerState extends State<Customer> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Мои офферы',
+                            'my_offers'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -320,8 +321,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const OpenOffers(
-                                  title: 'Открытые',
+                                return  OpenOffers(
+                                  title: 'open'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -345,13 +346,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Открытые',
+                                           'open'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Ждут отклика заказчика',
+                                              'waiting_for_the_customer_response'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -379,8 +380,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const SelectedOffersView(
-                                  title: 'Принятые',
+                                return  SelectedOffersView(
+                                  title: 'accepted'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -404,13 +405,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Принятые',
+                                          'accepted'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Есть отклик от заказчика',
+                                              'there_is_a_response_from_the_customer'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -440,8 +441,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const FinishedOffers(
-                                  title: 'Закрытые',
+                                return  FinishedOffers(
+                                  title: 'closed'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -465,13 +466,13 @@ class _CustomerState extends State<Customer> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Закрытые',
+                                          'closed'.tr(),
                                             style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'Сделка реализована',
+                                              'the_deal_has_been_implemented'.tr(),
                                               style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
@@ -520,7 +521,7 @@ class _CustomerState extends State<Customer> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.h, left: 20.w),
                           child: Text(
-                            'Избранное',
+                            'favourites'.tr(),
                             style: CustomTextStyle.black_16_w600_515150,
                           ),
                         ),
@@ -528,8 +529,8 @@ class _CustomerState extends State<Customer> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return const FavouriteTasks(
-                                  title: 'Избранные задачи',
+                                return  FavouriteTasks(
+                                  title: 'selected_customers'.tr(),
                                   asCustomer: true,
                                 );
                               }),
@@ -552,7 +553,7 @@ class _CustomerState extends State<Customer> {
                                       SizedBox(
                                         width: 235.w,
                                         child: Text(
-                                          'Задачи',
+                                          'tasks'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),
@@ -585,7 +586,7 @@ class _CustomerState extends State<Customer> {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return FavouriteCustomer(
-                                  title: 'Избранные заказчики',
+                                  title: 'selected_customers'.tr(),
                                 );
                               }),
                             );
@@ -606,7 +607,7 @@ class _CustomerState extends State<Customer> {
                                       SizedBox(
                                         width: 235.w,
                                         child: Text(
-                                          'Заказчики',
+                                          'customers'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),

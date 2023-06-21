@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +75,7 @@ class _ScorePageState extends State<ScorePage> {
         }
         return user?.balance != null
             ? MediaQuery(
-                data:  MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: Scaffold(
                   backgroundColor: ColorStyles.whiteFFFFFF,
                   resizeToAvoidBottomInset: false,
@@ -111,7 +112,7 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Грейды',
+                                                  'grades'.tr(),
                                                   style: CustomTextStyle.white_22_w700,
                                                 ),
                                               ],
@@ -143,7 +144,12 @@ class _ScorePageState extends State<ScorePage> {
                                                 child: Column(
                                                   children: [
                                                     AutoSizeText(
-                                                      '${user!.balance!.toString()}\nБаллов',
+                                                      user!.balance!.toString(),
+                                                      style: CustomTextStyle.white_26_w800,
+                                                      textAlign: TextAlign.end,
+                                                    ),
+                                                    AutoSizeText(
+                                                      'points'.tr(),
                                                       style: CustomTextStyle.white_26_w800,
                                                       textAlign: TextAlign.end,
                                                     ),
@@ -317,8 +323,8 @@ class _ScorePageState extends State<ScorePage> {
                                       },
                                       child: Text(
                                         page == 1
-                                            ? 'Сколько уровней я могу достичь?'
-                                            : 'Узнайте, куда можно потратить\nбаллы и как их заработать?',
+                                            ? 'how_many_levels_can_i_reach'.tr()
+                                            : 'find_out_where_you_can_spend_points_and_how_to_earn_them'.tr(),
                                         style: CustomTextStyle.white_14_w400.copyWith(
                                           decoration: TextDecoration.underline,
                                           decorationStyle: TextDecorationStyle.dashed,
@@ -467,7 +473,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[11].mustCoins!),
                                             ],
                                           ),
-                                       SizedBox(height: 10.h),
+                                          SizedBox(height: 10.h),
                                           Row(
                                             children: [
                                               firstPageItemScore(
@@ -504,7 +510,6 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[12].mustCoins!),
                                             ],
                                           ),
-                                          
                                           Row(
                                             children: [
                                               firstPageItemScore(

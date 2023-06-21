@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -324,7 +325,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                'Грейды',
+                                                'grades'.tr(),
                                                 style: CustomTextStyle.purple_12_w400,
                                               ),
                                             ),
@@ -439,7 +440,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Рейтинг',
+                                                  'rating'.tr(),
                                                   style: CustomTextStyle.gold_12_w400,
                                                 ),
                                                 SizedBox(width: 3.h),
@@ -501,7 +502,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              'Отзывы',
+                                              'reviews'.tr(),
                                               style: CustomTextStyle.blue_12_w400,
                                             ),
                                           ),
@@ -532,7 +533,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: Row(
                             children: [
                               Text(
-                                'Создано заданий:',
+                                'tasks_created'.tr(),
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
@@ -549,7 +550,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: Row(
                             children: [
                               Text(
-                                'Выполнено заданий:',
+                                'completed_tasks'.tr(),
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
@@ -579,7 +580,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       Padding(
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
                         child: Text(
-                          'Основная информация',
+                          'basic_information'.tr(),
                           style: CustomTextStyle.black_16_w600_515150,
                         ),
                       ),
@@ -605,13 +606,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Ваше Имя',
+                                          'your_name'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить имя профиля',
+                                            'change_profile_name'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -654,13 +655,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Телефон',
+                                          'telephone'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить номер телефона',
+                                            'change_phone_number'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -709,7 +710,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить электронную почту',
+                                            'change_email'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -749,7 +750,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       Padding(
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
                         child: Text(
-                          'Безопасность',
+                          'security'.tr(),
                           style: CustomTextStyle.black_16_w600_515150,
                         ),
                       ),
@@ -775,13 +776,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Пароль',
+                                          'password'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить пароль учетной записи',
+                                            'change_account_password'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -824,13 +825,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Паспортные данные',
+                                          'passport_data'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить Ваши личные данные',
+                                            'change_your_personal_data'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -873,13 +874,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Регион',
+                                          'region'.tr(),
                                           style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
-                                            'Изменить регион',
+                                            'change_the_region'.tr(),
                                             style: CustomTextStyle.grey_12_w400,
                                           ),
                                         ),
@@ -938,7 +939,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 ),
                                 SizedBox(width: 9.17.w),
                                 Text(
-                                  'Загрузить резюме (10мб)',
+                                  'upload_a_resume'.tr(),
                                   style: CustomTextStyle.blue_12_w400,
                                 ),
                                 SizedBox(
@@ -1073,7 +1074,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         child: Row(
                           children: [
                             Text(
-                              'Ваши категории',
+                              'your_categories'.tr(),
                               style: CustomTextStyle.black_16_w600_171716,
                             ),
                             const Spacer(),
@@ -1105,12 +1106,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       setState(() {});
                                     },
                                     listCategories,
-                                    'Выбор до 3х категорий*',
+                                    'selection_of_up_to_3_categories'.tr(),
                                     typeCategories,
                                   );
                                 },
                                 key: _categoryButtonKey,
-                                child: const Text('Изменить'),
+                                child: Text('change'.tr()),
                               ),
                             ),
                           ],
@@ -1122,7 +1123,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           child: Text(
-                            'Вы не выбрали ни одной категории',
+                            'you_have_not_selected_any_categories'.tr(),
                             style: CustomTextStyle.grey_14_w400,
                           ),
                         ),
@@ -1187,7 +1188,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Ваш опыт работы',
+                                'your_work_experience'.tr(),
                                 style: CustomTextStyle.black_16_w600_171716,
                               ),
                               Padding(
@@ -1201,7 +1202,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       change = true;
                                     });
                                   },
-                                  child: const Text('Изменить'),
+                                  child: Text('change'.tr()),
                                 ),
                               ),
                             ],
@@ -1223,7 +1224,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             textCapitalization: TextCapitalization.sentences,
                             focusNode: focusNode,
                             decoration: InputDecoration.collapsed(
-                              hintText: "Опишите свой опыт работы и прикрепите изображения",
+                              hintText: "describe_your_work_experience_and_attach_images".tr(),
                               border: InputBorder.none,
                               hintStyle: CustomTextStyle.grey_14_w400,
                             ),
@@ -1417,7 +1418,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: Padding(
                               padding: EdgeInsets.only(right: 10.w, top: 15),
                               child: Text(
-                                'Сохранить',
+                                'save'.tr(),
                                 style: CustomTextStyle.blue_14_w400_336FEE,
                               ),
                             ),
@@ -1457,7 +1458,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             ),
                             SizedBox(width: 9.17.w),
                             Text(
-                              'Изображения',
+                              'images'.tr(),
                               style: CustomTextStyle.blue_12_w400,
                             ),
                           ],
@@ -1514,7 +1515,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         ),
                         SizedBox(width: 12.w),
                         Text(
-                          'Выйти из аккаунта',
+                          'log_out_of_your_account'.tr(),
                           style: CustomTextStyle.black_14_w500_171716,
                         ),
                       ],
@@ -1540,7 +1541,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   },
                   child: Center(
                     child: Text(
-                      'Удалить аккаунт',
+                      'delete_account'.tr(),
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                   ),

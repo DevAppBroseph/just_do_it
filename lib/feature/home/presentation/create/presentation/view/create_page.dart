@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,9 +76,7 @@ class _CreatePageState extends State<CreatePage> {
                 height: 130.h,
                 decoration: const BoxDecoration(
                   color: ColorStyles.greyEAECEE,
-                  boxShadow: [
-                   
-                  ],
+                  boxShadow: [],
                 ),
                 child: Column(
                   children: [
@@ -91,7 +90,6 @@ class _CreatePageState extends State<CreatePage> {
                                     setState(() {
                                       searchListEnable = false;
                                       searchList = false;
-                                      
                                     });
                                   },
                                   icon: SvgImg.arrowRight,
@@ -148,7 +146,7 @@ class _CreatePageState extends State<CreatePage> {
                                       }
                                       setState(() {});
                                     },
-                                    hintText: 'Поиск',
+                                    hintText: 'search'.tr(),
                                     hintStyle: CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis),
                                     textEditingController: searchController,
                                     contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
@@ -188,7 +186,6 @@ class _CreatePageState extends State<CreatePage> {
                                     ),
                                   ],
                                 ),
-                    
                           SizedBox(width: 10.w),
                           GestureDetector(
                             onTap: () {
@@ -264,7 +261,7 @@ class _CreatePageState extends State<CreatePage> {
                                 },
                                 btnColor: ColorStyles.yellowFFD70A,
                                 textLabel: Text(
-                                  'Создать',
+                                  'create'.tr(),
                                   style: CustomTextStyle.black_16_w600_171716,
                                 ),
                               ),
@@ -288,7 +285,7 @@ class _CreatePageState extends State<CreatePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text(
-            'Что необходимо сделать?',
+            'what_needs_to_be_done'.tr(),
             style: CustomTextStyle.black_18_w800,
           ),
         ),
@@ -313,7 +310,13 @@ class _CreatePageState extends State<CreatePage> {
                     index == openCategory,
                     index,
                   ),
-                   activities[index] ==activities.last ? SizedBox(height: 20.h,):SizedBox(height: 0.h,),
+                  activities[index] == activities.last
+                      ? SizedBox(
+                          height: 20.h,
+                        )
+                      : SizedBox(
+                          height: 0.h,
+                        ),
                 ],
               );
             },
@@ -435,7 +438,7 @@ class _CreatePageState extends State<CreatePage> {
         height = 120.h;
       } else if (list.length == 2) {
         height = 80.h;
-      }else if (list.length == 1) {
+      } else if (list.length == 1) {
         height = 40.h;
       }
     } else {
@@ -497,7 +500,11 @@ class _CreatePageState extends State<CreatePage> {
         setState(() {});
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 20.w, top: activities[index].subcategory[0].description == label && label.length> 32 ? 10.h: 0.h, right: 20.w),
+        padding: EdgeInsets.only(
+            left: 20.w,
+            bottom: activities[index].subcategory[0].description == label && label.length > 32 ? 7.h : 0.h,
+            top: activities[index].subcategory[0].description == label && label.length > 32 ? 10.h : 0.h,
+            right: 20.w),
         child: Container(
           color: Colors.transparent,
           height: 40.h,
@@ -517,7 +524,6 @@ class _CreatePageState extends State<CreatePage> {
                   if (activities[index].selectSubcategory.contains(label)) const Icon(Icons.check)
                 ],
               ),
-              
             ],
           ),
         ),

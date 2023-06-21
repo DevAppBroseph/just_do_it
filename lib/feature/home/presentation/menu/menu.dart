@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class MenuPage extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'Меню',
+                    'menu'.tr(),
                     style: CustomTextStyle.black_22_w700,
                   ),
                   const Spacer(),
@@ -52,39 +53,39 @@ class MenuPage extends StatelessWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  itemMenu('assets/icons/add_circle.svg', 'Создать задание', () {
+                  itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(), () {
                     Navigator.pop(context, 'create');
                   }),
-                  itemMenu('assets/icons/search2.svg', 'Найти задания', () {
+                  itemMenu('assets/icons/search2.svg', 'find_tasks'.tr(), () {
                     Navigator.pop(context, 'search');
                   }),
-                  itemMenu('assets/icons/note.svg', 'Мои задания', () {
+                  itemMenu('assets/icons/note.svg', 'my_task'.tr(), () {
                     if (inTask) {
                       Navigator.pop(context);
                     } else {
                       Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
                     }
                   }),
-                  itemMenu('assets/icons/messages1.svg', 'Мои сообщения', () {
+                  itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(), () {
                     Navigator.pop(context, 'chat');
                   }),
-                  itemMenu('assets/icons/profile-circle.svg', 'Личный кабинет', () {
+                  itemMenu('assets/icons/profile-circle.svg', 'personal_account'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.personalAccount);
                   }),
-                  itemMenu('assets/icons/user_circle_add.svg', 'Реферальная система', () {
+                  itemMenu('assets/icons/user_circle_add.svg', 'referral_system'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.referal);
                   }),
-                  itemMenu('assets/icons/mouse.svg', 'О проекте', () {
+                  itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(), () {
                     showLoaderWrapperWhite(context);
                     Navigator.of(context).pushNamed(AppRoute.about);
                     Future.delayed(const Duration(seconds: 1), () {
                       Loader.hide();
                     });
                   }),
-                  itemMenu('assets/icons/message-favorite.svg', 'Связаться с нами', () {
+                  itemMenu('assets/icons/message-favorite.svg', 'contact_us'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.contactus);
                   }),
-                  itemMenu('assets/icons/moon.svg', 'Темный режим', () {}),
+                  itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {}),
                   SizedBox(height: 15.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,8 +106,8 @@ class MenuPage extends StatelessWidget {
                               'Ru',
                               style: CustomTextStyle.black_16_w600_171716,
                             ),
-                            Spacer(),
-                            Icon(
+                            const Spacer(),
+                            const Icon(
                               Icons.keyboard_arrow_down_rounded,
                               color: ColorStyles.greyBDBDBD,
                             ),

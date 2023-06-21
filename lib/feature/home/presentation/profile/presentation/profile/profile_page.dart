@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Профиль',
+                                  'profile'.tr(),
                                   style: CustomTextStyle.black_22_w700,
                                 ),
                               ),
@@ -210,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const Spacer(),
                   CupertinoButton(
                       child: Text(
-                        'Готово',
+                        'done'.tr(),
                         style: CustomTextStyle.black_13,
                       ),
                       onPressed: () {

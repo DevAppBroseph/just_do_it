@@ -28,14 +28,15 @@ void main() async {
   DartPluginRegistrant.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(  EasyLocalization(
-        supportedLocales: MainConfigApp.languages
-            .map((e) => Locale(e.langCode, e.langCountryCode))
-            .toList(),
-        path: 'assets/translations',
-        fallbackLocale: const Locale('ru', 'RU'),
-        child: const MyApp(),
-      ),);
+  runApp(
+    EasyLocalization(
+      supportedLocales: MainConfigApp.languages.map((e) => Locale(e.langCode, e.langCountryCode)).toList(),
+      path: 'assets/translations',
+      fallbackLocale: const Locale('ru', 'RU'),
+      startLocale: const Locale('ru', 'RU'),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

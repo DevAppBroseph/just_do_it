@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +61,7 @@ class _TasksPageState extends State<TasksPage> {
                           Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Мои задания',
+                              'my_task'.tr(),
                               style: CustomTextStyle.black_22_w700_171716,
                             ),
                           ),
@@ -109,7 +110,7 @@ class _TasksPageState extends State<TasksPage> {
                                 bottomLeft: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('Я заказчик', style: CustomTextStyle.black_14_w400_171716),
+                            child: Text('i_am_the_customer'.tr(), style: CustomTextStyle.black_14_w400_171716),
                           ),
                         ),
                         GestureDetector(
@@ -127,7 +128,7 @@ class _TasksPageState extends State<TasksPage> {
                                 bottomRight: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('Я исполнитель', style: CustomTextStyle.black_14_w400_171716),
+                            child: Text('i_am_executor'.tr(), style: CustomTextStyle.black_14_w400_171716),
                           ),
                         ),
                         const Spacer(),
