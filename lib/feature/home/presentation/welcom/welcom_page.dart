@@ -117,8 +117,8 @@ class _WelcomPageState extends State<WelcomPage> {
                         searchList
                             ? const SizedBox()
                             : SizedBox(
-                                width: 87,
-                                height: 40,
+                                width: 87.w,
+                                height: 40.h,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: ColorStyles.whiteFFFFFF,
@@ -145,8 +145,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   child: Row(
                                                     children: [
                                                       SizedBox(
-                                                        height: 20,
-                                                        width: 25,
+                                                        height: 20.h,
+                                                        width: 25.w,
                                                         child: e.title == 'EN'
                                                             ? Image.asset(e.icon)
                                                             : SvgPicture.asset(e.icon),
