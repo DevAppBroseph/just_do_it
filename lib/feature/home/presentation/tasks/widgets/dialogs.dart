@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,7 +121,7 @@ void taskMoreDialog(
                               Share.share(code.toString());
                             },
                             child: Text(
-                              'Поделиться',
+                              'share'.tr(),
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),
@@ -274,7 +275,7 @@ void taskMoreDialogForProfile(
                               Share.share(code.toString());
                             },
                             child: Text(
-                              'Поделиться',
+                              'share'.tr(),
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),

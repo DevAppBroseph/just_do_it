@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
@@ -194,7 +194,7 @@ class _EditTasksState extends State<EditTasks> {
                   ),
                   ListTile(
                     title: Text(
-                      'Документ',
+                      'document'.tr(),
                       style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
@@ -475,7 +475,11 @@ class _EditTasksState extends State<EditTasks> {
                     },
                     btnColor: ColorStyles.yellowFFD70A,
                     textLabel: Text(
-                      page == 0 ? 'Далее' : widget.task.asCustomer! ?'Редактировать задание':'Редактировать оффер',
+                      page == 0
+                          ? 'further'.tr()
+                          : widget.task.asCustomer!
+                              ? 'Редактировать задание'
+                              : 'Редактировать оффер',
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),

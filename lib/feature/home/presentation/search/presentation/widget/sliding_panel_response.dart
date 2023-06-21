@@ -1,5 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +29,8 @@ class SlidingPanelResponse extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask});
+  const SlidingPanelResponse(this.panelController,
+      {super.key, required this.selectTask});
 
   @override
   State<SlidingPanelResponse> createState() => _SlidingPanelResponseState();
@@ -83,7 +85,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
     user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     log(bottomInsets.toString());
-    return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
+    return BlocBuilder<ResponseBloc, ResponseState>(
+        buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -168,14 +171,16 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    int.parse(coastController.text
+                                        .replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Progress');
                               } else {
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    int.parse(coastController.text
+                                        .replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Selected');
                               }
@@ -183,14 +188,17 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               coastController.clear();
                               descriptionTextController.clear();
                               context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(UpdateProfileEvent(user));
                               setState(() {});
                             }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
+                          widget.selectTask!.asCustomer!
+                              ? 'Откликнуться'
+                              : 'Принять оффер',
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -239,7 +247,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
+                            context
+                                .read<ResponseBloc>()
+                                .add(OpenSlidingPanelToEvent(500.h));
                           },
                           child: Text(
                             'Готово',
@@ -307,27 +317,28 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       if (widget.selectTask?.currency?.name == null)
                         Text(
-                          'Бюджет от ',
+                          '${'budget_from'.tr()} ',
                           style: CustomTextStyle.grey_14_w400,
                         ),
-                      if (widget.selectTask?.currency?.name == 'Российский рубль')
+                      if (widget.selectTask?.currency?.name ==
+                          'Российский рубль')
                         Text(
-                          'Бюджет от ₽',
+                          '${'budget_from'.tr()} ₽',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Доллар США')
                         Text(
-                          'Бюджет от \$',
+                          '${'budget_from'.tr()} \$',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Евро')
                         Text(
-                          'Бюджет от €',
+                          '${'budget_from'.tr()} €',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       if (widget.selectTask?.currency?.name == 'Дирхам')
                         Text(
-                          'Бюджет от AED',
+                          '${'budget_from'.tr()} AED',
                           style: CustomTextStyle.grey_14_w400,
                         ),
                       SizedBox(height: 3.h),
@@ -340,14 +351,19 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             actionButton: false,
                             focusNode: focusCoastMax,
                             onTap: () {
-                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
+                              context
+                                  .read<ResponseBloc>()
+                                  .add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
                             onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
-                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
+                            formatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FormatterCurrency()
+                            ],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
@@ -367,7 +383,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 bound: 0.02,
                 child: Container(
                   height: 165.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -392,7 +409,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             maxLines: 3,
                             onTap: () {
                               log(bottomInsets.toString());
-                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
+                              context
+                                  .read<ResponseBloc>()
+                                  .add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,

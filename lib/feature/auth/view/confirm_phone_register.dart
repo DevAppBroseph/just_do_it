@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -97,7 +98,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Подтверждение телефона ',
+                            '${'confrim_phone'.tr()} ',
                             style: CustomTextStyle.black_22_w700,
                           )
                         ],
@@ -112,7 +113,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               textAlign: TextAlign.center,
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: 'Код подтверждения отправлен на\n',
+                                  text: '${'code_confirm_sent'.tr()}\n',
                                   style: CustomTextStyle.black_16_w400_515150,
                                 ),
                                 TextSpan(
@@ -154,11 +155,11 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Повторно отправить код ',
+                                  text: '${'resend_code'.tr()} ',
                                   style: CustomTextStyle.grey_16_w400,
                                 ),
                                 TextSpan(
-                                  text: '$currentSecond сек.',
+                                  text: '$currentSecond ${'sec'.tr()}.',
                                   style: CustomTextStyle.black_16_w400_171716,
                                 ),
                               ],
@@ -188,7 +189,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             },
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
-                              'Подтвердить',
+                              'confirm'.tr(),
                               style: CustomTextStyle.black_16_w600_171716,
                             ),
                           ),
@@ -197,7 +198,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             onTap: () => Navigator.of(context).pop(),
                             btnColor: ColorStyles.greyE0E6EE,
                             textLabel: Text(
-                              'Назад',
+                              'back'.tr(),
                               style: CustomTextStyle.black_16_w600_515150,
                             ),
                           ),

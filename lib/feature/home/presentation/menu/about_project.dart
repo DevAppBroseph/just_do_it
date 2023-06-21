@@ -1,15 +1,17 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:just_do_it/widget/back_icon_button_white.dart';
 import 'package:open_file/open_file.dart';
 
 class AboutProject extends StatefulWidget {
+  const AboutProject({super.key});
+
   @override
   State<AboutProject> createState() => _AboutProjectState();
 }
@@ -63,7 +65,7 @@ class _AboutProjectState extends State<AboutProject> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'О проекте',
+                                  'about_the_project'.tr(),
                                   style: CustomTextStyle.black_22_w700,
                                 ),
                               ],
@@ -90,11 +92,14 @@ class _AboutProjectState extends State<AboutProject> {
                             Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 50.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 50.w),
                                   child: Center(
                                     child: Text(
                                       'jobyfine'.toUpperCase(),
-                                      style: CustomTextStyle.black_39_w900_171716.copyWith(color: ColorStyles.black),
+                                      style: CustomTextStyle
+                                          .black_39_w900_171716
+                                          .copyWith(color: ColorStyles.black),
                                     ),
                                   ),
                                 ),
@@ -116,7 +121,7 @@ class _AboutProjectState extends State<AboutProject> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
-                          'Вопрос-ответ',
+                          'question_and_answer'.tr(),
                           style: CustomTextStyle.black_22_w700_171716,
                         ),
                       ),
@@ -142,12 +147,14 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            final res = await Repository().getFile(about?.confidence ?? '');
+                            final res = await Repository()
+                                .getFile(about?.confidence ?? '');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(
-                            "Пользовательское соглашение",
-                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
+                            "user_agreement".tr(),
+                            style: CustomTextStyle.blue_16_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
@@ -156,12 +163,14 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            final res = await Repository().getFile(about?.agreement ?? '');
+                            final res = await Repository()
+                                .getFile(about?.agreement ?? '');
                             if (res != null) await OpenFile.open(res);
                           },
                           child: Text(
-                            "Согласие на обработку персональных данных",
-                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
+                            "consent_to_the_processing_of_personal_data".tr(),
+                            style: CustomTextStyle.blue_16_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),

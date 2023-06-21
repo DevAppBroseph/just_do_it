@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -161,19 +161,25 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
                       onTap: () {
-                        if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш паспорт просрочен', context);
+                        if (dateTimeEnd != null &&
+                            DateTime.now().isAfter(dateTimeEnd!) &&
+                            docType != 'Resident_ID') {
+                          CustomAlert()
+                              .showMessage('Ваш паспорт просрочен', context);
                         } else if (dateTimeEnd != null &&
                             DateTime.now().isAfter(dateTimeEnd!) &&
                             docType == 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш документ просрочен', context);
+                          CustomAlert()
+                              .showMessage('Ваш документ просрочен', context);
                         } else if (checkExpireDate(dateTimeEnd) != null) {
-                          CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
+                          CustomAlert().showMessage(
+                              checkExpireDate(dateTimeEnd)!, context);
                         } else {
                           if (additionalInfo) {
                             additionalInfo = true;
                             String error = 'Укажите:';
-                            if (docType != 'Resident_ID' && serialDocumentController.text.isEmpty) {
+                            if (docType != 'Resident_ID' &&
+                                serialDocumentController.text.isEmpty) {
                               error += '\n- серию документа';
                             }
                             if (numberDocumentController.text.isEmpty) {
@@ -192,10 +198,16 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                               error += '\n- срок действия документа';
                             }
                             if (error == 'Укажите:') {
-                              user?.copyWith(docInfo: docinfo, docType: mapDocumentType(typeDocumentController.text));
-                              BlocProvider.of<ProfileBloc>(context).setUser(user);
+                              user?.copyWith(
+                                  docInfo: docinfo,
+                                  docType: mapDocumentType(
+                                      typeDocumentController.text));
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .setUser(user);
                               log(user.toString());
-                              Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                              Repository().updateUser(
+                                  BlocProvider.of<ProfileBloc>(context).access,
+                                  user!);
                               widget.panelController.animatePanelToPosition(0);
                             } else {
                               CustomAlert().showMessage(error, context);
@@ -203,7 +215,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           } else {
                             user?.copyWith(docInfo: '', docType: '');
                             BlocProvider.of<ProfileBloc>(context).setUser(user);
-                            Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                            Repository().updateUser(
+                                BlocProvider.of<ProfileBloc>(context).access,
+                                user!);
                             widget.panelController.animatePanelToPosition(0);
                           }
                         }
@@ -231,7 +245,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context.read<ReplyBloc>().add(OpenSlidingPanelToEvent(637.h));
+                            context
+                                .read<ReplyBloc>()
+                                .add(OpenSlidingPanelToEvent(637.h));
                           },
                           child: Text(
                             'Готово',
@@ -253,8 +269,10 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     String date = '';
     if (startDate == null && endDate == null) {
     } else {
-      date = startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
-      date += ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+      date =
+          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+      date +=
+          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
     }
 
     return ListView(
@@ -287,7 +305,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             children: [
               if (widget.selectTask != null)
                 Text(
-                  widget.selectTask!.asCustomer! ? 'Станьте исполнителем' : 'Станьте заказчиком ',
+                  widget.selectTask!.asCustomer!
+                      ? 'Станьте исполнителем'
+                      : 'Станьте заказчиком ',
                   style: CustomTextStyle.black_22_w700_171716,
                 ),
               SizedBox(height: 12.h),
@@ -310,21 +330,22 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                     setState(() {});
                   },
                   ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
-                  'Документ',
+                  'document'.tr(),
                 ),
                 child: Stack(
                   key: _documentKey,
                   alignment: Alignment.centerRight,
                   children: [
                     CustomTextField(
-                      hintText: 'Документ',
+                      hintText: 'document'.tr(),
                       hintStyle: CustomTextStyle.grey_14_w400,
                       width: 350.w,
                       height: 50.h,
                       enabled: false,
                       onTap: () {},
                       textEditingController: typeDocumentController,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 16.w),
@@ -389,16 +410,19 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
                 textEditingController: serialDocumentController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
@@ -421,10 +445,12 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 });
               },
               width: docType != 'Resident_ID'
-                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w
+                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w
                   : MediaQuery.of(context).size.width - 48.w,
               textEditingController: numberDocumentController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -435,7 +461,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             hintText: 'Кем выдан',
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -448,7 +476,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (docType == 'International Passport') SizedBox(height: 16.h),
@@ -468,7 +497,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocumentController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               formatters: [
                 LengthLimitingTextInputFormatter(15),
               ],
@@ -495,7 +525,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: dateDocumentController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             formatters: [
               LengthLimitingTextInputFormatter(15),
             ],
@@ -528,7 +559,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -538,21 +570,31 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
   void _showDatePicker(ctx, int index, bool isInternational, {String? title}) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
-        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month,
+                DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -582,20 +624,26 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocumentController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocumentController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocumentController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocumentController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocumentController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocumentController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   }
@@ -623,9 +671,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocumentController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocumentController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocumentController.text}\nНомер: ${numberDocumentController.text}\nКем выдан: ${whoGiveDocumentController.text}\nДата выдачи: ${dateDocumentController.text}';
@@ -635,9 +685,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocumentController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocumentController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocumentController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocumentController.text}\nНомер: ${numberDocumentController.text}\nКем выдан: ${whoGiveDocumentController.text}\nДата выдачи: ${dateDocumentController.text}';
@@ -674,13 +726,16 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     if (additionalInfo) {
       if (serialDocumentController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocumentController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocumentController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -704,7 +759,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     final start = dateDocumentController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
     if (start.isNotEmpty && regDate.hasMatch(dateDocumentController.text)) {
-      dateTimeStart = DateTime(int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+      dateTimeStart = DateTime(
+          int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
     }
 
     final end = whoGiveDocumentController.text.split('.');

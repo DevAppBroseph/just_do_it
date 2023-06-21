@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,7 +73,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Реферальная система',
+                          'referral_system'.tr(),
                           style: CustomTextStyle.black_22_w700,
                         ),
                       ],
@@ -85,7 +86,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'Это Ваша реферальная ссылка',
+                'this_is_your_referral_link'.tr(),
                 style: CustomTextStyle.black_16_w500_000000,
               ),
             ),
@@ -93,7 +94,7 @@ class _ReferalPageState extends State<ReferalPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
-                'За каждого нового пользователя, кто установит\nприложение по Вашей ссылке, Вы получите от\n100 баллов.',
+                'for_each_new_user'.tr(),
                 style: CustomTextStyle.black_14_w400_515150,
               ),
             ),
@@ -110,7 +111,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Установите приложение JOBYFINE и \nполучите дополнительно 200 баллов\nна свой счет!',
+                    'install_the_app'.tr(),
                     style: CustomTextStyle.black_14_w400_515150,
                   ),
                 ],
@@ -136,10 +137,10 @@ class _ReferalPageState extends State<ReferalPage> {
                       text:
                           'JobyFine - Приложение для поиска и выполнения работы\n$res'));
 
-                  const snackBar = SnackBar(
+                  final snackBar = SnackBar(
                     backgroundColor: ColorStyles.yellowFFCA0D,
-                    content: Text('Скопировано'),
-                    duration: Duration(seconds: 1),
+                    content: Text('copy'.tr()),
+                    duration: const Duration(seconds: 1),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
@@ -196,7 +197,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Поделиться',
+                          'share'.tr(),
                           style: CustomTextStyle.white_16_w600,
                         ),
                       ],
