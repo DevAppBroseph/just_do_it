@@ -149,11 +149,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             String error = 'Укажите:';
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
-                              error += '\n -сумму';
+                              error += '\n- сумму';
                               errorsFlag = true;
                             }
                             if (descriptionTextController.text.isEmpty) {
-                              error += '\n -описание';
+                              error += '\n- описание';
                               errorsFlag = true;
                             }
                             if (errorsFlag == true) {
