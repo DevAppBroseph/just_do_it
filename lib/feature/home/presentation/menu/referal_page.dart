@@ -135,7 +135,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       .share(int.parse(code));
                   Clipboard.setData(ClipboardData(
                       text:
-                          'JobyFine - Приложение для поиска и выполнения работы\n$res'));
+                          '${'jobfine_is_an_application_for_finding_and_doing_work'.tr()}\n$res'));
 
                   final snackBar = SnackBar(
                     backgroundColor: ColorStyles.yellowFFCA0D,
@@ -182,7 +182,7 @@ class _ReferalPageState extends State<ReferalPage> {
                       .share(int.parse(code));
                   if (res != null) {
                     Share.share(
-                        'JobyFine - Приложение для поиска и выполнения работы\n$res');
+                        '${'jobfine_is_an_application_for_finding_and_doing_work'.tr()}\n$res');
                   }
                 },
                 child: Container(

@@ -4,6 +4,9 @@ class ChatState {}
 
 class InitialState extends ChatState {}
 
+class UpdateMenuState extends ChatState {}
+
+
 class UpdateListMessageState extends ChatState {
   int? chatId;
 

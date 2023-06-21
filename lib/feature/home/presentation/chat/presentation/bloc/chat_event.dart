@@ -2,6 +2,8 @@ part of 'chat_bloc.dart';
 
 class ChatEvent {}
 
+class UpdateMenuEvent extends ChatEvent {}
+
 class CloseSlidingPanelEvent extends ChatEvent {}
 
 class StartSocket extends ChatEvent {

@@ -15,6 +15,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
@@ -147,6 +148,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                               if (value == 'EN') {
                                                 context.setLocale(const Locale('en', 'US'));
                                               }
+                                              BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
+
                                               setState(() {
                                                 selectLanguage = value!;
                                               });
@@ -367,7 +370,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         }
                                         setState(() {});
                                       },
-                                      hintText: 'Поиск',
+                                      hintText: 'search'.tr(),
                                       textEditingController: searchController,
                                       contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                                     ),
