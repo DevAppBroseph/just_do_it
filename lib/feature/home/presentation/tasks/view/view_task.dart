@@ -124,7 +124,7 @@ class _TaskViewState extends State<TaskView> {
               Row(
                 children: [
                   Text(
-                    'openly'.tr(),
+                   widget.selectTask.status == 'Completed'? 'closed'.tr():'openly'.tr(),
                     style: CustomTextStyle.black_12_w400,
                   ),
                   const Spacer(),
