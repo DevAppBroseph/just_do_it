@@ -153,7 +153,7 @@ class _CustomerState extends State<Customer> {
         if (current is CheckUserState) {
           if (current.error != null) {
             CustomAlert().showMessage(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован',
+                'a_user_with_such_a_phone_is_already_registered'.tr(),
                 context);
           } else {
             page = 1;
@@ -166,14 +166,14 @@ class _CustomerState extends State<Customer> {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
-          String messageError = 'Ошибка\n';
+          String messageError = '${'error'.tr()}\n';
           if (current.error!['email'] != null &&
               current.error!['email'][0] != null) {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'Пользователь с такой почтой уже зарегистрирован';
+              messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
             } else if (email.contains('Enter a valid email address.')) {
-              messageError = 'Введите корректный адрес почты';
+              messageError = 'enter_the_correct_email_address'.tr();
             }
           } else if (current.error!['phone_number'] != null &&
               current.error!['phone_number'][0] != null) {
@@ -181,10 +181,10 @@ class _CustomerState extends State<Customer> {
             if (phoneNumber
                 .contains('custom user with this Телефон already exists.')) {
               messageError =
-                  'Пользователь с таким телефоном уже зарегистрирован';
+                  'a_user_with_such_a_phone_is_already_registered'.tr();
             } else if (phoneNumber
                 .contains('The phone number entered is not valid.')) {
-              messageError = 'Введите корректный номер телефона';
+              messageError = 'enter_the_correct_phone_number'.tr();
             }
           }
           CustomAlert().showMessage(messageError, context);
@@ -202,23 +202,23 @@ class _CustomerState extends State<Customer> {
               onTap: () async {
                 if (page == 0) {
                   requestNextEmptyFocusStage1();
-                  String error = 'Укажите:';
+                  String error = 'specify'.tr();
                   bool errorsFlag = false;
                   if (firstnameController.text.isEmpty) {
-                    error += '\n- имя';
+                    error += '\n- ${'name'.tr()}';
                     errorsFlag = true;
                   }
                   if (lastnameController.text.isEmpty) {
-                    error += '\n- фамилию';
+                    error += '\n- ${'surname'.tr()}';
                     errorsFlag = true;
                   }
                   if (phoneController.text.isEmpty ||
                       phoneController.text == '+') {
-                    error += '\n- мобильный номер';
+                    error += '\n- ${'mobile_number'.tr()}';
                     errorsFlag = true;
                   }
                   if (emailController.text.isEmpty) {
-                    error += '\n- почту';
+                    error += '\n- email';
                     errorsFlag = true;
                   }
 
@@ -229,7 +229,7 @@ class _CustomerState extends State<Customer> {
                       .hasMatch(email);
 
                   if (!emailValid && emailController.text.isNotEmpty) {
-                    error += '\n- корректную почту';
+                    error += '\n- ${'correct_email'.tr()}';
                     errorsFlag = true;
                   }
 
@@ -237,7 +237,7 @@ class _CustomerState extends State<Customer> {
                     CustomAlert().showMessage(error, context);
                   } else if (!emailValid) {
                     CustomAlert()
-                        .showMessage('Введите корректный адрес почты', context);
+                        .showMessage('enter_the_correct_email_address'.tr(), context);
                   } else if (emailController.text
                           .split('@')
                           .last
@@ -246,10 +246,10 @@ class _CustomerState extends State<Customer> {
                           .length <
                       2) {
                     CustomAlert().showMessage(
-                        '- Введите корректный адрес почты', context);
+                        '- ${'enter_the_correct_email_address'.tr()}', context);
                   } else if (phoneController.text.length < 12) {
                     CustomAlert()
-                        .showMessage('- Некорректный номер телефона.', context);
+                        .showMessage('- ${'incorrect_phone_number'.tr()}', context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
                         'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение',
@@ -262,7 +262,7 @@ class _CustomerState extends State<Customer> {
                 } else {
                   requestNextEmptyFocusStage2();
                   user.copyWith(groups: [3]);
-                  String error = 'Укажите:';
+                  String error = 'specify'.tr();
                   bool errorsFlag = false;
 
                   if (passwordController.text.isEmpty ||

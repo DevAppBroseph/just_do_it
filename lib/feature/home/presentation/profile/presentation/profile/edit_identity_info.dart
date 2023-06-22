@@ -142,7 +142,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   } else {
                     if (additionalInfo) {
                       additionalInfo = true;
-                      String error = 'Укажите:';
+                      String error = 'specify'.tr();
                       if (docType != 'Resident_ID' &&
                           serialDocController.text.isEmpty) {
                         error += '\n- серию документа';
@@ -162,7 +162,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       if (dateDocController.text.isEmpty) {
                         error += '\n- срок действия документа';
                       }
-                      if (error == 'Укажите:') {
+                      if (error == 'specify'.tr()) {
                         user!.copyWith(
                             docInfo: docinfo,
                             region: regionController.text,

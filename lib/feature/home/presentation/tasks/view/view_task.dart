@@ -537,79 +537,90 @@ class _TaskViewState extends State<TaskView> {
                 ),
               ),
               SizedBox(height: 20.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  log(widget.selectTask.owner.toString());
-                  widget.openOwner(widget.selectTask.owner);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
-                    borderRadius: BorderRadius.circular(20.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorStyles.shadowFC6554,
-                        offset: const Offset(0, 4),
-                        blurRadius: 45.r,
-                      )
-                    ],
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                  child: Row(
-                    children: [
-                      if (widget.selectTask.owner?.photo != null)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(1000.r),
-                          child: Image.network(
-                            widget.selectTask.owner!.photo!,
-                            height: 48.h,
-                            width: 48.w,
-                            fit: BoxFit.cover,
+              BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+                if (current is UpdateTask) {
+                  getTask();
+                  return true;
+                }
+                if (previous != current) {
+                  return true;
+                }
+                return false;
+              }, builder: (context, state) {
+                return ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    log(widget.selectTask.owner.toString());
+                    widget.openOwner(widget.selectTask.owner);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorStyles.whiteFFFFFF,
+                      borderRadius: BorderRadius.circular(20.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorStyles.shadowFC6554,
+                          offset: const Offset(0, 4),
+                          blurRadius: 45.r,
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                    child: Row(
+                      children: [
+                        if (widget.selectTask.owner?.photo != null)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(1000.r),
+                            child: Image.network(
+                              widget.selectTask.owner!.photo!,
+                              height: 48.h,
+                              width: 48.w,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        SizedBox(width: 15.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.selectTask.asCustomer ?? false ? 'customer'.tr() : 'executor'.tr(),
+                                style: CustomTextStyle.grey_12_w400,
+                              ),
+                              SizedBox(
+                                width: 260,
+                                child: Text(
+                                  '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
+                                  style: CustomTextStyle.black_17_w600_171716,
+                                  softWrap: true,
+                                ),
+                              ),
+                              SizedBox(height: 6.h),
+                              Row(
+                                children: [
+                                  Text(
+                                    'rating'.tr(),
+                                    style: CustomTextStyle.grey_14_w400,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  SvgPicture.asset('assets/icons/star.svg'),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    widget.selectTask.owner?.ranking == null
+                                        ? '0'
+                                        : widget.selectTask.owner!.ranking.toString(),
+                                    style: CustomTextStyle.black_13_w500_171716,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      SizedBox(width: 15.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.selectTask.asCustomer ?? false ? 'customer'.tr() : 'executor'.tr(),
-                              style: CustomTextStyle.grey_12_w400,
-                            ),
-                            SizedBox(
-                              width: 260,
-                              child: Text(
-                                '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
-                                style: CustomTextStyle.black_17_w600_171716,
-                                softWrap: true,
-                              ),
-                            ),
-                            SizedBox(height: 6.h),
-                            Row(
-                              children: [
-                                Text(
-                                  'rating'.tr(),
-                                  style: CustomTextStyle.grey_14_w400,
-                                ),
-                                SizedBox(width: 8.w),
-                                SvgPicture.asset('assets/icons/star.svg'),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  widget.selectTask.owner?.ranking == null
-                                      ? '0'
-                                      : widget.selectTask.owner!.ranking.toString(),
-                                  style: CustomTextStyle.black_13_w500_171716,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
               SizedBox(height: 20.h),
               if (user != null && widget.canSelect && user.id != widget.selectTask.owner?.id)
                 CustomButton(

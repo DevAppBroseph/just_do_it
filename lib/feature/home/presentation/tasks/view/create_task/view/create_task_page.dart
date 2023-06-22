@@ -385,7 +385,7 @@ class _CeateTasksState extends State<CeateTasks> {
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
-                        String error = 'Укажите:';
+                        String error = 'specify'.tr();
                         bool errorsFlag = false;
 
                         if (startDate == null) {
@@ -558,7 +558,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           }
                         }
                       } else {
-                        String error = 'Укажите:';
+                        String error = 'specify'.tr();
                         bool errorsFlag = false;
 
                         if (selectCategory == null) {

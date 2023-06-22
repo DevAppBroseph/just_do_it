@@ -147,32 +147,25 @@ class _ContractorState extends State<Contractor> {
   void requestNextEmptyFocusStage1() {
     if (firstnameController.text.isEmpty) {
       focusNodeName.requestFocus();
-      scrollController1.animateTo(0,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (lastnameController.text.isEmpty) {
       focusNodeName.unfocus();
       focusNodeLastName.requestFocus();
-      scrollController1.animateTo(50.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(50.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (phoneController.text.isEmpty) {
       focusNodePhone.requestFocus();
-      scrollController1.animateTo(100.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(100.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (emailController.text.isEmpty) {
       focusNodeEmail.requestFocus();
-      scrollController1.animateTo(150.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (passwordController.text.isEmpty) {
       focusNodePassword1.requestFocus();
-      scrollController1.animateTo(200.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (repeatPasswordController.text.isEmpty) {
       focusNodePassword2.requestFocus();
-      scrollController1.animateTo(250.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(250.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (!confirmTermsPolicy) {
-      scrollController1.animateTo(90.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(90.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     }
   }
 
@@ -180,16 +173,13 @@ class _ContractorState extends State<Contractor> {
     if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -203,39 +193,31 @@ class _ContractorState extends State<Contractor> {
         Loader.hide();
         if (current is CheckUserState) {
           if (current.error != null) {
-            CustomAlert().showMessage(
-                'Пользователь с такой почтой или номером телефона уже зарегистрирован',
-                context);
+            CustomAlert().showMessage('a_user_with_such_an_email_or_phone_number_is_already_registered'.tr(), context);
           } else {
             page = 1;
             widget.stage(2);
           }
         } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
+          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister, arguments: [phoneController.text]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
-          String messageError = 'Ошибка\n';
-          if (current.error!['email'] != null &&
-              current.error!['email'][0] != null) {
+          String messageError = '${'error'.tr()}\n';
+          if (current.error!['email'] != null && current.error!['email'][0] != null) {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'Пользователь с такой почтой уже зарегистрирован';
+              messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
             } else if (email.contains('Enter a valid email address.')) {
-              messageError = 'Введите корректный адрес почты';
+              messageError = 'enter_the_correct_email_address'.tr();
             }
-          } else if (current.error!['phone_number'] != null &&
-              current.error!['phone_number'][0] != null) {
+          } else if (current.error!['phone_number'] != null && current.error!['phone_number'][0] != null) {
             String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber
-                .contains('custom user with this Телефон already exists.')) {
-              messageError =
-                  'Пользователь с таким телефоном уже зарегистрирован';
-            } else if (phoneNumber
-                .contains('The phone number entered is not valid.')) {
-              messageError = 'Введите корректный номер телефона';
+            if (phoneNumber.contains('custom user with this Телефон already exists.')) {
+              messageError = 'a_user_with_such_a_phone_is_already_registered'.tr();
+            } else if (phoneNumber.contains('The phone number entered is not valid.')) {
+              messageError = 'enter_the_correct_phone_number'.tr();
             }
           }
           CustomAlert().showMessage(messageError, context);
@@ -244,112 +226,90 @@ class _ContractorState extends State<Contractor> {
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(
-                child: page == 0
-                    ? firstStage(heightKeyBoard)
-                    : secondStage(heightKeyBoard)),
+            Expanded(child: page == 0 ? firstStage(heightKeyBoard) : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () async {
                 if (page == 0) {
                   requestNextEmptyFocusStage1();
-                  String error = 'Укажите:';
+                  String error = 'specify'.tr();
                   bool errorsFlag = false;
 
                   if (firstnameController.text.isEmpty) {
-                    error += '\n- имя';
+                    error += '\n- ${'name'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (lastnameController.text.isEmpty) {
-                    error += '\n- фамилию';
+                    error += '\n- ${'surname'.tr()}';
                     errorsFlag = true;
                   }
 
-                  if (phoneController.text.isEmpty ||
-                      phoneController.text == '+') {
-                    error += '\n- мобильный номер';
+                  if (phoneController.text.isEmpty || phoneController.text == '+') {
+                    error += '\n- ${'mobile_number'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (emailController.text.isEmpty) {
-                    error += '\n- почту';
+                    error += '\n- email';
                     errorsFlag = true;
                   }
 
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
+                  if (passwordController.text.isEmpty || repeatPasswordController.text.isEmpty) {
                     error += '\n- ${'password'.tr()}';
                     errorsFlag = true;
                   }
 
                   String email = emailController.text;
-                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
-                      .hasMatch(passwordController.text);
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$').hasMatch(passwordController.text);
                   if (!passwordValid && passwordController.text.isNotEmpty) {
-                    error +=
-                        '\n- корректный пароль (пароль должен содержать латинские символы и/или цифры)';
+                    error += '\n- ${'correct_password'.tr()}';
                     errorsFlag = true;
                   }
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                  bool emailValid =
+                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 
                   if (!emailValid && emailController.text.isNotEmpty) {
-                    error += '\n- корректную почту';
+                    error += '\n- ${'correct_email'.tr()}';
                     errorsFlag = true;
                   }
 
-                  if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
+                  if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text != repeatPasswordController.text)) {
                     if (errorsFlag == true) {
-                      error += '\n\nПароли не совпадают';
+                      error += '\n\n${'passwords_dont_match'.tr()}';
                     } else {
-                      error += '\nПароли не совпадают';
+                      error += '\n${'passwords_dont_match'.tr()}';
                     }
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
-                    error += '\nМинимальная длина пароля 6 символов';
+                    error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
                   } else if (phoneController.text.length < 12) {
-                    CustomAlert()
-                        .showMessage('- Некорректный номер телефона.', context);
-                  } else if (emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2) {
-                    CustomAlert().showMessage(
-                        '- Введите корректный адрес почты', context);
-                  } else if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    CustomAlert().showMessage('- пароли не совпадают', context);
+                    CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}.', context);
+                  } else if (emailController.text.split('@').last.split('.').last.length < 2) {
+                    CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
+                  } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text != repeatPasswordController.text)) {
+                    CustomAlert().showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
                   } else if (passwordController.text.length < 6) {
-                    CustomAlert().showMessage(
-                        '- минимальная длина пароля 6 символов', context);
+                    CustomAlert().showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
                   } else if (!emailValid) {
-                    CustomAlert()
-                        .showMessage('Введите корректный адрес почты', context);
+                    CustomAlert().showMessage('enter_the_correct_email_address'.tr(), context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение',
+                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'.tr(),
                         context);
                   } else {
                     showLoaderWrapper(context);
 
-                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
-                        phoneController.text, emailController.text));
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(CheckUserExistEvent(phoneController.text, emailController.text));
                   }
                 } else {
                   List<int> categorySelect = [];
@@ -361,13 +321,12 @@ class _ContractorState extends State<Contractor> {
                     }
                   }
                   requestNextEmptyFocusStage2();
-                  user.copyWith(
-                      activitiesDocument: categorySelect, groups: [4]);
-                  String error = 'Укажите:';
+                  user.copyWith(activitiesDocument: categorySelect, groups: [4]);
+                  String error = 'specify'.tr();
                   bool errorsFlag = false;
 
                   if (countryController.text.isEmpty) {
-                    error += '\n- страну';
+                    error += '\n- ${'nation'.tr()}';
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
@@ -375,12 +334,11 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (typeCategories.isEmpty) {
-                    error += '\n- до 3х категорий';
+                    error += '\n- ${'up_to_3_categories'.tr()}';
                     errorsFlag = true;
                   }
                   if (additionalInfo) {
-                    if (serialDocController.text.isEmpty &&
-                        user.docType != 'Resident_ID') {
+                    if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
                       error += '\n- серию документа';
                       errorsFlag = true;
                     }
@@ -406,8 +364,7 @@ class _ContractorState extends State<Contractor> {
                       errorsFlag = true;
                     }
                   }
-                  if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!)) {
+                  if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
                     error += '\n\n Ваш документ просрочен';
                     errorsFlag = true;
                   }
@@ -415,18 +372,14 @@ class _ContractorState extends State<Contractor> {
                   if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
                   } else {
-                    if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      CustomAlert()
-                          .showMessage('Ваш документ просрочен', context);
+                    if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                      CustomAlert().showMessage('Ваш документ просрочен', context);
                     } else if (checkExpireDate(dateTimeEnd) != null) {
-                      CustomAlert()
-                          .showMessage(checkExpireDate(dateTimeEnd)!, context);
+                      CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
-                      BlocProvider.of<AuthBloc>(context)
-                          .add(SendProfileEvent(user, token.toString()));
+                      BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                     }
                   }
                 }
@@ -435,9 +388,7 @@ class _ContractorState extends State<Contractor> {
                   ? confirmTermsPolicy
                       ? ColorStyles.yellowFFD70A
                       : ColorStyles.greyE0E6EE
-                  : countryController.text.isNotEmpty &&
-                          regionController.text.isNotEmpty &&
-                          typeCategories.isNotEmpty
+                  : countryController.text.isNotEmpty && regionController.text.isNotEmpty && typeCategories.isNotEmpty
                       ? ColorStyles.yellowFFD70A
                       : ColorStyles.greyE0E6EE,
               textLabel: Text(
@@ -486,8 +437,7 @@ class _ContractorState extends State<Contractor> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -506,8 +456,7 @@ class _ContractorState extends State<Contractor> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -572,8 +521,7 @@ class _ContractorState extends State<Contractor> {
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
           },
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -589,15 +537,13 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textEditingController: emailController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(value);
+            bool emailValid =
+                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
             if (!emailValid) {
               CustomAlert().showMessage('Почта указана неверно', context);
             }
@@ -605,9 +551,7 @@ class _ContractorState extends State<Contractor> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 250), () {
-              scrollController1.animateTo(500.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController1.animateTo(500.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -636,8 +580,7 @@ class _ContractorState extends State<Contractor> {
           ),
           textEditingController: passwordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -646,9 +589,7 @@ class _ContractorState extends State<Contractor> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController1.animateTo(300.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController1.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -677,8 +618,7 @@ class _ContractorState extends State<Contractor> {
           ),
           textEditingController: repeatPasswordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -687,9 +627,7 @@ class _ContractorState extends State<Contractor> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController1.animateTo(350.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController1.animateTo(350.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -704,8 +642,7 @@ class _ContractorState extends State<Contractor> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
               value: confirmTermsPolicy,
               onChanged: (value) {
                 setState(() {
@@ -782,8 +719,7 @@ class _ContractorState extends State<Contractor> {
               ],
             ),
             textEditingController: TextEditingController(),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
         if (image != null) SizedBox(height: 6.h),
@@ -824,9 +760,7 @@ class _ContractorState extends State<Contractor> {
                             width: 15.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(color: Colors.black)
-                                ],
+                                boxShadow: const [BoxShadow(color: Colors.black)],
                                 borderRadius: BorderRadius.circular(40.r)),
                             child: Center(
                               child: Icon(
@@ -866,8 +800,7 @@ class _ContractorState extends State<Contractor> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -888,8 +821,7 @@ class _ContractorState extends State<Contractor> {
                 'Выберите регион',
               );
             } else {
-              CustomAlert().showMessage(
-                  'Чтобы выбрать регион, сначала укажите страну', context);
+              CustomAlert().showMessage('Чтобы выбрать регион, сначала укажите страну', context);
             }
           },
           child: CustomTextField(
@@ -898,8 +830,7 @@ class _ContractorState extends State<Contractor> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -933,8 +864,7 @@ class _ContractorState extends State<Contractor> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: documentTypeController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -1005,8 +935,7 @@ class _ContractorState extends State<Contractor> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: categoryController,
-                contentPadding: EdgeInsets.only(
-                    left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
+                contentPadding: EdgeInsets.only(left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -1056,12 +985,8 @@ class _ContractorState extends State<Contractor> {
                       user.copyWith(activity: value);
                       setState(() {});
                     },
-                    formatters: [
-                      LengthLimitingTextInputFormatter(500),
-                      UpperEveryTextInputFormatter()
-                    ],
-                    contentPadding: EdgeInsets.only(
-                        left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
+                    formatters: [LengthLimitingTextInputFormatter(500), UpperEveryTextInputFormatter()],
+                    contentPadding: EdgeInsets.only(left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),
                 ),
               ),
@@ -1124,11 +1049,8 @@ class _ContractorState extends State<Contractor> {
                                         width: 15.h,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
-                                            boxShadow: const [
-                                              BoxShadow(color: Colors.black)
-                                            ],
-                                            borderRadius:
-                                                BorderRadius.circular(40.r)),
+                                            boxShadow: const [BoxShadow(color: Colors.black)],
+                                            borderRadius: BorderRadius.circular(40.r)),
                                         child: Center(
                                           child: Icon(
                                             Icons.close,
@@ -1161,9 +1083,7 @@ class _ContractorState extends State<Contractor> {
                             width: 50.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(color: Colors.black)
-                                ],
+                                boxShadow: const [BoxShadow(color: Colors.black)],
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Center(
                               child: SvgPicture.asset(
@@ -1186,9 +1106,7 @@ class _ContractorState extends State<Contractor> {
                               width: 15.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(color: Colors.black)
-                                  ],
+                                  boxShadow: const [BoxShadow(color: Colors.black)],
                                   borderRadius: BorderRadius.circular(40.r)),
                               child: Center(
                                 child: Icon(
@@ -1220,8 +1138,7 @@ class _ContractorState extends State<Contractor> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1258,8 +1175,7 @@ class _ContractorState extends State<Contractor> {
                             child: Center(
                                 child: Text(
                               photos.length.toString(),
-                              style: CustomTextStyle.white_11
-                                  .copyWith(fontSize: 10.sp),
+                              style: CustomTextStyle.white_11.copyWith(fontSize: 10.sp),
                             )),
                           ),
                         ),
@@ -1282,8 +1198,7 @@ class _ContractorState extends State<Contractor> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1298,8 +1213,7 @@ class _ContractorState extends State<Contractor> {
                               SizedBox(width: 4.w),
                               Text(
                                 'upload_a_resume'.tr(),
-                                style: CustomTextStyle.black_12_w400
-                                    .copyWith(fontSize: 12.sp),
+                                style: CustomTextStyle.black_12_w400.copyWith(fontSize: 12.sp),
                               )
                             ],
                           ),
@@ -1335,8 +1249,7 @@ class _ContractorState extends State<Contractor> {
         Row(
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
                 user.copyWith(isEntity: value);
@@ -1382,19 +1295,16 @@ class _ContractorState extends State<Contractor> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
-                    6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
                 textEditingController: serialDocController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
@@ -1409,9 +1319,7 @@ class _ContractorState extends State<Contractor> {
               textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
+                  scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
                 });
               },
               formatters: [
@@ -1419,11 +1327,9 @@ class _ContractorState extends State<Contractor> {
               ],
               width: user.docType == 'Resident_ID'
                   ? MediaQuery.of(context).size.width - 30.w - 18.w
-                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
-                      6.w,
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -1434,9 +1340,7 @@ class _ContractorState extends State<Contractor> {
             hintText: 'Кем выдан',
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1449,8 +1353,7 @@ class _ContractorState extends State<Contractor> {
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
@@ -1465,8 +1368,7 @@ class _ContractorState extends State<Contractor> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1482,8 +1384,7 @@ class _ContractorState extends State<Contractor> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1498,9 +1399,7 @@ class _ContractorState extends State<Contractor> {
             hintText: 'Место выдачи',
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1513,8 +1412,7 @@ class _ContractorState extends State<Contractor> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -1524,31 +1422,21 @@ class _ContractorState extends State<Contractor> {
   void _showDatePicker(ctx, int index, bool isInternational) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 2)
-        : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
+        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(
-            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(
-                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year + 15, DateTime.now().month,
-                DateTime.now().day);
+            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
-                DateTime.now().day + 1)
-        : DateTime(
-            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -1578,26 +1466,18 @@ class _ContractorState extends State<Contractor> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   }
@@ -1625,11 +1505,9 @@ class _ContractorState extends State<Contractor> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1640,11 +1518,9 @@ class _ContractorState extends State<Contractor> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1671,9 +1547,7 @@ class _ContractorState extends State<Contractor> {
 
   void documentEdit() {
     user.copyWith(
-      docInfo: serialDocController.text.isEmpty &&
-              numberDocController.text.isEmpty &&
-              dateDocController.text.isEmpty
+      docInfo: serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty
           ? ''
           : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );
