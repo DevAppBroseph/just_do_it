@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/contractor_profile.dart';
-import 'package:just_do_it/feature/home/presentation/profile/presentation/profile/customer_profile.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -49,7 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
           data: const MediaQueryData(textScaleFactor: 1.0),
           child: Scaffold(
             backgroundColor: ColorStyles.greyEAECEE,
-            body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
+            body: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, snapshot) {
               return SafeArea(
                 child: Stack(
                   children: [
@@ -226,7 +224,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         if (!contractorFlag && !customerFlag)
-          Container(color: Colors.white, child: const Center(child: CupertinoActivityIndicator()))
+          Container(
+              color: Colors.white,
+              child: const Center(child: CupertinoActivityIndicator()))
       ],
     );
   }

@@ -206,6 +206,7 @@
     "currency_paid": "Валюта для оплаты заказа",
     "raise_ad": "Поднять объявление наверх",
     "openly": "Открыто",
+    "opens": "Открытые",
     "edit": "Редактировать",
     "delete": "Удалить",
     "do_you_confirm_the_deletion_of_the_order?": "Вы подтверждаете удаление заказа?",
@@ -248,7 +249,7 @@
     "your_document_is_overdue": "Ваш документ просрочен",
     "select_a_region": "Выберите регион",
     "select_a_country": "Выберите страну",
-    "description_of_your_experience":"Описание своего опыта",
+    "description_of_your_experience": "Описание своего опыта",
     "the_email_address_is_incorrect": "Почта указана неверно",
     "to_select_a_region_first_specify_the_country": "Чтобы выбрать регион, сначала укажите страну",
     "the_validity_period_of_the_document_is_less_than_30_days": "Срок действия документа составляет менее 30 дней",
@@ -261,5 +262,7 @@
     "enter_the_correct_email_address": "Введите корректный адрес почты",
     "a_user_with_such_an_email_is_already_registered": "Пользователь с такой почтой уже зарегистрирован",
     "a_user_with_such_an_email_or_phone_number_is_already_registered": "Пользователь с такой почтой или номером телефона уже зарегистрирован",
-    "jobfine_is_an_application_for_finding_and_doing_work": "Jobfine - Приложение для поиска и выполнения работы"
+    "jobfine_is_an_application_for_finding_and_doing_work": "Jobfine - Приложение для поиска и выполнения работы",
+    "create_task": "Создать заказ",
+    "create_offer": "Создать оффер"
 }

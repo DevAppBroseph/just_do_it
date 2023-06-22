@@ -499,7 +499,7 @@ class _EditTasksState extends State<EditTasks> {
                       CupertinoButton(
                         onPressed: () => FocusScope.of(context).unfocus(),
                         child: Text(
-                          'Готово',
+                          'done'.tr(),
                           style: CustomTextStyle.black_empty,
                         ),
                       ),

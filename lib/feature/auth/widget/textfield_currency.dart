@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -179,7 +180,7 @@ class CustomTextFieldCurrency extends StatelessWidget {
               },
               child: MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: const Text('Готово'),
+                child: Text('done'.tr()),
               ),
             ),
             actions: [

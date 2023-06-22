@@ -241,7 +241,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                     const Spacer(),
                     CupertinoButton(
                         child: Text(
-                          'Готово',
+                          'done'.tr(),
                           style: CustomTextStyle.black_empty,
                         ),
                         onPressed: () {

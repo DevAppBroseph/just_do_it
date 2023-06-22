@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +53,7 @@ class _ListTasksState extends State<ListTasks> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {},
-                child: const Text('Создать заказ'),
+                child: Text('Создать create_task'.tr()),
               ),
             ),
             Expanded(
