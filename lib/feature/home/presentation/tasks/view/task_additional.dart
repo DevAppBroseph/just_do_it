@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,9 +46,9 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     setState(() {});
     if (widget.scoreTrue) {
       if (widget.asCustomer == true) {
-        scoreDialog(context, '10', 'создание заказа');
+        scoreDialog(context, '100', 'creating_an_order'.tr());
       } else {
-        scoreDialog(context, '10', 'создание оффера');
+        scoreDialog(context, '100', 'creating_an_offer'.tr().toLowerCase());
       }
 
       widget.scoreTrue = false;
@@ -56,6 +57,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
 
   @override
   Widget build(BuildContext context) {
+    
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
@@ -119,6 +121,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                                     selectTask = task;
                                   });
                                 },
+                                BlocProvider.of<ProfileBloc>(context).user,
                               );
                             },
                           ),

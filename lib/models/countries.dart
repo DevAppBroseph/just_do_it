@@ -1,11 +1,13 @@
 class Countries {
   String? name;
+  String? engName;
   int? id;
   List<Regions> region;
   bool select;
 
   Countries({
     required this.name,
+    required this.engName,
     required this.id,
     this.select = false,
     this.region = const [],
@@ -22,7 +24,7 @@ class Countries {
     return Countries(
       name: json['name'],
       id: json['id'],
-      region: regions,
+      region: regions, engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {
@@ -33,11 +35,14 @@ class Countries {
 
 class Regions {
   String? name;
+  String? engName;
+  
   int? id;
   List<Town> town;
   bool select;
 
   Regions({
+    required this.engName,
     required this.name,
     required this.id,
     this.select = false,
@@ -53,7 +58,7 @@ class Regions {
     return Regions(
       name: json['name'],
       id: json['id'],
-      town: towns,
+      town: towns, engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {
@@ -64,11 +69,13 @@ class Regions {
 
 class Town {
   String? name;
+  String? engName;
   int? id;
   bool select;
 
   Town({
     required this.name,
+    required this.engName,
     required this.id,
     this.select = false,
   });
@@ -76,7 +83,7 @@ class Town {
   factory Town.fromJson(Map<String, dynamic> json) {
     return Town(
       name: json['name'],
-      id: json['id'],
+      id: json['id'], engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {

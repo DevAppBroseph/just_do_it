@@ -68,7 +68,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   TextEditingController coastMinController = TextEditingController();
   TextEditingController coastMaxController = TextEditingController();
   TextEditingController keyWordController = TextEditingController();
-
+  late UserRegModel? user;
   String? countryString;
   String? currencyString;
   String? category;
@@ -90,6 +90,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
     return BlocBuilder<SearchBloc, SearchState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
@@ -695,22 +696,22 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 '${'budget_from'.tr()} ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Российский рубль')
+                            if (currencyString == 'Российский рубль' || currencyString == 'Russian Rouble')
                               Text(
                                 '${'budget_from'.tr()} ₽',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Доллар США')
+                            if (currencyString == 'Доллар США' || currencyString == 'USA Dollar')
                               Text(
                                 '${'budget_from'.tr()} \$',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Евро')
+                            if (currencyString == 'Евро' || currencyString == 'Euro')
                               Text(
                                 '${'budget_from'.tr()} €',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Дирхам')
+                            if (currencyString == 'Дирхам' || currencyString == 'UAE Dirham')
                               Text(
                                 '${'budget_from'.tr()} AED',
                                 style: CustomTextStyle.grey_14_w400,
@@ -777,22 +778,22 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 '${'budget_up_to'.tr()} ',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Российский рубль')
+                            if (currencyString == 'Российский рубль' || currencyString == 'Russian Rouble')
                               Text(
                                 '${'budget_up_to'.tr()} ₽',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Доллар США')
+                            if (currencyString == 'Доллар США' || currencyString == 'USA Dollar')
                               Text(
                                 '${'budget_up_to'.tr()} \$',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Евро')
+                            if (currencyString == 'Евро' || currencyString == 'Euro')
                               Text(
                                 '${'budget_up_to'.tr()} €',
                                 style: CustomTextStyle.grey_14_w400,
                               ),
-                            if (currencyString == 'Дирхам')
+                            if (currencyString == 'Дирхам' || currencyString == 'UAE Dirham')
                               Text(
                                 '${'budget_up_to'.tr()} AED',
                                 style: CustomTextStyle.grey_14_w400,
@@ -1040,7 +1041,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               currencyString = null;
               selectCurrency = null;
             } else {
-              currencyString = currency.name;
+              currencyString = user?.rus ?? true ? currency.name : currency.engName;
               selectCurrency = currency;
             }
 
@@ -1056,7 +1057,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Row(
                   children: [
                     Text(
-                      currency.name!,
+                      user?.rus ?? true ? currency.name! : currency.engName!,
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                     const Spacer(),
@@ -1176,7 +1177,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     elementCategory(
                       activities[index].photo ?? '',
-                      activities[index].description ?? '',
+                      user?.rus ?? true ? activities[index].description ?? '' : activities[index].engDescription ?? '',
                       index,
                       choice: activities[index].selectSubcategory,
                     ),
@@ -1373,7 +1374,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(
                     width: 250.w,
                     child: Text(
-                      selectActivities!.subcategory[index].description ?? '',
+                      user?.rus ?? true
+                          ? selectActivities!.subcategory[index].description ?? ''
+                          : selectActivities!.subcategory[index].engDescription ?? '',
                       style: CustomTextStyle.black_14_w400_515150,
                     ),
                   ),
@@ -1515,7 +1518,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   Row(
                     children: [
                       Text(
-                        countrySecond.name!,
+                        user?.rus ?? true ? countrySecond.name! : countrySecond.engName!,
                         style: CustomTextStyle.black_14_w500_171716,
                       ),
                       const Spacer(),
@@ -1686,7 +1689,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Expanded(
                             child: Text(
-                              countries[selectCountriesIndex!].region[k].name!,
+                              user?.rus ?? true
+                                  ? countries[selectCountriesIndex!].region[k].name!
+                                  : countries[selectCountriesIndex!].region[k].engName!,
                               style: CustomTextStyle.black_14_w500_171716,
                             ),
                           ),
@@ -1861,7 +1866,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Expanded(
                               child: Text(
-                                countries[selectCountriesIndex!].region[selecRegionIndex!].town[m].name!,
+                                user?.rus ?? true
+                                    ? countries[selectCountriesIndex!].region[selecRegionIndex!].town[m].name!
+                                    : countries[selectCountriesIndex!].region[selecRegionIndex!].town[m].engName!,
                                 style: CustomTextStyle.black_14_w500_171716,
                               ),
                             ),
@@ -2020,7 +2027,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : 'select_the_task_completion_date'.tr(),
+                      endDate != null
+                          ? DateFormat('dd.MM.yyyy').format(endDate!)
+                          : 'select_the_task_completion_date'.tr(),
                       style: CustomTextStyle.black_14_w400_171716,
                     ),
                   ],
@@ -2104,7 +2113,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     for (int i = 0; i < countries.length; i++) {
       if (countries[i].select) {
         selectCount += 1;
-        nameCountriesList.add('${countries[i].name}');
+        nameCountriesList.add('${user?.rus ?? true ? countries[i].name : countries[i].engName}');
       }
     }
 
@@ -2130,7 +2139,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       for (int i = 0; i < element.subcategory.length; i++) {
         if (element.subcategory[i].isSelect) {
           selectCount += 1;
-          nameCategories.add('${element.subcategory[i].description}');
+          nameCategories
+              .add('${user?.rus ?? true ? element.subcategory[i].description : element.subcategory[i].engDescription}');
         }
       }
     }

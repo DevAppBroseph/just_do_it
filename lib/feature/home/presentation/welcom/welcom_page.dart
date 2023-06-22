@@ -23,6 +23,7 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
@@ -85,6 +86,15 @@ class _WelcomPageState extends State<WelcomPage> {
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
+    if (user != null) {
+      if (user!.rus!) {
+        selectLanguage = 'RU';
+        context.setLocale(const Locale('ru', 'RU'));
+      } else {
+        selectLanguage = 'EN';
+        context.setLocale(const Locale('en', 'US'));
+      }
+    } else {}
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
@@ -144,12 +154,22 @@ class _WelcomPageState extends State<WelcomPage> {
                                               log(value.toString());
                                               if (value == 'RU') {
                                                 context.setLocale(const Locale('ru', 'RU'));
+                                                if (user != null) {
+                                                  Repository().editRusProfile(
+                                                      BlocProvider.of<ProfileBloc>(context).access, true);
+                                                }
                                               }
                                               if (value == 'EN') {
                                                 context.setLocale(const Locale('en', 'US'));
+                                                if (user != null) {
+                                                  Repository().editRusProfile(
+                                                      BlocProvider.of<ProfileBloc>(context).access, false);
+                                                }
+                                              }
+                                              if (user != null) {
+                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                               }
                                               BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-
                                               setState(() {
                                                 selectLanguage = value!;
                                               });

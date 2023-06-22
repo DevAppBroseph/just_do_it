@@ -1,14 +1,16 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemTask(Task task, Function(Task) onSelect) {
+Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
     child: ScaleButton(
@@ -75,7 +77,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                             SizedBox(
                               width: 245.w,
                               child: Text(
-                                _textCountry(task),
+                                _textCountry(task, user),
                                 style: CustomTextStyle.black_12_w500_515150,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -83,7 +85,7 @@ Widget itemTask(Task task, Function(Task) onSelect) {
                             ),
                             SizedBox(height: 5.h),
                             Text(
-                              _textData(task.dateStart),
+                              _textData(task.dateStart, user),
                               style: CustomTextStyle.grey_12_w400,
                             ),
                           ],
@@ -158,7 +160,7 @@ String _textCurrency(int data) {
   }
 }
 
-String _textData(String data) {
+String _textData(String data, UserRegModel? user) {
   String text = '';
   String day = '';
   String month = '';
@@ -173,19 +175,19 @@ String _textData(String data) {
   return text;
 }
 
-String _textCountry(Task task) {
+String _textCountry(Task task, UserRegModel? user) {
   var text = '';
   for (var country in task.countries) {
-    text += '${country.name}, ';
+    text += '${user?.rus ?? true ? country.name : country.engName}, ';
   }
   for (var region in task.regions) {
-    text += '${region.name}, ';
+    text += '${user?.rus ?? true ? region.name : region.engName}, ';
   }
   for (var town in task.towns) {
-    text += '${town.name}, ';
+    text += '${user?.rus ?? true ? town.name : town.engName}, ';
   }
   if (text.isNotEmpty) text = text.substring(0, text.length - 2);
-  if (text.isEmpty) text = 'Выбраны все страны';
+  if (text.isEmpty) text = 'all_countries_selected'.tr();
 
   return text;
 }

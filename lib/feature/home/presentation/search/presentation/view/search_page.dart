@@ -439,7 +439,11 @@ class _SearchPageState extends State<SearchPage> {
                                     
                                       lastPosition = scrollController.offset;
                                     });
-                                  }))
+                                  }, 
+                                   BlocProvider.of<ProfileBloc>(context).user,
+
+                                  
+                                  ))
                               .toList(),
                         );
                       },

@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/chat.dart';
+import 'package:just_do_it/models/message_task.dart';
 import 'package:just_do_it/models/new_message.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/dialog.dart';
@@ -100,6 +102,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
+        try {
+           log('message new $event');
+          var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
+            log(newMessageTask.toString());
+          TaskDialogs().showTaskMessage(
+            newMessageTask.message,
+          );
+
+          add(UpdateProfileChatEvent());
+        } catch (e) {
+          log('$e');
+        }
         try {
           add(UpdateProfileChatEvent());
           log('message new $event');

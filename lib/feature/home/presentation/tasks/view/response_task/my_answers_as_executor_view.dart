@@ -110,6 +110,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

@@ -96,3 +96,75 @@ class MessageDialogs {
     );
   }
 }
+
+class TaskDialogs {
+  // int tap = 0;
+  void showTaskMessage(
+    String message,
+  ) {
+    SmartDialog.showToast(
+      message,
+      usePenetrate: false,
+      clickMaskDismiss: true,
+      consumeEvent: true,
+      displayTime: const Duration(seconds: 3),
+      builder: (context) => GestureDetector(
+        onTap: () {
+          SmartDialog.dismiss(status: SmartStatus.allToast);
+        },
+        child: Container(
+          margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.r),
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(0, 4),
+                blurRadius: 10,
+                spreadRadius: 3,
+                color: Color.fromRGBO(26, 42, 97, 0.06),
+              ),
+            ],
+          ),
+          child: MediaQuery(
+            data: const MediaQueryData(textScaleFactor: 1.0),
+            child: Card(
+              elevation: 0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    minLeadingWidth: 10,
+                    leading: SvgPicture.asset(
+                      'assets/icons/chat.svg',
+                      color: ColorStyles.yellowFFCA0D,
+                      width: 30,
+                      height: 30,
+                    ),
+                    title: Text(message),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SvgPicture.asset('assets/icons/translate.svg'),
+                        SizedBox(width: 8.h),
+                        Text(
+                          'Показать оригинал',
+                          style: CustomTextStyle.blue_14_w400_336FEE,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      alignment: Alignment.topLeft,
+      maskColor: Colors.transparent,
+    );
+  }
+}

@@ -118,75 +118,57 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(
                 onTap: () {
-                  if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
-                    CustomAlert().showMessage('Пароли не совпадают', context);
-                  } else if (passwordController.text.length < 6 &&
-                      passwordController.text.isNotEmpty) {
-                    CustomAlert().showMessage(
-                        'минимальная длина пароля 6 символов', context);
-                  } else if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!) &&
-                      docType != 'Resident_ID') {
-                    CustomAlert().showMessage('Ваш паспорт просрочен', context);
-                  } else if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!) &&
-                      docType == 'Resident_ID') {
-                    CustomAlert()
-                        .showMessage('Ваш документ просрочен', context);
+                  if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text != repeatPasswordController.text)) {
+                    CustomAlert().showMessage('passwords_dont_match'.tr(), context);
+                  } else if (passwordController.text.length < 6 && passwordController.text.isNotEmpty) {
+                    CustomAlert().showMessage('the_minimum_password_length_is_6_characters'.tr(), context);
+                  } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
+                    CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
+                  } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType == 'Resident_ID') {
+                    CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                   } else if (checkExpireDate(dateTimeEnd) != null) {
-                    CustomAlert()
-                        .showMessage(checkExpireDate(dateTimeEnd)!, context);
+                    CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                   } else {
                     if (additionalInfo) {
                       additionalInfo = true;
                       String error = 'specify'.tr();
-                      if (docType != 'Resident_ID' &&
-                          serialDocController.text.isEmpty) {
-                        error += '\n- серию документа';
+                      if (docType != 'Resident_ID' && serialDocController.text.isEmpty) {
+                        error += '\n- ${'document_series'.tr()}';
                       }
                       if (numberDocController.text.isEmpty) {
-                        error += '\n- номер документа';
+                        error += '\n- ${'document_number'.tr()}';
                       }
                       if (whoGiveDocController.text.isEmpty) {
                         if (docType == 'Passport') {
-                          error += '\n- кем выдан документ';
+                          error += '\n- ${'who_issued_the_document'.tr().toLowerCase()}';
                         } else if (docType == 'Resident_ID') {
-                          error += '\n- место выдачи документа';
+                          error += '\n- ${'place_of_issue_of_the_document'.tr().toLowerCase()}';
                         } else {
-                          error += '\n- дату выдачи документа';
+                          error += '\n- ${'date_of_issue_of_the_document'.tr().toLowerCase()}';
                         }
                       }
                       if (dateDocController.text.isEmpty) {
-                        error += '\n- срок действия документа';
+                        error += '\n- ${'validity_period_of_the_document'.tr().toLowerCase()}';
                       }
                       if (error == 'specify'.tr()) {
                         user!.copyWith(
                             docInfo: docinfo,
                             region: regionController.text,
-                            docType:
-                                mapDocumentType(documentTypeController.text));
+                            docType: mapDocumentType(documentTypeController.text));
                         user!.copyWith(isEntity: physics);
                         user!.copyWith(isEntity: physics);
                         BlocProvider.of<ProfileBloc>(context).setUser(user);
-                        Repository().updateUser(
-                            BlocProvider.of<ProfileBloc>(context).access,
-                            user!);
+                        Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                         Navigator.of(context).pop();
                       } else {
                         CustomAlert().showMessage(error, context);
                       }
                     } else {
-                      user!.copyWith(
-                          docInfo: '',
-                          region: regionController.text,
-                          docType: '');
+                      user!.copyWith(docInfo: '', region: regionController.text, docType: '');
                       user!.copyWith(isEntity: physics);
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
-                      Repository().updateUser(
-                          BlocProvider.of<ProfileBloc>(context).access, user!);
+                      Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
 
                       Navigator.of(context).pop();
                     }
@@ -239,8 +221,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 300), () {
                         scrollController2.animateTo(50.h,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.linear);
+                            duration: const Duration(milliseconds: 100), curve: Curves.linear);
                       });
                     },
                   ),
@@ -305,8 +286,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 300), () {
                         scrollController2.animateTo(50.h,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.linear);
+                            duration: const Duration(milliseconds: 100), curve: Curves.linear);
                       });
                     },
                   ),
@@ -352,7 +332,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             context,
             _countryKey,
             (value) async {
-              countryController.text = value.name ?? '-';
+              countryController.text = user?.rus ?? true ? value.name ?? '-' : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions.clear();
@@ -361,7 +341,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               setState(() {});
             },
             listCountries,
-            'Выберите страну',
+            'select_a_country'.tr(),
           ),
           child: CustomTextField(
             hintText: 'country'.tr(),
@@ -369,8 +349,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -383,17 +362,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value.name ?? '-';
+                  regionController.text = user?.rus ?? true ? value.name ?? '-' : value.engName ?? '-';;
                   // user!.copyWith(region: regionController.text);
                   region = regionController.text;
                   setState(() {});
                 },
                 listRegions,
-                'Выберите регион',
+                'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage(
-                  'Чтобы выбрать регион, сначала укажите страну', context);
+              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr(), context);
             }
           },
           child: CustomTextField(
@@ -402,8 +380,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -434,8 +411,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 onTap: () {},
                 fillColor: Colors.grey[200],
                 textEditingController: documentTypeController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -480,16 +456,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -505,7 +478,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           children: [
             if (docType != 'Resident_ID')
               CustomTextField(
-                hintText: 'Серия',
+                hintText: 'series'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -515,19 +488,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
-                    6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
                 textEditingController: serialDocController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
@@ -545,18 +515,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
+                  scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
                 });
               },
               width: docType != 'Resident_ID'
-                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
-                      6.w
+                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w
                   : MediaQuery.of(context).size.width - 48.w,
               textEditingController: numberDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -564,12 +530,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (docType == 'Passport') SizedBox(height: 16.h),
         if (docType == 'Passport')
           CustomTextField(
-            hintText: 'Кем выдан',
+            hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -582,8 +546,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (docType == 'International Passport') SizedBox(height: 16.h),
@@ -594,17 +557,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 context,
                 0,
                 false,
-                title: 'Дата выдачи',
+                title: 'date_of_issue'.tr(),
               );
             },
             child: CustomTextField(
-              hintText: 'Дата выдачи',
+              hintText: 'date_of_issue'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               formatters: [
                 LengthLimitingTextInputFormatter(15),
               ],
@@ -622,17 +584,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   : docType == 'Passport'
                       ? true
                       : true,
-              title: 'Срок действия',
+              title: 'validity_period'.tr(),
             );
           },
           child: CustomTextField(
-            hintText: 'Срок действия',
+            hintText: 'validity_period'.tr(),
             enabled: false,
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: dateDocController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             formatters: [
               LengthLimitingTextInputFormatter(15),
             ],
@@ -647,12 +608,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
           CustomTextField(
-            hintText: 'Место выдачи',
+            hintText: 'place_of_issue'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -665,8 +624,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -676,7 +634,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   String? checkExpireDate(DateTime? value) {
     if (value != null) {
       if (value.difference(DateTime.now()).inDays < 30) {
-        return 'Срок действия документа составляет менее 30 дней';
+        return 'the_validity_period_of_the_document_is_less_than_30_days'.tr();
       }
     }
     return null;
@@ -685,31 +643,21 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   void _showDatePicker(ctx, int index, bool isInternational, {String? title}) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 2)
-        : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
+        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(
-            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(
-                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year + 15, DateTime.now().month,
-                DateTime.now().day);
+            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
-                DateTime.now().day + 1)
-        : DateTime(
-            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -739,26 +687,18 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   }
@@ -786,11 +726,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
@@ -800,11 +738,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
@@ -846,8 +782,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;
     if (userRegModel.docType != null && userRegModel.docType!.isNotEmpty) {
-      documentTypeController.text =
-          reverseMapDocumentType(userRegModel.docType!);
+      documentTypeController.text = reverseMapDocumentType(userRegModel.docType!);
       docType = userRegModel.docType!;
     }
     if (userRegModel.region != null) {
@@ -859,21 +794,16 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
 
     if (userRegModel.docInfo != null && userRegModel.docInfo!.isNotEmpty) {
       additionalInfo = true;
-      serialDocController.text =
-          DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
-      numberDocController.text =
-          DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
-      whoGiveDocController.text =
-          DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
-      dateDocController.text =
-          DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
+      serialDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).serial ?? '';
+      numberDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentNumber ?? '';
+      whoGiveDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).whoGiveDocument ?? '';
+      dateDocController.text = DocumentInfo.fromJson(userRegModel.docInfo!).documentData ?? '';
     }
 
     final start = dateDocController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
     if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
-      dateTimeStart = DateTime(
-          int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+      dateTimeStart = DateTime(int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
     }
 
     final end = whoGiveDocController.text.split('.');

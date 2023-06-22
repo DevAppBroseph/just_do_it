@@ -108,6 +108,7 @@ class _MyAnswersSelectedAsExecutorViewState extends State<MyAnswersSelectedAsExe
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

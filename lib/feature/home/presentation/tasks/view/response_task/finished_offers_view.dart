@@ -108,6 +108,7 @@ class _FinishedOffersState extends State<FinishedOffers> {
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

@@ -39,10 +39,11 @@ class _CreatePageState extends State<CreatePage> {
   bool searchListEnable = false;
   List<String> searchChoose = [];
   TextEditingController searchController = TextEditingController();
-
+  late UserRegModel? user;
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
   }
 
@@ -301,7 +302,7 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   elementCategory(
                     activities[index].photo ?? '',
-                    activities[index].description ?? '',
+                    user?.rus ?? true ? activities[index].description ?? '' : activities[index].engDescription ?? '',
                     index,
                     choice: activities[index].selectSubcategory,
                   ),
@@ -471,7 +472,7 @@ class _CreatePageState extends State<CreatePage> {
             physics: const BouncingScrollPhysics(),
             children: list
                 .map((e) => item(
-                      e.description ?? '',
+                      user?.rus ?? true ? e.description ?? '' : e.engDescription ?? '',
                       index,
                     ))
                 .toList(),

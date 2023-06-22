@@ -108,6 +108,7 @@ class _OrdersCompleteAsExecutorViewState extends State<OrdersCompleteAsExecutorV
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();
