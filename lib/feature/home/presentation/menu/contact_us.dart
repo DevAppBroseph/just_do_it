@@ -151,7 +151,7 @@ class _ContactUsState extends State<ContactUs> {
                                           vertical: 9.0,
                                           horizontal: 12.0,
                                         ),
-                                        child: const Text('Готово')),
+                                        child: Text('done'.tr())),
                                   ),
                                 ),
                               ),

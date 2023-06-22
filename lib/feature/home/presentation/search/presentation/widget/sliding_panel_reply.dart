@@ -224,7 +224,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                       },
                       btnColor: ColorStyles.yellowFFD70A,
                       textLabel: Text(
-                        'Готово',
+                        'done'.tr(),
                         style: CustomTextStyle.black_16_w600_171716,
                       ),
                     ),
@@ -250,7 +250,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                 .add(OpenSlidingPanelToEvent(637.h));
                           },
                           child: Text(
-                            'Готово',
+                            'done'.tr(),
                             style: CustomTextStyle.black_empty,
                           ),
                         ),
@@ -616,7 +616,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
-                                  'Готово',
+                                  'done'.tr(),
                                   style: CustomTextStyle.black_15,
                                 ),
                                 onPressed: () {

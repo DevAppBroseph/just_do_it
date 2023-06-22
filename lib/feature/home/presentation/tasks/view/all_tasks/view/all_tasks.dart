@@ -1,13 +1,11 @@
-
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
@@ -36,7 +34,8 @@ class _AllTasksViewState extends State<AllTasksView> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
+    List<Task> res = await Repository().getMyTaskList(
+        BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -83,7 +82,9 @@ class _AllTasksViewState extends State<AllTasksView> {
                           Align(
                             alignment: Alignment.center,
                             child: Text(
-                              widget.asCustomer ? 'Все задания' : 'Все офферы',
+                              widget.asCustomer
+                                  ? 'my_tasks'.tr()
+                                  : 'Все офферы',
                               style: CustomTextStyle.black_22_w700_171716,
                             ),
                           )
@@ -95,10 +96,14 @@ class _AllTasksViewState extends State<AllTasksView> {
                       child: Stack(
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                            height: MediaQuery.of(context).size.height -
+                                20.h -
+                                10.h -
+                                82.h,
                             child: ListView.builder(
                               itemCount: taskList.length,
-                              padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                              padding:
+                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 log(taskList[index].id.toString());
@@ -122,7 +127,6 @@ class _AllTasksViewState extends State<AllTasksView> {
               ),
             ),
           ),
-         
         ],
       ),
     );
@@ -130,7 +134,9 @@ class _AllTasksViewState extends State<AllTasksView> {
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(

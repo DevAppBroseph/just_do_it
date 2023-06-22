@@ -27,13 +27,16 @@ class SlidingPanelResponseFromFav extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponseFromFav(this.panelController, {super.key, required this.selectTask});
+  const SlidingPanelResponseFromFav(this.panelController,
+      {super.key, required this.selectTask});
 
   @override
-  State<SlidingPanelResponseFromFav> createState() => _SlidingPanelResponseFromFavState();
+  State<SlidingPanelResponseFromFav> createState() =>
+      _SlidingPanelResponseFromFavState();
 }
 
-class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFav> {
+class _SlidingPanelResponseFromFavState
+    extends State<SlidingPanelResponseFromFav> {
   double heightPanel = 637.h;
   bool slide = false;
   TextEditingController descriptionTextController = TextEditingController();
@@ -80,7 +83,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
 
-    return BlocBuilder<ResponseBlocFromFav, ResponseState>(buildWhen: (previous, current) {
+    return BlocBuilder<ResponseBlocFromFav, ResponseState>(
+        buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -96,7 +100,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
-            BlocProvider.of<ResponseBlocFromFav>(context).add(HideSlidingPanelEvent());
+            BlocProvider.of<ResponseBlocFromFav>(context)
+                .add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
             focusNodeDiscription.unfocus();
@@ -169,14 +174,16 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    int.parse(coastController.text
+                                        .replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Progress');
                               } else {
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
+                                    int.parse(coastController.text
+                                        .replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Selected');
                               }
@@ -184,14 +191,17 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                               coastController.clear();
                               descriptionTextController.clear();
                               context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(UpdateProfileEvent(user));
                               setState(() {});
                             }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
+                          widget.selectTask!.asCustomer!
+                              ? 'Откликнуться'
+                              : 'Принять оффер',
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -240,10 +250,12 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(500.h));
+                            context
+                                .read<ResponseBlocFromFav>()
+                                .add(OpenSlidingPanelToEvent(500.h));
                           },
                           child: Text(
-                            'Готово',
+                            'done'.tr(),
                             style: CustomTextStyle.black_empty,
                           ),
                         ),
@@ -311,7 +323,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                           '${'budget_from'.tr()} ',
                           style: CustomTextStyle.grey_14_w400,
                         ),
-                      if (widget.selectTask?.currency?.name == 'Российский рубль')
+                      if (widget.selectTask?.currency?.name ==
+                          'Российский рубль')
                         Text(
                           '${'budget_from'.tr()} ₽',
                           style: CustomTextStyle.grey_14_w400,
@@ -341,14 +354,19 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             actionButton: false,
                             focusNode: focusCoastMax,
                             onTap: () {
-                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(600.h));
+                              context
+                                  .read<ResponseBlocFromFav>()
+                                  .add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
                             onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
-                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
+                            formatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FormatterCurrency()
+                            ],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
@@ -368,7 +386,8 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                 bound: 0.02,
                 child: Container(
                   height: 150.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -391,7 +410,9 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                             autocorrect: true,
                             maxLines: 3,
                             onTap: () {
-                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
+                              context
+                                  .read<ResponseBlocFromFav>()
+                                  .add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,

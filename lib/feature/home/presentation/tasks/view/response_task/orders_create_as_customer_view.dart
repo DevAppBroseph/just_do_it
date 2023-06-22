@@ -1,30 +1,28 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class OrdersCreateAsCustomerView extends StatefulWidget {
-  final bool asCustomer;
   final String title;
-  const OrdersCreateAsCustomerView({super.key, required this.asCustomer, required this.title});
+  const OrdersCreateAsCustomerView({super.key, required this.title});
 
   @override
-  State<OrdersCreateAsCustomerView> createState() => _OrdersCreateAsCustomerViewState();
+  State<OrdersCreateAsCustomerView> createState() =>
+      _OrdersCreateAsCustomerViewState();
 }
 
-class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView> {
-  List<Task> taskList = [];
+class _OrdersCreateAsCustomerViewState
+    extends State<OrdersCreateAsCustomerView> {
   Task? selectTask;
   Owner? owner;
   late UserRegModel? user;
@@ -36,13 +34,13 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
   }
 
   void getListTask() async {
+    user = await Repository()
+        .getProfile(BlocProvider.of<ProfileBloc>(context).access!);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    taskList = BlocProvider.of<TasksBloc>(context).tasks;
-    log(taskList.length.toString());
     return Scaffold(
       body: Stack(
         children: [
@@ -94,10 +92,14 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
                       child: Stack(
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                            height: MediaQuery.of(context).size.height -
+                                20.h -
+                                10.h -
+                                82.h,
                             child: ListView.builder(
                               itemCount: user?.ordersCreateAsCustomer?.length,
-                              padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                              padding:
+                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.ordersCreateAsCustomer != []) {
@@ -130,7 +132,9 @@ class _OrdersCreateAsCustomerViewState extends State<OrdersCreateAsCustomerView>
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(

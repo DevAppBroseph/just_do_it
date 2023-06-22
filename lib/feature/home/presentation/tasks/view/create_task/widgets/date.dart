@@ -74,7 +74,7 @@ class _DatePickerState extends State<DatePicker> {
                           padding: EdgeInsets.symmetric(horizontal: 15.w),
                           borderRadius: BorderRadius.zero,
                           child: Text(
-                            'Готово',
+                            'done'.tr(),
                             style: CustomTextStyle.black_15,
                           ),
                           onPressed: () {

@@ -178,6 +178,7 @@ class _CeateTasksState extends State<CeateTasks> {
       }
       proverka = false;
     }
+
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
@@ -540,7 +541,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
-                                  title: 'Ждут подтверждения',
+                                  title: 'my_task'.tr(),
                                   asCustomer: true,
                                   scoreTrue: true,
                                 );
@@ -550,12 +551,27 @@ class _CeateTasksState extends State<CeateTasks> {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TaskAdditional(
-                                    title: 'Открыты',
+                                    title: 'opens'.tr(),
                                     asCustomer: widget.customer,
                                     scoreTrue: true);
                               }),
                             );
                           }
+
+                          // if (widget.customer) {
+                          //   await Navigator.of(context).push(
+                          //     MaterialPageRoute(builder: (context) {
+                          //       return OrdersCreateAsCustomerView(
+                          //           title: 'my_task'.tr());
+                          //     }),
+                          //   );
+                          // } else {
+                          //   await Navigator.of(context).push(
+                          //     MaterialPageRoute(builder: (context) {
+                          //       return OpenOffers(title: 'open'.tr());
+                          //     }),
+                          //   );
+                          // }
                         }
                       } else {
                         String error = 'specify'.tr();
@@ -594,8 +610,8 @@ class _CeateTasksState extends State<CeateTasks> {
                       page == 0
                           ? 'further'.tr()
                           : widget.customer
-                              ? 'Создать заказ'
-                              : 'Создать оффер',
+                              ? 'create_task'.tr()
+                              : 'create_offer'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),
@@ -615,7 +631,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       CupertinoButton(
                         onPressed: () => FocusScope.of(context).unfocus(),
                         child: Text(
-                          'Готово',
+                          'done'.tr(),
                           style: CustomTextStyle.black_empty,
                         ),
                       ),

@@ -180,7 +180,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: GestureDetector(
                   onTap: () {},
                   child: Container(
-                    height: 270.h,
+                    // height: 270.h,
                     decoration: BoxDecoration(
                       color: ColorStyles.whiteFFFFFF,
                       borderRadius: BorderRadius.circular(20.r),
@@ -538,8 +538,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       padding: EdgeInsets.only(bottom: 4.h),
                                       child: SizedBox(
                                         child: Text(
-                                          reviews?.ranking == null ? '0' : reviews!.ranking!.toString(),
-                                          style: CustomTextStyle.gold_16_w600_171716,
+                                          reviews?.ranking == null
+                                              ? '0'
+                                              : reviews!.ranking!.toString(),
+                                          style: CustomTextStyle
+                                              .gold_16_w600_171716,
                                         ),
                                       ),
                                     ),
@@ -632,12 +635,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               Text(
-                                user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString(),
+                                user?.countOrdersCompleteAsExecutor == null
+                                    ? '0'
+                                    : user!.countOrdersCompleteAsExecutor!
+                                        .toString(),
                                 style: CustomTextStyle.black_13_w500_171716,
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(height: 16.h),
                       ],
                     ),
                   ),
@@ -646,7 +653,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
               Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 15.h),
                 child: Container(
-                  height: 225.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     color: ColorStyles.whiteFFFFFF,
@@ -818,6 +824,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 16.h),
                     ],
                   ),
                 ),
@@ -826,7 +833,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 padding: EdgeInsets.only(
                     left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
                 child: Container(
-                  height: 225.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     color: ColorStyles.whiteFFFFFF,
@@ -998,6 +1004,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 16.h),
                     ],
                   ),
                 ),

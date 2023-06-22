@@ -252,7 +252,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                 .add(OpenSlidingPanelToEvent(500.h));
                           },
                           child: Text(
-                            'Готово',
+                            'done'.tr(),
                             style: CustomTextStyle.black_empty,
                           ),
                         ),

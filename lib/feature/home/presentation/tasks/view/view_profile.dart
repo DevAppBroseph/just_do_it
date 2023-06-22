@@ -85,236 +85,246 @@ class _ProfileViewState extends State<ProfileView> {
                           physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           children: [
-                            SizedBox(
-                              height: owner?.photo == null ? 235.h : 270.h,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
-                                child: Container(
-                                  height: 400.h,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteFFFFFF,
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 10.w,
-                                            left: 24.w,
-                                            top: 23,
-                                            bottom: 15),
-                                        child: Row(
-                                          children: [
-                                            if (owner?.photo != null)
-                                              GestureDetector(
-                                                onTap: () {
-                                                  launch(owner!.photo!);
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          1000.r),
-                                                  child: Image.network(
-                                                    owner?.photo ?? '',
-                                                    height: 76.h,
-                                                    width: 76.h,
-                                                    fit: BoxFit.cover,
-                                                  ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.whiteFFFFFF,
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10.w,
+                                          left: 24.w,
+                                          top: 23,
+                                          bottom: 15),
+                                      child: Row(
+                                        children: [
+                                          if (owner?.photo != null)
+                                            GestureDetector(
+                                              onTap: () {
+                                                launch(owner!.photo!);
+                                              },
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        1000.r),
+                                                child: Image.network(
+                                                  owner?.photo ?? '',
+                                                  height: 76.h,
+                                                  width: 76.h,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                            SizedBox(width: 17.w),
-                                            Expanded(
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        '${owner?.firstname ?? ''}\n${owner?.lastname ?? ''}',
-                                                        style: CustomTextStyle
-                                                            .black_17_w600_171716,
-                                                        softWrap: true,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const Spacer(),
-                                                  Row(
-                                                    children: [
-                                                      if (user?.id != owner?.id)
-                                                        BlocBuilder<TasksBloc,
-                                                                TasksState>(
+                                            ),
+                                          SizedBox(width: 17.w),
+                                          Expanded(
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      '${owner?.firstname ?? ''}\n${owner?.lastname ?? ''}',
+                                                      style: CustomTextStyle
+                                                          .black_17_w600_171716,
+                                                      softWrap: true,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Spacer(),
+                                                Row(
+                                                  children: [
+                                                    if (user?.id != owner?.id)
+                                                      BlocBuilder<TasksBloc,
+                                                              TasksState>(
+                                                          buildWhen: (previous,
+                                                              current) {
+                                                        return true;
+                                                      }, builder:
+                                                              (context, state) {
+                                                        return BlocBuilder<
+                                                                FavouritesBloc,
+                                                                FavouritesState>(
                                                             buildWhen:
                                                                 (previous,
                                                                     current) {
                                                           return true;
                                                         }, builder: (context,
                                                                 state) {
-                                                          return BlocBuilder<
-                                                                  FavouritesBloc,
-                                                                  FavouritesState>(
-                                                              buildWhen:
-                                                                  (previous,
-                                                                      current) {
-                                                            return true;
-                                                          }, builder: (context,
-                                                                  state) {
-                                                            if (state
-                                                                is FavouritesLoaded) {
-                                                              favouritesUsers =
-                                                                  state
-                                                                      .favourite
-                                                                      ?.favoriteUsers;
-                                                              return GestureDetector(
-                                                                onTap:
-                                                                    () async {
+                                                          if (state
+                                                              is FavouritesLoaded) {
+                                                            favouritesUsers = state
+                                                                .favourite
+                                                                ?.favoriteUsers;
+                                                            return GestureDetector(
+                                                              onTap: () async {
+                                                                if (owner
+                                                                        ?.isLiked !=
+                                                                    null) {
+                                                                  final access =
+                                                                      await Storage()
+                                                                          .getAccessToken();
                                                                   if (owner
                                                                           ?.isLiked !=
                                                                       null) {
-                                                                    final access =
-                                                                        await Storage()
-                                                                            .getAccessToken();
-                                                                    if (owner
-                                                                            ?.isLiked !=
-                                                                        null) {
-                                                                      await Repository().deleteLikeUser(
-                                                                          owner!
-                                                                              .isLiked!,
-                                                                          access!);
-                                                                    }
-                                                                    getPeopleList();
-                                                                    setState(
-                                                                        () {
-                                                                      owner?.isLiked =
-                                                                          null;
-                                                                    });
-                                                                  } else {
-                                                                    final access =
-                                                                        await Storage()
-                                                                            .getAccessToken();
-                                                                    log(access
-                                                                        .toString());
-                                                                    if (owner
-                                                                            ?.id !=
-                                                                        null) {
-                                                                      await Repository().addLikeUser(
-                                                                          owner!
-                                                                              .id!,
-                                                                          access!);
-                                                                    }
-                                                                    owner = await Repository().getRanking(
-                                                                        widget
-                                                                            .owner
-                                                                            .id,
-                                                                        access);
-                                                                    getPeopleList();
-                                                                    setState(
-                                                                        () {});
+                                                                    await Repository().deleteLikeUser(
+                                                                        owner!
+                                                                            .isLiked!,
+                                                                        access!);
                                                                   }
-                                                                },
-                                                                child: owner?.isLiked !=
-                                                                        null
-                                                                    ? SvgPicture
-                                                                        .asset(
-                                                                        'assets/icons/heart_yellow.svg',
-                                                                        height:
-                                                                            20.h,
-                                                                      )
-                                                                    : SvgPicture
-                                                                        .asset(
-                                                                        'assets/icons/heart.svg',
-                                                                        height:
-                                                                            20.h,
-                                                                      ),
-                                                              );
-                                                            }
-                                                            return Container();
-                                                          });
-                                                        }),
-                                                      SizedBox(width: 10.w),
-                                                      GestureDetector(
-                                                        onTap: () =>
-                                                            taskMoreDialogForProfile(
-                                                          context,
-                                                          getWidgetPosition(
-                                                              globalKey),
-                                                          (index) {},
-                                                          owner,
-                                                        ),
-                                                        child: SvgPicture.asset(
-                                                          'assets/icons/share.svg',
-                                                          height: 20.h,
-                                                          key: globalKey,
-                                                        ),
+                                                                  getPeopleList();
+                                                                  setState(() {
+                                                                    owner?.isLiked =
+                                                                        null;
+                                                                  });
+                                                                } else {
+                                                                  final access =
+                                                                      await Storage()
+                                                                          .getAccessToken();
+                                                                  log(access
+                                                                      .toString());
+                                                                  if (owner
+                                                                          ?.id !=
+                                                                      null) {
+                                                                    await Repository().addLikeUser(
+                                                                        owner!
+                                                                            .id!,
+                                                                        access!);
+                                                                  }
+                                                                  owner = await Repository()
+                                                                      .getRanking(
+                                                                          widget
+                                                                              .owner
+                                                                              .id,
+                                                                          access);
+                                                                  getPeopleList();
+                                                                  setState(
+                                                                      () {});
+                                                                }
+                                                              },
+                                                              child: owner?.isLiked !=
+                                                                      null
+                                                                  ? SvgPicture
+                                                                      .asset(
+                                                                      'assets/icons/heart_yellow.svg',
+                                                                      height:
+                                                                          20.h,
+                                                                    )
+                                                                  : SvgPicture
+                                                                      .asset(
+                                                                      'assets/icons/heart.svg',
+                                                                      height:
+                                                                          20.h,
+                                                                    ),
+                                                            );
+                                                          }
+                                                          return Container();
+                                                        });
+                                                      }),
+                                                    SizedBox(width: 10.w),
+                                                    GestureDetector(
+                                                      onTap: () =>
+                                                          taskMoreDialogForProfile(
+                                                        context,
+                                                        getWidgetPosition(
+                                                            globalKey),
+                                                        (index) {},
+                                                        owner,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                      child: SvgPicture.asset(
+                                                        'assets/icons/share.svg',
+                                                        height: 20.h,
+                                                        key: globalKey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      BlocBuilder<RatingBloc, RatingState>(
-                                          builder: (context, snapshot) {
-                                        var reviews =
-                                            BlocProvider.of<RatingBloc>(context)
-                                                .reviews;
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 0.8.h),
-                                                    child: ScaleButton(
-                                                      onTap: () {},
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 70.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: ColorStyles
-                                                              .greyEAECEE,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      30.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'grade'.tr(),
-                                                            style: CustomTextStyle
-                                                                .purple_12_w400,
-                                                          ),
+                                    ),
+                                    BlocBuilder<RatingBloc, RatingState>(
+                                        builder: (context, snapshot) {
+                                      var reviews =
+                                          BlocProvider.of<RatingBloc>(context)
+                                              .reviews;
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 0.8.h),
+                                                  child: ScaleButton(
+                                                    onTap: () {},
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 70.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles
+                                                            .greyEAECEE,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'grade'.tr(),
+                                                          style: CustomTextStyle
+                                                              .purple_12_w400,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: 10.h,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      BlocBuilder<ScoreBloc,
-                                                              ScoreState>(
-                                                          builder:
-                                                              (context, state) {
-                                                        if (state
-                                                            is ScoreLoaded) {
-                                                          final levels =
-                                                              state.levels;
-                                                          if (owner!.balance! <
-                                                              levels![0]
-                                                                  .mustCoins!) {
+                                                ),
+                                                SizedBox(
+                                                  height: 10.h,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    BlocBuilder<ScoreBloc,
+                                                            ScoreState>(
+                                                        builder:
+                                                            (context, state) {
+                                                      if (state
+                                                          is ScoreLoaded) {
+                                                        final levels =
+                                                            state.levels;
+                                                        if (owner!.balance! <
+                                                            levels![0]
+                                                                .mustCoins!) {
+                                                          return CachedNetworkImage(
+                                                            progressIndicatorBuilder:
+                                                                (context, url,
+                                                                    progress) {
+                                                              return const CupertinoActivityIndicator();
+                                                            },
+                                                            imageUrl:
+                                                                '${levels[0].bwImage}',
+                                                            height: 30.h,
+                                                            width: 30.w,
+                                                          );
+                                                        }
+                                                        for (int i = 0;
+                                                            i < levels.length;
+                                                            i++) {
+                                                          if (levels[i + 1]
+                                                                  .mustCoins ==
+                                                              null) {
                                                             return CachedNetworkImage(
                                                               progressIndicatorBuilder:
                                                                   (context, url,
@@ -322,17 +332,18 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 return const CupertinoActivityIndicator();
                                                               },
                                                               imageUrl:
-                                                                  '${levels[0].bwImage}',
+                                                                  '${levels[i].image}',
                                                               height: 30.h,
                                                               width: 30.w,
                                                             );
-                                                          }
-                                                          for (int i = 0;
-                                                              i < levels.length;
-                                                              i++) {
-                                                            if (levels[i + 1]
-                                                                    .mustCoins ==
-                                                                null) {
+                                                          } else {
+                                                            if (owner!.balance! >=
+                                                                    levels[i]
+                                                                        .mustCoins! &&
+                                                                owner!.balance! <
+                                                                    levels[i +
+                                                                            1]
+                                                                        .mustCoins!) {
                                                               return CachedNetworkImage(
                                                                 progressIndicatorBuilder:
                                                                     (context,
@@ -345,237 +356,209 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 height: 30.h,
                                                                 width: 30.w,
                                                               );
-                                                            } else {
-                                                              if (owner!.balance! >=
-                                                                      levels[i]
-                                                                          .mustCoins! &&
-                                                                  owner!.balance! <
-                                                                      levels[i +
-                                                                              1]
-                                                                          .mustCoins!) {
-                                                                return CachedNetworkImage(
-                                                                  progressIndicatorBuilder:
-                                                                      (context,
-                                                                          url,
-                                                                          progress) {
-                                                                    return const CupertinoActivityIndicator();
-                                                                  },
-                                                                  imageUrl:
-                                                                      '${levels[i].image}',
-                                                                  height: 30.h,
-                                                                  width: 30.w,
-                                                                );
-                                                              } else if (owner!
-                                                                      .balance! >=
-                                                                  levels.last
-                                                                      .mustCoins!) {
-                                                                return CachedNetworkImage(
-                                                                  progressIndicatorBuilder:
-                                                                      (context,
-                                                                          url,
-                                                                          progress) {
-                                                                    return const CupertinoActivityIndicator();
-                                                                  },
-                                                                  imageUrl:
-                                                                      '${levels.last.image}',
-                                                                  height: 30.h,
-                                                                  width: 30.w,
-                                                                );
-                                                              }
+                                                            } else if (owner!
+                                                                    .balance! >=
+                                                                levels.last
+                                                                    .mustCoins!) {
+                                                              return CachedNetworkImage(
+                                                                progressIndicatorBuilder:
+                                                                    (context,
+                                                                        url,
+                                                                        progress) {
+                                                                  return const CupertinoActivityIndicator();
+                                                                },
+                                                                imageUrl:
+                                                                    '${levels.last.image}',
+                                                                height: 30.h,
+                                                                width: 30.w,
+                                                              );
                                                             }
                                                           }
                                                         }
-                                                        return Container();
-                                                      }),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                      }
+                                                      return Container();
+                                                    }),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: 20.w,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 5.5.h),
-                                                    child: ScaleButton(
-                                                      onTap: () {},
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 90.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: ColorStyles
-                                                              .yellowFFCA0D
-                                                              .withOpacity(0.2),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      30.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                'rating'.tr(),
-                                                                style: CustomTextStyle
-                                                                    .gold_12_w400,
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 3.h),
-                                                              Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 12,
-                                                                    height: 12,
-                                                                    child: SvgPicture
-                                                                        .asset(
-                                                                      'assets/icons/star.svg',
-                                                                    ),
+                                          ),
+                                          SizedBox(
+                                            width: 20.w,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 5.5.h),
+                                                  child: ScaleButton(
+                                                    onTap: () {},
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 90.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles
+                                                            .yellowFFCA0D
+                                                            .withOpacity(0.2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              'rating'.tr(),
+                                                              style: CustomTextStyle
+                                                                  .gold_12_w400,
+                                                            ),
+                                                            SizedBox(
+                                                                width: 3.h),
+                                                            Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 12,
+                                                                  height: 12,
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/icons/star.svg',
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: 10.h,
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 4.h),
-                                                    child: SizedBox(
-                                                      child: Text(
-                                                        owner?.ranking == null
-                                                            ? '0'
-                                                            : owner!.ranking
-                                                                .toString(),
-                                                        style: CustomTextStyle
-                                                            .gold_16_w600_171716,
-                                                      ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10.h,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 4.h),
+                                                  child: SizedBox(
+                                                    child: Text(
+                                                      owner?.ranking == null
+                                                          ? '0'
+                                                          : owner!.ranking
+                                                              .toString(),
+                                                      style: CustomTextStyle
+                                                          .gold_16_w600_171716,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: 20.w,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 15.h),
-                                                    child: ScaleButton(
-                                                      onTap: () {},
-                                                      bound: 0.02,
-                                                      child: Container(
-                                                        height: 25.h,
-                                                        width: 75.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: ColorStyles
-                                                              .blue336FEE
-                                                              .withOpacity(0.2),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      30.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'reviews'.tr(),
-                                                            style: CustomTextStyle
-                                                                .blue_12_w400,
-                                                          ),
+                                          ),
+                                          SizedBox(
+                                            width: 20.w,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 15.h),
+                                                  child: ScaleButton(
+                                                    onTap: () {},
+                                                    bound: 0.02,
+                                                    child: Container(
+                                                      height: 25.h,
+                                                      width: 75.h,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles
+                                                            .blue336FEE
+                                                            .withOpacity(0.2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30.r),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'reviews'.tr(),
+                                                          style: CustomTextStyle
+                                                              .blue_12_w400,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 4.0.h),
-                                                    child: SizedBox(
-                                                      child: Text(
-                                                        owner!.reviews?.length
-                                                                .toString() ??
-                                                            '0',
-                                                        style: CustomTextStyle
-                                                            .blue_16_w600_171716,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                      ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 4.0.h),
+                                                  child: SizedBox(
+                                                    child: Text(
+                                                      owner!.reviews?.length
+                                                              .toString() ??
+                                                          '0',
+                                                      style: CustomTextStyle
+                                                          .blue_16_w600_171716,
+                                                      textAlign: TextAlign.left,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        );
-                                      }),
-                                      SizedBox(height: 15.h),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 15.h),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'tasks_created'.tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
-                                            ),
-                                            Text(
-                                              owner!.countOrdersCreate
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w500_171716,
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                    SizedBox(height: 15.h),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 15.h),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'tasks_created'.tr(),
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                          Text(
+                                            owner!.countOrdersCreate.toString(),
+                                            style: CustomTextStyle
+                                                .black_13_w500_171716,
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 15.h),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'completed_tasks'.tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
-                                            ),
-                                            Text(
-                                              owner!.countOrdersComplete
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w500_171716,
-                                            ),
-                                          ],
-                                        ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 15.h),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'completed_tasks'.tr(),
+                                            style: CustomTextStyle.grey_12_w400,
+                                          ),
+                                          Text(
+                                            owner!.countOrdersComplete
+                                                .toString(),
+                                            style: CustomTextStyle
+                                                .black_13_w500_171716,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(height: 16.h),
+                                  ],
                                 ),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(bottom: 7.h, top: 5.h),
                               child: Container(
-                                height: 105.h,
                                 width: 100.w,
                                 decoration: BoxDecoration(
                                   color: ColorStyles.whiteFFFFFF,
@@ -643,7 +626,8 @@ class _ProfileViewState extends State<ProfileView> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  'the_user_is_verified_by_the_application'.tr(),
+                                                  'the_user_is_verified_by_the_application'
+                                                      .tr(),
                                                   style: owner != null &&
                                                           owner!.isPassportExist !=
                                                               null &&
@@ -675,6 +659,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         ],
                                       ),
                                     ),
+                                    SizedBox(height: 16.h),
                                   ],
                                 ),
                               ),
@@ -779,7 +764,8 @@ class _ProfileViewState extends State<ProfileView> {
                                               owner!.activity != null &&
                                               owner!.activity!.isNotEmpty
                                           ? owner!.activity!
-                                          : 'work_experience_is_not_specified'.tr(),
+                                          : 'work_experience_is_not_specified'
+                                              .tr(),
                                       style:
                                           CustomTextStyle.black_12_w400_292D32,
                                     ),
