@@ -177,7 +177,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                         } else {
                           if (additionalInfo) {
                             additionalInfo = true;
-                            String error = 'Укажите:';
+                            String error = 'specify'.tr();
                             if (docType != 'Resident_ID' &&
                                 serialDocumentController.text.isEmpty) {
                               error += '\n- серию документа';
@@ -197,7 +197,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                             if (dateDocumentController.text.isEmpty) {
                               error += '\n- срок действия документа';
                             }
-                            if (error == 'Укажите:') {
+                            if (error == 'specify'.tr()) {
                               user?.copyWith(
                                   docInfo: docinfo,
                                   docType: mapDocumentType(

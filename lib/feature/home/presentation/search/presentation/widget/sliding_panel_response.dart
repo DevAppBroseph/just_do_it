@@ -153,7 +153,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         onTap: () async {
                           final access = await Storage().getAccessToken();
                           if (widget.selectTask != null) {
-                            String error = 'Укажите:';
+                            String error = 'specify'.tr();
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
                               error += '\n- сумму';

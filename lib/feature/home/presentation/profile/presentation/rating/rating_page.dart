@@ -12,6 +12,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/models/review.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class RatingPage extends StatefulWidget {
@@ -26,9 +27,11 @@ class _RatingPageState extends State<RatingPage> {
   bool state = false;
   PageController pageController = PageController();
   int stageRegistration = 1;
+  late UserRegModel? user;
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.whiteFFFFFF,
       body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
@@ -114,8 +117,7 @@ class _RatingPageState extends State<RatingPage> {
                   ? Container(
                       height: 34.h,
                       width: 34.h,
-                      decoration:
-                          const BoxDecoration(color: ColorStyles.shadowFC6554),
+                      decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -210,8 +212,7 @@ class _RatingPageState extends State<RatingPage> {
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
       width: width.w,
-      padding:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: ColorStyles.whiteFFFFFF,
@@ -226,8 +227,7 @@ class _RatingPageState extends State<RatingPage> {
                     ? Container(
                         height: 34.h,
                         width: 34.h,
-                        decoration: const BoxDecoration(
-                            color: ColorStyles.shadowFC6554),
+                        decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
                       )
                     : CachedNetworkImage(
                         height: 34.h,
@@ -374,8 +374,7 @@ class _RatingPageState extends State<RatingPage> {
                       Container(
                         height: 76.h,
                         width: 130.h,
-                        padding: EdgeInsets.only(
-                            left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF3F3F3,
                           borderRadius: BorderRadius.only(
@@ -397,9 +396,7 @@ class _RatingPageState extends State<RatingPage> {
                                 SvgPicture.asset('assets/icons/star.svg'),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  reviews.ranking == null
-                                      ? '-'
-                                      : (reviews.ranking!).toString(),
+                                  reviews.ranking == null ? '-' : (reviews.ranking!).toString(),
                                   style: CustomTextStyle.black_20_w600,
                                 ),
                               ],
@@ -416,7 +413,7 @@ class _RatingPageState extends State<RatingPage> {
                     children: [
                       SizedBox(width: 24.w),
                       Text(
-                        '${'you_have_completed'.tr()} ${reviews.reviewsDetail.length} ${'taskss'.tr()}',
+                        '${'you_have_completed'.tr()} ${user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString()} ${'taskss'.tr()}',
                         style: CustomTextStyle.black_14_w400_515150,
                       ),
                     ],

@@ -101,7 +101,7 @@ class _ContractorState extends State<Contractor> {
                     right: 20.w,
                   ),
                   child: Container(
-                    height: 245.h,
+                    height: 'tasks_for_which_responses'.tr().length == 92 ?260.h :242.h,
                     width: 100.w,
                     decoration: BoxDecoration(
                       color: ColorStyles.whiteFFFFFF,

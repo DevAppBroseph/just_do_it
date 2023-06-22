@@ -291,7 +291,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                         ),
                                                         child: Center(
                                                           child: Text(
-                                                            'Грейд',
+                                                            'grade'.tr(),
                                                             style: CustomTextStyle
                                                                 .purple_12_w400,
                                                           ),
@@ -427,7 +427,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                     .center,
                                                             children: [
                                                               Text(
-                                                                'Рейтинг',
+                                                                'rating'.tr(),
                                                                 style: CustomTextStyle
                                                                     .gold_12_w400,
                                                               ),
@@ -536,7 +536,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Создано заданий:',
+                                              'tasks_created'.tr(),
                                               style:
                                                   CustomTextStyle.grey_12_w400,
                                             ),
@@ -554,7 +554,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Выполнено заданий:',
+                                              'completed_tasks'.tr(),
                                               style:
                                                   CustomTextStyle.grey_12_w400,
                                             ),
@@ -597,7 +597,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  'Паспортные данные загружены',
+                                                  'passport_data_uploaded'.tr(),
                                                   style: owner != null &&
                                                           owner!.isPassportExist !=
                                                               null &&
@@ -643,7 +643,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  'Пользователь верифицирован\nприложением',
+                                                  'the_user_is_verified_by_the_application'.tr(),
                                                   style: owner != null &&
                                                           owner!.isPassportExist !=
                                                               null &&
@@ -714,7 +714,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             padding:
                                                 EdgeInsets.only(left: 10.w),
                                             child: Text(
-                                              'Посмотреть резюме',
+                                              'view_resume'.tr(),
                                               style: CustomTextStyle
                                                   .black_11_w400_171716
                                                   .copyWith(
@@ -752,7 +752,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             SizedBox(height: 30.h),
                             Text(
-                              'Опыт работы',
+                              'work_experience'.tr(),
                               style: CustomTextStyle.black_17_w800,
                             ),
                             SizedBox(height: 20.h),
@@ -779,7 +779,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               owner!.activity != null &&
                                               owner!.activity!.isNotEmpty
                                           ? owner!.activity!
-                                          : 'Опыт работы не указан.',
+                                          : 'work_experience_is_not_specified'.tr(),
                                       style:
                                           CustomTextStyle.black_12_w400_292D32,
                                     ),
@@ -848,7 +848,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                         'assets/icons/translate.svg'),
                                                     SizedBox(width: 8.h),
                                                     Text(
-                                                      'Перевод',
+                                                      'translation'.tr(),
                                                       style: CustomTextStyle
                                                           .blue_14_w400_336FEE,
                                                     )
@@ -882,7 +882,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: Text(
-                                        'Пожаловаться на пользователя',
+                                        'report_a_user'.tr(),
                                         style: CustomTextStyle
                                             .black_11_w400_171716
                                             .copyWith(
@@ -1026,7 +1026,7 @@ class _ProfileViewState extends State<ProfileView> {
                               SvgPicture.asset('assets/icons/translate.svg'),
                               SizedBox(width: 8.h),
                               Text(
-                                'Перевод',
+                                'translation'.tr(),
                                 style: CustomTextStyle.blue_14_w400_336FEE,
                               )
                             ],

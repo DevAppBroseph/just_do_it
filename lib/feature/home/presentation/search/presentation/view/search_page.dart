@@ -199,7 +199,7 @@ class _SearchPageState extends State<SearchPage> {
                                         ),
                                       ],
                                     ),
-                                    hintText: 'Поиск',
+                                    hintText: 'search'.tr(),
                                     textEditingController: searchController,
                                     onTap: () async {
                                       owner = null;

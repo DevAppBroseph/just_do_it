@@ -126,7 +126,7 @@ void taskMoreDialog(
                             ),
                           ),
                           Text(
-                            'Пожаловаться',
+                            'complain'.tr(),
                             style: CustomTextStyle.black_12_w400_292D32,
                           ),
                         ],
@@ -185,14 +185,14 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                   height: 30.h,
                                 ),
                                 Text(
-                                  'Начислено $score баллов',
+                                  '${'accrued'.tr()} $score ${'points'.tr().toLowerCase()}',
                                   style: CustomTextStyle.black_20_w700,
                                 ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
                                 Text(
-                                  'Поздравляем! Вам начислено $score баллов за $action',
+                                  '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
                                   style: CustomTextStyle.grey_13_w400,
                                   textAlign: TextAlign.center,
                                 ),

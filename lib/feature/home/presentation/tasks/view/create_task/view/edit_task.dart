@@ -311,7 +311,7 @@ class _EditTasksState extends State<EditTasks> {
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
-                        String error = 'Укажите:';
+                        String error = 'specify'.tr();
                         bool errorsFlag = false;
 
                         if (startDate == null) {
@@ -442,7 +442,7 @@ class _EditTasksState extends State<EditTasks> {
                           Loader.hide();
                         }
                       } else {
-                        String error = 'Укажите:';
+                        String error = 'specify'.tr();
                         bool errorsFlag = false;
 
                         if (selectCategory == null) {

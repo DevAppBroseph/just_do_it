@@ -1,14 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   final Function(String page) onBackPressed;
   bool inTask;
 
@@ -16,6 +19,20 @@ class MenuPage extends StatelessWidget {
     required this.onBackPressed,
     required this.inTask,
   });
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  bool openLanguage = false;
+
+  List<Language> listLanguage = [
+    Language(icon: 'assets/icons/russia.svg', title: 'RU', id: 1),
+    Language(icon: 'assets/images/england.png', title: 'EN', id: 2)
+  ];
+
+  String selectLanguage = 'RU';
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +77,7 @@ class MenuPage extends StatelessWidget {
                     Navigator.pop(context, 'search');
                   }),
                   itemMenu('assets/icons/note.svg', 'my_task'.tr(), () {
-                    if (inTask) {
+                    if (widget.inTask) {
                       Navigator.pop(context);
                     } else {
                       Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
@@ -90,28 +107,62 @@ class MenuPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 36.h,
-                        width: 102.h,
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                        decoration: BoxDecoration(
-                          color: ColorStyles.greyF7F7F8,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/icons/russia.svg'),
-                            Spacer(),
-                            Text(
-                              'Ru',
-                              style: CustomTextStyle.black_16_w600_171716,
-                            ),
-                            const Spacer(),
-                            const Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: ColorStyles.greyBDBDBD,
-                            ),
-                          ],
+                      SizedBox(
+                        width: 87.w,
+                        height: 40.h,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorStyles.whiteFFFFFF,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    value: selectLanguage,
+                                    icon: Padding(
+                                      padding: EdgeInsets.only(left: 5.w),
+                                      child: const Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: ColorStyles.greyBDBDBD,
+                                      ),
+                                    ),
+                                    onChanged: (value) {
+                                      if (value == 'RU') {
+                                        context.setLocale(const Locale('ru', 'RU'));
+                                      }
+                                      if (value == 'EN') {
+                                        context.setLocale(const Locale('en', 'US'));
+                                      }
+                                        BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
+                                      setState(() {
+                                        selectLanguage = value!;
+                                      });
+                                    },
+                                    items: listLanguage.map<DropdownMenuItem<String>>((e) {
+                                      return DropdownMenuItem<String>(
+                                          value: e.title,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 20.h,
+                                                width: 25.w,
+                                                child: e.title == 'EN' ? Image.asset(e.icon) : SvgPicture.asset(e.icon),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 5.w),
+                                                child: Text(e.title),
+                                              ),
+                                            ],
+                                          ));
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

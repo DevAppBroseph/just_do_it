@@ -17,6 +17,7 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(InitialState()) {
+    on<UpdateMenuEvent>(_updateMenu);
     on<StartSocket>(_startSocket);
     on<UpdateProfileChatEvent>(_updateprofile);
     on<GetListMessage>(_getListMessage);
@@ -36,6 +37,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void editChatId(int? value) {
     idChat = value;
+  }
+
+  void _updateMenu(UpdateMenuEvent event, Emitter<ChatState> emit) async {
+    emit(UpdateMenuState());
   }
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
@@ -125,7 +130,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           add(GetListMessage());
           add(RefreshPersonChatEvent());
-          
         } catch (e) {
           log('$e');
         }
