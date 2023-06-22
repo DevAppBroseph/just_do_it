@@ -2566,10 +2566,10 @@ class _TaskViewState extends State<TaskView> {
                                                       final idChat = await Navigator.of(context).pushNamed(
                                                         AppRoute.personalChat,
                                                         arguments: [
-                                                          '${widget.selectTask.answers[index].chatId}',
-                                                          '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                          '${widget.selectTask.answers[index].owner?.id}',
-                                                          '${widget.selectTask.answers[index].owner?.photo}',
+                                                          '${widget.selectTask.chatId}',
+                                                          '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
+                                                          '${widget.selectTask.owner?.id}',
+                                                          '${widget.selectTask.owner?.photo}',
                                                         ],
                                                       );
                                                       chatBloc.editShowPersonChat(true);
