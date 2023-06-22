@@ -708,7 +708,7 @@ class _TaskViewState extends State<TaskView> {
                   },
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text(
-                    widget.selectTask.asCustomer ?? false ? 'you_responded'.tr() : 'you_have_accepted_the_offer'.tr(),
+                    widget.selectTask.asCustomer ?? false ? 'respond'.tr() : 'accept_the_offer'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
