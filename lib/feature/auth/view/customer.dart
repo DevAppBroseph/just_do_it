@@ -252,7 +252,7 @@ class _CustomerState extends State<Customer> {
                         .showMessage('- ${'incorrect_phone_number'.tr()}', context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
-                        'Необходимо дать согласие на обработку персональных данных и пользовательское соглашение',
+                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'.tr(),
                         context);
                   } else {
                     showLoaderWrapper(context);
@@ -272,7 +272,7 @@ class _CustomerState extends State<Customer> {
                   }
 
                   if (countryController.text.isEmpty) {
-                    error += '\n- страну';
+                    error += '\n- ${'nation'.tr()}';
                     errorsFlag = true;
                   }
                   if (regionController.text.isEmpty) {
@@ -283,46 +283,46 @@ class _CustomerState extends State<Customer> {
                       .hasMatch(passwordController.text);
                   if (!passwordValid && passwordController.text.isNotEmpty) {
                     error +=
-                        '\n- корректный пароль (пароль должен содержать латинские символы и/или цифры)';
+                        '\n- ${'correct_password'.tr()}';
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
-                    error += '\nМинимальная длина пароля 6 символов';
+                    error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                     errorsFlag = true;
                   }
                   if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
-                    error += '\nПароли не совпадают';
+                    error += '\n${'passwords_dont_match'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (additionalInfo) {
                     if (serialDocController.text.isEmpty &&
                         user.docType != 'Resident_ID') {
-                      error += '\n- серию документа';
+                      error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
                     }
                     if (numberDocController.text.isEmpty) {
-                      error += '\n- номер документа';
+                      error += '\n- ${'document_number'.tr()}';
                       errorsFlag = true;
                     }
                     if (whoGiveDocController.text.isEmpty) {
                       if (user.docType != 'Passport') {
-                        error += '\n- срок действия документа';
+                        error += '\n- ${'validity_period_of_the_document'.tr()}';
                         errorsFlag = true;
                       } else if (user.docType != 'Resident_ID') {
-                        error += '\n- кем был выдан документ';
+                        error += '\n- ${'who_issued_the_document'.tr()}';
                         errorsFlag = true;
                       }
                     }
 
                     if (dateDocController.text.isEmpty) {
                       if (user.docType == 'Resident_ID') {
-                        error += '\n- место выдачи документа';
+                        error += '\n- ${'place_of_issue_of_the_document'.tr()}';
                       } else {
-                        error += '\n- дату выдачи документа';
+                        error += '\n- ${'date_of_issue_of_the_document'.tr()}';
                       }
                       errorsFlag = true;
                     }
@@ -331,16 +331,16 @@ class _CustomerState extends State<Customer> {
                       CustomAlert().showMessage(error, context);
                     } else if (passwordController.text.length < 6) {
                       CustomAlert().showMessage(
-                          '- минимальная длина пароля 6 символов', context);
+                          '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
                     } else if ((passwordController.text.isNotEmpty &&
                             repeatPasswordController.text.isNotEmpty) &&
                         (passwordController.text !=
                             repeatPasswordController.text)) {
-                      CustomAlert().showMessage('Пароли не совпадают', context);
+                      CustomAlert().showMessage('passwords_dont_match'.tr(), context);
                     } else if (dateTimeEnd != null &&
                         DateTime.now().isAfter(dateTimeEnd!)) {
                       CustomAlert()
-                          .showMessage('Ваш документ просрочен', context);
+                          .showMessage('your_document_is_overdue'.tr(), context);
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       CustomAlert()
                           .showMessage(checkExpireDate(dateTimeEnd)!, context);
@@ -358,10 +358,10 @@ class _CustomerState extends State<Customer> {
                           repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text !=
                           repeatPasswordController.text)) {
-                    CustomAlert().showMessage('Пароли не совпадают', context);
+                    CustomAlert().showMessage('passwords_dont_match'.tr(), context);
                   } else if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!)) {
-                    CustomAlert().showMessage('Ваш паспорт просрочен', context);
+                    CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     CustomAlert()
                         .showMessage(checkExpireDate(dateTimeEnd)!, context);
@@ -548,7 +548,7 @@ class _CustomerState extends State<Customer> {
                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(value);
             if (!emailValid) {
-              CustomAlert().showMessage('Почта указана неверно', context);
+              CustomAlert().showMessage('the_email_address_is_incorrect'.tr(), context);
             }
             if (emailValid) requestNextEmptyFocusStage1();
           },
@@ -804,7 +804,7 @@ class _CustomerState extends State<Customer> {
               setState(() {});
             },
             listCountries,
-            'Выберите страну',
+            'select_a_country'.tr(),
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
@@ -831,11 +831,11 @@ class _CustomerState extends State<Customer> {
                   setState(() {});
                 },
                 listRegions,
-                'Выберите регион',
+                'select_a_region'.tr(),
               );
             } else {
               CustomAlert().showMessage(
-                  'Чтобы выбрать регион, сначала укажите страну', context);
+                  'to_select_a_region_first_specify_the_country'.tr(), context);
             }
           },
           child: CustomTextField(
@@ -962,7 +962,7 @@ class _CustomerState extends State<Customer> {
           children: [
             if (user.docType != 'Resident_ID')
               CustomTextField(
-                hintText: 'Серия',
+                hintText: 'series'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -1021,7 +1021,7 @@ class _CustomerState extends State<Customer> {
         if (user.docType == 'Passport') SizedBox(height: 16.h),
         if (user.docType == 'Passport')
           CustomTextField(
-            hintText: 'Кем выдан',
+            hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
@@ -1050,7 +1050,7 @@ class _CustomerState extends State<Customer> {
               _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
-              hintText: 'Дата выдачи',
+              hintText: 'date_of_issue'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
@@ -1067,7 +1067,7 @@ class _CustomerState extends State<Customer> {
               _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
-              hintText: 'Срок действия',
+              hintText: 'validity_period'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
@@ -1160,7 +1160,7 @@ class _CustomerState extends State<Customer> {
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
-                                  'Готово',
+                                  'done'.tr(),
                                   style: CustomTextStyle.black_15,
                                 ),
                                 onPressed: () {
@@ -1253,7 +1253,7 @@ class _CustomerState extends State<Customer> {
   String? checkExpireDate(DateTime? value) {
     if (value != null) {
       if (value.difference(DateTime.now()).inDays < 30) {
-        return 'Срок действия документа составляет менее 30 дней';
+        return 'the_validity_period_of_the_document_is_less_than_30_days'.tr();
       }
     }
     return null;

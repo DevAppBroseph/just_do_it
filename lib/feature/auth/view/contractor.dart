@@ -339,33 +339,33 @@ class _ContractorState extends State<Contractor> {
                   }
                   if (additionalInfo) {
                     if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
-                      error += '\n- серию документа';
+                      error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
                     }
                     if (numberDocController.text.isEmpty) {
-                      error += '\n- номер документа';
+                      error += '\n- ${'document_number'.tr()}';
                       errorsFlag = true;
                     }
                     if (whoGiveDocController.text.isEmpty) {
                       if (user.docType != 'Passport') {
-                        error += '\n- срок действия документа';
+                        error += '\n- ${'validity_period_of_the_document'.tr()}';
                         errorsFlag = true;
                       } else if (user.docType != 'Resident_ID') {
-                        error += '\n- кем был выдан документ';
+                        error += '\n- ${'who_issued_the_document'}';
                         errorsFlag = true;
                       }
                     }
                     if (dateDocController.text.isEmpty) {
                       if (user.docType == 'Resident_ID') {
-                        error += '\n- место выдачи документа';
+                        error += '\n- ${'place_of_issue_of_the_document'.tr()}';
                       } else {
-                        error += '\n- дату выдачи документа';
+                        error += '\n- ${'date_of_issue_of_the_document'.tr()}';
                       }
                       errorsFlag = true;
                     }
                   }
                   if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                    error += '\n\n Ваш документ просрочен';
+                    error += '\n\n ${'your_document_is_overdue'.tr()}';
                     errorsFlag = true;
                   }
 
@@ -373,7 +373,7 @@ class _ContractorState extends State<Contractor> {
                     CustomAlert().showMessage(error, context);
                   } else {
                     if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                      CustomAlert().showMessage('Ваш документ просрочен', context);
+                      CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                     } else {
@@ -545,7 +545,7 @@ class _ContractorState extends State<Contractor> {
             bool emailValid =
                 RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
             if (!emailValid) {
-              CustomAlert().showMessage('Почта указана неверно', context);
+              CustomAlert().showMessage('the_email_address_is_incorrect'.tr(), context);
             }
             if (emailValid) requestNextEmptyFocusStage1();
           },
@@ -792,7 +792,7 @@ class _ContractorState extends State<Contractor> {
               setState(() {});
             },
             listCountries,
-            'Выберите страну',
+            'select_a_country'.tr(),
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
@@ -818,10 +818,10 @@ class _ContractorState extends State<Contractor> {
                   setState(() {});
                 },
                 listRegions,
-                'Выберите регион',
+                'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage('Чтобы выбрать регион, сначала укажите страну', context);
+              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr(), context);
             }
           },
           child: CustomTextField(
@@ -968,7 +968,7 @@ class _ContractorState extends State<Contractor> {
                 child: SizedBox(
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
-                    hintText: 'Описание своего опыта',
+                    hintText: 'description_of_your_experience'.tr(),
                     hintStyle: CustomTextStyle.grey_14_w400,
                     maxLines: 6,
                     onTap: () {
@@ -1285,7 +1285,7 @@ class _ContractorState extends State<Contractor> {
           children: [
             if (user.docType != 'Resident_ID')
               CustomTextField(
-                hintText: 'Серия',
+                hintText: 'series'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -1337,7 +1337,7 @@ class _ContractorState extends State<Contractor> {
         if (user.docType == 'Passport') SizedBox(height: 16.h),
         if (user.docType == 'Passport')
           CustomTextField(
-            hintText: 'Кем выдан',
+            hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
@@ -1363,7 +1363,7 @@ class _ContractorState extends State<Contractor> {
               _showDatePicker(context, 0, true);
             },
             child: CustomTextField(
-              hintText: 'Дата выдачи',
+              hintText: 'date_of_issue'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
@@ -1379,7 +1379,7 @@ class _ContractorState extends State<Contractor> {
               _showDatePicker(context, 1, false);
             },
             child: CustomTextField(
-              hintText: 'Срок действия',
+              hintText: 'validity_period'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
@@ -1396,7 +1396,7 @@ class _ContractorState extends State<Contractor> {
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
-            hintText: 'Место выдачи',
+            hintText: 'place_of_issue'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
@@ -1458,7 +1458,7 @@ class _ContractorState extends State<Contractor> {
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
-                                  'Готово',
+                                  'done'.tr(),
                                   style: CustomTextStyle.black_15,
                                 ),
                                 onPressed: () {
@@ -1539,7 +1539,7 @@ class _ContractorState extends State<Contractor> {
   String? checkExpireDate(DateTime? value) {
     if (value != null) {
       if (value.difference(DateTime.now()).inDays < 30) {
-        return 'Срок действия документа составляет менее 30 дней';
+        return 'the_validity_period_of_the_document_is_less_than_30_days'.tr();
       }
     }
     return null;
