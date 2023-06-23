@@ -29,8 +29,7 @@ class SlidingPanelResponse extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponse(this.panelController,
-      {super.key, required this.selectTask});
+  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask});
 
   @override
   State<SlidingPanelResponse> createState() => _SlidingPanelResponseState();
@@ -73,7 +72,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   TextEditingController keyWordController = TextEditingController();
 
   ScrollController mainScrollController = ScrollController();
-
+  bool proverka = false;
   bool customerFlag = true;
   bool contractorFlag = true;
   void getProfile() {
@@ -82,14 +81,19 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
 
   @override
   Widget build(BuildContext context) {
+    log(proverka.toString());
+    if (proverka == false) {
+      focusNodeDiscription.unfocus();
+      focusCoastMax.unfocus();
+    }
     user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     log(bottomInsets.toString());
-    return BlocBuilder<ResponseBloc, ResponseState>(
-        buildWhen: (previous, current) {
+    return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
+
         return true;
       } else {
         heightPanel = 500.h;
@@ -107,6 +111,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
             slide = false;
             focusNodeDiscription.unfocus();
             focusCoastMax.unfocus();
+            proverka = false;
           }
         },
         maxHeight: heightPanel,
@@ -156,11 +161,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             String error = 'specify'.tr();
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
-                              error += '\n- сумму';
+                              error += '\n- ${'amount'.tr()}';
                               errorsFlag = true;
                             }
                             if (descriptionTextController.text.isEmpty) {
-                              error += '\n- описание';
+                              error += '\n- ${'description'.tr().toLowerCase()}';
                               errorsFlag = true;
                             }
                             if (errorsFlag == true) {
@@ -171,16 +176,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text
-                                        .replaceAll(' ', '')),
+                                    int.parse(coastController.text.replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Progress');
                               } else {
                                 Repository().createAnswer(
                                     widget.selectTask!.id!,
                                     access,
-                                    int.parse(coastController.text
-                                        .replaceAll(' ', '')),
+                                    int.parse(coastController.text.replaceAll(' ', '')),
                                     descriptionTextController.text,
                                     'Selected');
                               }
@@ -188,17 +191,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               coastController.clear();
                               descriptionTextController.clear();
                               context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .add(UpdateProfileEvent(user));
+                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                               setState(() {});
                             }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer!
-                              ? 'Откликнуться'
-                              : 'Принять оффер',
+                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -246,10 +246,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         const Spacer(),
                         CupertinoButton(
                           onPressed: () {
+                            proverka = false;
                             FocusScope.of(context).unfocus();
-                            context
-                                .read<ResponseBloc>()
-                                .add(OpenSlidingPanelToEvent(500.h));
+                            context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
                           },
                           child: Text(
                             'done'.tr(),
@@ -320,8 +319,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           '${'budget_from'.tr()} ',
                           style: CustomTextStyle.grey_14_w400,
                         ),
-                      if (widget.selectTask?.currency?.name ==
-                          'Российский рубль')
+                      if (widget.selectTask?.currency?.name == 'Российский рубль')
                         Text(
                           '${'budget_from'.tr()} ₽',
                           style: CustomTextStyle.grey_14_w400,
@@ -351,19 +349,15 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             actionButton: false,
                             focusNode: focusCoastMax,
                             onTap: () {
-                              context
-                                  .read<ResponseBloc>()
-                                  .add(OpenSlidingPanelToEvent(600.h));
+                              proverka = true;
+                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
                             onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
-                            formatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              FormatterCurrency()
-                            ],
+                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
@@ -383,8 +377,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 bound: 0.02,
                 child: Container(
                   height: 165.h,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -394,7 +387,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Сопроводительное письмо',
+                        'covering_letter'.tr(),
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
@@ -408,10 +401,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             focusNode: focusNodeDiscription,
                             maxLines: 3,
                             onTap: () {
+                              proverka = true;
                               log(bottomInsets.toString());
-                              context
-                                  .read<ResponseBloc>()
-                                  .add(OpenSlidingPanelToEvent(700.h));
+                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,

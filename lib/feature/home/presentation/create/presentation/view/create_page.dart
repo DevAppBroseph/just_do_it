@@ -302,7 +302,7 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   elementCategory(
                     activities[index].photo ?? '',
-                    user?.rus ?? true ? activities[index].description ?? '' : activities[index].engDescription ?? '',
+                    user?.rus ?? true && context.locale.languageCode == 'RU'? activities[index].description ?? '' : activities[index].engDescription ?? '',
                     index,
                     choice: activities[index].selectSubcategory,
                   ),
@@ -472,7 +472,7 @@ class _CreatePageState extends State<CreatePage> {
             physics: const BouncingScrollPhysics(),
             children: list
                 .map((e) => item(
-                      user?.rus ?? true ? e.description ?? '' : e.engDescription ?? '',
+                      user?.rus ?? true && context.locale.languageCode == 'RU'? e.description ?? '' : e.engDescription ?? '',
                       index,
                     ))
                 .toList(),

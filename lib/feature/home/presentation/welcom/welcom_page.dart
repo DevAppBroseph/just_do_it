@@ -88,15 +88,18 @@ class _WelcomPageState extends State<WelcomPage> {
     user = BlocProvider.of<ProfileBloc>(context).user;
     if (user?.rus != null) {
       log('fvbt ${user!.rus!.toString()}');
-      // if (user!.rus!) {
-      //   selectLanguage = 'RU';
-      //   context.setLocale(const Locale('ru', 'RU'));
-      // } else {
-      //   selectLanguage = 'EN';
-      //   context.setLocale(const Locale('en', 'US'));
-      // }
+      if (user!.rus!) {
+        selectLanguage = 'RU';
+      } else {
+        selectLanguage = 'EN';
+      }
     }
-
+    if (context.locale.languageCode == 'RU') {
+      selectLanguage = 'RU';
+    }
+    if (context.locale.languageCode == 'EN') {
+      selectLanguage = 'EN';
+    }
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
@@ -144,7 +147,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
-                                            value: user?.rus ?? true ? selectLanguage = 'RU' : selectLanguage = 'EN',
+                                            value: selectLanguage,
                                             icon: Padding(
                                               padding: EdgeInsets.only(left: 5.w),
                                               child: const Icon(

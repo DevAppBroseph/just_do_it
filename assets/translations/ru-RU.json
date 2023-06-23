@@ -271,7 +271,15 @@
     "enter_the_code":"Введите код",
     "invalid_code": "Неверный код",
     "well":"Хорошо",
+    "amount":"сумму",
+    "minimum_price":"минимальную цену",
+    "maximum_price":"максимальную цену",
     "select_an_area":"Выбрать район",
-    "create_offer": "Создать оффер"
-    
+    "covering_letter": "Сопроводительное письмо",
+    "create_offer": "Создать оффер",
+    "the_minimum_budget_must_be_less_than_the_maximum": "минимальный бюджет должен быть меньше максимального",
+    "edit_task":"Редактировать задание",
+    "edit_offer":"Редактировать оффер",
+    "names":"название",
+    "themaximum_budget_should_not_exceed": "максимальный бюджет не должен превышать 1 000 000 000"
 }

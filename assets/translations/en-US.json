@@ -271,5 +271,15 @@
     "for": "for",
     "well":"Well",
     "select_an_area":"Select an area",
-    "create_offer": "Create an offer"
+    "amount":"amount",
+    "minimum_price":"minimum price",
+    "maximum_price":"maximum price",
+    "covering_letter": "Covering letter",
+    "the_minimum_budget_must_be_less_than_the_maximum": "the minimum budget must be less than the maximum",
+    "edit_task":"Edit task",
+    "edit_offer":"Edit offer",
+    "names":"name",
+    "create_offer": "Create an offer",
+    "themaximum_budget_should_not_exceed": "the maximum budget should not exceed 1 000 000 000"
+    
 }

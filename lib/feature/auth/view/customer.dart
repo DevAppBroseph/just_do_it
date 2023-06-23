@@ -796,7 +796,7 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) async {
-              countryController.text = value.name ?? '-';
+              countryController.text = context.locale.languageCode == 'RU' ? value.name ?? '-':  value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -826,7 +826,7 @@ class _CustomerState extends State<Customer> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value.name ?? '-';
+                  regionController.text = context.locale.languageCode == 'RU' ? value.name ?? '-':  value.engName ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
