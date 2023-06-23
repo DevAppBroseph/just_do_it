@@ -21,6 +21,7 @@ class SendMessageEvent extends ChatEvent {
 }
 
 class GetListMessage extends ChatEvent {}
+class CloseSocketEvent extends ChatEvent {}
 
 class UpdateProfileChatEvent extends ChatEvent {}
 

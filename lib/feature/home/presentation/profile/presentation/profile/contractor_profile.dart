@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -26,6 +27,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ContractorProfile extends StatefulWidget {
   double padding;
@@ -1497,6 +1499,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 onTap: () {
                   BlocProvider.of<ProfileBloc>(context).setAccess(null);
                   BlocProvider.of<ProfileBloc>(context).setUser(null);
+                  BlocProvider.of<ChatBloc>(context).add(CloseSocketEvent());
                   Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
                 },
                 child: Container(

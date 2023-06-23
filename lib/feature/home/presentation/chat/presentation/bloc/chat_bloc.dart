@@ -21,6 +21,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(InitialState()) {
     on<UpdateMenuEvent>(_updateMenu);
     on<StartSocket>(_startSocket);
+    on<CloseSocketEvent>(_closeSocket);
     on<UpdateProfileChatEvent>(_updateprofile);
     on<GetListMessage>(_getListMessage);
     on<GetListMessageItem>(_getListMessageItem);
@@ -103,9 +104,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
-           log('message new $event');
+          log('message new $event');
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
-            log(newMessageTask.toString());
+          log(newMessageTask.toString());
           TaskDialogs().showTaskMessage(
             newMessageTask.message,
           );
@@ -115,7 +116,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           log('$e');
         }
         try {
-          add(UpdateProfileChatEvent());
           log('message new $event');
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
@@ -153,6 +153,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       },
       cancelOnError: false,
     );
+  }
+
+  void _closeSocket(CloseSocketEvent eventBloc, Emitter<ChatState> emit) async {
+    channel?.sink.close();
   }
 
   void _tryConnect() async {
