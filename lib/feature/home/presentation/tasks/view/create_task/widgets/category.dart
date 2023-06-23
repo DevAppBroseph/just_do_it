@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
@@ -45,7 +46,7 @@ class _CategoryState extends State<Category> {
 
   bool openCategory = false;
   bool openSubCategory = false;
-
+  late UserRegModel? user;
   final ScrollController _categoryController = ScrollController();
   final ScrollController _subCategoryController = ScrollController();
 
@@ -53,6 +54,7 @@ class _CategoryState extends State<Category> {
   void initState() {
     super.initState();
     activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    user = BlocProvider.of<ProfileBloc>(context).user;
   }
 
   @override
@@ -92,7 +94,9 @@ class _CategoryState extends State<Category> {
                       SizedBox(height: 3.h),
                       if (widget.selectCategory != null)
                         Text(
-                          widget.selectCategory!.description!,
+                          user?.rus ?? true
+                              ? widget.selectCategory!.description!
+                              : widget.selectCategory!.engDescription!,
                           style: CustomTextStyle.black_14_w400_171716,
                         ),
                     ],
@@ -163,14 +167,12 @@ class _CategoryState extends State<Category> {
                                     SizedBox(
                                       width: 250.w,
                                       child: Text(
-                                        e.description ?? '-',
-                                        style: CustomTextStyle
-                                            .black_14_w400_515150,
+                                        user?.rus ?? true ? e.description ?? '-' : e.engDescription ?? '',
+                                        style: CustomTextStyle.black_14_w400_515150,
                                       ),
                                     ),
                                     const Spacer(),
-                                    if (e.id == widget.selectCategory?.id)
-                                      const Icon(Icons.check)
+                                    if (e.id == widget.selectCategory?.id) const Icon(Icons.check)
                                   ],
                                 ),
                               ],
@@ -220,7 +222,9 @@ class _CategoryState extends State<Category> {
                         SizedBox(
                           width: 240.w,
                           child: Text(
-                            widget.selectSubCategory?.description ?? '-',
+                            user?.rus ?? true
+                                ? widget.selectSubCategory?.description ?? '-'
+                                : widget.selectSubCategory?.engDescription ?? '-',
                             style: CustomTextStyle.black_14_w400_171716,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -291,15 +295,12 @@ class _CategoryState extends State<Category> {
                                         SizedBox(
                                           width: 250.w,
                                           child: Text(
-                                            e.description ?? '-',
-                                            style: CustomTextStyle
-                                                .black_14_w400_515150,
+                                            user?.rus ?? true ? e.description ?? '-' : e.engDescription ?? '-',
+                                            style: CustomTextStyle.black_14_w400_515150,
                                           ),
                                         ),
                                         const Spacer(),
-                                        if (e.id ==
-                                            widget.selectSubCategory?.id)
-                                          const Icon(Icons.check)
+                                        if (e.id == widget.selectSubCategory?.id) const Icon(Icons.check)
                                       ],
                                     ),
                                   ],
@@ -424,8 +425,7 @@ class _CategoryState extends State<Category> {
                 ],
               ),
               textEditingController: TextEditingController(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             ),
           ),
           SizedBox(height: 15.h),
@@ -465,11 +465,9 @@ class _CategoryState extends State<Category> {
                           GestureDetector(
                             onTap: () {
                               if (widget.document[index].file != null) {
-                                OpenFile.open(
-                                    widget.document[index].file!.path);
+                                OpenFile.open(widget.document[index].file!.path);
                               } else {
-                                launch(widget.document[index].linkUrl!
-                                        .contains(server)
+                                launch(widget.document[index].linkUrl!.contains(server)
                                     ? widget.document[index].linkUrl!
                                     : server + widget.document[index].linkUrl!);
                               }
@@ -479,9 +477,7 @@ class _CategoryState extends State<Category> {
                               width: 50.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(color: Colors.black)
-                                  ],
+                                  boxShadow: const [BoxShadow(color: Colors.black)],
                                   borderRadius: BorderRadius.circular(10.r)),
                               child: Center(
                                 child: SvgPicture.asset(
@@ -502,9 +498,7 @@ class _CategoryState extends State<Category> {
                                 width: 15.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(color: Colors.black)
-                                    ],
+                                    boxShadow: const [BoxShadow(color: Colors.black)],
                                     borderRadius: BorderRadius.circular(40.r)),
                                 child: Center(
                                   child: Icon(
@@ -562,9 +556,7 @@ class _CategoryState extends State<Category> {
                                 width: 15.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(color: Colors.black)
-                                    ],
+                                    boxShadow: const [BoxShadow(color: Colors.black)],
                                     borderRadius: BorderRadius.circular(40.r)),
                                 child: Center(
                                   child: Icon(

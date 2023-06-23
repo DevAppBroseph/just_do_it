@@ -104,6 +104,8 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                                     selectTask = task;
                                   });
                                 },
+                                BlocProvider.of<ProfileBloc>(context).user,
+
                               );
                             },
                           ),

@@ -40,6 +40,7 @@ class Repository {
 
     return null;
   }
+
   Future<Reviews?> getRankingReview(int? id, String? access) async {
     final response = await dio.get(
       '$server/ranking/$id',
@@ -198,7 +199,7 @@ class Repository {
   Future<bool> addReviewsDetail(String? access, int? receiver, String? message, int? mark) async {
     log(receiver.toString());
     log(mark.toString());
-     log(message.toString());
+    log(message.toString());
     final response = await dio.post(
       '$server/ranking/',
       data: {
@@ -211,7 +212,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-   
+
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
@@ -254,7 +255,8 @@ class Repository {
     }
     return false;
   }
- Future<bool> editTaskPatch(String? access, Task task) async {
+
+  Future<bool> editTaskPatch(String? access, Task task) async {
     final response = await dio.patch(
       '$server/orders/${task.id}',
       data: {
@@ -271,6 +273,25 @@ class Repository {
     }
     return false;
   }
+
+  Future<bool> editRusProfile(String? access, bool rus) async {
+    final response = await dio.patch(
+      '$server/profile/',
+      data: {
+        'rus': rus,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(rus.toString());
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
   Future<Uint8List?> downloadFile(String url) async {
     try {
       final response = await dio.get(

@@ -109,6 +109,7 @@ class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInP
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

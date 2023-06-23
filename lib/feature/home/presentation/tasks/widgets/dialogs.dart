@@ -207,7 +207,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                             },
                             btnColor: ColorStyles.purpleA401C4,
                             textLabel: Text(
-                              'Хорошо',
+                              'well'.tr(),
                               style: CustomTextStyle.white_14_w400,
                             ),
                           ),

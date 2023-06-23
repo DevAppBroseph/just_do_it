@@ -28,11 +28,7 @@ class Contractor extends StatefulWidget {
   final Size size;
   Function(int) callBacK;
   Function() callBackFlag;
-  Contractor(
-      {super.key,
-      required this.size,
-      required this.callBacK,
-      required this.callBackFlag});
+  Contractor({super.key, required this.size, required this.callBacK, required this.callBackFlag});
 
   @override
   State<Contractor> createState() => _ContractorState();
@@ -66,8 +62,7 @@ class _ContractorState extends State<Contractor> {
   }
 
   void getListTask() async {
-    List<Task> res = await Repository()
-        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
+    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, true);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -81,8 +76,12 @@ class _ContractorState extends State<Contractor> {
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Stack(
         children: [
-          BlocBuilder<ProfileBloc, ProfileState>(
-              buildWhen: (previous, current) {
+          BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+            if (current is LoadProfileSuccessState) {
+              user = BlocProvider.of<ProfileBloc>(context).user;
+              log('LoadProfileSuccessState');
+              return true; 
+            }
             if (current is UpdateProfileSuccessState) {
               user = BlocProvider.of<ProfileBloc>(context).user;
               log('UpdateProfileSuccessState');
@@ -123,8 +122,7 @@ class _ContractorState extends State<Contractor> {
                           onTap: () async {
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return OrdersCreateAsCustomerView(
-                                    title: 'my_task'.tr());
+                                return OrdersCreateAsCustomerView(title: 'my_task'.tr());
                               }),
                             );
                           },
@@ -143,36 +141,29 @@ class _ContractorState extends State<Contractor> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'my_task'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'created_by_me_as_a_customer'
-                                                  .tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              'created_by_me_as_a_customer'.tr(),
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      if (user?.countOrdersCreateAsCustomer !=
-                                          null)
+                                      if (user?.countOrdersCreateAsCustomer != null)
                                         Padding(
                                           padding: EdgeInsets.only(right: 6.w),
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user!.countOrdersCreateAsCustomer
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              user!.countOrdersCreateAsCustomer.toString(),
+                                              style: CustomTextStyle.black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -210,36 +201,29 @@ class _ContractorState extends State<Contractor> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'performed'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
                                               'tasks_for_which_responses'.tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      if (user?.countOrdersInProgressAsCustomer !=
-                                          null)
+                                      if (user?.countOrdersInProgressAsCustomer != null)
                                         Padding(
                                           padding: EdgeInsets.only(right: 6.w),
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user!
-                                                  .countOrdersInProgressAsCustomer
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              user!.countOrdersInProgressAsCustomer.toString(),
+                                              style: CustomTextStyle.black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -277,35 +261,29 @@ class _ContractorState extends State<Contractor> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'closed'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
                                               'completed_task'.tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      if (user?.countOrdersCompleteACustomer !=
-                                          null)
+                                      if (user?.countOrdersCompleteACustomer != null)
                                         Padding(
                                           padding: EdgeInsets.only(right: 6.w),
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user!.countOrdersCompleteACustomer
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              user!.countOrdersCompleteACustomer.toString(),
+                                              style: CustomTextStyle.black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -370,37 +348,29 @@ class _ContractorState extends State<Contractor> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'accepted_offers'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
-                                              'i_made_a_response_to_the_offer'
-                                                  .tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              'i_made_a_response_to_the_offer'.tr(),
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      if (user?.selectedOffersAsCustomer !=
-                                          null)
+                                      if (user?.selectedOffersAsCustomer != null)
                                         Padding(
                                           padding: EdgeInsets.only(right: 6.w),
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user!.selectedOffersAsCustomer!
-                                                  .length
-                                                  .toString(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              user!.selectedOffersAsCustomer!.length.toString(),
+                                              style: CustomTextStyle.black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -438,20 +408,17 @@ class _ContractorState extends State<Contractor> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'closed_offers'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                           ),
                                           SizedBox(
                                             width: 235.w,
                                             child: Text(
                                               'completed_task'.tr(),
-                                              style:
-                                                  CustomTextStyle.grey_12_w400,
+                                              style: CustomTextStyle.grey_12_w400,
                                             ),
                                           ),
                                         ],
@@ -461,15 +428,10 @@ class _ContractorState extends State<Contractor> {
                                         child: SizedBox(
                                           width: 35.w,
                                           child: Text(
-                                            user?.finishedOffersAsCustomer !=
-                                                    null
-                                                ? user!
-                                                    .finishedOffersAsCustomer!
-                                                    .length
-                                                    .toString()
+                                            user?.finishedOffersAsCustomer != null
+                                                ? user!.finishedOffersAsCustomer!.length.toString()
                                                 : '0',
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.black_13_w400_171716,
                                             textAlign: TextAlign.end,
                                           ),
                                         ),
@@ -538,26 +500,19 @@ class _ContractorState extends State<Contractor> {
                                         width: 235.w,
                                         child: Text(
                                           'offers'.tr(),
-                                          style: CustomTextStyle
-                                              .black_13_w400_171716,
+                                          style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),
-                                      BlocBuilder<FavouritesBloc,
-                                              FavouritesState>(
-                                          builder: (context, state) {
+                                      BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
                                         if (state is FavouritesLoaded) {
-                                          final favouritesOrders =
-                                              state.favourite!.favouriteOffers;
+                                          final favouritesOrders = state.favourite!.favouriteOffers;
                                           return Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 6.w),
+                                            padding: EdgeInsets.only(right: 6.w),
                                             child: SizedBox(
                                               width: 35.w,
                                               child: Text(
-                                                favouritesOrders!.length
-                                                    .toString(),
-                                                style: CustomTextStyle
-                                                    .black_13_w400_171716,
+                                                favouritesOrders!.length.toString(),
+                                                style: CustomTextStyle.black_13_w400_171716,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -599,26 +554,19 @@ class _ContractorState extends State<Contractor> {
                                         width: 235.w,
                                         child: Text(
                                           'executors'.tr(),
-                                          style: CustomTextStyle
-                                              .black_13_w400_171716,
+                                          style: CustomTextStyle.black_13_w400_171716,
                                         ),
                                       ),
-                                      BlocBuilder<FavouritesBloc,
-                                              FavouritesState>(
-                                          builder: (context, state) {
+                                      BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
                                         if (state is FavouritesLoaded) {
-                                          final favouritesOrders =
-                                              state.favourite!.favoriteUsers;
+                                          final favouritesOrders = state.favourite!.favoriteUsers;
                                           return Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 6.w),
+                                            padding: EdgeInsets.only(right: 6.w),
                                             child: SizedBox(
                                               width: 35.w,
                                               child: Text(
-                                                favouritesOrders!.length
-                                                    .toString(),
-                                                style: CustomTextStyle
-                                                    .black_13_w400_171716,
+                                                favouritesOrders!.length.toString(),
+                                                style: CustomTextStyle.black_13_w400_171716,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),

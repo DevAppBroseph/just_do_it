@@ -34,18 +34,20 @@ class OrderTask {
 class Currency {
   bool isSelect;
   int? id;
+  String? engName;
   String? name;
   String? shortName;
 
-  Currency(this.isSelect, {required this.id, required this.name, required this.shortName});
+  Currency(this.isSelect, {required this.id, required this.name, required this.shortName, required this.engName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(false, id: json['id'], name: json['name'], shortName: json['short_name']);
+    return Currency(false, id: json['id'], name: json['name'], shortName: json['short_name'], engName: json['eng_name']);
   }
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "short_name": shortName,
+        'eng_name': engName
       };
 }
 

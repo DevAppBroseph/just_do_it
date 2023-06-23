@@ -140,17 +140,19 @@ class _HomePageState extends State<HomePage> {
           Scaffold(
             body: BlocBuilder<ProfileBloc, ProfileState>(
               buildWhen: (previous, current) {
+              
                 if (current is EditPageState) {
                   searchQuery = current.text;
                   page = current.page;
                   pageController.jumpToPage(page);
                   streamController.add(page);
                 }
+                
                 return true;
               },
               builder: (context, snapshot) {
                 if (snapshot is LoadProfileState) {
-                  return const CupertinoActivityIndicator();
+                  return const Center(child: CupertinoActivityIndicator());
                 }
                 return PageView(
                   controller: pageController,

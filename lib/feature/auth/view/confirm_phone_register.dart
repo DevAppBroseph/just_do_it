@@ -71,16 +71,16 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-            scoreDialog(context, '50', 'регистрацию');
+            scoreDialog(context, '50', 'registrations');
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is ConfirmCodeRegisterErrorState) {
-            CustomAlert().showMessage('Неверный код', context);
+            CustomAlert().showMessage('invalid_code'.tr(), context);
           } else if (current is ConfirmRestoreErrorState) {
-            CustomAlert().showMessage('Неверный код', context);
+            CustomAlert().showMessage('invalid_code'.tr(), context);
           }
           return false;
         },
@@ -184,7 +184,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                         widget.phone, codeController.text));
                               } else {
                                 CustomAlert()
-                                    .showMessage('Введите код', context);
+                                    .showMessage('enter_the_code'.tr(), context);
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,

@@ -263,5 +263,13 @@
     "a_user_with_such_an_email_or_phone_number_is_already_registered": "A user with such an email or phone number is already registered",
     "jobfine_is_an_application_for_finding_and_doing_work": "Jobfine is an application for finding and doing work",
     "create_task": "Create an order",
+    "creating_an_order": "creating an order",
+    "left_a_review": "leaving a review",
+    "registrations": "registration",
+    "enter_the_code":"Enter the code",
+    "invalid_code": "Invalid code",
+    "for": "for",
+    "well":"Well",
+    "select_an_area":"Select an area",
     "create_offer": "Create an offer"
 }

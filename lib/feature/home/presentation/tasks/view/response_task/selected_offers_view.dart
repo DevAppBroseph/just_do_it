@@ -108,6 +108,7 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

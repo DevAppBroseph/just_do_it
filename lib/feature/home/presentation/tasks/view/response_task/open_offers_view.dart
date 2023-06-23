@@ -108,6 +108,7 @@ class _OpenOffersState extends State<OpenOffers> {
                                         selectTask = task;
                                       });
                                     },
+                                    user!
                                   );
                                 }
                                 return Container();

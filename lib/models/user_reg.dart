@@ -33,6 +33,7 @@ class UserRegModel {
   List<ArrayImages>? images;
   Uint8List? cv;
   String? cvType;
+  bool? rus;
   List<dynamic>? groups;
   List<Activities>? activities;
   List<int>? activitiesDocument;
@@ -57,7 +58,7 @@ class UserRegModel {
   List<Task>? finishedOffers;
   List<Task>? selectedOffersAsCustomer;
   List<Task>? finishedOffersAsCustomer;
-   List<Task>? myAnswersAsExecutor;
+  List<Task>? myAnswersAsExecutor;
 
   UserRegModel({
     this.countOrdersCreateAsCustomer,
@@ -80,6 +81,7 @@ class UserRegModel {
     this.country,
     this.photoLink,
     this.cvLink,
+    this.rus,
     this.photo,
     this.ordersCompleteAsExecutor,
     this.countOrdersCompleteAsExecutor,
@@ -114,7 +116,7 @@ class UserRegModel {
     List<Task>? selectedOffers,
     List<Task>? finishedOffers,
     List<Task>? selectedOffersAsCustomerk,
-     List<Task>? myAnswersAsExecutor,
+    List<Task>? myAnswersAsExecutor,
     List<Task>? finishedOffersAsCustomer,
     int? countOrdersCreateAsCustomer,
     List<Task>? ordersCreateAsCustomer,
@@ -144,11 +146,13 @@ class UserRegModel {
     String? photoLink,
     String? cvLink,
     int? id,
+    bool? rus,
     int? countOrdersInProgressAsCustomer,
     int? countOrderComplete,
     List<ActivitiesInfo>? activitiesInfo,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
+    this.rus = rus ?? this.rus;
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
     this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
@@ -215,6 +219,7 @@ class UserRegModel {
     String? activity = data['activity'];
     String? cvLink = data['CV'];
     int? id = data['id'];
+    bool? rus = data['rus'];
     List<ActivitiesInfo> list = [];
     int? balance = data['balance'];
     String? link = data['link'];
@@ -310,6 +315,7 @@ class UserRegModel {
       firstname: firstname,
       lastname: lastname,
       groups: groups,
+      rus: rus,
       photoLink: photoLink,
       sex: sex,
       countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
@@ -411,15 +417,18 @@ class Activities {
   bool isSelect;
   int id;
   String? description;
+  String? engDescription;
   String? photo;
   List<Subcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
+  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory, this.engDescription);
 
   factory Activities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
+    String? engDescription = data['description_eng'];
+
     String? photo = data['photo'];
     List<Subcategory> subcategory = [];
     if (data['subcategories'] != null) {
@@ -427,7 +436,7 @@ class Activities {
         subcategory.add(Subcategory.fromJson(element));
       }
     }
-    return Activities(false, id, description, photo, subcategory);
+    return Activities(false, id, description, photo, subcategory, engDescription);
   }
 }
 
@@ -435,13 +444,15 @@ class Subcategory {
   bool isSelect;
   int id;
   String? description;
+  String? engDescription;
 
-  Subcategory(this.isSelect, {required this.id, required this.description});
+  Subcategory(this.isSelect, {required this.id, required this.description, required this.engDescription});
 
   factory Subcategory.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
+    String? engDescription = data['description_eng'];
     String? description = data['description'];
-    return Subcategory(false, id: id, description: description);
+    return Subcategory(false, id: id, description: description, engDescription: engDescription);
   }
 }
 

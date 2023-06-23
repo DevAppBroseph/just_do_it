@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -40,8 +42,7 @@ void iconSelectModal(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -113,21 +114,12 @@ void iconSelectModal(
                                   return ElevatedButton(
                                     onPressed: () => onTap(index),
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(
-                                            EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.white),
-                                        elevation:
-                                            const MaterialStatePropertyAll(0),
-                                        overlayColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.grey),
+                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
+                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                                        elevation: const MaterialStatePropertyAll(0),
+                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
                                         shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        0.r)))),
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20.w),
                                       child: SizedBox(
@@ -136,8 +128,7 @@ void iconSelectModal(
                                           children: [
                                             Text(
                                               list[index],
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              style: CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
                                           ],
@@ -187,6 +178,7 @@ void iconSelectModalCategories(
   String label,
   List<String> selectCategories,
 ) {
+  UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
   showDialog(
     useSafeArea: false,
     barrierColor: Colors.transparent,
@@ -197,8 +189,7 @@ void iconSelectModalCategories(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -271,64 +262,47 @@ void iconSelectModalCategories(
                                     onPressed: () {
                                       if (selectCategories.length > 1) {
                                         if (selectCategories.length < 3) {
-                                          if (selectCategories.contains(
-                                              list[index].description)) {
-                                            selectCategories.remove(
-                                                list[index].description ?? '');
+                                          if (selectCategories.contains(list[index].description)) {
+                                            selectCategories.remove(list[index].description ?? '');
                                           } else {
-                                            selectCategories.add(
-                                                list[index].description ?? '');
+                                            selectCategories.add(list[index].description ?? '');
                                           }
                                         } else {
-                                          if (selectCategories.contains(
-                                              list[index].description)) {
-                                            selectCategories.remove(
-                                                list[index].description);
+                                          if (selectCategories.contains(list[index].description)) {
+                                            selectCategories.remove(list[index].description);
                                           }
                                         }
                                         onTap(selectCategories);
                                       } else if (selectCategories.isEmpty ||
                                           selectCategories.length == 1 &&
-                                              !selectCategories.contains(
-                                                  list[index].description)) {
-                                        selectCategories
-                                            .add(list[index].description ?? '');
+                                              !selectCategories.contains(list[index].description)) {
+                                        selectCategories.add(list[index].description ?? '');
                                         onTap(selectCategories);
                                       }
 
                                       setState((() {}));
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(
-                                            EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.white),
-                                        elevation:
-                                            const MaterialStatePropertyAll(0),
-                                        overlayColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.grey),
+                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
+                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                                        elevation: const MaterialStatePropertyAll(0),
+                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
                                         shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        0.r)))),
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
                                           children: [
                                             Text(
-                                              list[index].description!,
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              user?.rus ?? true
+                                                  ? list[index].description!
+                                                  : list[index].engDescription!,
+                                              style: CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
-                                            if (selectCategories.contains(
-                                                list[index].description!))
+                                            if (selectCategories.contains(list[index].description!))
                                               const Icon(
                                                 Icons.check,
                                                 color: Colors.black,
@@ -379,6 +353,7 @@ void showCountryWidget(
   List<Countries> list,
   String label,
 ) {
+  UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
   showDialog(
     useSafeArea: false,
     barrierColor: Colors.transparent,
@@ -389,17 +364,14 @@ void showCountryWidget(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: list.length < 3
-                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
-                  : 200.h,
+              height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -449,9 +421,7 @@ void showCountryWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: list.length < 3
-                                ? (list.isEmpty ? 1 : list.length) * 50.h
-                                : 150.h,
+                            height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h : 150.h,
                             child: Scrollbar(
                               thumbVisibility: true,
                               controller: scrollController,
@@ -469,32 +439,21 @@ void showCountryWidget(
                                       Navigator.of(context).pop();
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(
-                                            EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.white),
-                                        elevation:
-                                            const MaterialStatePropertyAll(0),
-                                        overlayColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.grey),
+                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
+                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                                        elevation: const MaterialStatePropertyAll(0),
+                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
                                         shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        0.r)))),
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
                                           children: [
                                             Text(
-                                              list[index].name ?? "-",
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              user?.rus ?? true ? list[index].name ?? "-" : list[index].engName ?? "-",
+                                              style: CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
                                           ],
@@ -543,6 +502,8 @@ void showRegionWidget(
   List<Regions> list,
   String label,
 ) {
+  UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+
   showDialog(
     useSafeArea: false,
     barrierColor: Colors.transparent,
@@ -553,17 +514,14 @@ void showRegionWidget(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: list.length < 3
-                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
-                  : 200.h,
+              height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -613,9 +571,7 @@ void showRegionWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: list.length < 3
-                                ? (list.isEmpty ? 1 : list.length) * 50.h
-                                : 150.h,
+                            height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h : 150.h,
                             child: Scrollbar(
                               thumbVisibility: true,
                               controller: scrollController,
@@ -633,24 +589,14 @@ void showRegionWidget(
                                       Navigator.of(context).pop();
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(
-                                            EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.white),
-                                        elevation:
-                                            const MaterialStatePropertyAll(0),
-                                        overlayColor:
-                                            const MaterialStatePropertyAll(
-                                                Colors.grey),
+                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
+                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                                        elevation: const MaterialStatePropertyAll(0),
+                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
                                         shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        0.r)))),
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
@@ -658,9 +604,10 @@ void showRegionWidget(
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                list[index].name ?? '-',
-                                                style: CustomTextStyle
-                                                    .black_14_w300,
+                                                user?.rus ?? true
+                                                    ? list[index].name ?? '-'
+                                                    : list[index].engName ?? '-',
+                                                style: CustomTextStyle.black_14_w300,
                                                 maxLines: null,
                                               ),
                                             ),
