@@ -274,7 +274,7 @@ class Repository {
     return false;
   }
 
-  Future<bool> editRusProfile(String? access, bool rus) async {
+  Future<UserRegModel?> editRusProfile(String? access, bool rus) async {
     final response = await dio.patch(
       '$server/profile/',
       data: {
@@ -287,9 +287,10 @@ class Repository {
     );
     log(rus.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return UserRegModel.fromJson(response.data);
+    } else {
+      return null;
     }
-    return false;
   }
 
   Future<Uint8List?> downloadFile(String url) async {

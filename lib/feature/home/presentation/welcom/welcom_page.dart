@@ -86,15 +86,17 @@ class _WelcomPageState extends State<WelcomPage> {
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
-    if (user != null) {
-      if (user!.rus!) {
-        selectLanguage = 'RU';
-        context.setLocale(const Locale('ru', 'RU'));
-      } else {
-        selectLanguage = 'EN';
-        context.setLocale(const Locale('en', 'US'));
-      }
-    } else {}
+    if (user?.rus != null) {
+      log('fvbt ${user!.rus!.toString()}');
+      // if (user!.rus!) {
+      //   selectLanguage = 'RU';
+      //   context.setLocale(const Locale('ru', 'RU'));
+      // } else {
+      //   selectLanguage = 'EN';
+      //   context.setLocale(const Locale('en', 'US'));
+      // }
+    }
+
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
@@ -142,7 +144,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
-                                            value: selectLanguage,
+                                            value: user?.rus ?? true ? selectLanguage = 'RU' : selectLanguage = 'EN',
                                             icon: Padding(
                                               padding: EdgeInsets.only(left: 5.w),
                                               child: const Icon(
@@ -150,25 +152,24 @@ class _WelcomPageState extends State<WelcomPage> {
                                                 color: ColorStyles.greyBDBDBD,
                                               ),
                                             ),
-                                            onChanged: (value) {
-                                              log(value.toString());
+                                            onChanged: (value) async {
                                               if (value == 'RU') {
                                                 context.setLocale(const Locale('ru', 'RU'));
                                                 if (user != null) {
-                                                  Repository().editRusProfile(
+                                                  user = await Repository().editRusProfile(
                                                       BlocProvider.of<ProfileBloc>(context).access, true);
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                                 }
                                               }
                                               if (value == 'EN') {
                                                 context.setLocale(const Locale('en', 'US'));
                                                 if (user != null) {
-                                                  Repository().editRusProfile(
+                                                  user = await Repository().editRusProfile(
                                                       BlocProvider.of<ProfileBloc>(context).access, false);
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                                 }
                                               }
-                                              if (user != null) {
-                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                              }
+                                              if (user != null) {}
                                               BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
                                               setState(() {
                                                 selectLanguage = value!;
@@ -511,7 +512,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           child: ClipOval(
                                                             child: SizedBox.fromSize(
                                                                 size: Size.fromRadius(40.r),
-                                                                child: user!.photoLink == null
+                                                                child: user?.photoLink == null
                                                                     ? Container(
                                                                         height: 60.h,
                                                                         width: 60.w,
@@ -529,7 +530,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       )),
                                                           ),
                                                         ),
-                                                        if (user!.photoLink != null)
+                                                        if (user?.photoLink != null)
                                                           Align(
                                                             alignment: Alignment.topRight,
                                                             child: GestureDetector(
