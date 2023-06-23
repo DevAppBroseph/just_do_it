@@ -390,19 +390,19 @@ class _CeateTasksState extends State<CeateTasks> {
                         bool errorsFlag = false;
 
                         if (startDate == null) {
-                          error += '\n- дату начала';
+                          error += '\n- ${'start_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (startDate == null) {
-                          error += '\n- дату завершения';
+                          error += '\n- ${'completion_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (coastMinController.text.isEmpty) {
-                          error += '\n- минимальную цену';
+                          error += '\n- ${'minimum_price'.tr()}';
                           errorsFlag = true;
                         }
                         if (coastMaxController.text.isEmpty) {
-                          error += '\n- максимальную цену';
+                          error += '\n- ${'maximum_price'.tr()}';
                           errorsFlag = true;
                         }
 
@@ -417,7 +417,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         //   errorsFlag = true;
                         // }
                         if (currency == null) {
-                          error += '\n- валюту';
+                          error += '\n- ${'currency'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         coastMaxController.text =
@@ -429,7 +429,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           if (int.parse(coastMinController.text) >
                               int.parse(coastMaxController.text)) {
                             error +=
-                                '\n- минимальный бюджет должен быть меньше максимального';
+                                '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
                             errorsFlag = true;
                           }
                         }
@@ -437,7 +437,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
                             error +=
-                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                                '\n- themaximum_budget_should_not_exceed'.tr();
                             errorsFlag = true;
                           }
                         }
@@ -445,7 +445,7 @@ class _CeateTasksState extends State<CeateTasks> {
                             coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
                             error +=
-                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                                '\n- themaximum_budget_should_not_exceed'.tr();
                             errorsFlag = true;
                           }
                         }
@@ -578,19 +578,19 @@ class _CeateTasksState extends State<CeateTasks> {
                         bool errorsFlag = false;
 
                         if (selectCategory == null) {
-                          error += '\n- категорию';
+                          error += '\n-  ${'category'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (selectSubCategory == null) {
-                          error += '\n- подкатегорию';
+                          error += '\n- ${'subcategory'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (titleController.text.isEmpty) {
-                          error += '\n- название';
+                          error += '\n- ${'names'.tr()}';
                           errorsFlag = true;
                         }
                         if (aboutController.text.isEmpty) {
-                          error += '\n- описание';
+                          error += '\n- ${'description'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
 

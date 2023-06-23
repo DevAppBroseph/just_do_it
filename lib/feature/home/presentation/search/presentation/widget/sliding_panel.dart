@@ -83,6 +83,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   ScrollController mainScrollController = ScrollController();
 
   bool customerFlag = true;
+  bool proverka = false;
   bool contractorFlag = true;
 
   bool passport = false;
@@ -90,6 +91,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   @override
   Widget build(BuildContext context) {
+    if (proverka == false) {
+      focusCoastMin.unfocus();
+      focusCoastMax.unfocus();
+      focusCoastKeyWord.unfocus();
+    }
     user = BlocProvider.of<ProfileBloc>(context).user;
     return BlocBuilder<SearchBloc, SearchState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
@@ -119,6 +125,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               focusCoastMax.unfocus();
               focusCoastKeyWord.unfocus();
               slide = false;
+              proverka = false;
             }
           },
           color: Colors.transparent,
@@ -351,6 +358,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   onTap: () {
                                     FocusScope.of(context).unfocus();
                                     slide = false;
+                                    proverka = false;
+
                                     setState(() {});
                                   },
                                   child: Container(
@@ -726,6 +735,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   focusNode: focusCoastMin,
                                   actionButton: false,
                                   onTap: () {
+                                    proverka = true;
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
                                         duration: const Duration(seconds: 1), curve: Curves.linear);
@@ -808,6 +818,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   actionButton: false,
                                   textInputType: TextInputType.number,
                                   onTap: () {
+                                    proverka = true;
+
                                     slide = true;
                                     mainScrollController.animateTo(heightPanel,
                                         duration: const Duration(seconds: 1), curve: Curves.linear);
@@ -881,6 +893,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           textInputType: TextInputType.name,
                                           focusNode: focusCoastKeyWord,
                                           onTap: () {
+                                            proverka = true;
+
                                             slide = true;
                                             Future.delayed(const Duration(milliseconds: 200), () {
                                               mainScrollController.animateTo(heightPanel,

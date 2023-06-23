@@ -75,19 +75,15 @@ class _EditTasksState extends State<EditTasks> {
     coastMinController.text = widget.task.priceFrom.toString();
     coastMaxController.text = widget.task.priceTo.toString();
     final splitStartDate = widget.task.dateStart.split('-');
-    startDate = DateTime(int.parse(splitStartDate[0]),
-        int.parse(splitStartDate[1]), int.parse(splitStartDate[2]));
+    startDate = DateTime(int.parse(splitStartDate[0]), int.parse(splitStartDate[1]), int.parse(splitStartDate[2]));
     final splitEndDate = widget.task.dateEnd.split('-');
-    endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]),
-        int.parse(splitEndDate[2]));
+    endDate = DateTime(int.parse(splitEndDate[0]), int.parse(splitEndDate[1]), int.parse(splitEndDate[2]));
     initCountry();
 
     for (var element in widget.task.files ?? []) {
       document.add(
         ArrayImages(
-          element.linkUrl!.contains(server)
-              ? element.linkUrl
-              : server + element.linkUrl!,
+          element.linkUrl!.contains(server) ? element.linkUrl : server + element.linkUrl!,
           null,
           id: element.id,
         ),
@@ -154,8 +150,7 @@ class _EditTasksState extends State<EditTasks> {
     );
     if (result != null) {
       for (var element in result.files) {
-        document.add(ArrayImages(null, element.bytes,
-            file: File(element.path!), type: element.path?.split('.').last));
+        document.add(ArrayImages(null, element.bytes, file: File(element.path!), type: element.path?.split('.').last));
       }
       setState(() {});
     }
@@ -234,8 +229,7 @@ class _EditTasksState extends State<EditTasks> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600),
-                                curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -266,8 +260,7 @@ class _EditTasksState extends State<EditTasks> {
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
                         document: document,
-                        selectCategory:
-                            selectCategory ?? widget.task.activities,
+                        selectCategory: selectCategory ?? widget.task.activities,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
                         aboutController: aboutController,
@@ -306,8 +299,7 @@ class _EditTasksState extends State<EditTasks> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
@@ -315,19 +307,19 @@ class _EditTasksState extends State<EditTasks> {
                         bool errorsFlag = false;
 
                         if (startDate == null) {
-                          error += '\n- дату начала';
+                          error += '\n- ${'start_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (startDate == null) {
-                          error += '\n- дату завершения';
+                          error += '\n- ${'completion_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (coastMinController.text.isEmpty) {
-                          error += '\n- минимальную цену';
+                          error += '\n- ${'minimum_price'.tr()}';
                           errorsFlag = true;
                         }
                         if (coastMaxController.text.isEmpty) {
-                          error += '\n- максимальную цену';
+                          error += '\n- ${'maximum_price'.tr()}';
                           errorsFlag = true;
                         }
                         // bool countriesIsSelect = false;
@@ -341,28 +333,21 @@ class _EditTasksState extends State<EditTasks> {
                         //   errorsFlag = true;
                         // }
 
-                        if (coastMinController.text.isNotEmpty &&
-                            coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) >
-                              int.parse(coastMaxController.text)) {
-                            error +=
-                                '\n- минимальный бюджет должен быть меньше максимального';
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
+                            error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty &&
-                            coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMinController.text) > 1000000000) {
-                            error +=
-                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                            error += '\n- themaximum_budget_should_not_exceed'.tr();
                             errorsFlag = true;
                           }
                         }
-                        if (coastMinController.text.isNotEmpty &&
-                            coastMaxController.text.isNotEmpty) {
+                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
                           if (int.parse(coastMaxController.text) > 1000000000) {
-                            error +=
-                                '\n- максимальный бюджет не должен превышать 1 000 000 000';
+                            error += '\n- themaximum_budget_should_not_exceed'.tr();
                             errorsFlag = true;
                           }
                         }
@@ -404,18 +389,13 @@ class _EditTasksState extends State<EditTasks> {
                             name: titleController.text,
                             description: aboutController.text,
                             subcategory: selectSubCategory!,
-                            dateStart:
-                                DateFormat('yyyy-MM-dd').format(startDate!),
+                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
                             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
                             priceFrom: int.parse(
-                              coastMinController.text.isEmpty
-                                  ? '0'
-                                  : coastMinController.text,
+                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
                             ),
                             priceTo: int.parse(
-                              coastMaxController.text.isEmpty
-                                  ? '0'
-                                  : coastMaxController.text,
+                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
                             ),
                             regions: regions,
                             countries: country,
@@ -429,10 +409,8 @@ class _EditTasksState extends State<EditTasks> {
                             currency: currency,
                           );
 
-                          final profileBloc =
-                              BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository()
-                              .editTask(profileBloc.access!, newTask);
+                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                          bool res = await Repository().editTask(profileBloc.access!, newTask);
                           if (res) {
                             Navigator.of(context)
                               ..pop()
@@ -446,19 +424,19 @@ class _EditTasksState extends State<EditTasks> {
                         bool errorsFlag = false;
 
                         if (selectCategory == null) {
-                          error += '\n- категорию';
+                          error += '\n- ${'category'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (selectSubCategory == null) {
-                          error += '\n- подкатегорию';
+                          error += '\n- ${'subcategory'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (titleController.text.isEmpty) {
-                          error += '\n- название';
+                          error += '\n- ${'names'.tr()}';
                           errorsFlag = true;
                         }
                         if (aboutController.text.isEmpty) {
-                          error += '\n- описание';
+                          error += '\n- ${'description'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
 
@@ -478,8 +456,8 @@ class _EditTasksState extends State<EditTasks> {
                       page == 0
                           ? 'further'.tr()
                           : widget.task.asCustomer!
-                              ? 'Редактировать задание'
-                              : 'Редактировать оффер',
+                              ? 'edit_task'.tr()
+                              : 'edit_offer'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
                   ),

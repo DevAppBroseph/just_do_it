@@ -159,11 +159,11 @@ class _SlidingPanelResponseFromFavState
                             String error = 'specify'.tr();
                             bool errorsFlag = false;
                             if (coastController.text.isEmpty) {
-                              error += '\n- сумму';
+                              error += '\n- ${'amount'.tr()}';
                               errorsFlag = true;
                             }
                             if (descriptionTextController.text.isEmpty) {
-                              error += '\n- описание';
+                              error += '\n- ${'description'.tr().toLowerCase()}';
                               errorsFlag = true;
                             }
                             if (errorsFlag == true) {
@@ -397,7 +397,7 @@ class _SlidingPanelResponseFromFavState
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Сопроводительное письмо',
+                        'covering_letter'.tr(),
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),

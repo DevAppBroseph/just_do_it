@@ -18,12 +18,9 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
-    as rep;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart'
-    as res;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart'
-    as search;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as res;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart' as search;
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
@@ -65,8 +62,7 @@ class _HomePageState extends State<HomePage> {
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
-      final owner =
-          await Repository().getRanking(int.parse(userProfile), access);
+      final owner = await Repository().getRanking(int.parse(userProfile), access);
       if (owner != null) {
         Navigator.push(
           context,
@@ -106,8 +102,7 @@ class _HomePageState extends State<HomePage> {
       if (accessToken != null && accessToken.isNotEmpty) {
         log('1');
         timer.cancel();
-        BlocProvider.of<ChatBloc>(context)
-            .add(StartSocket(context, accessToken));
+        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, accessToken));
       }
     });
 
@@ -140,14 +135,13 @@ class _HomePageState extends State<HomePage> {
           Scaffold(
             body: BlocBuilder<ProfileBloc, ProfileState>(
               buildWhen: (previous, current) {
-              
                 if (current is EditPageState) {
                   searchQuery = current.text;
                   page = current.page;
                   pageController.jumpToPage(page);
                   streamController.add(page);
                 }
-                
+
                 return true;
               },
               builder: (context, snapshot) {
@@ -215,21 +209,18 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     height: 96.h,
-                    child: BlocBuilder<ChatBloc, ChatState>(
-                        buildWhen: (previous, current) {
+                    child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
                       log('$current');
                       if (current is UpdateMenuState) {
                         return true;
                       }
                       if (current is UpdateProfileChatState) {
                         context.read<TasksBloc>().add(UpdateTaskEvent());
-                        BlocProvider.of<ProfileBloc>(context)
-                            .add(GetProfileEvent());
+                        BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
                         return false;
                       }
                       if (current is ReconnectState) {
-                        BlocProvider.of<ChatBloc>(context)
-                            .add(StartSocket(context, null));
+                        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, null));
                       }
                       if (current is UpdateListPersonState) {
                         return false;
@@ -237,8 +228,7 @@ class _HomePageState extends State<HomePage> {
                       return true;
                     }, builder: (context, snapshot) {
                       int undreadMessage = 0;
-                      for (var element
-                          in BlocProvider.of<ChatBloc>(context).chatList) {
+                      for (var element in BlocProvider.of<ChatBloc>(context).chatList) {
                         undreadMessage += element.countUnreadMessage ?? 0;
                       }
                       return Padding(
@@ -266,8 +256,7 @@ class _HomePageState extends State<HomePage> {
                               'assets/icons/messages.svg',
                               'chat'.tr(),
                               3,
-                              counderMessage:
-                                  undreadMessage != 0 ? undreadMessage : null,
+                              counderMessage: undreadMessage != 0 ? undreadMessage : null,
                             ),
                             itemBottomNavigatorBar(
                               'assets/icons/profile.svg',
@@ -315,8 +304,7 @@ class _HomePageState extends State<HomePage> {
               } else if (snapshot is res.CloseSlidingPanelState) {
                 panelControllerResponse.animatePanelToPosition(0.0);
               }
-              return SlidingPanelResponse(panelControllerResponse,
-                  selectTask: selectTask);
+              return SlidingPanelResponse(panelControllerResponse, selectTask: selectTask);
             },
           ),
         ],
@@ -324,8 +312,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(String icon, String label, int index,
-      {int? counderMessage}) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index, {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
         searchQuery = '';
@@ -347,8 +334,7 @@ class _HomePageState extends State<HomePage> {
             ]);
           } else {
             if (index == 1) {
-              BlocProvider.of<search.SearchBloc>(context)
-                  .add(search.ClearFilterEvent());
+              BlocProvider.of<search.SearchBloc>(context).add(search.ClearFilterEvent());
             }
             pageController.jumpToPage(index);
             page = index;
@@ -370,14 +356,12 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   SvgPicture.asset(
                     icon,
-                    color:
-                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                    color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_292D32
-                        .copyWith(fontSize: 12.sp),
+                    style: CustomTextStyle.black_12_w400_292D32.copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),
