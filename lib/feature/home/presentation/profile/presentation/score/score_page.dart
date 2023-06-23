@@ -577,7 +577,7 @@ class _ScorePageState extends State<ScorePage> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 39.w, vertical: 50.h),
                                     child: SizedBox(
-                                      height: 600.h,
+                                      height: 490.h,
                                       child: Image.asset(
                                         'assets/images/group.png',
                                         alignment: Alignment.topCenter,
@@ -589,12 +589,13 @@ class _ScorePageState extends State<ScorePage> {
                                         horizontal: 10.w,
                                         vertical: Platform.isIOS
                                             ? 22.h
-                                            : devicePixelRatio * 7.h),
+                                            : devicePixelRatio * 5.h),
                                     child: SizedBox(
-                                      height: Platform.isIOS ? 620.h : 750.h,
+                                      // color: Colors.red.withOpacity(0.2),
+                                      height: 590.h,
                                       child: Column(
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Row(
                                             mainAxisAlignment:
@@ -657,10 +658,6 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[3].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(
-                                              height: Platform.isIOS
-                                                  ? 20.h
-                                                  : devicePixelRatio * 6.h),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -722,10 +719,6 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[4].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(
-                                              height: Platform.isIOS
-                                                  ? 25.h
-                                                  : devicePixelRatio * 8.h),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -789,10 +782,6 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[11].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(
-                                              height: Platform.isIOS
-                                                  ? 20.h
-                                                  : devicePixelRatio * 7.h),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -858,10 +847,6 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[12].mustCoins!),
                                             ],
                                           ),
-                                          SizedBox(
-                                              height: Platform.isIOS
-                                                  ? 25.h
-                                                  : devicePixelRatio * 7.h),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -927,6 +912,8 @@ class _ScorePageState extends State<ScorePage> {
                                                   levels[19].mustCoins!),
                                             ],
                                           ),
+                                          // SizedBox(
+                                          //     height: 75.h * devicePixelRatio),
                                         ],
                                       ),
                                     ),
@@ -1038,32 +1025,28 @@ class _ScorePageState extends State<ScorePage> {
       }
     }
     return SizedBox(
-      width: 83.5.w,
+      // width: 80.w,
       child: Column(
         children: [
           // if (title.length > 11) SizedBox(height: 15.h),
           SizedBox(
-            // height: 70.h,
             child: Stack(alignment: Alignment.center, children: [
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  height: 57.h,
-                  width: 57.w,
+                  height: 65.h,
+                  width: 65.h,
                   decoration: BoxDecoration(
                     color: colorBoxDecoration(score, mustCoins, title),
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  height: 55.h,
-                  width: 55.w,
-                  child: Image.network(
-                    icon,
-                  ),
+              SizedBox(
+                height: 65.h,
+                width: 65.h,
+                child: Image.network(
+                  icon,
                 ),
               ),
             ]),
