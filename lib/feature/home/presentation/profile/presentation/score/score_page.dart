@@ -592,7 +592,7 @@ class _ScorePageState extends State<ScorePage> {
                                             : devicePixelRatio * 5.h),
                                     child: SizedBox(
                                       // color: Colors.red.withOpacity(0.2),
-                                      height: 590.h,
+                                      height: Platform.isIOS ? 570.h : 590.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
