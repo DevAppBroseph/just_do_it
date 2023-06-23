@@ -43,11 +43,8 @@ class _MenuPageState extends State<MenuPage> {
     if (user != null) {
       if (user.rus!) {
         selectLanguage = 'RU';
-        context.setLocale(const Locale('ru', 'RU'));
       } else {
         selectLanguage = 'EN';
-        context.setLocale(const Locale('en', 'US'));
-
       }
     }
     return MediaQuery(
@@ -143,18 +140,25 @@ class _MenuPageState extends State<MenuPage> {
                                         color: ColorStyles.greyBDBDBD,
                                       ),
                                     ),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
                                       if (value == 'RU') {
                                         context.setLocale(const Locale('ru', 'RU'));
-                                        Repository().editRusProfile(BlocProvider.of<ProfileBloc>(context).access, true);
+                                        if (user != null) {
+                                          user = await Repository()
+                                              .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, true);
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                        }
                                       }
                                       if (value == 'EN') {
                                         context.setLocale(const Locale('en', 'US'));
-                                        Repository()
-                                            .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, false);
+                                        if (user != null) {
+                                          user = await Repository()
+                                              .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, false);
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                        }
                                       }
+                                      if (user != null) {}
                                       BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-                                      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                       setState(() {
                                         selectLanguage = value!;
                                       });

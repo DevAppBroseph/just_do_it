@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -452,7 +453,9 @@ void showCountryWidget(
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true ? list[index].name ?? "-" : list[index].engName ?? "-",
+                                              user?.rus ?? true && context.locale.languageCode == 'RU'
+                                                  ? list[index].name ?? "-"
+                                                  : list[index].engName ?? "-",
                                               style: CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
@@ -604,7 +607,7 @@ void showRegionWidget(
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                user?.rus ?? true
+                                                user?.rus ?? true && context.locale.languageCode == 'RU'
                                                     ? list[index].name ?? '-'
                                                     : list[index].engName ?? '-',
                                                 style: CustomTextStyle.black_14_w300,
