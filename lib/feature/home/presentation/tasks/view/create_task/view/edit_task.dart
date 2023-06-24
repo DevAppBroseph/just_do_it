@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/models/countries.dart';
@@ -53,7 +54,7 @@ class _EditTasksState extends State<EditTasks> {
   Currency? currency;
   Activities? selectCategory;
   Subcategory? selectSubCategory;
-
+  late UserRegModel? user;
   DateTime? startDate;
   DateTime? endDate;
 
@@ -208,6 +209,7 @@ class _EditTasksState extends State<EditTasks> {
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
@@ -416,7 +418,8 @@ class _EditTasksState extends State<EditTasks> {
                               ..pop()
                               ..pop();
                           }
-
+                          context.read<TasksBloc>().add(UpdateTaskEvent());
+                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                           Loader.hide();
                         }
                       } else {

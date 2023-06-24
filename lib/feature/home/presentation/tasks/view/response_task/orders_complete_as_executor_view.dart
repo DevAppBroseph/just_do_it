@@ -41,6 +41,7 @@ class _OrdersCompleteAsExecutorViewState extends State<OrdersCompleteAsExecutorV
 
   @override
   Widget build(BuildContext context) {
+    
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
