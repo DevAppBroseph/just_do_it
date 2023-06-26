@@ -587,7 +587,7 @@ class _ScorePageState extends State<ScorePage> {
                                         horizontal: 10.w,
                                         vertical: Platform.isIOS ? 22.h : 25.h),
                                     child: SizedBox(
-                                      height: Platform.isIOS ? 650.h : 700.h,
+                                      height: Platform.isIOS ? 700.h : 700.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
