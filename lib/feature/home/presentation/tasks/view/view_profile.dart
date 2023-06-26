@@ -659,7 +659,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 16.h),
+                                    SizedBox(height: 23.h),
                                   ],
                                 ),
                               ),
