@@ -574,35 +574,27 @@ class _ScorePageState extends State<ScorePage> {
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 39.w, vertical: 30.h),
-                                    child: SizedBox(
-                                      height: 530.h,
-                                      child: Image.asset(
-                                        'assets/images/group.png',
-                                        alignment: Alignment.topCenter,
-                                      ),
+                                    padding: EdgeInsets.only(top: 50.h),
+                                    child: Image.asset(
+                                      'assets/images/group.png',
+                                      height: 590.h,
+                                      alignment: Alignment.topCenter,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 10.w,
-                                        vertical: Platform.isIOS
-                                            ? 22.h
-                                            : devicePixelRatio * 0.h),
+                                        vertical: Platform.isIOS ? 22.h : 25.h),
                                     child: SizedBox(
-                                      // color: Colors.red.withOpacity(0.2),
-                                      height: Platform.isIOS ? 650.h : 670.h,
+                                      height: Platform.isIOS ? 650.h : 700.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
-                                          SizedBox(
-                                              height:
-                                                  Platform.isIOS ? 20.h : 40.h),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 27.w),
+                                                horizontal: 10.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -622,7 +614,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[0].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[1]
@@ -637,7 +628,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[1].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[2]
@@ -652,7 +642,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[2].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[3]
@@ -670,10 +659,13 @@ class _ScorePageState extends State<ScorePage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          // SizedBox(
+                                          //     height: Platform.isIOS
+                                          //         ? 10.h
+                                          //         : devicePixelRatio * 8.h),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 27.w),
+                                                horizontal: 15.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -693,7 +685,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[7].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[6]
@@ -708,7 +699,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[6].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[5]
@@ -723,7 +713,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[5].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[4]
@@ -741,10 +730,13 @@ class _ScorePageState extends State<ScorePage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          // SizedBox(
+                                          //     height: Platform.isIOS
+                                          //         ? 10.h
+                                          //         : devicePixelRatio * 8.h),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 27.w),
+                                                horizontal: 15.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -812,10 +804,10 @@ class _ScorePageState extends State<ScorePage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          // SizedBox(height: 10.h),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 27.w),
+                                                horizontal: 15.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -835,7 +827,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[15].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[14]
@@ -850,7 +841,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[14].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[13]
@@ -865,7 +855,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[13].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[12]
@@ -883,10 +872,10 @@ class _ScorePageState extends State<ScorePage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          // SizedBox(height: 10.h),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 27.w),
+                                                horizontal: 15.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -906,7 +895,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[16].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[17]
@@ -921,7 +909,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[17].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[18]
@@ -936,7 +923,6 @@ class _ScorePageState extends State<ScorePage> {
                                                             '',
                                                     user!.balance!,
                                                     levels[18].mustCoins!),
-                                                // const Spacer(),
                                                 firstPageItemScore(
                                                     user!.balance! >=
                                                                 levels[19]
@@ -954,7 +940,7 @@ class _ScorePageState extends State<ScorePage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 5.h),
                                         ],
                                       ),
                                     ),
@@ -1075,8 +1061,8 @@ class _ScorePageState extends State<ScorePage> {
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  height: 55.h,
-                  width: 55.h,
+                  height: 60.h,
+                  width: 60.h,
                   decoration: BoxDecoration(
                     color: colorBoxDecoration(score, mustCoins, title),
                     borderRadius: BorderRadius.circular(30),
@@ -1084,8 +1070,8 @@ class _ScorePageState extends State<ScorePage> {
                 ),
               ),
               SizedBox(
-                height: 45.h,
-                width: 45.h,
+                height: 50.h,
+                width: 50.h,
                 child: Image.network(
                   icon,
                 ),
@@ -1095,7 +1081,7 @@ class _ScorePageState extends State<ScorePage> {
           SizedBox(width: 60.w, height: 5.h),
           SizedBox(
             height: 5.h,
-            width: 47.w,
+            width: 55.w,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: LinearProgressIndicator(
@@ -1109,13 +1095,13 @@ class _ScorePageState extends State<ScorePage> {
           SizedBox(height: 2.h),
           Center(
             child: SizedBox(
-              width: 70.w,
+              width: 75.w,
               child: Text(
                 textAlign: TextAlign.center,
                 title,
                 style: score >= mustCoins || title == proverkaNext
-                    ? CustomTextStyle.purple_12_w600.copyWith(fontSize: 11.sp)
-                    : CustomTextStyle.grey_12_w400.copyWith(fontSize: 11.sp),
+                    ? CustomTextStyle.purple_12_w600.copyWith(fontSize: 12.sp)
+                    : CustomTextStyle.grey_12_w400.copyWith(fontSize: 12.sp),
               ),
             ),
           ),
@@ -1126,7 +1112,7 @@ class _ScorePageState extends State<ScorePage> {
               mustCoins.toString(),
               textAlign: TextAlign.center,
               style: CustomTextStyle.black_12_w400_515150
-                  .copyWith(fontSize: 11.sp),
+                  .copyWith(fontSize: 12.sp),
             ),
           ),
         ],
