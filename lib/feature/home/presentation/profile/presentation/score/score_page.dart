@@ -575,9 +575,9 @@ class _ScorePageState extends State<ScorePage> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 39.w, vertical: 50.h),
+                                        horizontal: 39.w, vertical: 30.h),
                                     child: SizedBox(
-                                      height: 490.h,
+                                      height: 530.h,
                                       child: Image.asset(
                                         'assets/images/group.png',
                                         alignment: Alignment.topCenter,
@@ -589,331 +589,372 @@ class _ScorePageState extends State<ScorePage> {
                                         horizontal: 10.w,
                                         vertical: Platform.isIOS
                                             ? 22.h
-                                            : devicePixelRatio * 5.h),
+                                            : devicePixelRatio * 0.h),
                                     child: SizedBox(
                                       // color: Colors.red.withOpacity(0.2),
-                                      height: Platform.isIOS ? 570.h : 590.h,
+                                      height: Platform.isIOS ? 650.h : 670.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[0]
-                                                                  .mustCoins! ||
-                                                          levels[0].name ==
-                                                              proverkaNext
-                                                      ? '${levels[0].image}'
-                                                      : '${levels[0].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[0].name ?? ''
-                                                      : levels[0].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[0].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[1]
-                                                                  .mustCoins! ||
-                                                          levels[1].name ==
-                                                              proverkaNext
-                                                      ? '${levels[1].image}'
-                                                      : '${levels[1].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[1].name ?? ''
-                                                      : levels[1].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[1].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[2]
-                                                                  .mustCoins! ||
-                                                          levels[2].name ==
-                                                              proverkaNext
-                                                      ? '${levels[2].image}'
-                                                      : '${levels[2].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[2].name ?? ''
-                                                      : levels[2].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[2].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[3]
-                                                                  .mustCoins! ||
-                                                          levels[3].name ==
-                                                              proverkaNext
-                                                      ? '${levels[3].image}'
-                                                      : '${levels[3].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[3].name ?? ''
-                                                      : levels[3].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[3].mustCoins!),
-                                            ],
+                                          SizedBox(
+                                              height:
+                                                  Platform.isIOS ? 20.h : 40.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 27.w),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[0]
+                                                                    .mustCoins! ||
+                                                            levels[0].name ==
+                                                                proverkaNext
+                                                        ? '${levels[0].image}'
+                                                        : '${levels[0].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[0].name ?? ''
+                                                        : levels[0].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[0].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[1]
+                                                                    .mustCoins! ||
+                                                            levels[1].name ==
+                                                                proverkaNext
+                                                        ? '${levels[1].image}'
+                                                        : '${levels[1].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[1].name ?? ''
+                                                        : levels[1].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[1].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[2]
+                                                                    .mustCoins! ||
+                                                            levels[2].name ==
+                                                                proverkaNext
+                                                        ? '${levels[2].image}'
+                                                        : '${levels[2].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[2].name ?? ''
+                                                        : levels[2].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[2].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[3]
+                                                                    .mustCoins! ||
+                                                            levels[3].name ==
+                                                                proverkaNext
+                                                        ? '${levels[3].image}'
+                                                        : '${levels[3].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[3].name ?? ''
+                                                        : levels[3].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[3].mustCoins!),
+                                              ],
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[7]
-                                                                  .mustCoins! ||
-                                                          levels[7].name ==
-                                                              proverkaNext
-                                                      ? '${levels[7].image}'
-                                                      : '${levels[7].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[7].name ?? ''
-                                                      : levels[7].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[7].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[6]
-                                                                  .mustCoins! ||
-                                                          levels[6].name ==
-                                                              proverkaNext
-                                                      ? '${levels[6].image}'
-                                                      : '${levels[6].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[6].name ?? ''
-                                                      : levels[6].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[6].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[5]
-                                                                  .mustCoins! ||
-                                                          levels[5].name ==
-                                                              proverkaNext
-                                                      ? '${levels[5].image}'
-                                                      : '${levels[5].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[5].name ?? ''
-                                                      : levels[5].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[5].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[4]
-                                                                  .mustCoins! ||
-                                                          levels[4].name ==
-                                                              proverkaNext
-                                                      ? '${levels[4].image}'
-                                                      : '${levels[4].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[4].name ?? ''
-                                                      : levels[4].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[4].mustCoins!),
-                                            ],
+                                          SizedBox(height: 10.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 27.w),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[7]
+                                                                    .mustCoins! ||
+                                                            levels[7].name ==
+                                                                proverkaNext
+                                                        ? '${levels[7].image}'
+                                                        : '${levels[7].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[7].name ?? ''
+                                                        : levels[7].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[7].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[6]
+                                                                    .mustCoins! ||
+                                                            levels[6].name ==
+                                                                proverkaNext
+                                                        ? '${levels[6].image}'
+                                                        : '${levels[6].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[6].name ?? ''
+                                                        : levels[6].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[6].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[5]
+                                                                    .mustCoins! ||
+                                                            levels[5].name ==
+                                                                proverkaNext
+                                                        ? '${levels[5].image}'
+                                                        : '${levels[5].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[5].name ?? ''
+                                                        : levels[5].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[5].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[4]
+                                                                    .mustCoins! ||
+                                                            levels[4].name ==
+                                                                proverkaNext
+                                                        ? '${levels[4].image}'
+                                                        : '${levels[4].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[4].name ?? ''
+                                                        : levels[4].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[4].mustCoins!),
+                                              ],
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[8]
-                                                                  .mustCoins! ||
-                                                          levels[8].name ==
-                                                              proverkaNext
-                                                      ? '${levels[8].image}'
-                                                      : '${levels[8].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[8].name ?? ''
-                                                      : levels[8].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[8].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[9]
-                                                                  .mustCoins! ||
-                                                          levels[9].name ==
-                                                              proverkaNext
-                                                      ? '${levels[9].image}'
-                                                      : '${levels[9].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[9].name ?? ''
-                                                      : levels[9].engName ?? '',
-                                                  user!.balance!,
-                                                  levels[9].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[10]
-                                                                  .mustCoins! ||
-                                                          levels[10].name ==
-                                                              proverkaNext
-                                                      ? '${levels[10].image}'
-                                                      : '${levels[10].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[10].name ?? ''
-                                                      : levels[10].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[10].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[11]
-                                                                  .mustCoins! ||
-                                                          levels[11].name ==
-                                                              proverkaNext
-                                                      ? '${levels[11].image}'
-                                                      : '${levels[11].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[11].name ?? ''
-                                                      : levels[11].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[11].mustCoins!),
-                                            ],
+                                          SizedBox(height: 10.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 27.w),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[8]
+                                                                    .mustCoins! ||
+                                                            levels[8].name ==
+                                                                proverkaNext
+                                                        ? '${levels[8].image}'
+                                                        : '${levels[8].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[8].name ?? ''
+                                                        : levels[8].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[8].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[9]
+                                                                    .mustCoins! ||
+                                                            levels[9].name ==
+                                                                proverkaNext
+                                                        ? '${levels[9].image}'
+                                                        : '${levels[9].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[9].name ?? ''
+                                                        : levels[9].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[9].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[10]
+                                                                    .mustCoins! ||
+                                                            levels[10].name ==
+                                                                proverkaNext
+                                                        ? '${levels[10].image}'
+                                                        : '${levels[10].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[10].name ?? ''
+                                                        : levels[10].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[10].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[11]
+                                                                    .mustCoins! ||
+                                                            levels[11].name ==
+                                                                proverkaNext
+                                                        ? '${levels[11].image}'
+                                                        : '${levels[11].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[11].name ?? ''
+                                                        : levels[11].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[11].mustCoins!),
+                                              ],
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[15]
-                                                                  .mustCoins! ||
-                                                          levels[15].name ==
-                                                              proverkaNext
-                                                      ? '${levels[15].image}'
-                                                      : '${levels[15].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[15].name ?? ''
-                                                      : levels[15].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[15].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[14]
-                                                                  .mustCoins! ||
-                                                          levels[14].name ==
-                                                              proverkaNext
-                                                      ? '${levels[14].image}'
-                                                      : '${levels[14].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[14].name ?? ''
-                                                      : levels[14].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[14].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[13]
-                                                                  .mustCoins! ||
-                                                          levels[13].name ==
-                                                              proverkaNext
-                                                      ? '${levels[13].image}'
-                                                      : '${levels[13].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[13].name ?? ''
-                                                      : levels[13].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[13].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[12]
-                                                                  .mustCoins! ||
-                                                          levels[12].name ==
-                                                              proverkaNext
-                                                      ? '${levels[12].image}'
-                                                      : '${levels[12].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[12].name ?? ''
-                                                      : levels[12].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[12].mustCoins!),
-                                            ],
+                                          SizedBox(height: 10.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 27.w),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[15]
+                                                                    .mustCoins! ||
+                                                            levels[15].name ==
+                                                                proverkaNext
+                                                        ? '${levels[15].image}'
+                                                        : '${levels[15].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[15].name ?? ''
+                                                        : levels[15].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[15].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[14]
+                                                                    .mustCoins! ||
+                                                            levels[14].name ==
+                                                                proverkaNext
+                                                        ? '${levels[14].image}'
+                                                        : '${levels[14].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[14].name ?? ''
+                                                        : levels[14].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[14].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[13]
+                                                                    .mustCoins! ||
+                                                            levels[13].name ==
+                                                                proverkaNext
+                                                        ? '${levels[13].image}'
+                                                        : '${levels[13].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[13].name ?? ''
+                                                        : levels[13].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[13].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[12]
+                                                                    .mustCoins! ||
+                                                            levels[12].name ==
+                                                                proverkaNext
+                                                        ? '${levels[12].image}'
+                                                        : '${levels[12].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[12].name ?? ''
+                                                        : levels[12].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[12].mustCoins!),
+                                              ],
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[16]
-                                                                  .mustCoins! ||
-                                                          levels[16].name ==
-                                                              proverkaNext
-                                                      ? '${levels[16].image}'
-                                                      : '${levels[16].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[16].name ?? ''
-                                                      : levels[16].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[16].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[17]
-                                                                  .mustCoins! ||
-                                                          levels[17].name ==
-                                                              proverkaNext
-                                                      ? '${levels[17].image}'
-                                                      : '${levels[17].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[17].name ?? ''
-                                                      : levels[17].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[17].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[18]
-                                                                  .mustCoins! ||
-                                                          levels[18].name ==
-                                                              proverkaNext
-                                                      ? '${levels[18].image}'
-                                                      : '${levels[18].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[18].name ?? ''
-                                                      : levels[18].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[18].mustCoins!),
-                                              const Spacer(),
-                                              firstPageItemScore(
-                                                  user!.balance! >=
-                                                              levels[19]
-                                                                  .mustCoins! ||
-                                                          levels[19].name ==
-                                                              proverkaNext
-                                                      ? '${levels[19].image}'
-                                                      : '${levels[19].bwImage}',
-                                                  user!.rus!
-                                                      ? levels[19].name ?? ''
-                                                      : levels[19].engName ??
-                                                          '',
-                                                  user!.balance!,
-                                                  levels[19].mustCoins!),
-                                            ],
+                                          SizedBox(height: 10.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 27.w),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[16]
+                                                                    .mustCoins! ||
+                                                            levels[16].name ==
+                                                                proverkaNext
+                                                        ? '${levels[16].image}'
+                                                        : '${levels[16].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[16].name ?? ''
+                                                        : levels[16].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[16].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[17]
+                                                                    .mustCoins! ||
+                                                            levels[17].name ==
+                                                                proverkaNext
+                                                        ? '${levels[17].image}'
+                                                        : '${levels[17].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[17].name ?? ''
+                                                        : levels[17].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[17].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[18]
+                                                                    .mustCoins! ||
+                                                            levels[18].name ==
+                                                                proverkaNext
+                                                        ? '${levels[18].image}'
+                                                        : '${levels[18].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[18].name ?? ''
+                                                        : levels[18].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[18].mustCoins!),
+                                                // const Spacer(),
+                                                firstPageItemScore(
+                                                    user!.balance! >=
+                                                                levels[19]
+                                                                    .mustCoins! ||
+                                                            levels[19].name ==
+                                                                proverkaNext
+                                                        ? '${levels[19].image}'
+                                                        : '${levels[19].bwImage}',
+                                                    user!.rus!
+                                                        ? levels[19].name ?? ''
+                                                        : levels[19].engName ??
+                                                            '',
+                                                    user!.balance!,
+                                                    levels[19].mustCoins!),
+                                              ],
+                                            ),
                                           ),
-                                          // SizedBox(
-                                          //     height: 75.h * devicePixelRatio),
+                                          SizedBox(height: 10.h),
                                         ],
                                       ),
                                     ),
@@ -1034,8 +1075,8 @@ class _ScorePageState extends State<ScorePage> {
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  height: 65.h,
-                  width: 65.h,
+                  height: 55.h,
+                  width: 55.h,
                   decoration: BoxDecoration(
                     color: colorBoxDecoration(score, mustCoins, title),
                     borderRadius: BorderRadius.circular(30),
@@ -1043,8 +1084,8 @@ class _ScorePageState extends State<ScorePage> {
                 ),
               ),
               SizedBox(
-                height: 65.h,
-                width: 65.h,
+                height: 45.h,
+                width: 45.h,
                 child: Image.network(
                   icon,
                 ),
@@ -1054,7 +1095,7 @@ class _ScorePageState extends State<ScorePage> {
           SizedBox(width: 60.w, height: 5.h),
           SizedBox(
             height: 5.h,
-            width: 53.w,
+            width: 47.w,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: LinearProgressIndicator(
@@ -1065,27 +1106,27 @@ class _ScorePageState extends State<ScorePage> {
               ),
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 2.h),
           Center(
             child: SizedBox(
-              width: 84.w,
+              width: 70.w,
               child: Text(
                 textAlign: TextAlign.center,
                 title,
                 style: score >= mustCoins || title == proverkaNext
-                    ? CustomTextStyle.purple_12_w600.copyWith(fontSize: 12.sp)
-                    : CustomTextStyle.grey_12_w400.copyWith(fontSize: 12.sp),
+                    ? CustomTextStyle.purple_12_w600.copyWith(fontSize: 11.sp)
+                    : CustomTextStyle.grey_12_w400.copyWith(fontSize: 11.sp),
               ),
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 2.h),
           SizedBox(
             width: 40.w,
             child: Text(
               mustCoins.toString(),
               textAlign: TextAlign.center,
               style: CustomTextStyle.black_12_w400_515150
-                  .copyWith(fontSize: 12.sp),
+                  .copyWith(fontSize: 11.sp),
             ),
           ),
         ],
