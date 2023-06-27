@@ -365,7 +365,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[11].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                   width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[10].name ?? ''
@@ -381,7 +381,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[12].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[11].name ?? ''
@@ -594,7 +594,7 @@ class _ScorePageState extends State<ScorePage> {
                                         children: <Widget>[
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 10.w),
+                                                horizontal: 15.w),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -1055,7 +1055,7 @@ class _ScorePageState extends State<ScorePage> {
       // width: 80.w,
       child: Column(
         children: [
-          // if (title.length > 11) SizedBox(height: 15.h),
+          if (title.length > 11) SizedBox(height: 15.h),
           SizedBox(
             child: Stack(alignment: Alignment.center, children: [
               Align(
