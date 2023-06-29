@@ -309,11 +309,11 @@ class _EditTasksState extends State<EditTasks> {
                         bool errorsFlag = false;
 
                         if (startDate == null) {
-                          error += '\n- ${'start_date'.tr().toLowerCase()}';
+                          error += '\n- ${'starts_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
-                        if (startDate == null) {
-                          error += '\n- ${'completion_date'.tr().toLowerCase()}';
+                        if (endDate == null) {
+                          error += '\n- ${'completions_date'.tr().toLowerCase()}';
                           errorsFlag = true;
                         }
                         if (coastMinController.text.isEmpty) {
