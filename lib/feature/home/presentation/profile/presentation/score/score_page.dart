@@ -118,7 +118,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 Text(
                                                   'grades'.tr(),
                                                   style: CustomTextStyle
-                                                      .white_22_w700,
+                                                      .white_21_w700,
                                                 ),
                                               ],
                                             ),
@@ -152,20 +152,20 @@ class _ScorePageState extends State<ScorePage> {
                                                     AutoSizeText(
                                                       user!.balance!.toString(),
                                                       style: CustomTextStyle
-                                                          .white_26_w800,
+                                                          .white_21_w700,
                                                       textAlign: TextAlign.end,
                                                     ),
                                                     AutoSizeText(
                                                       'points'.tr(),
                                                       style: CustomTextStyle
-                                                          .white_26_w800,
+                                                          .white_21_w700,
                                                       textAlign: TextAlign.end,
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: 15.w,
+                                                width: 27.w,
                                               ),
                                               if (user!.balance! <
                                                   levels[0].mustCoins!)
@@ -196,7 +196,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   child: AutoSizeText(
                                                     levels[0].name ?? '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -212,7 +212,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[0].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -228,7 +228,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[1].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -237,14 +237,14 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[3].mustCoins!)
                                                 SizedBox(
-                                                  width: 75.w,
+                                                  width: 60.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[2].name ?? ''
                                                         : levels[2].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -260,7 +260,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[3].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -276,7 +276,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[4].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -292,7 +292,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[5].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -308,7 +308,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[6].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -324,7 +324,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[7].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -340,7 +340,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[8].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -356,7 +356,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[9].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -372,7 +372,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[10].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -388,7 +388,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[11].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -404,7 +404,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[12].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -420,7 +420,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[13].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -436,7 +436,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[14].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -452,23 +452,23 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[15].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
                                               if (user!.balance! >=
                                                       levels[16].mustCoins! &&
                                                   user!.balance! <
-                                                      levels[17].mustCoins!)
+                                                       levels[17].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.5.w,
+                                                  width: 60.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[16].name ?? ''
                                                         : levels[16].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -484,7 +484,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[17].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -500,7 +500,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[18].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
@@ -514,7 +514,7 @@ class _ScorePageState extends State<ScorePage> {
                                                         : levels[19].engName ??
                                                             '',
                                                     style: CustomTextStyle
-                                                        .white_26_w800,
+                                                        .white_21_w700,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),

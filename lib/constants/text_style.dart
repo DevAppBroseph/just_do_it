@@ -49,6 +49,12 @@ class CustomTextStyle {
     color: ColorStyles.whiteFFFFFF,
     fontFamily: 'SFPro',
   );
+    static TextStyle white_21_w700 = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: ColorStyles.whiteFFFFFF,
+    fontFamily: 'SFPro',
+  );
 
   static TextStyle white_16_w600 = TextStyle(
     fontSize: 17.sp,
