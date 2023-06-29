@@ -192,7 +192,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! <
                                                   levels[0].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     levels[0].name ?? '',
                                                     style: CustomTextStyle
@@ -205,7 +205,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[1].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[0].name ?? ''
@@ -221,7 +221,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[2].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[1].name ?? ''
@@ -253,7 +253,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[4].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[3].name ?? ''
@@ -269,7 +269,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[5].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[4].name ?? ''
@@ -285,7 +285,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[6].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[5].name ?? ''
@@ -301,7 +301,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[7].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[6].name ?? ''
@@ -317,7 +317,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[8].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[7].name ?? ''
@@ -333,7 +333,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[9].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[8].name ?? ''
@@ -349,7 +349,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[10].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[9].name ?? ''
@@ -397,7 +397,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[13].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[12].name ?? ''
@@ -413,7 +413,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[14].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[13].name ?? ''
@@ -429,7 +429,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[15].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[14].name ?? ''
@@ -445,7 +445,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[16].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[15].name ?? ''
@@ -461,7 +461,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[17].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[16].name ?? ''
@@ -477,7 +477,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[18].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[17].name ?? ''
@@ -493,7 +493,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   user!.balance! <
                                                       levels[19].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[18].name ?? ''
@@ -507,7 +507,7 @@ class _ScorePageState extends State<ScorePage> {
                                               if (user!.balance! >=
                                                   levels[19].mustCoins!)
                                                 SizedBox(
-                                                  width: 88.w,
+                                                  width: 88.5.w,
                                                   child: AutoSizeText(
                                                     user!.rus!
                                                         ? levels[19].name ?? ''
@@ -1055,7 +1055,7 @@ class _ScorePageState extends State<ScorePage> {
       // width: 80.w,
       child: Column(
         children: [
-          if (title.length > 11) SizedBox(height: 15.h),
+          // if (title.length > 11) SizedBox(height: 15.h),
           SizedBox(
             child: Stack(alignment: Alignment.center, children: [
               Align(
@@ -1095,7 +1095,7 @@ class _ScorePageState extends State<ScorePage> {
           SizedBox(height: 2.h),
           Center(
             child: SizedBox(
-              width: 75.w,
+              width: 80.w,
               child: Text(
                 textAlign: TextAlign.center,
                 title,
