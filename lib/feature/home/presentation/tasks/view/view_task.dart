@@ -648,14 +648,15 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-              SizedBox(height: 18.h),
+                
+                SizedBox(height: 18.h),
               if (widget.canSelect &&
                   user?.id != widget.selectTask.owner?.id &&
                   widget.selectTask.isAnswered != null &&
                   widget.selectTask.isAnswered?.status == 'Progress')
                 CustomButton(
                   onTap: () async {},
-                  btnColor: ColorStyles.yellowFFD70A,
+                  btnColor: ColorStyles.greyEAECEE,
                   textLabel: Text(
                     widget.selectTask.asCustomer ?? false ? 'you_responded'.tr() : 'you_have_accepted_the_offer'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
@@ -669,7 +670,7 @@ class _TaskViewState extends State<TaskView> {
                   widget.selectTask.status != 'Completed')
                 CustomButton(
                   onTap: () async {},
-                  btnColor: ColorStyles.yellowFFD70A,
+                  btnColor: ColorStyles.greyEAECEE,
                   textLabel: Text(
                     'you_have_been_chosen'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
@@ -1392,7 +1393,7 @@ class _TaskViewState extends State<TaskView> {
                                               width: 140.w,
                                               child: CustomButton(
                                                 onTap: () async {},
-                                                btnColor: ColorStyles.yellowFFD70A,
+                                                btnColor: ColorStyles.greyEAECEE,
                                                 textLabel: Text(
                                                   'you_have_been_chosen'.tr(),
                                                   style: TextStyle(
@@ -2787,7 +2788,7 @@ class _TaskViewState extends State<TaskView> {
                                                   width: 140.w,
                                                   child: CustomButton(
                                                     onTap: () async {},
-                                                    btnColor: ColorStyles.yellowFFD70A,
+                                                    btnColor: Colors.white,
                                                     textLabel: Text(
                                                       'you_have_been_chosen'.tr(),
                                                       style: TextStyle(
