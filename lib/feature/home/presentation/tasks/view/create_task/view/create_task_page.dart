@@ -610,7 +610,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       page == 0
                           ? 'further'.tr()
                           : widget.customer
-                              ? 'create_task'.tr()
+                              ? 'сreate_a_task'.tr()
                               : 'create_offer'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,
                     ),
