@@ -796,7 +796,7 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) async {
-              countryController.text = context.locale.languageCode == 'RU' ? value.name ?? '-':  value.engName ?? '-';
+              countryController.text = context.locale.languageCode == 'ru' ? value.name ?? '-':  value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -826,7 +826,7 @@ class _CustomerState extends State<Customer> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = context.locale.languageCode == 'RU' ? value.name ?? '-':  value.engName ?? '-';
+                  regionController.text = context.locale.languageCode == 'ru' ? value.name ?? '-':  value.engName ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
@@ -989,7 +989,7 @@ class _CustomerState extends State<Customer> {
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
+              hintText: user.docType != 'Resident_ID' ? 'number'.tr() : 'id_number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {

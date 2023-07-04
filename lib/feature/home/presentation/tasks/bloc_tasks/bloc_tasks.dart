@@ -24,7 +24,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final countries = event.isSelectCountry.map((e) => e.id!).toList();
 
     tasks = await Repository().getTaskList(
-      event.access,
+ 
       event.query,
       event.priceFrom,
       event.priceTo,

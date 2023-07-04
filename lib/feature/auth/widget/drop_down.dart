@@ -453,7 +453,7 @@ void showCountryWidget(
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true && context.locale.languageCode == 'RU'
+                                              user?.rus ?? true && context.locale.languageCode == 'ru'
                                                   ? list[index].name ?? "-"
                                                   : list[index].engName ?? "-",
                                               style: CustomTextStyle.black_14_w300,
@@ -607,7 +607,7 @@ void showRegionWidget(
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                user?.rus ?? true && context.locale.languageCode == 'RU'
+                                                user?.rus ?? true && context.locale.languageCode == 'ru'
                                                     ? list[index].name ?? '-'
                                                     : list[index].engName ?? '-',
                                                 style: CustomTextStyle.black_14_w300,

@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/question.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:open_file/open_file.dart';
@@ -19,10 +22,11 @@ class AboutProject extends StatefulWidget {
 class _AboutProjectState extends State<AboutProject> {
   About? about;
   int? selectIndex;
-
+  late UserRegModel? user;
   @override
   void initState() {
     super.initState();
+       user = BlocProvider.of<ProfileBloc>(context).user;
     getQuestions();
   }
 
@@ -108,8 +112,8 @@ class _AboutProjectState extends State<AboutProject> {
                             SizedBox(height: 40.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 40.w),
-                              child: Text(
-                                context.locale.languageCode == 'RU' ? about?.about ?? '': about?.aboutEng ?? '',
+                              child: Text( 
+                                  user?.rus ?? true &&  context.locale.languageCode == 'ru' ? about?.about ?? '': about?.aboutEng ?? '',
                                 style: CustomTextStyle.black_14_w400_515150,
                               ),
                             ),
@@ -136,8 +140,8 @@ class _AboutProjectState extends State<AboutProject> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: itemQuestion(
                                 index,
-                                about!.question[index].question,
-                                about!.question[index].answer,
+                                   user?.rus ?? true &&  context.locale.languageCode == 'ru' ? about!.question[index].question : about!.question[index].questionEng,
+                                 user?.rus ?? true &&  context.locale.languageCode == 'ru' ?  about!.question[index].answer: about!.question[index].answerEng,
                               ),
                             );
                           },

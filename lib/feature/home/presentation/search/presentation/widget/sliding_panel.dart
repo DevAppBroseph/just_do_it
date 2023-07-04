@@ -304,7 +304,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           GetTasksEvent(
                               passport: passport,
                               cv: cv,
-                              access: access,
+                              // access: access,
                               query: keyWordController.text,
                               dateEnd: format1,
                               dateStart: format2,
@@ -568,7 +568,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              countryString != null && countryString!.isNotEmpty ? countryString! : 'Страны не выбраны',
+                              countryString != null && countryString!.isNotEmpty ? countryString! : 'countries_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -1191,7 +1191,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     elementCategory(
                       activities[index].photo ?? '',
-                      user?.rus ?? true ? activities[index].description ?? '' : activities[index].engDescription ?? '',
+                      user?.rus ?? true && context.locale.languageCode == 'ru' ? activities[index].description ?? '' : activities[index].engDescription ?? '',
                       index,
                       choice: activities[index].selectSubcategory,
                     ),
@@ -1388,7 +1388,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(
                     width: 250.w,
                     child: Text(
-                      user?.rus ?? true
+                      user?.rus ?? true && context.locale.languageCode == 'ru'
                           ? selectActivities!.subcategory[index].description ?? ''
                           : selectActivities!.subcategory[index].engDescription ?? '',
                       style: CustomTextStyle.black_14_w400_515150,
@@ -1532,7 +1532,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   Row(
                     children: [
                       Text(
-                        user?.rus ?? true ? countrySecond.name! : countrySecond.engName!,
+                        user?.rus ?? true && context.locale.languageCode == 'ru' ? countrySecond.name! : countrySecond.engName!,
                         style: CustomTextStyle.black_14_w500_171716,
                       ),
                       const Spacer(),
@@ -1703,7 +1703,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Expanded(
                             child: Text(
-                              user?.rus ?? true
+                              user?.rus ?? true && context.locale.languageCode == 'ru'
                                   ? countries[selectCountriesIndex!].region[k].name!
                                   : countries[selectCountriesIndex!].region[k].engName!,
                               style: CustomTextStyle.black_14_w500_171716,
@@ -1880,7 +1880,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Expanded(
                               child: Text(
-                                user?.rus ?? true
+                                user?.rus ?? true && context.locale.languageCode == 'ru'
                                     ? countries[selectCountriesIndex!].region[selecRegionIndex!].town[m].name!
                                     : countries[selectCountriesIndex!].region[selecRegionIndex!].town[m].engName!,
                                 style: CustomTextStyle.black_14_w500_171716,

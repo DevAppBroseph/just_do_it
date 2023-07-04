@@ -101,7 +101,7 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            access: access,
+            
             query: searchController.text,
             dateEnd: null,
             dateStart: null,
@@ -118,7 +118,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-
+    log('${taskList.isEmpty}');
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(

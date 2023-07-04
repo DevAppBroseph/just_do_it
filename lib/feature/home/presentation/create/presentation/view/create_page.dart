@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,7 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
+   log( context.locale.languageCode.toString());
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
 
@@ -302,7 +305,7 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   elementCategory(
                     activities[index].photo ?? '',
-                    user?.rus ?? true && context.locale.languageCode == 'RU'? activities[index].description ?? '' : activities[index].engDescription ?? '',
+                    user?.rus ?? true && context.locale.languageCode == 'ru'? activities[index].description ?? '' : activities[index].engDescription ?? '',
                     index,
                     choice: activities[index].selectSubcategory,
                   ),

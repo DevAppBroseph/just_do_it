@@ -104,7 +104,7 @@ class Repository {
   }
 
   Future<List<Task>> getTaskList(
-    String? access,
+    
     String? query,
     int? priceFrom,
     int? priceTo,
@@ -140,7 +140,7 @@ class Repository {
       queryParameters: queryParameters,
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        headers: access != null ? {'Authorization': 'Bearer $access'} : null,
+        // headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );
 
