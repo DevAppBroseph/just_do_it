@@ -681,6 +681,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      log(response.data.toString());
       return About.fromJson(response.data);
     }
     return null;

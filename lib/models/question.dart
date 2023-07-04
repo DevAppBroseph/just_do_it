@@ -1,12 +1,14 @@
 class About {
   List<Question> question;
   String about;
+  String aboutEng;
   String confidence;
   String agreement;
 
   About({
     required this.question,
     required this.about,
+    required this.aboutEng,
     required this.confidence,
     required this.agreement,
   });
@@ -21,6 +23,7 @@ class About {
       about: json["about"],
       confidence: json["confidence"],
       agreement: json["agreement"],
+      aboutEng: json["about_eng"],
     );
   }
 }
@@ -28,17 +31,23 @@ class About {
 class Question {
   int id;
   String question;
+  String questionEng;
   String answer;
+  String answerEng;
 
   Question({
     required this.id,
     required this.question,
+    required this.questionEng,
     required this.answer,
+    required this.answerEng,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json["id"],
         question: json["question"],
         answer: json["answer"],
+        questionEng: json["question_eng"],
+        answerEng: json["answer_eng"],
       );
 }

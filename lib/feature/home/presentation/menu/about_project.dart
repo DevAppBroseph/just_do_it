@@ -109,7 +109,7 @@ class _AboutProjectState extends State<AboutProject> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 40.w),
                               child: Text(
-                                about?.about ?? '',
+                                context.locale.languageCode == 'RU' ? about?.about ?? '': about?.aboutEng ?? '',
                                 style: CustomTextStyle.black_14_w400_515150,
                               ),
                             ),
