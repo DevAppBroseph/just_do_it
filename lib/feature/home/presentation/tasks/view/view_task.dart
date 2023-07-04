@@ -648,8 +648,8 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-                
-                SizedBox(height: 18.h),
+
+              SizedBox(height: 18.h),
               if (widget.canSelect &&
                   user?.id != widget.selectTask.owner?.id &&
                   widget.selectTask.isAnswered != null &&
@@ -937,9 +937,8 @@ class _TaskViewState extends State<TaskView> {
                               widget.selectTask.owner?.id, descriptionTextController.text, rating);
                           context.read<TasksBloc>().add(UpdateTaskEvent());
                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          scoreDialog(context, '100', 'left_a_review'.tr());
-
                           Navigator.pop(context);
+                          scoreDialog(context, '100', 'left_a_review'.tr());
                         }
                       },
                       btnColor: ColorStyles.yellowFFD70A,
@@ -1644,9 +1643,8 @@ class _TaskViewState extends State<TaskView> {
                                                 rating);
                                             context.read<TasksBloc>().add(UpdateTaskEvent());
                                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                            scoreDialog(context, '100', 'left_a_review'.tr());
-
                                             Navigator.pop(context);
+                                            scoreDialog(context, '100', 'left_a_review'.tr());
                                           }
                                         },
                                         btnColor: ColorStyles.yellowFFD70A,
@@ -2121,9 +2119,10 @@ class _TaskViewState extends State<TaskView> {
                                                   rating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                 Navigator.pop(context);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
 
-                                              Navigator.pop(context);
+                                          
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -2356,8 +2355,9 @@ class _TaskViewState extends State<TaskView> {
                                               widget.selectTask.owner?.id, descriptionTextController3.text, rating);
                                           context.read<TasksBloc>().add(UpdateTaskEvent());
                                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                          scoreDialog(context, '100', 'left_a_review'.tr());
                                           Navigator.pop(context);
+                                          scoreDialog(context, '100', 'left_a_review'.tr());
+                                         
                                         }
                                       },
                                       btnColor: ColorStyles.yellowFFD70A,
