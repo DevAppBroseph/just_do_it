@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_do_it/models/task.dart';
 
@@ -477,9 +478,9 @@ class DocumentInfo {
 }
 
 String mapDocumentType(String value) {
-  if (value == 'Паспорт РФ') {
+  if (value == 'passport_of_the_RF'.tr()) {
     return 'Passport';
-  } else if (value == 'Заграничный паспорт') {
+  } else if (value == 'foreign_passport'.tr()) {
     return 'International Passport';
   }
   return 'Resident_ID';
@@ -487,9 +488,9 @@ String mapDocumentType(String value) {
 
 String reverseMapDocumentType(String value) {
   if (value == 'Passport') {
-    return 'Паспорт РФ';
+    return 'passport_of_the_RF'.tr();
   } else if (value == 'International Passport') {
-    return 'Заграничный паспорт';
+    return 'foreign_passport'.tr();
   }
-  return 'Резидент ID';
+  return 'resident_ID'.tr();
 }

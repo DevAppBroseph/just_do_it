@@ -11,6 +11,7 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutProject extends StatefulWidget {
   const AboutProject({super.key});
@@ -154,13 +155,17 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            String? res = await Repository().getFile(
-                                user?.rus ?? true && context.locale.languageCode == 'ru'
-                                    ? about!.confidence
-                                    : about?.confidenceEng ?? '');
-                            res = res?.replaceAll(' ', '');
+                            // String? res = await Repository().getFile(
+                            //     user?.rus ?? true && context.locale.languageCode == 'ru'
+                            //         ? about!.confidence
+                            //         : about?.confidenceEng ?? '');
+                            launch(user?.rus ?? true && context.locale.languageCode == 'ru'
+                                ? server + about!.confidence
+                                : server + about!.confidenceEng);
+
+                            // res = res?.replaceAll(' ', '');
                             log(server + about!.confidence.toString());
-                            if (res != null) await OpenFile.open(server + res);
+                            // if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
                             "user_agreement".tr(),
@@ -173,12 +178,15 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            String? res = await Repository().getFile(
-                                user?.rus ?? true && context.locale.languageCode == 'ru'
-                                    ? about?.agreement ?? ''
-                                    : about?.agreementEng ?? '');
-                            res = res?.replaceAll(' ', '');
-                            if (res != null) await OpenFile.open(server + res);
+                            launch(user?.rus ?? true && context.locale.languageCode == 'ru'
+                                ? server + about!.agreement
+                                : server + about!.agreementEng);
+                            // String? res = await Repository().getFile(
+                            //     user?.rus ?? true && context.locale.languageCode == 'ru'
+                            //         ? about?.agreement ?? ''
+                            //         : about?.agreementEng ?? '');
+                            // res = res?.replaceAll(' ', '');
+                            // if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),

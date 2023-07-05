@@ -310,7 +310,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                     docType = mapDocumentType(value);
                     setState(() {});
                   },
-                  ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
+                  ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
                   'document'.tr(),
                 ),
                 child: Stack(
