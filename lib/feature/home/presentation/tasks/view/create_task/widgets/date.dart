@@ -248,7 +248,7 @@ class _DatePickerState extends State<DatePicker> {
                               child: Text(
                                 user?.rus ?? true
                                     ? widget.allCountries[i].region[index].name!
-                                    : widget.allCountries[i].region[index].name!,
+                                    : widget.allCountries[i].region[index].engName!,
                                 style: CustomTextStyle.black_14_w400_515150,
                               ),
                             ),

@@ -198,7 +198,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer! ? 'Откликнуться' : 'Принять оффер',
+                          widget.selectTask!.asCustomer! ? 'respond'.tr() : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -213,7 +213,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           onTap: () {},
                           btnColor: ColorStyles.purpleA401C4,
                           textLabel: Text(
-                            'Стать первым',
+                            'become_the_first'.tr(),
                             style: CustomTextStyle.white_16_w600,
                           ),
                         ),
@@ -289,14 +289,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         SizedBox(height: 27.h),
         SizedBox(
           height: 510.h,
-          child: ListView(
+          child: ListView( 
             shrinkWrap: true,
             controller: mainScrollController,
             physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
-                'Ваш отклик на задание',
+                'your_response_to_the_task'.tr(),
                 style: CustomTextStyle.black_22_w700_171716,
               ),
               SizedBox(height: 30.h),

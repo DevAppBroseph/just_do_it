@@ -296,14 +296,17 @@ class _ContractorState extends State<Contractor> {
                     CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
                   } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text != repeatPasswordController.text)) {
-                    CustomAlert().showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
+                    CustomAlert()
+                        .showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
                   } else if (passwordController.text.length < 6) {
-                    CustomAlert().showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
+                    CustomAlert()
+                        .showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
                   } else if (!emailValid) {
                     CustomAlert().showMessage('enter_the_correct_email_address'.tr(), context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
-                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'.tr(),
+                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'
+                            .tr(),
                         context);
                   } else {
                     showLoaderWrapper(context);
@@ -315,8 +318,14 @@ class _ContractorState extends State<Contractor> {
                   List<int> categorySelect = [];
                   for (int i = 0; i < typeCategories.length; i++) {
                     for (int j = 0; j < listCategories.length; j++) {
-                      if (typeCategories[i] == listCategories[j].description) {
-                        categorySelect.add(listCategories[j].id);
+                      if (context.locale.languageCode == 'ru') {
+                        if (typeCategories[i] == listCategories[j].description) {
+                          categorySelect.add(listCategories[j].id);
+                        } else {
+                          if (typeCategories[i] == listCategories[j].engDescription) {
+                            categorySelect.add(listCategories[j].id);
+                          }
+                        }
                       }
                     }
                   }
@@ -784,7 +793,8 @@ class _ContractorState extends State<Contractor> {
             context,
             _countryKey,
             (value) async {
-              countryController.text = value.name ?? '-';
+              countryController.text = regionController.text =
+                  context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -813,7 +823,8 @@ class _ContractorState extends State<Contractor> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = value.name ?? '-';
+                  regionController.text = regionController.text =
+                      context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
@@ -1309,7 +1320,7 @@ class _ContractorState extends State<Contractor> {
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user.docType != 'Resident_ID' ? 'Номер' : 'Номер ID',
+              hintText: user.docType != 'Resident_ID' ? 'number'.tr() : 'id_number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {

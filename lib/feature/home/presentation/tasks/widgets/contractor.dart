@@ -48,7 +48,7 @@ class _ContractorState extends State<Contractor> {
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            access: access,
+          
             query: null,
             dateEnd: null,
             dateStart: null,

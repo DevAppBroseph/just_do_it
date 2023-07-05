@@ -502,7 +502,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               ),
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
+              hintText: docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {

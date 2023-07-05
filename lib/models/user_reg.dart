@@ -410,7 +410,7 @@ class ActivitiesInfo {
     String? photo = data['photo'];
 
     return ActivitiesInfo(id, description, photo);
-  }
+  } 
 }
 
 class Activities {

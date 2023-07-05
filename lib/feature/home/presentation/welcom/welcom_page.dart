@@ -90,16 +90,26 @@ class _WelcomPageState extends State<WelcomPage> {
       log('fvbt ${user!.rus!.toString()}');
       if (user!.rus!) {
         selectLanguage = 'RU';
+        context.setLocale(const Locale('ru', 'RU'));
+        BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
       } else {
         selectLanguage = 'EN';
+        context.setLocale(const Locale('en', 'US'));
+        BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
+      }
+    } else {
+      if (context.locale.languageCode == 'ru') {
+        selectLanguage = 'RU';
+        context.setLocale(const Locale('ru', 'RU'));
+        BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
+      }
+      if (context.locale.languageCode == 'en') {
+        selectLanguage = 'EN';
+        context.setLocale(const Locale('en', 'US'));
+        BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
       }
     }
-    if (context.locale.languageCode == 'RU') {
-      selectLanguage = 'RU';
-    }
-    if (context.locale.languageCode == 'EN') {
-      selectLanguage = 'EN';
-    }
+
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
@@ -413,6 +423,9 @@ class _WelcomPageState extends State<WelcomPage> {
                         SizedBox(width: 12.w),
                         GestureDetector(
                           onTap: () {
+                            if(user != null){
+
+                      
                             Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
                               (page) {},
                               false,
@@ -429,6 +442,10 @@ class _WelcomPageState extends State<WelcomPage> {
                                 }
                               }
                             });
+                          }
+                          else{
+                            Navigator.of(context).pushNamed(AppRoute.auth);
+                          }
                           },
                           child: SvgPicture.asset('assets/icons/category2.svg'),
                         ),

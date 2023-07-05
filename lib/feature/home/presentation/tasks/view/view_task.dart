@@ -76,7 +76,7 @@ class _TaskViewState extends State<TaskView> {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            access: access,
+         
           ),
         );
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));

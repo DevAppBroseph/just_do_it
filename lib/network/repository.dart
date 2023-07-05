@@ -104,7 +104,7 @@ class Repository {
   }
 
   Future<List<Task>> getTaskList(
-    String? access,
+    
     String? query,
     int? priceFrom,
     int? priceTo,
@@ -140,7 +140,7 @@ class Repository {
       queryParameters: queryParameters,
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        headers: access != null ? {'Authorization': 'Bearer $access'} : null,
+        // headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );
 
@@ -681,6 +681,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
+      log(response.data.toString());
       return About.fromJson(response.data);
     }
     return null;
@@ -819,7 +820,7 @@ class Repository {
 
   Future<String?> getFile(String file) async {
     try {
-      String savePath = await getFilePath('${DateTime.now()}.doc');
+      String savePath = await getFilePath('${DateTime.now()}.docx');
       final response = await dio.get(
         '$server$file',
         options: Options(
@@ -827,7 +828,7 @@ class Repository {
           followRedirects: false,
         ),
       );
-
+      // log(response.data.toString());
       if (response.statusCode == 200) {
         Map<Permission, PermissionStatus> statuses = await [
           Permission.storage,

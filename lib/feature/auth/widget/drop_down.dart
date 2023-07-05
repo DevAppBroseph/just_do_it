@@ -263,21 +263,21 @@ void iconSelectModalCategories(
                                     onPressed: () {
                                       if (selectCategories.length > 1) {
                                         if (selectCategories.length < 3) {
-                                          if (selectCategories.contains(list[index].description)) {
-                                            selectCategories.remove(list[index].description ?? '');
+                                          if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
+                                            selectCategories.remove( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
                                           } else {
-                                            selectCategories.add(list[index].description ?? '');
+                                            selectCategories.add( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
                                           }
                                         } else {
-                                          if (selectCategories.contains(list[index].description)) {
-                                            selectCategories.remove(list[index].description);
+                                          if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
+                                            selectCategories.remove( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
                                           }
                                         }
                                         onTap(selectCategories);
                                       } else if (selectCategories.isEmpty ||
                                           selectCategories.length == 1 &&
-                                              !selectCategories.contains(list[index].description)) {
-                                        selectCategories.add(list[index].description ?? '');
+                                              !selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
+                                        selectCategories.add( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
                                         onTap(selectCategories);
                                       }
 
@@ -297,13 +297,13 @@ void iconSelectModalCategories(
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true
+                                              user?.rus ?? true && context.locale.languageCode == 'ru'
                                                   ? list[index].description!
                                                   : list[index].engDescription!,
                                               style: CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
-                                            if (selectCategories.contains(list[index].description!))
+                                            if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? ''))
                                               const Icon(
                                                 Icons.check,
                                                 color: Colors.black,
@@ -453,7 +453,7 @@ void showCountryWidget(
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true && context.locale.languageCode == 'RU'
+                                              user?.rus ?? true && context.locale.languageCode == 'ru'
                                                   ? list[index].name ?? "-"
                                                   : list[index].engName ?? "-",
                                               style: CustomTextStyle.black_14_w300,
@@ -607,7 +607,7 @@ void showRegionWidget(
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                user?.rus ?? true && context.locale.languageCode == 'RU'
+                                                user?.rus ?? true && context.locale.languageCode == 'ru'
                                                     ? list[index].name ?? '-'
                                                     : list[index].engName ?? '-',
                                                 style: CustomTextStyle.black_14_w300,
