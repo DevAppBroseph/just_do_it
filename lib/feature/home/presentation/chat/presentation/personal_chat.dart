@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,6 @@ class _PersonalChatState extends State<PersonalChat> {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return Scaffold(
-          
           body: Container(
             color: ColorStyles.greyEAECEE,
             child: Column(
@@ -76,7 +76,7 @@ class _PersonalChatState extends State<PersonalChat> {
                         ),
                         const Spacer(),
                         Text(
-                          'Профиль',
+                          'profile'.tr(),
                           style: CustomTextStyle.black_22_w700,
                         ),
                         const Spacer(),
@@ -85,14 +85,12 @@ class _PersonalChatState extends State<PersonalChat> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 Expanded(
                   child: ProfileView(
-                      owner: Owner(
-                          id: int.parse(widget.idWithChat),
-                          firstname: null,
-                          lastname: null,
-                          photo: null)),
+                      owner: Owner(id: int.parse(widget.idWithChat), firstname: null, lastname: null, photo: null)),
                 ),
               ],
             ),
@@ -108,7 +106,7 @@ class _PersonalChatState extends State<PersonalChat> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor:ColorStyles.whiteFFFFFF,
+        backgroundColor: ColorStyles.whiteFFFFFF,
         body: Column(
           children: [
             SizedBox(height: 66.h),
@@ -128,7 +126,7 @@ class _PersonalChatState extends State<PersonalChat> {
                     child: SizedBox(
                       width: 240.w,
                       child: AutoSizeText(
-                        widget.name.isEmpty ? 'Аккаунт удален' : widget.name,
+                        widget.name.isEmpty ? 'account_deleted'.tr() : widget.name,
                         style: CustomTextStyle.black_22_w700,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -160,18 +158,15 @@ class _PersonalChatState extends State<PersonalChat> {
               child: BlocBuilder<ChatBloc, ChatState>(
                 buildWhen: (previous, current) {
                   if (current is UpdateListMessageItemState) {
-                    widget.id =
-                        BlocProvider.of<ChatBloc>(context).idChat.toString();
+                    widget.id = BlocProvider.of<ChatBloc>(context).idChat.toString();
                   } else if (current is UpdateListPersonState) {
                     final access = BlocProvider.of<ProfileBloc>(context).access;
-                    BlocProvider.of<ChatBloc>(context)
-                        .add(GetListMessageItem(access!));
+                    BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
                   }
                   return true;
                 },
                 builder: (context, snapshot) {
-                  List<ChatMessage> messages =
-                      BlocProvider.of<ChatBloc>(context).messages;
+                  List<ChatMessage> messages = BlocProvider.of<ChatBloc>(context).messages;
                   return GestureDetector(
                     onTap: () {
                       focusNode.unfocus();
@@ -182,8 +177,7 @@ class _PersonalChatState extends State<PersonalChat> {
                       reverse: true,
                       controller: scrollController,
                       physics: const ClampingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 24.w, vertical: 24.w),
+                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.w),
                       itemBuilder: (context, index) {
                         if (user?.id != int.parse(messages[index].user.id)) {
                           return Padding(
@@ -203,8 +197,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                           width: 40.h,
                                           decoration: BoxDecoration(
                                             color: ColorStyles.greyE0E6EE,
-                                            borderRadius:
-                                                BorderRadius.circular(50.r),
+                                            borderRadius: BorderRadius.circular(50.r),
                                           ),
                                           child: widget.image != null
                                               ? widget.image != 'null'
@@ -223,12 +216,10 @@ class _PersonalChatState extends State<PersonalChat> {
                                       child: SizedBox(
                                         width: 250.w,
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             CupertinoCard(
-                                              radius:
-                                                  BorderRadius.circular(25.r),
+                                              radius: BorderRadius.circular(25.r),
                                               color: ColorStyles.greyF9F9F9,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
@@ -305,7 +296,7 @@ class _PersonalChatState extends State<PersonalChat> {
                         child: Padding(
                         padding: EdgeInsets.all(24.w),
                         child: Text(
-                          'Вы не можете написать собеседнику,\nтак как он удалил свой аккаунт',
+                          'you_can_t_write_to_the_interlocutor_because_he_deleted_his_account'.tr(),
                           style: CustomTextStyle.black_14_w400_515150,
                           textAlign: TextAlign.center,
                         ),
@@ -325,7 +316,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                     height: 70.h,
                                     focusNode: focusNode,
                                     actionButton: false,
-                                    hintText: 'Введите сообщение',
+                                    hintText: 'enter_a_message'.tr(),
                                     textEditingController: textController,
                                     fillColor: ColorStyles.greyF9F9F9,
                                     maxLines: 10,
@@ -348,12 +339,9 @@ class _PersonalChatState extends State<PersonalChat> {
                                           SizedBox(width: 18.w),
                                           GestureDetector(
                                             onTap: () {
-                                              if (textController
-                                                  .text.isNotEmpty) {
+                                              if (textController.text.isNotEmpty) {
                                                 // BlocProvider.of<ChatBloc>(context).messages.isEmpty
-                                                BlocProvider.of<ChatBloc>(
-                                                        context)
-                                                    .add(
+                                                BlocProvider.of<ChatBloc>(context).add(
                                                   SendMessageEvent(
                                                     textController.text,
                                                     widget.idWithChat,

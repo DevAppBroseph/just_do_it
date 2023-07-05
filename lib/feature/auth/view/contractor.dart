@@ -854,15 +854,15 @@ class _ContractorState extends State<Contractor> {
               documentTypeController.text = value;
               additionalInfo = true;
               user.copyWith(
-                docType: value == 'Паспорт РФ'
+                docType: value == 'passport_of_the_RF'.tr()
                     ? 'Passport'
-                    : value == 'Резидент ID'
+                    : value == 'resident_ID'.tr()
                         ? 'Resident_ID'
                         : 'International Passport',
               );
               setState(() {});
             },
-            ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
+            ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
             'document'.tr(),
           ),
           child: Stack(

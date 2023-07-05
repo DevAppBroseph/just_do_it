@@ -362,7 +362,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = user?.rus ?? true ? value.name ?? '-' : value.engName ?? '-';;
+                  regionController.text = user?.rus ?? true ? value.name ?? '-' : value.engName ?? '-';
                   // user!.copyWith(region: regionController.text);
                   region = regionController.text;
                   setState(() {});
@@ -396,7 +396,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               docType = mapDocumentType(value);
               setState(() {});
             },
-            ['Паспорт РФ', 'Заграничный паспорт', 'Резидент ID'],
+            ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
             'document'.tr(),
           ),
           child: Stack(
