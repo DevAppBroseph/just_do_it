@@ -3,14 +3,18 @@ class About {
   String about;
   String aboutEng;
   String confidence;
+  String confidenceEng;
   String agreement;
+  String agreementEng;
 
   About({
     required this.question,
     required this.about,
     required this.aboutEng,
     required this.confidence,
+    required this.confidenceEng,
     required this.agreement,
+    required this.agreementEng,
   });
 
   factory About.fromJson(Map<String, dynamic> json) {
@@ -23,7 +27,7 @@ class About {
       about: json["about"],
       confidence: json["confidence"],
       agreement: json["agreement"],
-      aboutEng: json["about_eng"],
+      aboutEng: json["about_eng"], confidenceEng: json["confidence_eng"], agreementEng: json["agreement_eng"],
     );
   }
 }

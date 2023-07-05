@@ -828,7 +828,7 @@ class Repository {
           followRedirects: false,
         ),
       );
-
+      // log(response.data.toString());
       if (response.statusCode == 200) {
         Map<Permission, PermissionStatus> statuses = await [
           Permission.storage,
