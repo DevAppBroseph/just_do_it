@@ -1085,7 +1085,7 @@ class _CustomerState extends State<Customer> {
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
           CustomTextField(
-            hintText: 'Место выдачи',
+            hintText: 'place_of_issue'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
