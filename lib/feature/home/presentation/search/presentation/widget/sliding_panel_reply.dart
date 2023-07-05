@@ -168,11 +168,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                     child: CustomButton(
                       onTap: () {
                         if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш паспорт просрочен', context);
+                          CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                         } else if (dateTimeEnd != null &&
                             DateTime.now().isAfter(dateTimeEnd!) &&
                             docType == 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш документ просрочен', context);
+                          CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                         } else if (checkExpireDate(dateTimeEnd) != null) {
                           CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                         } else {
@@ -180,22 +180,22 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                             additionalInfo = true;
                             String error = 'specify'.tr();
                             if (docType != 'Resident_ID' && serialDocumentController.text.isEmpty) {
-                              error += '\n- серию документа';
+                              error += '\n- ${'document_series'.tr()}';
                             }
                             if (numberDocumentController.text.isEmpty) {
-                              error += '\n- номер документа';
+                              error += '\n- ${'document_number'.tr()}';
                             }
                             if (whoGiveDocumentController.text.isEmpty) {
                               if (docType == 'Passport') {
-                                error += '\n- кем выдан документ';
+                                error += '\n- ${'who_issued_the_document'.tr()}';
                               } else if (docType == 'Resident_ID') {
-                                error += '\n- место выдачи документа';
+                                error += '\n- ${'place_of_issue_of_the_document'.tr()}';
                               } else {
-                                error += '\n- дату выдачи документа';
+                                error += '\n- ${'date_of_issue_of_the_document'.tr()}';
                               }
                             }
                             if (dateDocumentController.text.isEmpty) {
-                              error += '\n- срок действия документа';
+                              error += '\n- ${'validity_period_of_the_document'.tr()}';
                             }
                             if (error == 'specify'.tr()) {
                               user?.copyWith(docInfo: docinfo, docType: mapDocumentType(typeDocumentController.text));
@@ -294,15 +294,15 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             children: [
               if (widget.selectTask != null)
                 Text(
-                  widget.selectTask!.asCustomer! ? 'Станьте исполнителем' : 'Станьте заказчиком ',
+                  widget.selectTask!.asCustomer! ? 'become_a_performer'.tr() : 'become_a_customer'.tr(),
                   style: CustomTextStyle.black_22_w700_171716,
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
                 Text(
                   !widget.selectTask!.asCustomer!
-                      ? 'Чтобы принять оффер, Вам необходимо дозаполнить информацию о себе.'
-                      : 'Чтобы выполнять задания, Вам необходимо дозаполнить информацию о себе.',
+                      ? 'to_accept_the_offer'.tr()
+                      : 'to_complete_tasks'.tr(),
                   style: CustomTextStyle.black_13_w400_515150,
                 ),
               SizedBox(height: 30.h),
@@ -385,7 +385,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
           children: [
             if (docType != 'Resident_ID')
               CustomTextField(
-                hintText: 'Серия',
+                hintText: 'series'.tr(),
                 hintStyle: CustomTextStyle.grey_14_w400,
                 actionButton: false,
                 height: 50.h,
@@ -411,7 +411,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               ),
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: docType == 'Resident_ID' ? 'Номер ID' : 'Номер',
+              hintText: docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
@@ -442,7 +442,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
         if (docType == 'Passport') SizedBox(height: 16.h),
         if (docType == 'Passport')
           CustomTextField(
-            hintText: 'Кем выдан',
+            hintText: 'issued_by_whom'.tr(),
             onTap: () {
               proverka = true;
 
@@ -471,11 +471,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 context,
                 0,
                 false,
-                title: 'Дата выдачи',
+                title: 'date_of_issue'.tr(),
               );
             },
             child: CustomTextField(
-              hintText: 'Дата выдачи',
+              hintText: 'date_of_issue'.tr(),
               enabled: false,
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
@@ -498,11 +498,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   : docType == 'Passport'
                       ? true
                       : true,
-              title: 'Срок действия',
+              title: 'validity_period'.tr(),
             );
           },
           child: CustomTextField(
-            hintText: 'Срок действия',
+            hintText: 'validity_period'.tr(),
             enabled: false,
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
@@ -522,7 +522,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
           CustomTextField(
-            hintText: 'Место выдачи',
+            hintText: 'place_of_issue'.tr(),
             onTap: () {
               // Future.delayed(const Duration(milliseconds: 300), () {
               //   scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);

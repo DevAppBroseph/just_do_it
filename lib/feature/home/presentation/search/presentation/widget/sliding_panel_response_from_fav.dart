@@ -200,8 +200,8 @@ class _SlidingPanelResponseFromFavState
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
                           widget.selectTask!.asCustomer!
-                              ? 'Откликнуться'
-                              : 'Принять оффер',
+                              ? 'respond'.tr()
+                              : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -216,7 +216,7 @@ class _SlidingPanelResponseFromFavState
                           onTap: () {},
                           btnColor: ColorStyles.purpleA401C4,
                           textLabel: Text(
-                            'Стать первым',
+                            'become_the_first'.tr(),
                             style: CustomTextStyle.white_16_w600,
                           ),
                         ),
@@ -300,7 +300,7 @@ class _SlidingPanelResponseFromFavState
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
-                'Ваш отклик на задание',
+                'your_response_to_the_task'.tr(),
                 style: CustomTextStyle.black_22_w700_171716,
               ),
               SizedBox(height: 30.h),

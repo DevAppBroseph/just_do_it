@@ -1312,7 +1312,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Expanded(
                 child: Text(
-                  selectActivities?.description ?? '',
+                  user?.rus ?? true && context.locale.languageCode == 'ru' ?  selectActivities?.description ?? '': selectActivities?.engDescription ?? '',
                   style: CustomTextStyle.black_22_w700,
                 ),
               ),

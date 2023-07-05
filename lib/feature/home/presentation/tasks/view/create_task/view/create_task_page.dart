@@ -114,12 +114,12 @@ class _CeateTasksState extends State<CeateTasks> {
                 children: [
                   SizedBox(height: 10.h),
                   Text(
-                    'Выберите что загрузить',
+                    'choose_what_to_download'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                   ListTile(
                     title: Text(
-                      'Фото',
+                      'photo'.tr(),
                       style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {

@@ -280,7 +280,7 @@ void taskMoreDialogForProfile(
                             ),
                           ),
                           Text(
-                            'Пожаловаться',
+                            'complain'.tr(),
                             style: CustomTextStyle.black_12_w400_292D32,
                           ),
                         ],

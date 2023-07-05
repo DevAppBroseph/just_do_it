@@ -41,14 +41,10 @@ class Currency {
   Currency(this.isSelect, {required this.id, required this.name, required this.shortName, required this.engName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(false, id: json['id'], name: json['name'], shortName: json['short_name'], engName: json['eng_name']);
+    return Currency(false,
+        id: json['id'], name: json['name'], shortName: json['short_name'], engName: json['eng_name']);
   }
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "short_name": shortName,
-        'eng_name': engName
-      };
+  Map<String, dynamic> toJson() => {"id": id, "name": name, "short_name": shortName, 'eng_name': engName};
 }
 
 class Owner {
@@ -142,15 +138,17 @@ class ownerActivities {
   bool isSelect;
   int id;
   String? description;
+  String? engDescription;
   String? photo;
   List<ownerSubcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  ownerActivities(this.isSelect, this.id, this.description, this.photo, this.subcategory);
+  ownerActivities(this.isSelect, this.engDescription, this.id, this.description, this.photo, this.subcategory);
 
   factory ownerActivities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
+    String? engDescription = data['description_eng'];
     String? photo = data['photo'];
     List<ownerSubcategory> subcategory = [];
     if (data['subcategories'] != null) {
@@ -158,7 +156,14 @@ class ownerActivities {
         subcategory.add(ownerSubcategory.fromJson(element));
       }
     }
-    return ownerActivities(false, id, description, photo, subcategory);
+    return ownerActivities(
+      false,
+      engDescription,
+      id,
+      description,
+      photo,
+      subcategory,
+    );
   }
 }
 
