@@ -820,7 +820,7 @@ class Repository {
 
   Future<String?> getFile(String file) async {
     try {
-      String savePath = await getFilePath('${DateTime.now()}.doc');
+      String savePath = await getFilePath('${DateTime.now()}.docx');
       final response = await dio.get(
         '$server$file',
         options: Options(

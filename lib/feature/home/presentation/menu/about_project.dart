@@ -159,7 +159,7 @@ class _AboutProjectState extends State<AboutProject> {
                                     ? about!.confidence
                                     : about?.confidenceEng ?? '');
                             res = res?.replaceAll(' ', '');
-                            log(server + res.toString());
+                            log(server + about!.confidence.toString());
                             if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
