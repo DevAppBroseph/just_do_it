@@ -309,7 +309,7 @@ class _TaskViewState extends State<TaskView> {
                     SizedBox(
                       width: 260,
                       child: Text(
-                        '${user?.rus ?? true ? widget.selectTask.activities?.description ?? '-' : widget.selectTask.activities?.engDescription ?? '-'}, ${user?.rus ?? true ? widget.selectTask.subcategory?.description ?? '-' : widget.selectTask.subcategory?.engDescription}',
+                        '${user?.rus ?? true && context.locale.languageCode == 'ru' ? widget.selectTask.activities?.description ?? '-' : widget.selectTask.activities?.engDescription ?? '-'}, ${user?.rus ?? true && context.locale.languageCode == 'ru' ? widget.selectTask.subcategory?.description ?? '-' : widget.selectTask.subcategory?.engDescription}',
                         style: CustomTextStyle.black_12_w400_292D32,
                         softWrap: true,
                       ),

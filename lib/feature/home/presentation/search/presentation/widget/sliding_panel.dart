@@ -1055,7 +1055,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               currencyString = null;
               selectCurrency = null;
             } else {
-              currencyString = user?.rus ?? true ? currency.name : currency.engName;
+              currencyString = user?.rus ?? true && context.locale.languageCode == 'ru' ? currency.name : currency.engName;
               selectCurrency = currency;
             }
 
@@ -1071,7 +1071,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Row(
                   children: [
                     Text(
-                      user?.rus ?? true ? currency.name! : currency.engName!,
+                      user?.rus ?? true&& context.locale.languageCode == 'ru' ? currency.name! : currency.engName!,
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                     const Spacer(),
@@ -2127,7 +2127,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     for (int i = 0; i < countries.length; i++) {
       if (countries[i].select) {
         selectCount += 1;
-        nameCountriesList.add('${user?.rus ?? true ? countries[i].name : countries[i].engName}');
+        nameCountriesList.add('${user?.rus ?? true&& context.locale.languageCode == 'ru' ? countries[i].name : countries[i].engName}');
       }
     }
 
@@ -2154,7 +2154,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         if (element.subcategory[i].isSelect) {
           selectCount += 1;
           nameCategories
-              .add('${user?.rus ?? true ? element.subcategory[i].description : element.subcategory[i].engDescription}');
+              .add('${user?.rus ?? true && context.locale.languageCode == 'ru' ? element.subcategory[i].description : element.subcategory[i].engDescription}');
         }
       }
     }
