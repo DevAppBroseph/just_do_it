@@ -103,7 +103,7 @@ class Repository {
     }
     return tasks;
   }
-  Future<bool> deleteNotifications(String access) async {
+  Future<bool> deleteNotifications(String? access) async {
     final res = await dio.delete(
       '$server/chat/notifications',
       options: Options(
@@ -118,10 +118,10 @@ class Repository {
     return false;
   }
 
-  Future<List<NotificationsOnDevice>> getMyNotifications(String access, bool unread) async {
+  Future<List<NotificationsOnDevice>> getMyNotifications(String? access) async {
     final response = await dio.get(
       '$server/chat/notifications',
-      queryParameters: {'unread': unread},
+      
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},
