@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Task? selectTask;
   Owner? owner;
-
+  late UserRegModel? user;
   String? access;
   List<String> historySearch = [];
 
@@ -73,7 +73,7 @@ class _SearchPageState extends State<SearchPage> {
     if (widget.taskId != null) getTask();
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-    
+    user = BlocProvider.of<ProfileBloc>(context).user!;
   }
 
   void getTask() async {
@@ -101,7 +101,6 @@ class _SearchPageState extends State<SearchPage> {
   void getTaskList() {
     context.read<TasksBloc>().add(
           GetTasksEvent(
-            
             query: searchController.text,
             dateEnd: null,
             dateStart: null,
@@ -250,14 +249,16 @@ class _SearchPageState extends State<SearchPage> {
                                           SvgPicture.asset(
                                             'assets/icons/notification_main.svg',
                                           ),
-                                          Container(
-                                            height: 10.w,
-                                            width: 10.w,
-                                            decoration: BoxDecoration(
-                                              color: ColorStyles.yellowFFD70B,
-                                              borderRadius: BorderRadius.circular(20.r),
-                                            ),
-                                          )
+                                          user!.hasNotifications!
+                                              ? Container(
+                                                  height: 10.w,
+                                                  width: 10.w,
+                                                  decoration: BoxDecoration(
+                                                    color: ColorStyles.yellowFFD70B,
+                                                    borderRadius: BorderRadius.circular(20.r),
+                                                  ),
+                                                )
+                                              : Container()
                                         ],
                                       ),
                                     ),
@@ -433,16 +434,16 @@ class _SearchPageState extends State<SearchPage> {
                           controller: scrollController,
                           padding: EdgeInsets.zero,
                           children: taskList
-                              .map((e) => itemTask(e, (task) {
-                                    setState(() {
-                                      selectTask = task;
-                                    
-                                      lastPosition = scrollController.offset;
-                                    });
-                                  }, 
-                                   BlocProvider.of<ProfileBloc>(context).user,
+                              .map((e) => itemTask(
+                                    e,
+                                    (task) {
+                                      setState(() {
+                                        selectTask = task;
 
-                                  
+                                        lastPosition = scrollController.offset;
+                                      });
+                                    },
+                                    BlocProvider.of<ProfileBloc>(context).user,
                                   ))
                               .toList(),
                         );

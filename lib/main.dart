@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.da
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/notification/notifications_bloc/notifications_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
+            BlocProvider<NotificationsBloc>(create: (context) => NotificationsBloc()),
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
             BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
             BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),

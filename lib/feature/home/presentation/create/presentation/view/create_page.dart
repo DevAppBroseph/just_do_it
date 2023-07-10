@@ -58,7 +58,7 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
-   log( context.locale.languageCode.toString());
+    log(context.locale.languageCode.toString());
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
 
@@ -168,14 +168,16 @@ class _CreatePageState extends State<CreatePage> {
                                           SvgPicture.asset(
                                             'assets/icons/notification_main.svg',
                                           ),
-                                          Container(
-                                            height: 10.w,
-                                            width: 10.w,
-                                            decoration: BoxDecoration(
-                                              color: ColorStyles.yellowFFD70B,
-                                              borderRadius: BorderRadius.circular(20.r),
-                                            ),
-                                          )
+                                          user!.hasNotifications!
+                                              ? Container(
+                                                  height: 10.w,
+                                                  width: 10.w,
+                                                  decoration: BoxDecoration(
+                                                    color: ColorStyles.yellowFFD70B,
+                                                    borderRadius: BorderRadius.circular(20.r),
+                                                  ),
+                                                )
+                                              : Container()
                                         ],
                                       ),
                                     ),
@@ -305,7 +307,9 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   elementCategory(
                     activities[index].photo ?? '',
-                    user?.rus ?? true && context.locale.languageCode == 'ru'? activities[index].description ?? '' : activities[index].engDescription ?? '',
+                    user?.rus ?? true && context.locale.languageCode == 'ru'
+                        ? activities[index].description ?? ''
+                        : activities[index].engDescription ?? '',
                     index,
                     choice: activities[index].selectSubcategory,
                   ),
@@ -475,7 +479,9 @@ class _CreatePageState extends State<CreatePage> {
             physics: const BouncingScrollPhysics(),
             children: list
                 .map((e) => item(
-                      user?.rus ?? true && context.locale.languageCode == 'RU'? e.description ?? '' : e.engDescription ?? '',
+                      user?.rus ?? true && context.locale.languageCode == 'RU'
+                          ? e.description ?? ''
+                          : e.engDescription ?? '',
                       index,
                     ))
                 .toList(),
