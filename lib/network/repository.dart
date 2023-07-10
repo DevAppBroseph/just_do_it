@@ -14,6 +14,7 @@ import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/like_order.dart';
 import 'package:just_do_it/models/like_user.dart';
+import 'package:just_do_it/models/notofications.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/review.dart';
@@ -102,9 +103,43 @@ class Repository {
     }
     return tasks;
   }
+  Future<bool> deleteNotifications(String access) async {
+    final res = await dio.delete(
+      '$server/chat/notifications',
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<List<NotificationsOnDevice>> getMyNotifications(String access, bool unread) async {
+    final response = await dio.get(
+      '$server/chat/notifications',
+      queryParameters: {'unread': unread},
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+
+    List<NotificationsOnDevice> notifications = [];
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      for (var element in response.data) {
+        notifications.add(NotificationsOnDevice.fromJson(element));
+      }
+      return notifications;
+    }
+    return notifications;
+  }
 
   Future<List<Task>> getTaskList(
-    
     String? query,
     int? priceFrom,
     int? priceTo,

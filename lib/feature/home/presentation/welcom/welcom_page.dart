@@ -333,14 +333,16 @@ class _WelcomPageState extends State<WelcomPage> {
                                             SvgPicture.asset(
                                               'assets/icons/notification_main.svg',
                                             ),
-                                            Container(
-                                              height: 10.w,
-                                              width: 10.w,
-                                              decoration: BoxDecoration(
-                                                color: ColorStyles.yellowFFD70B,
-                                                borderRadius: BorderRadius.circular(20.r),
-                                              ),
-                                            )
+                                            user!.hasNotifications!
+                                                ? Container(
+                                                    height: 10.w,
+                                                    width: 10.w,
+                                                    decoration: BoxDecoration(
+                                                      color: ColorStyles.yellowFFD70B,
+                                                      borderRadius: BorderRadius.circular(20.r),
+                                                    ),
+                                                  )
+                                                : Container(),
                                           ],
                                         ),
                                       ),
@@ -423,29 +425,26 @@ class _WelcomPageState extends State<WelcomPage> {
                         SizedBox(width: 12.w),
                         GestureDetector(
                           onTap: () {
-                            if(user != null){
-
-                      
-                            Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
-                              (page) {},
-                              false,
-                            ]).then((value) {
-                              if (value != null) {
-                                if (value == 'create') {
-                                  widget.onSelect(0);
+                            if (user != null) {
+                              Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
+                                (page) {},
+                                false,
+                              ]).then((value) {
+                                if (value != null) {
+                                  if (value == 'create') {
+                                    widget.onSelect(0);
+                                  }
+                                  if (value == 'search') {
+                                    widget.onSelect(1);
+                                  }
+                                  if (value == 'chat') {
+                                    widget.onSelect(3);
+                                  }
                                 }
-                                if (value == 'search') {
-                                  widget.onSelect(1);
-                                }
-                                if (value == 'chat') {
-                                  widget.onSelect(3);
-                                }
-                              }
-                            });
-                          }
-                          else{
-                            Navigator.of(context).pushNamed(AppRoute.auth);
-                          }
+                              });
+                            } else {
+                              Navigator.of(context).pushNamed(AppRoute.auth);
+                            }
                           },
                           child: SvgPicture.asset('assets/icons/category2.svg'),
                         ),

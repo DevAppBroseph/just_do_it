@@ -33,6 +33,7 @@ class UserRegModel {
   bool? isEntity;
   List<ArrayImages>? images;
   Uint8List? cv;
+  bool? hasNotifications;
   String? cvType;
   bool? rus;
   List<dynamic>? groups;
@@ -66,6 +67,7 @@ class UserRegModel {
     this.selectedOffers,
     this.myAnswersAsExecutor,
     this.finishedOffers,
+    this.hasNotifications,
     this.selectedOffersAsCustomer,
     this.finishedOffersAsCustomer,
     this.openOffers,
@@ -112,6 +114,7 @@ class UserRegModel {
     String? phoneNumber,
     String? email,
     String? firstname,
+    bool? hasNotifications,
     String? lastname,
     String? password,
     List<Task>? selectedOffers,
@@ -154,6 +157,7 @@ class UserRegModel {
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.rus = rus ?? this.rus;
+    this.hasNotifications = hasNotifications ?? this.hasNotifications;
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
     this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
@@ -205,6 +209,7 @@ class UserRegModel {
     int? countOrdersInProgressAsCustomer = data['count_orders_in_progress_as_customer'];
     int? countMyAnswersSelectedAsExecutor = data['count_my_answers_selected_as_executor'];
     int? countOrdersCompleteACustomer = data['count_orders_complete_as_customer'];
+    bool? hasNotifications = data['has_notifications'];
     int? countOrderComplete = data['count_orders_complete'];
     String? phoneNumber = data['phone_number'];
     String? firstname = data['firstname'];
@@ -309,6 +314,7 @@ class UserRegModel {
       finishedOffers: listFinishedOffers,
       finishedOffersAsCustomer: listFinishedOffersAsCustomer,
       email: email,
+      hasNotifications:hasNotifications,
       myAnswersAsExecutor: listMyAnswersAsExecutor,
       countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
       countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
