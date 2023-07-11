@@ -9,6 +9,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class PersonalAccountPage extends StatefulWidget {
@@ -38,6 +39,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -72,14 +74,17 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                             SvgPicture.asset(
                               'assets/icons/notification_account.svg',
                             ),
-                            Container(
-                              height: 10.w,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                color: ColorStyles.yellowFFD70B,
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                            )
+                            if (user != null)
+                              user.hasNotifications!
+                                  ? Container(
+                                      height: 10.w,
+                                      width: 10.w,
+                                      decoration: BoxDecoration(
+                                        color: ColorStyles.yellowFFD70B,
+                                        borderRadius: BorderRadius.circular(20.r),
+                                      ),
+                                    )
+                                  : Container()
                           ],
                         ),
                       ),
@@ -95,9 +100,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          
                           Navigator.of(context).pushNamed(AppRoute.profile);
-                          
                         },
                         child: Container(
                           color: Colors.transparent,
