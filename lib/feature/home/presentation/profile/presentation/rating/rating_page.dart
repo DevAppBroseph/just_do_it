@@ -154,7 +154,7 @@ class _RatingPageState extends State<RatingPage> {
                   SvgPicture.asset('assets/icons/star.svg'),
                   SizedBox(width: 4.w),
                   Text(
-                    '${review.mark}/10',
+                    '${review.mark}/5',
                     style: CustomTextStyle.black_14_w400_171716,
                   ),
                 ],
@@ -265,7 +265,7 @@ class _RatingPageState extends State<RatingPage> {
                       SvgPicture.asset('assets/icons/star.svg'),
                       SizedBox(width: 4.w),
                       Text(
-                        '${review.mark}/10',
+                        '${review.mark}/5',
                         style: CustomTextStyle.black_14_w400_171716,
                       ),
                     ],

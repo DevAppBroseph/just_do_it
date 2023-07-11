@@ -231,7 +231,7 @@ class Repository {
     return false;
   }
 
-  Future<bool> addReviewsDetail(String? access, int? receiver, String? message, int? mark) async {
+  Future<bool> addReviewsDetail(String? access, int? receiver, String? message, double? mark) async {
     log(receiver.toString());
     log(mark.toString());
     log(message.toString());

@@ -75,9 +75,7 @@ class _TaskViewState extends State<TaskView> {
   void getTaskList() {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<TasksBloc>().add(
-          GetTasksEvent(
-         
-          ),
+          GetTasksEvent(),
         );
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
   }
@@ -121,7 +119,7 @@ class _TaskViewState extends State<TaskView> {
               Row(
                 children: [
                   Text(
-                    widget.selectTask.status == 'Completed' ? 'closed'.tr() : 'openly'.tr(),
+                    widget.selectTask.status == 'Completed' ? 'close'.tr() : 'openly'.tr(),
                     style: CustomTextStyle.black_12_w400,
                   ),
                   const Spacer(),
@@ -881,7 +879,7 @@ class _TaskViewState extends State<TaskView> {
                       initialRating: 0,
                       minRating: 0,
                       direction: Axis.horizontal,
-                      allowHalfRating: true,
+                     
                       itemCount: 5,
                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                       itemBuilder: (context, _) => const Icon(
@@ -898,43 +896,8 @@ class _TaskViewState extends State<TaskView> {
                         if (widget.selectTask.owner!.hasReview!) {
                           CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                         } else {
-                          int rating = 0;
-                          if (reviewRating == 0.0) {
-                            rating = 0;
-                          }
-                          if (reviewRating == 0.5) {
-                            rating = 1;
-                          }
-                          if (reviewRating == 1.0) {
-                            rating = 2;
-                          }
-                          if (reviewRating == 1.5) {
-                            rating = 3;
-                          }
-                          if (reviewRating == 2.0) {
-                            rating = 4;
-                          }
-                          if (reviewRating == 2.5) {
-                            rating = 5;
-                          }
-                          if (reviewRating == 3.0) {
-                            rating = 6;
-                          }
-                          if (reviewRating == 3.5) {
-                            rating = 7;
-                          }
-                          if (reviewRating == 4.0) {
-                            rating = 8;
-                          }
-                          if (reviewRating == 4.5) {
-                            rating = 9;
-                          }
-                          if (reviewRating == 5.0) {
-                            rating = 10;
-                          }
-
                           Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                              widget.selectTask.owner?.id, descriptionTextController.text, rating);
+                              widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
                           context.read<TasksBloc>().add(UpdateTaskEvent());
                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                           Navigator.pop(context);
@@ -1583,7 +1546,7 @@ class _TaskViewState extends State<TaskView> {
                                         initialRating: 0,
                                         minRating: 0,
                                         direction: Axis.horizontal,
-                                        allowHalfRating: true,
+                                      
                                         itemCount: 5,
                                         itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                         itemBuilder: (context, _) => const Icon(
@@ -1600,47 +1563,11 @@ class _TaskViewState extends State<TaskView> {
                                           if (widget.selectTask.answers[index].owner!.hasReview!) {
                                             CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                           } else {
-                                            int rating = 0;
-                                            if (reviewRating == 0.0) {
-                                              rating = 0;
-                                            }
-                                            if (reviewRating == 0.5) {
-                                              rating = 1;
-                                            }
-                                            if (reviewRating == 1.0) {
-                                              rating = 2;
-                                            }
-                                            if (reviewRating == 1.5) {
-                                              rating = 3;
-                                            }
-                                            if (reviewRating == 2.0) {
-                                              rating = 4;
-                                            }
-                                            if (reviewRating == 2.5) {
-                                              rating = 5;
-                                            }
-                                            if (reviewRating == 3.0) {
-                                              rating = 6;
-                                            }
-                                            if (reviewRating == 3.5) {
-                                              rating = 7;
-                                            }
-                                            if (reviewRating == 4.0) {
-                                              rating = 8;
-                                            }
-                                            if (reviewRating == 4.5) {
-                                              rating = 9;
-                                            }
-                                            if (reviewRating == 5.0) {
-                                              rating = 10;
-                                            }
-                                            print(descriptionTextController1.text);
-
                                             Repository().addReviewsDetail(
                                                 BlocProvider.of<ProfileBloc>(context).access,
                                                 widget.selectTask.answers[index].owner?.id,
                                                 descriptionTextController1.text,
-                                                rating);
+                                                reviewRating);
                                             context.read<TasksBloc>().add(UpdateTaskEvent());
                                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                             Navigator.pop(context);
@@ -1820,7 +1747,7 @@ class _TaskViewState extends State<TaskView> {
                                           initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
-                                          allowHalfRating: true,
+                                         
                                           itemCount: 5,
                                           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                           itemBuilder: (context, _) => const Icon(
@@ -1837,45 +1764,11 @@ class _TaskViewState extends State<TaskView> {
                                             if (widget.selectTask.owner!.hasReview!) {
                                               CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                             } else {
-                                              int rating = 0;
-                                              if (reviewRating == 0.0) {
-                                                rating = 0;
-                                              }
-                                              if (reviewRating == 0.5) {
-                                                rating = 1;
-                                              }
-                                              if (reviewRating == 1.0) {
-                                                rating = 2;
-                                              }
-                                              if (reviewRating == 1.5) {
-                                                rating = 3;
-                                              }
-                                              if (reviewRating == 2.0) {
-                                                rating = 4;
-                                              }
-                                              if (reviewRating == 2.5) {
-                                                rating = 5;
-                                              }
-                                              if (reviewRating == 3.0) {
-                                                rating = 6;
-                                              }
-                                              if (reviewRating == 3.5) {
-                                                rating = 7;
-                                              }
-                                              if (reviewRating == 4.0) {
-                                                rating = 8;
-                                              }
-                                              if (reviewRating == 4.5) {
-                                                rating = 9;
-                                              }
-                                              if (reviewRating == 5.0) {
-                                                rating = 10;
-                                              }
                                               Repository().addReviewsDetail(
                                                   BlocProvider.of<ProfileBloc>(context).access,
                                                   widget.selectTask.owner?.id,
                                                   descriptionTextController2.text,
-                                                  rating);
+                                                  reviewRating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                               scoreDialog(context, '100', 'left_a_review'.tr());
@@ -2061,7 +1954,7 @@ class _TaskViewState extends State<TaskView> {
                                           initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
-                                          allowHalfRating: true,
+                                        
                                           itemCount: 5,
                                           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                           itemBuilder: (context, _) => const Icon(
@@ -2078,51 +1971,15 @@ class _TaskViewState extends State<TaskView> {
                                             if (widget.selectTask.answers[index].owner!.hasReview!) {
                                               CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                             } else {
-                                              int rating = 0;
-                                              if (reviewRating == 0.0) {
-                                                rating = 0;
-                                              }
-                                              if (reviewRating == 0.5) {
-                                                rating = 1;
-                                              }
-                                              if (reviewRating == 1.0) {
-                                                rating = 2;
-                                              }
-                                              if (reviewRating == 1.5) {
-                                                rating = 3;
-                                              }
-                                              if (reviewRating == 2.0) {
-                                                rating = 4;
-                                              }
-                                              if (reviewRating == 2.5) {
-                                                rating = 5;
-                                              }
-                                              if (reviewRating == 3.0) {
-                                                rating = 6;
-                                              }
-                                              if (reviewRating == 3.5) {
-                                                rating = 7;
-                                              }
-                                              if (reviewRating == 4.0) {
-                                                rating = 8;
-                                              }
-                                              if (reviewRating == 4.5) {
-                                                rating = 9;
-                                              }
-                                              if (reviewRating == 5.0) {
-                                                rating = 10;
-                                              }
                                               Repository().addReviewsDetail(
                                                   BlocProvider.of<ProfileBloc>(context).access,
                                                   widget.selectTask.owner?.id,
                                                   descriptionTextController3.text,
-                                                  rating);
+                                                  reviewRating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                                 Navigator.pop(context);
+                                              Navigator.pop(context);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
-
-                                          
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -2300,7 +2157,7 @@ class _TaskViewState extends State<TaskView> {
                                       initialRating: 0,
                                       minRating: 0,
                                       direction: Axis.horizontal,
-                                      allowHalfRating: true,
+                                    
                                       itemCount: 5,
                                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                       itemBuilder: (context, _) => const Icon(
@@ -2317,47 +2174,15 @@ class _TaskViewState extends State<TaskView> {
                                         if (widget.selectTask.owner!.hasReview!) {
                                           CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                         } else {
-                                          int rating = 0;
-                                          if (reviewRating == 0.0) {
-                                            rating = 0;
-                                          }
-                                          if (reviewRating == 0.5) {
-                                            rating = 1;
-                                          }
-                                          if (reviewRating == 1.0) {
-                                            rating = 2;
-                                          }
-                                          if (reviewRating == 1.5) {
-                                            rating = 3;
-                                          }
-                                          if (reviewRating == 2.0) {
-                                            rating = 4;
-                                          }
-                                          if (reviewRating == 2.5) {
-                                            rating = 5;
-                                          }
-                                          if (reviewRating == 3.0) {
-                                            rating = 6;
-                                          }
-                                          if (reviewRating == 3.5) {
-                                            rating = 7;
-                                          }
-                                          if (reviewRating == 4.0) {
-                                            rating = 8;
-                                          }
-                                          if (reviewRating == 4.5) {
-                                            rating = 9;
-                                          }
-                                          if (reviewRating == 5.0) {
-                                            rating = 10;
-                                          }
-                                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                                              widget.selectTask.owner?.id, descriptionTextController3.text, rating);
+                                          Repository().addReviewsDetail(
+                                              BlocProvider.of<ProfileBloc>(context).access,
+                                              widget.selectTask.owner?.id,
+                                              descriptionTextController3.text,
+                                              reviewRating);
                                           context.read<TasksBloc>().add(UpdateTaskEvent());
                                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                           Navigator.pop(context);
                                           scoreDialog(context, '100', 'left_a_review'.tr());
-                                         
                                         }
                                       },
                                       btnColor: ColorStyles.yellowFFD70A,
