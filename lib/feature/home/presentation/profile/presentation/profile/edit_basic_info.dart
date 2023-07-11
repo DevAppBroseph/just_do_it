@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -43,8 +44,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
         children: [
           Scaffold(
             backgroundColor: ColorStyles.whiteFFFFFF,
-            body: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, snapshot) {
+            body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
                 return const CupertinoActivityIndicator();
               }
@@ -86,8 +86,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textEditingController: firstnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(firstname: value);
                             },
@@ -105,8 +104,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textEditingController: lastnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(lastname: value);
                             },
@@ -141,8 +139,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               ),
                               LengthLimitingTextInputFormatter(12),
                             ],
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(phoneNumber: value);
                             },
@@ -159,8 +156,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textEditingController: emailController,
                             hintStyle: CustomTextStyle.grey_14_w400,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(email: value);
                             },
@@ -168,11 +164,9 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               requestNextEmptyFocusStage1();
                             },
                             onTap: () {
-                              Future.delayed(const Duration(milliseconds: 250),
-                                  () {
+                              Future.delayed(const Duration(milliseconds: 250), () {
                                 scrollController1.animateTo(500.h,
-                                    duration: const Duration(milliseconds: 100),
-                                    curve: Curves.linear);
+                                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
                               });
                             },
                           ),
@@ -183,8 +177,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           child: Row(
                             children: [
                               Checkbox(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.r)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
                                 value: physics,
                                 onChanged: (value) {
                                   setState(() {
@@ -211,10 +204,46 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: CustomButton(
                         onTap: () {
-                          user!.copyWith(isEntity: physics);
-                          BlocProvider.of<ProfileBloc>(context)
-                              .add(UpdateProfileEvent(user));
-                          Navigator.of(context).pop();
+                          String error = 'specify'.tr();
+                          bool errorsFlag = false;
+
+                          if (firstnameController.text.isEmpty) {
+                            error += '\n- ${'name'.tr()}';
+                            errorsFlag = true;
+                          }
+
+                          if (lastnameController.text.isEmpty) {
+                            error += '\n- ${'surname'.tr()}';
+                            errorsFlag = true;
+                          }
+
+                          if (phoneController.text.isEmpty || phoneController.text == '+') {
+                            error += '\n- ${'mobile_number'.tr()}';
+                            errorsFlag = true;
+                          }
+
+                          if (emailController.text.isEmpty) {
+                            error += '\n- email';
+                            errorsFlag = true;
+                          }
+
+                          String email = emailController.text;
+
+                          bool emailValid =
+                              RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(email);
+
+                          if (!emailValid && emailController.text.isNotEmpty) {
+                            error += '\n- ${'correct_email'.tr()}';
+                            errorsFlag = true;
+                          }
+                          if (errorsFlag) {
+                            CustomAlert().showMessage(error, context);
+                          } else {
+                            user!.copyWith(isEntity: physics);
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            Navigator.of(context).pop();
+                          }
                         },
                         btnColor: ColorStyles.yellowFFD70B,
                         textLabel: Text(
