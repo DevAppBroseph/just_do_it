@@ -24,7 +24,7 @@ class NotificationPage extends StatelessWidget {
   List<NotificationsOnDevice>? notifications;
   late UserRegModel? user;
   NotificationPage({super.key});
-
+  bool proverka = true;
   @override
   Widget build(BuildContext context) {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
@@ -63,7 +63,13 @@ class NotificationPage extends StatelessWidget {
               BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
                 if (state is NotificationsLoaded) {
                   notifications = state.notifications;
-
+                  log(notifications.toString());
+                  if (notifications == []) {
+                    proverka = true;
+                  } else {
+                    proverka = false;
+                  }
+                  
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     child: ListView.builder(
@@ -120,7 +126,7 @@ class NotificationPage extends StatelessWidget {
                   onTap: () {
                     BlocProvider.of<NotificationsBloc>(context).add(DeleteNotificationsEvent(access));
                   },
-                  btnColor: ColorStyles.greyE0E6EE,
+                  btnColor: proverka ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
                   textLabel: Text(
                     'clear'.tr(),
                     style: CustomTextStyle.black_16_w600_515150,
