@@ -73,7 +73,8 @@ class _SearchPageState extends State<SearchPage> {
     if (widget.taskId != null) getTask();
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-    user = BlocProvider.of<ProfileBloc>(context).user!;
+      user = BlocProvider.of<ProfileBloc>(context).user;
+   
   }
 
   void getTask() async {
@@ -237,7 +238,10 @@ class _SearchPageState extends State<SearchPage> {
                                     contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                                   ),
                                 )
-                              : Row(
+                              :
+                              user != null
+                              ?
+                               Row(
                                   children: [
                                     GestureDetector(
                                       onTap: () {
@@ -272,7 +276,7 @@ class _SearchPageState extends State<SearchPage> {
                                       child: SvgPicture.asset('assets/icons/search3.svg'),
                                     ),
                                   ],
-                                ),
+                                ): Container(),
                           SizedBox(width: 10.w),
                           GestureDetector(
                               onTap: () {

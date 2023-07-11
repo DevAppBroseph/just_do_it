@@ -156,42 +156,44 @@ class _CreatePageState extends State<CreatePage> {
                                     contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
                                   ),
                                 )
-                              : Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(AppRoute.notification);
-                                      },
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/notification_main.svg',
+                              : user != null
+                                  ? Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(AppRoute.notification);
+                                          },
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/notification_main.svg',
+                                              ),
+                                              user!.hasNotifications!
+                                                  ? Container(
+                                                      height: 10.w,
+                                                      width: 10.w,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles.yellowFFD70B,
+                                                        borderRadius: BorderRadius.circular(20.r),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
                                           ),
-                                          user!.hasNotifications!
-                                              ? Container(
-                                                  height: 10.w,
-                                                  width: 10.w,
-                                                  decoration: BoxDecoration(
-                                                    color: ColorStyles.yellowFFD70B,
-                                                    borderRadius: BorderRadius.circular(20.r),
-                                                  ),
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(width: 12.w),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        setState(() {
-                                          searchListEnable = true;
-                                        });
-                                      },
-                                      child: SvgPicture.asset('assets/icons/search3.svg'),
-                                    ),
-                                  ],
-                                ),
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            setState(() {
+                                              searchListEnable = true;
+                                            });
+                                          },
+                                          child: SvgPicture.asset('assets/icons/search3.svg'),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                           SizedBox(width: 10.w),
                           GestureDetector(
                             onTap: () {
