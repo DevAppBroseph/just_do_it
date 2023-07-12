@@ -100,45 +100,36 @@ class _CustomerState extends State<Customer> {
   void requestNextEmptyFocusStage1() {
     if (firstnameController.text.isEmpty) {
       focusNodeName.requestFocus();
-      scrollController1.animateTo(0,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (lastnameController.text.isEmpty) {
       focusNodeLastName.requestFocus();
-      scrollController1.animateTo(50.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(50.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (phoneController.text.isEmpty) {
       focusNodePhone.requestFocus();
-      scrollController1.animateTo(100.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(100.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (emailController.text.isEmpty) {
       focusNodeEmail.requestFocus();
-      scrollController1.animateTo(150.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     }
   }
 
   void requestNextEmptyFocusStage2() {
     if (passwordController.text.isEmpty) {
       focusNodePassword1.requestFocus();
-      scrollController2.animateTo(0,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController2.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (repeatPasswordController.text.isEmpty) {
       focusNodePassword2.requestFocus();
-      scrollController2.animateTo(50.h,
-          duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController2.animateTo(50.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h,
-            duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -152,38 +143,30 @@ class _CustomerState extends State<Customer> {
         Loader.hide();
         if (current is CheckUserState) {
           if (current.error != null) {
-            CustomAlert().showMessage(
-                'a_user_with_such_a_phone_is_already_registered'.tr(),
-                context);
+            CustomAlert().showMessage('a_user_with_such_a_phone_is_already_registered'.tr(), context);
           } else {
             page = 1;
             widget.stage(2);
           }
         } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
+          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister, arguments: [phoneController.text]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
           String messageError = '${'error'.tr()}\n';
-          if (current.error!['email'] != null &&
-              current.error!['email'][0] != null) {
+          if (current.error!['email'] != null && current.error!['email'][0] != null) {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
               messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
             } else if (email.contains('Enter a valid email address.')) {
               messageError = 'enter_the_correct_email_address'.tr();
             }
-          } else if (current.error!['phone_number'] != null &&
-              current.error!['phone_number'][0] != null) {
+          } else if (current.error!['phone_number'] != null && current.error!['phone_number'][0] != null) {
             String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber
-                .contains('custom user with this Телефон already exists.')) {
-              messageError =
-                  'a_user_with_such_a_phone_is_already_registered'.tr();
-            } else if (phoneNumber
-                .contains('The phone number entered is not valid.')) {
+            if (phoneNumber.contains('custom user with this Телефон already exists.')) {
+              messageError = 'a_user_with_such_a_phone_is_already_registered'.tr();
+            } else if (phoneNumber.contains('The phone number entered is not valid.')) {
               messageError = 'enter_the_correct_phone_number'.tr();
             }
           }
@@ -193,10 +176,7 @@ class _CustomerState extends State<Customer> {
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(
-                child: page == 0
-                    ? firstStage(heightKeyBoard)
-                    : secondStage(heightKeyBoard)),
+            Expanded(child: page == 0 ? firstStage(heightKeyBoard) : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () async {
@@ -212,8 +192,7 @@ class _CustomerState extends State<Customer> {
                     error += '\n- ${'surname'.tr()}';
                     errorsFlag = true;
                   }
-                  if (phoneController.text.isEmpty ||
-                      phoneController.text == '+') {
+                  if (phoneController.text.isEmpty || phoneController.text == '+') {
                     error += '\n- ${'mobile_number'.tr()}';
                     errorsFlag = true;
                   }
@@ -224,9 +203,8 @@ class _CustomerState extends State<Customer> {
 
                   String email = emailController.text;
 
-                  bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(email);
+                  bool emailValid =
+                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 
                   if (!emailValid && emailController.text.isNotEmpty) {
                     error += '\n- ${'correct_email'.tr()}';
@@ -236,28 +214,20 @@ class _CustomerState extends State<Customer> {
                   if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
                   } else if (!emailValid) {
-                    CustomAlert()
-                        .showMessage('enter_the_correct_email_address'.tr(), context);
-                  } else if (emailController.text
-                          .split('@')
-                          .last
-                          .split('.')
-                          .last
-                          .length <
-                      2) {
-                    CustomAlert().showMessage(
-                        '- ${'enter_the_correct_email_address'.tr()}', context);
+                    CustomAlert().showMessage('enter_the_correct_email_address'.tr(), context);
+                  } else if (emailController.text.split('@').last.split('.').last.length < 2) {
+                    CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
                   } else if (phoneController.text.length < 12) {
-                    CustomAlert()
-                        .showMessage('- ${'incorrect_phone_number'.tr()}', context);
+                    CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}', context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
-                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'.tr(),
+                        'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'
+                            .tr(),
                         context);
                   } else {
                     showLoaderWrapper(context);
-                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
-                        phoneController.text, emailController.text));
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(CheckUserExistEvent(phoneController.text, emailController.text));
                   }
                 } else {
                   requestNextEmptyFocusStage2();
@@ -265,8 +235,7 @@ class _CustomerState extends State<Customer> {
                   String error = 'specify'.tr();
                   bool errorsFlag = false;
 
-                  if (passwordController.text.isEmpty ||
-                      repeatPasswordController.text.isEmpty) {
+                  if (passwordController.text.isEmpty || repeatPasswordController.text.isEmpty) {
                     error += '\n- ${'password'.tr()}';
                     errorsFlag = true;
                   }
@@ -279,28 +248,33 @@ class _CustomerState extends State<Customer> {
                     error += '\n- ${'region'.tr().toLowerCase()}';
                     errorsFlag = true;
                   }
-                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
-                      .hasMatch(passwordController.text);
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$').hasMatch(passwordController.text);
                   if (!passwordValid && passwordController.text.isNotEmpty) {
-                    error +=
-                        '\n- ${'correct_password'.tr()}';
+                    error += '\n- ${'correct_password'.tr()}';
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
                     error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                     errorsFlag = true;
                   }
-                  if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
+                  if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text != repeatPasswordController.text)) {
                     error += '\n${'passwords_dont_match'.tr()}';
                     errorsFlag = true;
                   }
+                  if (numberDocController.text.length < 4) {
+                    error += '\n- ${'number_document'.tr()}';
+                      errorsFlag = true;
+                  }
+                  if (whoGiveDocController.text.length <= 3) {
+                    if (user.docType == 'Resident_ID') {
+                      error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                        errorsFlag = true;
+                    }
+                  }
 
                   if (additionalInfo) {
-                    if (serialDocController.text.isEmpty &&
-                        user.docType != 'Resident_ID') {
+                    if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
                       error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
                     }
@@ -332,46 +306,35 @@ class _CustomerState extends State<Customer> {
                     } else if (passwordController.text.length < 6) {
                       CustomAlert().showMessage(
                           '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
-                    } else if ((passwordController.text.isNotEmpty &&
-                            repeatPasswordController.text.isNotEmpty) &&
-                        (passwordController.text !=
-                            repeatPasswordController.text)) {
+                    } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                        (passwordController.text != repeatPasswordController.text)) {
                       CustomAlert().showMessage('passwords_dont_match'.tr(), context);
-                    } else if (dateTimeEnd != null &&
-                        DateTime.now().isAfter(dateTimeEnd!)) {
-                      CustomAlert()
-                          .showMessage('your_document_is_overdue'.tr(), context);
+                    } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                      CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                     } else if (checkExpireDate(dateTimeEnd) != null) {
-                      CustomAlert()
-                          .showMessage(checkExpireDate(dateTimeEnd)!, context);
+                      CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
                       documentEdit();
 
-                      BlocProvider.of<AuthBloc>(context)
-                          .add(SendProfileEvent(user, token.toString()));
+                      BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                     }
                   } else if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
-                  } else if ((passwordController.text.isNotEmpty &&
-                          repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text !=
-                          repeatPasswordController.text)) {
+                  } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text != repeatPasswordController.text)) {
                     CustomAlert().showMessage('passwords_dont_match'.tr(), context);
-                  } else if (dateTimeEnd != null &&
-                      DateTime.now().isAfter(dateTimeEnd!)) {
+                  } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
                     CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
                   } else if (checkExpireDate(dateTimeEnd) != null) {
-                    CustomAlert()
-                        .showMessage(checkExpireDate(dateTimeEnd)!, context);
+                    CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
                   } else {
                     final token = await FirebaseMessaging.instance.getToken();
                     showLoaderWrapper(context);
                     documentEdit();
 
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SendProfileEvent(user, token.toString()));
+                    BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                   }
                 }
               },
@@ -431,8 +394,7 @@ class _CustomerState extends State<Customer> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -451,8 +413,7 @@ class _CustomerState extends State<Customer> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -514,8 +475,7 @@ class _CustomerState extends State<Customer> {
               type: MaskAutoCompletionType.eager,
             ),
           ],
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -525,9 +485,7 @@ class _CustomerState extends State<Customer> {
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
-              scrollController1.animateTo(200.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController1.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -538,15 +496,13 @@ class _CustomerState extends State<Customer> {
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(value);
+            bool emailValid =
+                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
             if (!emailValid) {
               CustomAlert().showMessage('the_email_address_is_incorrect'.tr(), context);
             }
@@ -554,9 +510,7 @@ class _CustomerState extends State<Customer> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController1.animateTo(250.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController1.animateTo(250.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -568,8 +522,7 @@ class _CustomerState extends State<Customer> {
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             suffixIcon: Stack(
               alignment: Alignment.centerRight,
               children: [
@@ -640,9 +593,7 @@ class _CustomerState extends State<Customer> {
                             width: 15.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(color: Colors.black)
-                                ],
+                                boxShadow: const [BoxShadow(color: Colors.black)],
                                 borderRadius: BorderRadius.circular(40.r)),
                             child: Center(
                               child: Icon(
@@ -670,8 +621,7 @@ class _CustomerState extends State<Customer> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
               value: confirmTermsPolicy,
               onChanged: (value) {
                 setState(() {
@@ -735,8 +685,7 @@ class _CustomerState extends State<Customer> {
                   ),
           ),
           textEditingController: passwordController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -745,9 +694,7 @@ class _CustomerState extends State<Customer> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(0.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController2.animateTo(0.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -779,13 +726,10 @@ class _CustomerState extends State<Customer> {
             requestNextEmptyFocusStage2();
           },
           textEditingController: repeatPasswordController,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController2.animateTo(50.h,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.linear);
+              scrollController2.animateTo(50.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
             });
           },
         ),
@@ -796,7 +740,7 @@ class _CustomerState extends State<Customer> {
             context,
             _countryKey,
             (value) async {
-              countryController.text = context.locale.languageCode == 'ru' ? value.name ?? '-':  value.engName ?? '-';
+              countryController.text = context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -812,8 +756,7 @@ class _CustomerState extends State<Customer> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -826,7 +769,8 @@ class _CustomerState extends State<Customer> {
                 context,
                 _regionKey,
                 (value) {
-                  regionController.text = context.locale.languageCode == 'ru' ? value.name ?? '-':  value.engName ?? '-';
+                  regionController.text =
+                      context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
@@ -834,8 +778,7 @@ class _CustomerState extends State<Customer> {
                 'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage(
-                  'to_select_a_region_first_specify_the_country'.tr(), context);
+              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr(), context);
             }
           },
           child: CustomTextField(
@@ -844,8 +787,7 @@ class _CustomerState extends State<Customer> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -881,8 +823,7 @@ class _CustomerState extends State<Customer> {
                 onTap: () {},
                 fillColor: Colors.grey[200],
                 textEditingController: documentTypeController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -925,8 +866,7 @@ class _CustomerState extends State<Customer> {
         Row(
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
                 setState(() {
@@ -972,19 +912,16 @@ class _CustomerState extends State<Customer> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
-                    6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
                 textEditingController: serialDocController,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
@@ -999,9 +936,7 @@ class _CustomerState extends State<Customer> {
               textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear);
+                  scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
                 });
               },
               formatters: [
@@ -1009,11 +944,9 @@ class _CustomerState extends State<Customer> {
               ],
               width: user.docType == 'Resident_ID'
                   ? MediaQuery.of(context).size.width - 30.w - 18.w
-                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
-                      6.w,
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
               textEditingController: numberDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -1024,9 +957,7 @@ class _CustomerState extends State<Customer> {
             hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1039,8 +970,7 @@ class _CustomerState extends State<Customer> {
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
@@ -1055,8 +985,7 @@ class _CustomerState extends State<Customer> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1072,8 +1001,7 @@ class _CustomerState extends State<Customer> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1088,9 +1016,7 @@ class _CustomerState extends State<Customer> {
             hintText: 'place_of_issue'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.linear);
+                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1103,8 +1029,7 @@ class _CustomerState extends State<Customer> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -1114,31 +1039,21 @@ class _CustomerState extends State<Customer> {
   void _showDatePicker(ctx, int index, bool isInternational) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 2)
-        : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
+        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(
-            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(
-                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year + 15, DateTime.now().month,
-                DateTime.now().day);
+            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
-                dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
-                DateTime.now().day + 1)
-        : DateTime(
-            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -1168,26 +1083,18 @@ class _CustomerState extends State<Customer> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy')
-                                                .format(DateTime.now());
+                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
                                       }
                                     }
                                   }
@@ -1215,11 +1122,9 @@ class _CustomerState extends State<Customer> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1230,11 +1135,9 @@ class _CustomerState extends State<Customer> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text =
-                                  DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1261,9 +1164,7 @@ class _CustomerState extends State<Customer> {
 
   void documentEdit() {
     user.copyWith(
-      docInfo: serialDocController.text.isEmpty &&
-              numberDocController.text.isEmpty &&
-              dateDocController.text.isEmpty
+      docInfo: serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty
           ? ''
           : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );

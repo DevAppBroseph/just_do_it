@@ -139,6 +139,14 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       if (numberDocController.text.isEmpty) {
                         error += '\n- ${'document_number'.tr()}';
                       }
+                      if (numberDocController.text.length < 4) {
+                        error += '\n- ${'number_document'.tr()}';
+                      }
+                       if (whoGiveDocController.text.length <= 3) {
+                        if (docType == 'Resident_ID') {
+                          error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                        }
+                      }
                       if (whoGiveDocController.text.isEmpty) {
                         if (docType == 'Passport') {
                           error += '\n- ${'who_issued_the_document'.tr().toLowerCase()}';
@@ -148,6 +156,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           error += '\n- ${'date_of_issue_of_the_document'.tr().toLowerCase()}';
                         }
                       }
+                     
+
                       if (dateDocController.text.isEmpty) {
                         error += '\n- ${'validity_period_of_the_document'.tr().toLowerCase()}';
                       }

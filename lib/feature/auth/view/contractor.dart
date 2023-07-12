@@ -364,6 +364,16 @@ class _ContractorState extends State<Contractor> {
                         errorsFlag = true;
                       }
                     }
+                    if (numberDocController.text.length < 4) {
+                      error += '\n- ${'number_document'.tr()}';
+                        errorsFlag = true;
+                    }
+                    if (whoGiveDocController.text.length <= 3) {
+                      if (user.docType == 'Resident_ID') {
+                        error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                          errorsFlag = true;
+                      }
+                    }
                     if (dateDocController.text.isEmpty) {
                       if (user.docType == 'Resident_ID') {
                         error += '\n- ${'place_of_issue_of_the_document'.tr()}';

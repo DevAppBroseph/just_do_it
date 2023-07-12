@@ -182,6 +182,14 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                             if (numberDocController.text.isEmpty) {
                               error += '\n- номер документа';
                             }
+                            if (numberDocController.text.length < 4) {
+                              error += '\n- ${'number_document'.tr()}';
+                            }
+                            if (whoGiveDocController.text.length <= 3) {
+                              if (docType == 'Resident_ID') {
+                                error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                              }
+                            }
                             if (whoGiveDocController.text.isEmpty) {
                               if (docType == 'Passport') {
                                 error += '\n- кем выдан документ';
