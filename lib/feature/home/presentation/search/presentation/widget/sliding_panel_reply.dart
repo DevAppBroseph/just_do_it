@@ -185,10 +185,10 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                             if (numberDocumentController.text.isEmpty) {
                               error += '\n- ${'document_number'.tr()}';
                             }
-                            if (numberDocumentController.text.length < 4) {
+                            if (numberDocumentController.text.length < 5) {
                               error += '\n- ${'number_document'.tr()}';
                             }
-                            if (whoGiveDocumentController.text.length <= 3) {
+                            if (whoGiveDocumentController.text.length < 3) {
                               if (docType == 'Resident_ID') {
                                 error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                               }

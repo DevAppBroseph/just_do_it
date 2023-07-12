@@ -139,10 +139,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                       if (numberDocController.text.isEmpty) {
                         error += '\n- ${'document_number'.tr()}';
                       }
-                      if (numberDocController.text.length < 4) {
+                      if (numberDocController.text.length < 5) {
                         error += '\n- ${'number_document'.tr()}';
                       }
-                       if (whoGiveDocController.text.length <= 3) {
+                       if (whoGiveDocController.text.length < 3) {
                         if (docType == 'Resident_ID') {
                           error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                         }
