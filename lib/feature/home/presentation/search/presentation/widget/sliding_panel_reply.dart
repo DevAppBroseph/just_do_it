@@ -185,10 +185,18 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                             if (numberDocumentController.text.isEmpty) {
                               error += '\n- ${'document_number'.tr()}';
                             }
+                            if (numberDocumentController.text.length < 4) {
+                              error += '\n- ${'number_document'.tr()}';
+                            }
+                            if (whoGiveDocumentController.text.length <= 3) {
+                              if (docType == 'Resident_ID') {
+                                error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                              }
+                            }
                             if (whoGiveDocumentController.text.isEmpty) {
                               if (docType == 'Passport') {
                                 error += '\n- ${'who_issued_the_document'.tr()}';
-                              } else if (docType == 'Resident_ID') {
+                              } else if (whoGiveDocumentController == 'Resident_ID') {
                                 error += '\n- ${'place_of_issue_of_the_document'.tr()}';
                               } else {
                                 error += '\n- ${'date_of_issue_of_the_document'.tr()}';
@@ -300,9 +308,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
                 Text(
-                  !widget.selectTask!.asCustomer!
-                      ? 'to_accept_the_offer'.tr()
-                      : 'to_complete_tasks'.tr(),
+                  !widget.selectTask!.asCustomer! ? 'to_accept_the_offer'.tr() : 'to_complete_tasks'.tr(),
                   style: CustomTextStyle.black_13_w400_515150,
                 ),
               SizedBox(height: 30.h),

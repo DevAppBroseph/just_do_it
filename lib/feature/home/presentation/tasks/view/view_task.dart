@@ -879,7 +879,6 @@ class _TaskViewState extends State<TaskView> {
                       initialRating: 0,
                       minRating: 0,
                       direction: Axis.horizontal,
-                     
                       itemCount: 5,
                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                       itemBuilder: (context, _) => const Icon(
@@ -900,7 +899,9 @@ class _TaskViewState extends State<TaskView> {
                               widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
                           context.read<TasksBloc>().add(UpdateTaskEvent());
                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          Navigator.pop(context);
+               
+                          
+                                              widget.openOwner(widget.selectTask.owner);
                           scoreDialog(context, '100', 'left_a_review'.tr());
                         }
                       },
@@ -1546,7 +1547,6 @@ class _TaskViewState extends State<TaskView> {
                                         initialRating: 0,
                                         minRating: 0,
                                         direction: Axis.horizontal,
-                                      
                                         itemCount: 5,
                                         itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                         itemBuilder: (context, _) => const Icon(
@@ -1559,7 +1559,7 @@ class _TaskViewState extends State<TaskView> {
                                       ),
                                       SizedBox(height: 30.h),
                                       CustomButton(
-                                        onTap: () {
+                                        onTap: () async {
                                           if (widget.selectTask.answers[index].owner!.hasReview!) {
                                             CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                           } else {
@@ -1570,7 +1570,12 @@ class _TaskViewState extends State<TaskView> {
                                                 reviewRating);
                                             context.read<TasksBloc>().add(UpdateTaskEvent());
                                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                            Navigator.pop(context);
+                                       
+                                            
+                                             final owner = await Repository().getRanking(
+                                                  widget.selectTask.answers[index].owner?.id,
+                                                  BlocProvider.of<ProfileBloc>(context).access);
+                                              widget.openOwner(owner);
                                             scoreDialog(context, '100', 'left_a_review'.tr());
                                           }
                                         },
@@ -1747,7 +1752,6 @@ class _TaskViewState extends State<TaskView> {
                                           initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
-                                         
                                           itemCount: 5,
                                           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                           itemBuilder: (context, _) => const Icon(
@@ -1771,9 +1775,11 @@ class _TaskViewState extends State<TaskView> {
                                                   reviewRating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          
+                                              widget.openOwner(widget.selectTask.owner);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
 
-                                              Navigator.pop(context);
+                                          
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -1954,7 +1960,6 @@ class _TaskViewState extends State<TaskView> {
                                           initialRating: 0,
                                           minRating: 0,
                                           direction: Axis.horizontal,
-                                        
                                           itemCount: 5,
                                           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                           itemBuilder: (context, _) => const Icon(
@@ -1967,7 +1972,7 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                                         SizedBox(height: 30.h),
                                         CustomButton(
-                                          onTap: () {
+                                          onTap: () async {
                                             if (widget.selectTask.answers[index].owner!.hasReview!) {
                                               CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                             } else {
@@ -1978,7 +1983,9 @@ class _TaskViewState extends State<TaskView> {
                                                   reviewRating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                              Navigator.pop(context);
+                               
+                                              
+                                              widget.openOwner(widget.selectTask.owner);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
                                             }
                                           },
@@ -2157,7 +2164,6 @@ class _TaskViewState extends State<TaskView> {
                                       initialRating: 0,
                                       minRating: 0,
                                       direction: Axis.horizontal,
-                                    
                                       itemCount: 5,
                                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                       itemBuilder: (context, _) => const Icon(
@@ -2181,7 +2187,9 @@ class _TaskViewState extends State<TaskView> {
                                               reviewRating);
                                           context.read<TasksBloc>().add(UpdateTaskEvent());
                                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                          Navigator.pop(context);
+                                    
+                                        
+                                              widget.openOwner(widget.selectTask.owner);
                                           scoreDialog(context, '100', 'left_a_review'.tr());
                                         }
                                       },
