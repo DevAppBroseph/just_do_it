@@ -44,6 +44,7 @@ class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInP
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
+      backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(

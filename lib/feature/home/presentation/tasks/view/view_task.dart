@@ -105,11 +105,12 @@ class _TaskViewState extends State<TaskView> {
   Widget build(BuildContext context) {
     log(' (${widget.canSelect} ffh ${widget.selectTask.owner?.id} && ${widget.selectTask.isAnswered == null})');
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
-    return Container(
-      color: ColorStyles.greyEAECEE,
-      child: MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
-        child: Padding(
+    return MediaQuery(
+      data: const MediaQueryData(textScaleFactor: 1.0, ),
+      
+      child: Scaffold(
+           backgroundColor: ColorStyles.greyEAECEE,
+        body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: ListView(
             physics: const ClampingScrollPhysics(),
@@ -157,7 +158,7 @@ class _TaskViewState extends State<TaskView> {
                               } else {
                                 proverka = true;
                                 final access = await Storage().getAccessToken();
-
+      
                                 if (selectTask?.id != null) {
                                   await Repository().addLikeOrder(selectTask!.id!, access!);
                                 }
@@ -385,7 +386,7 @@ class _TaskViewState extends State<TaskView> {
                                   widget.selectTask.files![index].type == 'docx') {
                                 file = true;
                               }
-
+      
                               if (file) {
                                 return SizedBox(
                                   height: 60.h,
@@ -626,7 +627,7 @@ class _TaskViewState extends State<TaskView> {
                     final chatBloc = BlocProvider.of<ChatBloc>(context);
                     chatBloc.editShowPersonChat(false);
                     chatBloc.editChatId(widget.selectTask.chatId);
-
+      
                     chatBloc.messages = [];
                     final idChat = await Navigator.of(context).pushNamed(
                       AppRoute.personalChat,
@@ -646,7 +647,7 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-
+      
               SizedBox(height: 18.h),
               if (widget.canSelect &&
                   user?.id != widget.selectTask.owner?.id &&
@@ -674,7 +675,7 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-
+      
               if (widget.canSelect && user?.id != widget.selectTask.owner?.id && widget.selectTask.isAnswered == null)
                 CustomButton(
                   onTap: () async {
@@ -916,7 +917,7 @@ class _TaskViewState extends State<TaskView> {
                     )
                   ],
                 ),
-
+      
               if (widget.selectTask.answers.isNotEmpty &&
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
@@ -1778,7 +1779,7 @@ class _TaskViewState extends State<TaskView> {
                                           
                                               widget.openOwner(widget.selectTask.owner);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
-
+      
                                           
                                             }
                                           },
@@ -2428,7 +2429,7 @@ class _TaskViewState extends State<TaskView> {
                                                       Repository().editTaskPatch(
                                                           BlocProvider.of<ProfileBloc>(context).access,
                                                           widget.selectTask);
-
+      
                                                       context.read<TasksBloc>().add(UpdateTaskEvent());
                                                       BlocProvider.of<ProfileBloc>(context)
                                                           .add(UpdateProfileEvent(user));

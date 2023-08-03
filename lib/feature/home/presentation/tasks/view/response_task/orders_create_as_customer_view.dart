@@ -42,6 +42,7 @@ class _OrdersCreateAsCustomerViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(

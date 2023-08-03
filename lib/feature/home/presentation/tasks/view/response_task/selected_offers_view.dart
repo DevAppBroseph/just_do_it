@@ -44,6 +44,7 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(

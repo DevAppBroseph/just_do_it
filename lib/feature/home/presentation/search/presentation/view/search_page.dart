@@ -122,7 +122,7 @@ class _SearchPageState extends State<SearchPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+         backgroundColor: ColorStyles.greyEAECEE,
         resizeToAvoidBottomInset: false,
         body: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
           if (current is UpdateListMessageItemState) {
@@ -145,13 +145,13 @@ class _SearchPageState extends State<SearchPage> {
               Container(
                 height: searchList ? 100.h : 120.h,
                 decoration: const BoxDecoration(
-                  color: ColorStyles.greyEAECEE,
+              
                 ),
                 child: Column(
                   children: [
                     Container(
                       height: 60.h,
-                      color: ColorStyles.greyEAECEE,
+                    
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 15.w, right: 28.w),
@@ -473,16 +473,14 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     if (selectTask != null) {
-      return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
-        body: TaskView(
+      return  TaskView(
           selectTask: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
             setState(() {});
           },
           canSelect: true,
-        ),
+       
       );
     }
     return const SizedBox();

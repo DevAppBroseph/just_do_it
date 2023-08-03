@@ -34,7 +34,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    // log(response.statusMessage.toString());
+    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return Owner.fromJson(response.data);
     }
@@ -553,13 +553,15 @@ class Repository {
           "fcm_token": token,
         },
       );
-      log(response.data.toString());
+      log(response.statusMessage.toString());
       if (response.statusCode == 200) {
         String? accessToken = response.data['access'];
         await Storage().setAccessToken(accessToken);
         return response.data['access'];
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
     return null;
   }
 

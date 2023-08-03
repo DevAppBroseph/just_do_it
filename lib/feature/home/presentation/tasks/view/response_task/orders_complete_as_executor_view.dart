@@ -45,6 +45,7 @@ class _OrdersCompleteAsExecutorViewState extends State<OrdersCompleteAsExecutorV
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(

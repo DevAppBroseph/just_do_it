@@ -44,6 +44,7 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(

@@ -43,7 +43,7 @@ class _ResponseTasksCompleteViewAsCustomerState extends State<ResponseTasksCompl
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
-    return Scaffold(
+    return Scaffold(  backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
@@ -52,7 +52,7 @@ class _ResponseTasksCompleteViewAsCustomerState extends State<ResponseTasksCompl
               data: const MediaQueryData(textScaleFactor: 1.0),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: ColorStyles.greyEAECEE,
+              
                 ),
                 child: Column(
                   children: [

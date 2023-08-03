@@ -44,6 +44,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     log(taskList.length.toString());
     return Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
