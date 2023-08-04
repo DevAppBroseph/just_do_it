@@ -23,8 +23,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
           boxShadow: [
             BoxShadow(
               color: ColorStyles.shadowFC6554,
-              offset: const Offset(0, -4),
-              blurRadius: 55.r,
+              offset: const Offset(0, 8),
+              blurRadius: 10.r,
             )
           ],
         ),
