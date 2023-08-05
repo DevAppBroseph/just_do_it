@@ -205,7 +205,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                             if (error == 'specify'.tr()) {
                               user?.copyWith(docInfo: docinfo, docType: mapDocumentType(documentTypeController.text));
                               BlocProvider.of<ProfileBloc>(context).setUser(user);
-                              log(user.toString());
+                       
                               Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                               widget.panelController.animatePanelToPosition(0);
                             } else {

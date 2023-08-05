@@ -110,6 +110,7 @@ class _SearchPageState extends State<SearchPage> {
             subcategory: [],
             countFilter: null,
             customer: null,
+            access: access,
           ),
         );
   }

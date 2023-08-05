@@ -145,6 +145,7 @@ class Repository {
     int? priceTo,
     String? dateStart,
     String? dateEnd,
+    String? access,
     List<int> subcategory,
     List<int> regions,
     List<int> towns,
@@ -175,7 +176,7 @@ class Repository {
       queryParameters: queryParameters,
       options: Options(
         validateStatus: ((status) => status! >= 200),
-        // headers: access != null ? {'Authorization': 'Bearer $access'} : null,
+        headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );
 
@@ -423,7 +424,7 @@ class Repository {
       data: data,
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-    log(response.statusMessage.toString());
+    log('updateUser ${response.statusMessage}');
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     user = event.newUser;
     if (access != null) {
       UserRegModel? res = await Repository().updateUser(access!, user!);
+      
       if (res != null) {
+  
         user = res;
         emit(UpdateProfileSuccessState());
       }

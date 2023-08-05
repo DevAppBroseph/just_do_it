@@ -30,6 +30,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       event.priceTo,
       event.dateStart,
       event.dateEnd,
+      event.access,
       event.subcategory,
       regions,
       towns,

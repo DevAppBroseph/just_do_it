@@ -112,7 +112,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
         }
       }
       user?.copyWith(images: photos);
+      
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+        
+
+      
     }
   }
 
@@ -129,7 +133,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
 
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-      setState(() {});
+ 
     }
   }
 
@@ -144,6 +148,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
+      log(current.toString());
+      if(current is UpdateProfileSuccessState){
+        user = BlocProvider.of<ProfileBloc>(context).user;
+       
+      }
       if (current is UpdateProfileTaskState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
         if (user!.images != null) {
@@ -685,230 +694,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           ),
                         ),
                       ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     Navigator.of(context).pushNamed(AppRoute.editBasicInfo);
-                      //   },
-                      //   child: Padding(
-                      //     padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                      //     child: Row(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         SvgPicture.asset(
-                      //           'assets/icons/sms-notification.svg',
-                      //           color: ColorStyles.yellowFFCA0D,
-                      //         ),
-                      //         SizedBox(width: 3.w),
-                      //         Padding(
-                      //           padding: EdgeInsets.only(left: 5.w),
-                      //           child: Row(
-                      //             children: [
-                      //               Column(
-                      //                 crossAxisAlignment: CrossAxisAlignment.start,
-                      //                 children: [
-                      //                   Text(
-                      //                     'E-mail',
-                      //                     style: CustomTextStyle.black_13_w400_171716,
-                      //                   ),
-                      //                   SizedBox(
-                      //                     width: 235.w,
-                      //                     child: Text(
-                      //                       'change_email'.tr(),
-                      //                       style: CustomTextStyle.grey_12_w400,
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //               SizedBox(
-                      //                 width: 15.w,
-                      //               ),
-                      //               Icon(
-                      //                 Icons.arrow_forward_ios,
-                      //                 color: ColorStyles.greyBDBDBD,
-                      //                 size: 16.h,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+                     
                       SizedBox(height: 20.h),
                     ],
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: 20.w, bottom: 15.h, right: 20.w, top: 15.h),
-              //   child: Container(
-              //     width: 100.w,
-              //     decoration: BoxDecoration(
-              //       color: ColorStyles.whiteFFFFFF,
-              //       borderRadius: BorderRadius.circular(20.r),
-              //     ),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Padding(
-              //           padding: EdgeInsets.only(top: 20.h, left: 20.w),
-              //           child: Text(
-              //             'security'.tr(),
-              //             style: CustomTextStyle.black_16_w600_515150,
-              //           ),
-              //         ),
-              //         GestureDetector(
-              //           onTap: () {
-              //             Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
-              //           },
-              //           child: Padding(
-              //             padding: EdgeInsets.only(top: 20.h, left: 20.w),
-              //             child: Row(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 SvgPicture.asset(
-              //                   'assets/icons/password-check.svg',
-              //                   color: ColorStyles.yellowFFCA0D,
-              //                 ),
-              //                 SizedBox(width: 3.w),
-              //                 Padding(
-              //                   padding: EdgeInsets.only(left: 5.w),
-              //                   child: Row(
-              //                     children: [
-              //                       Column(
-              //                         crossAxisAlignment: CrossAxisAlignment.start,
-              //                         children: [
-              //                           Text(
-              //                             'password'.tr(),
-              //                             style: CustomTextStyle.black_13_w400_171716,
-              //                           ),
-              //                           SizedBox(
-              //                             width: 235.w,
-              //                             child: Text(
-              //                               'change_account_password'.tr(),
-              //                               style: CustomTextStyle.grey_12_w400,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                       SizedBox(
-              //                         width: 15.w,
-              //                       ),
-              //                       Icon(
-              //                         Icons.arrow_forward_ios,
-              //                         color: ColorStyles.greyBDBDBD,
-              //                         size: 16.h,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         GestureDetector(
-              //           onTap: () {
-              //             Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
-              //           },
-              //           child: Padding(
-              //             padding: EdgeInsets.only(top: 20.h, left: 20.w),
-              //             child: Row(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 SvgPicture.asset(
-              //                   'assets/icons/finger-scan.svg',
-              //                   color: ColorStyles.yellowFFCA0D,
-              //                 ),
-              //                 SizedBox(width: 3.w),
-              //                 Padding(
-              //                   padding: EdgeInsets.only(left: 5.w),
-              //                   child: Row(
-              //                     children: [
-              //                       Column(
-              //                         crossAxisAlignment: CrossAxisAlignment.start,
-              //                         children: [
-              //                           Text(
-              //                             'passport_data'.tr(),
-              //                             style: CustomTextStyle.black_13_w400_171716,
-              //                           ),
-              //                           SizedBox(
-              //                             width: 235.w,
-              //                             child: Text(
-              //                               'change_your_personal_data'.tr(),
-              //                               style: CustomTextStyle.grey_12_w400,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                       SizedBox(
-              //                         width: 15.w,
-              //                       ),
-              //                       Icon(
-              //                         Icons.arrow_forward_ios,
-              //                         color: ColorStyles.greyBDBDBD,
-              //                         size: 16.h,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         GestureDetector(
-              //           onTap: () {
-              //             Navigator.of(context).pushNamed(AppRoute.editIdentityInfo);
-              //           },
-              //           child: Padding(
-              //             padding: EdgeInsets.only(top: 20.h, left: 20.w),
-              //             child: Row(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 SvgPicture.asset(
-              //                   'assets/icons/location1.svg',
-              //                   color: ColorStyles.yellowFFCA0D,
-              //                 ),
-              //                 SizedBox(width: 3.w),
-              //                 Padding(
-              //                   padding: EdgeInsets.only(left: 5.w),
-              //                   child: Row(
-              //                     children: [
-              //                       Column(
-              //                         crossAxisAlignment: CrossAxisAlignment.start,
-              //                         children: [
-              //                           Text(
-              //                             'region'.tr(),
-              //                             style: CustomTextStyle.black_13_w400_171716,
-              //                           ),
-              //                           SizedBox(
-              //                             width: 235.w,
-              //                             child: Text(
-              //                               'change_the_region'.tr(),
-              //                               style: CustomTextStyle.grey_12_w400,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                       SizedBox(
-              //                         width: 15.w,
-              //                       ),
-              //                       Icon(
-              //                         Icons.arrow_forward_ios,
-              //                         color: ColorStyles.greyBDBDBD,
-              //                         size: 16.h,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
+             
                       SizedBox(height: 16.h),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+       
               Row(
                 children: [
                   Container(
@@ -1373,35 +1167,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   ),
                                                 ),
                                               ),
-                                            // if (change)
-                                            //   GestureDetector(
-                                            //     onTap: () async {
-                                            //       user!.images!.removeAt(index);
-
-                                            //       BlocProvider.of<ProfileBloc>(context).setUser(user);
-
-                                            //       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                            //       setState(() {});
-                                            //     },
-                                            //     child: Align(
-                                            //       alignment: Alignment.topRight,
-                                            //       child: Container(
-                                            //         width: 20.w,
-                                            //         height: 20.h,
-                                            //         margin: EdgeInsets.only(right: 10.w),
-                                            //         decoration: const BoxDecoration(
-                                            //           color: Colors.white,
-                                            //           shape: BoxShape.circle,
-                                            //         ),
-                                            //         alignment: Alignment.center,
-                                            //         child: Icon(
-                                            //           Icons.close,
-                                            //           color: Colors.black,
-                                            //           size: 10.h,
-                                            //         ),
-                                            //       ),
-                                            //     ),
-                                            //   ),
+                                           
                                           ],
                                         ),
                                       ),
@@ -1471,7 +1237,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     ),
                     if (user?.images?.isNotEmpty ?? false)
                       SizedBox(
-                        width: 121.w,
+                        width: user!.rus!? 121.w : 100,
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(

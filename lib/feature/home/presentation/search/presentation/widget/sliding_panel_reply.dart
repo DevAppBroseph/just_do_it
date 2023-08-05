@@ -208,7 +208,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                             if (error == 'specify'.tr()) {
                               user?.copyWith(docInfo: docinfo, docType: mapDocumentType(typeDocumentController.text));
                               BlocProvider.of<ProfileBloc>(context).setUser(user);
-                              log(user.toString());
+                             
                               Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                               widget.panelController.animatePanelToPosition(0);
                             } else {

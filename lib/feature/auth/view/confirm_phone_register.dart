@@ -71,7 +71,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-            scoreDialog(context, '50', 'registrations');
+            scoreDialog(context, '50', 'registrations'.tr());
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 

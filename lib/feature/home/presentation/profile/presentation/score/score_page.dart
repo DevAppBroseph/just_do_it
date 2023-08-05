@@ -684,7 +684,7 @@ class _ScorePageState extends State<ScorePage> {
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         return itemScore(levels[index].image != null ? '${levels[index].image}' : '',
-                                            levels[index].name ?? '', index);
+                                            user!.rus! ? levels[index].name ?? '' : levels[index].engName ?? '', index);
                                       }),
                                   SizedBox(height: 18.h),
                                 ],
