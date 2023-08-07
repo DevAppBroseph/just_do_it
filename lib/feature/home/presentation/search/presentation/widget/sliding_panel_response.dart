@@ -81,14 +81,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
 
   @override
   Widget build(BuildContext context) {
-
+    log(proverka.toString());
     if (proverka == false) {
       focusNodeDiscription.unfocus();
       focusCoastMax.unfocus();
     }
     user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-  
+    log(bottomInsets.toString());
     return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
@@ -192,7 +192,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               descriptionTextController.clear();
                               context.read<TasksBloc>().add(UpdateTaskEvent());
                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                           
+                              setState(() {});
                             }
                           }
                         },
@@ -402,7 +402,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             maxLines: 3,
                             onTap: () {
                               proverka = true;
-                 
+                              log(bottomInsets.toString());
                               context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },

@@ -26,8 +26,10 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class EditTasks extends StatefulWidget {
+  bool customer;
   Task task;
   EditTasks({
+    required this.customer,
     super.key,
     required this.task,
   });
@@ -175,12 +177,12 @@ class _EditTasksState extends State<EditTasks> {
                 children: [
                   SizedBox(height: 10.h),
                   Text(
-                    'Выберите что загрузить',
+                    'choose_what_to_download'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                   ListTile(
                     title: Text(
-                      'Фото',
+                      'photo'.tr(),
                       style: CustomTextStyle.black_14_w400_292D32,
                     ),
                     onTap: () {
@@ -238,7 +240,7 @@ class _EditTasksState extends State<EditTasks> {
                       ),
                       SizedBox(width: 12.w),
                       Text(
-                        'Редактирование',
+                        'edity'.tr(),
                         style: CustomTextStyle.black_22_w700,
                       ),
                       Text(
@@ -259,6 +261,7 @@ class _EditTasksState extends State<EditTasks> {
                     },
                     children: [
                       Category(
+                        customer: widget.customer,
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
                         document: document,

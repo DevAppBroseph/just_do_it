@@ -358,7 +358,7 @@ class _CeateTasksState extends State<CeateTasks> {
                           }
 
                           setState(() {});
-                        },
+                        }, customer: widget.customer,
                       ),
                       DatePicker(
                         bottomInsets: bottomInsets,

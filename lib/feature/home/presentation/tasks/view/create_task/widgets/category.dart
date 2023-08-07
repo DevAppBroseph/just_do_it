@@ -18,6 +18,7 @@ class Category extends StatefulWidget {
   TextEditingController titleController;
   TextEditingController aboutController;
   Activities? selectCategory;
+  bool customer;
   Subcategory? selectSubCategory;
   double bottomInsets;
   Function onAttach;
@@ -33,6 +34,7 @@ class Category extends StatefulWidget {
     required this.selectSubCategory,
     required this.bottomInsets,
     required this.onAttach,
+    required this.customer,
     required this.document,
     required this.removefiles,
   });
@@ -368,7 +370,7 @@ class _CategoryState extends State<Category> {
                   openCategory = false;
                   setState(() {});
                 },
-                hintText: 'description_task'.tr(),
+                hintText: widget.customer? 'description_task'.tr(): 'description_offer'.tr(),
                 style: CustomTextStyle.black_14_w400_171716,
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,

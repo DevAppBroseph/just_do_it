@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     height: 96.h,
                     child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
-              
+                      log('$current');
                       if (current is UpdateMenuState) {
                         return true;
                       }

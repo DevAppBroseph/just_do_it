@@ -105,7 +105,7 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
-    log('${widget.selectTask.isAnswered == null} d  ddddd)');
+
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
@@ -207,7 +207,7 @@ class _TaskViewState extends State<TaskView> {
                           await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                return EditTasks(task: widget.selectTask);
+                                return EditTasks(task: widget.selectTask, customer: widget.selectTask.asCustomer!);
                               },
                             ),
                           );
@@ -589,7 +589,7 @@ class _TaskViewState extends State<TaskView> {
                                 style: CustomTextStyle.grey_12_w400,
                               ),
                               SizedBox(
-                                width: 260,
+                                width: 260.w,
                                 child: Text(
                                   '${widget.selectTask.owner?.firstname ?? '-'} ${widget.selectTask.owner?.lastname ?? '-'}',
                                   style: CustomTextStyle.black_17_w600_171716,
@@ -701,7 +701,7 @@ class _TaskViewState extends State<TaskView> {
                           BlocProvider.of<resf.ResponseBlocFromFav>(context)
                               .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
                         } else {
-                          log(widget.selectTask.toString());
+                      
                           BlocProvider.of<res.ResponseBloc>(context)
                               .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
                         }
@@ -769,17 +769,10 @@ class _TaskViewState extends State<TaskView> {
                                         children: [
                                           SizedBox(
                                             width: 300.w,
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 190.w,
-                                                  child: Text(
-                                                    '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
-                                                    style: CustomTextStyle.black_15_w600_171716,
-                                                    softWrap: true,
-                                                  ),
-                                                ),
-                                              ],
+                                            child: Text(
+                                              '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
+                                              style: CustomTextStyle.black_15_w600_171716,
+                                              softWrap: true,
                                             ),
                                           ),
                                           SizedBox(height: 6.h),
@@ -1434,17 +1427,10 @@ class _TaskViewState extends State<TaskView> {
                                                           children: [
                                                             SizedBox(
                                                               width: 300.w,
-                                                              child: Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 190.w,
-                                                                    child: Text(
-                                                                      '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                      style: CustomTextStyle.black_15_w600_171716,
-                                                                      softWrap: true,
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                                              child: Text(
+                                                                '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                style: CustomTextStyle.black_15_w600_171716,
+                                                                softWrap: true,
                                                               ),
                                                             ),
                                                             SizedBox(height: 6.h),
@@ -1639,17 +1625,10 @@ class _TaskViewState extends State<TaskView> {
                                                             children: [
                                                               SizedBox(
                                                                 width: 300.w,
-                                                                child: Row(
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      width: 190.w,
-                                                                      child: Text(
-                                                                        '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
-                                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                                        softWrap: true,
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                child: Text(
+                                                                  '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                  softWrap: true,
                                                                 ),
                                                               ),
                                                               SizedBox(height: 6.h),
@@ -1843,17 +1822,10 @@ class _TaskViewState extends State<TaskView> {
                                                             children: [
                                                               SizedBox(
                                                                 width: 300.w,
-                                                                child: Row(
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      width: 190.w,
-                                                                      child: Text(
-                                                                        '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                                        softWrap: true,
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                child: Text(
+                                                                  '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                  softWrap: true,
                                                                 ),
                                                               ),
                                                               SizedBox(height: 6.h),
@@ -2048,17 +2020,10 @@ class _TaskViewState extends State<TaskView> {
                                                         children: [
                                                           SizedBox(
                                                             width: 300.w,
-                                                            child: Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: 190.w,
-                                                                  child: Text(
-                                                                    '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                    style: CustomTextStyle.black_15_w600_171716,
-                                                                    softWrap: true,
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                            child: Text(
+                                                              '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                              softWrap: true,
                                                             ),
                                                           ),
                                                           SizedBox(height: 6.h),
