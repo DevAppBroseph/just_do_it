@@ -55,92 +55,107 @@ class _NotificationPageState extends State<NotificationPage> {
             }
             log('ddddd$proverka'.toString());
             return SafeArea(
-              child: Column(
+              child: Stack(
                 children: [
-                  SizedBox(height: 60.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: Row(
-                      children: [
-                        CustomIconButton(
-                          onBackPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: SvgImg.arrowRight,
-                        ),
-                        const Spacer(),
-                        Text(
-                          'notifications'.tr(),
-                          style: CustomTextStyle.black_22_w700,
-                        ),
-                        const Spacer(),
-                        SizedBox(width: 12.w)
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: ListView.builder(
-                        itemCount: notifications?.length,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) {
-                          return ScaleButton(
-                            bound: 0.01,
-                            duration: const Duration(milliseconds: 200),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 18.h),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.format_overline_sharp),
-                                    SizedBox(width: 32.h),
-                                    SizedBox(
-                                      width: 190.w,
-                                      child: Text(
-                                        notifications?[index].text ?? '-',
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: CustomTextStyle.black_14_w400_171716,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      _textData(
-                                          notifications?[index].dateTime?.toUtc().toString().substring(0, 10) ?? '-'),
-                                      style: CustomTextStyle.grey_14_w400,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 21.h),
-                                Container(
-                                  height: 1.h,
-                                  color: ColorStyles.greyF7F7F8,
-                                )
-                              ],
+                  Column(
+                    children: [
+                      SizedBox(height: 60.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Row(
+                          children: [
+                            CustomIconButton(
+                              onBackPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: SvgImg.arrowRight,
                             ),
-                          );
-                        },
+                            const Spacer(),
+                            Text(
+                              'notifications'.tr(),
+                              style: CustomTextStyle.black_22_w700,
+                            ),
+                            const Spacer(),
+                            SizedBox(width: 12.w)
+                          ],
+                        ),
                       ),
-                    );
-                  }),
-                  const Spacer(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: CustomButton(
-                      onTap: () {
-                        BlocProvider.of<NotificationsBloc>(context).add(DeleteNotificationsEvent(access));
-                      },
-                      btnColor: proverka ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
-                      textLabel: Text(
-                        'clear'.tr(),
-                        style: CustomTextStyle.black_16_w600_515150,
+                      SizedBox(height: 20.h),
+                      BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24.w),
+                          child: SizedBox(
+                            height: 50.h * notifications!.length,
+                            child: Padding(
+                              padding:  EdgeInsets.only(bottom: 32.h),
+                              child: ListView.builder(
+                                itemCount: notifications?.length,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return ScaleButton(
+                                    bound: 0.01,
+                                    duration: const Duration(milliseconds: 200),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 18.h),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.format_overline_sharp),
+                                            SizedBox(width: 32.h),
+                                            SizedBox(
+                                              width: 190.w,
+                                              child: Text(
+                                                notifications?[index].text ?? '-',
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: CustomTextStyle.black_14_w400_171716,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              _textData(
+                                                  notifications?[index].dateTime?.toUtc().toString().substring(0, 10) ??
+                                                      '-'),
+                                              style: CustomTextStyle.grey_14_w400,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 21.h),
+                                        Container(
+                                          height: 1.h,
+                                          color: ColorStyles.greyF7F7F8,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 32.h),
+                        child: CustomButton(
+                          onTap: () {
+                            BlocProvider.of<NotificationsBloc>(context).add(DeleteNotificationsEvent(access));
+                          },
+                          btnColor: proverka ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
+                          textLabel: Text(
+                            'clear'.tr(),
+                            style: CustomTextStyle.black_16_w600_515150,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 52.h),
+                  )
                 ],
               ),
             );

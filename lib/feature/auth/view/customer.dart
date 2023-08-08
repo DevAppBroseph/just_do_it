@@ -262,10 +262,7 @@ class _CustomerState extends State<Customer> {
                     error += '\n${'passwords_dont_match'.tr()}';
                     errorsFlag = true;
                   }
-                  if (numberDocController.text.length < 5) {
-                    error += '\n- ${'number_document'.tr()}';
-                      errorsFlag = true;
-                  }
+                  
                   if (whoGiveDocController.text.length < 3) {
                     if (user.docType == 'Resident_ID') {
                       error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
@@ -274,6 +271,10 @@ class _CustomerState extends State<Customer> {
                   }
 
                   if (additionalInfo) {
+                    if (numberDocController.text.length < 5) {
+                    error += '\n- ${'number_document'.tr()}';
+                      errorsFlag = true;
+                  }
                     if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
                       error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
@@ -1047,7 +1048,7 @@ class _CustomerState extends State<Customer> {
         ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
             ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
+            : DateTime(DateTime.now().year , DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null

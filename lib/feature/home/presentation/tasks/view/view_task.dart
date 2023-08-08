@@ -105,7 +105,6 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
-
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
@@ -701,7 +700,6 @@ class _TaskViewState extends State<TaskView> {
                           BlocProvider.of<resf.ResponseBlocFromFav>(context)
                               .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
                         } else {
-                      
                           BlocProvider.of<res.ResponseBloc>(context)
                               .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
                         }
@@ -724,7 +722,11 @@ class _TaskViewState extends State<TaskView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 90.h,
+                      height: widget.selectTask.isAnswered!.owner!.firstname!.length +
+                                  widget.selectTask.isAnswered!.owner!.lastname!.length <
+                              30
+                          ? 90.h
+                          : 103.h,
                       child: Padding(
                         padding: EdgeInsets.only(top: 15.h),
                         child: ScaleButton(
@@ -1381,7 +1383,11 @@ class _TaskViewState extends State<TaskView> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: 90.h,
+                                        height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                    widget.selectTask.answers[index].owner!.lastname!.length <
+                                                30
+                                            ? 90.h
+                                            : 103.h,
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 15.h),
                                           child: ScaleButton(
@@ -1580,7 +1586,11 @@ class _TaskViewState extends State<TaskView> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
-                                          height: 90.h,
+                                          height: widget.selectTask.isAnswered!.owner!.firstname!.length +
+                                                      widget.selectTask.isAnswered!.owner!.lastname!.length <
+                                                  30
+                                              ? 90.h
+                                              : 103.h,
                                           child: Padding(
                                             padding: EdgeInsets.only(top: 15.h),
                                             child: ScaleButton(
@@ -1776,7 +1786,11 @@ class _TaskViewState extends State<TaskView> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
-                                          height: 90.h,
+                                          height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                      widget.selectTask.answers[index].owner!.lastname!.length <
+                                                  30
+                                              ? 90.h
+                                              : 103.h,
                                           child: Padding(
                                             padding: EdgeInsets.only(top: 15.h),
                                             child: ScaleButton(
@@ -1974,7 +1988,11 @@ class _TaskViewState extends State<TaskView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      height: 90.h,
+                                      height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                  widget.selectTask.answers[index].owner!.lastname!.length <
+                                              30
+                                          ? 90.h
+                                          : 103.h,
                                       child: Padding(
                                         padding: EdgeInsets.only(top: 15.h),
                                         child: ScaleButton(

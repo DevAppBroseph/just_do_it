@@ -70,7 +70,7 @@ class _ContractorState extends State<Contractor> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),

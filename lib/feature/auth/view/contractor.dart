@@ -360,7 +360,7 @@ class _ContractorState extends State<Contractor> {
                         error += '\n- ${'validity_period_of_the_document'.tr()}';
                         errorsFlag = true;
                       } else if (user.docType != 'Resident_ID') {
-                        error += '\n- ${'who_issued_the_document'}';
+                        error += '\n- ${'who_issued_the_document'.tr()}';
                         errorsFlag = true;
                       }
                     }
@@ -1448,7 +1448,7 @@ class _ContractorState extends State<Contractor> {
         : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
             ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
             : DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day);
