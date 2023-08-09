@@ -103,6 +103,7 @@ class Repository {
     }
     return tasks;
   }
+
   Future<bool> deleteNotifications(String? access) async {
     final res = await dio.delete(
       '$server/chat/notifications',
@@ -121,7 +122,6 @@ class Repository {
   Future<List<NotificationsOnDevice>> getMyNotifications(String? access) async {
     final response = await dio.get(
       '$server/chat/notifications',
-      
       options: Options(
         validateStatus: ((status) => status! >= 200),
         headers: {'Authorization': 'Bearer $access'},
@@ -233,9 +233,6 @@ class Repository {
   }
 
   Future<bool> addReviewsDetail(String? access, int? receiver, String? message, double? mark) async {
-    log(receiver.toString());
-    log(mark.toString());
-    log(message.toString());
     final response = await dio.post(
       '$server/ranking/',
       data: {
@@ -249,6 +246,26 @@ class Repository {
       ),
     );
 
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> sendMessageToSupport(String? access, String? email, String? text, String? title) async {
+    final response = await dio.post(
+      '$server/support/',
+      data: {
+        "email": email,
+        "text": text,
+        "title": title,
+      },
+      options: Options(
+        validateStatus: ((status) => status! >= 200),
+        headers: {'Authorization': 'Bearer $access'},
+      ),
+    );
+    log(response.statusMessage.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }

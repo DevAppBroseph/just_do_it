@@ -185,7 +185,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                   height: 30.h,
                                 ),
                                 Text(
-                                  '${'accrued'.tr()} $score ${'points'.tr().toLowerCase()}',
+                                  '$score ${'points'.tr().toLowerCase()}' 'accrued'.tr(),
                                   style: CustomTextStyle.black_20_w700,
                                 ),
                                 SizedBox(

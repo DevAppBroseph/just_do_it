@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ContactUs extends StatefulWidget {
@@ -111,7 +115,35 @@ class _ContactUsState extends State<ContactUs> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: CustomButton(
-                    onTap: () {},
+                    onTap: () {
+                      String error = 'specify'.tr();
+                      bool errorsFlag = false;
+                      bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(controllerEmail.text);
+
+                      if (!emailValid && controllerEmail.text.isNotEmpty) {
+                        error += '\n- ${'correct_email'.tr()}';
+                        errorsFlag = true;
+                      }
+                      if (controllerTheme.text.isEmpty) {
+                        error += '\n- ${'subject_appeal_second'.tr().toLowerCase()}';
+                        errorsFlag = true;
+                      }
+                      if (controllerMessage.text.isEmpty) {
+                        error += '\n- ${'description'.tr().toLowerCase()}';
+                        errorsFlag = true;
+                      }
+                      if (errorsFlag == true) {
+                        CustomAlert().showMessage(error, context);
+                      } else {
+                        Repository().sendMessageToSupport(BlocProvider.of<ProfileBloc>(context).access,
+                            controllerEmail.text, controllerMessage.text, controllerTheme.text);
+                        CustomAlert().showMessage('the_message_has_been_sent'.tr(), context);
+                        controllerTheme.text = '';
+                        controllerEmail.text = '';
+                        controllerMessage.text = '';
+                      }
+                    },
                     btnColor: ColorStyles.yellowFFD70B,
                     textLabel: Text(
                       'send'.tr(),
@@ -128,16 +160,14 @@ class _ContactUsState extends State<ContactUs> {
                   const Spacer(),
                   AnimatedPadding(
                     duration: const Duration(milliseconds: 0),
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Row(
                       children: [
                         Expanded(
                           child: Container(
                             color: Colors.grey[200],
                             child: MediaQuery(
-                              data: MediaQuery.of(context)
-                                  .copyWith(textScaleFactor: 1.0),
+                              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Padding(
