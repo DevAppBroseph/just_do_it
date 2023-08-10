@@ -82,54 +82,60 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                       SizedBox(height: 20.h),
                       BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          child: SizedBox(
-                            height: 50.h * notifications!.length,
-                            child: Padding(
-                              padding:  EdgeInsets.only(bottom: 32.h),
-                              child: ListView.builder(
-                                itemCount: notifications?.length,
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return ScaleButton(
-                                    bound: 0.01,
-                                    duration: const Duration(milliseconds: 200),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 18.h),
-                                        Row(
-                                          children: [
-                                            const Icon(Icons.format_overline_sharp),
-                                            SizedBox(width: 32.h),
-                                            SizedBox(
-                                              width: 190.w,
-                                              child: Text(
-                                                notifications?[index].text ?? '-',
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: CustomTextStyle.black_14_w400_171716,
+                        return Scrollbar(
+                          thumbVisibility: true,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: SizedBox(
+                              height: 32.h * notifications!.length,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 32.h),
+                                child: ListView.builder(
+                                  itemCount: notifications?.length,
+                                  shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return ScaleButton(
+                                      bound: 0.01,
+                                      duration: const Duration(milliseconds: 200),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 18.h),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.format_overline_sharp),
+                                              SizedBox(width: 32.h),
+                                              SizedBox(
+                                                width: 190.w,
+                                                child: Text(
+                                                  notifications?[index].text ?? '-',
+                                                  maxLines: 3,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: CustomTextStyle.black_14_w400_171716,
+                                                ),
                                               ),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              _textData(
-                                                  notifications?[index].dateTime?.toUtc().toString().substring(0, 10) ??
-                                                      '-'),
-                                              style: CustomTextStyle.grey_14_w400,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 21.h),
-                                        Container(
-                                          height: 1.h,
-                                          color: ColorStyles.greyF7F7F8,
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
+                                              const Spacer(),
+                                              Text(
+                                                _textData(notifications?[index]
+                                                        .dateTime
+                                                        ?.toUtc()
+                                                        .toString()
+                                                        .substring(0, 10) ??
+                                                    '-'),
+                                                style: CustomTextStyle.grey_14_w400,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 21.h),
+                                          Container(
+                                            height: 1.h,
+                                            color: ColorStyles.greyF7F7F8,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),

@@ -8,6 +8,7 @@ import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -147,6 +148,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
       barrierDismissible: false,
       context: context,
       builder: (context) {
+         UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
@@ -184,8 +186,14 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                 SizedBox(
                                   height: 30.h,
                                 ),
+                                if(user!.rus!)
                                 Text(
-                                  '$score ${'points'.tr().toLowerCase()}' 'accrued'.tr(),
+                                  '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}' ,
+                                  style: CustomTextStyle.black_20_w700,
+                                ),
+                                if(!user.rus!)
+                                Text(
+                                  '$score points earned' ,
                                   style: CustomTextStyle.black_20_w700,
                                 ),
                                 SizedBox(

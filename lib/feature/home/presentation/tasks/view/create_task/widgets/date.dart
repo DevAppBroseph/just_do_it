@@ -790,7 +790,7 @@ class _DatePickerState extends State<DatePicker> {
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
             child: Scrollbar(
-              thumbVisibility: true,
+              thumbVisibility: true, 
               controller: countyController,
               child: ListView(
                 shrinkWrap: true,

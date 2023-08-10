@@ -334,7 +334,7 @@ class _CategoryState extends State<Category> {
                   setState(() {});
                 },
                 style: CustomTextStyle.black_14_w400_171716,
-                hintText: 'task_name'.tr(),
+                hintText:  widget.customer? 'task_name'.tr() : 'offer_name'.tr(),
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
