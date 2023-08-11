@@ -14,13 +14,13 @@ Widget itemFavouriteUser(FavoriteCustomers user, Function(FavoriteCustomers) onS
         decoration: BoxDecoration(
           color: ColorStyles.whiteFFFFFF,
           borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [
-            BoxShadow(
-              color: ColorStyles.shadowFC6554,
-              offset: const Offset(0, 4),
-              blurRadius: 45.r,
-            )
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: ColorStyles.shadowFC6554,
+          //     offset: const Offset(0, 4),
+          //     blurRadius: 45.r,
+          //   )
+          // ],
         ),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
         child: Row(

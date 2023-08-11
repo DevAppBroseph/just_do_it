@@ -20,13 +20,13 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
         decoration: BoxDecoration(
           color: ColorStyles.whiteFFFFFF,
           borderRadius: BorderRadius.circular(10.r),
-          boxShadow: [
-            BoxShadow(
-              color: ColorStyles.shadowFC6554,
-              offset: const Offset(0, 8),
-              blurRadius: 5.r,
-            )
-          ],
+          // boxShadow: [
+            // BoxShadow(
+            //   color: ColorStyles.shadowFC6554,
+            //   offset: const Offset(0, 8),
+            //   blurRadius: 5.r,
+            // )
+          // ],
         ),
         height: 130.h,
         width: 327.h,
