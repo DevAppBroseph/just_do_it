@@ -432,6 +432,13 @@ class CustomTextStyle {
     color: ColorStyles.greyDADADA,
     fontFamily: 'SFPro',
   );
+    static TextStyle grey_16_w800 = TextStyle(
+    fontSize: 17.sp,
+    fontWeight: FontWeight.w800,
+    color: ColorStyles.greyDADADA,
+    fontFamily: 'SFPro',
+  );
+
 
   static TextStyle grey_14_w400_ellipsis = TextStyle(
     overflow: TextOverflow.ellipsis,

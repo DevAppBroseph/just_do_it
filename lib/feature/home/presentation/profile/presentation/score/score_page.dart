@@ -672,7 +672,9 @@ class _ScorePageState extends State<ScorePage> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
                                     child: Text(
-                                     user!.rus! ? 'Наша система грейдов создана для активных пользователей. Создавайте новые заказы или привлекайте друзей, а мы начислим вам баллы.\n\nБаллы можно использовать для оплаты сервисов и заказов.  Чем больше баллов вы потратите, тем выше будет ваш грейд, тем больше доверия со стороны заказчиков и полезных бонусов и привилегий от приложения.\n\nИтак, будьте активными, создавайте новые заказы, привлекайте друзей и зарабатывайте баллы.\n\nБолее подробно о том как заработать баллы - смотрите в разделе «вопрос-ответ»' : 'Our grading system is designed for active users. Create new orders or refer friends, and we will reward you with points.\n\nThese points can be used to pay for services and orders. The more points you spend, the higher your grade will be, leading to increased trust from customers and valuable bonuses and privileges from the application.\n\nSo, be active, create new orders, refer friends, and earn points.\n\nFor more details on how to earn points, please refer to the "FAQ" section.',
+                                      user!.rus!
+                                          ? 'Наша система грейдов создана для активных пользователей. Создавайте новые заказы или привлекайте друзей, а мы начислим вам баллы.\n\nБаллы можно использовать для оплаты сервисов и заказов.  Чем больше баллов вы потратите, тем выше будет ваш грейд, тем больше доверия со стороны заказчиков и полезных бонусов и привилегий от приложения.\n\nИтак, будьте активными, создавайте новые заказы, привлекайте друзей и зарабатывайте баллы.\n\nБолее подробно о том как заработать баллы - смотрите в разделе «вопрос-ответ»'
+                                          : 'Our grading system is designed for active users. Create new orders or refer friends, and we will reward you with points.\n\nThese points can be used to pay for services and orders. The more points you spend, the higher your grade will be, leading to increased trust from customers and valuable bonuses and privileges from the application.\n\nSo, be active, create new orders, refer friends, and earn points.\n\nFor more details on how to earn points, please refer to the "FAQ" section.',
                                       style: CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
@@ -684,7 +686,7 @@ class _ScorePageState extends State<ScorePage> {
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         return itemScore(levels[index].image != null ? '${levels[index].image}' : '',
-                                            user!.rus! ? levels[index].name ?? '' : levels[index].engName ?? '', index);
+                                            user!.rus! ? levels[index].name ?? '' : levels[index].engName ?? '', user!.rus! ? levels[index].desc ?? '' : levels[index].descEng ?? '');
                                       }),
                                   SizedBox(height: 18.h),
                                 ],
@@ -835,7 +837,7 @@ class _ScorePageState extends State<ScorePage> {
     }
   }
 
-  Widget itemScore(String icon, String title, int index) {
+  Widget itemScore(String icon, String title, String desc) {
     return Container(
       height: 80.h,
       width: 372.w,
@@ -871,163 +873,10 @@ class _ScorePageState extends State<ScorePage> {
                 style: CustomTextStyle.purple_14_w600,
               ),
               SizedBox(height: 3.h),
-              if (index == 0)
                 SizedBox(
                   width: 230.w,
                   child: Text(
-                    '',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 1)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '3 приветственных чат контактов в день в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 2)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '3 приветственных оффера или отклика в день в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 3)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '1 выделение цветом объявления или заказа в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 4)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '1 закреп в топе в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 5)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '1 рассылка задания или объявления в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 6)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Пакет 20 чатов в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 7)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Подписка на 24 часа в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 8)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '2 закрепа в топе в подарок + 1 выделение цветом',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 9)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '2 рассылки, 2 закрепа, 2 выделение цветом в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 10)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '2 подписки по 24 часа',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 11)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Подписка на неделю в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 12)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Выбор любой платной услуги в подарок (за исключением годовой подписки)',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 13)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Безлимитное количество чатов',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 14)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Безлимитное количество чатов и контактных данных',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 15)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '2 подписки по неделе в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 16)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    '3 подписки по неделе в подарок',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 17)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Подписка на месяц',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 18)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Подписка на месяц',
-                    style: CustomTextStyle.black_12_w400_515150,
-                  ),
-                ),
-              if (index == 19)
-                SizedBox(
-                  width: 230.w,
-                  child: Text(
-                    'Подписка на год и заслуженный статус',
+                    desc,
                     style: CustomTextStyle.black_12_w400_515150,
                   ),
                 ),

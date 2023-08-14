@@ -125,7 +125,6 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CustomTextField(
-                            readOnly: true,
                             hintText: 'phone_number'.tr(),
                             height: 50.h,
                             textInputType: TextInputType.phone,
@@ -134,16 +133,20 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             formatters: [
                               MaskTextInputFormatter(
                                 initialText: '+ ',
-                                mask: '+############',
+                                mask: '+###############',
                                 filter: {"#": RegExp(r'[0-9]')},
                               ),
-                              LengthLimitingTextInputFormatter(12),
+                              LengthLimitingTextInputFormatter(15),
                             ],
+                            onTap: () {
+                              if (phoneController.text.isEmpty) phoneController.text = '+';
+                            },
                             contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(phoneNumber: value);
                             },
                             onFieldSubmitted: (value) {
+                              if (phoneController.text == '+') phoneController.text = '';
                               requestNextEmptyFocusStage1();
                             },
                           ),
@@ -226,7 +229,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             error += '\n- email';
                             errorsFlag = true;
                           }
-
+                          if (phoneController.text.length < 12)  {
+                            error += '\n- ${'incorrect_phone_number'.tr()}';
+                            errorsFlag = true;
+                          }
                           String email = emailController.text;
 
                           bool emailValid =

@@ -35,6 +35,7 @@ class UserRegModel {
   Uint8List? cv;
   bool? hasNotifications;
   String? cvType;
+  bool? isBanned;
   bool? rus;
   List<dynamic>? groups;
   List<Activities>? activities;
@@ -83,6 +84,7 @@ class UserRegModel {
     this.region,
     this.country,
     this.photoLink,
+    this.isBanned,
     this.cvLink,
     this.rus,
     this.photo,
@@ -137,6 +139,7 @@ class UserRegModel {
     List<ArrayImages>? images,
     Uint8List? cv,
     String? cvType,
+    bool? isBanned,
     List<Task>? ordersCompleteAsExecutor,
     List<Task>? ordersInProgressAsCustomer,
     List<Task>? ordersCompleteAsCustomer,
@@ -156,6 +159,7 @@ class UserRegModel {
     List<ActivitiesInfo>? activitiesInfo,
   }) {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
+    this.isBanned = isBanned ?? this.isBanned;
     this.rus = rus ?? this.rus;
     this.hasNotifications = hasNotifications ?? this.hasNotifications;
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
@@ -203,6 +207,7 @@ class UserRegModel {
 
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
+    bool isBanned = data['is_banned'];
     int? countOrdersCreateAsCustomer = data['count_orders_create_as_customer'];
     int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
     int? countOrdersCompleteAsExecutor = data['count_orders_complete_as_executor'];
@@ -323,6 +328,7 @@ class UserRegModel {
       lastname: lastname,
       groups: groups,
       rus: rus,
+      isBanned: isBanned,
       photoLink: photoLink,
       sex: sex,
       countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,

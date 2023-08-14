@@ -217,7 +217,7 @@ class _CustomerState extends State<Customer> {
                     CustomAlert().showMessage('enter_the_correct_email_address'.tr(), context);
                   } else if (emailController.text.split('@').last.split('.').last.length < 2) {
                     CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
-                  } else if (phoneController.text.length < 12) {
+                  } else if (phoneController.text.length < 15) {
                     CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}', context);
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
@@ -471,10 +471,13 @@ class _CustomerState extends State<Customer> {
           textEditingController: phoneController,
           formatters: [
             MaskTextInputFormatter(
-              mask: '+############',
+              mask: '+###############',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
+              
             ),
+                              LengthLimitingTextInputFormatter(15),
+
           ],
           contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {

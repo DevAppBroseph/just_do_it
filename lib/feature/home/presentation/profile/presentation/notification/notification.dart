@@ -108,7 +108,9 @@ class _NotificationPageState extends State<NotificationPage> {
                                               SizedBox(
                                                 width: 190.w,
                                                 child: Text(
-                                                  notifications?[index].text ?? '-',
+                                                  user!.rus!
+                                                      ? notifications![index].text ?? '-'
+                                                      : notifications?[index].engMessage ?? '-',
                                                   maxLines: 3,
                                                   overflow: TextOverflow.ellipsis,
                                                   style: CustomTextStyle.black_14_w400_171716,

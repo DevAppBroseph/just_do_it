@@ -19,6 +19,7 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/language.dart';

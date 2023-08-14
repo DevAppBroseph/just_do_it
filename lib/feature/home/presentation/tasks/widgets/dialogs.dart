@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -230,7 +232,103 @@ void scoreDialog(BuildContext context, String score, String action) =>
         );
       },
     );
-
+void banDialog(BuildContext context, String action) =>
+    showDialog(
+      useSafeArea: false,
+      barrierColor: Colors.black.withOpacity(0.1),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            alignment: Alignment.center,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: GestureDetector(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 327.w,
+                    height: 393.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
+                      child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                 SvgPicture.asset(
+                                  'assets/icons/alert_circle.svg',
+                                  color: ColorStyles.yellowFFCA0D,
+                                ),
+                                SizedBox(
+                                  height: 30.h,
+                                ),
+                                Text(
+                                  'you_can_t'.tr(),
+                                  style: CustomTextStyle.black_20_w700,
+                                ),
+                                 Text(
+                                  action,
+                                  style: CustomTextStyle.black_20_w700,
+                                ),
+                                
+                              SizedBox(
+                                  height: 18.h,
+                                ),
+                                Text(
+                                  'your_profile_is_blocked'.tr() ,
+                                  style: CustomTextStyle.grey_14_w400,
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Text(
+                                  'contact_the_administrator_to_unblock'.tr(),
+                                  style: CustomTextStyle.grey_13_w400,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomButton(
+                            onTap: ()  {
+                               Navigator.of(context).pop();
+                                Navigator.of(context).pushNamed(AppRoute.contactus);
+                                 
+                            },
+                            btnColor: ColorStyles.yellowFFCA0D,
+                            textLabel: Text(
+                              'contact'.tr(),
+                              style: CustomTextStyle.black_14_w500_171716,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
 void taskMoreDialogForProfile(
   BuildContext context,
   Offset offset,

@@ -290,7 +290,7 @@ class _ContractorState extends State<Contractor> {
 
                   if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
-                  } else if (phoneController.text.length < 12) {
+                  } else if (phoneController.text.length < 15) {
                     CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}.', context);
                   } else if (emailController.text.split('@').last.split('.').last.length < 2) {
                     CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
@@ -366,12 +366,12 @@ class _ContractorState extends State<Contractor> {
                     }
                     if (numberDocController.text.length < 5) {
                       error += '\n- ${'number_document'.tr()}';
-                        errorsFlag = true;
+                      errorsFlag = true;
                     }
                     if (whoGiveDocController.text.length < 3) {
                       if (user.docType == 'Resident_ID') {
                         error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
-                          errorsFlag = true;
+                        errorsFlag = true;
                       }
                     }
                     if (dateDocController.text.isEmpty) {
@@ -532,10 +532,11 @@ class _ContractorState extends State<Contractor> {
           hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             MaskTextInputFormatter(
-              mask: '+############',
+              mask: '+###############',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
+            LengthLimitingTextInputFormatter(15),
           ],
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
@@ -1448,7 +1449,7 @@ class _ContractorState extends State<Contractor> {
         : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year+15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
             ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
             : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);

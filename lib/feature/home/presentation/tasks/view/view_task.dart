@@ -687,21 +687,30 @@ class _TaskViewState extends State<TaskView> {
                             builder: (context) => const AuthPage(),
                           ));
                     } else {
-                      if (user?.docInfo == '' || user?.docInfo == null) {
-                        if (widget.fromFav) {
-                          BlocProvider.of<repf.ReplyFromFavBloc>(context)
-                              .add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
-                        } else {
-                          BlocProvider.of<rep.ReplyBloc>(context)
-                              .add(rep.OpenSlidingPanelEvent(selectTask: selectTask));
+                      if (user!.isBanned!) {
+                        if(widget.selectTask.asCustomer!){
+                          banDialog(context, 'respond_to_the_task'.tr());
+                        }else{
+                          banDialog(context, 'respond_to_the_offer'.tr());
+
                         }
                       } else {
-                        if (widget.fromFav) {
-                          BlocProvider.of<resf.ResponseBlocFromFav>(context)
-                              .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
+                        if (user?.docInfo == '' || user?.docInfo == null) {
+                          if (widget.fromFav) {
+                            BlocProvider.of<repf.ReplyFromFavBloc>(context)
+                                .add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
+                          } else {
+                            BlocProvider.of<rep.ReplyBloc>(context)
+                                .add(rep.OpenSlidingPanelEvent(selectTask: selectTask));
+                          }
                         } else {
-                          BlocProvider.of<res.ResponseBloc>(context)
-                              .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
+                          if (widget.fromFav) {
+                            BlocProvider.of<resf.ResponseBlocFromFav>(context)
+                                .add(resf.OpenSlidingPanelFromFavEvent(selectTask: selectTask));
+                          } else {
+                            BlocProvider.of<res.ResponseBloc>(context)
+                                .add(res.OpenSlidingPanelEvent(selectTask: selectTask));
+                          }
                         }
                       }
                     }

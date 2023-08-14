@@ -55,6 +55,7 @@ class Owner {
   String? cv;
   int? isLiked;
   double? ranking;
+  bool? isBanned;
   bool? isPassportExist;
   int? countOrdersCreate;
   String? activity;
@@ -72,6 +73,7 @@ class Owner {
     required this.photo,
     this.balance,
     this.cv,
+    this.isBanned,
     this.ranking,
     this.activities,
     this.isPassportExist,
@@ -116,6 +118,7 @@ class Owner {
       balance: json["balance"],
       ranking: json["ranking"],
       isLiked: json["is_liked"],
+      isBanned: json["is_banned"],
       isPassportExist: json["is_passport_exist"],
       countOrdersCreate: json["count_orders_create"],
       activity: json["activity"],
