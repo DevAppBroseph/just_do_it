@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task.dart';
@@ -27,18 +28,16 @@ class SlidingPanelResponseFromFav extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponseFromFav(this.panelController,
-      {super.key, required this.selectTask});
+  const SlidingPanelResponseFromFav(this.panelController, {super.key, required this.selectTask});
 
   @override
-  State<SlidingPanelResponseFromFav> createState() =>
-      _SlidingPanelResponseFromFavState();
+  State<SlidingPanelResponseFromFav> createState() => _SlidingPanelResponseFromFavState();
 }
 
-class _SlidingPanelResponseFromFavState
-    extends State<SlidingPanelResponseFromFav> {
+class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFav> {
   double heightPanel = 637.h;
   bool slide = false;
+  bool isGraded = false;
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController coastController = TextEditingController();
   TypeFilter typeFilter = TypeFilter.main;
@@ -83,8 +82,7 @@ class _SlidingPanelResponseFromFavState
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
 
-    return BlocBuilder<ResponseBlocFromFav, ResponseState>(
-        buildWhen: (previous, current) {
+    return BlocBuilder<ResponseBlocFromFav, ResponseState>(buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -100,8 +98,7 @@ class _SlidingPanelResponseFromFavState
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
-            BlocProvider.of<ResponseBlocFromFav>(context)
-                .add(HideSlidingPanelEvent());
+            BlocProvider.of<ResponseBlocFromFav>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
             focusNodeDiscription.unfocus();
@@ -154,54 +151,59 @@ class _SlidingPanelResponseFromFavState
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: CustomButton(
                         onTap: () async {
-                          final access = await Storage().getAccessToken();
-                          if (widget.selectTask != null) {
-                            String error = 'specify'.tr();
-                            bool errorsFlag = false;
-                            if (coastController.text.isEmpty) {
-                              error += '\n- ${'amount'.tr()}';
-                              errorsFlag = true;
-                            }
-                            if (descriptionTextController.text.isEmpty) {
-                              error += '\n- ${'description'.tr().toLowerCase()}';
-                              errorsFlag = true;
-                            }
-                            if (errorsFlag == true) {
-                              CustomAlert().showMessage(error, context);
+                          if (user!.isBanned!) {
+                            if (widget.selectTask!.asCustomer!) {
+                              banDialog(context, 'responses_to_tasks_is'.tr());
                             } else {
-                              widget.panelController.animatePanelToPosition(0);
-                              if (widget.selectTask!.asCustomer!) {
-                                Repository().createAnswer(
-                                    widget.selectTask!.id!,
-                                    access,
-                                    int.parse(coastController.text
-                                        .replaceAll(' ', '')),
-                                    descriptionTextController.text,
-                                    'Progress');
-                              } else {
-                                Repository().createAnswer(
-                                    widget.selectTask!.id!,
-                                    access,
-                                    int.parse(coastController.text
-                                        .replaceAll(' ', '')),
-                                    descriptionTextController.text,
-                                    'Selected');
+                              banDialog(context, 'responses_to_offers_is'.tr());
+                            }
+                          } else {
+                            final access = await Storage().getAccessToken();
+                            if (widget.selectTask != null) {
+                              String error = 'specify'.tr();
+                              bool errorsFlag = false;
+                              if (coastController.text.isEmpty) {
+                                error += '\n- ${'amount'.tr()}';
+                                errorsFlag = true;
                               }
+                              if (descriptionTextController.text.isEmpty) {
+                                error += '\n- ${'description'.tr().toLowerCase()}';
+                                errorsFlag = true;
+                              }
+                              if (errorsFlag == true) {
+                                CustomAlert().showMessage(error, context);
+                              } else {
+                                widget.panelController.animatePanelToPosition(0);
+                                if (widget.selectTask!.asCustomer!) {
+                                  Repository().createAnswer(
+                                      widget.selectTask!.id!,
+                                      access,
+                                      int.parse(coastController.text.replaceAll(' ', '')),
+                                      descriptionTextController.text,
+                                      'Progress',
+                                      isGraded);
+                                } else {
+                                  Repository().createAnswer(
+                                      widget.selectTask!.id!,
+                                      access,
+                                      int.parse(coastController.text.replaceAll(' ', '')),
+                                      descriptionTextController.text,
+                                      'Selected',
+                                      isGraded);
+                                }
 
-                              coastController.clear();
-                              descriptionTextController.clear();
-                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .add(UpdateProfileEvent(user));
-                              setState(() {});
+                                coastController.clear();
+                                descriptionTextController.clear();
+                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                setState(() {});
+                              }
                             }
                           }
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer!
-                              ? 'respond'.tr()
-                              : 'accept_the_offer'.tr(),
+                          widget.selectTask!.asCustomer! ? 'respond'.tr() : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
@@ -213,7 +215,15 @@ class _SlidingPanelResponseFromFavState
                       alignment: Alignment.center,
                       children: [
                         CustomButton(
-                          onTap: () {},
+                          onTap: () {
+                            if (isGraded) {
+                              CustomAlert().showMessage('Уже нажали', context);
+                            } else {
+                              setState(() {
+                                isGraded = true;
+                              });
+                            }
+                          },
                           btnColor: ColorStyles.purpleA401C4,
                           textLabel: Text(
                             'become_the_first'.tr(),
@@ -250,9 +260,7 @@ class _SlidingPanelResponseFromFavState
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context
-                                .read<ResponseBlocFromFav>()
-                                .add(OpenSlidingPanelToEvent(500.h));
+                            context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(500.h));
                           },
                           child: Text(
                             'done'.tr(),
@@ -323,8 +331,7 @@ class _SlidingPanelResponseFromFavState
                           '${'budget_from'.tr()} ',
                           style: CustomTextStyle.grey_14_w400,
                         ),
-                      if (widget.selectTask?.currency?.name ==
-                          'Российский рубль')
+                      if (widget.selectTask?.currency?.name == 'Российский рубль')
                         Text(
                           '${'budget_from'.tr()} ₽',
                           style: CustomTextStyle.grey_14_w400,
@@ -354,19 +361,14 @@ class _SlidingPanelResponseFromFavState
                             actionButton: false,
                             focusNode: focusCoastMax,
                             onTap: () {
-                              context
-                                  .read<ResponseBlocFromFav>()
-                                  .add(OpenSlidingPanelToEvent(600.h));
+                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(600.h));
                               setState(() {});
                             },
                             onChanged: (value) {},
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
-                            formatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              FormatterCurrency()
-                            ],
+                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
@@ -386,8 +388,7 @@ class _SlidingPanelResponseFromFavState
                 bound: 0.02,
                 child: Container(
                   height: 150.h,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),
@@ -410,9 +411,7 @@ class _SlidingPanelResponseFromFavState
                             autocorrect: true,
                             maxLines: 3,
                             onTap: () {
-                              context
-                                  .read<ResponseBlocFromFav>()
-                                  .add(OpenSlidingPanelToEvent(700.h));
+                              context.read<ResponseBlocFromFav>().add(OpenSlidingPanelToEvent(700.h));
                               setState(() {});
                             },
                             style: CustomTextStyle.black_14_w400_171716,

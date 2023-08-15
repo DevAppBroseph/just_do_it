@@ -3,6 +3,7 @@ import 'package:just_do_it/models/favourites_info.dart';
 class Answers {
   String? description;
   int? id;
+  bool? isGraded;
   String? status;
   int? price;
   OwnerOrder? owner;
@@ -13,6 +14,7 @@ class Answers {
       required this.id,
       required this.status,
       required this.price,
+      required this.isGraded,
       this.owner,
       this.chatId});
 
@@ -24,12 +26,14 @@ class Answers {
       chatId: json['chat_id'],
       price: json['price'],
       owner: json['owner'] == null ? null : OwnerOrder.fromJson(json['owner']),
+      isGraded: json['is_graded'],
     );
   }
   Map<String, dynamic> toJson() => {
         "description": description,
         "id": id,
         'status': status,
+        "is_graded": isGraded,
         'price': price,
         // 'owner': owner,
       };

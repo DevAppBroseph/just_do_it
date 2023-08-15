@@ -98,7 +98,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 70.w),
                                   child: Text(
-                                    'К сожалению, пользователь заблокирован',
+                                    'user_account_is_currently_blocked'.tr(),
                                     textAlign: TextAlign.center,
                                     style: CustomTextStyle.grey_16_w800,
                                   ),

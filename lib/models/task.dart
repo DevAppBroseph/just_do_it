@@ -7,6 +7,7 @@ import 'package:just_do_it/models/user_reg.dart';
 class Task {
   int? id;
   bool? asCustomer;
+  bool? isGraded;
   int? isLiked;
   Owner? owner;
   int? chatId;
@@ -31,7 +32,7 @@ class Task {
   String? whenStart;
   String? coast;
   List<Answers> answers;
-  
+
   Task(
       {this.id,
       this.owner,
@@ -46,6 +47,7 @@ class Task {
       required this.dateStart,
       required this.dateEnd,
       required this.priceFrom,
+      required this.isGraded,
       required this.priceTo,
       this.regions = const [],
       this.towns = const [],
@@ -101,6 +103,7 @@ class Task {
 
     return Task(
         id: json["id"],
+        isGraded: json["is_graded"],
         owner: Owner.fromJson(json["owner"]),
         isLiked: json["is_liked"],
         currency: Currency.fromJson(json['currency']),
@@ -134,6 +137,7 @@ class Task {
     data['status'] = status;
     data['is_liked'] = isLiked;
     data['price_to'] = priceTo;
+    data['is_graded'] = isGraded;
     data['regions'] = regions.map((e) => e.id).toList();
     data['answers'] = answers.map((e) => e.id).toList();
     data['as_customer'] = asCustomer;
@@ -143,7 +147,7 @@ class Task {
 
     if (files != null) {
       List<MultipartFile> filesMultiDoc = [];
-      for (var element in files!) { 
+      for (var element in files!) {
         if (element.byte != null) {
           filesMultiDoc.add(
             MultipartFile.fromBytes(

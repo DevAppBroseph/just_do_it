@@ -273,7 +273,7 @@ class Repository {
     return false;
   }
 
-  Future<Answers?> createAnswer(int id, String? access, int price, String description, String status) async {
+  Future<Answers?> createAnswer(int id, String? access, int price, String description, String status, bool isGraded) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
@@ -282,6 +282,7 @@ class Repository {
         "price": price,
         "description": description,
         "status": status,
+        "is_graded": isGraded,
       },
     );
     log(id.toString());

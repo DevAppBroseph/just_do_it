@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task.dart';
@@ -45,6 +46,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   TypeFilter typeFilter = TypeFilter.main;
   int groupValue = 0;
   int page = 0;
+  bool isGraded = false;
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
   bool additionalInfo = false;
@@ -156,43 +158,53 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: CustomButton(
                         onTap: () async {
-                          final access = await Storage().getAccessToken();
-                          if (widget.selectTask != null) {
-                            String error = 'specify'.tr();
-                            bool errorsFlag = false;
-                            if (coastController.text.isEmpty) {
-                              error += '\n- ${'amount'.tr()}';
-                              errorsFlag = true;
-                            }
-                            if (descriptionTextController.text.isEmpty) {
-                              error += '\n- ${'description'.tr().toLowerCase()}';
-                              errorsFlag = true;
-                            }
-                            if (errorsFlag == true) {
-                              CustomAlert().showMessage(error, context);
+                          if (user!.isBanned!) {
+                            if (widget.selectTask!.asCustomer!) {
+                              banDialog(context, 'responses_to_tasks_is'.tr());
                             } else {
-                              widget.panelController.animatePanelToPosition(0);
-                              if (widget.selectTask!.asCustomer!) {
-                                Repository().createAnswer(
-                                    widget.selectTask!.id!,
-                                    access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
-                                    descriptionTextController.text,
-                                    'Progress');
-                              } else {
-                                Repository().createAnswer(
-                                    widget.selectTask!.id!,
-                                    access,
-                                    int.parse(coastController.text.replaceAll(' ', '')),
-                                    descriptionTextController.text,
-                                    'Selected');
+                              banDialog(context, 'responses_to_offers_is'.tr());
+                            }
+                          } else {
+                            final access = await Storage().getAccessToken();
+                            if (widget.selectTask != null) {
+                              String error = 'specify'.tr();
+                              bool errorsFlag = false;
+                              if (coastController.text.isEmpty) {
+                                error += '\n- ${'amount'.tr()}';
+                                errorsFlag = true;
                               }
+                              if (descriptionTextController.text.isEmpty) {
+                                error += '\n- ${'description'.tr().toLowerCase()}';
+                                errorsFlag = true;
+                              }
+                              if (errorsFlag == true) {
+                                CustomAlert().showMessage(error, context);
+                              } else {
+                                widget.panelController.animatePanelToPosition(0);
+                                if (widget.selectTask!.asCustomer!) {
+                                  Repository().createAnswer(
+                                      widget.selectTask!.id!,
+                                      access,
+                                      int.parse(coastController.text.replaceAll(' ', '')),
+                                      descriptionTextController.text,
+                                      'Progress',
+                                      isGraded);
+                                } else {
+                                  Repository().createAnswer(
+                                      widget.selectTask!.id!,
+                                      access,
+                                      int.parse(coastController.text.replaceAll(' ', '')),
+                                      descriptionTextController.text,
+                                      'Selected',
+                                      isGraded);
+                                }
 
-                              coastController.clear();
-                              descriptionTextController.clear();
-                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                              setState(() {});
+                                coastController.clear();
+                                descriptionTextController.clear();
+                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                setState(() {});
+                              }
                             }
                           }
                         },
@@ -210,7 +222,15 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       alignment: Alignment.center,
                       children: [
                         CustomButton(
-                          onTap: () {},
+                          onTap: () {
+                            if (isGraded) {
+                              CustomAlert().showMessage('Уже нажали', context);
+                            } else {
+                              setState(() {
+                                isGraded = true;
+                              });
+                            }
+                          },
                           btnColor: ColorStyles.purpleA401C4,
                           textLabel: Text(
                             'become_the_first'.tr(),
@@ -289,7 +309,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         SizedBox(height: 27.h),
         SizedBox(
           height: 510.h,
-          child: ListView( 
+          child: ListView(
             shrinkWrap: true,
             controller: mainScrollController,
             physics: const NeverScrollableScrollPhysics(),

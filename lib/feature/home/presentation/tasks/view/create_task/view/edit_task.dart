@@ -51,7 +51,7 @@ class _EditTasksState extends State<EditTasks> {
 
   List<ArrayImages> document = [];
   // List<ArrayImages> photo = [];
-
+  bool isGraded = true;
   List<Countries> countries = [];
   Currency? currency;
   Activities? selectCategory;
@@ -292,13 +292,14 @@ class _EditTasksState extends State<EditTasks> {
                         endDate: endDate,
                         allCountries: countries,
                         currecy: currency,
-                        onEdit: (startDate, endDate, countries, currency) {
+                        onEdit: (startDate, endDate, countries, currency, isGraded) {
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.currency = currency;
+                          this.isGraded = isGraded;
                           setState(() {});
-                        },
+                        }, isGraded: isGraded,
                       ),
                     ],
                   ),
@@ -411,7 +412,7 @@ class _EditTasksState extends State<EditTasks> {
                             typeLocation: '',
                             whenStart: '',
                             coast: '',
-                            currency: currency,
+                            currency: currency, isGraded: isGraded,
                           );
 
                           final profileBloc = BlocProvider.of<ProfileBloc>(context);

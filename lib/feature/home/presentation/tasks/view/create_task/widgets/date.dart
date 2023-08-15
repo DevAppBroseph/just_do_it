@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_currency.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -23,15 +24,17 @@ class DatePicker extends StatefulWidget {
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
-  Function(DateTime?, DateTime?, List<Countries>, Currency?) onEdit;
+  Function(DateTime?, DateTime?, List<Countries>, Currency?, bool) onEdit;
   DateTime? startDate;
   DateTime? endDate;
+  bool isGraded;
   List<Countries> allCountries;
   Currency? currecy;
 
   DatePicker({
     super.key,
     required this.onEdit,
+    required this.isGraded,
     required this.bottomInsets,
     required this.coastMinController,
     required this.coastMaxController,
@@ -103,6 +106,7 @@ class _DatePickerState extends State<DatePicker> {
                               widget.endDate,
                               widget.allCountries,
                               widget.currecy,
+                              widget.isGraded,
                             );
                           },
                         ),
@@ -164,6 +168,7 @@ class _DatePickerState extends State<DatePicker> {
                       widget.endDate,
                       widget.allCountries,
                       widget.currecy,
+                      widget.isGraded,
                     );
                     setState(() {});
                   }),
@@ -233,6 +238,7 @@ class _DatePickerState extends State<DatePicker> {
                       widget.endDate,
                       widget.allCountries,
                       widget.currecy,
+                      widget.isGraded,
                     );
 
                     setState(() {});
@@ -292,6 +298,7 @@ class _DatePickerState extends State<DatePicker> {
                             widget.endDate,
                             widget.allCountries,
                             widget.currecy,
+                            widget.isGraded,
                           );
 
                           setState(() {});
@@ -511,6 +518,7 @@ class _DatePickerState extends State<DatePicker> {
                                   widget.endDate,
                                   widget.allCountries,
                                   widget.currecy,
+                                  widget.isGraded,
                                 );
 
                                 setState(() {});
@@ -613,6 +621,7 @@ class _DatePickerState extends State<DatePicker> {
                                   widget.endDate,
                                   widget.allCountries,
                                   widget.currecy,
+                                  widget.isGraded,
                                 );
                               },
                               onFieldSubmitted: (value) {
@@ -697,6 +706,7 @@ class _DatePickerState extends State<DatePicker> {
                                   widget.endDate,
                                   widget.allCountries,
                                   widget.currecy,
+                                  widget.isGraded,
                                 );
                               },
                               onFieldSubmitted: (value) {
@@ -833,6 +843,7 @@ class _DatePickerState extends State<DatePicker> {
                             widget.endDate,
                             widget.allCountries,
                             widget.currecy,
+                            widget.isGraded,
                           );
                         },
                         child: Container(
@@ -1054,12 +1065,20 @@ class _DatePickerState extends State<DatePicker> {
           SizedBox(height: 8.h),
           CustomButton(
             onTap: () async {
-             
+              if (widget.isGraded) {
+                CustomAlert().showMessage('Уже нажали', context);
+              } else {
                 setState(() {
-                  raise = true;
+                  widget.isGraded = true;
                 });
-               
-             
+                widget.onEdit(
+                  widget.startDate,
+                  widget.endDate,
+                  widget.allCountries,
+                  widget.currecy,
+                  widget.isGraded,
+                );
+              }
             },
             btnColor: ColorStyles.purpleA401C4,
             textLabel: Text(

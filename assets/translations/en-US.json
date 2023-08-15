@@ -28,6 +28,7 @@
     "restoring_access": "Restoring access",
     "to_reset_the_password_enter_the_phone_number_or_mail": "To reset the password, enter the phone number or E-mail that was specified during registration.",
     "send": "Send",
+    "user_account_is_currently_blocked":"We're sorry, user account is currently blocked",
     "registration": "Registration",
     "back": "Back",
     "further": "Next",

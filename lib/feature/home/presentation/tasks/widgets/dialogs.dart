@@ -27,8 +27,7 @@ void iconSelectTranslate(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(
-                top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
+            insetPadding: EdgeInsets.only(top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -58,7 +57,7 @@ void iconSelectTranslate(
                         height: 40.h,
                         alignment: Alignment.center,
                         child: Text(
-                          'show_original'.tr(), 
+                          'show_original'.tr(),
                           style: CustomTextStyle.black_16_w500_000000,
                         ),
                       ),
@@ -86,8 +85,7 @@ void taskMoreDialog(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -119,8 +117,7 @@ void taskMoreDialog(
                           GestureDetector(
                             onTap: () async {
                               final code = await FirebaseDynamicLinksService()
-                                  .shareUserTask(
-                                      int.parse(selectTask.id.toString()));
+                                  .shareUserTask(int.parse(selectTask.id.toString()));
                               Share.share(code.toString());
                             },
                             child: Text(
@@ -143,14 +140,13 @@ void taskMoreDialog(
         );
       },
     );
-void scoreDialog(BuildContext context, String score, String action) =>
-    showDialog(
+void scoreDialog(BuildContext context, String score, String action) => showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: false,
       context: context,
       builder: (context) {
-         UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+        UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
@@ -188,16 +184,16 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                 SizedBox(
                                   height: 30.h,
                                 ),
-                                if(user!.rus!)
-                                Text(
-                                  '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}' ,
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
-                                if(!user.rus!)
-                                Text(
-                                  '$score points earned' ,
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
+                                if (user!.rus!)
+                                  Text(
+                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
+                                if (!user.rus!)
+                                  Text(
+                                    '$score points earned',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -211,8 +207,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                           ),
                           CustomButton(
                             onTap: () async {
-                              BlocProvider.of<ProfileBloc>(context)
-                                  .add(GetProfileEvent());
+                              BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
                               Navigator.of(context).pop();
                             },
                             btnColor: ColorStyles.purpleA401C4,
@@ -232,8 +227,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
         );
       },
     );
-void banDialog(BuildContext context, String action) =>
-    showDialog(
+void banDialog(BuildContext context, String action) => showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: false,
@@ -266,13 +260,13 @@ void banDialog(BuildContext context, String action) =>
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 17.w),
                       child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Center(
                             child: Column(
                               children: [
-                                 SvgPicture.asset(
+                                SvgPicture.asset(
                                   'assets/icons/alert_circle.svg',
                                   color: ColorStyles.yellowFFCA0D,
                                 ),
@@ -283,16 +277,16 @@ void banDialog(BuildContext context, String action) =>
                                   'you_can_t'.tr(),
                                   style: CustomTextStyle.black_20_w700,
                                 ),
-                                 Text(
+                                Text(
                                   action,
                                   style: CustomTextStyle.black_20_w700,
+                                  textAlign: TextAlign.center,
                                 ),
-                                
-                              SizedBox(
+                                SizedBox(
                                   height: 18.h,
                                 ),
                                 Text(
-                                  'your_profile_is_blocked'.tr() ,
+                                  'your_profile_is_blocked'.tr(),
                                   style: CustomTextStyle.grey_14_w400,
                                 ),
                                 SizedBox(
@@ -307,10 +301,9 @@ void banDialog(BuildContext context, String action) =>
                             ),
                           ),
                           CustomButton(
-                            onTap: ()  {
-                               Navigator.of(context).pop();
-                                Navigator.of(context).pushNamed(AppRoute.contactus);
-                                 
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pushNamed(AppRoute.contactus);
                             },
                             btnColor: ColorStyles.yellowFFCA0D,
                             textLabel: Text(
@@ -343,8 +336,7 @@ void taskMoreDialogForProfile(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding:
-                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -375,9 +367,8 @@ void taskMoreDialogForProfile(
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              final code = await FirebaseDynamicLinksService()
-                                  .shareUserProfile(
-                                      int.parse(owner!.id.toString()));
+                              final code =
+                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(owner!.id.toString()));
                               Share.share(code.toString());
                             },
                             child: Text(

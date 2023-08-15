@@ -255,6 +255,7 @@
     "respond_to_the_task": "создание заданий временно ограничено.",
     "you_can_t": "К сожалению,",
     "responses_to_tasks_is": "отклики на задания временно ограничены.",
+    "user_account_is_currently_blocked":"К сожалению пользователь заблокирован",
     "giving_feedback_is_currently_restricted": "вы не можете оставлять отзывы.",
     "responses_to_offers_is": "отклики на офферы временно ограничены.",
     "profile_viewing_is_currently_restricted": "просмотр профиля временно заблокирован.",

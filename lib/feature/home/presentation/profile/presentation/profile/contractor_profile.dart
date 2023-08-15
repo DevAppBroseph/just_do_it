@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -112,11 +113,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
         }
       }
       user?.copyWith(images: photos);
-      
-      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-        
 
-      
+      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
   }
 
@@ -133,7 +131,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
 
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
- 
     }
   }
 
@@ -149,9 +146,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
     return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
       Loader.hide();
       log(current.toString());
-      if(current is UpdateProfileSuccessState){
+      if (current is UpdateProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
-       
       }
       if (current is UpdateProfileTaskState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
@@ -694,15 +690,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           ),
                         ),
                       ),
-                     
                       SizedBox(height: 20.h),
                     ],
                   ),
                 ),
               ),
-             
-                      SizedBox(height: 16.h),
-       
+              SizedBox(height: 16.h),
               Row(
                 children: [
                   Container(
@@ -1167,7 +1160,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                   ),
                                                 ),
                                               ),
-                                           
                                           ],
                                         ),
                                       ),
@@ -1237,7 +1229,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     ),
                     if (user?.images?.isNotEmpty ?? false)
                       SizedBox(
-                        width: user!.rus!? 121.w : 100,
+                        width: user!.rus! ? 121.w : 100,
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
@@ -1305,10 +1297,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
                 child: GestureDetector(
                   onTap: () async {
-                    await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
-                    BlocProvider.of<ProfileBloc>(context).setAccess(null);
-                    BlocProvider.of<ProfileBloc>(context).setUser(null);
-                    Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                    if (user!.isBanned!) {
+                          banDialog(context, 'your_profile_is_blocked'.tr());
+
+                    } else {
+                      await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
+                      BlocProvider.of<ProfileBloc>(context).setAccess(null);
+                      BlocProvider.of<ProfileBloc>(context).setUser(null);
+                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+                    }
                   },
                   child: Center(
                     child: Text(

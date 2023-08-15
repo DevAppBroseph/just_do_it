@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -65,8 +66,7 @@ class _ChatPageState extends State<ChatPage> {
                   SizedBox(width: 23.w),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(AppRoute.menu,
-                          arguments: [(page) {}, false]).then((value) {
+                      Navigator.of(context).pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
                         if (value != null) {
                           if (value == 'create') {
                             widget.onSelect(0);
@@ -93,8 +93,7 @@ class _ChatPageState extends State<ChatPage> {
                   return false;
                 },
                 builder: (context, snapshot) {
-                  List<ChatList> listChat =
-                      BlocProvider.of<ChatBloc>(context).chatList;
+                  List<ChatList> listChat = BlocProvider.of<ChatBloc>(context).chatList;
                   return ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     itemCount: listChat.length,
@@ -118,24 +117,28 @@ class _ChatPageState extends State<ChatPage> {
       child: ScaleButton(
         bound: 0.02,
         onTap: () async {
-          final chatBloc = BlocProvider.of<ChatBloc>(context);
-          chatBloc.editShowPersonChat(false);
-          chatBloc.editChatId(chat.id);
-          chatBloc.messages = [];
-          await Navigator.of(context).pushNamed(
-            AppRoute.personalChat,
-            arguments: [
-              '${chat.id}',
-              chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
-                  ? ''
-                  : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
-              '${chat.chatWith?.id}',
-              '${chat.chatWith?.photo}',
-            ],
-          );
-          chatBloc.editShowPersonChat(true);
-          chatBloc.editChatId(null);
-          getInitMessage();
+          if (user!.isBanned!) {
+            banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
+          } else {
+            final chatBloc = BlocProvider.of<ChatBloc>(context);
+            chatBloc.editShowPersonChat(false);
+            chatBloc.editChatId(chat.id);
+            chatBloc.messages = [];
+            await Navigator.of(context).pushNamed(
+              AppRoute.personalChat,
+              arguments: [
+                '${chat.id}',
+                chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
+                    ? ''
+                    : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
+                '${chat.chatWith?.id}',
+                '${chat.chatWith?.photo}',
+              ],
+            );
+            chatBloc.editShowPersonChat(true);
+            chatBloc.editChatId(null);
+            getInitMessage();
+          }
         },
         duration: const Duration(milliseconds: 50),
         child: Container(
@@ -170,8 +173,7 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 height: 24.h,
                                 width: 24.h,
-                                child:
-                                    SvgPicture.asset('assets/icons/user.svg'),
+                                child: SvgPicture.asset('assets/icons/user.svg'),
                               ),
                             ],
                           ),
@@ -190,8 +192,7 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 width: 180.w,
                                 child: AutoSizeText(
-                                  chat.chatWith != null &&
-                                          chat.chatWith!.firstname!.isEmpty
+                                  chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
                                       ? 'Аккаунт удален'
                                       : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                                   style: CustomTextStyle.black_14_w400_000000,
@@ -200,11 +201,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               const Spacer(),
                               Text(
-                                _textData(chat.lastMsg?.time
-                                        ?.toUtc()
-                                        .toString()
-                                        .substring(0, 10) ??
-                                    '-'),
+                                _textData(chat.lastMsg?.time?.toUtc().toString().substring(0, 10) ?? '-'),
                                 style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -223,8 +220,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               if (chat.lastMsg?.unread != null &&
                                   chat.lastMsg!.unread! &&
-                                  (user != null &&
-                                      user.id != chat.lastMsg?.sender?.id) &&
+                                  (user != null && user.id != chat.lastMsg?.sender?.id) &&
                                   chat.countUnreadMessage != 0)
                                 Container(
                                   height: 15.h,
