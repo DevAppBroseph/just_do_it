@@ -551,7 +551,11 @@ class _TaskViewState extends State<TaskView> {
                 return ScaleButton(
                   bound: 0.02,
                   onTap: () {
-                    widget.openOwner(widget.selectTask.owner);
+                    if (user!.isBanned!) {
+                      banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                    } else {
+                      widget.openOwner(widget.selectTask.owner);
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -688,11 +692,10 @@ class _TaskViewState extends State<TaskView> {
                           ));
                     } else {
                       if (user!.isBanned!) {
-                        if(widget.selectTask.asCustomer!){
-                          banDialog(context, 'respond_to_the_task'.tr());
-                        }else{
-                          banDialog(context, 'respond_to_the_offer'.tr());
-
+                        if (widget.selectTask.asCustomer!) {
+                          banDialog(context, 'responses_to_tasks_is'.tr());
+                        } else {
+                          banDialog(context, 'responses_to_offers_is'.tr());
                         }
                       } else {
                         if (user?.docInfo == '' || user?.docInfo == null) {
@@ -741,9 +744,13 @@ class _TaskViewState extends State<TaskView> {
                         child: ScaleButton(
                           bound: 0.02,
                           onTap: () async {
-                            final owner = await Repository()
-                                .getRanking(widget.selectTask.owner?.id, BlocProvider.of<ProfileBloc>(context).access);
-                            widget.openOwner(owner);
+                            if (user!.isBanned!) {
+                              banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                            } else {
+                              final owner = await Repository().getRanking(
+                                  widget.selectTask.owner?.id, BlocProvider.of<ProfileBloc>(context).access);
+                              widget.openOwner(owner);
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -899,16 +906,20 @@ class _TaskViewState extends State<TaskView> {
                     SizedBox(height: 30.h),
                     CustomButton(
                       onTap: () {
-                        if (widget.selectTask.owner!.hasReview!) {
-                          CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                        if (user!.isBanned!) {
+                          banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                         } else {
-                          Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
-                              widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
-                          context.read<TasksBloc>().add(UpdateTaskEvent());
-                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                          if (widget.selectTask.owner!.hasReview!) {
+                            CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                          } else {
+                            Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
+                                widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
+                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                          widget.openOwner(widget.selectTask.owner);
-                          scoreDialog(context, '100', 'left_a_review'.tr());
+                            widget.openOwner(widget.selectTask.owner);
+                            scoreDialog(context, '100', 'left_a_review'.tr());
+                          }
                         }
                       },
                       btnColor: ColorStyles.yellowFFD70A,
@@ -965,10 +976,14 @@ class _TaskViewState extends State<TaskView> {
                               child: ScaleButton(
                                 bound: 0.02,
                                 onTap: () async {
-                                  final owner = await Repository().getRanking(
-                                      widget.selectTask.answers[index].owner?.id,
-                                      BlocProvider.of<ProfileBloc>(context).access);
-                                  widget.openOwner(owner);
+                                  if (user!.isBanned!) {
+                                    banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                  } else {
+                                    final owner = await Repository().getRanking(
+                                        widget.selectTask.answers[index].owner?.id,
+                                        BlocProvider.of<ProfileBloc>(context).access);
+                                    widget.openOwner(owner);
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -1134,21 +1149,25 @@ class _TaskViewState extends State<TaskView> {
                                             width: 140.w,
                                             child: CustomButton(
                                               onTap: () async {
-                                                final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                chatBloc.editShowPersonChat(false);
-                                                chatBloc.editChatId(widget.selectTask.chatId);
-                                                chatBloc.messages = [];
-                                                final idChat = await Navigator.of(context).pushNamed(
-                                                  AppRoute.personalChat,
-                                                  arguments: [
-                                                    '${widget.selectTask.answers[index].chatId}',
-                                                    '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                    '${widget.selectTask.answers[index].owner?.id}',
-                                                    '${widget.selectTask.answers[index].owner?.photo}',
-                                                  ],
-                                                );
-                                                chatBloc.editShowPersonChat(true);
-                                                chatBloc.editChatId(null);
+                                                if (user!.isBanned!) {
+                                                  banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
+                                                } else {
+                                                  final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                  chatBloc.editShowPersonChat(false);
+                                                  chatBloc.editChatId(widget.selectTask.chatId);
+                                                  chatBloc.messages = [];
+                                                  final idChat = await Navigator.of(context).pushNamed(
+                                                    AppRoute.personalChat,
+                                                    arguments: [
+                                                      '${widget.selectTask.answers[index].chatId}',
+                                                      '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                      '${widget.selectTask.answers[index].owner?.id}',
+                                                      '${widget.selectTask.answers[index].owner?.photo}',
+                                                    ],
+                                                  );
+                                                  chatBloc.editShowPersonChat(true);
+                                                  chatBloc.editChatId(null);
+                                                }
                                               },
                                               btnColor: ColorStyles.greyDADADA,
                                               textLabel: Text(
@@ -1201,10 +1220,14 @@ class _TaskViewState extends State<TaskView> {
                                 child: ScaleButton(
                                   bound: 0.02,
                                   onTap: () async {
-                                    final owner = await Repository().getRanking(
-                                        widget.selectTask.answers[index].owner?.id,
-                                        BlocProvider.of<ProfileBloc>(context).access);
-                                    widget.openOwner(owner);
+                                    if (user!.isBanned!) {
+                                      banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                    } else {
+                                      final owner = await Repository().getRanking(
+                                          widget.selectTask.answers[index].owner?.id,
+                                          BlocProvider.of<ProfileBloc>(context).access);
+                                      widget.openOwner(owner);
+                                    }
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -1328,21 +1351,25 @@ class _TaskViewState extends State<TaskView> {
                                               width: 140.w,
                                               child: CustomButton(
                                                 onTap: () async {
-                                                  final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                  chatBloc.editShowPersonChat(false);
-                                                  chatBloc.editChatId(widget.selectTask.chatId);
-                                                  chatBloc.messages = [];
-                                                  final idChat = await Navigator.of(context).pushNamed(
-                                                    AppRoute.personalChat,
-                                                    arguments: [
-                                                      '${widget.selectTask.answers[index].chatId}',
-                                                      '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                      '${widget.selectTask.answers[index].owner?.id}',
-                                                      '${widget.selectTask.answers[index].owner?.photo}',
-                                                    ],
-                                                  );
-                                                  chatBloc.editShowPersonChat(true);
-                                                  chatBloc.editChatId(null);
+                                                  if (user!.isBanned!) {
+                                                    banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
+                                                  } else {
+                                                    final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                    chatBloc.editShowPersonChat(false);
+                                                    chatBloc.editChatId(widget.selectTask.chatId);
+                                                    chatBloc.messages = [];
+                                                    final idChat = await Navigator.of(context).pushNamed(
+                                                      AppRoute.personalChat,
+                                                      arguments: [
+                                                        '${widget.selectTask.answers[index].chatId}',
+                                                        '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                        '${widget.selectTask.answers[index].owner?.id}',
+                                                        '${widget.selectTask.answers[index].owner?.photo}',
+                                                      ],
+                                                    );
+                                                    chatBloc.editShowPersonChat(true);
+                                                    chatBloc.editChatId(null);
+                                                  }
                                                 },
                                                 btnColor: ColorStyles.greyDADADA,
                                                 textLabel: Text(
@@ -1402,10 +1429,14 @@ class _TaskViewState extends State<TaskView> {
                                           child: ScaleButton(
                                             bound: 0.02,
                                             onTap: () async {
-                                              final owner = await Repository().getRanking(
-                                                  widget.selectTask.answers[index].owner?.id,
-                                                  BlocProvider.of<ProfileBloc>(context).access);
-                                              widget.openOwner(owner);
+                                              if (user!.isBanned!) {
+                                                banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                              } else {
+                                                final owner = await Repository().getRanking(
+                                                    widget.selectTask.answers[index].owner?.id,
+                                                    BlocProvider.of<ProfileBloc>(context).access);
+                                                widget.openOwner(owner);
+                                              }
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -1563,22 +1594,26 @@ class _TaskViewState extends State<TaskView> {
                                       SizedBox(height: 30.h),
                                       CustomButton(
                                         onTap: () async {
-                                          if (widget.selectTask.answers[index].owner!.hasReview!) {
-                                            CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                          if (user!.isBanned!) {
+                                            banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                           } else {
-                                            Repository().addReviewsDetail(
-                                                BlocProvider.of<ProfileBloc>(context).access,
-                                                widget.selectTask.answers[index].owner?.id,
-                                                descriptionTextController1.text,
-                                                reviewRating);
-                                            context.read<TasksBloc>().add(UpdateTaskEvent());
-                                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                            if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                              CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                            } else {
+                                              Repository().addReviewsDetail(
+                                                  BlocProvider.of<ProfileBloc>(context).access,
+                                                  widget.selectTask.answers[index].owner?.id,
+                                                  descriptionTextController1.text,
+                                                  reviewRating);
+                                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                            final owner = await Repository().getRanking(
-                                                widget.selectTask.answers[index].owner?.id,
-                                                BlocProvider.of<ProfileBloc>(context).access);
-                                            widget.openOwner(owner);
-                                            scoreDialog(context, '100', 'left_a_review'.tr());
+                                              final owner = await Repository().getRanking(
+                                                  widget.selectTask.answers[index].owner?.id,
+                                                  BlocProvider.of<ProfileBloc>(context).access);
+                                              widget.openOwner(owner);
+                                              scoreDialog(context, '100', 'left_a_review'.tr());
+                                            }
                                           }
                                         },
                                         btnColor: ColorStyles.yellowFFD70A,
@@ -1605,9 +1640,14 @@ class _TaskViewState extends State<TaskView> {
                                             child: ScaleButton(
                                               bound: 0.02,
                                               onTap: () async {
-                                                final owner = await Repository().getRanking(widget.selectTask.owner?.id,
-                                                    BlocProvider.of<ProfileBloc>(context).access);
-                                                widget.openOwner(owner);
+                                                if (user!.isBanned!) {
+                                                  banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                                } else {
+                                                  final owner = await Repository().getRanking(
+                                                      widget.selectTask.owner?.id,
+                                                      BlocProvider.of<ProfileBloc>(context).access);
+                                                  widget.openOwner(owner);
+                                                }
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
@@ -1764,19 +1804,24 @@ class _TaskViewState extends State<TaskView> {
                                         SizedBox(height: 30.h),
                                         CustomButton(
                                           onTap: () {
-                                            if (widget.selectTask.owner!.hasReview!) {
-                                              CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                            if (user!.isBanned!) {
+                                              banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                             } else {
-                                              Repository().addReviewsDetail(
-                                                  BlocProvider.of<ProfileBloc>(context).access,
-                                                  widget.selectTask.owner?.id,
-                                                  descriptionTextController2.text,
-                                                  reviewRating);
-                                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                              if (widget.selectTask.owner!.hasReview!) {
+                                                CustomAlert()
+                                                    .showMessage('have_you_already_left_a_review'.tr(), context);
+                                              } else {
+                                                Repository().addReviewsDetail(
+                                                    BlocProvider.of<ProfileBloc>(context).access,
+                                                    widget.selectTask.owner?.id,
+                                                    descriptionTextController2.text,
+                                                    reviewRating);
+                                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                              widget.openOwner(widget.selectTask.owner);
-                                              scoreDialog(context, '100', 'left_a_review'.tr());
+                                                widget.openOwner(widget.selectTask.owner);
+                                                scoreDialog(context, '100', 'left_a_review'.tr());
+                                              }
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -1805,10 +1850,14 @@ class _TaskViewState extends State<TaskView> {
                                             child: ScaleButton(
                                               bound: 0.02,
                                               onTap: () async {
-                                                final owner = await Repository().getRanking(
-                                                    widget.selectTask.answers[index].owner?.id,
-                                                    BlocProvider.of<ProfileBloc>(context).access);
-                                                widget.openOwner(owner);
+                                                if (user!.isBanned!) {
+                                                  banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                                } else {
+                                                  final owner = await Repository().getRanking(
+                                                      widget.selectTask.answers[index].owner?.id,
+                                                      BlocProvider.of<ProfileBloc>(context).access);
+                                                  widget.openOwner(owner);
+                                                }
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
@@ -1967,19 +2016,24 @@ class _TaskViewState extends State<TaskView> {
                                         SizedBox(height: 30.h),
                                         CustomButton(
                                           onTap: () async {
-                                            if (widget.selectTask.answers[index].owner!.hasReview!) {
-                                              CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                            if (user!.isBanned!) {
+                                              banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                             } else {
-                                              Repository().addReviewsDetail(
-                                                  BlocProvider.of<ProfileBloc>(context).access,
-                                                  widget.selectTask.owner?.id,
-                                                  descriptionTextController3.text,
-                                                  reviewRating);
-                                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                              if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                                CustomAlert()
+                                                    .showMessage('have_you_already_left_a_review'.tr(), context);
+                                              } else {
+                                                Repository().addReviewsDetail(
+                                                    BlocProvider.of<ProfileBloc>(context).access,
+                                                    widget.selectTask.owner?.id,
+                                                    descriptionTextController3.text,
+                                                    reviewRating);
+                                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                              widget.openOwner(widget.selectTask.owner);
-                                              scoreDialog(context, '100', 'left_a_review'.tr());
+                                                widget.openOwner(widget.selectTask.owner);
+                                                scoreDialog(context, '100', 'left_a_review'.tr());
+                                              }
                                             }
                                           },
                                           btnColor: ColorStyles.yellowFFD70A,
@@ -2007,10 +2061,14 @@ class _TaskViewState extends State<TaskView> {
                                         child: ScaleButton(
                                           bound: 0.02,
                                           onTap: () async {
-                                            final owner = await Repository().getRanking(
-                                                widget.selectTask.answers[index].owner?.id,
-                                                BlocProvider.of<ProfileBloc>(context).access);
-                                            widget.openOwner(owner);
+                                            if (user!.isBanned!) {
+                                              banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                            } else {
+                                              final owner = await Repository().getRanking(
+                                                  widget.selectTask.answers[index].owner?.id,
+                                                  BlocProvider.of<ProfileBloc>(context).access);
+                                              widget.openOwner(owner);
+                                            }
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
@@ -2167,19 +2225,23 @@ class _TaskViewState extends State<TaskView> {
                                     SizedBox(height: 30.h),
                                     CustomButton(
                                       onTap: () {
-                                        if (widget.selectTask.owner!.hasReview!) {
-                                          CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                        if (user!.isBanned!) {
+                                          banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                         } else {
-                                          Repository().addReviewsDetail(
-                                              BlocProvider.of<ProfileBloc>(context).access,
-                                              widget.selectTask.owner?.id,
-                                              descriptionTextController3.text,
-                                              reviewRating);
-                                          context.read<TasksBloc>().add(UpdateTaskEvent());
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          if (widget.selectTask.owner!.hasReview!) {
+                                            CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                          } else {
+                                            Repository().addReviewsDetail(
+                                                BlocProvider.of<ProfileBloc>(context).access,
+                                                widget.selectTask.owner?.id,
+                                                descriptionTextController3.text,
+                                                reviewRating);
+                                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                          widget.openOwner(widget.selectTask.owner);
-                                          scoreDialog(context, '100', 'left_a_review'.tr());
+                                            widget.openOwner(widget.selectTask.owner);
+                                            scoreDialog(context, '100', 'left_a_review'.tr());
+                                          }
                                         }
                                       },
                                       btnColor: ColorStyles.yellowFFD70A,
@@ -2206,10 +2268,14 @@ class _TaskViewState extends State<TaskView> {
                                     child: ScaleButton(
                                       bound: 0.02,
                                       onTap: () async {
-                                        final owner = await Repository().getRanking(
-                                            widget.selectTask.answers[index].owner?.id,
-                                            BlocProvider.of<ProfileBloc>(context).access);
-                                        widget.openOwner(owner);
+                                        if (user!.isBanned!) {
+                                          banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                        } else {
+                                          final owner = await Repository().getRanking(
+                                              widget.selectTask.answers[index].owner?.id,
+                                              BlocProvider.of<ProfileBloc>(context).access);
+                                          widget.openOwner(owner);
+                                        }
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -2378,21 +2444,26 @@ class _TaskViewState extends State<TaskView> {
                                                   width: 140.w,
                                                   child: CustomButton(
                                                     onTap: () async {
-                                                      final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                      chatBloc.editShowPersonChat(false);
-                                                      chatBloc.editChatId(widget.selectTask.chatId);
-                                                      chatBloc.messages = [];
-                                                      final idChat = await Navigator.of(context).pushNamed(
-                                                        AppRoute.personalChat,
-                                                        arguments: [
-                                                          '${widget.selectTask.chatId}',
-                                                          '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
-                                                          '${widget.selectTask.owner?.id}',
-                                                          '${widget.selectTask.owner?.photo}',
-                                                        ],
-                                                      );
-                                                      chatBloc.editShowPersonChat(true);
-                                                      chatBloc.editChatId(null);
+                                                      if (user!.isBanned!) {
+                                                        banDialog(
+                                                            context, 'access_to_chat_is_currently_restricted'.tr());
+                                                      } else {
+                                                        final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                        chatBloc.editShowPersonChat(false);
+                                                        chatBloc.editChatId(widget.selectTask.chatId);
+                                                        chatBloc.messages = [];
+                                                        final idChat = await Navigator.of(context).pushNamed(
+                                                          AppRoute.personalChat,
+                                                          arguments: [
+                                                            '${widget.selectTask.chatId}',
+                                                            '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
+                                                            '${widget.selectTask.owner?.id}',
+                                                            '${widget.selectTask.owner?.photo}',
+                                                          ],
+                                                        );
+                                                        chatBloc.editShowPersonChat(true);
+                                                        chatBloc.editChatId(null);
+                                                      }
                                                     },
                                                     btnColor: ColorStyles.greyDADADA,
                                                     textLabel: Text(
@@ -2448,10 +2519,14 @@ class _TaskViewState extends State<TaskView> {
                                     child: ScaleButton(
                                       bound: 0.02,
                                       onTap: () async {
-                                        final owner = await Repository().getRanking(
-                                            widget.selectTask.answers[index].owner?.id,
-                                            BlocProvider.of<ProfileBloc>(context).access);
-                                        widget.openOwner(owner);
+                                        if (user!.isBanned!) {
+                                          banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                        } else {
+                                          final owner = await Repository().getRanking(
+                                              widget.selectTask.answers[index].owner?.id,
+                                              BlocProvider.of<ProfileBloc>(context).access);
+                                          widget.openOwner(owner);
+                                        }
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -2576,21 +2651,26 @@ class _TaskViewState extends State<TaskView> {
                                                   width: 140.w,
                                                   child: CustomButton(
                                                     onTap: () async {
-                                                      final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                      chatBloc.editShowPersonChat(false);
-                                                      chatBloc.editChatId(widget.selectTask.chatId);
-                                                      chatBloc.messages = [];
-                                                      final idChat = await Navigator.of(context).pushNamed(
-                                                        AppRoute.personalChat,
-                                                        arguments: [
-                                                          '${widget.selectTask.answers[index].chatId}',
-                                                          '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                          '${widget.selectTask.answers[index].owner?.id}',
-                                                          '${widget.selectTask.answers[index].owner?.photo}',
-                                                        ],
-                                                      );
-                                                      chatBloc.editShowPersonChat(true);
-                                                      chatBloc.editChatId(null);
+                                                      if (user!.isBanned!) {
+                                                        banDialog(
+                                                            context, 'access_to_chat_is_currently_restricted'.tr());
+                                                      } else {
+                                                        final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                        chatBloc.editShowPersonChat(false);
+                                                        chatBloc.editChatId(widget.selectTask.chatId);
+                                                        chatBloc.messages = [];
+                                                        final idChat = await Navigator.of(context).pushNamed(
+                                                          AppRoute.personalChat,
+                                                          arguments: [
+                                                            '${widget.selectTask.answers[index].chatId}',
+                                                            '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                            '${widget.selectTask.answers[index].owner?.id}',
+                                                            '${widget.selectTask.answers[index].owner?.photo}',
+                                                          ],
+                                                        );
+                                                        chatBloc.editShowPersonChat(true);
+                                                        chatBloc.editChatId(null);
+                                                      }
                                                     },
                                                     btnColor: ColorStyles.greyDADADA,
                                                     textLabel: Text(

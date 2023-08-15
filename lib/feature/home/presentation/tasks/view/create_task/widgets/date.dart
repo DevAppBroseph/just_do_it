@@ -28,6 +28,7 @@ class DatePicker extends StatefulWidget {
   DateTime? endDate;
   List<Countries> allCountries;
   Currency? currecy;
+
   DatePicker({
     super.key,
     required this.onEdit,
@@ -49,6 +50,7 @@ class _DatePickerState extends State<DatePicker> {
   bool openCurrency = false;
   bool openRegion = false;
   bool openTown = false;
+  bool raise = false;
   ScrollController controller = ScrollController();
   ScrollController countyController = ScrollController();
   ScrollController regionController = ScrollController();
@@ -790,7 +792,7 @@ class _DatePickerState extends State<DatePicker> {
             ),
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
             child: Scrollbar(
-              thumbVisibility: true, 
+              thumbVisibility: true,
               controller: countyController,
               child: ListView(
                 shrinkWrap: true,
@@ -1051,7 +1053,14 @@ class _DatePickerState extends State<DatePicker> {
           ),
           SizedBox(height: 8.h),
           CustomButton(
-            onTap: () {},
+            onTap: () async {
+             
+                setState(() {
+                  raise = true;
+                });
+               
+             
+            },
             btnColor: ColorStyles.purpleA401C4,
             textLabel: Text(
               'raise_ad'.tr(),

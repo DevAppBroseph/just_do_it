@@ -69,10 +69,8 @@ class Repository {
 
     if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
       return true;
-    } 
-    if(res.statusCode == 403){
-      
     }
+    if (res.statusCode == 403) {}
     return false;
   }
 
@@ -784,6 +782,36 @@ class Repository {
       return FavouritesUser.fromJson(response.data);
     }
     return null;
+  }
+
+  Future<String> userOnTop(int id, String? access) async {
+    final response = await dio.post(
+      '$server/answers/upgrade/$id',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+
+    if (response.statusCode == 204) {
+      return 'Поднятие было сделано';
+    }
+     if (response.statusCode == 400) {
+      return 'Недостаточно баллов';
+    }
+    return 'Ошибка сервера';
+  }
+
+  Future<String> taskOnTop(int id, String? access) async {
+    final response = await dio.post(
+      '$server/orders/upgrade/$id',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+
+   if (response.statusCode == 204) {
+      return 'Поднятие было сделано';
+    }
+     if (response.statusCode == 400) {
+      return 'Недостаточно баллов';
+    }
+    return 'Ошибка сервера';
   }
 
   Future<bool> deleteLikeUser(int id, String access) async {
