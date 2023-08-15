@@ -476,7 +476,7 @@ class _CustomerState extends State<Customer> {
               type: MaskAutoCompletionType.eager,
               
             ),
-                              LengthLimitingTextInputFormatter(15),
+                              LengthLimitingTextInputFormatter(16),
 
           ],
           contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),

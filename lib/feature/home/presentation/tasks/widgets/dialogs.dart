@@ -308,7 +308,7 @@ void banDialog(BuildContext context, String action) => showDialog(
                             btnColor: ColorStyles.yellowFFCA0D,
                             textLabel: Text(
                               'contact'.tr(),
-                              style: CustomTextStyle.black_14_w500_171716,
+                              style: CustomTextStyle.black_14_w800_171716,
                             ),
                           ),
                         ],

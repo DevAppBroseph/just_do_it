@@ -629,22 +629,26 @@ class _TaskViewState extends State<TaskView> {
               if (user != null && widget.canSelect && user.id != widget.selectTask.owner?.id)
                 CustomButton(
                   onTap: () async {
-                    final chatBloc = BlocProvider.of<ChatBloc>(context);
-                    chatBloc.editShowPersonChat(false);
-                    chatBloc.editChatId(widget.selectTask.chatId);
+                    if (user!.isBanned!) {
+                      banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
+                    } else {
+                      final chatBloc = BlocProvider.of<ChatBloc>(context);
+                      chatBloc.editShowPersonChat(false);
+                      chatBloc.editChatId(widget.selectTask.chatId);
 
-                    chatBloc.messages = [];
-                    final idChat = await Navigator.of(context).pushNamed(
-                      AppRoute.personalChat,
-                      arguments: [
-                        '${widget.selectTask.chatId}',
-                        '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
-                        '${widget.selectTask.owner?.id}',
-                        '${widget.selectTask.owner?.photo}',
-                      ],
-                    );
-                    chatBloc.editShowPersonChat(true);
-                    chatBloc.editChatId(null);
+                      chatBloc.messages = [];
+                      final idChat = await Navigator.of(context).pushNamed(
+                        AppRoute.personalChat,
+                        arguments: [
+                          '${widget.selectTask.chatId}',
+                          '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
+                          '${widget.selectTask.owner?.id}',
+                          '${widget.selectTask.owner?.photo}',
+                        ],
+                      );
+                      chatBloc.editShowPersonChat(true);
+                      chatBloc.editChatId(null);
+                    }
                   },
                   btnColor: ColorStyles.yellowFFD70A,
                   textLabel: Text(

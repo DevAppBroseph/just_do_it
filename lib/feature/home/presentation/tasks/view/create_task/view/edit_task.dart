@@ -17,6 +17,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -299,7 +300,8 @@ class _EditTasksState extends State<EditTasks> {
                           this.currency = currency;
                           this.isGraded = isGraded;
                           setState(() {});
-                        }, isGraded: isGraded,
+                        },
+                        isGraded: isGraded,
                       ),
                     ],
                   ),
@@ -361,70 +363,79 @@ class _EditTasksState extends State<EditTasks> {
                         if (errorsFlag) {
                           CustomAlert().showMessage(error, context);
                         } else {
-                          showLoaderWrapper(context);
-
-                          List<Countries> country = [];
-                          List<Regions> regions = [];
-                          List<Town> towns = [];
-
-                          for (var element in countries) {
-                            if (element.select) {
-                              country.add(element);
+                          if (user!.isBanned!) {
+                            if (widget.task.asCustomer!) {
+                              banDialog(context, 'respond_to_the_task'.tr());
+                            } else {
+                              banDialog(context, 'respond_to_the_offer'.tr());
                             }
-                          }
+                          } else {
+                            showLoaderWrapper(context);
 
-                          for (var element in country) {
-                            for (var element1 in element.region) {
-                              if (element1.select) {
-                                regions.add(element1);
+                            List<Countries> country = [];
+                            List<Regions> regions = [];
+                            List<Town> towns = [];
+
+                            for (var element in countries) {
+                              if (element.select) {
+                                country.add(element);
                               }
                             }
-                          }
 
-                          for (var element in regions) {
-                            for (var element1 in element.town) {
-                              if (element1.select) {
-                                towns.add(element1);
+                            for (var element in country) {
+                              for (var element1 in element.region) {
+                                if (element1.select) {
+                                  regions.add(element1);
+                                }
                               }
                             }
-                          }
 
-                          Task newTask = Task(
-                            id: widget.task.id,
-                            asCustomer: widget.task.asCustomer,
-                            name: titleController.text,
-                            description: aboutController.text,
-                            subcategory: selectSubCategory!,
-                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
-                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
-                            priceFrom: int.parse(
-                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
-                            ),
-                            priceTo: int.parse(
-                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
-                            ),
-                            regions: regions,
-                            countries: country,
-                            towns: towns,
-                            files: document,
-                            icon: '',
-                            task: '',
-                            typeLocation: '',
-                            whenStart: '',
-                            coast: '',
-                            currency: currency, isGraded: isGraded,
-                          );
+                            for (var element in regions) {
+                              for (var element1 in element.town) {
+                                if (element1.select) {
+                                  towns.add(element1);
+                                }
+                              }
+                            }
 
-                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository().editTask(profileBloc.access!, newTask);
-                          if (res) {
-                            Navigator.of(context)
-                              ..pop()
-                              ..pop();
+                            Task newTask = Task(
+                              id: widget.task.id,
+                              asCustomer: widget.task.asCustomer,
+                              name: titleController.text,
+                              description: aboutController.text,
+                              subcategory: selectSubCategory!,
+                              dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+                              dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
+                              priceFrom: int.parse(
+                                coastMinController.text.isEmpty ? '0' : coastMinController.text,
+                              ),
+                              priceTo: int.parse(
+                                coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+                              ),
+                              regions: regions,
+                              countries: country,
+                              towns: towns,
+                              files: document,
+                              icon: '',
+                              task: '',
+                              typeLocation: '',
+                              whenStart: '',
+                              coast: '',
+                              currency: currency,
+                              isGraded: isGraded,
+                            );
+
+                            final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                            bool res = await Repository().editTask(profileBloc.access!, newTask);
+                            if (res) {
+                              Navigator.of(context)
+                                ..pop()
+                                ..pop();
+                            }
+                            context.read<TasksBloc>().add(UpdateTaskEvent());
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            Loader.hide();
                           }
-                          context.read<TasksBloc>().add(UpdateTaskEvent());
-                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          Loader.hide();
                         }
                       } else {
                         String error = 'specify'.tr();

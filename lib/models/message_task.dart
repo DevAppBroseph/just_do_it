@@ -16,7 +16,7 @@ class NewMessageAnswerTask {
   String? id;
 
   factory NewMessageAnswerTask.fromJson(Map<String, dynamic> json) => NewMessageAnswerTask(
-        action: json["action"],
+        action: json["action"] ,
         message: json["message"],
         id: json["order_id"] != null ? json["id"].toString() : null,
       );

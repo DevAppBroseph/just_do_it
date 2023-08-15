@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task.dart';
@@ -431,113 +432,121 @@ class _CeateTasksState extends State<CeateTasks> {
                           // showAlertToast(error);
                           CustomAlert().showMessage(error, context);
                         } else {
-                          showLoaderWrapper(context);
-
-                          List<Countries> country = [];
-                          List<Regions> regions = [];
-                          List<Town> towns = [];
-
-                          for (var element in countries) {
-                            if (element.select) {
-                              country.add(element);
+                          if (user!.isBanned!) {
+                            if (widget.customer) {
+                              banDialog(context, 'respond_to_the_task'.tr());
+                            } else {
+                              banDialog(context, 'respond_to_the_offer'.tr());
                             }
-                          }
-
-                          for (var element in country) {
-                            for (var element1 in element.region) {
-                              if (element1.select) {
-                                regions.add(element1);
-                              }
-                            }
-                          }
-
-                          for (var element in regions) {
-                            for (var element1 in element.town) {
-                              if (element1.select) {
-                                towns.add(element1);
-                              }
-                            }
-                          }
-                          log('dsdddff $isGraded');
-                          Task newTask = Task(
-                            asCustomer: widget.customer,
-                            name: titleController.text,
-                            description: aboutController.text,
-                            subcategory: selectSubCategory!,
-                            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
-                            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
-                            priceFrom: int.parse(
-                              coastMinController.text.isEmpty ? '0' : coastMinController.text,
-                            ),
-                            priceTo: int.parse(
-                              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
-                            ),
-                            regions: regions,
-                            countries: country,
-                            towns: towns,
-                            files: documents,
-                            icon: '',
-                            task: '',
-                            typeLocation: '',
-                            whenStart: '',
-                            coast: '',
-                            currency: currency,
-                            isGraded: isGraded,
-                          );
-                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                          bool res = await Repository().createTask(profileBloc.access!, newTask);
-                          if (widget.currentPage == 6) {
-                            if (res) Navigator.of(context).pop();
-                          }
-
-                          if (widget.currentPage == 1 || widget.currentPage == 2) {
-                            if (res) Navigator.of(context).pop();
-                            if (res) {
-                              Navigator.of(context).pop(!widget.customer);
-                            }
-                          }
-                          if (widget.currentPage == 3 || widget.currentPage == 4) {
-                            if (res) {
-                              Navigator.of(context).pop(!widget.customer);
-                            }
-                          }
-
-                          Loader.hide();
-
-                          if (widget.customer) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return TaskAdditional(
-                                  title: 'my_task'.tr(),
-                                  asCustomer: true,
-                                  scoreTrue: true,
-                                );
-                              }),
-                            );
                           } else {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return TaskAdditional(
-                                    title: 'opens'.tr(), asCustomer: widget.customer, scoreTrue: true);
-                              }),
-                            );
-                          }
+                            showLoaderWrapper(context);
 
-                          // if (widget.customer) {
-                          //   await Navigator.of(context).push(
-                          //     MaterialPageRoute(builder: (context) {
-                          //       return OrdersCreateAsCustomerView(
-                          //           title: 'my_task'.tr());
-                          //     }),
-                          //   );
-                          // } else {
-                          //   await Navigator.of(context).push(
-                          //     MaterialPageRoute(builder: (context) {
-                          //       return OpenOffers(title: 'open'.tr());
-                          //     }),
-                          //   );
-                          // }
+                            List<Countries> country = [];
+                            List<Regions> regions = [];
+                            List<Town> towns = [];
+
+                            for (var element in countries) {
+                              if (element.select) {
+                                country.add(element);
+                              }
+                            }
+
+                            for (var element in country) {
+                              for (var element1 in element.region) {
+                                if (element1.select) {
+                                  regions.add(element1);
+                                }
+                              }
+                            }
+
+                            for (var element in regions) {
+                              for (var element1 in element.town) {
+                                if (element1.select) {
+                                  towns.add(element1);
+                                }
+                              }
+                            }
+                            log('dsdddff $isGraded');
+                            Task newTask = Task(
+                              asCustomer: widget.customer,
+                              name: titleController.text,
+                              description: aboutController.text,
+                              subcategory: selectSubCategory!,
+                              dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+                              dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
+                              priceFrom: int.parse(
+                                coastMinController.text.isEmpty ? '0' : coastMinController.text,
+                              ),
+                              priceTo: int.parse(
+                                coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+                              ),
+                              regions: regions,
+                              countries: country,
+                              towns: towns,
+                              files: documents,
+                              icon: '',
+                              task: '',
+                              typeLocation: '',
+                              whenStart: '',
+                              coast: '',
+                              currency: currency,
+                              isGraded: isGraded,
+                            );
+                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                            bool res = await Repository().createTask(profileBloc.access!, newTask);
+                            if (widget.currentPage == 6) {
+                              if (res) Navigator.of(context).pop();
+                            }
+
+                            if (widget.currentPage == 1 || widget.currentPage == 2) {
+                              if (res) Navigator.of(context).pop();
+                              if (res) {
+                                Navigator.of(context).pop(!widget.customer);
+                              }
+                            }
+                            if (widget.currentPage == 3 || widget.currentPage == 4) {
+                              if (res) {
+                                Navigator.of(context).pop(!widget.customer);
+                              }
+                            }
+
+                            Loader.hide();
+
+                            if (widget.customer) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return TaskAdditional(
+                                    title: 'my_task'.tr(),
+                                    asCustomer: true,
+                                    scoreTrue: true,
+                                  );
+                                }),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return TaskAdditional(
+                                      title: 'opens'.tr(), asCustomer: widget.customer, scoreTrue: true);
+                                }),
+                              );
+                            }
+
+                            // if (widget.customer) {
+                            //   await Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (context) {
+                            //       return OrdersCreateAsCustomerView(
+                            //           title: 'my_task'.tr());
+                            //     }),
+                            //   );
+                            // } else {
+                            //   await Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (context) {
+                            //       return OpenOffers(title: 'open'.tr());
+                            //     }),
+                            //   );
+                            // }
+                          }
                         }
                       } else {
                         String error = 'specify'.tr();

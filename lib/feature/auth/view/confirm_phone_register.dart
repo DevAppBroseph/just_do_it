@@ -22,8 +22,7 @@ class ConfirmCodeRegisterPage extends StatefulWidget {
   });
 
   @override
-  State<ConfirmCodeRegisterPage> createState() =>
-      _ConfirmCodeRegisterPageState();
+  State<ConfirmCodeRegisterPage> createState() => _ConfirmCodeRegisterPageState();
 }
 
 class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
@@ -69,14 +68,12 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           Loader.hide();
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-            scoreDialog(context, '50', 'registrations'.tr());
+            Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+            scoreDialog(context, '50', 'регистрацию');
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+            Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is ConfirmCodeRegisterErrorState) {
             CustomAlert().showMessage('invalid_code'.tr(), context);
           } else if (current is ConfirmRestoreErrorState) {
@@ -128,8 +125,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               pinAnimationType: PinAnimationType.none,
                               showCursor: false,
                               length: 4,
-                              androidSmsAutofillMethod:
-                                  AndroidSmsAutofillMethod.smsRetrieverApi,
+                              androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
                               controller: codeController,
                               focusNode: focusNode,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,12 +175,10 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
 
-                                BlocProvider.of<AuthBloc>(context).add(
-                                    ConfirmCodeEvent(
-                                        widget.phone, codeController.text));
+                                BlocProvider.of<AuthBloc>(context)
+                                    .add(ConfirmCodeEvent(widget.phone, codeController.text));
                               } else {
-                                CustomAlert()
-                                    .showMessage('enter_the_code'.tr(), context);
+                                CustomAlert().showMessage('enter_the_code'.tr(), context);
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,
@@ -208,23 +202,20 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                     SizedBox(height: 34.h),
                   ],
                 ),
-                if (MediaQuery.of(context).viewInsets.bottom > 0 &&
-                    focusNode.hasFocus)
+                if (MediaQuery.of(context).viewInsets.bottom > 0 && focusNode.hasFocus)
                   Column(
                     children: [
                       const Spacer(),
                       AnimatedPadding(
                         duration: const Duration(milliseconds: 0),
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                         child: Row(
                           children: [
                             Expanded(
                               child: Container(
                                 color: Colors.grey[200],
                                 child: MediaQuery(
-                                  data: MediaQuery.of(context)
-                                      .copyWith(textScaleFactor: 1.0),
+                                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                                   child: Align(
                                     alignment: Alignment.centerRight,
                                     child: Padding(

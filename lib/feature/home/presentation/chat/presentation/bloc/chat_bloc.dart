@@ -104,12 +104,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
-          log('message new $event');
+          log('messreferferfreage new $event');
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
-          log(newMessageTask.toString());
-          TaskDialogs().showTaskMessage(
-            newMessageTask.message,
-          );
+          log('fdfff $newMessageTask');
+          if (newMessageTask.action.isEmpty) {
+            TaskDialogs().showTaskMessage(
+              newMessageTask.message,
+            );
+          }
 
           add(UpdateProfileChatEvent());
         } catch (e) {

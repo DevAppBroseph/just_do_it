@@ -136,7 +136,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                                 mask: '+###############',
                                 filter: {"#": RegExp(r'[0-9]')},
                               ),
-                              LengthLimitingTextInputFormatter(15),
+                              LengthLimitingTextInputFormatter(16),
                             ],
                             onTap: () {
                               if (phoneController.text.isEmpty) phoneController.text = '+';

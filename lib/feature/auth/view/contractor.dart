@@ -536,7 +536,7 @@ class _ContractorState extends State<Contractor> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
-            LengthLimitingTextInputFormatter(15),
+            LengthLimitingTextInputFormatter(16),
           ],
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
