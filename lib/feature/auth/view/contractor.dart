@@ -290,7 +290,7 @@ class _ContractorState extends State<Contractor> {
 
                   if (errorsFlag) {
                     CustomAlert().showMessage(error, context);
-                  } else if (phoneController.text.length < 15) {
+                  } else if (phoneController.text.length < 12) {
                     CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}.', context);
                   } else if (emailController.text.split('@').last.split('.').last.length < 2) {
                     CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
