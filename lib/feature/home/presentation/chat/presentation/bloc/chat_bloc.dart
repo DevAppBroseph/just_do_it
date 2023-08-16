@@ -105,8 +105,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         try {
           log('messreferferfreage new $event');
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
-          log('fdfff $newMessageTask');
-          if (newMessageTask.action.isEmpty) {
+          log('fdfff ${newMessageTask.action}');
+          if (newMessageTask.action.isNotEmpty) {
             TaskDialogs().showTaskMessage(
               newMessageTask.message,
             );

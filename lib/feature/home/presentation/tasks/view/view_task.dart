@@ -1194,9 +1194,10 @@ class _TaskViewState extends State<TaskView> {
                                                     BlocProvider.of<ProfileBloc>(context).access,
                                                     widget.selectTask.answers[index].id!,
                                                     'Selected');
-                                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                user = BlocProvider.of<ProfileBloc>(context).user;
-                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                      BlocProvider.of<ProfileBloc>(context)
+                                                          .add(UpdateProfileEvent(user));
+                                                
                                                 if (widget.canEdit) {
                                                   Navigator.pop(context);
                                                 }
