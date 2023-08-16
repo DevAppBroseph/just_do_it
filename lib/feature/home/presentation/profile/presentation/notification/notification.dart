@@ -87,7 +87,7 @@ class _NotificationPageState extends State<NotificationPage> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 24.w),
                             child: SizedBox(
-                              height: 80.h * notifications!.length,
+                              height: 630.h,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 32.h),
                                 child: ListView.builder(
