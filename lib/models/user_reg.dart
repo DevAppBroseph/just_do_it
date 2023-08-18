@@ -232,7 +232,7 @@ class UserRegModel {
     int? id = data['id'];
     bool? rus = data['rus'];
     List<ActivitiesInfo> list = [];
-    int? balance = data['balance'];
+    int? balance = data['actual_balance'];
     String? link = data['link'];
     if (data['activities_info'] != null) {
       for (var element in data['activities_info']) {

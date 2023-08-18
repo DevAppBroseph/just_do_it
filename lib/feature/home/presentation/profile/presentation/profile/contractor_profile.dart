@@ -1298,8 +1298,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: GestureDetector(
                   onTap: () async {
                     if (user!.isBanned!) {
-                          banDialog(context, 'your_profile_is_blocked'.tr());
-
+                      banDialog(context, 'your_profile_is_blocked'.tr());
                     } else {
                       await Repository().deleteProfile(BlocProvider.of<ProfileBloc>(context).access!);
                       BlocProvider.of<ProfileBloc>(context).setAccess(null);
