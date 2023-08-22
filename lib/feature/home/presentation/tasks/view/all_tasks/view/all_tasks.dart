@@ -114,7 +114,7 @@ class _AllTasksViewState extends State<AllTasksView> {
                                       selectTask = task;
                                     });
                                   },
-                                  BlocProvider.of<ProfileBloc>(context).user
+                                  BlocProvider.of<ProfileBloc>(context).user,context
                                 );
                               },
                             ),

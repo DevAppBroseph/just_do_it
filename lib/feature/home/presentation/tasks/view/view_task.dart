@@ -299,7 +299,7 @@ class _TaskViewState extends State<TaskView> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            width: 12.w,
+                                            width: 7.w,
                                           ),
                                           SvgPicture.asset(
                                             'assets/icons/arrow_up_yellow.svg',
@@ -315,7 +315,7 @@ class _TaskViewState extends State<TaskView> {
                                             width: 4.w,
                                           ),
                                           Text(
-                                            '${DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour}:${DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute}',
+                                            '${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
                                             style: CustomTextStyle.black_11_w500_171716,
                                           ),
                                         ],
@@ -336,7 +336,7 @@ class _TaskViewState extends State<TaskView> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            width: 13.w,
+                                            width: 10.w,
                                           ),
                                           SvgPicture.asset(
                                             'assets/icons/arrow_up_yellow.svg',
@@ -349,7 +349,7 @@ class _TaskViewState extends State<TaskView> {
                                             style: CustomTextStyle.black_11_w500_171716,
                                           ),
                                           Text(
-                                            ' ${DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour}:${DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute}',
+                                            ' ${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
                                             style: CustomTextStyle.black_11_w500_171716,
                                           ),
                                         ],
@@ -2966,6 +2966,33 @@ class _TaskViewState extends State<TaskView> {
     month = parts[1].trim();
     text = '$day.$month.$year';
     return text;
+  }
+
+  String _timeWithZero(String time) {
+    switch (time) {
+      case '0':
+        return '00';
+      case '1':
+        return '01';
+      case '2':
+        return '02';
+      case '3':
+        return '03';
+      case '4':
+        return '04';
+      case '5':
+        return '05';
+      case '6':
+        return '06';
+      case '7':
+        return '07';
+      case '8':
+        return '08';
+      case '9':
+        return '09';
+      default:
+        return time;
+    }
   }
 
   String _textCountry(Task task, UserRegModel? user) {

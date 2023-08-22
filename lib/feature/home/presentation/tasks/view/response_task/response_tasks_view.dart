@@ -110,7 +110,7 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
                                         selectTask = task;
                                       });
                                     },
-                                    user!
+                                    user!,context
                                   );
                                 }
                                 return Container();

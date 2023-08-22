@@ -109,7 +109,7 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
                                         selectTask = task;
                                       });
                                     },
-                                    user!
+                                    user!,context
                                   );
                                 }
                                 return Container();

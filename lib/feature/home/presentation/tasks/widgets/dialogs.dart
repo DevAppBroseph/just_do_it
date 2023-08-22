@@ -184,16 +184,10 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
                                 SizedBox(
                                   height: 30.h,
                                 ),
-                                if (user!.rus!)
-                                  Text(
-                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
-                                if (!user.rus!)
-                                  Text(
-                                    '$score points earned',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
+                                Text(
+                                  '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                                  style: CustomTextStyle.black_20_w700,
+                                ),  
                                 SizedBox(
                                   height: 15.h,
                                 ),

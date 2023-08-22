@@ -6,11 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
+Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildContext context) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
     child: ScaleButton(
@@ -155,12 +156,17 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
               ),
             ),
             task.isGradedNow!
-                ? Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 100.h,
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/icons/arrow_up.svg',
+                ? GestureDetector(
+                    onTap: () {
+                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 100.h,
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/icons/arrow_up.svg',
+                      ),
                     ),
                   )
                 : Container(),

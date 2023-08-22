@@ -121,7 +121,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                                     selectTask = task;
                                   });
                                 },
-                                BlocProvider.of<ProfileBloc>(context).user,
+                                BlocProvider.of<ProfileBloc>(context).user, context
                               );
                             },
                           ),

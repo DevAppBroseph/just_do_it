@@ -224,8 +224,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         CustomButton(
                           onTap: () {
                             if (isGraded) {
-                              onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
-                                  'your_ad_is_now_above_others'.tr());
                             } else {
                               onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
                                   'your_ad_is_now_above_others'.tr());
@@ -234,10 +232,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               });
                             }
                           },
-                          btnColor: ColorStyles.purpleA401C4,
+                            btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
                           textLabel: Text(
                             'become_the_first'.tr(),
-                            style: CustomTextStyle.white_16_w600,
+                            style: isGraded ? CustomTextStyle.grey_14_w600 : CustomTextStyle.white_14,
                           ),
                         ),
                         Padding(
