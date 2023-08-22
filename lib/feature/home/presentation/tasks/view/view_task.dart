@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1130,6 +1131,8 @@ class _TaskViewState extends State<TaskView> {
                           if (widget.selectTask.owner!.hasReview!) {
                             CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                           } else {
+                            showLoaderWrapperWhite(context);
+
                             Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
                                 widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
                             context.read<TasksBloc>().add(UpdateTaskEvent());
@@ -1137,6 +1140,10 @@ class _TaskViewState extends State<TaskView> {
 
                             widget.openOwner(widget.selectTask.owner);
                             scoreDialog(context, '100', 'left_a_review'.tr());
+
+                            Future.delayed(const Duration(seconds: 2), () {
+                              Loader.hide();
+                            });
                           }
                         }
                       },
@@ -1825,12 +1832,15 @@ class _TaskViewState extends State<TaskView> {
                                                   reviewRating);
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
+                                              showLoaderWrapperWhite(context);
                                               final owner = await Repository().getRanking(
                                                   widget.selectTask.answers[index].owner?.id,
                                                   BlocProvider.of<ProfileBloc>(context).access);
                                               widget.openOwner(owner);
                                               scoreDialog(context, '100', 'left_a_review'.tr());
+                                              Future.delayed(const Duration(seconds: 2), () {
+                                                Loader.hide();
+                                              });
                                             }
                                           }
                                         },
@@ -2036,9 +2046,13 @@ class _TaskViewState extends State<TaskView> {
                                                     reviewRating);
                                                 context.read<TasksBloc>().add(UpdateTaskEvent());
                                                 BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                showLoaderWrapperWhite(context);
 
                                                 widget.openOwner(widget.selectTask.owner);
                                                 scoreDialog(context, '100', 'left_a_review'.tr());
+                                                Future.delayed(const Duration(seconds: 2), () {
+                                                  Loader.hide();
+                                                });
                                               }
                                             }
                                           },
@@ -2248,9 +2262,12 @@ class _TaskViewState extends State<TaskView> {
                                                     reviewRating);
                                                 context.read<TasksBloc>().add(UpdateTaskEvent());
                                                 BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
+                                                showLoaderWrapperWhite(context);
                                                 widget.openOwner(widget.selectTask.owner);
                                                 scoreDialog(context, '100', 'left_a_review'.tr());
+                                                Future.delayed(const Duration(seconds: 2), () {
+                                                  Loader.hide();
+                                                });
                                               }
                                             }
                                           },
@@ -2456,9 +2473,13 @@ class _TaskViewState extends State<TaskView> {
                                                 reviewRating);
                                             context.read<TasksBloc>().add(UpdateTaskEvent());
                                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                            showLoaderWrapperWhite(context);
 
                                             widget.openOwner(widget.selectTask.owner);
                                             scoreDialog(context, '100', 'left_a_review'.tr());
+                                            Future.delayed(const Duration(seconds: 2), () {
+                                              Loader.hide();
+                                            });
                                           }
                                         }
                                       },
