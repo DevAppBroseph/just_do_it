@@ -217,8 +217,11 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                         CustomButton(
                           onTap: () {
                             if (isGraded) {
-                              CustomAlert().showMessage('Уже нажали', context);
+                              onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
+                                  'your_ad_is_now_above_others'.tr());
                             } else {
+                              onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
+                                  'your_ad_is_now_above_others'.tr());
                               setState(() {
                                 isGraded = true;
                               });
@@ -233,11 +236,16 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                         Padding(
                           padding: EdgeInsets.only(left: 150.w),
                           child: Align(
-                            child: SvgPicture.asset(
-                              SvgImg.help,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
+                            child: GestureDetector(
+                              onTap: () {
+                                helpOnTopDialog(context, 'put_on_top'.tr(), 'the_visibility_of_your_response'.tr());
+                              },
+                              child: SvgPicture.asset(
+                                SvgImg.help,
+                                color: Colors.white,
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
                           ),
                         ),

@@ -207,7 +207,7 @@ class Repository {
     );
 
     Task? task;
-
+    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       task = Task.fromJson(response.data);
       return task;
@@ -227,6 +227,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
+    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }
@@ -273,7 +274,8 @@ class Repository {
     return false;
   }
 
-  Future<Answers?> createAnswer(int id, String? access, int price, String description, String status, bool isGraded) async {
+  Future<Answers?> createAnswer(
+      int id, String? access, int price, String description, String status, bool isGraded) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
@@ -794,7 +796,7 @@ class Repository {
     if (response.statusCode == 204) {
       return 'Поднятие было сделано';
     }
-     if (response.statusCode == 400) {
+    if (response.statusCode == 400) {
       return 'Недостаточно баллов';
     }
     return 'Ошибка сервера';
@@ -806,10 +808,10 @@ class Repository {
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
 
-   if (response.statusCode == 204) {
+    if (response.statusCode == 204) {
       return 'Поднятие было сделано';
     }
-     if (response.statusCode == 400) {
+    if (response.statusCode == 400) {
       return 'Недостаточно баллов';
     }
     return 'Ошибка сервера';

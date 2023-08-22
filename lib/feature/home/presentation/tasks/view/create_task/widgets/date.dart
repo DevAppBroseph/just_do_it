@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -1059,15 +1060,19 @@ class _DatePickerState extends State<DatePicker> {
           Row(
             children: [
               const Spacer(),
-              SvgPicture.asset(SvgImg.help),
+              GestureDetector(
+                  onTap: () {
+                    helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                  },
+                  child: SvgPicture.asset(SvgImg.help)),
             ],
           ),
           SizedBox(height: 8.h),
           CustomButton(
             onTap: () async {
               if (widget.isGraded) {
-                CustomAlert().showMessage('Уже нажали', context);
               } else {
+                onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
                 setState(() {
                   widget.isGraded = true;
                 });
@@ -1080,10 +1085,10 @@ class _DatePickerState extends State<DatePicker> {
                 );
               }
             },
-            btnColor: ColorStyles.purpleA401C4,
+            btnColor: widget.isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
             textLabel: Text(
               'raise_ad'.tr(),
-              style: CustomTextStyle.white_14,
+              style: widget.isGraded ? CustomTextStyle.grey_14_w600 : CustomTextStyle.white_14,
             ),
           ),
           SizedBox(height: widget.bottomInsets),

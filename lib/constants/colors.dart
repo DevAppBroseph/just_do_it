@@ -20,6 +20,8 @@ class ColorStyles {
   static const greyF9F9F9 = Color(0xFFF9F9F9);
   static const greyF3F3F3 = Color(0xFFF3F3F3);
   static const greyD9D9D9 = Color(0xFFD9D9D9);
+  static const grey939393 = Color.fromRGBO(147, 147, 147, 1);
+
 
   static const Color shadowFC6554 = Color.fromRGBO(26, 42, 97, 0.06);
   static const Color blueFC6554 = Color.fromRGBO(20, 55, 106, 0.45);

@@ -322,6 +322,192 @@ void banDialog(BuildContext context, String action) => showDialog(
         );
       },
     );
+void helpOnTopDialog(BuildContext context, String title, String description) => showDialog(
+      useSafeArea: false,
+      barrierColor: Colors.black.withOpacity(0.1),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            alignment: Alignment.center,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: GestureDetector(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 327.w,
+                    height: 393.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/help_circle.svg',
+                                  color: ColorStyles.yellowFFCA0D,
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  child: Text(
+                                    title,
+                                    style: CustomTextStyle.black_20_w700,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                  child: Text(
+                                    description,
+                                    style: CustomTextStyle.black_14_w500_171716,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomButton(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            btnColor: ColorStyles.yellowFFCA0D,
+                            textLabel: Text(
+                              'i_see'.tr(),
+                              style: CustomTextStyle.black_14_w800_171716,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+void onTopDialog(BuildContext context, String title, String action, String description) => showDialog(
+      useSafeArea: false,
+      barrierColor: Colors.black.withOpacity(0.1),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            alignment: Alignment.center,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: GestureDetector(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 327.w,
+                    height: 393.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/arrow_big_up_dash.svg',
+                                  color: ColorStyles.yellowFFCA0D,
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  child: Text(
+                                    title,
+                                    style: CustomTextStyle.black_20_w700,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Text(
+                                  action,
+                                  style: CustomTextStyle.black_14_w500_171716,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                  child: Text(
+                                    description,
+                                    style: CustomTextStyle.grey_12_w400,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomButton(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            btnColor: ColorStyles.yellowFFCA0D,
+                            textLabel: Text(
+                              'i_see'.tr(),
+                              style: CustomTextStyle.black_14_w800_171716,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
 void taskMoreDialogForProfile(
   BuildContext context,
   Offset offset,

@@ -8,7 +8,9 @@ class Task {
   int? id;
   bool? asCustomer;
   bool? isGraded;
+  bool? isGradedNow;
   int? isLiked;
+  String? lastUpgrade;
   Owner? owner;
   int? chatId;
   String name;
@@ -38,6 +40,7 @@ class Task {
       this.owner,
       this.asCustomer,
       this.isLiked,
+      this.lastUpgrade,
       this.chatId,
       this.currency,
       required this.name,
@@ -48,6 +51,7 @@ class Task {
       required this.dateEnd,
       required this.priceFrom,
       required this.isGraded,
+      this.isGradedNow,
       required this.priceTo,
       this.regions = const [],
       this.towns = const [],
@@ -103,6 +107,7 @@ class Task {
 
     return Task(
         id: json["id"],
+        lastUpgrade: json['last_grade'],
         isGraded: json["is_graded"],
         owner: Owner.fromJson(json["owner"]),
         isLiked: json["is_liked"],
@@ -123,7 +128,7 @@ class Task {
         files: files,
         towns: towns,
         answers: answers,
-        isAnswered: isAnswered);
+        isAnswered: isAnswered, isGradedNow:  json["is_graded_now"],);
   }
 
   Map<String, dynamic> toJson() {

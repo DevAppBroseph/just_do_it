@@ -459,6 +459,12 @@ class CustomTextStyle {
     color: ColorStyles.greyBDBDBD,
     fontFamily: 'SFPro',
   );
+   static TextStyle grey_14_w600 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorStyles.grey939393,
+    fontFamily: 'SFPro',
+  );
   static TextStyle grey_13_w400 = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,

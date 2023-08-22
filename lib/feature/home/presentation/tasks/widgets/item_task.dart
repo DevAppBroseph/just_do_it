@@ -21,129 +21,150 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user) {
           color: ColorStyles.whiteFFFFFF,
           borderRadius: BorderRadius.circular(10.r),
           // boxShadow: [
-            // BoxShadow(
-            //   color: ColorStyles.shadowFC6554,
-            //   offset: const Offset(0, 8),
-            //   blurRadius: 5.r,
-            // )
+          // BoxShadow(
+          //   color: ColorStyles.shadowFC6554,
+          //   offset: const Offset(0, 8),
+          //   blurRadius: 5.r,
+          // )
           // ],
         ),
         height: 130.h,
         width: 327.h,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 50.h,
-                child: Column(
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 16.h),
+              child: Padding(
+                padding: EdgeInsets.only(left: 12.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (task.activities != null)
-                      Row(
+                    SizedBox(
+                      height: 50.h,
+                      child: Column(
                         children: [
-                          if (task.activities?.photo != null)
-                            Image.network(
-                              task.activities!.photo!,
-                              height: 34.h,
-                              width: 34.h,
+                          if (task.activities != null)
+                            Row(
+                              children: [
+                                if (task.activities?.photo != null)
+                                  Image.network(
+                                    task.activities!.photo!,
+                                    height: 34.h,
+                                    width: 34.h,
+                                  ),
+                              ],
                             ),
                         ],
                       ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 15.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 245.w,
-                    child: Text(
-                      task.name,
-                      style: CustomTextStyle.black_14_w500_171716,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 245.w,
-                    child: Row(
+                    SizedBox(width: 15.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
                             SizedBox(
-                              width: 245.w,
+                              width: 230.w,
                               child: Text(
-                                _textCountry(task, user),
-                                style: CustomTextStyle.black_12_w500_515150,
-                                maxLines: 1,
+                                task.name,
+                                style: CustomTextStyle.black_14_w500_171716,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            SizedBox(height: 5.h),
-                            Text(
-                              _textData(task.dateStart, user),
-                              style: CustomTextStyle.grey_12_w400,
                             ),
                           ],
                         ),
                         const Spacer(),
+                        SizedBox(
+                          width: 230.w,
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 230.w,
+                                    child: Text(
+                                      _textCountry(task, user),
+                                      style: CustomTextStyle.black_12_w500_515150,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5.h),
+                                  Text(
+                                    _textData(task.dateStart, user),
+                                    style: CustomTextStyle.grey_12_w400,
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 230.w,
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              if (task.currency?.name == null)
+                                SizedBox(
+                                  width: 230.w,
+                                  child: Text(
+                                    'до ${_textCurrency(task.priceTo)} ',
+                                    maxLines: 1,
+                                    style: CustomTextStyle.black_14_w500_171716,
+                                  ),
+                                ),
+                              if (task.currency?.name == 'Дирхам')
+                                Text(
+                                  'до ${_textCurrency(task.priceTo)} AED',
+                                  maxLines: 1,
+                                  style: CustomTextStyle.black_14_w500_171716,
+                                ),
+                              if (task.currency?.name == 'Российский рубль')
+                                Text(
+                                  'до ${_textCurrency(task.priceTo)}  ₽',
+                                  maxLines: 1,
+                                  style: CustomTextStyle.black_14_w500_171716,
+                                ),
+                              if (task.currency?.name == 'Доллар США')
+                                Text(
+                                  'до ${_textCurrency(task.priceTo)} \$',
+                                  maxLines: 1,
+                                  style: CustomTextStyle.black_14_w500_171716,
+                                ),
+                              if (task.currency?.name == 'Евро')
+                                Text(
+                                  'до ${_textCurrency(task.priceTo)} €',
+                                  maxLines: 1,
+                                  style: CustomTextStyle.black_14_w500_171716,
+                                ),
+                              SizedBox(width: 5.w),
+                              SvgPicture.asset(
+                                'assets/icons/card.svg',
+                                height: 16.h,
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 245.w,
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        if (task.currency?.name == null)
-                          SizedBox(
-                            width: 245.w,
-                            child: Text(
-                              'до ${_textCurrency(task.priceTo)} ',
-                              maxLines: 1,
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          ),
-                        if (task.currency?.name == 'Дирхам')
-                          Text(
-                            'до ${_textCurrency(task.priceTo)} AED',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.currency?.name == 'Российский рубль')
-                          Text(
-                            'до ${_textCurrency(task.priceTo)}  ₽',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.currency?.name == 'Доллар США')
-                          Text(
-                            'до ${_textCurrency(task.priceTo)} \$',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.currency?.name == 'Евро')
-                          Text(
-                            'до ${_textCurrency(task.priceTo)} €',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        SizedBox(width: 5.w),
-                        SvgPicture.asset(
-                          'assets/icons/card.svg',
-                          height: 16.h,
-                        ),
-                      ],
+                  ],
+                ),
+              ),
+            ),
+            task.isGradedNow!
+                ? Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 100.h,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/icons/arrow_up.svg',
                     ),
                   )
-                ],
-              ),
-            ],
-          ),
+                : Container(),
+          ],
         ),
       ),
     ),
