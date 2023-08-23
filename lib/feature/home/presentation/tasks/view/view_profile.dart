@@ -494,20 +494,21 @@ class _ProfileViewState extends State<ProfileView> {
                                                   padding: EdgeInsets.only(left: 5.w),
                                                   child: Row(
                                                     children: [
-                                                      Text(
-                                                        'passport_data_uploaded'.tr(),
-                                                        style: owner != null &&
-                                                                owner!.isPassportExist != null &&
-                                                                owner!.isPassportExist!
-                                                            ? CustomTextStyle.black_11_w400_171716
-                                                            : CustomTextStyle.grey_12_w400,
+                                                      SizedBox(
+                                                        width: 240.w,
+                                                        child: Text(
+                                                          'passport_data_uploaded'.tr(),
+                                                          style: owner != null &&
+                                                                  owner!.isPassportExist != null &&
+                                                                  owner!.isPassportExist!
+                                                              ? CustomTextStyle.black_11_w400_171716
+                                                              : CustomTextStyle.grey_12_w400,
+                                                        ),
                                                       ),
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)
-                                                        SizedBox(
-                                                          width: 63.w,
-                                                        ),
+                                                     
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)
@@ -532,20 +533,21 @@ class _ProfileViewState extends State<ProfileView> {
                                                   padding: EdgeInsets.only(left: 5.w),
                                                   child: Row(
                                                     children: [
-                                                      Text(
-                                                        'the_user_is_verified_by_the_application'.tr(),
-                                                        style: owner != null &&
-                                                                owner!.isPassportExist != null &&
-                                                                owner!.isPassportExist!
-                                                            ? CustomTextStyle.black_11_w400_171716
-                                                            : CustomTextStyle.grey_12_w400,
+                                                      SizedBox(
+                                                         width: 240.w,
+                                                        child: Text(
+                                                          'the_user_is_verified_by_the_application'.tr(),
+                                                          style: owner != null &&
+                                                                  owner!.isPassportExist != null &&
+                                                                  owner!.isPassportExist!
+                                                              ? CustomTextStyle.black_11_w400_171716
+                                                              : CustomTextStyle.grey_12_w400,
+                                                        ),
                                                       ),
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)
-                                                        SizedBox(
-                                                          width: 70.w,
-                                                        ),
+                                                       
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)

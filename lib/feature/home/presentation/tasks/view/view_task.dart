@@ -59,11 +59,13 @@ class TaskView extends StatefulWidget {
 class _TaskViewState extends State<TaskView> {
   double? reviewRating;
   Task? selectTask;
-
+  UserRegModel? user;
   @override
   void initState() {
     super.initState();
     getTask();
+    user = BlocProvider.of<ProfileBloc>(context).user;
+
     selectTask = widget.selectTask;
   }
 
@@ -93,6 +95,7 @@ class _TaskViewState extends State<TaskView> {
   bool proverka = false;
   List<FavouriteOffers>? favouritesOrders;
   FavouriteOffers? selectFavouriteTask;
+  Owner? ownerw;
 
   getPersonAndTask(bool res, UserRegModel? user) {
     context.read<TasksBloc>().add(UpdateTaskEvent());
@@ -105,7 +108,6 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
-    UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: MediaQuery(
@@ -288,7 +290,12 @@ class _TaskViewState extends State<TaskView> {
                             ? DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().day != DateTime.now().day
                                 ? GestureDetector(
                                     onTap: () {
-                                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                      if (widget.selectTask.owner?.id == user?.id) {
+                                        onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                            'ad_is_now_above'.tr());
+                                      } else {
+                                        helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                      }
                                     },
                                     child: Container(
                                       height: 30.h,
@@ -325,7 +332,12 @@ class _TaskViewState extends State<TaskView> {
                                   )
                                 : GestureDetector(
                                     onTap: () {
-                                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                      if (widget.selectTask.owner?.id == user?.id) {
+                                        onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                            'ad_is_now_above'.tr());
+                                      } else {
+                                        helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                      }
                                     },
                                     child: Container(
                                       height: 30.h,
@@ -337,7 +349,7 @@ class _TaskViewState extends State<TaskView> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            width: 10.w,
+                                            width: 7.w,
                                           ),
                                           SvgPicture.asset(
                                             'assets/icons/arrow_up_yellow.svg',
@@ -841,10 +853,10 @@ class _TaskViewState extends State<TaskView> {
                 );
               }),
               SizedBox(height: 20.h),
-              if (user != null && widget.canSelect && user.id != widget.selectTask.owner?.id)
+              if (user != null && widget.canSelect && user!.id != widget.selectTask.owner?.id)
                 CustomButton(
                   onTap: () async {
-                    if (user.isBanned!) {
+                    if (user!.isBanned!) {
                       banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
                     } else {
                       final chatBloc = BlocProvider.of<ChatBloc>(context);
@@ -910,14 +922,14 @@ class _TaskViewState extends State<TaskView> {
                             builder: (context) => const AuthPage(),
                           ));
                     } else {
-                      if (user.isBanned!) {
+                      if (user!.isBanned!) {
                         if (widget.selectTask.asCustomer!) {
                           banDialog(context, 'responses_to_tasks_is'.tr());
                         } else {
                           banDialog(context, 'responses_to_offers_is'.tr());
                         }
                       } else {
-                        if (user.docInfo == '' || user.docInfo == null) {
+                        if (user!.docInfo == '' || user!.docInfo == null) {
                           if (widget.fromFav) {
                             BlocProvider.of<repf.ReplyFromFavBloc>(context)
                                 .add(repf.OpenSlidingPanelEvent(selectTask: selectTask));
@@ -1181,266 +1193,38 @@ class _TaskViewState extends State<TaskView> {
                   }
                   return false;
                 }, builder: (context, state) {
-                  return SizedBox(
-                    height: widget.selectTask.status == 'Completed'
-                        ? 600.h
-                        : widget.selectTask.answers.every((element) => element.status != 'Selected')
-                            ? 300.h * widget.selectTask.answers.length
-                            : 300.h,
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: widget.selectTask.answers.length,
-                      itemBuilder: (context, index) {
-                        log((widget.selectTask.answers.every((element) => element.status != 'Selected').toString()));
-                        if (widget.selectTask.answers.every((element) => element.status != 'Selected') &&
-                            user?.id == widget.selectTask.owner?.id) {
-                          if (widget.selectTask.asCustomer!) {
-                            return Padding(
-                              padding: EdgeInsets.only(top: 15.h),
-                              child: ScaleButton(
-                                bound: 0.02,
-                                onTap: () async {
-                                  if (user!.isBanned!) {
-                                    banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                  } else {
-                                    final owner = await Repository().getRanking(
-                                        widget.selectTask.answers[index].owner?.id,
-                                        BlocProvider.of<ProfileBloc>(context).access);
-                                    widget.openOwner(owner);
-                                  }
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.whiteFFFFFF,
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ColorStyles.shadowFC6554,
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 45.r,
-                                      )
-                                    ],
-                                  ),
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          if (widget.selectTask.answers[index].owner?.photo != null)
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.circular(1000.r),
-                                              child: Image.network(
-                                                widget.selectTask.answers[index].owner!.photo!,
-                                                height: 48.h,
-                                                width: 48.w,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          SizedBox(width: 15.w),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 300.w,
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 180.w,
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                              text:
-                                                                  '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                              children: [
-                                                                WidgetSpan(
-                                                                  child: SizedBox(
-                                                                    width: 10.w,
-                                                                  ),
-                                                                ),
-                                                                WidgetSpan(
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.only(bottom: 3.h),
-                                                                    child: SvgPicture.asset('assets/icons/star.svg'),
-                                                                  ),
-                                                                ),
-                                                                WidgetSpan(
-                                                                  child: SizedBox(width: 4.w),
-                                                                ),
-                                                                WidgetSpan(
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.only(bottom: 1.h),
-                                                                    child: Text(
-                                                                      widget.selectTask.answers[index].owner?.ranking ==
-                                                                              null
-                                                                          ? '0'
-                                                                          : widget
-                                                                              .selectTask.answers[index].owner!.ranking
-                                                                              .toString(),
-                                                                      style: CustomTextStyle.black_13_w500_171716,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ]),
-                                                        ),
-                                                      ),
-                                                      const Spacer(),
-                                                      Text(
-                                                        'before'.tr(),
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 6.h),
-                                                Row(
-                                                  children: [
-                                                    const Spacer(),
-                                                    if (widget.selectTask.currency?.name == null &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        '${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        '${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        '${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        '${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                    if (widget.selectTask.currency?.name == 'Евро' &&
-                                                        widget.selectTask.answers[index].price != null)
-                                                      Text(
-                                                        '${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                        style: CustomTextStyle.black_15_w600_171716,
-                                                      ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'completed_tasks'.tr(),
-                                                      style: CustomTextStyle.grey_12_w400,
-                                                    ),
-                                                    SizedBox(width: 4.w),
-                                                    if (widget.selectTask.answers[index].owner != null)
-                                                      Text(
-                                                        widget.selectTask.answers[index].owner!.countOrdersComplete
-                                                            .toString(),
-                                                        style: CustomTextStyle.black_12_w400,
-                                                      ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      if (widget.selectTask.answers[index].description != null)
-                                        SizedBox(
-                                          height: 15.h,
-                                        ),
-                                      if (widget.selectTask.answers[index].description != null)
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10.w),
-                                          child: Text(
-                                            widget.selectTask.answers[index].description!,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 3,
-                                            style: CustomTextStyle.black_12_w400_292D32,
-                                          ),
-                                        ),
-                                      SizedBox(
-                                        height: 30.h,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 50.h,
-                                            width: 140.w,
-                                            child: CustomButton(
-                                              onTap: () async {
-                                                if (user!.isBanned!) {
-                                                  banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
-                                                } else {
-                                                  final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                  chatBloc.editShowPersonChat(false);
-                                                  chatBloc.editChatId(widget.selectTask.chatId);
-                                                  chatBloc.messages = [];
-                                                  final idChat = await Navigator.of(context).pushNamed(
-                                                    AppRoute.personalChat,
-                                                    arguments: [
-                                                      '${widget.selectTask.answers[index].chatId}',
-                                                      '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                      '${widget.selectTask.answers[index].owner?.id}',
-                                                      '${widget.selectTask.answers[index].owner?.photo}',
-                                                    ],
-                                                  );
-                                                  chatBloc.editShowPersonChat(true);
-                                                  chatBloc.editChatId(null);
-                                                }
-                                              },
-                                              btnColor: ColorStyles.greyDADADA,
-                                              textLabel: Text(
-                                                'write_to_the_chat'.tr(),
-                                                style: TextStyle(
-                                                    color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          SizedBox(
-                                            height: 50.h,
-                                            width: 140.w,
-                                            child: CustomButton(
-                                              onTap: () async {
-                                                log(widget.selectTask.answers[index].id!.toString());
-                                                Repository().updateStatusResponse(
-                                                    BlocProvider.of<ProfileBloc>(context).access,
-                                                    widget.selectTask.answers[index].id!,
-                                                    'Selected');
-                                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
-                                                if (widget.canEdit) {
-                                                  Navigator.pop(context);
-                                                }
-                                              },
-                                              btnColor: ColorStyles.yellowFFD70A,
-                                              textLabel: Text(
-                                                'choose_a_executor'.tr(),
-                                                style: TextStyle(
-                                                    color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          } else {
-                            return SizedBox(
-                              height: 205.h,
-                              child: Padding(
+                  return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+                    if (current is LoadProfileSuccessState) {
+                      user = BlocProvider.of<ProfileBloc>(context).user;
+                      log('LoadProfileSuccessState');
+                      return true;
+                    }
+                    if (current is UpdateProfileSuccessState) {
+                      user = BlocProvider.of<ProfileBloc>(context).user;
+                      log('UpdateProfileSuccessState');
+                      return true;
+                    }
+                    if (previous != current) {
+                      return true;
+                    }
+                    return false;
+                  }, builder: (context, stateProfile) {
+                    return SizedBox(
+                      height: widget.selectTask.status == 'Completed'
+                          ? 600.h
+                          : widget.selectTask.answers.every((element) => element.status != 'Selected')
+                              ? 300.h * widget.selectTask.answers.length
+                              : 300.h,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: widget.selectTask.answers.length,
+                        itemBuilder: (context, index) {
+                          log((widget.selectTask.answers.every((element) => element.status != 'Selected').toString()));
+                          if (widget.selectTask.answers.every((element) => element.status != 'Selected') &&
+                              user?.id == widget.selectTask.owner?.id) {
+                            if (widget.selectTask.asCustomer!) {
+                              return Padding(
                                 padding: EdgeInsets.only(top: 15.h),
                                 child: ScaleButton(
                                   bound: 0.02,
@@ -1492,59 +1276,102 @@ class _TaskViewState extends State<TaskView> {
                                                     child: Row(
                                                       children: [
                                                         SizedBox(
-                                                          width: 110.w,
-                                                          child: Text(
-                                                            '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                            softWrap: true,
+                                                          width: 180.w,
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                                style: CustomTextStyle.black_15_w600_171716,
+                                                                text:
+                                                                    '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                children: [
+                                                                  WidgetSpan(
+                                                                    child: SizedBox(
+                                                                      width: 10.w,
+                                                                    ),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(bottom: 3.h),
+                                                                      child: SvgPicture.asset('assets/icons/star.svg'),
+                                                                    ),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: SizedBox(width: 4.w),
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(bottom: 1.h),
+                                                                      child: Text(
+                                                                        widget.selectTask.answers[index].owner
+                                                                                    ?.ranking ==
+                                                                                null
+                                                                            ? '0'
+                                                                            : widget.selectTask.answers[index].owner!
+                                                                                .ranking
+                                                                                .toString(),
+                                                                        style: CustomTextStyle.black_13_w500_171716,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ]),
                                                           ),
                                                         ),
                                                         const Spacer(),
-                                                        if (widget.selectTask.currency?.name == null &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
-                                                        if (widget.selectTask.currency?.name == 'Евро' &&
-                                                            widget.selectTask.answers[index].price != null)
-                                                          Text(
-                                                            '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                            style: CustomTextStyle.black_15_w600_171716,
-                                                          ),
+                                                        Text(
+                                                          'before'.tr(),
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
                                                   SizedBox(height: 6.h),
                                                   Row(
                                                     children: [
-                                                      SvgPicture.asset('assets/icons/star.svg'),
-                                                      SizedBox(width: 4.w),
+                                                      const Spacer(),
+                                                      if (widget.selectTask.currency?.name == null &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                      if (widget.selectTask.currency?.name == 'Евро' &&
+                                                          widget.selectTask.answers[index].price != null)
+                                                        Text(
+                                                          '${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                          style: CustomTextStyle.black_15_w600_171716,
+                                                        ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
                                                       Text(
-                                                        widget.selectTask.answers[index].owner?.ranking == null
-                                                            ? '0'
-                                                            : widget.selectTask.answers[index].owner!.ranking
-                                                                .toString(),
-                                                        style: CustomTextStyle.black_13_w500_171716,
+                                                        'completed_tasks'.tr(),
+                                                        style: CustomTextStyle.grey_12_w400,
                                                       ),
+                                                      SizedBox(width: 4.w),
+                                                      if (widget.selectTask.answers[index].owner != null)
+                                                        Text(
+                                                          widget.selectTask.answers[index].owner!.countOrdersComplete
+                                                              .toString(),
+                                                          style: CustomTextStyle.black_12_w400,
+                                                        ),
                                                     ],
                                                   ),
                                                 ],
@@ -1613,14 +1440,26 @@ class _TaskViewState extends State<TaskView> {
                                               height: 50.h,
                                               width: 140.w,
                                               child: CustomButton(
-                                                onTap: () async {},
-                                                btnColor: ColorStyles.greyEAECEE,
+                                                onTap: () async {
+                                                  log(widget.selectTask.answers[index].id!.toString());
+                                                  Repository().updateStatusResponse(
+                                                      BlocProvider.of<ProfileBloc>(context).access,
+                                                      widget.selectTask.answers[index].id!,
+                                                      'Selected');
+                                                  context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
+                                                  if (widget.canEdit) {
+                                                    Navigator.pop(context);
+                                                  }
+                                                },
+                                                btnColor: ColorStyles.yellowFFD70A,
                                                 textLabel: Text(
-                                                  'you_have_been_chosen'.tr(),
+                                                  'choose_a_executor'.tr(),
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.w700),
+                                                      fontWeight: FontWeight.w500),
                                                 ),
                                               ),
                                             ),
@@ -1630,444 +1469,210 @@ class _TaskViewState extends State<TaskView> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }
-                        } else {
-                          if (widget.selectTask.answers[index].status == 'Selected') {
-                            if (widget.selectTask.status == 'Completed') {
-                              if (user?.id == widget.selectTask.owner?.id) {
-                                if (widget.selectTask.asCustomer!)
-                                //отзыв за заказчика
-                                {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: widget.selectTask.answers[index].owner!.firstname!.length +
-                                                    widget.selectTask.answers[index].owner!.lastname!.length <
-                                                30
-                                            ? 90.h
-                                            : 103.h,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: ScaleButton(
-                                            bound: 0.02,
-                                            onTap: () async {
-                                              if (user!.isBanned!) {
-                                                banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                              } else {
-                                                final owner = await Repository().getRanking(
-                                                    widget.selectTask.answers[index].owner?.id,
-                                                    BlocProvider.of<ProfileBloc>(context).access);
-                                                widget.openOwner(owner);
-                                              }
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: ColorStyles.whiteFFFFFF,
-                                                borderRadius: BorderRadius.circular(20.r),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: ColorStyles.shadowFC6554,
-                                                    offset: const Offset(0, 4),
-                                                    blurRadius: 45.r,
-                                                  )
-                                                ],
-                                              ),
-                                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      if (widget.selectTask.answers[index].owner?.photo != null)
-                                                        ClipRRect(
-                                                          borderRadius: BorderRadius.circular(1000.r),
-                                                          child: Image.network(
-                                                            widget.selectTask.answers[index].owner!.photo!,
-                                                            height: 48.h,
-                                                            width: 48.w,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      SizedBox(width: 15.w),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 300.w,
-                                                              child: Text(
-                                                                '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                style: CustomTextStyle.black_15_w600_171716,
-                                                                softWrap: true,
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 6.h),
-                                                            Row(
-                                                              children: [
-                                                                SvgPicture.asset('assets/icons/star.svg'),
-                                                                SizedBox(width: 4.w),
-                                                                Text(
-                                                                  widget.selectTask.answers[index].owner?.ranking ==
-                                                                          null
-                                                                      ? '0'
-                                                                      : widget.selectTask.answers[index].owner!.ranking
-                                                                          .toString(),
-                                                                  style: CustomTextStyle.black_13_w500_171716,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 30.h),
-                                      Text(
-                                        'leave_a_review'.tr(),
-                                        style: CustomTextStyle.black_17_w800,
-                                      ),
-                                      SizedBox(height: 15.h),
-                                      Text(
-                                        'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
-                                        style: CustomTextStyle.black_14_w500_171716,
-                                      ),
-                                      SizedBox(height: 30.h),
-                                      ScaleButton(
-                                        onTap: () {},
-                                        bound: 0.02,
-                                        child: Container(
-                                          height: 150.h,
-                                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
-                                          decoration: BoxDecoration(
-                                            color: ColorStyles.greyF9F9F9,
-                                            borderRadius: BorderRadius.circular(10.r),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'custom_text'.tr(),
-                                                style: CustomTextStyle.grey_14_w400,
-                                              ),
-                                              SizedBox(height: 3.h),
-                                              Row(
-                                                children: [
-                                                  CustomTextField(
-                                                    height: 90.h,
-                                                    width: 285.w,
-                                                    autocorrect: true,
-                                                    maxLines: 8,
-                                                    onTap: () {
-                                                      setState(() {});
-                                                    },
-                                                    style: CustomTextStyle.black_14_w400_171716,
-                                                    textEditingController: descriptionTextController1,
-                                                    fillColor: ColorStyles.greyF9F9F9,
-                                                    onChanged: (value) {},
-                                                    formatters: [
-                                                      UpperEveryTextInputFormatter(),
-                                                    ],
-                                                    hintText: '',
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 30.h),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'rate_the_executor'.tr(),
-                                            style: CustomTextStyle.black_17_w800,
-                                          ),
-                                          SizedBox(width: 15.h),
-                                          SvgPicture.asset(
-                                            SvgImg.help,
-                                            color: Colors.black,
-                                            width: 20,
-                                            height: 20,
-                                          ),
+                              );
+                            } else {
+                              return SizedBox(
+                                height: 205.h,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 15.h),
+                                  child: ScaleButton(
+                                    bound: 0.02,
+                                    onTap: () async {
+                                      if (user!.isBanned!) {
+                                        banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                      } else {
+                                        final owner = await Repository().getRanking(
+                                            widget.selectTask.answers[index].owner?.id,
+                                            BlocProvider.of<ProfileBloc>(context).access);
+                                        widget.openOwner(owner);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: ColorStyles.whiteFFFFFF,
+                                        borderRadius: BorderRadius.circular(20.r),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: ColorStyles.shadowFC6554,
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 45.r,
+                                          )
                                         ],
                                       ),
-                                      SizedBox(height: 15.h),
-                                      RatingBar.builder(
-                                        initialRating: 0,
-                                        minRating: 0,
-                                        direction: Axis.horizontal,
-                                        itemCount: 5,
-                                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: ColorStyles.yellowFFCA0D,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          reviewRating = rating;
-                                        },
-                                      ),
-                                      SizedBox(height: 30.h),
-                                      CustomButton(
-                                        onTap: () async {
-                                          if (user!.isBanned!) {
-                                            banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
-                                          } else {
-                                            if (widget.selectTask.answers[index].owner!.hasReview!) {
-                                              CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
-                                            } else {
-                                              Repository().addReviewsDetail(
-                                                  BlocProvider.of<ProfileBloc>(context).access,
-                                                  widget.selectTask.answers[index].owner?.id,
-                                                  descriptionTextController1.text,
-                                                  reviewRating);
-                                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                              showLoaderWrapperWhite(context);
-                                              final owner = await Repository().getRanking(
-                                                  widget.selectTask.answers[index].owner?.id,
-                                                  BlocProvider.of<ProfileBloc>(context).access);
-                                              widget.openOwner(owner);
-                                              scoreDialog(context, '100', 'left_a_review'.tr());
-                                              Future.delayed(const Duration(seconds: 2), () {
-                                                Loader.hide();
-                                              });
-                                            }
-                                          }
-                                        },
-                                        btnColor: ColorStyles.yellowFFD70A,
-                                        textLabel: Text(
-                                          'send_feedback'.tr(),
-                                          style: CustomTextStyle.black_16_w600_171716,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  if (widget.selectTask.isAnswered?.owner?.firstname != null) {
-                                    return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: widget.selectTask.isAnswered!.owner!.firstname!.length +
-                                                      widget.selectTask.isAnswered!.owner!.lastname!.length <
-                                                  30
-                                              ? 90.h
-                                              : 103.h,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: ScaleButton(
-                                              bound: 0.02,
-                                              onTap: () async {
-                                                if (user!.isBanned!) {
-                                                  banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                                } else {
-                                                  final owner = await Repository().getRanking(
-                                                      widget.selectTask.owner?.id,
-                                                      BlocProvider.of<ProfileBloc>(context).access);
-                                                  widget.openOwner(owner);
-                                                }
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: ColorStyles.whiteFFFFFF,
-                                                  borderRadius: BorderRadius.circular(20.r),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: ColorStyles.shadowFC6554,
-                                                      offset: const Offset(0, 4),
-                                                      blurRadius: 45.r,
-                                                    )
-                                                  ],
+                                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              if (widget.selectTask.answers[index].owner?.photo != null)
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(1000.r),
+                                                  child: Image.network(
+                                                    widget.selectTask.answers[index].owner!.photo!,
+                                                    height: 48.h,
+                                                    width: 48.w,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                              SizedBox(width: 15.w),
+                                              Expanded(
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        if (widget.selectTask.isAnswered?.owner?.photo != null)
-                                                          ClipRRect(
-                                                            borderRadius: BorderRadius.circular(1000.r),
-                                                            child: Image.network(
-                                                              widget.selectTask.isAnswered!.owner!.photo!,
-                                                              height: 48.h,
-                                                              width: 48.w,
-                                                              fit: BoxFit.cover,
+                                                    SizedBox(
+                                                      width: 300.w,
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 110.w,
+                                                            child: Text(
+                                                              '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                              softWrap: true,
                                                             ),
                                                           ),
-                                                        SizedBox(width: 15.w),
-                                                        Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 300.w,
-                                                                child: Text(
-                                                                  '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
-                                                                  style: CustomTextStyle.black_15_w600_171716,
-                                                                  softWrap: true,
-                                                                ),
-                                                              ),
-                                                              SizedBox(height: 6.h),
-                                                              Row(
-                                                                children: [
-                                                                  SvgPicture.asset('assets/icons/star.svg'),
-                                                                  SizedBox(width: 4.w),
-                                                                  Text(
-                                                                    widget.selectTask.isAnswered?.owner?.ranking == null
-                                                                        ? '0'
-                                                                        : widget.selectTask.isAnswered!.owner!.ranking
-                                                                            .toString(),
-                                                                    style: CustomTextStyle.black_13_w500_171716,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
+                                                          const Spacer(),
+                                                          if (widget.selectTask.currency?.name == null &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                          if (widget.selectTask.currency?.name == 'Евро' &&
+                                                              widget.selectTask.answers[index].price != null)
+                                                            Text(
+                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 6.h),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset('assets/icons/star.svg'),
+                                                        SizedBox(width: 4.w),
+                                                        Text(
+                                                          widget.selectTask.answers[index].owner?.ranking == null
+                                                              ? '0'
+                                                              : widget.selectTask.answers[index].owner!.ranking
+                                                                  .toString(),
+                                                          style: CustomTextStyle.black_13_w500_171716,
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ),
-                                        SizedBox(height: 30.h),
-                                        Text(
-                                          'leave_a_review'.tr(),
-                                          style: CustomTextStyle.black_17_w800,
-                                        ),
-                                        SizedBox(height: 15.h),
-                                        Text(
-                                          'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
-                                          style: CustomTextStyle.black_14_w500_171716,
-                                        ),
-                                        SizedBox(height: 30.h),
-                                        ScaleButton(
-                                          onTap: () {},
-                                          bound: 0.02,
-                                          child: Container(
-                                            height: 150.h,
-                                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
-                                            decoration: BoxDecoration(
-                                              color: ColorStyles.greyF9F9F9,
-                                              borderRadius: BorderRadius.circular(10.r),
+                                          if (widget.selectTask.answers[index].description != null)
+                                            SizedBox(
+                                              height: 15.h,
                                             ),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'custom_text'.tr(),
-                                                  style: CustomTextStyle.grey_14_w400,
+                                          if (widget.selectTask.answers[index].description != null)
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 10.w),
+                                              child: Text(
+                                                widget.selectTask.answers[index].description!,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                                style: CustomTextStyle.black_12_w400_292D32,
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: 30.h,
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                height: 50.h,
+                                                width: 140.w,
+                                                child: CustomButton(
+                                                  onTap: () async {
+                                                    if (user!.isBanned!) {
+                                                      banDialog(context, 'access_to_chat_is_currently_restricted'.tr());
+                                                    } else {
+                                                      final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                      chatBloc.editShowPersonChat(false);
+                                                      chatBloc.editChatId(widget.selectTask.chatId);
+                                                      chatBloc.messages = [];
+                                                      final idChat = await Navigator.of(context).pushNamed(
+                                                        AppRoute.personalChat,
+                                                        arguments: [
+                                                          '${widget.selectTask.answers[index].chatId}',
+                                                          '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                          '${widget.selectTask.answers[index].owner?.id}',
+                                                          '${widget.selectTask.answers[index].owner?.photo}',
+                                                        ],
+                                                      );
+                                                      chatBloc.editShowPersonChat(true);
+                                                      chatBloc.editChatId(null);
+                                                    }
+                                                  },
+                                                  btnColor: ColorStyles.greyDADADA,
+                                                  textLabel: Text(
+                                                    'write_to_the_chat'.tr(),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
                                                 ),
-                                                SizedBox(height: 3.h),
-                                                Row(
-                                                  children: [
-                                                    CustomTextField(
-                                                      height: 90.h,
-                                                      width: 285.w,
-                                                      autocorrect: true,
-                                                      maxLines: 8,
-                                                      onTap: () {
-                                                        setState(() {});
-                                                      },
-                                                      style: CustomTextStyle.black_14_w400_171716,
-                                                      textEditingController: descriptionTextController2,
-                                                      fillColor: ColorStyles.greyF9F9F9,
-                                                      onChanged: (value) {},
-                                                      formatters: [
-                                                        UpperEveryTextInputFormatter(),
-                                                      ],
-                                                      hintText: '',
-                                                    ),
-                                                  ],
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              SizedBox(
+                                                height: 50.h,
+                                                width: 140.w,
+                                                child: CustomButton(
+                                                  onTap: () async {},
+                                                  btnColor: ColorStyles.greyEAECEE,
+                                                  textLabel: Text(
+                                                    'you_have_been_chosen'.tr(),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w700),
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        SizedBox(height: 30.h),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'evaluate_the_customer'.tr(),
-                                              style: CustomTextStyle.black_17_w800,
-                                            ),
-                                            SizedBox(width: 15.h),
-                                            SvgPicture.asset(
-                                              SvgImg.help,
-                                              color: Colors.black,
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 15.h),
-                                        RatingBar.builder(
-                                          initialRating: 0,
-                                          minRating: 0,
-                                          direction: Axis.horizontal,
-                                          itemCount: 5,
-                                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                          itemBuilder: (context, _) => const Icon(
-                                            Icons.star,
-                                            color: ColorStyles.yellowFFCA0D,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            reviewRating = rating;
-                                          },
-                                        ),
-                                        SizedBox(height: 30.h),
-                                        CustomButton(
-                                          onTap: () {
-                                            if (user!.isBanned!) {
-                                              banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
-                                            } else {
-                                              if (widget.selectTask.owner!.hasReview!) {
-                                                CustomAlert()
-                                                    .showMessage('have_you_already_left_a_review'.tr(), context);
-                                              } else {
-                                                Repository().addReviewsDetail(
-                                                    BlocProvider.of<ProfileBloc>(context).access,
-                                                    widget.selectTask.owner?.id,
-                                                    descriptionTextController2.text,
-                                                    reviewRating);
-                                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                                showLoaderWrapperWhite(context);
-
-                                                widget.openOwner(widget.selectTask.owner);
-                                                scoreDialog(context, '100', 'left_a_review'.tr());
-                                                Future.delayed(const Duration(seconds: 2), () {
-                                                  Loader.hide();
-                                                });
-                                              }
-                                            }
-                                          },
-                                          btnColor: ColorStyles.yellowFFD70A,
-                                          textLabel: Text(
-                                            'send_feedback'.tr(),
-                                            style: CustomTextStyle.black_16_w600_171716,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20.h,
-                                        )
-                                      ],
-                                    );
-                                  } else {
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            if (widget.selectTask.answers[index].status == 'Selected') {
+                              if (widget.selectTask.status == 'Completed') {
+                                if (user?.id == widget.selectTask.owner?.id) {
+                                  if (widget.selectTask.asCustomer!)
+                                  //отзыв за заказчика
+                                  {
                                     return Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -2200,7 +1805,7 @@ class _TaskViewState extends State<TaskView> {
                                                         setState(() {});
                                                       },
                                                       style: CustomTextStyle.black_14_w400_171716,
-                                                      textEditingController: descriptionTextController3,
+                                                      textEditingController: descriptionTextController1,
                                                       fillColor: ColorStyles.greyF9F9F9,
                                                       onChanged: (value) {},
                                                       formatters: [
@@ -2218,7 +1823,7 @@ class _TaskViewState extends State<TaskView> {
                                         Row(
                                           children: [
                                             Text(
-                                              'evaluate_the_customer'.tr(),
+                                              'rate_the_executor'.tr(),
                                               style: CustomTextStyle.black_17_w800,
                                             ),
                                             SizedBox(width: 15.h),
@@ -2247,7 +1852,8 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                                         SizedBox(height: 30.h),
                                         CustomButton(
-                                          onTap: () async {
+                                          onTap: () {
+                                            _ownerback(index);
                                             if (user!.isBanned!) {
                                               banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                             } else {
@@ -2255,15 +1861,16 @@ class _TaskViewState extends State<TaskView> {
                                                 CustomAlert()
                                                     .showMessage('have_you_already_left_a_review'.tr(), context);
                                               } else {
+                                                showLoaderWrapperWhite(context);
                                                 Repository().addReviewsDetail(
                                                     BlocProvider.of<ProfileBloc>(context).access,
-                                                    widget.selectTask.owner?.id,
-                                                    descriptionTextController3.text,
+                                                    widget.selectTask.answers[index].owner?.id,
+                                                    descriptionTextController1.text,
                                                     reviewRating);
                                                 context.read<TasksBloc>().add(UpdateTaskEvent());
                                                 BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                                showLoaderWrapperWhite(context);
-                                                widget.openOwner(widget.selectTask.owner);
+
+                                                widget.openOwner(ownerw);
                                                 scoreDialog(context, '100', 'left_a_review'.tr());
                                                 Future.delayed(const Duration(seconds: 2), () {
                                                   Loader.hide();
@@ -2279,539 +1886,763 @@ class _TaskViewState extends State<TaskView> {
                                         ),
                                       ],
                                     );
-                                  }
-                                }
-                              } else {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: widget.selectTask.answers[index].owner!.firstname!.length +
-                                                  widget.selectTask.answers[index].owner!.lastname!.length <
-                                              30
-                                          ? 90.h
-                                          : 103.h,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(top: 15.h),
-                                        child: ScaleButton(
-                                          bound: 0.02,
-                                          onTap: () async {
-                                            if (user!.isBanned!) {
-                                              banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                            } else {
-                                              final owner = await Repository().getRanking(
-                                                  widget.selectTask.answers[index].owner?.id,
-                                                  BlocProvider.of<ProfileBloc>(context).access);
-                                              widget.openOwner(owner);
-                                            }
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorStyles.whiteFFFFFF,
-                                              borderRadius: BorderRadius.circular(20.r),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: ColorStyles.shadowFC6554,
-                                                  offset: const Offset(0, 4),
-                                                  blurRadius: 45.r,
-                                                )
-                                              ],
-                                            ),
-                                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    if (widget.selectTask.answers[index].owner?.photo != null)
-                                                      ClipRRect(
-                                                        borderRadius: BorderRadius.circular(1000.r),
-                                                        child: Image.network(
-                                                          widget.selectTask.answers[index].owner!.photo!,
-                                                          height: 48.h,
-                                                          width: 48.w,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    SizedBox(width: 15.w),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 300.w,
-                                                            child: Text(
-                                                              '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                              softWrap: true,
-                                                            ),
-                                                          ),
-                                                          SizedBox(height: 6.h),
-                                                          Row(
-                                                            children: [
-                                                              SvgPicture.asset('assets/icons/star.svg'),
-                                                              SizedBox(width: 4.w),
-                                                              Text(
-                                                                widget.selectTask.answers[index].owner?.ranking == null
-                                                                    ? '0'
-                                                                    : widget.selectTask.answers[index].owner!.ranking
-                                                                        .toString(),
-                                                                style: CustomTextStyle.black_13_w500_171716,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 30.h),
-                                    Text(
-                                      'leave_a_review'.tr(),
-                                      style: CustomTextStyle.black_17_w800,
-                                    ),
-                                    SizedBox(height: 15.h),
-                                    Text(
-                                      'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
-                                      style: CustomTextStyle.black_14_w500_171716,
-                                    ),
-                                    SizedBox(height: 30.h),
-                                    ScaleButton(
-                                      onTap: () {},
-                                      bound: 0.02,
-                                      child: Container(
-                                        height: 150.h,
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.greyF9F9F9,
-                                          borderRadius: BorderRadius.circular(10.r),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'custom_text'.tr(),
-                                              style: CustomTextStyle.grey_14_w400,
-                                            ),
-                                            SizedBox(height: 3.h),
-                                            Row(
-                                              children: [
-                                                CustomTextField(
-                                                  height: 90.h,
-                                                  width: 285.w,
-                                                  autocorrect: true,
-                                                  maxLines: 8,
-                                                  onTap: () {
-                                                    setState(() {});
-                                                  },
-                                                  style: CustomTextStyle.black_14_w400_171716,
-                                                  textEditingController: descriptionTextController3,
-                                                  fillColor: ColorStyles.greyF9F9F9,
-                                                  onChanged: (value) {},
-                                                  formatters: [
-                                                    UpperEveryTextInputFormatter(),
-                                                  ],
-                                                  hintText: '',
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 30.h),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'rate_the_executor'.tr(),
-                                          style: CustomTextStyle.black_17_w800,
-                                        ),
-                                        SizedBox(width: 15.h),
-                                        SvgPicture.asset(
-                                          SvgImg.help,
-                                          color: Colors.black,
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15.h),
-                                    RatingBar.builder(
-                                      initialRating: 0,
-                                      minRating: 0,
-                                      direction: Axis.horizontal,
-                                      itemCount: 5,
-                                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: ColorStyles.yellowFFCA0D,
-                                      ),
-                                      onRatingUpdate: (rating) {
-                                        reviewRating = rating;
-                                      },
-                                    ),
-                                    SizedBox(height: 30.h),
-                                    CustomButton(
-                                      onTap: () {
-                                        if (user!.isBanned!) {
-                                          banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
-                                        } else {
-                                          if (widget.selectTask.owner!.hasReview!) {
-                                            CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
-                                          } else {
-                                            Repository().addReviewsDetail(
-                                                BlocProvider.of<ProfileBloc>(context).access,
-                                                widget.selectTask.owner?.id,
-                                                descriptionTextController3.text,
-                                                reviewRating);
-                                            context.read<TasksBloc>().add(UpdateTaskEvent());
-                                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                            showLoaderWrapperWhite(context);
-
-                                            widget.openOwner(widget.selectTask.owner);
-                                            scoreDialog(context, '100', 'left_a_review'.tr());
-                                            Future.delayed(const Duration(seconds: 2), () {
-                                              Loader.hide();
-                                            });
-                                          }
-                                        }
-                                      },
-                                      btnColor: ColorStyles.yellowFFD70A,
-                                      textLabel: Text(
-                                        'send_feedback'.tr(),
-                                        style: CustomTextStyle.black_16_w600_171716,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
-                            } else {
-                              if (widget.selectTask.asCustomer == true ||
-                                  widget.selectTask.answers[index].owner?.id == user?.id) {
-                                return SizedBox(
-                                  height: widget.selectTask.answers[index].owner!.firstname!.length +
-                                                  widget.selectTask.answers[index].owner!.lastname!.length >
-                                              16 ||
-                                          widget.selectTask.answers[index].description!.length > 40
-                                      ? 240.h
-                                      : 220.h,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 15.h),
-                                    child: ScaleButton(
-                                      bound: 0.02,
-                                      onTap: () async {
-                                        if (user!.isBanned!) {
-                                          banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                        } else {
-                                          final owner = await Repository().getRanking(
-                                              widget.selectTask.answers[index].owner?.id,
-                                              BlocProvider.of<ProfileBloc>(context).access);
-                                          widget.openOwner(owner);
-                                        }
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.whiteFFFFFF,
-                                          borderRadius: BorderRadius.circular(20.r),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ColorStyles.shadowFC6554,
-                                              offset: const Offset(0, 4),
-                                              blurRadius: 45.r,
-                                            )
-                                          ],
-                                        ),
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                if (widget.selectTask.answers[index].owner?.photo != null)
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(1000.r),
-                                                    child: Image.network(
-                                                      widget.selectTask.answers[index].owner!.photo!,
-                                                      height: 48.h,
-                                                      width: 48.w,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                  } else {
+                                    if (widget.selectTask.isAnswered?.owner?.firstname != null) {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: widget.selectTask.isAnswered!.owner!.firstname!.length +
+                                                        widget.selectTask.isAnswered!.owner!.lastname!.length <
+                                                    30
+                                                ? 90.h
+                                                : 103.h,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(top: 15.h),
+                                              child: ScaleButton(
+                                                bound: 0.02,
+                                                onTap: () async {
+                                                  if (user!.isBanned!) {
+                                                    banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                                  } else {
+                                                    final owner = await Repository().getRanking(
+                                                        widget.selectTask.owner?.id,
+                                                        BlocProvider.of<ProfileBloc>(context).access);
+                                                    widget.openOwner(owner);
+                                                  }
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: ColorStyles.whiteFFFFFF,
+                                                    borderRadius: BorderRadius.circular(20.r),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: ColorStyles.shadowFC6554,
+                                                        offset: const Offset(0, 4),
+                                                        blurRadius: 45.r,
+                                                      )
+                                                    ],
                                                   ),
-                                                SizedBox(width: 15.w),
-                                                Expanded(
+                                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      SizedBox(
-                                                        width: 300.w,
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 180.w,
-                                                              child: RichText(
-                                                                text: TextSpan(
-                                                                    style: CustomTextStyle.black_15_w600_171716,
-                                                                    text:
-                                                                        '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
-                                                                    children: [
-                                                                      WidgetSpan(
-                                                                        child: SizedBox(
-                                                                          width: 10.w,
-                                                                        ),
-                                                                      ),
-                                                                      WidgetSpan(
-                                                                        child: Padding(
-                                                                          padding: EdgeInsets.only(bottom: 3.h),
-                                                                          child:
-                                                                              SvgPicture.asset('assets/icons/star.svg'),
-                                                                        ),
-                                                                      ),
-                                                                      WidgetSpan(
-                                                                        child: SizedBox(width: 4.w),
-                                                                      ),
-                                                                      WidgetSpan(
-                                                                        child: Padding(
-                                                                          padding: EdgeInsets.only(bottom: 1.h),
-                                                                          child: Text(
-                                                                            widget.selectTask.answers[index].owner
-                                                                                        ?.ranking ==
-                                                                                    null
-                                                                                ? '0'
-                                                                                : widget.selectTask.answers[index]
-                                                                                    .owner!.ranking
-                                                                                    .toString(),
-                                                                            style: CustomTextStyle.black_13_w500_171716,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ]),
+                                                      Row(
+                                                        children: [
+                                                          if (widget.selectTask.isAnswered?.owner?.photo != null)
+                                                            ClipRRect(
+                                                              borderRadius: BorderRadius.circular(1000.r),
+                                                              child: Image.network(
+                                                                widget.selectTask.isAnswered!.owner!.photo!,
+                                                                height: 48.h,
+                                                                width: 48.w,
+                                                                fit: BoxFit.cover,
                                                               ),
                                                             ),
-                                                            const Spacer(),
-                                                            Text(
-                                                              'before'.tr(),
-                                                              style: CustomTextStyle.black_15_w600_171716,
+                                                          SizedBox(width: 15.w),
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 300.w,
+                                                                  child: Text(
+                                                                    '${widget.selectTask.isAnswered?.owner?.firstname ?? '-'} ${widget.selectTask.isAnswered?.owner?.lastname ?? '-'}',
+                                                                    style: CustomTextStyle.black_15_w600_171716,
+                                                                    softWrap: true,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(height: 6.h),
+                                                                Row(
+                                                                  children: [
+                                                                    SvgPicture.asset('assets/icons/star.svg'),
+                                                                    SizedBox(width: 4.w),
+                                                                    Text(
+                                                                      widget.selectTask.isAnswered?.owner?.ranking ==
+                                                                              null
+                                                                          ? '0'
+                                                                          : widget.selectTask.isAnswered!.owner!.ranking
+                                                                              .toString(),
+                                                                      style: CustomTextStyle.black_13_w500_171716,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 6.h),
-                                                      Row(
-                                                        children: [
-                                                          const Spacer(),
-                                                          if (widget.selectTask.currency?.name == null &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} ',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Дирхам' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Российский рубль' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Доллар США' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                          if (widget.selectTask.currency?.name == 'Евро' &&
-                                                              widget.selectTask.answers[index].price != null)
-                                                            Text(
-                                                              '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} €',
-                                                              style: CustomTextStyle.black_15_w600_171716,
-                                                            ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'completed_tasks'.tr(),
-                                                            style: CustomTextStyle.grey_12_w400,
                                                           ),
-                                                          SizedBox(width: 4.w),
-                                                          if (widget.selectTask.answers[index].owner != null)
-                                                            Text(
-                                                              widget
-                                                                  .selectTask.answers[index].owner!.countOrdersComplete
-                                                                  .toString(),
-                                                              style: CustomTextStyle.black_12_w400,
-                                                            ),
                                                         ],
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            if (widget.selectTask.answers[index].description != null)
-                                              SizedBox(
-                                                height: 15.h,
                                               ),
-                                            if (widget.selectTask.answers[index].description != null)
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 10.w),
-                                                child: Text(
-                                                  widget.selectTask.answers[index].description!,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  style: CustomTextStyle.black_12_w400_292D32,
-                                                ),
-                                              ),
-                                            SizedBox(
-                                              height: 30.h,
                                             ),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  height: 50.h,
-                                                  width: 140.w,
-                                                  child: CustomButton(
-                                                    onTap: () async {
-                                                      if (user!.isBanned!) {
-                                                        banDialog(
-                                                            context, 'access_to_chat_is_currently_restricted'.tr());
-                                                      } else {
-                                                        final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                        chatBloc.editShowPersonChat(false);
-                                                        chatBloc.editChatId(widget.selectTask.chatId);
-                                                        chatBloc.messages = [];
-                                                        final idChat = await Navigator.of(context).pushNamed(
-                                                          AppRoute.personalChat,
-                                                          arguments: [
-                                                            '${widget.selectTask.chatId}',
-                                                            '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
-                                                            '${widget.selectTask.owner?.id}',
-                                                            '${widget.selectTask.owner?.photo}',
-                                                          ],
-                                                        );
-                                                        chatBloc.editShowPersonChat(true);
-                                                        chatBloc.editChatId(null);
-                                                      }
-                                                    },
-                                                    btnColor: ColorStyles.greyDADADA,
-                                                    textLabel: Text(
-                                                      'write_to_the_chat'.tr(),
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12.sp,
-                                                          fontWeight: FontWeight.w500),
-                                                    ),
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          Text(
+                                            'leave_a_review'.tr(),
+                                            style: CustomTextStyle.black_17_w800,
+                                          ),
+                                          SizedBox(height: 15.h),
+                                          Text(
+                                            'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
+                                            style: CustomTextStyle.black_14_w500_171716,
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          ScaleButton(
+                                            onTap: () {},
+                                            bound: 0.02,
+                                            child: Container(
+                                              height: 150.h,
+                                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                                              decoration: BoxDecoration(
+                                                color: ColorStyles.greyF9F9F9,
+                                                borderRadius: BorderRadius.circular(10.r),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'custom_text'.tr(),
+                                                    style: CustomTextStyle.grey_14_w400,
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  width: 10.w,
-                                                ),
-                                                SizedBox(
-                                                  height: 50.h,
-                                                  width: 140.w,
-                                                  child: CustomButton(
-                                                    onTap: () {
-                                                      log(widget.selectTask.answers[index].id!.toString());
-                                                      widget.selectTask.status = 'Completed';
-                                                      Repository().editTaskPatch(
-                                                          BlocProvider.of<ProfileBloc>(context).access,
-                                                          widget.selectTask);
+                                                  SizedBox(height: 3.h),
+                                                  Row(
+                                                    children: [
+                                                      CustomTextField(
+                                                        height: 90.h,
+                                                        width: 285.w,
+                                                        autocorrect: true,
+                                                        maxLines: 8,
+                                                        onTap: () {
+                                                          setState(() {});
+                                                        },
+                                                        style: CustomTextStyle.black_14_w400_171716,
+                                                        textEditingController: descriptionTextController2,
+                                                        fillColor: ColorStyles.greyF9F9F9,
+                                                        onChanged: (value) {},
+                                                        formatters: [
+                                                          UpperEveryTextInputFormatter(),
+                                                        ],
+                                                        hintText: '',
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'evaluate_the_customer'.tr(),
+                                                style: CustomTextStyle.black_17_w800,
+                                              ),
+                                              SizedBox(width: 15.h),
+                                              SvgPicture.asset(
+                                                SvgImg.help,
+                                                color: Colors.black,
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 15.h),
+                                          RatingBar.builder(
+                                            initialRating: 0,
+                                            minRating: 0,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                            itemBuilder: (context, _) => const Icon(
+                                              Icons.star,
+                                              color: ColorStyles.yellowFFCA0D,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              reviewRating = rating;
+                                            },
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          CustomButton(
+                                            onTap: () {
+                                              if (user!.isBanned!) {
+                                                banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
+                                              } else {
+                                                if (widget.selectTask.owner!.hasReview!) {
+                                                  CustomAlert()
+                                                      .showMessage('have_you_already_left_a_review'.tr(), context);
+                                                } else {
+                                                  showLoaderWrapperWhite(context);
 
-                                                      context.read<TasksBloc>().add(UpdateTaskEvent());
-                                                      BlocProvider.of<ProfileBloc>(context)
-                                                          .add(UpdateProfileEvent(user));
-                                                      Navigator.pop(context);
-                                                    },
-                                                    btnColor: ColorStyles.yellowFFD70A,
-                                                    textLabel: Text(
-                                                      'dones'.tr(),
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12.sp,
-                                                          fontWeight: FontWeight.w500),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                                  Repository().addReviewsDetail(
+                                                      BlocProvider.of<ProfileBloc>(context).access,
+                                                      widget.selectTask.owner?.id,
+                                                      descriptionTextController2.text,
+                                                      reviewRating);
+                                                  context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
+                                                  widget.openOwner(widget.selectTask.owner);
+                                                  scoreDialog(context, '100', 'left_a_review'.tr());
+                                                  Future.delayed(const Duration(seconds: 2), () {
+                                                    Loader.hide();
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            btnColor: ColorStyles.yellowFFD70A,
+                                            textLabel: Text(
+                                              'send_feedback'.tr(),
+                                              style: CustomTextStyle.black_16_w600_171716,
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return SizedBox(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 15.h),
-                                    child: ScaleButton(
-                                      bound: 0.02,
-                                      onTap: () async {
-                                        if (user!.isBanned!) {
-                                          banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
-                                        } else {
-                                          final owner = await Repository().getRanking(
-                                              widget.selectTask.answers[index].owner?.id,
-                                              BlocProvider.of<ProfileBloc>(context).access);
-                                          widget.openOwner(owner);
-                                        }
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.whiteFFFFFF,
-                                          borderRadius: BorderRadius.circular(20.r),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ColorStyles.shadowFC6554,
-                                              offset: const Offset(0, 4),
-                                              blurRadius: 45.r,
-                                            )
-                                          ],
-                                        ),
-                                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                if (widget.selectTask.answers[index].owner?.photo != null)
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(1000.r),
-                                                    child: Image.network(
-                                                      widget.selectTask.answers[index].owner!.photo!,
-                                                      height: 48.h,
-                                                      width: 48.w,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                          ),
+                                          SizedBox(
+                                            height: 20.h,
+                                          )
+                                        ],
+                                      );
+                                    } else {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                        widget.selectTask.answers[index].owner!.lastname!.length <
+                                                    30
+                                                ? 90.h
+                                                : 103.h,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(top: 15.h),
+                                              child: ScaleButton(
+                                                bound: 0.02,
+                                                onTap: () async {
+                                                  if (user!.isBanned!) {
+                                                    banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                                  } else {
+                                                    final owner = await Repository().getRanking(
+                                                        widget.selectTask.answers[index].owner?.id,
+                                                        BlocProvider.of<ProfileBloc>(context).access);
+                                                    widget.openOwner(owner);
+                                                  }
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: ColorStyles.whiteFFFFFF,
+                                                    borderRadius: BorderRadius.circular(20.r),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: ColorStyles.shadowFC6554,
+                                                        offset: const Offset(0, 4),
+                                                        blurRadius: 45.r,
+                                                      )
+                                                    ],
                                                   ),
-                                                SizedBox(width: 15.w),
-                                                Expanded(
+                                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      SizedBox(
-                                                        width: 300.w,
-                                                        child: Row(
+                                                      Row(
+                                                        children: [
+                                                          if (widget.selectTask.answers[index].owner?.photo != null)
+                                                            ClipRRect(
+                                                              borderRadius: BorderRadius.circular(1000.r),
+                                                              child: Image.network(
+                                                                widget.selectTask.answers[index].owner!.photo!,
+                                                                height: 48.h,
+                                                                width: 48.w,
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                          SizedBox(width: 15.w),
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 300.w,
+                                                                  child: Text(
+                                                                    '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                    style: CustomTextStyle.black_15_w600_171716,
+                                                                    softWrap: true,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(height: 6.h),
+                                                                Row(
+                                                                  children: [
+                                                                    SvgPicture.asset('assets/icons/star.svg'),
+                                                                    SizedBox(width: 4.w),
+                                                                    Text(
+                                                                      widget.selectTask.answers[index].owner?.ranking ==
+                                                                              null
+                                                                          ? '0'
+                                                                          : widget
+                                                                              .selectTask.answers[index].owner!.ranking
+                                                                              .toString(),
+                                                                      style: CustomTextStyle.black_13_w500_171716,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          Text(
+                                            'leave_a_review'.tr(),
+                                            style: CustomTextStyle.black_17_w800,
+                                          ),
+                                          SizedBox(height: 15.h),
+                                          Text(
+                                            'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
+                                            style: CustomTextStyle.black_14_w500_171716,
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          ScaleButton(
+                                            onTap: () {},
+                                            bound: 0.02,
+                                            child: Container(
+                                              height: 150.h,
+                                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                                              decoration: BoxDecoration(
+                                                color: ColorStyles.greyF9F9F9,
+                                                borderRadius: BorderRadius.circular(10.r),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'custom_text'.tr(),
+                                                    style: CustomTextStyle.grey_14_w400,
+                                                  ),
+                                                  SizedBox(height: 3.h),
+                                                  Row(
+                                                    children: [
+                                                      CustomTextField(
+                                                        height: 90.h,
+                                                        width: 285.w,
+                                                        autocorrect: true,
+                                                        maxLines: 8,
+                                                        onTap: () {
+                                                          setState(() {});
+                                                        },
+                                                        style: CustomTextStyle.black_14_w400_171716,
+                                                        textEditingController: descriptionTextController3,
+                                                        fillColor: ColorStyles.greyF9F9F9,
+                                                        onChanged: (value) {},
+                                                        formatters: [
+                                                          UpperEveryTextInputFormatter(),
+                                                        ],
+                                                        hintText: '',
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'evaluate_the_customer'.tr(),
+                                                style: CustomTextStyle.black_17_w800,
+                                              ),
+                                              SizedBox(width: 15.h),
+                                              SvgPicture.asset(
+                                                SvgImg.help,
+                                                color: Colors.black,
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 15.h),
+                                          RatingBar.builder(
+                                            initialRating: 0,
+                                            minRating: 0,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                            itemBuilder: (context, _) => const Icon(
+                                              Icons.star,
+                                              color: ColorStyles.yellowFFCA0D,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              reviewRating = rating;
+                                            },
+                                          ),
+                                          SizedBox(height: 30.h),
+                                          CustomButton(
+                                            onTap: () async {
+                                              if (user!.isBanned!) {
+                                                banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
+                                              } else {
+                                                if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                                  CustomAlert()
+                                                      .showMessage('have_you_already_left_a_review'.tr(), context);
+                                                } else {
+                                                  showLoaderWrapperWhite(context);
+                                                  Repository().addReviewsDetail(
+                                                      BlocProvider.of<ProfileBloc>(context).access,
+                                                      widget.selectTask.owner?.id,
+                                                      descriptionTextController3.text,
+                                                      reviewRating);
+                                                  context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                  widget.openOwner(widget.selectTask.owner);
+                                                  scoreDialog(context, '100', 'left_a_review'.tr());
+                                                  Future.delayed(const Duration(seconds: 2), () {
+                                                    Loader.hide();
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            btnColor: ColorStyles.yellowFFD70A,
+                                            textLabel: Text(
+                                              'send_feedback'.tr(),
+                                              style: CustomTextStyle.black_16_w600_171716,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  }
+                                } else {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                    widget.selectTask.answers[index].owner!.lastname!.length <
+                                                30
+                                            ? 90.h
+                                            : 103.h,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 15.h),
+                                          child: ScaleButton(
+                                            bound: 0.02,
+                                            onTap: () async {
+                                              if (user!.isBanned!) {
+                                                banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                              } else {
+                                                final owner = await Repository().getRanking(
+                                                    widget.selectTask.answers[index].owner?.id,
+                                                    BlocProvider.of<ProfileBloc>(context).access);
+                                                widget.openOwner(owner);
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: ColorStyles.whiteFFFFFF,
+                                                borderRadius: BorderRadius.circular(20.r),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: ColorStyles.shadowFC6554,
+                                                    offset: const Offset(0, 4),
+                                                    blurRadius: 45.r,
+                                                  )
+                                                ],
+                                              ),
+                                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      if (widget.selectTask.answers[index].owner?.photo != null)
+                                                        ClipRRect(
+                                                          borderRadius: BorderRadius.circular(1000.r),
+                                                          child: Image.network(
+                                                            widget.selectTask.answers[index].owner!.photo!,
+                                                            height: 48.h,
+                                                            width: 48.w,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      SizedBox(width: 15.w),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             SizedBox(
-                                                              width: 110.w,
+                                                              width: 300.w,
                                                               child: Text(
                                                                 '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
                                                                 style: CustomTextStyle.black_15_w600_171716,
                                                                 softWrap: true,
                                                               ),
                                                             ),
+                                                            SizedBox(height: 6.h),
+                                                            Row(
+                                                              children: [
+                                                                SvgPicture.asset('assets/icons/star.svg'),
+                                                                SizedBox(width: 4.w),
+                                                                Text(
+                                                                  widget.selectTask.answers[index].owner?.ranking ==
+                                                                          null
+                                                                      ? '0'
+                                                                      : widget.selectTask.answers[index].owner!.ranking
+                                                                          .toString(),
+                                                                  style: CustomTextStyle.black_13_w500_171716,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 30.h),
+                                      Text(
+                                        'leave_a_review'.tr(),
+                                        style: CustomTextStyle.black_17_w800,
+                                      ),
+                                      SizedBox(height: 15.h),
+                                      Text(
+                                        'points_are_credited_to_your_account_for_leaving_reviews_and_rating'.tr(),
+                                        style: CustomTextStyle.black_14_w500_171716,
+                                      ),
+                                      SizedBox(height: 30.h),
+                                      ScaleButton(
+                                        onTap: () {},
+                                        bound: 0.02,
+                                        child: Container(
+                                          height: 150.h,
+                                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.greyF9F9F9,
+                                            borderRadius: BorderRadius.circular(10.r),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'custom_text'.tr(),
+                                                style: CustomTextStyle.grey_14_w400,
+                                              ),
+                                              SizedBox(height: 3.h),
+                                              Row(
+                                                children: [
+                                                  CustomTextField(
+                                                    height: 90.h,
+                                                    width: 285.w,
+                                                    autocorrect: true,
+                                                    maxLines: 8,
+                                                    onTap: () {
+                                                      setState(() {});
+                                                    },
+                                                    style: CustomTextStyle.black_14_w400_171716,
+                                                    textEditingController: descriptionTextController3,
+                                                    fillColor: ColorStyles.greyF9F9F9,
+                                                    onChanged: (value) {},
+                                                    formatters: [
+                                                      UpperEveryTextInputFormatter(),
+                                                    ],
+                                                    hintText: '',
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 30.h),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'rate_the_executor'.tr(),
+                                            style: CustomTextStyle.black_17_w800,
+                                          ),
+                                          SizedBox(width: 15.h),
+                                          SvgPicture.asset(
+                                            SvgImg.help,
+                                            color: Colors.black,
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15.h),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 0,
+                                        direction: Axis.horizontal,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: ColorStyles.yellowFFCA0D,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          reviewRating = rating;
+                                        },
+                                      ),
+                                      SizedBox(height: 30.h),
+                                      CustomButton(
+                                        onTap: () {
+                                          if (user!.isBanned!) {
+                                            banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
+                                          } else {
+                                            if (widget.selectTask.owner!.hasReview!) {
+                                              CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
+                                            } else {
+                                              Repository().addReviewsDetail(
+                                                  BlocProvider.of<ProfileBloc>(context).access,
+                                                  widget.selectTask.owner?.id,
+                                                  descriptionTextController3.text,
+                                                  reviewRating);
+                                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                              showLoaderWrapperWhite(context);
+
+                                              widget.openOwner(widget.selectTask.owner);
+                                              scoreDialog(context, '100', 'left_a_review'.tr());
+                                              Future.delayed(const Duration(seconds: 2), () {
+                                                Loader.hide();
+                                              });
+                                            }
+                                          }
+                                        },
+                                        btnColor: ColorStyles.yellowFFD70A,
+                                        textLabel: Text(
+                                          'send_feedback'.tr(),
+                                          style: CustomTextStyle.black_16_w600_171716,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              } else {
+                                if (widget.selectTask.asCustomer == true ||
+                                    widget.selectTask.answers[index].owner?.id == user?.id) {
+                                  return SizedBox(
+                                    height: widget.selectTask.answers[index].owner!.firstname!.length +
+                                                    widget.selectTask.answers[index].owner!.lastname!.length >
+                                                16 ||
+                                            widget.selectTask.answers[index].description!.length > 40
+                                        ? 240.h
+                                        : 220.h,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 15.h),
+                                      child: ScaleButton(
+                                        bound: 0.02,
+                                        onTap: () async {
+                                          if (user!.isBanned!) {
+                                            banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                          } else {
+                                            final owner = await Repository().getRanking(
+                                                widget.selectTask.answers[index].owner?.id,
+                                                BlocProvider.of<ProfileBloc>(context).access);
+                                            widget.openOwner(owner);
+                                          }
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.whiteFFFFFF,
+                                            borderRadius: BorderRadius.circular(20.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ColorStyles.shadowFC6554,
+                                                offset: const Offset(0, 4),
+                                                blurRadius: 45.r,
+                                              )
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  if (widget.selectTask.answers[index].owner?.photo != null)
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(1000.r),
+                                                      child: Image.network(
+                                                        widget.selectTask.answers[index].owner!.photo!,
+                                                        height: 48.h,
+                                                        width: 48.w,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  SizedBox(width: 15.w),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 300.w,
+                                                          child: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 180.w,
+                                                                child: RichText(
+                                                                  text: TextSpan(
+                                                                      style: CustomTextStyle.black_15_w600_171716,
+                                                                      text:
+                                                                          '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                      children: [
+                                                                        WidgetSpan(
+                                                                          child: SizedBox(
+                                                                            width: 10.w,
+                                                                          ),
+                                                                        ),
+                                                                        WidgetSpan(
+                                                                          child: Padding(
+                                                                            padding: EdgeInsets.only(bottom: 3.h),
+                                                                            child: SvgPicture.asset(
+                                                                                'assets/icons/star.svg'),
+                                                                          ),
+                                                                        ),
+                                                                        WidgetSpan(
+                                                                          child: SizedBox(width: 4.w),
+                                                                        ),
+                                                                        WidgetSpan(
+                                                                          child: Padding(
+                                                                            padding: EdgeInsets.only(bottom: 1.h),
+                                                                            child: Text(
+                                                                              widget.selectTask.answers[index].owner
+                                                                                          ?.ranking ==
+                                                                                      null
+                                                                                  ? '0'
+                                                                                  : widget.selectTask.answers[index]
+                                                                                      .owner!.ranking
+                                                                                      .toString(),
+                                                                              style:
+                                                                                  CustomTextStyle.black_13_w500_171716,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ]),
+                                                                ),
+                                                              ),
+                                                              const Spacer(),
+                                                              Text(
+                                                                'before'.tr(),
+                                                                style: CustomTextStyle.black_15_w600_171716,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 6.h),
+                                                        Row(
+                                                          children: [
                                                             const Spacer(),
                                                             if (widget.selectTask.currency?.name == null &&
                                                                 widget.selectTask.answers[index].price != null)
@@ -2846,117 +2677,326 @@ class _TaskViewState extends State<TaskView> {
                                                               ),
                                                           ],
                                                         ),
-                                                      ),
-                                                      SizedBox(height: 6.h),
-                                                      Row(
-                                                        children: [
-                                                          SvgPicture.asset('assets/icons/star.svg'),
-                                                          SizedBox(width: 4.w),
-                                                          Text(
-                                                            widget.selectTask.answers[index].owner?.ranking == null
-                                                                ? '0'
-                                                                : widget.selectTask.answers[index].owner!.ranking
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              'completed_tasks'.tr(),
+                                                              style: CustomTextStyle.grey_12_w400,
+                                                            ),
+                                                            SizedBox(width: 4.w),
+                                                            if (widget.selectTask.answers[index].owner != null)
+                                                              Text(
+                                                                widget.selectTask.answers[index].owner!
+                                                                    .countOrdersComplete
                                                                     .toString(),
-                                                            style: CustomTextStyle.black_13_w500_171716,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            if (widget.selectTask.answers[index].description != null)
-                                              SizedBox(
-                                                height: 15.h,
-                                              ),
-                                            if (widget.selectTask.answers[index].description != null)
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 10.w),
-                                                child: Text(
-                                                  widget.selectTask.answers[index].description!,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 3,
-                                                  style: CustomTextStyle.black_12_w400_292D32,
-                                                ),
-                                              ),
-                                            SizedBox(
-                                              height: 30.h,
-                                            ),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  height: 50.h,
-                                                  width: 140.w,
-                                                  child: CustomButton(
-                                                    onTap: () async {
-                                                      if (user!.isBanned!) {
-                                                        banDialog(
-                                                            context, 'access_to_chat_is_currently_restricted'.tr());
-                                                      } else {
-                                                        final chatBloc = BlocProvider.of<ChatBloc>(context);
-                                                        chatBloc.editShowPersonChat(false);
-                                                        chatBloc.editChatId(widget.selectTask.chatId);
-                                                        chatBloc.messages = [];
-                                                        final idChat = await Navigator.of(context).pushNamed(
-                                                          AppRoute.personalChat,
-                                                          arguments: [
-                                                            '${widget.selectTask.answers[index].chatId}',
-                                                            '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
-                                                            '${widget.selectTask.answers[index].owner?.id}',
-                                                            '${widget.selectTask.answers[index].owner?.photo}',
+                                                                style: CustomTextStyle.black_12_w400,
+                                                              ),
                                                           ],
-                                                        );
-                                                        chatBloc.editShowPersonChat(true);
-                                                        chatBloc.editChatId(null);
-                                                      }
-                                                    },
-                                                    btnColor: ColorStyles.greyDADADA,
-                                                    textLabel: Text(
-                                                      'write_to_the_chat'.tr(),
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12.sp,
-                                                          fontWeight: FontWeight.w500),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                ),
+                                                ],
+                                              ),
+                                              if (widget.selectTask.answers[index].description != null)
                                                 SizedBox(
-                                                  width: 10.w,
+                                                  height: 15.h,
                                                 ),
-                                                SizedBox(
-                                                  height: 50.h,
-                                                  width: 140.w,
-                                                  child: CustomButton(
-                                                    onTap: () async {},
-                                                    btnColor: Colors.white,
-                                                    textLabel: Text(
-                                                      'you_have_been_chosen'.tr(),
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12.sp,
-                                                          fontWeight: FontWeight.w700),
-                                                    ),
+                                              if (widget.selectTask.answers[index].description != null)
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 10.w),
+                                                  child: Text(
+                                                    widget.selectTask.answers[index].description!,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    style: CustomTextStyle.black_12_w400_292D32,
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                height: 30.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 50.h,
+                                                    width: 140.w,
+                                                    child: CustomButton(
+                                                      onTap: () async {
+                                                        if (user!.isBanned!) {
+                                                          banDialog(
+                                                              context, 'access_to_chat_is_currently_restricted'.tr());
+                                                        } else {
+                                                          final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                          chatBloc.editShowPersonChat(false);
+                                                          chatBloc.editChatId(widget.selectTask.chatId);
+                                                          chatBloc.messages = [];
+                                                          final idChat = await Navigator.of(context).pushNamed(
+                                                            AppRoute.personalChat,
+                                                            arguments: [
+                                                              '${widget.selectTask.chatId}',
+                                                              '${widget.selectTask.owner?.firstname ?? ''} ${widget.selectTask.owner?.lastname ?? ''}',
+                                                              '${widget.selectTask.owner?.id}',
+                                                              '${widget.selectTask.owner?.photo}',
+                                                            ],
+                                                          );
+                                                          chatBloc.editShowPersonChat(true);
+                                                          chatBloc.editChatId(null);
+                                                        }
+                                                      },
+                                                      btnColor: ColorStyles.greyDADADA,
+                                                      textLabel: Text(
+                                                        'write_to_the_chat'.tr(),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 12.sp,
+                                                            fontWeight: FontWeight.w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 50.h,
+                                                    width: 140.w,
+                                                    child: CustomButton(
+                                                      onTap: () {
+                                                        log(widget.selectTask.answers[index].id!.toString());
+                                                        widget.selectTask.status = 'Completed';
+                                                        Repository().editTaskPatch(
+                                                            BlocProvider.of<ProfileBloc>(context).access,
+                                                            widget.selectTask);
+
+                                                        context.read<TasksBloc>().add(UpdateTaskEvent());
+                                                        BlocProvider.of<ProfileBloc>(context)
+                                                            .add(UpdateProfileEvent(user));
+                                                        Navigator.pop(context);
+                                                      },
+                                                      btnColor: ColorStyles.yellowFFD70A,
+                                                      textLabel: Text(
+                                                        'dones'.tr(),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 12.sp,
+                                                            fontWeight: FontWeight.w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                } else {
+                                  return SizedBox(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 15.h),
+                                      child: ScaleButton(
+                                        bound: 0.02,
+                                        onTap: () async {
+                                          if (user!.isBanned!) {
+                                            banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
+                                          } else {
+                                            final owner = await Repository().getRanking(
+                                                widget.selectTask.answers[index].owner?.id,
+                                                BlocProvider.of<ProfileBloc>(context).access);
+                                            widget.openOwner(owner);
+                                          }
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: ColorStyles.whiteFFFFFF,
+                                            borderRadius: BorderRadius.circular(20.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ColorStyles.shadowFC6554,
+                                                offset: const Offset(0, 4),
+                                                blurRadius: 45.r,
+                                              )
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  if (widget.selectTask.answers[index].owner?.photo != null)
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(1000.r),
+                                                      child: Image.network(
+                                                        widget.selectTask.answers[index].owner!.photo!,
+                                                        height: 48.h,
+                                                        width: 48.w,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  SizedBox(width: 15.w),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 300.w,
+                                                          child: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 110.w,
+                                                                child: Text(
+                                                                  '${widget.selectTask.answers[index].owner?.firstname ?? '-'} ${widget.selectTask.answers[index].owner?.lastname ?? '-'}',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                  softWrap: true,
+                                                                ),
+                                                              ),
+                                                              const Spacer(),
+                                                              if (widget.selectTask.currency?.name == null &&
+                                                                  widget.selectTask.answers[index].price != null)
+                                                                Text(
+                                                                  '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} ',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                ),
+                                                              if (widget.selectTask.currency?.name == 'Дирхам' &&
+                                                                  widget.selectTask.answers[index].price != null)
+                                                                Text(
+                                                                  '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} AED',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                ),
+                                                              if (widget.selectTask.currency?.name ==
+                                                                      'Российский рубль' &&
+                                                                  widget.selectTask.answers[index].price != null)
+                                                                Text(
+                                                                  '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)}  ₽',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                ),
+                                                              if (widget.selectTask.currency?.name == 'Доллар США' &&
+                                                                  widget.selectTask.answers[index].price != null)
+                                                                Text(
+                                                                  '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} \$',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                ),
+                                                              if (widget.selectTask.currency?.name == 'Евро' &&
+                                                                  widget.selectTask.answers[index].price != null)
+                                                                Text(
+                                                                  '${'before'.tr()} ${_textCurrency(widget.selectTask.answers[index].price!)} €',
+                                                                  style: CustomTextStyle.black_15_w600_171716,
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 6.h),
+                                                        Row(
+                                                          children: [
+                                                            SvgPicture.asset('assets/icons/star.svg'),
+                                                            SizedBox(width: 4.w),
+                                                            Text(
+                                                              widget.selectTask.answers[index].owner?.ranking == null
+                                                                  ? '0'
+                                                                  : widget.selectTask.answers[index].owner!.ranking
+                                                                      .toString(),
+                                                              style: CustomTextStyle.black_13_w500_171716,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (widget.selectTask.answers[index].description != null)
+                                                SizedBox(
+                                                  height: 15.h,
+                                                ),
+                                              if (widget.selectTask.answers[index].description != null)
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 10.w),
+                                                  child: Text(
+                                                    widget.selectTask.answers[index].description!,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 3,
+                                                    style: CustomTextStyle.black_12_w400_292D32,
+                                                  ),
+                                                ),
+                                              SizedBox(
+                                                height: 30.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 50.h,
+                                                    width: 140.w,
+                                                    child: CustomButton(
+                                                      onTap: () async {
+                                                        if (user!.isBanned!) {
+                                                          banDialog(
+                                                              context, 'access_to_chat_is_currently_restricted'.tr());
+                                                        } else {
+                                                          final chatBloc = BlocProvider.of<ChatBloc>(context);
+                                                          chatBloc.editShowPersonChat(false);
+                                                          chatBloc.editChatId(widget.selectTask.chatId);
+                                                          chatBloc.messages = [];
+                                                          final idChat = await Navigator.of(context).pushNamed(
+                                                            AppRoute.personalChat,
+                                                            arguments: [
+                                                              '${widget.selectTask.answers[index].chatId}',
+                                                              '${widget.selectTask.answers[index].owner?.firstname ?? ''} ${widget.selectTask.answers[index].owner?.lastname ?? ''}',
+                                                              '${widget.selectTask.answers[index].owner?.id}',
+                                                              '${widget.selectTask.answers[index].owner?.photo}',
+                                                            ],
+                                                          );
+                                                          chatBloc.editShowPersonChat(true);
+                                                          chatBloc.editChatId(null);
+                                                        }
+                                                      },
+                                                      btnColor: ColorStyles.greyDADADA,
+                                                      textLabel: Text(
+                                                        'write_to_the_chat'.tr(),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 12.sp,
+                                                            fontWeight: FontWeight.w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 50.h,
+                                                    width: 140.w,
+                                                    child: CustomButton(
+                                                      onTap: () async {},
+                                                      btnColor: Colors.white,
+                                                      textLabel: Text(
+                                                        'you_have_been_chosen'.tr(),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 12.sp,
+                                                            fontWeight: FontWeight.w700),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
                               }
+                            } else {
+                              Container();
                             }
-                          } else {
-                            Container();
                           }
-                        }
-                        return null;
-                      },
-                    ),
-                  );
+                          return null;
+                        },
+                      ),
+                    );
+                  });
                 }),
             ],
           ),
@@ -3014,6 +3054,11 @@ class _TaskViewState extends State<TaskView> {
       default:
         return time;
     }
+  }
+
+  Future<void> _ownerback(int index) async {
+    ownerw = await Repository()
+        .getRanking(widget.selectTask.answers[index].owner?.id, BlocProvider.of<ProfileBloc>(context).access);
   }
 
   String _textCountry(Task task, UserRegModel? user) {

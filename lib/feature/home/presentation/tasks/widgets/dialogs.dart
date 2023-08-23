@@ -187,7 +187,7 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
                                 Text(
                                   '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
                                   style: CustomTextStyle.black_20_w700,
-                                ),  
+                                ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -208,6 +208,93 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
                             textLabel: Text(
                               'well'.tr(),
                               style: CustomTextStyle.white_14_w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+void noMoney(BuildContext context, String action, String text) => showDialog(
+      useSafeArea: false,
+      barrierColor: Colors.black.withOpacity(0.1),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            alignment: Alignment.center,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: GestureDetector(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 327.w,
+                    height: 393.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/alert_circle.svg',
+                                  color: ColorStyles.yellowFFCA0D,
+                                ),
+                                SizedBox(
+                                  height: 30.h,
+                                ),
+                                Text(
+                                  'you_can_t'.tr(),
+                                  style: CustomTextStyle.black_20_w700,
+                                ),
+                                Text(
+                                  action,
+                                  style: CustomTextStyle.black_20_w700,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                  height: 18.h,
+                                ),
+                                Text(
+                                  text,
+                                  style: CustomTextStyle.grey_14_w400,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomButton(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            btnColor: ColorStyles.yellowFFCA0D,
+                            textLabel: Text(
+                              'back'.tr(),
+                              style: CustomTextStyle.black_14_w800_171716,
                             ),
                           ),
                         ],

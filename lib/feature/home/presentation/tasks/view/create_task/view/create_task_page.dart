@@ -495,41 +495,50 @@ class _CeateTasksState extends State<CeateTasks> {
                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                             final profileBloc = BlocProvider.of<ProfileBloc>(context);
                             bool res = await Repository().createTask(profileBloc.access!, newTask);
-                            if (widget.currentPage == 6) {
-                              if (res) Navigator.of(context).pop();
-                            }
-
-                            if (widget.currentPage == 1 || widget.currentPage == 2) {
-                              if (res) Navigator.of(context).pop();
-                              if (res) {
-                                Navigator.of(context).pop(!widget.customer);
+                            if (res) {
+                              if (widget.currentPage == 6) {
+                                if (res) Navigator.of(context).pop();
                               }
-                            }
-                            if (widget.currentPage == 3 || widget.currentPage == 4) {
-                              if (res) {
-                                Navigator.of(context).pop(!widget.customer);
+
+                              if (widget.currentPage == 1 || widget.currentPage == 2) {
+                                if (res) Navigator.of(context).pop();
+                                if (res) {
+                                  Navigator.of(context).pop(!widget.customer);
+                                }
                               }
-                            }
+                              if (widget.currentPage == 3 || widget.currentPage == 4) {
+                                if (res) {
+                                  Navigator.of(context).pop(!widget.customer);
+                                }
+                              }
 
-                            Loader.hide();
+                              Loader.hide();
 
-                            if (widget.customer) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) {
-                                  return TaskAdditional(
-                                    title: 'my_task'.tr(),
-                                    asCustomer: true,
-                                    scoreTrue: true,
-                                  );
-                                }),
-                              );
+                              if (widget.customer) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) {
+                                    return TaskAdditional(
+                                      title: 'my_task'.tr(),
+                                      asCustomer: true,
+                                      scoreTrue: true,
+                                    );
+                                  }),
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) {
+                                    return TaskAdditional(
+                                        title: 'opens'.tr(), asCustomer: widget.customer, scoreTrue: true);
+                                  }),
+                                );
+                              }
                             } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) {
-                                  return TaskAdditional(
-                                      title: 'opens'.tr(), asCustomer: widget.customer, scoreTrue: true);
-                                }),
-                              );
+                              Loader.hide();
+                              if (widget.customer) {
+                                noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+                              } else {
+                                noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+                              }
                             }
 
                             // if (widget.customer) {
