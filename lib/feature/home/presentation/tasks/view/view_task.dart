@@ -132,6 +132,7 @@ class _TaskViewState extends State<TaskView> {
                     BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                       if (current is UpdateTask) {
                         getTask();
+
                         return true;
                       }
                       if (previous != current) {
@@ -304,29 +305,29 @@ class _TaskViewState extends State<TaskView> {
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 7.w,
-                                          ),
-                                          SvgPicture.asset(
-                                            'assets/icons/arrow_up_yellow.svg',
-                                          ),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          Text(
-                                            'raised_yesterday_in'.tr(),
-                                            style: CustomTextStyle.black_11_w500_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          Text(
-                                            '${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
-                                            style: CustomTextStyle.black_11_w500_171716,
-                                          ),
-                                        ],
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/arrow_up_yellow.svg',
+                                            ),
+                                            SizedBox(
+                                              width: 4.w,
+                                            ),
+                                            Text(
+                                              'raised_yesterday_in'.tr(),
+                                              style: CustomTextStyle.black_11_w500_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 4.w,
+                                            ),
+                                            Text(
+                                              '${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
+                                              style: CustomTextStyle.black_11_w500_171716,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   )
@@ -346,26 +347,26 @@ class _TaskViewState extends State<TaskView> {
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 7.w,
-                                          ),
-                                          SvgPicture.asset(
-                                            'assets/icons/arrow_up_yellow.svg',
-                                          ),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          Text(
-                                            'raised_in'.tr(),
-                                            style: CustomTextStyle.black_11_w500_171716,
-                                          ),
-                                          Text(
-                                            ' ${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
-                                            style: CustomTextStyle.black_11_w500_171716,
-                                          ),
-                                        ],
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/arrow_up_yellow.svg',
+                                            ),
+                                            SizedBox(
+                                              width: 4.w,
+                                            ),
+                                            Text(
+                                              'raised_in'.tr(),
+                                              style: CustomTextStyle.black_11_w500_171716,
+                                            ),
+                                            Text(
+                                              ' ${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
+                                              style: CustomTextStyle.black_11_w500_171716,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   )
@@ -1147,6 +1148,8 @@ class _TaskViewState extends State<TaskView> {
 
                             Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
                                 widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
+                            getTaskList();
+                            getTask();
                             context.read<TasksBloc>().add(UpdateTaskEvent());
                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
@@ -1201,7 +1204,8 @@ class _TaskViewState extends State<TaskView> {
                     }
                     if (current is UpdateProfileSuccessState) {
                       user = BlocProvider.of<ProfileBloc>(context).user;
-                      log('UpdateProfileSuccessState');
+
+                      log('UpdateProfileSuccessState ${user}');
                       return true;
                     }
                     if (previous != current) {
@@ -1867,6 +1871,8 @@ class _TaskViewState extends State<TaskView> {
                                                     widget.selectTask.answers[index].owner?.id,
                                                     descriptionTextController1.text,
                                                     reviewRating);
+                                                getTaskList();
+                                                getTask();
                                                 context.read<TasksBloc>().add(UpdateTaskEvent());
                                                 BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
@@ -2081,9 +2087,10 @@ class _TaskViewState extends State<TaskView> {
                                                       widget.selectTask.owner?.id,
                                                       descriptionTextController2.text,
                                                       reviewRating);
+                                                  getTaskList();
+                                                  getTask();
                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
                                                   BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
                                                   widget.openOwner(widget.selectTask.owner);
                                                   scoreDialog(context, '100', 'left_a_review'.tr());
                                                   Future.delayed(const Duration(seconds: 2), () {
@@ -2297,8 +2304,11 @@ class _TaskViewState extends State<TaskView> {
                                                       widget.selectTask.owner?.id,
                                                       descriptionTextController3.text,
                                                       reviewRating);
+                                                  getTaskList();
+                                                  getTask();
                                                   context.read<TasksBloc>().add(UpdateTaskEvent());
                                                   BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
                                                   widget.openOwner(widget.selectTask.owner);
                                                   scoreDialog(context, '100', 'left_a_review'.tr());
                                                   Future.delayed(const Duration(seconds: 2), () {
@@ -2503,14 +2513,17 @@ class _TaskViewState extends State<TaskView> {
                                             if (widget.selectTask.owner!.hasReview!) {
                                               CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                             } else {
+                                              showLoaderWrapperWhite(context);
+
                                               Repository().addReviewsDetail(
                                                   BlocProvider.of<ProfileBloc>(context).access,
                                                   widget.selectTask.owner?.id,
                                                   descriptionTextController3.text,
                                                   reviewRating);
+                                              getTaskList();
+                                              getTask();
                                               context.read<TasksBloc>().add(UpdateTaskEvent());
                                               BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                              showLoaderWrapperWhite(context);
 
                                               widget.openOwner(widget.selectTask.owner);
                                               scoreDialog(context, '100', 'left_a_review'.tr());

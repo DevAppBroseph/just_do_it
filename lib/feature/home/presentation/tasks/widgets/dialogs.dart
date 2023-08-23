@@ -355,7 +355,7 @@ void banDialog(BuildContext context, String action) => showDialog(
                                   height: 30.h,
                                 ),
                                 Text(
-                                  'you_can_t'.tr(),
+                                  'unfortunately'.tr(),
                                   style: CustomTextStyle.black_20_w700,
                                 ),
                                 Text(

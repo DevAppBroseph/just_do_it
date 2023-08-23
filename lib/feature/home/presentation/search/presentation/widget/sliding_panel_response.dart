@@ -77,6 +77,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   bool proverka = false;
   bool customerFlag = true;
   bool contractorFlag = true;
+  bool res = false;
   void getProfile() {
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
@@ -180,30 +181,35 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               if (errorsFlag == true) {
                                 CustomAlert().showMessage(error, context);
                               } else {
-                                widget.panelController.animatePanelToPosition(0);
                                 if (widget.selectTask!.asCustomer!) {
-                                  Repository().createAnswer(
+                                  res = await Repository().createAnswer(
                                       widget.selectTask!.id!,
                                       access,
                                       int.parse(coastController.text.replaceAll(' ', '')),
                                       descriptionTextController.text,
                                       'Progress',
                                       isGraded);
+                                  isGraded = false;
                                 } else {
-                                  Repository().createAnswer(
+                                  res = await Repository().createAnswer(
                                       widget.selectTask!.id!,
                                       access,
                                       int.parse(coastController.text.replaceAll(' ', '')),
                                       descriptionTextController.text,
                                       'Selected',
                                       isGraded);
+                                  isGraded = false;
                                 }
-
-                                coastController.clear();
-                                descriptionTextController.clear();
-                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                setState(() {});
+                                if (res) {
+                                  widget.panelController.animatePanelToPosition(0);
+                                  coastController.clear();
+                                  descriptionTextController.clear();
+                                  context.read<TasksBloc>().add(UpdateTaskEvent());
+                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                  setState(() {});
+                                } else {
+                                  noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
+                                }
                               }
                             }
                           }
@@ -232,7 +238,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               });
                             }
                           },
-                            btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
+                          btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
                           textLabel: Text(
                             'become_the_first'.tr(),
                             style: isGraded ? CustomTextStyle.grey_14_w600 : CustomTextStyle.white_14,
@@ -243,8 +249,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           child: Align(
                             child: GestureDetector(
                               onTap: () {
-                                helpOnTopDialog(context, 'put_on_top'.tr(),
-                                    'the_visibility_of_your_response'.tr());
+                                helpOnTopDialog(context, 'put_on_top'.tr(), 'the_visibility_of_your_response'.tr());
                               },
                               child: SvgPicture.asset(
                                 SvgImg.help,

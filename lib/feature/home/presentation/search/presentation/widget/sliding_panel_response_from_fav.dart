@@ -74,6 +74,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
 
   bool customerFlag = true;
   bool contractorFlag = true;
+  bool res = false;
   void getProfile() {
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
@@ -175,7 +176,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                               } else {
                                 widget.panelController.animatePanelToPosition(0);
                                 if (widget.selectTask!.asCustomer!) {
-                                  Repository().createAnswer(
+                                  res = await Repository().createAnswer(
                                       widget.selectTask!.id!,
                                       access,
                                       int.parse(coastController.text.replaceAll(' ', '')),
@@ -183,7 +184,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                                       'Progress',
                                       isGraded);
                                 } else {
-                                  Repository().createAnswer(
+                                  res = await Repository().createAnswer(
                                       widget.selectTask!.id!,
                                       access,
                                       int.parse(coastController.text.replaceAll(' ', '')),
@@ -191,12 +192,16 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                                       'Selected',
                                       isGraded);
                                 }
-
-                                coastController.clear();
-                                descriptionTextController.clear();
-                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                setState(() {});
+                                isGraded = false;
+                                if (res) {
+                                  coastController.clear();
+                                  descriptionTextController.clear();
+                                  context.read<TasksBloc>().add(UpdateTaskEvent());
+                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                  setState(() {});
+                                } else {
+                                  noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
+                                }
                               }
                             }
                           }

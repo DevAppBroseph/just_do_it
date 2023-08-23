@@ -274,7 +274,7 @@ class Repository {
     return false;
   }
 
-  Future<Answers?> createAnswer(
+  Future<bool> createAnswer(
       int id, String? access, int price, String description, String status, bool isGraded) async {
     final response = await dio.post(
       '$server/answers/',
@@ -289,9 +289,9 @@ class Repository {
     );
     log(id.toString());
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return Answers.fromJson(response.data);
+      return true;
     }
-    return null;
+    return false;
   }
 
   Future<bool> editTask(String? access, Task task) async {
