@@ -16,7 +16,7 @@ class NotificationsOnDevice {
   factory NotificationsOnDevice.fromJson(Map<String, dynamic> json) {
     return NotificationsOnDevice(
       text: json['text'],
-      engMessage: json['eng_message'],
+      engMessage: json['eng_text'],
       id: json['id'],
       dateTime: DateTime.parse(json['datetime']),
       unread: json['unread'],
