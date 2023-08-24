@@ -189,7 +189,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                       descriptionTextController.text,
                                       'Progress',
                                       isGraded);
-                                  isGraded = false;
                                 } else {
                                   res = await Repository().createAnswer(
                                       widget.selectTask!.id!,
@@ -198,8 +197,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                       descriptionTextController.text,
                                       'Selected',
                                       isGraded);
-                                  isGraded = false;
                                 }
+                                isGraded = false;
                                 if (res) {
                                   widget.panelController.animatePanelToPosition(0);
                                   coastController.clear();

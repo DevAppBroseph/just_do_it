@@ -60,6 +60,7 @@ class _TaskViewState extends State<TaskView> {
   double? reviewRating;
   Task? selectTask;
   UserRegModel? user;
+  bool proverkaReview = false;
   @override
   void initState() {
     super.initState();
@@ -305,9 +306,10 @@ class _TaskViewState extends State<TaskView> {
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
                                       ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                      child: Center(
                                         child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               'assets/icons/arrow_up_yellow.svg',
@@ -347,9 +349,10 @@ class _TaskViewState extends State<TaskView> {
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
                                       ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                      child: Center(
                                         child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               'assets/icons/arrow_up_yellow.svg',
@@ -1141,11 +1144,11 @@ class _TaskViewState extends State<TaskView> {
                         if (user!.isBanned!) {
                           banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                         } else {
-                          if (widget.selectTask.owner!.hasReview!) {
+                          if (widget.selectTask.owner!.hasReview! || proverkaReview) {
                             CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                           } else {
                             showLoaderWrapperWhite(context);
-
+                            proverkaReview = true;
                             Repository().addReviewsDetail(BlocProvider.of<ProfileBloc>(context).access,
                                 widget.selectTask.owner?.id, descriptionTextController.text, reviewRating);
                             getTaskList();
@@ -1861,10 +1864,12 @@ class _TaskViewState extends State<TaskView> {
                                             if (user!.isBanned!) {
                                               banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                             } else {
-                                              if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                              if (widget.selectTask.answers[index].owner!.hasReview! || proverkaReview) {
                                                 CustomAlert()
                                                     .showMessage('have_you_already_left_a_review'.tr(), context);
                                               } else {
+proverkaReview = true;
+
                                                 showLoaderWrapperWhite(context);
                                                 Repository().addReviewsDetail(
                                                     BlocProvider.of<ProfileBloc>(context).access,
@@ -2076,11 +2081,12 @@ class _TaskViewState extends State<TaskView> {
                                               if (user!.isBanned!) {
                                                 banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                               } else {
-                                                if (widget.selectTask.owner!.hasReview!) {
+                                                if (widget.selectTask.owner!.hasReview! || proverkaReview) {
                                                   CustomAlert()
                                                       .showMessage('have_you_already_left_a_review'.tr(), context);
                                                 } else {
                                                   showLoaderWrapperWhite(context);
+                                                  proverkaReview = true;
 
                                                   Repository().addReviewsDetail(
                                                       BlocProvider.of<ProfileBloc>(context).access,
@@ -2294,11 +2300,14 @@ class _TaskViewState extends State<TaskView> {
                                               if (user!.isBanned!) {
                                                 banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                               } else {
-                                                if (widget.selectTask.answers[index].owner!.hasReview!) {
+                                                if (widget.selectTask.answers[index].owner!.hasReview! ||
+                                                    proverkaReview) {
                                                   CustomAlert()
                                                       .showMessage('have_you_already_left_a_review'.tr(), context);
                                                 } else {
                                                   showLoaderWrapperWhite(context);
+                                                  proverkaReview = true;
+
                                                   Repository().addReviewsDetail(
                                                       BlocProvider.of<ProfileBloc>(context).access,
                                                       widget.selectTask.owner?.id,
@@ -2510,10 +2519,11 @@ class _TaskViewState extends State<TaskView> {
                                           if (user!.isBanned!) {
                                             banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                           } else {
-                                            if (widget.selectTask.owner!.hasReview!) {
+                                            if (widget.selectTask.owner!.hasReview! || proverkaReview) {
                                               CustomAlert().showMessage('have_you_already_left_a_review'.tr(), context);
                                             } else {
                                               showLoaderWrapperWhite(context);
+                                              proverkaReview = true;
 
                                               Repository().addReviewsDetail(
                                                   BlocProvider.of<ProfileBloc>(context).access,
