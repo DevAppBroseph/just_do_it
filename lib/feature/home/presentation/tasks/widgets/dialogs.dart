@@ -125,9 +125,17 @@ void taskMoreDialog(
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),
-                          Text(
-                            'complain'.tr(),
-                            style: CustomTextStyle.black_12_w400_292D32,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
+                                '${selectTask.name}, ${selectTask.owner!.firstname} ${selectTask.owner!.lastname}',
+                                'task_complaint'.tr()
+                              ]);
+                            },
+                            child: Text(
+                              'complain'.tr(),
+                              style: CustomTextStyle.black_12_w400_292D32,
+                            ),
                           ),
                         ],
                       ),
@@ -384,7 +392,7 @@ void banDialog(BuildContext context, String action) => showDialog(
                           CustomButton(
                             onTap: () {
                               Navigator.of(context).pop();
-                              Navigator.of(context).pushNamed(AppRoute.contactus);
+                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: ['', '']);
                             },
                             btnColor: ColorStyles.yellowFFCA0D,
                             textLabel: Text(
@@ -643,9 +651,17 @@ void taskMoreDialogForProfile(
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),
-                          Text(
-                            'complain'.tr(),
-                            style: CustomTextStyle.black_12_w400_292D32,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
+                                '${owner!.firstname} ${owner.lastname}',
+                                'user_complaint'.tr()
+                              ]);
+                            },
+                            child: Text(
+                              'complain'.tr(),
+                              style: CustomTextStyle.black_12_w400_292D32,
+                            ),
                           ),
                         ],
                       ),

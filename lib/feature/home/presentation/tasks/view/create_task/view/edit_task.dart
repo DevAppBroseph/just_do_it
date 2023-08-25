@@ -428,13 +428,22 @@ class _EditTasksState extends State<EditTasks> {
                             final profileBloc = BlocProvider.of<ProfileBloc>(context);
                             bool res = await Repository().editTask(profileBloc.access!, newTask);
                             if (res) {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
+                              if (res) {
+                                Navigator.of(context)
+                                  ..pop()
+                                  ..pop();
+                              }
+                              context.read<TasksBloc>().add(UpdateTaskEvent());
+                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                              Loader.hide();
+                            } else {
+                              Loader.hide();
+                              if (widget.customer) {
+                                noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+                              } else {
+                                noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+                              }
                             }
-                            context.read<TasksBloc>().add(UpdateTaskEvent());
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                            Loader.hide();
                           }
                         }
                       } else {

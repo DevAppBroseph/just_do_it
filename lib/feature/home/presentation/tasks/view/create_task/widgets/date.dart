@@ -1083,6 +1083,9 @@ class _DatePickerState extends State<DatePicker> {
                   widget.currecy,
                   widget.isGraded,
                 );
+                setState(() {
+                  widget.isGraded = false;
+                });
               }
             },
             btnColor: widget.isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,

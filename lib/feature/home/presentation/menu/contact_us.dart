@@ -11,7 +11,9 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ContactUs extends StatefulWidget {
-  const ContactUs({super.key});
+  final String name;
+  final String theme;
+  const ContactUs({super.key, required this.name, required this.theme});
 
   @override
   State<ContactUs> createState() => _ContactUsState();
@@ -21,6 +23,12 @@ class _ContactUsState extends State<ContactUs> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerTheme = TextEditingController();
   TextEditingController controllerMessage = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    controllerMessage.text = widget.name;
+    controllerTheme.text = widget.theme;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -67,7 +67,8 @@ class AppRoute {
       case createTasks:
         return MaterialPageRoute(builder: (_) => ListTasks());
       case contactus:
-        return MaterialPageRoute(builder: (_) => ContactUs());
+        List<String> arg = route.arguments as List<String>;
+        return MaterialPageRoute(builder: (_) => ContactUs(name: arg[0], theme: arg[1],));
       case score:
         return MaterialPageRoute(builder: (_) => const ScorePage());
       case about:

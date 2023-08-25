@@ -111,7 +111,7 @@ class _MenuPageState extends State<MenuPage> {
                     });
                   }),
                   itemMenu('assets/icons/message-favorite.svg', 'contact_us'.tr(), () {
-                    Navigator.of(context).pushNamed(AppRoute.contactus);
+                    Navigator.of(context).pushNamed(AppRoute.contactus, arguments: ['', '']);
                   }),
                   itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {}),
                   SizedBox(height: 15.h),

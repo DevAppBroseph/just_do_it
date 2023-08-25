@@ -306,7 +306,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    log(response.statusCode.toString());
+    log(response.data.toString());
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     }

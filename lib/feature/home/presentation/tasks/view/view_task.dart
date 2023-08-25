@@ -189,7 +189,7 @@ class _TaskViewState extends State<TaskView> {
                     }),
                   SizedBox(width: 10.w),
                   GestureDetector(
-                    onTap: () => taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
+                    onTap: () => taskMoreDialog( context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
                     child: SvgPicture.asset(
                       'assets/icons/more-circle.svg',
                       key: globalKey,
@@ -301,7 +301,7 @@ class _TaskViewState extends State<TaskView> {
                                     },
                                     child: Container(
                                       height: 30.h,
-                                      width: 167.w,
+                                      width: user?.rus ?? true && context.locale.languageCode == 'ru'? 167.w: 180.w,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
@@ -344,7 +344,7 @@ class _TaskViewState extends State<TaskView> {
                                     },
                                     child: Container(
                                       height: 30.h,
-                                      width: 136.w,
+                                      width:   136.w ,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
@@ -415,10 +415,9 @@ class _TaskViewState extends State<TaskView> {
                                         borderRadius: BorderRadius.circular(30.r),
                                       ),
                                       child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          SizedBox(
-                                            width: 12.w,
-                                          ),
                                           SvgPicture.asset(
                                             'assets/icons/arrow_up_purple.svg',
                                           ),
@@ -476,10 +475,9 @@ class _TaskViewState extends State<TaskView> {
                                     borderRadius: BorderRadius.circular(30.r),
                                   ),
                                   child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox(
-                                        width: 12.w,
-                                      ),
                                       SvgPicture.asset(
                                         'assets/icons/arrow_up_purple.svg',
                                       ),
@@ -1864,11 +1862,12 @@ class _TaskViewState extends State<TaskView> {
                                             if (user!.isBanned!) {
                                               banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
                                             } else {
-                                              if (widget.selectTask.answers[index].owner!.hasReview! || proverkaReview) {
+                                              if (widget.selectTask.answers[index].owner!.hasReview! ||
+                                                  proverkaReview) {
                                                 CustomAlert()
                                                     .showMessage('have_you_already_left_a_review'.tr(), context);
                                               } else {
-proverkaReview = true;
+                                                proverkaReview = true;
 
                                                 showLoaderWrapperWhite(context);
                                                 Repository().addReviewsDetail(

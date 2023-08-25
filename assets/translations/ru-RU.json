@@ -188,6 +188,8 @@
     "report_a_user": "Пожаловаться на пользователя",
     "work_experience_is_not_specified": "Опыт работы не указан",
     "complain": "Пожаловаться ",
+    "user_complaint":"Жалоба на пользователя",
+    "task_complaint":"Жалоба на задание",
     "all_categories": "Все категории",
     "all_subcategories": "Все подкатегории",
     "all_countries": "Все страны",
