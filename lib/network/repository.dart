@@ -274,8 +274,7 @@ class Repository {
     return false;
   }
 
-  Future<bool> createAnswer(
-      int id, String? access, int price, String description, String status, bool isGraded) async {
+  Future<bool> createAnswer(int id, String? access, int price, String description, String status, bool isGraded) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
@@ -313,7 +312,10 @@ class Repository {
     return false;
   }
 
-  Future<bool> editTaskPatch(String? access, Task task) async {
+  Future<bool> editTaskPatch(
+    String? access,
+    Task task,
+  ) async {
     final response = await dio.patch(
       '$server/orders/${task.id}',
       data: {
@@ -787,34 +789,29 @@ class Repository {
     return null;
   }
 
-  Future<String> userOnTop(int id, String? access) async {
-    final response = await dio.post(
-      '$server/answers/upgrade/$id',
+  Future<bool?> isEnoughUserOnTop(String? access) async {
+    final response = await dio.get(
+      '$server/answers/is_enough',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
 
-    if (response.statusCode == 204) {
-      return 'Поднятие было сделано';
+    log(response.data.toString());
+    if (response.statusCode == 200) {
+      return response.data;
     }
-    if (response.statusCode == 400) {
-      return 'Недостаточно баллов';
-    }
-    return 'Ошибка сервера';
+    return null;
   }
 
-  Future<String> taskOnTop(int id, String? access) async {
+  Future<bool?> isEnoughOrdersOnTop(String? access) async {
     final response = await dio.post(
-      '$server/orders/upgrade/$id',
+      '$server/answers/is_enough',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
 
-    if (response.statusCode == 204) {
-      return 'Поднятие было сделано';
+    if (response.statusCode == 200) {
+      return response.data;
     }
-    if (response.statusCode == 400) {
-      return 'Недостаточно баллов';
-    }
-    return 'Ошибка сервера';
+    return null;
   }
 
   Future<bool> deleteLikeUser(int id, String access) async {

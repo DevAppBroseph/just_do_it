@@ -99,6 +99,7 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
+            isGraded = false;
             BlocProvider.of<ResponseBlocFromFav>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
@@ -220,14 +221,20 @@ class _SlidingPanelResponseFromFavState extends State<SlidingPanelResponseFromFa
                       alignment: Alignment.center,
                       children: [
                         CustomButton(
-                          onTap: () {
-                            if (isGraded) {
+                          onTap: () async {
+                            final res =
+                                await Repository().isEnoughUserOnTop(BlocProvider.of<ProfileBloc>(context).access);
+                            if (res!) {
+                              if (isGraded) {
+                              } else {
+                                onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
+                                    'your_ad_is_now_above_others'.tr());
+                                setState(() {
+                                  isGraded = true;
+                                });
+                              }
                             } else {
-                              onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
-                                  'your_ad_is_now_above_others'.tr());
-                              setState(() {
-                                isGraded = true;
-                              });
+                              noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
                             }
                           },
                           btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,

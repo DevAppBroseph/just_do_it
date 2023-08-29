@@ -347,6 +347,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         customer: widget.customer,
                       ),
                       DatePicker(
+                        asCustomer: widget.customer,
                         bottomInsets: bottomInsets,
                         coastMaxController: coastMaxController,
                         coastMinController: coastMinController,

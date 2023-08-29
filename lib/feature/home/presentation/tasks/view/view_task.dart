@@ -189,7 +189,7 @@ class _TaskViewState extends State<TaskView> {
                     }),
                   SizedBox(width: 10.w),
                   GestureDetector(
-                    onTap: () => taskMoreDialog( context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
+                    onTap: () => taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
                     child: SvgPicture.asset(
                       'assets/icons/more-circle.svg',
                       key: globalKey,
@@ -301,7 +301,7 @@ class _TaskViewState extends State<TaskView> {
                                     },
                                     child: Container(
                                       height: 30.h,
-                                      width: user?.rus ?? true && context.locale.languageCode == 'ru'? 167.w: 180.w,
+                                      width: user?.rus ?? true && context.locale.languageCode == 'ru' ? 167.w : 180.w,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
@@ -344,7 +344,7 @@ class _TaskViewState extends State<TaskView> {
                                     },
                                     child: Container(
                                       height: 30.h,
-                                      width:   136.w ,
+                                      width: 136.w,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.yellowFFCA0D,
                                         borderRadius: BorderRadius.circular(30.r),
@@ -1113,11 +1113,16 @@ class _TaskViewState extends State<TaskView> {
                           style: CustomTextStyle.black_17_w800,
                         ),
                         SizedBox(width: 15.h),
-                        SvgPicture.asset(
-                          SvgImg.help,
-                          color: Colors.black,
-                          width: 20,
-                          height: 20,
+                        GestureDetector(
+                          onTap: () {
+                            helpOnTopDialog(context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                          },
+                          child: SvgPicture.asset(
+                            SvgImg.help,
+                            color: Colors.black,
+                            width: 20,
+                            height: 20,
+                          ),
                         ),
                       ],
                     ),
@@ -1832,11 +1837,17 @@ class _TaskViewState extends State<TaskView> {
                                               style: CustomTextStyle.black_17_w800,
                                             ),
                                             SizedBox(width: 15.h),
-                                            SvgPicture.asset(
-                                              SvgImg.help,
-                                              color: Colors.black,
-                                              width: 20,
-                                              height: 20,
+                                            GestureDetector(
+                                              onTap: () {
+                                                helpOnTopDialog(
+                                                    context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                                              },
+                                              child: SvgPicture.asset(
+                                                SvgImg.help,
+                                                color: Colors.black,
+                                                width: 20,
+                                                height: 20,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -2051,11 +2062,17 @@ class _TaskViewState extends State<TaskView> {
                                                 style: CustomTextStyle.black_17_w800,
                                               ),
                                               SizedBox(width: 15.h),
-                                              SvgPicture.asset(
-                                                SvgImg.help,
-                                                color: Colors.black,
-                                                width: 20,
-                                                height: 20,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  helpOnTopDialog(
+                                                      context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                                                },
+                                                child: SvgPicture.asset(
+                                                  SvgImg.help,
+                                                  color: Colors.black,
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -2270,11 +2287,17 @@ class _TaskViewState extends State<TaskView> {
                                                 style: CustomTextStyle.black_17_w800,
                                               ),
                                               SizedBox(width: 15.h),
-                                              SvgPicture.asset(
-                                                SvgImg.help,
-                                                color: Colors.black,
-                                                width: 20,
-                                                height: 20,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  helpOnTopDialog(context, 'put_on_top'.tr(),
+                                                      'please_provide_a_rating'.tr());
+                                                },
+                                                child: SvgPicture.asset(
+                                                  SvgImg.help,
+                                                  color: Colors.black,
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -2489,11 +2512,17 @@ class _TaskViewState extends State<TaskView> {
                                             style: CustomTextStyle.black_17_w800,
                                           ),
                                           SizedBox(width: 15.h),
-                                          SvgPicture.asset(
-                                            SvgImg.help,
-                                            color: Colors.black,
-                                            width: 20,
-                                            height: 20,
+                                          GestureDetector(
+                                                onTap: () {
+                                                  helpOnTopDialog(context, 'put_on_top'.tr(),
+                                                      'please_provide_a_rating'.tr());
+                                                },
+                                            child: SvgPicture.asset(
+                                              SvgImg.help,
+                                              color: Colors.black,
+                                              width: 20,
+                                              height: 20,
+                                            ),
                                           ),
                                         ],
                                       ),

@@ -109,6 +109,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         panel: panel(context, bottomInsets),
         onPanelSlide: (position) {
           if (position == 0) {
+            isGraded = false;
+
             BlocProvider.of<ResponseBloc>(context).add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
@@ -199,16 +201,13 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                       isGraded);
                                 }
                                 isGraded = false;
-                                if (res) {
-                                  widget.panelController.animatePanelToPosition(0);
-                                  coastController.clear();
-                                  descriptionTextController.clear();
-                                  context.read<TasksBloc>().add(UpdateTaskEvent());
-                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                  setState(() {});
-                                } else {
-                                  noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
-                                }
+
+                                widget.panelController.animatePanelToPosition(0);
+                                coastController.clear();
+                                descriptionTextController.clear();
+                                context.read<TasksBloc>().add(UpdateTaskEvent());
+                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                setState(() {});
                               }
                             }
                           }
@@ -227,14 +226,20 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       alignment: Alignment.center,
                       children: [
                         CustomButton(
-                          onTap: () {
-                            if (isGraded) {
+                          onTap: () async {
+                            final res =
+                                await Repository().isEnoughUserOnTop(BlocProvider.of<ProfileBloc>(context).access);
+                            if (res!) {
+                              if (isGraded) {
+                              } else {
+                                onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
+                                    'your_ad_is_now_above_others'.tr());
+                                setState(() {
+                                  isGraded = true;
+                                });
+                              }
                             } else {
-                              onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
-                                  'your_ad_is_now_above_others'.tr());
-                              setState(() {
-                                isGraded = true;
-                              });
+                              noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
                             }
                           },
                           btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,

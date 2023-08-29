@@ -29,12 +29,14 @@ class DatePicker extends StatefulWidget {
   DateTime? startDate;
   DateTime? endDate;
   bool isGraded;
+  bool asCustomer;
   List<Countries> allCountries;
   Currency? currecy;
 
   DatePicker({
     super.key,
     required this.onEdit,
+    required this.asCustomer,
     required this.isGraded,
     required this.bottomInsets,
     required this.coastMinController,
@@ -1070,22 +1072,31 @@ class _DatePickerState extends State<DatePicker> {
           SizedBox(height: 8.h),
           CustomButton(
             onTap: () async {
-              if (widget.isGraded) {
+              final res = await Repository().isEnoughOrdersOnTop(BlocProvider.of<ProfileBloc>(context).access);
+              if (res!) {
+                if (widget.isGraded) {
+                } else {
+                  onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
+                  setState(() {
+                    widget.isGraded = true;
+                  });
+                  widget.onEdit(
+                    widget.startDate,
+                    widget.endDate,
+                    widget.allCountries,
+                    widget.currecy,
+                    widget.isGraded,
+                  );
+                  setState(() {
+                    widget.isGraded = false;
+                  });
+                }
               } else {
-                onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
-                setState(() {
-                  widget.isGraded = true;
-                });
-                widget.onEdit(
-                  widget.startDate,
-                  widget.endDate,
-                  widget.allCountries,
-                  widget.currecy,
-                  widget.isGraded,
-                );
-                setState(() {
-                  widget.isGraded = false;
-                });
+                if (widget.asCustomer) {
+                  noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+                } else {
+                  noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+                }
               }
             },
             btnColor: widget.isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,

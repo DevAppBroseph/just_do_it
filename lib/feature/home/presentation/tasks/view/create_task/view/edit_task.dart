@@ -52,7 +52,7 @@ class _EditTasksState extends State<EditTasks> {
 
   List<ArrayImages> document = [];
   // List<ArrayImages> photo = [];
-  bool isGraded = true;
+  bool isGraded = false;
   List<Countries> countries = [];
   Currency? currency;
   Activities? selectCategory;
@@ -64,7 +64,11 @@ class _EditTasksState extends State<EditTasks> {
   @override
   void initState() {
     super.initState();
-
+    if (widget.task.isGradedNow == true) {
+      setState(() {
+        isGraded = true;
+      });
+    }
     for (var element in BlocProvider.of<AuthBloc>(context).activities) {
       if (widget.task.activities?.id == element.id) {
         selectCategory = element;
@@ -286,6 +290,7 @@ class _EditTasksState extends State<EditTasks> {
                         },
                       ),
                       DatePicker(
+                        asCustomer: widget.customer,
                         bottomInsets: bottomInsets,
                         coastMaxController: coastMaxController,
                         coastMinController: coastMinController,
