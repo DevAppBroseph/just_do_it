@@ -50,6 +50,7 @@ class UserRegModel {
   int? countOrdersInProgressAsCustomer;
   int? countOrdersCompleteACustomer;
   int? balance;
+  int? allbalance;
   String? link;
   int? countOrderComplete;
   int? countMyAnswersSelectedAsExecutor;
@@ -85,6 +86,7 @@ class UserRegModel {
     this.country,
     this.photoLink,
     this.isBanned,
+    this.allbalance,
     this.cvLink,
     this.rus,
     this.photo,
@@ -119,6 +121,7 @@ class UserRegModel {
     bool? hasNotifications,
     String? lastname,
     String? password,
+    int? allbalance,
     List<Task>? selectedOffers,
     List<Task>? finishedOffers,
     List<Task>? selectedOffersAsCustomerk,
@@ -161,6 +164,7 @@ class UserRegModel {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.isBanned = isBanned ?? this.isBanned;
     this.rus = rus ?? this.rus;
+    this.allbalance = allbalance ?? this.allbalance;
     this.hasNotifications = hasNotifications ?? this.hasNotifications;
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
@@ -233,6 +237,7 @@ class UserRegModel {
     bool? rus = data['rus'];
     List<ActivitiesInfo> list = [];
     int? balance = data['actual_balance'];
+    int? allbalance = data['balance'];
     String? link = data['link'];
     if (data['activities_info'] != null) {
       for (var element in data['activities_info']) {
@@ -319,7 +324,7 @@ class UserRegModel {
       finishedOffers: listFinishedOffers,
       finishedOffersAsCustomer: listFinishedOffersAsCustomer,
       email: email,
-      hasNotifications:hasNotifications,
+      hasNotifications: hasNotifications,
       myAnswersAsExecutor: listMyAnswersAsExecutor,
       countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
       countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
@@ -331,6 +336,7 @@ class UserRegModel {
       isBanned: isBanned,
       photoLink: photoLink,
       sex: sex,
+      allbalance: allbalance,
       countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
       ordersCreateAsCustomer: listOrdersCreateAsCustomer,
       ordersCompleteAsExecutor: listOrdersCompleteAsExecutor,
@@ -359,6 +365,7 @@ class UserRegModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['phone_number'] = phoneNumber;
     data['email'] = email;
+    data['rus'] = rus;
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['password'] = password;
@@ -423,7 +430,7 @@ class ActivitiesInfo {
     String? photo = data['photo'];
 
     return ActivitiesInfo(id, description, photo);
-  } 
+  }
 }
 
 class Activities {

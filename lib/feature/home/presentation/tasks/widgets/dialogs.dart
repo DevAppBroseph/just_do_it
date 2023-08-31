@@ -154,7 +154,7 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+      
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
@@ -192,6 +192,12 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
                                 SizedBox(
                                   height: 30.h,
                                 ),
+                                if(context.locale.languageCode == 'en')
+                                Text(
+                                  '$score points ${'accrued'.tr()}',
+                                  style: CustomTextStyle.black_20_w700,
+                                ),
+                                 if(context.locale.languageCode == 'ru')
                                 Text(
                                   '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
                                   style: CustomTextStyle.black_20_w700,

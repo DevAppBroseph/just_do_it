@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -55,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
+    log('dwdededesadsdadasdasdasdsadededed ${event.userRegModel.rus}');
     Map<String, dynamic>? res =
         await Repository().confirmRegister(event.userRegModel, event.token);
     if (res == null) {

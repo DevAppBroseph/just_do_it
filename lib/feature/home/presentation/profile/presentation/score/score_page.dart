@@ -46,17 +46,17 @@ class _ScorePageState extends State<ScorePage> {
       if (state is ScoreLoaded) {
         final levels = state.levels;
         for (int i = 0; i < levels!.length; i++) {
-          if (user!.balance! >= levels[i].mustCoins!) {
+          if (user!.allbalance! >= levels[i].mustCoins!) {
             proverka = levels[i].name;
             log(proverka.toString());
-          } else if (user!.balance! <= levels[0].mustCoins!) {
+          } else if (user!.allbalance! <= levels[0].mustCoins!) {
             proverka = levels[0].name;
             log(proverka.toString());
             break;
           }
         }
         for (int i = 0; i < levels.length; i++) {
-          if (user!.balance! >= levels.last.mustCoins!) {
+          if (user!.allbalance! >= levels.last.mustCoins!) {
             proverkaNext = levels.last.name;
             log(proverka.toString());
             break;
@@ -64,16 +64,16 @@ class _ScorePageState extends State<ScorePage> {
             proverkaNext = levels[0].name;
             log(proverka.toString());
             break;
-          } else if (user!.balance! >= levels.last.mustCoins!) {
+          } else if (user!.allbalance! >= levels.last.mustCoins!) {
             proverkaNext = levels.last.name;
             log(proverka.toString());
             break;
-          } else if (user!.balance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
+          } else if (user!.allbalance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
             proverkaNext = levels[i + 1].name;
             log(proverkaNext.toString());
           }
         }
-        return user?.balance != null
+        return user?.allbalance != null
             ? MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: Scaffold(
@@ -142,7 +142,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 child: Column(
                                                   children: [
                                                     AutoSizeText(
-                                                      user!.balance!.toString(),
+                                                      user!.allbalance!.toString(),
                                                       style: CustomTextStyle.white_21_w700,
                                                       textAlign: TextAlign.end,
                                                     ),
@@ -157,7 +157,7 @@ class _ScorePageState extends State<ScorePage> {
                                               SizedBox(
                                                 width: 27.w,
                                               ),
-                                              if (user!.balance! < levels[0].mustCoins!)
+                                              if (user!.allbalance! < levels[0].mustCoins!)
                                                 CachedNetworkImage(
                                                   progressIndicatorBuilder: (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
@@ -167,12 +167,12 @@ class _ScorePageState extends State<ScorePage> {
                                                   width: 113.w,
                                                   fit: BoxFit.fill,
                                                 ),
-                                              if (user!.balance! >= levels[0].mustCoins!)
-                                                _scorePicture(levels, user!.balance!),
+                                              if (user!.allbalance! >= levels[0].mustCoins!)
+                                                _scorePicture(levels, user!.allbalance!),
                                               SizedBox(
                                                 width: 15.w,
                                               ),
-                                              if (user!.balance! < levels[0].mustCoins!)
+                                              if (user!.allbalance! < levels[0].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -181,8 +181,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[0].mustCoins! &&
-                                                  user!.balance! < levels[1].mustCoins!)
+                                              if (user!.allbalance! >= levels[0].mustCoins! &&
+                                                  user!.allbalance! < levels[1].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -191,8 +191,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[1].mustCoins! &&
-                                                  user!.balance! < levels[2].mustCoins!)
+                                              if (user!.allbalance! >= levels[1].mustCoins! &&
+                                                  user!.allbalance! < levels[2].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -201,8 +201,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[2].mustCoins! &&
-                                                  user!.balance! < levels[3].mustCoins!)
+                                              if (user!.allbalance! >= levels[2].mustCoins! &&
+                                                  user!.allbalance! < levels[3].mustCoins!)
                                                 SizedBox(
                                                   width: 60.5.w,
                                                   child: AutoSizeText(
@@ -211,8 +211,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[3].mustCoins! &&
-                                                  user!.balance! < levels[4].mustCoins!)
+                                              if (user!.allbalance! >= levels[3].mustCoins! &&
+                                                  user!.allbalance! < levels[4].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -221,8 +221,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[4].mustCoins! &&
-                                                  user!.balance! < levels[5].mustCoins!)
+                                              if (user!.allbalance! >= levels[4].mustCoins! &&
+                                                  user!.allbalance! < levels[5].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -231,8 +231,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[5].mustCoins! &&
-                                                  user!.balance! < levels[6].mustCoins!)
+                                              if (user!.allbalance! >= levels[5].mustCoins! &&
+                                                  user!.allbalance! < levels[6].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -241,8 +241,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[6].mustCoins! &&
-                                                  user!.balance! < levels[7].mustCoins!)
+                                              if (user!.allbalance! >= levels[6].mustCoins! &&
+                                                  user!.allbalance! < levels[7].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -251,8 +251,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[7].mustCoins! &&
-                                                  user!.balance! < levels[8].mustCoins!)
+                                              if (user!.allbalance! >= levels[7].mustCoins! &&
+                                                  user!.allbalance! < levels[8].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -261,8 +261,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[8].mustCoins! &&
-                                                  user!.balance! < levels[9].mustCoins!)
+                                              if (user!.allbalance! >= levels[8].mustCoins! &&
+                                                  user!.allbalance! < levels[9].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -271,8 +271,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[9].mustCoins! &&
-                                                  user!.balance! < levels[10].mustCoins!)
+                                              if (user!.allbalance! >= levels[9].mustCoins! &&
+                                                  user!.allbalance! < levels[10].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -281,8 +281,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[10].mustCoins! &&
-                                                  user!.balance! < levels[11].mustCoins!)
+                                              if (user!.allbalance! >= levels[10].mustCoins! &&
+                                                  user!.allbalance! < levels[11].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -291,8 +291,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[11].mustCoins! &&
-                                                  user!.balance! < levels[12].mustCoins!)
+                                              if (user!.allbalance! >= levels[11].mustCoins! &&
+                                                  user!.allbalance! < levels[12].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -301,8 +301,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[12].mustCoins! &&
-                                                  user!.balance! < levels[13].mustCoins!)
+                                              if (user!.allbalance! >= levels[12].mustCoins! &&
+                                                  user!.allbalance! < levels[13].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -311,8 +311,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[13].mustCoins! &&
-                                                  user!.balance! < levels[14].mustCoins!)
+                                              if (user!.allbalance! >= levels[13].mustCoins! &&
+                                                  user!.allbalance! < levels[14].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -321,8 +321,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[14].mustCoins! &&
-                                                  user!.balance! < levels[15].mustCoins!)
+                                              if (user!.allbalance! >= levels[14].mustCoins! &&
+                                                  user!.allbalance! < levels[15].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -331,8 +331,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[15].mustCoins! &&
-                                                  user!.balance! < levels[16].mustCoins!)
+                                              if (user!.allbalance! >= levels[15].mustCoins! &&
+                                                  user!.allbalance! < levels[16].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -341,8 +341,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[16].mustCoins! &&
-                                                  user!.balance! < levels[17].mustCoins!)
+                                              if (user!.allbalance! >= levels[16].mustCoins! &&
+                                                  user!.allbalance! < levels[17].mustCoins!)
                                                 SizedBox(
                                                   width: 60.5.w,
                                                   child: AutoSizeText(
@@ -351,8 +351,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[17].mustCoins! &&
-                                                  user!.balance! < levels[18].mustCoins!)
+                                              if (user!.allbalance! >= levels[17].mustCoins! &&
+                                                  user!.allbalance! < levels[18].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -361,8 +361,8 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[18].mustCoins! &&
-                                                  user!.balance! < levels[19].mustCoins!)
+                                              if (user!.allbalance! >= levels[18].mustCoins! &&
+                                                  user!.allbalance! < levels[19].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -371,7 +371,7 @@ class _ScorePageState extends State<ScorePage> {
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                              if (user!.balance! >= levels[19].mustCoins!)
+                                              if (user!.allbalance! >= levels[19].mustCoins!)
                                                 SizedBox(
                                                   width: 88.5.w,
                                                   child: AutoSizeText(
@@ -451,36 +451,36 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[0].mustCoins! ||
+                                                    user!.allbalance! >= levels[0].mustCoins! ||
                                                             levels[0].name == proverkaNext
                                                         ? '${levels[0].image}'
                                                         : '${levels[0].bwImage}',
                                                     user!.rus! ? levels[0].name ?? '' : levels[0].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[0].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[1].mustCoins! ||
+                                                    user!.allbalance! >= levels[1].mustCoins! ||
                                                             levels[1].name == proverkaNext
                                                         ? '${levels[1].image}'
                                                         : '${levels[1].bwImage}',
                                                     user!.rus! ? levels[1].name ?? '' : levels[1].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[1].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[2].mustCoins! ||
+                                                    user!.allbalance! >= levels[2].mustCoins! ||
                                                             levels[2].name == proverkaNext
                                                         ? '${levels[2].image}'
                                                         : '${levels[2].bwImage}',
                                                     user!.rus! ? levels[2].name ?? '' : levels[2].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[2].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[3].mustCoins! ||
+                                                    user!.allbalance! >= levels[3].mustCoins! ||
                                                             levels[3].name == proverkaNext
                                                         ? '${levels[3].image}'
                                                         : '${levels[3].bwImage}',
                                                     user!.rus! ? levels[3].name ?? '' : levels[3].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[3].mustCoins!),
                                               ],
                                             ),
@@ -495,36 +495,36 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[7].mustCoins! ||
+                                                    user!.allbalance! >= levels[7].mustCoins! ||
                                                             levels[7].name == proverkaNext
                                                         ? '${levels[7].image}'
                                                         : '${levels[7].bwImage}',
                                                     user!.rus! ? levels[7].name ?? '' : levels[7].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[7].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[6].mustCoins! ||
+                                                    user!.allbalance! >= levels[6].mustCoins! ||
                                                             levels[6].name == proverkaNext
                                                         ? '${levels[6].image}'
                                                         : '${levels[6].bwImage}',
                                                     user!.rus! ? levels[6].name ?? '' : levels[6].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[6].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[5].mustCoins! ||
+                                                    user!.allbalance! >= levels[5].mustCoins! ||
                                                             levels[5].name == proverkaNext
                                                         ? '${levels[5].image}'
                                                         : '${levels[5].bwImage}',
                                                     user!.rus! ? levels[5].name ?? '' : levels[5].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[5].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[4].mustCoins! ||
+                                                    user!.allbalance! >= levels[4].mustCoins! ||
                                                             levels[4].name == proverkaNext
                                                         ? '${levels[4].image}'
                                                         : '${levels[4].bwImage}',
                                                     user!.rus! ? levels[4].name ?? '' : levels[4].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[4].mustCoins!),
                                               ],
                                             ),
@@ -539,39 +539,39 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[8].mustCoins! ||
+                                                    user!.allbalance! >= levels[8].mustCoins! ||
                                                             levels[8].name == proverkaNext
                                                         ? '${levels[8].image}'
                                                         : '${levels[8].bwImage}',
                                                     user!.rus! ? levels[8].name ?? '' : levels[8].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[8].mustCoins!),
                                                 // const Spacer(),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[9].mustCoins! ||
+                                                    user!.allbalance! >= levels[9].mustCoins! ||
                                                             levels[9].name == proverkaNext
                                                         ? '${levels[9].image}'
                                                         : '${levels[9].bwImage}',
                                                     user!.rus! ? levels[9].name ?? '' : levels[9].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[9].mustCoins!),
                                                 // const Spacer(),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[10].mustCoins! ||
+                                                    user!.allbalance! >= levels[10].mustCoins! ||
                                                             levels[10].name == proverkaNext
                                                         ? '${levels[10].image}'
                                                         : '${levels[10].bwImage}',
                                                     user!.rus! ? levels[10].name ?? '' : levels[10].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[10].mustCoins!),
                                                 // const Spacer(),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[11].mustCoins! ||
+                                                    user!.allbalance! >= levels[11].mustCoins! ||
                                                             levels[11].name == proverkaNext
                                                         ? '${levels[11].image}'
                                                         : '${levels[11].bwImage}',
                                                     user!.rus! ? levels[11].name ?? '' : levels[11].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[11].mustCoins!),
                                               ],
                                             ),
@@ -583,36 +583,36 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[15].mustCoins! ||
+                                                    user!.allbalance! >= levels[15].mustCoins! ||
                                                             levels[15].name == proverkaNext
                                                         ? '${levels[15].image}'
                                                         : '${levels[15].bwImage}',
                                                     user!.rus! ? levels[15].name ?? '' : levels[15].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[15].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[14].mustCoins! ||
+                                                    user!.allbalance! >= levels[14].mustCoins! ||
                                                             levels[14].name == proverkaNext
                                                         ? '${levels[14].image}'
                                                         : '${levels[14].bwImage}',
                                                     user!.rus! ? levels[14].name ?? '' : levels[14].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[14].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[13].mustCoins! ||
+                                                    user!.allbalance! >= levels[13].mustCoins! ||
                                                             levels[13].name == proverkaNext
                                                         ? '${levels[13].image}'
                                                         : '${levels[13].bwImage}',
                                                     user!.rus! ? levels[13].name ?? '' : levels[13].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[13].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[12].mustCoins! ||
+                                                    user!.allbalance! >= levels[12].mustCoins! ||
                                                             levels[12].name == proverkaNext
                                                         ? '${levels[12].image}'
                                                         : '${levels[12].bwImage}',
                                                     user!.rus! ? levels[12].name ?? '' : levels[12].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[12].mustCoins!),
                                               ],
                                             ),
@@ -624,36 +624,36 @@ class _ScorePageState extends State<ScorePage> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[16].mustCoins! ||
+                                                    user!.allbalance! >= levels[16].mustCoins! ||
                                                             levels[16].name == proverkaNext
                                                         ? '${levels[16].image}'
                                                         : '${levels[16].bwImage}',
                                                     user!.rus! ? levels[16].name ?? '' : levels[16].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[16].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[17].mustCoins! ||
+                                                    user!.allbalance! >= levels[17].mustCoins! ||
                                                             levels[17].name == proverkaNext
                                                         ? '${levels[17].image}'
                                                         : '${levels[17].bwImage}',
                                                     user!.rus! ? levels[17].name ?? '' : levels[17].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[17].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[18].mustCoins! ||
+                                                    user!.allbalance! >= levels[18].mustCoins! ||
                                                             levels[18].name == proverkaNext
                                                         ? '${levels[18].image}'
                                                         : '${levels[18].bwImage}',
                                                     user!.rus! ? levels[18].name ?? '' : levels[18].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[18].mustCoins!),
                                                 firstPageItemScore(
-                                                    user!.balance! >= levels[19].mustCoins! ||
+                                                    user!.allbalance! >= levels[19].mustCoins! ||
                                                             levels[19].name == proverkaNext
                                                         ? '${levels[19].image}'
                                                         : '${levels[19].bwImage}',
                                                     user!.rus! ? levels[19].name ?? '' : levels[19].engName ?? '',
-                                                    user!.balance!,
+                                                    user!.allbalance!,
                                                     levels[19].mustCoins!),
                                               ],
                                             ),
@@ -705,10 +705,10 @@ class _ScorePageState extends State<ScorePage> {
     });
   }
 
-  Widget _scorePicture(List<Levels>? levels, int balance) {
+  Widget _scorePicture(List<Levels>? levels, int allbalance) {
     for (int i = 0; i < levels!.length; i++) {
       if (levels[i].mustCoins != null) {
-        if (balance >= levels[i].mustCoins! && balance < levels[i + 1].mustCoins!) {
+        if (allbalance >= levels[i].mustCoins! && allbalance < levels[i + 1].mustCoins!) {
           return CachedNetworkImage(
             progressIndicatorBuilder: (context, url, progress) {
               return const CupertinoActivityIndicator();
@@ -718,7 +718,7 @@ class _ScorePageState extends State<ScorePage> {
             width: 113.w,
             fit: BoxFit.fill,
           );
-        } else if (balance >= levels.last.mustCoins!) {
+        } else if (allbalance >= levels.last.mustCoins!) {
           return CachedNetworkImage(
             progressIndicatorBuilder: (context, url, progress) {
               return const CupertinoActivityIndicator();

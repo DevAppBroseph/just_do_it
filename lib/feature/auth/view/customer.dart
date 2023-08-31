@@ -262,19 +262,19 @@ class _CustomerState extends State<Customer> {
                     error += '\n${'passwords_dont_match'.tr()}';
                     errorsFlag = true;
                   }
-                  
+
                   if (whoGiveDocController.text.length < 3) {
                     if (user.docType == 'Resident_ID') {
                       error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
-                        errorsFlag = true;
+                      errorsFlag = true;
                     }
                   }
 
                   if (additionalInfo) {
                     if (numberDocController.text.length < 5) {
-                    error += '\n- ${'number_document'.tr()}';
+                      error += '\n- ${'number_document'.tr()}';
                       errorsFlag = true;
-                  }
+                    }
                     if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
                       error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
@@ -318,7 +318,12 @@ class _CustomerState extends State<Customer> {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
                       documentEdit();
-
+                      if (context.locale.languageCode == 'en') {
+                        user.rus = false;
+                      }
+                      if (context.locale.languageCode == 'ru') {
+                        user.rus = true;
+                      }
                       BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                     }
                   } else if (errorsFlag) {
@@ -334,7 +339,12 @@ class _CustomerState extends State<Customer> {
                     final token = await FirebaseMessaging.instance.getToken();
                     showLoaderWrapper(context);
                     documentEdit();
-
+                    if (context.locale.languageCode == 'en') {
+                      user.rus = false;
+                    }
+                    if (context.locale.languageCode == 'ru') {
+                      user.rus = true;
+                    }
                     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                   }
                 }
@@ -474,10 +484,8 @@ class _CustomerState extends State<Customer> {
               mask: '+###############',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
-              
             ),
-                              LengthLimitingTextInputFormatter(16),
-
+            LengthLimitingTextInputFormatter(16),
           ],
           contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -1048,7 +1056,7 @@ class _CustomerState extends State<Customer> {
         : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year+15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
             ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
             : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);

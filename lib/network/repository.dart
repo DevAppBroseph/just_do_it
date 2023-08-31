@@ -334,6 +334,7 @@ class Repository {
   }
 
   Future<UserRegModel?> editRusProfile(String? access, bool rus) async {
+    log('swdswdwwdwdwdwdwdwdwdwddw   $rus');
     final response = await dio.patch(
       '$server/profile/',
       data: {

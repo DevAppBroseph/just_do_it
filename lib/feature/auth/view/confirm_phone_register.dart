@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,11 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:pinput/pinput.dart';
 
 class ConfirmCodeRegisterPage extends StatefulWidget {
@@ -27,7 +31,6 @@ class ConfirmCodeRegisterPage extends StatefulWidget {
 
 class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   TextEditingController codeController = TextEditingController();
-
   FocusNode focusNode = FocusNode();
   Timer? timer;
   int currentSecond = 59;
@@ -68,8 +71,10 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           Loader.hide();
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+
             Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-            scoreDialog(context, '50', 'регистрацию');
+
+            scoreDialog(context, '50', 'registrations'.tr());
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 

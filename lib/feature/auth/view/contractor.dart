@@ -398,6 +398,12 @@ class _ContractorState extends State<Contractor> {
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
+                      if (context.locale.languageCode == 'en') {
+                        user.rus = false;
+                      }
+                      if (context.locale.languageCode == 'ru') {
+                        user.rus = true;
+                      }
                       BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
                     }
                   }
