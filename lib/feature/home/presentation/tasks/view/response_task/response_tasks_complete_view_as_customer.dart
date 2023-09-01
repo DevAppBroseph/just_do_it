@@ -144,7 +144,8 @@ class _ResponseTasksCompleteViewAsCustomerState extends State<ResponseTasksCompl
             setState(() {});
           },
           canEdit: true,
-          canSelect: true,
+          canSelect: true, 
+          canOnTop: false,
         ),
       );
     }

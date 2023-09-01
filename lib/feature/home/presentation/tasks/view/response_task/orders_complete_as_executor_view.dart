@@ -146,6 +146,7 @@ class _OrdersCompleteAsExecutorViewState extends State<OrdersCompleteAsExecutorV
           },
           canEdit: false,
           canSelect: true,
+          canOnTop: false,
         ),
       );
     }

@@ -42,6 +42,7 @@ class TaskView extends StatefulWidget {
   final Function(Owner?) openOwner;
   final bool canSelect;
   final bool canEdit;
+  final bool canOnTop;
   final bool fromFav;
   TaskView({
     super.key,
@@ -50,6 +51,7 @@ class TaskView extends StatefulWidget {
     this.canSelect = false,
     this.canEdit = false,
     this.fromFav = false,
+    this.canOnTop = true,
   });
 
   @override
@@ -109,6 +111,7 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
+    log('dfsfesfasdas ${widget.canOnTop}');
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: MediaQuery(
@@ -129,7 +132,7 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_12_w400,
                   ),
                   const Spacer(),
-                  if (user?.id != selectTask?.owner?.id)
+                  if (user?.id != selectTask?.owner?.id )
                     BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                       if (current is UpdateTask) {
                         getTask();
@@ -188,6 +191,7 @@ class _TaskViewState extends State<TaskView> {
                       });
                     }),
                   SizedBox(width: 10.w),
+                  if(widget.selectTask.owner?.id != user?.id)
                   GestureDetector(
                     onTap: () => taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
                     child: SvgPicture.asset(
@@ -271,6 +275,7 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(
                 height: 12.h,
               ),
+              if(widget.canOnTop)
               BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                 if (current is UpdateTask) {
                   return true;

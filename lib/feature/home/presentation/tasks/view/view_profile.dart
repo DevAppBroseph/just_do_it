@@ -67,6 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
       final access = BlocProvider.of<ProfileBloc>(context).access;
       context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
     }
+
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
@@ -81,14 +82,13 @@ class _ProfileViewState extends State<ProfileView> {
                   physics: const BouncingScrollPhysics(),
                   child: owner!.isBanned!
                       ? Center(
-                        child: Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(top: 200.h),
                                 child: SvgPicture.asset(
                                   'assets/icons/frown.svg',
-                           
                                 ),
                               ),
                               SizedBox(
@@ -107,10 +107,9 @@ class _ProfileViewState extends State<ProfileView> {
                               SizedBox(
                                 height: 140.h,
                               ),
-                              
                             ],
                           ),
-                      )
+                        )
                       : Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -217,19 +216,20 @@ class _ProfileViewState extends State<ProfileView> {
                                                               });
                                                             }),
                                                           SizedBox(width: 10.w),
-                                                          GestureDetector(
-                                                            onTap: () => taskMoreDialogForProfile(
-                                                              context,
-                                                              getWidgetPosition(globalKey),
-                                                              (index) {},
-                                                              owner,
+                                                          if (widget.owner.id != user?.id)
+                                                            GestureDetector(
+                                                              onTap: () => taskMoreDialogForProfile(
+                                                                context,
+                                                                getWidgetPosition(globalKey),
+                                                                (index) {},
+                                                                owner,
+                                                              ),
+                                                              child: SvgPicture.asset(
+                                                                'assets/icons/share.svg',
+                                                                height: 20.h,
+                                                                key: globalKey,
+                                                              ),
                                                             ),
-                                                            child: SvgPicture.asset(
-                                                              'assets/icons/share.svg',
-                                                              height: 20.h,
-                                                              key: globalKey,
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
                                                     ],
@@ -508,14 +508,13 @@ class _ProfileViewState extends State<ProfileView> {
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)
-                                                     
-                                                      if (owner != null &&
-                                                          owner!.isPassportExist != null &&
-                                                          owner!.isPassportExist!)
-                                                        const Icon(
-                                                          Icons.check,
-                                                          color: Colors.green,
-                                                        ),
+                                                        if (owner != null &&
+                                                            owner!.isPassportExist != null &&
+                                                            owner!.isPassportExist!)
+                                                          const Icon(
+                                                            Icons.check,
+                                                            color: Colors.green,
+                                                          ),
                                                     ],
                                                   ),
                                                 ),
@@ -534,7 +533,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                   child: Row(
                                                     children: [
                                                       SizedBox(
-                                                         width: 240.w,
+                                                        width: 240.w,
                                                         child: Text(
                                                           'the_user_is_verified_by_the_application'.tr(),
                                                           style: owner != null &&
@@ -547,14 +546,13 @@ class _ProfileViewState extends State<ProfileView> {
                                                       if (owner != null &&
                                                           owner!.isPassportExist != null &&
                                                           owner!.isPassportExist!)
-                                                       
-                                                      if (owner != null &&
-                                                          owner!.isPassportExist != null &&
-                                                          owner!.isPassportExist!)
-                                                        const Icon(
-                                                          Icons.check,
-                                                          color: Colors.green,
-                                                        ),
+                                                        if (owner != null &&
+                                                            owner!.isPassportExist != null &&
+                                                            owner!.isPassportExist!)
+                                                          const Icon(
+                                                            Icons.check,
+                                                            color: Colors.green,
+                                                          ),
                                                     ],
                                                   ),
                                                 ),
