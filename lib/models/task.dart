@@ -9,8 +9,10 @@ class Task {
   bool? asCustomer;
   bool? isGraded;
   bool? isGradedNow;
+  bool? isBanned;
   int? isLiked;
   String? lastUpgrade;
+  String? banReason;
   Owner? owner;
   int? chatId;
   String name;
@@ -43,10 +45,12 @@ class Task {
       this.lastUpgrade,
       this.chatId,
       this.currency,
+      this.isBanned,
       required this.name,
       required this.description,
       this.activities,
       this.subcategory,
+      this.banReason,
       required this.dateStart,
       required this.dateEnd,
       required this.priceFrom,
@@ -109,6 +113,8 @@ class Task {
         id: json["id"],
         lastUpgrade: json['last_grade'],
         isGraded: json["is_graded"],
+        isBanned: json["is_banned"],
+        banReason: json["ban_reason"],
         owner: Owner.fromJson(json["owner"]),
         isLiked: json["is_liked"],
         currency: Currency.fromJson(json['currency']),
