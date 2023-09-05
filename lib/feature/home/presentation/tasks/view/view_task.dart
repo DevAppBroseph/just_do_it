@@ -63,6 +63,8 @@ class _TaskViewState extends State<TaskView> {
   Task? selectTask;
   UserRegModel? user;
   bool proverkaReview = false;
+  bool open = false;
+
   @override
   void initState() {
     super.initState();
@@ -127,12 +129,18 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(height: 10.h),
               Row(
                 children: [
-                  Text(
-                    widget.selectTask.status == 'Completed' ? 'close'.tr() : 'openly'.tr(),
-                    style: CustomTextStyle.black_12_w400,
-                  ),
+                  if (!widget.selectTask.isBanned!)
+                    Text(
+                      widget.selectTask.status == 'Completed' ? 'close'.tr() : 'openly'.tr(),
+                      style: CustomTextStyle.black_12_w400,
+                    ),
+                  if (widget.selectTask.isBanned!)
+                    Text(
+                      'blocked'.tr(),
+                      style: CustomTextStyle.red_11_w400_171716,
+                    ),
                   const Spacer(),
-                  if (user?.id != selectTask?.owner?.id )
+                  if (user?.id != selectTask?.owner?.id)
                     BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                       if (current is UpdateTask) {
                         getTask();
@@ -191,9 +199,9 @@ class _TaskViewState extends State<TaskView> {
                       });
                     }),
                   SizedBox(width: 10.w),
-                  if(widget.selectTask.owner?.id != user?.id)
                   GestureDetector(
-                    onTap: () => taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask),
+                    onTap: () =>
+                        taskMoreDialog(context, getWidgetPosition(globalKey), (index) {}, widget.selectTask, user),
                     child: SvgPicture.asset(
                       'assets/icons/more-circle.svg',
                       key: globalKey,
@@ -275,232 +283,238 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(
                 height: 12.h,
               ),
-              if(widget.canOnTop)
-              BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
-                if (current is UpdateTask) {
-                  return true;
-                }
-                if (previous != current) {
-                  return true;
-                }
-                return false;
-              }, builder: (context, state) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'before'.tr(),
-                      style: CustomTextStyle.black_17_w500_171716,
-                    ),
-                    widget.selectTask.isGradedNow!
-                        ? widget.selectTask.lastUpgrade != null
-                            ? DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().day != DateTime.now().day
-                                ? GestureDetector(
-                                    onTap: () {
-                                      if (widget.selectTask.owner?.id == user?.id) {
+              if (widget.canOnTop)
+                BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+                  log(current.toString());
+                  if (current is UpdateTask) {
+                    return true;
+                  }
+                  if (previous != current) {
+                    return true;
+                  }
+                  return false;
+                }, builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'before'.tr(),
+                        style: CustomTextStyle.black_17_w500_171716,
+                      ),
+                      widget.selectTask.isGradedNow!
+                          ? widget.selectTask.lastUpgrade != null
+                              ? DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().day != DateTime.now().day
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        if (widget.selectTask.owner?.id == user?.id) {
+                                          onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                              'ad_is_now_above'.tr());
+                                        } else {
+                                          helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 30.h,
+                                        width: user?.rus ?? true && context.locale.languageCode == 'ru' ? 167.w : 180.w,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.yellowFFCA0D,
+                                          borderRadius: BorderRadius.circular(30.r),
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/arrow_up_yellow.svg',
+                                              ),
+                                              SizedBox(
+                                                width: 4.w,
+                                              ),
+                                              Text(
+                                                'raised_yesterday_in'.tr(),
+                                                style: CustomTextStyle.black_11_w500_171716,
+                                              ),
+                                              SizedBox(
+                                                width: 4.w,
+                                              ),
+                                              Text(
+                                                '${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
+                                                style: CustomTextStyle.black_11_w500_171716,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        if (widget.selectTask.owner?.id == user?.id) {
+                                          onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                              'ad_is_now_above'.tr());
+                                        } else {
+                                          helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 30.h,
+                                        width: 136.w,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.yellowFFCA0D,
+                                          borderRadius: BorderRadius.circular(30.r),
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/arrow_up_yellow.svg',
+                                              ),
+                                              SizedBox(
+                                                width: 4.w,
+                                              ),
+                                              Text(
+                                                'raised_in'.tr(),
+                                                style: CustomTextStyle.black_11_w500_171716,
+                                              ),
+                                              Text(
+                                                ' ${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
+                                                style: CustomTextStyle.black_11_w500_171716,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                              : widget.selectTask.owner?.id == user?.id
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        Task newTask = Task(
+                                          id: widget.selectTask.id,
+                                          asCustomer: widget.selectTask.asCustomer,
+                                          name: widget.selectTask.name,
+                                          description: widget.selectTask.description,
+                                          subcategory: widget.selectTask.subcategory!,
+                                          dateStart: widget.selectTask.dateStart,
+                                          dateEnd: widget.selectTask.dateEnd,
+                                          priceFrom: widget.selectTask.priceFrom,
+                                          priceTo: widget.selectTask.priceTo,
+                                          regions: widget.selectTask.regions,
+                                          countries: widget.selectTask.countries,
+                                          towns: widget.selectTask.towns,
+                                          files: widget.selectTask.files,
+                                          icon: '',
+                                          task: '',
+                                          typeLocation: '',
+                                          whenStart: '',
+                                          coast: '',
+                                          currency: widget.selectTask.currency,
+                                          isGraded: true,
+                                        );
+                                        final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                                        await Repository().editTask(profileBloc.access!, newTask);
+                                        getTaskList();
+                                        getTask();
+
+                                        context.read<TasksBloc>().add(UpdateTaskEvent());
+                                        BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
                                         onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
                                             'ad_is_now_above'.tr());
-                                      } else {
-                                        helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 30.h,
-                                      width: user?.rus ?? true && context.locale.languageCode == 'ru' ? 167.w : 180.w,
-                                      decoration: BoxDecoration(
-                                        color: ColorStyles.yellowFFCA0D,
-                                        borderRadius: BorderRadius.circular(30.r),
-                                      ),
-                                      child: Center(
+                                      },
+                                      child: Container(
+                                        height: 30.h,
+                                        width: 132.w,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.purpleA401C4,
+                                          borderRadius: BorderRadius.circular(30.r),
+                                        ),
                                         child: Row(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              'assets/icons/arrow_up_yellow.svg',
+                                              'assets/icons/arrow_up_purple.svg',
                                             ),
                                             SizedBox(
                                               width: 4.w,
                                             ),
                                             Text(
-                                              'raised_yesterday_in'.tr(),
-                                              style: CustomTextStyle.black_11_w500_171716,
-                                            ),
-                                            SizedBox(
-                                              width: 4.w,
-                                            ),
-                                            Text(
-                                              '${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
-                                              style: CustomTextStyle.black_11_w500_171716,
+                                              'raise_again'.tr(),
+                                              style: CustomTextStyle.white_11,
                                             ),
                                           ],
                                         ),
                                       ),
+                                    )
+                                  : Container()
+                          : widget.selectTask.owner?.id == user?.id
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    Task newTask = Task(
+                                      id: widget.selectTask.id,
+                                      asCustomer: widget.selectTask.asCustomer,
+                                      name: widget.selectTask.name,
+                                      description: widget.selectTask.description,
+                                      subcategory: widget.selectTask.subcategory!,
+                                      dateStart: widget.selectTask.dateStart,
+                                      dateEnd: widget.selectTask.dateEnd,
+                                      priceFrom: widget.selectTask.priceFrom,
+                                      priceTo: widget.selectTask.priceTo,
+                                      regions: widget.selectTask.regions,
+                                      countries: widget.selectTask.countries,
+                                      towns: widget.selectTask.towns,
+                                      files: widget.selectTask.files,
+                                      icon: '',
+                                      task: '',
+                                      typeLocation: '',
+                                      whenStart: '',
+                                      coast: '',
+                                      currency: widget.selectTask.currency,
+                                      isGraded: true,
+                                    );
+
+                                    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                                    await Repository().editTask(profileBloc.access!, newTask);
+                                    getTaskList();
+                                    getTask();
+
+                                    context.read<TasksBloc>().add(UpdateTaskEvent());
+                                    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
+                                    onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                        'ad_is_now_above'.tr());
+                                  },
+                                  child: Container(
+                                    height: 30.h,
+                                    width: 132.w,
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.purpleA401C4,
+                                      borderRadius: BorderRadius.circular(30.r),
                                     ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      if (widget.selectTask.owner?.id == user?.id) {
-                                        onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
-                                            'ad_is_now_above'.tr());
-                                      } else {
-                                        helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 30.h,
-                                      width: 136.w,
-                                      decoration: BoxDecoration(
-                                        color: ColorStyles.yellowFFCA0D,
-                                        borderRadius: BorderRadius.circular(30.r),
-                                      ),
-                                      child: Center(
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/icons/arrow_up_yellow.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 4.w,
-                                            ),
-                                            Text(
-                                              'raised_in'.tr(),
-                                              style: CustomTextStyle.black_11_w500_171716,
-                                            ),
-                                            Text(
-                                              ' ${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().hour.toString())}:${_timeWithZero(DateTime.parse(widget.selectTask.lastUpgrade!).toLocal().minute.toString())}',
-                                              style: CustomTextStyle.black_11_w500_171716,
-                                            ),
-                                          ],
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/arrow_up_purple.svg',
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 4.w,
+                                        ),
+                                        Text(
+                                          'up_to'.tr(),
+                                          style: CustomTextStyle.white_11,
+                                        ),
+                                      ],
                                     ),
-                                  )
-                            : widget.selectTask.owner?.id == user?.id
-                                ? GestureDetector(
-                                    onTap: () async {
-                                      Task newTask = Task(
-                                        id: widget.selectTask.id,
-                                        asCustomer: widget.selectTask.asCustomer,
-                                        name: widget.selectTask.name,
-                                        description: widget.selectTask.description,
-                                        subcategory: widget.selectTask.subcategory!,
-                                        dateStart: widget.selectTask.dateStart,
-                                        dateEnd: widget.selectTask.dateEnd,
-                                        priceFrom: widget.selectTask.priceFrom,
-                                        priceTo: widget.selectTask.priceTo,
-                                        regions: widget.selectTask.regions,
-                                        countries: widget.selectTask.countries,
-                                        towns: widget.selectTask.towns,
-                                        files: widget.selectTask.files,
-                                        icon: '',
-                                        task: '',
-                                        typeLocation: '',
-                                        whenStart: '',
-                                        coast: '',
-                                        currency: widget.selectTask.currency,
-                                        isGraded: true,
-                                      );
-                                      final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                                      await Repository().editTask(profileBloc.access!, newTask);
-                                      getTaskList();
-                                      getTask();
-
-                                      context.read<TasksBloc>().add(UpdateTaskEvent());
-                                      onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
-                                          'ad_is_now_above'.tr());
-                                    },
-                                    child: Container(
-                                      height: 30.h,
-                                      width: 132.w,
-                                      decoration: BoxDecoration(
-                                        color: ColorStyles.purpleA401C4,
-                                        borderRadius: BorderRadius.circular(30.r),
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/arrow_up_purple.svg',
-                                          ),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          Text(
-                                            'raise_again'.tr(),
-                                            style: CustomTextStyle.white_11,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : Container()
-                        : widget.selectTask.owner?.id == user?.id
-                            ? GestureDetector(
-                                onTap: () async {
-                                  Task newTask = Task(
-                                    id: widget.selectTask.id,
-                                    asCustomer: widget.selectTask.asCustomer,
-                                    name: widget.selectTask.name,
-                                    description: widget.selectTask.description,
-                                    subcategory: widget.selectTask.subcategory!,
-                                    dateStart: widget.selectTask.dateStart,
-                                    dateEnd: widget.selectTask.dateEnd,
-                                    priceFrom: widget.selectTask.priceFrom,
-                                    priceTo: widget.selectTask.priceTo,
-                                    regions: widget.selectTask.regions,
-                                    countries: widget.selectTask.countries,
-                                    towns: widget.selectTask.towns,
-                                    files: widget.selectTask.files,
-                                    icon: '',
-                                    task: '',
-                                    typeLocation: '',
-                                    whenStart: '',
-                                    coast: '',
-                                    currency: widget.selectTask.currency,
-                                    isGraded: true,
-                                  );
-
-                                  final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                                  await Repository().editTask(profileBloc.access!, newTask);
-                                  getTaskList();
-                                  getTask();
-                                  context.read<TasksBloc>().add(UpdateTaskEvent());
-                                  onTopDialog(
-                                      context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
-                                },
-                                child: Container(
-                                  height: 30.h,
-                                  width: 132.w,
-                                  decoration: BoxDecoration(
-                                    color: ColorStyles.purpleA401C4,
-                                    borderRadius: BorderRadius.circular(30.r),
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/icons/arrow_up_purple.svg',
-                                      ),
-                                      SizedBox(
-                                        width: 4.w,
-                                      ),
-                                      Text(
-                                        'up_to'.tr(),
-                                        style: CustomTextStyle.white_11,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Container()
-                  ],
-                );
-              }),
+                                )
+                              : Container()
+                    ],
+                  );
+                }),
               if (widget.selectTask.currency?.name == null)
                 Text(
                   '${_textCurrency(widget.selectTask.priceTo)} ',
@@ -918,8 +932,67 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-
-              if (widget.canSelect && user?.id != widget.selectTask.owner?.id && widget.selectTask.isAnswered == null)
+              if (widget.selectTask.isBanned!)
+                Stack(
+                  children: [
+                    Container(
+                      height: 36.h,
+                      decoration: BoxDecoration(
+                        color: ColorStyles.redFC6554,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (open) {
+                            open = false;
+                          } else {
+                            open = true;
+                          }
+                          setState(() {});
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset('assets/icons/star.svg'),
+                            Expanded(
+                              child: Text(
+                                'Причина блокировки',
+                                textAlign: TextAlign.start,
+                                style: CustomTextStyle.red_11_w400_171716,
+                              ),
+                            ),
+                            open
+                                ? const Icon(
+                                    Icons.keyboard_arrow_up,
+                                    size: 10,
+                                    color: ColorStyles.redFF5151,
+                                  )
+                                : const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 10,
+                                    color: ColorStyles.redFF5151,
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (open)
+                      AnimatedContainer(
+                        height: 60.h,
+                        duration: const Duration(milliseconds: 300),
+                        child: Text(
+                          widget.selectTask.banReason!,
+                          style: CustomTextStyle.black_14_w400_515150,
+                        ),
+                      ),
+                  ],
+                ),
+              if (widget.canSelect &&
+                  user?.id != widget.selectTask.owner?.id &&
+                  widget.selectTask.isAnswered == null &&
+                  !widget.selectTask.isBanned! &&
+                  !widget.selectTask.isBanned!)
                 CustomButton(
                   onTap: () async {
                     if (user == null) {
@@ -967,7 +1040,8 @@ class _TaskViewState extends State<TaskView> {
                   user?.id != widget.selectTask.owner?.id &&
                   widget.selectTask.isAnswered != null &&
                   widget.selectTask.status == 'Completed' &&
-                  widget.selectTask.asCustomer!)
+                  widget.selectTask.asCustomer! &&
+                  !widget.selectTask.isBanned!)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -985,8 +1059,8 @@ class _TaskViewState extends State<TaskView> {
                             if (user!.isBanned!) {
                               banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
                             } else {
-                              final owner = await Repository().getRanking(
-                                  widget.selectTask.owner?.id, BlocProvider.of<ProfileBloc>(context).access);
+                              final owner = await Repository().getRanking(widget.selectTask.isAnswered!.owner?.id,
+                                  BlocProvider.of<ProfileBloc>(context).access);
                               widget.openOwner(owner);
                             }
                           },
@@ -1120,7 +1194,7 @@ class _TaskViewState extends State<TaskView> {
                         SizedBox(width: 15.h),
                         GestureDetector(
                           onTap: () {
-                            helpOnTopDialog(context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                            helpOnTopDialog(context, 'evaluate_the_customer'.tr(), 'please_provide_a_rating'.tr());
                           },
                           child: SvgPicture.asset(
                             SvgImg.help,
@@ -1188,7 +1262,8 @@ class _TaskViewState extends State<TaskView> {
               if (widget.selectTask.answers.isNotEmpty &&
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
-                      user?.id == widget.selectTask.owner?.id))
+                      user?.id == widget.selectTask.owner?.id) &&
+                  !widget.selectTask.isBanned!)
                 Text(
                   'responses'.tr(),
                   style: CustomTextStyle.black_17_w800,
@@ -1196,7 +1271,8 @@ class _TaskViewState extends State<TaskView> {
               if (widget.selectTask.answers.isNotEmpty &&
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
-                      user?.id == widget.selectTask.owner?.id))
+                      user?.id == widget.selectTask.owner?.id) &&
+                  !widget.selectTask.isBanned!)
                 BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                   if (current is UpdateTask) {
                     getTask();
@@ -1845,7 +1921,7 @@ class _TaskViewState extends State<TaskView> {
                                             GestureDetector(
                                               onTap: () {
                                                 helpOnTopDialog(
-                                                    context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                                                    context, 'rate_the_executor'.tr(), 'please_provide_a_rating'.tr());
                                               },
                                               child: SvgPicture.asset(
                                                 SvgImg.help,
@@ -2070,7 +2146,7 @@ class _TaskViewState extends State<TaskView> {
                                               GestureDetector(
                                                 onTap: () {
                                                   helpOnTopDialog(
-                                                      context, 'put_on_top'.tr(), 'please_provide_a_rating'.tr());
+                                                      context, 'evaluate_the_customer'.tr(), 'please_provide_a_rating'.tr());
                                                 },
                                                 child: SvgPicture.asset(
                                                   SvgImg.help,
@@ -2294,8 +2370,8 @@ class _TaskViewState extends State<TaskView> {
                                               SizedBox(width: 15.h),
                                               GestureDetector(
                                                 onTap: () {
-                                                  helpOnTopDialog(context, 'put_on_top'.tr(),
-                                                      'please_provide_a_rating'.tr());
+                                                  helpOnTopDialog(
+                                                      context, 'evaluate_the_customer'.tr(), 'please_provide_a_rating'.tr());
                                                 },
                                                 child: SvgPicture.asset(
                                                   SvgImg.help,
@@ -2518,10 +2594,10 @@ class _TaskViewState extends State<TaskView> {
                                           ),
                                           SizedBox(width: 15.h),
                                           GestureDetector(
-                                                onTap: () {
-                                                  helpOnTopDialog(context, 'put_on_top'.tr(),
-                                                      'please_provide_a_rating'.tr());
-                                                },
+                                            onTap: () {
+                                              helpOnTopDialog(
+                                                  context, 'rate_the_executor'.tr(), 'please_provide_a_rating'.tr());
+                                            },
                                             child: SvgPicture.asset(
                                               SvgImg.help,
                                               color: Colors.black,

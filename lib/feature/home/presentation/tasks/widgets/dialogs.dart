@@ -76,6 +76,7 @@ void taskMoreDialog(
   Offset offset,
   Function(int index) onTap,
   Task selectTask,
+  UserRegModel? user,
 ) =>
     showDialog(
       useSafeArea: false,
@@ -125,18 +126,19 @@ void taskMoreDialog(
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
-                                '${selectTask.name}, ${selectTask.owner!.firstname} ${selectTask.owner!.lastname}',
-                                'task_complaint'.tr()
-                              ]);
-                            },
-                            child: Text(
-                              'complain'.tr(),
-                              style: CustomTextStyle.black_12_w400_292D32,
+                          if (selectTask.owner?.id != user?.id)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
+                                  '${selectTask.name}, ${selectTask.owner!.firstname} ${selectTask.owner!.lastname}',
+                                  'task_complaint'.tr()
+                                ]);
+                              },
+                              child: Text(
+                                'complain'.tr(),
+                                style: CustomTextStyle.black_12_w400_292D32,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -154,7 +156,6 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
       barrierDismissible: false,
       context: context,
       builder: (context) {
-      
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
@@ -192,16 +193,16 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
                                 SizedBox(
                                   height: 30.h,
                                 ),
-                                if(context.locale.languageCode == 'en')
-                                Text(
-                                  '$score points ${'accrued'.tr()}',
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
-                                 if(context.locale.languageCode == 'ru')
-                                Text(
-                                  '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
+                                if (context.locale.languageCode == 'en')
+                                  Text(
+                                    '$score points ${'accrued'.tr()}',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
+                                if (context.locale.languageCode == 'ru')
+                                  Text(
+                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -608,6 +609,8 @@ void taskMoreDialogForProfile(
   Offset offset,
   Function(int index) onTap,
   Owner? owner,
+  UserRegModel? user,
+
 ) =>
     showDialog(
       useSafeArea: false,
@@ -657,12 +660,12 @@ void taskMoreDialogForProfile(
                               style: CustomTextStyle.black_12_w400_292D32,
                             ),
                           ),
+                          if (owner?.id != user?.id)
+
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
-                                '${owner!.firstname} ${owner.lastname}',
-                                'user_complaint'.tr()
-                              ]);
+                              Navigator.of(context).pushNamed(AppRoute.contactus,
+                                  arguments: ['${owner!.firstname} ${owner.lastname}', 'user_complaint'.tr()]);
                             },
                             child: Text(
                               'complain'.tr(),

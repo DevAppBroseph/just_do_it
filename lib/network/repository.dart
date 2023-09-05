@@ -804,11 +804,11 @@ class Repository {
   }
 
   Future<bool?> isEnoughOrdersOnTop(String? access) async {
-    final response = await dio.post(
+    final response = await dio.get(
       '$server/answers/is_enough',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-
+log(response.data.toString());
     if (response.statusCode == 200) {
       return response.data;
     }

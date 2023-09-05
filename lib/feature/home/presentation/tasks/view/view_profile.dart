@@ -216,20 +216,15 @@ class _ProfileViewState extends State<ProfileView> {
                                                               });
                                                             }),
                                                           SizedBox(width: 10.w),
-                                                          if (widget.owner.id != user?.id)
-                                                            GestureDetector(
-                                                              onTap: () => taskMoreDialogForProfile(
-                                                                context,
-                                                                getWidgetPosition(globalKey),
-                                                                (index) {},
-                                                                owner,
-                                                              ),
-                                                              child: SvgPicture.asset(
-                                                                'assets/icons/share.svg',
-                                                                height: 20.h,
-                                                                key: globalKey,
-                                                              ),
+                                                          GestureDetector(
+                                                            onTap: () => taskMoreDialogForProfile(context,
+                                                                getWidgetPosition(globalKey), (index) {}, owner, user),
+                                                            child: SvgPicture.asset(
+                                                              'assets/icons/share.svg',
+                                                              height: 20.h,
+                                                              key: globalKey,
                                                             ),
+                                                          ),
                                                         ],
                                                       ),
                                                     ],

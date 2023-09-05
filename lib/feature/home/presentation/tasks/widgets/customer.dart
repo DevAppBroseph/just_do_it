@@ -9,6 +9,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favourite_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/favoutire_customer.dart';
@@ -65,624 +66,634 @@ class _CustomerState extends State<Customer> {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Stack(
-        children: [
-          BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-            log('$current');
-            if (current is UpdateProfileSuccessState) {
-              user = BlocProvider.of<ProfileBloc>(context).user;
-              log('UpdateProfileSuccessState');
+      child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
+        if (current is UpdateTask) {
+          return true;
+        }
+        if (previous != current) {
+          return true;
+        }
+        return false;
+      }, builder: (context, state) {
+        return Stack(
+          children: [
+            BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
+              log('$current');
+              if (current is UpdateProfileSuccessState) {
+                user = BlocProvider.of<ProfileBloc>(context).user;
+                log('UpdateProfileSuccessState');
+                return true;
+              }
+              if (current is LoadProfileSuccessState) {
+                user = BlocProvider.of<ProfileBloc>(context).user;
+                log('LoadProfileSuccessState');
+                return true;
+              }
+              if (previous != current) {
+                return true;
+              }
               return true;
-            }
-            if (current is LoadProfileSuccessState) {
-              user = BlocProvider.of<ProfileBloc>(context).user;
-              log('LoadProfileSuccessState');
-              return true;
-            }
-            if (previous != current) {
-              return true;
-            }
-            return true;
-          }, builder: (context, data) {
-            return ListView(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20.w,
-                    bottom: 15.h,
-                    right: 20.w,
-                  ),
-                  child: Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
-                      borderRadius: BorderRadius.circular(20.r),
+            }, builder: (context, data) {
+              return ListView(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      bottom: 15.h,
+                      right: 20.w,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                          child: Text(
-                            'my_tasks'.tr(),
-                            style: CustomTextStyle.black_16_w600_515150,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return MyAnswersAsExecutorView(
-                                  title: 'all_responses'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
+                    child: Container(
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: ColorStyles.whiteFFFFFF,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/note2.svg',
-                                  color: ColorStyles.yellowFFCA0D,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'all_responses'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'tasks_that_i_have_responded_to'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.countMyAnswersAsExecutor != null
-                                                ? user!.countMyAnswersAsExecutor.toString()
-                                                : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              'my_tasks'.tr(),
+                              style: CustomTextStyle.black_16_w600_515150,
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return MyAnswersSelectedAsExecutorView(
-                                  title: 'confirmed'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/clipboard-tick.svg',
-                                  color: ColorStyles.yellowFFCA0D,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'confirmed'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'i_was_chosen_as_a_performer'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.countMyAnswersSelectedAsExecutor != null
-                                                ? user!.countMyAnswersSelectedAsExecutor.toString()
-                                                : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return MyAnswersAsExecutorView(
+                                    title: 'all_responses'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/note2.svg',
+                                    color: ColorStyles.yellowFFCA0D,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return OrdersCompleteAsExecutorView(
-                                  title: 'closed'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/document-like.svg',
-                                  color: ColorStyles.yellowFFCA0D,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'closed'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'tasks_that_were_completed_by_me'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'all_responses'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.countOrdersCompleteAsExecutor != null
-                                                ? user!.countOrdersCompleteAsExecutor.toString()
-                                                : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 22.h),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20.w,
-                    bottom: 15.h,
-                    right: 20.w,
-                  ),
-                  child: Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                          child: Text(
-                            'my_offers'.tr(),
-                            style: CustomTextStyle.black_16_w600_515150,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return OpenOffers(title: 'open'.tr());
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/flash-circle.svg',
-                                  color: ColorStyles.blue336FEE,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'open'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'waiting_for_the_customer_response'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.openOffers != null ? user!.openOffers!.length.toString() : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return SelectedOffersView(
-                                  title: 'accepted'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/tick-circle.svg',
-                                  color: Colors.green,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'accepted'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'there_is_a_response_from_the_customer'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.selectedOffers != null
-                                                ? user!.selectedOffers!.length.toString()
-                                                : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return FinishedOffers(
-                                  title: 'closed'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/verify.svg',
-                                  color: ColorStyles.purpleA401C4,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'closed'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                          ),
-                                          SizedBox(
-                                            width: 235.w,
-                                            child: Text(
-                                              'the_deal_has_been_implemented'.tr(),
-                                              style: CustomTextStyle.grey_12_w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: SizedBox(
-                                          width: 35.w,
-                                          child: Text(
-                                            user?.finishedOffers != null
-                                                ? user!.finishedOffers!.length.toString()
-                                                : '0',
-                                            style: CustomTextStyle.black_13_w400_171716,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 22.h),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20.w,
-                    bottom: 15.h,
-                    right: 20.w,
-                  ),
-                  child: Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                          child: Text(
-                            'favourites'.tr(),
-                            style: CustomTextStyle.black_16_w600_515150,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return FavouriteTasks(
-                                  title: 'selected_customers'.tr(),
-                                  asCustomer: true,
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/edit.svg',
-                                  color: ColorStyles.greyD9D9D9,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 235.w,
-                                        child: Text(
-                                          'tasks'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
-                                        ),
-                                      ),
-                                      BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
-                                        if (state is FavouritesLoaded) {
-                                          final favouritesOrders = state.favourite!.favouriteOrder;
-                                          return Padding(
-                                            padding: EdgeInsets.only(right: 6.w),
-                                            child: SizedBox(
-                                              width: 35.w,
+                                            SizedBox(
+                                              width: 235.w,
                                               child: Text(
-                                                favouritesOrders!.length.toString(),
-                                                style: CustomTextStyle.black_13_w400_171716,
-                                                textAlign: TextAlign.end,
+                                                'tasks_that_i_have_responded_to'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
                                               ),
                                             ),
-                                          );
-                                        }
-                                        return Container();
-                                      }),
-                                    ],
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.countMyAnswersAsExecutor != null
+                                                  ? user!.countMyAnswersAsExecutor.toString()
+                                                  : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return FavouriteCustomer(
-                                  title: 'selected_customers'.tr(),
-                                );
-                              }),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/user1.svg',
-                                  color: ColorStyles.greyD9D9D9,
-                                ),
-                                SizedBox(width: 3.w),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 235.w,
-                                        child: Text(
-                                          'customers'.tr(),
-                                          style: CustomTextStyle.black_13_w400_171716,
-                                        ),
-                                      ),
-                                      BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
-                                        if (state is FavouritesLoaded) {
-                                          final favouritesOrders = state.favourite!.favoriteUsers;
-                                          return Padding(
-                                            padding: EdgeInsets.only(right: 6.w),
-                                            child: SizedBox(
-                                              width: 35.w,
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return MyAnswersSelectedAsExecutorView(
+                                    title: 'confirmed'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/clipboard-tick.svg',
+                                    color: ColorStyles.yellowFFCA0D,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'confirmed'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 235.w,
                                               child: Text(
-                                                favouritesOrders!.length.toString(),
-                                                style: CustomTextStyle.black_13_w400_171716,
-                                                textAlign: TextAlign.end,
+                                                'i_was_chosen_as_a_performer'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
                                               ),
                                             ),
-                                          );
-                                        }
-                                        return Container();
-                                      }),
-                                    ],
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.countMyAnswersSelectedAsExecutor != null
+                                                  ? user!.countMyAnswersSelectedAsExecutor.toString()
+                                                  : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 22.h),
-                      ],
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return OrdersCompleteAsExecutorView(
+                                    title: 'closed'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/document-like.svg',
+                                    color: ColorStyles.yellowFFCA0D,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'closed'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 235.w,
+                                              child: Text(
+                                                'tasks_that_were_completed_by_me'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.countOrdersCompleteAsExecutor != null
+                                                  ? user!.countOrdersCompleteAsExecutor.toString()
+                                                  : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 22.h),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 100.h,
-                )
-              ],
-            );
-          }),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 34.h),
-              child: CustomButton(
-                onTap: () async {
-                  final res = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return CeateTasks(
-                          customer: false,
-                          doublePop: true,
-                          currentPage: 4,
-                        );
-                      },
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      bottom: 15.h,
+                      right: 20.w,
                     ),
-                  );
-                  if (res != null) {
-                    if (res == true) {
-                      widget.callBacK(1);
-                    } else {
-                      widget.callBacK(0);
+                    child: Container(
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: ColorStyles.whiteFFFFFF,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                            child: Text(
+                              'my_offers'.tr(),
+                              style: CustomTextStyle.black_16_w600_515150,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return OpenOffers(title: 'open'.tr());
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/flash-circle.svg',
+                                    color: ColorStyles.blue336FEE,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'open'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 235.w,
+                                              child: Text(
+                                                'waiting_for_the_customer_response'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.openOffers != null ? user!.openOffers!.length.toString() : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return SelectedOffersView(
+                                    title: 'accepted'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/tick-circle.svg',
+                                    color: Colors.green,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'accepted'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 235.w,
+                                              child: Text(
+                                                'there_is_a_response_from_the_customer'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.selectedOffers != null
+                                                  ? user!.selectedOffers!.length.toString()
+                                                  : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return FinishedOffers(
+                                    title: 'closed'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/verify.svg',
+                                    color: ColorStyles.purpleA401C4,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'closed'.tr(),
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                            ),
+                                            SizedBox(
+                                              width: 235.w,
+                                              child: Text(
+                                                'the_deal_has_been_implemented'.tr(),
+                                                style: CustomTextStyle.grey_12_w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: SizedBox(
+                                            width: 35.w,
+                                            child: Text(
+                                              user?.finishedOffers != null
+                                                  ? user!.finishedOffers!.length.toString()
+                                                  : '0',
+                                              style: CustomTextStyle.black_13_w400_171716,
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 22.h),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      bottom: 15.h,
+                      right: 20.w,
+                    ),
+                    child: Container(
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: ColorStyles.whiteFFFFFF,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                            child: Text(
+                              'favourites'.tr(),
+                              style: CustomTextStyle.black_16_w600_515150,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return FavouriteTasks(
+                                    title: 'selected_customers'.tr(),
+                                    asCustomer: true,
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/edit.svg',
+                                    color: ColorStyles.greyD9D9D9,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'tasks'.tr(),
+                                            style: CustomTextStyle.black_13_w400_171716,
+                                          ),
+                                        ),
+                                        BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+                                          if (state is FavouritesLoaded) {
+                                            final favouritesOrders = state.favourite!.favouriteOrder;
+                                            return Padding(
+                                              padding: EdgeInsets.only(right: 6.w),
+                                              child: SizedBox(
+                                                width: 35.w,
+                                                child: Text(
+                                                  favouritesOrders!.length.toString(),
+                                                  style: CustomTextStyle.black_13_w400_171716,
+                                                  textAlign: TextAlign.end,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return Container();
+                                        }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return FavouriteCustomer(
+                                    title: 'selected_customers'.tr(),
+                                  );
+                                }),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/user1.svg',
+                                    color: ColorStyles.greyD9D9D9,
+                                  ),
+                                  SizedBox(width: 3.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 235.w,
+                                          child: Text(
+                                            'customers'.tr(),
+                                            style: CustomTextStyle.black_13_w400_171716,
+                                          ),
+                                        ),
+                                        BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+                                          if (state is FavouritesLoaded) {
+                                            final favouritesOrders = state.favourite!.favoriteUsers;
+                                            return Padding(
+                                              padding: EdgeInsets.only(right: 6.w),
+                                              child: SizedBox(
+                                                width: 35.w,
+                                                child: Text(
+                                                  favouritesOrders!.length.toString(),
+                                                  style: CustomTextStyle.black_13_w400_171716,
+                                                  textAlign: TextAlign.end,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return Container();
+                                        }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 22.h),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100.h,
+                  )
+                ],
+              );
+            }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 34.h),
+                child: CustomButton(
+                  onTap: () async {
+                    final res = await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CeateTasks(
+                            customer: false,
+                            doublePop: true,
+                            currentPage: 4,
+                          );
+                        },
+                      ),
+                    );
+                    if (res != null) {
+                      if (res == true) {
+                        widget.callBacK(1);
+                      } else {
+                        widget.callBacK(0);
+                      }
                     }
-                  }
 
-                  getListTask();
-                },
-                btnColor: ColorStyles.yellowFFD70A,
-                textLabel: Text(
-                  'create_offer'.tr(),
-                  style: CustomTextStyle.black_16_w600_171716,
+                    getListTask();
+                  },
+                  btnColor: ColorStyles.yellowFFD70A,
+                  textLabel: Text(
+                    'create_offer'.tr(),
+                    style: CustomTextStyle.black_16_w600_171716,
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        );
+      }),
     );
   }
 }
