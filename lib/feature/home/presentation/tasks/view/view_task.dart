@@ -129,12 +129,12 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(height: 10.h),
               Row(
                 children: [
-                  if (!widget.selectTask.isBanned!)
+                  if (widget.selectTask.isBanned == null || !widget.selectTask.isBanned!)
                     Text(
                       widget.selectTask.status == 'Completed' ? 'close'.tr() : 'openly'.tr(),
                       style: CustomTextStyle.black_12_w400,
                     ),
-                  if (widget.selectTask.isBanned!)
+                  if (widget.selectTask.isBanned != null && widget.selectTask.isBanned!)
                     Text(
                       'blocked'.tr(),
                       style: CustomTextStyle.red_11_w400_171716,
@@ -873,7 +873,7 @@ class _TaskViewState extends State<TaskView> {
                   ),
                 );
               }),
-              SizedBox(height: 20.h),
+              if (!widget.selectTask.isBanned!) SizedBox(height: 20.h),
               if (user != null && widget.canSelect && user!.id != widget.selectTask.owner?.id)
                 CustomButton(
                   onTap: () async {
@@ -932,13 +932,35 @@ class _TaskViewState extends State<TaskView> {
                     style: CustomTextStyle.black_16_w600_171716,
                   ),
                 ),
-              if (widget.selectTask.isBanned!)
+              if (widget.selectTask.isBanned != null &&
+                  widget.selectTask.isBanned! &&
+                  user?.id == widget.selectTask.owner?.id)
                 Stack(
                   children: [
+                    if (open)
+                      AnimatedContainer(
+                        height: 150.h,
+                        width: 330.w,
+                        duration: const Duration(milliseconds: 300),
+                        decoration: BoxDecoration(
+                          color: ColorStyles.whiteFFFFFF,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 50.h, left: 16.w, right: 16.w),
+                          child: SizedBox(
+                            width: 250.w,
+                            child: Text(
+                              widget.selectTask.banReason!,
+                              style: CustomTextStyle.black_14_w400_515150,
+                            ),
+                          ),
+                        ),
+                      ),
                     Container(
                       height: 36.h,
                       decoration: BoxDecoration(
-                        color: ColorStyles.redFC6554,
+                        color: ColorStyles.redFC6554.withOpacity(0.19),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: GestureDetector(
@@ -950,42 +972,117 @@ class _TaskViewState extends State<TaskView> {
                           }
                           setState(() {});
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset('assets/icons/star.svg'),
-                            Expanded(
-                              child: Text(
-                                'Причина блокировки',
-                                textAlign: TextAlign.start,
-                                style: CustomTextStyle.red_11_w400_171716,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 23.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 11.h),
+                                child: SvgPicture.asset('assets/icons/info_circle.svg'),
                               ),
-                            ),
-                            open
-                                ? const Icon(
-                                    Icons.keyboard_arrow_up,
-                                    size: 10,
-                                    color: ColorStyles.redFF5151,
-                                  )
-                                : const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 10,
-                                    color: ColorStyles.redFF5151,
-                                  ),
-                          ],
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 11.h),
+                                child: Text(
+                                  'Причина блокировки',
+                                  textAlign: TextAlign.start,
+                                  style: CustomTextStyle.red_11_w400_171716,
+                                ),
+                              ),
+                              const Spacer(),
+                              open
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 5.h),
+                                      child: const Icon(
+                                        Icons.keyboard_arrow_up,
+                                        size: 30,
+                                        color: ColorStyles.redFF5151,
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: EdgeInsets.only(top: 5.h),
+                                      child: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        size: 30,
+                                        color: ColorStyles.redFF5151,
+                                      ),
+                                    ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    if (open)
-                      AnimatedContainer(
-                        height: 60.h,
-                        duration: const Duration(milliseconds: 300),
-                        child: Text(
-                          widget.selectTask.banReason!,
-                          style: CustomTextStyle.black_14_w400_515150,
-                        ),
+                  ],
+                ),
+              if (widget.selectTask.isBanned != null &&
+                  widget.selectTask.isBanned! &&
+                  open &&
+                  widget.selectTask.isBanned! &&
+                  user?.id == widget.selectTask.owner?.id)
+                SizedBox(
+                  height: 20.h,
+                ),
+              if (widget.canSelect &&
+                  user?.id != widget.selectTask.owner?.id &&
+                  widget.selectTask.isAnswered != null &&
+                  widget.selectTask.isAnswered?.status == 'Progress' &&
+                  widget.selectTask.isBanned!)
+                Column(
+                  children: [
+                     Row(
+                      children: [
+                        const Spacer(),
+                        GestureDetector(
+                            onTap: () {
+                              helpOnTopDialog(context, ''.tr(), 'task_has_been_blocked'.tr());
+                            },
+                            child: SvgPicture.asset(SvgImg.help)),
+                      ],
+                    ),
+                    SizedBox(height: 5.h),
+                    CustomButton(
+                      onTap: () async {
+                        final answer = widget.selectTask.answers.firstWhere((element) => element.owner?.id == user?.id);
+                        await Repository().deleteResponse(BlocProvider.of<ProfileBloc>(context).access, answer.id!);
+                        context.read<TasksBloc>().add(UpdateTaskEvent());
+                        BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                      },
+                      btnColor: ColorStyles.yellowFFD70A,
+                      textLabel: Text(
+                        'cance_response'.tr(),
+                        style: CustomTextStyle.black_16_w600_171716,
                       ),
+                    ),
+                  ],
+                ),
+              if (widget.selectTask.isBanned!) SizedBox(height: 20.h),
+
+              if (user?.id == widget.selectTask.owner?.id && widget.selectTask.isBanned!)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        GestureDetector(
+                            onTap: () {
+                              helpOnTopDialog(context, ''.tr(), 'comply_with'.tr());
+                            },
+                            child: SvgPicture.asset(SvgImg.help)),
+                      ],
+                    ),
+                    SizedBox(height: 5.h),
+                    CustomButton(
+                      onTap: () async {},
+                      btnColor: ColorStyles.yellowFFD70A,
+                      textLabel: Text(
+                        'resend'.tr(),
+                        style: CustomTextStyle.black_16_w600_171716,
+                      ),
+                    ),
                   ],
                 ),
               if (widget.canSelect &&
@@ -1263,7 +1360,7 @@ class _TaskViewState extends State<TaskView> {
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
                       user?.id == widget.selectTask.owner?.id) &&
-                  !widget.selectTask.isBanned!)
+                  (widget.selectTask.isBanned == null || !widget.selectTask.isBanned!))
                 Text(
                   'responses'.tr(),
                   style: CustomTextStyle.black_17_w800,
@@ -1272,7 +1369,7 @@ class _TaskViewState extends State<TaskView> {
                   (!widget.selectTask.asCustomer! || user?.id == widget.selectTask.owner?.id) &&
                   (widget.selectTask.answers.any((element) => element.status == 'Selected') ||
                       user?.id == widget.selectTask.owner?.id) &&
-                  !widget.selectTask.isBanned!)
+                  (widget.selectTask.isBanned == null || !widget.selectTask.isBanned!))
                 BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                   if (current is UpdateTask) {
                     getTask();
@@ -2145,8 +2242,8 @@ class _TaskViewState extends State<TaskView> {
                                               SizedBox(width: 15.h),
                                               GestureDetector(
                                                 onTap: () {
-                                                  helpOnTopDialog(
-                                                      context, 'evaluate_the_customer'.tr(), 'please_provide_a_rating'.tr());
+                                                  helpOnTopDialog(context, 'evaluate_the_customer'.tr(),
+                                                      'please_provide_a_rating'.tr());
                                                 },
                                                 child: SvgPicture.asset(
                                                   SvgImg.help,
@@ -2370,8 +2467,8 @@ class _TaskViewState extends State<TaskView> {
                                               SizedBox(width: 15.h),
                                               GestureDetector(
                                                 onTap: () {
-                                                  helpOnTopDialog(
-                                                      context, 'evaluate_the_customer'.tr(), 'please_provide_a_rating'.tr());
+                                                  helpOnTopDialog(context, 'evaluate_the_customer'.tr(),
+                                                      'please_provide_a_rating'.tr());
                                                 },
                                                 child: SvgPicture.asset(
                                                   SvgImg.help,

@@ -19,7 +19,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
       onTap: () => onSelect(task),
       child: Container(
         decoration: BoxDecoration(
-          color: ColorStyles.whiteFFFFFF,
+          color: task.isBanned == null || !task.isBanned! ? ColorStyles.whiteFFFFFF : ColorStyles.grey939393.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
           // boxShadow: [
           // BoxShadow(

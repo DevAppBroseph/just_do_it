@@ -344,7 +344,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       Row(
                                         children: [
                                           BlocBuilder<ScoreBloc, ScoreState>(buildWhen: (previous, current) {
-                                            if (user!.balance! == proverkaBalance) {
+                                            if (user!.allbalance! == proverkaBalance) {
                                               return false;
                                             }
                                             return true;
@@ -353,9 +353,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               Future.delayed(const Duration(milliseconds: 500), () {
                                                 widget.callBackFlag();
                                               });
-                                              proverkaBalance = user!.balance!;
+                                              proverkaBalance = user!.allbalance!;
                                               final levels = state.levels;
-                                              if (user!.balance! < levels![0].mustCoins!) {
+                                              if (user!.allbalance! < levels![0].mustCoins!) {
                                                 return CachedNetworkImage(
                                                   progressIndicatorBuilder: (context, url, progress) {
                                                     return const CupertinoActivityIndicator();
@@ -376,8 +376,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                     width: 30.w,
                                                   );
                                                 } else {
-                                                  if (user!.balance! >= levels[i].mustCoins! &&
-                                                      user!.balance! < levels[i + 1].mustCoins!) {
+                                                  if (user!.allbalance! >= levels[i].mustCoins! &&
+                                                      user!.allbalance! < levels[i + 1].mustCoins!) {
                                                     return CachedNetworkImage(
                                                       progressIndicatorBuilder: (context, url, progress) {
                                                         return const CupertinoActivityIndicator();
@@ -386,7 +386,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                       height: 30.h,
                                                       width: 30.w,
                                                     );
-                                                  } else if (user!.balance! >= levels.last.mustCoins!) {
+                                                  } else if (user!.allbalance! >= levels.last.mustCoins!) {
                                                     return CachedNetworkImage(
                                                       progressIndicatorBuilder: (context, url, progress) {
                                                         return const CupertinoActivityIndicator();
@@ -571,6 +571,120 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         SizedBox(height: 16.h),
                       ],
                     ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              Padding(
+                padding: EdgeInsets.only(bottom: 7.h, top: 5.h, left: 20.w, right: 20.w),
+                child: Container(
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.whiteFFFFFF,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 23.h, left: 20.w),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SvgPicture.asset('assets/icons/document.svg'),
+                            SizedBox(width: 3.w),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.w),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 240.w,
+                                    child: Text(
+                                      'passport_data_uploaded'.tr(),
+                                      style: user != null && user!.docType != null
+                                          ? CustomTextStyle.black_11_w400_171716
+                                          : CustomTextStyle.grey_12_w400,
+                                    ),
+                                  ),
+                                  if (user != null && user!.docType != null)
+                                    if (user != null && user!.docType != null)
+                                      const Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.h, left: 20.w),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SvgPicture.asset('assets/icons/security-user.svg'),
+                            SizedBox(width: 3.w),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.w),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 180.w,
+                                    child: user?.verifyStatus != null && user!.verifyStatus == 'Success'
+                                        ? Text('your_account_is_verified'.tr(),
+                                            style: CustomTextStyle.black_11_w400_171716)
+                                        : Text('re_verify'.tr(), style: CustomTextStyle.red_11_w400_171716),
+                                  ),
+                                  user?.verifyStatus != null && user!.verifyStatus == 'Success'
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.green,
+                                        )
+                                      : user!.verifyStatus == 'Progress'
+                                          ? ScaleButton(
+                                              onTap: () {},
+                                              bound: 0.02,
+                                              child: Container(
+                                                height: 22.h,
+                                                width: 86.w,
+                                                decoration: BoxDecoration(
+                                                  color: ColorStyles.greyBDBDBD,
+                                                  borderRadius: BorderRadius.circular(30.r),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    'on_inspection'.tr(),
+                                                    style: CustomTextStyle.white_11,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : ScaleButton(
+                                              onTap: () {},
+                                              bound: 0.02,
+                                              child: Container(
+                                                height: 22.h,
+                                                width: 86.w,
+                                                decoration: BoxDecoration(
+                                                  color: ColorStyles.yellowFFCA0D,
+                                                  borderRadius: BorderRadius.circular(30.r),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    'send'.tr(),
+                                                    style: CustomTextStyle.black_11_w400_171716,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 18.h),
+                    ],
                   ),
                 ),
               ),

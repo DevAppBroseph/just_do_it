@@ -142,7 +142,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 child: Column(
                                                   children: [
                                                     AutoSizeText(
-                                                      user!.allbalance!.toString(),
+                                                      user!.balance!.toString(),
                                                       style: CustomTextStyle.white_21_w700,
                                                       textAlign: TextAlign.end,
                                                     ),

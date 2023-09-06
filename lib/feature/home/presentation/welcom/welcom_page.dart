@@ -658,15 +658,15 @@ class _WelcomPageState extends State<WelcomPage> {
                                                             children: [
                                                               BlocBuilder<ScoreBloc, ScoreState>(
                                                                   buildWhen: (previous, current) {
-                                                                if (user!.balance! == proverkaBalance) {
+                                                                if (user!.allbalance! == proverkaBalance) {
                                                                   return false;
                                                                 }
                                                                 return true;
                                                               }, builder: (context, state) {
                                                                 if (state is ScoreLoaded) {
-                                                                  proverkaBalance = bloc.user!.balance!;
+                                                                  proverkaBalance = bloc.user!.allbalance!;
                                                                   final levels = state.levels;
-                                                                  if (bloc.user!.balance! < levels![0].mustCoins!) {
+                                                                  if (bloc.user!.allbalance! < levels![0].mustCoins!) {
                                                                     return CachedNetworkImage(
                                                                       progressIndicatorBuilder:
                                                                           (context, url, progress) {
@@ -689,8 +689,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                         width: 30.w,
                                                                       );
                                                                     } else {
-                                                                      if (bloc.user!.balance! >= levels[i].mustCoins! &&
-                                                                          bloc.user!.balance! <
+                                                                      if (bloc.user!.allbalance! >= levels[i].mustCoins! &&
+                                                                          bloc.user!.allbalance! <
                                                                               levels[i + 1].mustCoins!) {
                                                                         return CachedNetworkImage(
                                                                           progressIndicatorBuilder:
@@ -701,7 +701,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                           height: 30.h,
                                                                           width: 30.w,
                                                                         );
-                                                                      } else if (bloc.user!.balance! >=
+                                                                      } else if (bloc.user!.allbalance! >=
                                                                           levels.last.mustCoins!) {
                                                                         return CachedNetworkImage(
                                                                           progressIndicatorBuilder:

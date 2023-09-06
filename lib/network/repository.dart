@@ -596,7 +596,7 @@ class Repository {
       '$server/profile/',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-
+    log(response.data.toString());
     if (response.statusCode == 200) {
       final user = UserRegModel.fromJson(response.data);
       return user;
@@ -790,6 +790,19 @@ class Repository {
     return null;
   }
 
+  Future<bool> deleteResponse(String? access, int id) async {
+    final response = await dio.delete(
+      '$server/answers/$id',
+      options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
+    );
+    log(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool?> isEnoughUserOnTop(String? access) async {
     final response = await dio.get(
       '$server/answers/is_enough',
@@ -808,7 +821,7 @@ class Repository {
       '$server/answers/is_enough',
       options: Options(validateStatus: ((status) => status! >= 200), headers: {'Authorization': 'Bearer $access'}),
     );
-log(response.data.toString());
+    log(response.data.toString());
     if (response.statusCode == 200) {
       return response.data;
     }

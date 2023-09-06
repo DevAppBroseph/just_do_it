@@ -31,6 +31,7 @@ class UserRegModel {
   Uint8List? photo;
   bool? sex;
   bool? isEntity;
+  String? verifyStatus;
   List<ArrayImages>? images;
   Uint8List? cv;
   bool? hasNotifications;
@@ -77,6 +78,7 @@ class UserRegModel {
     this.phoneNumber,
     this.email,
     this.firstname,
+    this.verifyStatus,
     this.lastname,
     this.password,
     this.docType,
@@ -122,6 +124,7 @@ class UserRegModel {
     String? lastname,
     String? password,
     int? allbalance,
+    String? verifyStatus,
     List<Task>? selectedOffers,
     List<Task>? finishedOffers,
     List<Task>? selectedOffersAsCustomerk,
@@ -164,6 +167,7 @@ class UserRegModel {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.isBanned = isBanned ?? this.isBanned;
     this.rus = rus ?? this.rus;
+    this.verifyStatus = verifyStatus ?? this.verifyStatus;
     this.allbalance = allbalance ?? this.allbalance;
     this.hasNotifications = hasNotifications ?? this.hasNotifications;
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
@@ -212,6 +216,7 @@ class UserRegModel {
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
     bool isBanned = data['is_banned'];
+    String? verifyStatus = data['verify_status'];
     int? countOrdersCreateAsCustomer = data['count_orders_create_as_customer'];
     int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
     int? countOrdersCompleteAsExecutor = data['count_orders_complete_as_executor'];
@@ -347,6 +352,7 @@ class UserRegModel {
       ordersCompleteAsCustomer: listTaskOrdersCompleteAsCustomer,
       region: region,
       docType: docType,
+      verifyStatus: verifyStatus,
       docInfo: docInfo,
       country: country,
       isEntity: isEntity,
