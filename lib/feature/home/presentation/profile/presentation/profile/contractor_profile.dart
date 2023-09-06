@@ -640,7 +640,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           Icons.check,
                                           color: Colors.green,
                                         )
-                                      : user!.verifyStatus == 'Progress'
+                                      : user!.isButtonPressed!
                                           ? ScaleButton(
                                               onTap: () {},
                                               bound: 0.02,
@@ -660,7 +660,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               ),
                                             )
                                           : ScaleButton(
-                                              onTap: () {},
+                                              onTap: () {
+                                                user!.copyWith(isButtonPressed: true);
+                                                BlocProvider.of<ProfileBloc>(context).setUser(user);
+                                                Repository()
+                                                    .updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                                              },
                                               bound: 0.02,
                                               child: Container(
                                                 height: 22.h,

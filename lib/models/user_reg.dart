@@ -37,6 +37,7 @@ class UserRegModel {
   bool? hasNotifications;
   String? cvType;
   bool? isBanned;
+  bool? isButtonPressed;
   bool? rus;
   List<dynamic>? groups;
   List<Activities>? activities;
@@ -77,6 +78,7 @@ class UserRegModel {
     this.ordersCreateAsCustomer,
     this.phoneNumber,
     this.email,
+    this.isButtonPressed,
     this.firstname,
     this.verifyStatus,
     this.lastname,
@@ -120,6 +122,7 @@ class UserRegModel {
     String? phoneNumber,
     String? email,
     String? firstname,
+    bool? isButtonPressed,
     bool? hasNotifications,
     String? lastname,
     String? password,
@@ -167,6 +170,7 @@ class UserRegModel {
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     this.isBanned = isBanned ?? this.isBanned;
     this.rus = rus ?? this.rus;
+    this.isButtonPressed = isButtonPressed ?? this.isButtonPressed;
     this.verifyStatus = verifyStatus ?? this.verifyStatus;
     this.allbalance = allbalance ?? this.allbalance;
     this.hasNotifications = hasNotifications ?? this.hasNotifications;
@@ -216,6 +220,7 @@ class UserRegModel {
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
     bool isBanned = data['is_banned'];
+    bool isButtonPressed = data['is_button_pressed'];
     String? verifyStatus = data['verify_status'];
     int? countOrdersCreateAsCustomer = data['count_orders_create_as_customer'];
     int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
@@ -329,6 +334,7 @@ class UserRegModel {
       finishedOffers: listFinishedOffers,
       finishedOffersAsCustomer: listFinishedOffersAsCustomer,
       email: email,
+      isButtonPressed: isButtonPressed,
       hasNotifications: hasNotifications,
       myAnswersAsExecutor: listMyAnswersAsExecutor,
       countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
@@ -372,6 +378,7 @@ class UserRegModel {
     data['phone_number'] = phoneNumber;
     data['email'] = email;
     data['rus'] = rus;
+    data['is_button_pressed'] = isButtonPressed;
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['password'] = password;
