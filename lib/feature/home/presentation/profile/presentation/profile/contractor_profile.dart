@@ -622,14 +622,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         child: Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SvgPicture.asset('assets/icons/security-user.svg'),
+                            user?.verifyStatus != null && user!.verifyStatus == 'Success'
+                                ? SvgPicture.asset('assets/icons/security-user.svg')
+                                : SvgPicture.asset(
+                                    'assets/icons/security-user.svg',
+                                    color: Colors.red,
+                                  ),
                             SizedBox(width: 3.w),
                             Padding(
                               padding: EdgeInsets.only(left: 5.w),
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 180.w,
+                                    width:
+                                        user?.verifyStatus != null && user!.verifyStatus == 'Success' ? 240.w : 180.w,
                                     child: user?.verifyStatus != null && user!.verifyStatus == 'Success'
                                         ? Text('your_account_is_verified'.tr(),
                                             style: CustomTextStyle.black_11_w400_171716)

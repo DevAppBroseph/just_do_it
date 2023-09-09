@@ -540,7 +540,7 @@ class _CustomerState extends State<Customer> {
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
                                   return FavouriteTasks(
-                                    title: 'selected_customers'.tr(),
+                                    title: 'selected_tasks'.tr(),
                                     asCustomer: true,
                                   );
                                 }),

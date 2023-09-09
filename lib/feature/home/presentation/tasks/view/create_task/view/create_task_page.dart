@@ -150,10 +150,13 @@ class _CeateTasksState extends State<CeateTasks> {
   @override
   void initState() {
     super.initState();
+    user = BlocProvider.of<ProfileBloc>(context).user;
     selectCategory = widget.selectCategory;
+    log(selectCategory!.selectSubcategory.toString());
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
-        if (widget.selectCategory!.selectSubcategory.contains(element.description)) {
+        if (widget.selectCategory!.selectSubcategory.contains(
+            user?.rus ?? true  ? element.description : element.engDescription)) {
           selectSubCategory = element;
         }
       }

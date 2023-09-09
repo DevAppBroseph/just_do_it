@@ -257,6 +257,7 @@ class _CreatePageState extends State<CreatePage> {
                                     await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
+                                   
                                           return CeateTasks(
                                             customer: true,
                                             selectCategory: selectCategory,
@@ -481,7 +482,7 @@ class _CreatePageState extends State<CreatePage> {
             physics: const BouncingScrollPhysics(),
             children: list
                 .map((e) => item(
-                      user?.rus ?? true && context.locale.languageCode == 'RU'
+                      user?.rus ?? true && context.locale.languageCode == 'ru'
                           ? e.description ?? ''
                           : e.engDescription ?? '',
                       index,
@@ -509,6 +510,7 @@ class _CreatePageState extends State<CreatePage> {
             activities[i].selectSubcategory.clear();
           }
         }
+        log(activities[index].selectSubcategory.toString());
         setState(() {});
       },
       child: Padding(

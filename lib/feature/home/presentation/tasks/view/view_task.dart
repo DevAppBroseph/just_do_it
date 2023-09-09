@@ -68,9 +68,9 @@ class _TaskViewState extends State<TaskView> {
   @override
   void initState() {
     super.initState();
+
     getTask();
     user = BlocProvider.of<ProfileBloc>(context).user;
-
     selectTask = widget.selectTask;
   }
 
@@ -104,16 +104,13 @@ class _TaskViewState extends State<TaskView> {
 
   getPersonAndTask(bool res, UserRegModel? user) {
     context.read<TasksBloc>().add(UpdateTaskEvent());
-
     BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-
     if (res) Navigator.pop(context);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    log('dfsfesfasdas ${widget.canOnTop}');
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: MediaQuery(
@@ -143,6 +140,12 @@ class _TaskViewState extends State<TaskView> {
                   if (user?.id != selectTask?.owner?.id)
                     BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
                       if (current is UpdateTask) {
+                        getTask();
+                        
+
+                        return true;
+                      }
+                      if (current is TasksLoaded) {
                         getTask();
 
                         return true;
@@ -390,38 +393,48 @@ class _TaskViewState extends State<TaskView> {
                               : widget.selectTask.owner?.id == user?.id
                                   ? GestureDetector(
                                       onTap: () async {
-                                        Task newTask = Task(
-                                          id: widget.selectTask.id,
-                                          asCustomer: widget.selectTask.asCustomer,
-                                          name: widget.selectTask.name,
-                                          description: widget.selectTask.description,
-                                          subcategory: widget.selectTask.subcategory!,
-                                          dateStart: widget.selectTask.dateStart,
-                                          dateEnd: widget.selectTask.dateEnd,
-                                          priceFrom: widget.selectTask.priceFrom,
-                                          priceTo: widget.selectTask.priceTo,
-                                          regions: widget.selectTask.regions,
-                                          countries: widget.selectTask.countries,
-                                          towns: widget.selectTask.towns,
-                                          files: widget.selectTask.files,
-                                          icon: '',
-                                          task: '',
-                                          typeLocation: '',
-                                          whenStart: '',
-                                          coast: '',
-                                          currency: widget.selectTask.currency,
-                                          isGraded: true,
-                                        );
-                                        final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                                        await Repository().editTask(profileBloc.access!, newTask);
-                                        getTaskList();
-                                        getTask();
+                                        final res = await Repository()
+                                            .isEnoughOrdersOnTop(BlocProvider.of<ProfileBloc>(context).access);
+                                        if (res!) {
+                                          Task newTask = Task(
+                                            id: widget.selectTask.id,
+                                            asCustomer: widget.selectTask.asCustomer,
+                                            name: widget.selectTask.name,
+                                            description: widget.selectTask.description,
+                                            subcategory: widget.selectTask.subcategory!,
+                                            dateStart: widget.selectTask.dateStart,
+                                            dateEnd: widget.selectTask.dateEnd,
+                                            priceFrom: widget.selectTask.priceFrom,
+                                            priceTo: widget.selectTask.priceTo,
+                                            regions: widget.selectTask.regions,
+                                            countries: widget.selectTask.countries,
+                                            towns: widget.selectTask.towns,
+                                            files: widget.selectTask.files,
+                                            icon: '',
+                                            task: '',
+                                            typeLocation: '',
+                                            whenStart: '',
+                                            coast: '',
+                                            currency: widget.selectTask.currency,
+                                            isGraded: true,
+                                          );
+                                          final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                                          await Repository().editTask(profileBloc.access!, newTask);
+                                          getTaskList();
+                                          getTask();
 
-                                        context.read<TasksBloc>().add(UpdateTaskEvent());
-                                        BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                          context.read<TasksBloc>().add(UpdateTaskEvent());
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                        onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
-                                            'ad_is_now_above'.tr());
+                                          onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                              'ad_is_now_above'.tr());
+                                        } else {
+                                          if (widget.selectTask.asCustomer!) {
+                                            noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+                                          } else {
+                                            noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+                                          }
+                                        }
                                       },
                                       child: Container(
                                         height: 30.h,
@@ -452,39 +465,49 @@ class _TaskViewState extends State<TaskView> {
                           : widget.selectTask.owner?.id == user?.id
                               ? GestureDetector(
                                   onTap: () async {
-                                    Task newTask = Task(
-                                      id: widget.selectTask.id,
-                                      asCustomer: widget.selectTask.asCustomer,
-                                      name: widget.selectTask.name,
-                                      description: widget.selectTask.description,
-                                      subcategory: widget.selectTask.subcategory!,
-                                      dateStart: widget.selectTask.dateStart,
-                                      dateEnd: widget.selectTask.dateEnd,
-                                      priceFrom: widget.selectTask.priceFrom,
-                                      priceTo: widget.selectTask.priceTo,
-                                      regions: widget.selectTask.regions,
-                                      countries: widget.selectTask.countries,
-                                      towns: widget.selectTask.towns,
-                                      files: widget.selectTask.files,
-                                      icon: '',
-                                      task: '',
-                                      typeLocation: '',
-                                      whenStart: '',
-                                      coast: '',
-                                      currency: widget.selectTask.currency,
-                                      isGraded: true,
-                                    );
+                                    final res = await Repository()
+                                        .isEnoughOrdersOnTop(BlocProvider.of<ProfileBloc>(context).access);
+                                    if (res!) {
+                                      Task newTask = Task(
+                                        id: widget.selectTask.id,
+                                        asCustomer: widget.selectTask.asCustomer,
+                                        name: widget.selectTask.name,
+                                        description: widget.selectTask.description,
+                                        subcategory: widget.selectTask.subcategory!,
+                                        dateStart: widget.selectTask.dateStart,
+                                        dateEnd: widget.selectTask.dateEnd,
+                                        priceFrom: widget.selectTask.priceFrom,
+                                        priceTo: widget.selectTask.priceTo,
+                                        regions: widget.selectTask.regions,
+                                        countries: widget.selectTask.countries,
+                                        towns: widget.selectTask.towns,
+                                        files: widget.selectTask.files,
+                                        icon: '',
+                                        task: '',
+                                        typeLocation: '',
+                                        whenStart: '',
+                                        coast: '',
+                                        currency: widget.selectTask.currency,
+                                        isGraded: true,
+                                      );
 
-                                    final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                                    await Repository().editTask(profileBloc.access!, newTask);
-                                    getTaskList();
-                                    getTask();
+                                      final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                                      await Repository().editTask(profileBloc.access!, newTask);
+                                      getTaskList();
+                                      getTask();
 
-                                    context.read<TasksBloc>().add(UpdateTaskEvent());
-                                    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                      context.read<TasksBloc>().add(UpdateTaskEvent());
+                                      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
-                                    onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
-                                        'ad_is_now_above'.tr());
+                                      onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(),
+                                          'ad_is_now_above'.tr());
+                                    } else {
+                                      if (widget.selectTask.asCustomer!) {
+                                        noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+                                      } else {
+                                        noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+                                      }
+                                    }
                                   },
                                   child: Container(
                                     height: 30.h,
@@ -1033,7 +1056,7 @@ class _TaskViewState extends State<TaskView> {
                   widget.selectTask.isBanned!)
                 Column(
                   children: [
-                     Row(
+                    Row(
                       children: [
                         const Spacer(),
                         GestureDetector(
@@ -1383,13 +1406,12 @@ class _TaskViewState extends State<TaskView> {
                   return BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
                     if (current is LoadProfileSuccessState) {
                       user = BlocProvider.of<ProfileBloc>(context).user;
-                      log('LoadProfileSuccessState');
+
                       return true;
                     }
                     if (current is UpdateProfileSuccessState) {
                       user = BlocProvider.of<ProfileBloc>(context).user;
 
-                      log('UpdateProfileSuccessState ${user}');
                       return true;
                     }
                     if (previous != current) {
@@ -1408,7 +1430,6 @@ class _TaskViewState extends State<TaskView> {
                         shrinkWrap: true,
                         itemCount: widget.selectTask.answers.length,
                         itemBuilder: (context, index) {
-                          log((widget.selectTask.answers.every((element) => element.status != 'Selected').toString()));
                           if (widget.selectTask.answers.every((element) => element.status != 'Selected') &&
                               user?.id == widget.selectTask.owner?.id) {
                             if (widget.selectTask.asCustomer!) {
@@ -1629,7 +1650,6 @@ class _TaskViewState extends State<TaskView> {
                                               width: 140.w,
                                               child: CustomButton(
                                                 onTap: () async {
-                                                  log(widget.selectTask.answers[index].id!.toString());
                                                   Repository().updateStatusResponse(
                                                       BlocProvider.of<ProfileBloc>(context).access,
                                                       widget.selectTask.answers[index].id!,
@@ -2990,7 +3010,6 @@ class _TaskViewState extends State<TaskView> {
                                                     width: 140.w,
                                                     child: CustomButton(
                                                       onTap: () {
-                                                        log(widget.selectTask.answers[index].id!.toString());
                                                         widget.selectTask.status = 'Completed';
                                                         Repository().editTaskPatch(
                                                             BlocProvider.of<ProfileBloc>(context).access,

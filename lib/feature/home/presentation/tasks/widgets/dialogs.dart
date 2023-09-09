@@ -97,7 +97,7 @@ void taskMoreDialog(
                 children: [
                   Container(
                     width: 125.w,
-                    height: 72.h,
+                    height: selectTask.owner?.id != user?.id? 72.h: 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [
@@ -631,7 +631,7 @@ void taskMoreDialogForProfile(
                 children: [
                   Container(
                     width: 125.w,
-                    height: 72.h,
+                    height:owner?.id != user?.id? 72.h: 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [

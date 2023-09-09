@@ -568,7 +568,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(
                             width: 200.w,
                             child: Text(
-                              countryString != null && countryString!.isNotEmpty ? countryString! : 'countries_not_selected'.tr(),
+                              countryString != null && countryString!.isNotEmpty
+                                  ? countryString!
+                                  : 'countries_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.black_14_w400_171716,
@@ -1055,7 +1057,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               currencyString = null;
               selectCurrency = null;
             } else {
-              currencyString = user?.rus ?? true && context.locale.languageCode == 'ru' ? currency.name : currency.engName;
+              currencyString =
+                  user?.rus ?? true && context.locale.languageCode == 'ru' ? currency.name : currency.engName;
               selectCurrency = currency;
             }
 
@@ -1071,7 +1074,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 Row(
                   children: [
                     Text(
-                      user?.rus ?? true&& context.locale.languageCode == 'ru' ? currency.name! : currency.engName!,
+                      user?.rus ?? true && context.locale.languageCode == 'ru' ? currency.name! : currency.engName!,
                       style: CustomTextStyle.black_14_w500_171716,
                     ),
                     const Spacer(),
@@ -1191,7 +1194,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     elementCategory(
                       activities[index].photo ?? '',
-                      user?.rus ?? true && context.locale.languageCode == 'ru' ? activities[index].description ?? '' : activities[index].engDescription ?? '',
+                      user?.rus ?? true && context.locale.languageCode == 'ru'
+                          ? activities[index].description ?? ''
+                          : activities[index].engDescription ?? '',
                       index,
                       choice: activities[index].selectSubcategory,
                     ),
@@ -1208,7 +1213,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     for (var element in activities[currentIndex].subcategory) {
       if (element.isSelect) {
         activities[currentIndex].isSelect = true;
-        selectWork = element.description!;
+        if (user?.rus ?? true && context.locale.languageCode == 'ru') {
+          selectWork = element.description!;
+        } else {
+          selectWork = element.engDescription!;
+        }
+
         break;
       } else {
         activities[currentIndex].isSelect = false;
@@ -1312,7 +1322,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Expanded(
                 child: Text(
-                  user?.rus ?? true && context.locale.languageCode == 'ru' ?  selectActivities?.description ?? '': selectActivities?.engDescription ?? '',
+                  user?.rus ?? true && context.locale.languageCode == 'ru'
+                      ? selectActivities?.description ?? ''
+                      : selectActivities?.engDescription ?? '',
                   style: CustomTextStyle.black_22_w700,
                 ),
               ),
@@ -1532,7 +1544,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   Row(
                     children: [
                       Text(
-                        user?.rus ?? true && context.locale.languageCode == 'ru' ? countrySecond.name! : countrySecond.engName!,
+                        user?.rus ?? true && context.locale.languageCode == 'ru'
+                            ? countrySecond.name!
+                            : countrySecond.engName!,
                         style: CustomTextStyle.black_14_w500_171716,
                       ),
                       const Spacer(),
@@ -2127,7 +2141,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     for (int i = 0; i < countries.length; i++) {
       if (countries[i].select) {
         selectCount += 1;
-        nameCountriesList.add('${user?.rus ?? true&& context.locale.languageCode == 'ru' ? countries[i].name : countries[i].engName}');
+        nameCountriesList.add(
+            '${user?.rus ?? true && context.locale.languageCode == 'ru' ? countries[i].name : countries[i].engName}');
       }
     }
 
@@ -2153,8 +2168,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
       for (int i = 0; i < element.subcategory.length; i++) {
         if (element.subcategory[i].isSelect) {
           selectCount += 1;
-          nameCategories
-              .add('${user?.rus ?? true && context.locale.languageCode == 'ru' ? element.subcategory[i].description : element.subcategory[i].engDescription}');
+          nameCategories.add(
+              '${user?.rus ?? true && context.locale.languageCode == 'ru' ? element.subcategory[i].description : element.subcategory[i].engDescription}');
         }
       }
     }
