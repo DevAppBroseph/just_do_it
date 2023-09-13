@@ -456,6 +456,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                 scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               });
             },
+            actionButton: false,
             focusNode: focusNodeWhoTake,
             hintStyle: CustomTextStyle.grey_14_w400,
             formatters: [
@@ -684,7 +685,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
   String? checkExpireDate(DateTime? value) {
     if (value != null) {
       if (value.difference(DateTime.now()).inDays < 30) {
-        return 'Срок действия документа составляет менее 30 дней';
+        return 'validity_period_v'.tr();
       }
     }
     return null;

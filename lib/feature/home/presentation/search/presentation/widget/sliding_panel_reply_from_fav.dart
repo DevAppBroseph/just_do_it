@@ -673,7 +673,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   String? checkExpireDate(DateTime? value) {
     if (value != null) {
       if (value.difference(DateTime.now()).inDays < 30) {
-        return 'Срок действия документа составляет менее 30 дней';
+        return 'validity_period_v'.tr();
       }
     }
     return null;

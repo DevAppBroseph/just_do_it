@@ -165,21 +165,25 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                         user!.copyWith(
                             docInfo: docinfo,
                             region: regionController.text,
+                            isButtonPressed: false,
                             docType: mapDocumentType(documentTypeController.text));
-                        user!.copyWith(isEntity: physics);
-                        user!.copyWith(isEntity: physics);
+                        user!.copyWith(isEntity: physics, isButtonPressed: false);
+                        user!.copyWith(isEntity: physics, isButtonPressed: false);
                         BlocProvider.of<ProfileBloc>(context).setUser(user);
                         Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+
                         Navigator.of(context).pop();
                       } else {
                         CustomAlert().showMessage(error, context);
                       }
                     } else {
                       user!.copyWith(docInfo: '', region: regionController.text, docType: '');
-                      user!.copyWith(isEntity: physics);
+                      user!.copyWith(isEntity: physics,isButtonPressed: false);
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
                       Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
-
+                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+  
                       Navigator.of(context).pop();
                     }
                   }

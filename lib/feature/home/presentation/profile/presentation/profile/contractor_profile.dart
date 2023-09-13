@@ -148,6 +148,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       log(current.toString());
       if (current is UpdateProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
+        return true;
       }
       if (current is UpdateProfileTaskState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
@@ -600,13 +601,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     width: 240.w,
                                     child: Text(
                                       'passport_data_uploaded'.tr(),
-                                      style: user != null && user!.docType != null
+                                      style: user != null && user!.docType != null && user!.docType != ''
                                           ? CustomTextStyle.black_11_w400_171716
                                           : CustomTextStyle.grey_12_w400,
                                     ),
                                   ),
-                                  if (user != null && user!.docType != null)
-                                    if (user != null && user!.docType != null)
+                                  if (user != null && user!.docType != null && user!.docType != '')
+                                  
                                       const Icon(
                                         Icons.check,
                                         color: Colors.green,

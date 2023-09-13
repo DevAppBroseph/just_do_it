@@ -23,6 +23,7 @@ class Task {
   String dateEnd;
   int priceFrom;
   String? status;
+  bool? isButtonPressed;
   int priceTo;
   Answers? isAnswered;
   List<Countries> countries;
@@ -64,6 +65,7 @@ class Task {
       this.status,
       this.isAnswered,
       this.icon,
+      this.isButtonPressed,
       this.task,
       this.typeLocation,
       this.whenStart,
@@ -129,6 +131,7 @@ class Task {
         priceTo: json["price_to"],
         asCustomer: json['as_customer'],
         status: json['status'],
+        isButtonPressed: json['is_button_pressed'],
         countries: countries,
         regions: regions,
         files: files,
@@ -144,6 +147,7 @@ class Task {
     data['subcategory'] = subcategory?.id;
     data['date_start'] = dateStart;
     data['date_end'] = dateEnd;
+    data['is_button_pressed'] = isButtonPressed;
     data['price_from'] = priceFrom;
     data['status'] = status;
     data['is_liked'] = isLiked;
