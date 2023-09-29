@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-NewMessageAnswerTask newMessageAnswerFromJson(String str) => NewMessageAnswerTask.fromJson(json.decode(str));
+NewMessageAnswerTask newMessageAnswerFromJson(String str) =>
+    NewMessageAnswerTask.fromJson(json.decode(str));
 
-String newMessageAnswerToJson(NewMessageAnswerTask data) => json.encode(data.toJson());
+String newMessageAnswerToJson(NewMessageAnswerTask data) =>
+    json.encode(data.toJson());
 
 class NewMessageAnswerTask {
   NewMessageAnswerTask({
@@ -15,8 +17,10 @@ class NewMessageAnswerTask {
   String action;
   String? id;
 
-  factory NewMessageAnswerTask.fromJson(Map<String, dynamic> json) => NewMessageAnswerTask(
-        action: json["action"] ,
+  factory NewMessageAnswerTask.fromJson(Map<String, dynamic> json) =>
+      NewMessageAnswerTask(
+        action:
+            json["action"] is int ? json["action"].toString() : json["action"],
         message: json["message"],
         id: json["order_id"] != null ? json["id"].toString() : null,
       );

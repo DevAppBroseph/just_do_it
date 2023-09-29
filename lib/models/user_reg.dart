@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 
 class ArrayImages {
   int? id;
@@ -37,10 +38,11 @@ class UserRegModel {
   bool? hasNotifications;
   String? cvType;
   bool? isBanned;
+  String? banReason;
   bool? isButtonPressed;
   bool? rus;
   List<dynamic>? groups;
-  List<Activities>? activities;
+  List<TaskCategory>? activities;
   List<int>? activitiesDocument;
   List<Task>? ordersInProgressAsCustomer;
   List<Task>? ordersCompleteAsCustomer;
@@ -65,6 +67,7 @@ class UserRegModel {
   List<Task>? selectedOffersAsCustomer;
   List<Task>? finishedOffersAsCustomer;
   List<Task>? myAnswersAsExecutor;
+  bool? canAppellate;
 
   UserRegModel({
     this.countOrdersCreateAsCustomer,
@@ -78,6 +81,7 @@ class UserRegModel {
     this.ordersCreateAsCustomer,
     this.phoneNumber,
     this.email,
+     this.canAppellate,
     this.isButtonPressed,
     this.firstname,
     this.verifyStatus,
@@ -115,6 +119,7 @@ class UserRegModel {
     this.activitiesInfo,
     this.balance,
     this.link,
+    this.banReason,
     this.countOrderComplete,
   });
 
@@ -127,6 +132,7 @@ class UserRegModel {
     String? lastname,
     String? password,
     int? allbalance,
+    bool? canAppellate,
     String? verifyStatus,
     List<Task>? selectedOffers,
     List<Task>? finishedOffers,
@@ -154,7 +160,7 @@ class UserRegModel {
     List<Task>? ordersCompleteAsCustomer,
     List<dynamic>? groups,
     List<Task>? myAnswersSelectedAsExecutor,
-    List<Activities>? activities,
+    List<TaskCategory>? activities,
     List<int>? activitiesDocument,
     int? countOrdersCompleteACustomer,
     String? region,
@@ -211,6 +217,7 @@ class UserRegModel {
     this.photoLink = photoLink ?? this.photoLink;
     this.cvLink = cvLink ?? this.cvLink;
     this.id = id ?? this.id;
+    this.canAppellate = canAppellate ?? this.canAppellate;
     this.activitiesInfo = activitiesInfo ?? this.activitiesInfo;
     this.countOrderComplete = countOrderComplete ?? this.countOrderComplete;
     balance = balance ?? balance;
@@ -241,6 +248,7 @@ class UserRegModel {
     String? docType = data['doc_type'];
     String? docInfo = data['doc_info'];
     bool? isEntity = data['is_entity'];
+    bool? canAppellate = data['canApellate'];
     String? activity = data['activity'];
     String? cvLink = data['CV'];
     int? id = data['id'];
@@ -249,6 +257,7 @@ class UserRegModel {
     int? balance = data['actual_balance'];
     int? allbalance = data['balance'];
     String? link = data['link'];
+    String? banReason = data['failed_verify_reason'];
     if (data['activities_info'] != null) {
       for (var element in data['activities_info']) {
         list.add(ActivitiesInfo.fromJson(element));
@@ -369,7 +378,8 @@ class UserRegModel {
       images: listImages,
       countMyAnswersAsExecutor: countMyAnswersAsExecutor,
       balance: balance,
-      link: link,
+      link: link, canAppellate: canAppellate??false,
+      banReason: banReason??"NOREASON"
     );
   }
 
@@ -446,48 +456,9 @@ class ActivitiesInfo {
   }
 }
 
-class Activities {
-  bool isSelect;
-  int id;
-  String? description;
-  String? engDescription;
-  String? photo;
-  List<Subcategory> subcategory;
-  List<String> selectSubcategory = [];
 
-  Activities(this.isSelect, this.id, this.description, this.photo, this.subcategory, this.engDescription);
 
-  factory Activities.fromJson(Map<String, dynamic> data) {
-    int id = data['id'];
-    String? description = data['description'];
-    String? engDescription = data['description_eng'];
 
-    String? photo = data['photo'];
-    List<Subcategory> subcategory = [];
-    if (data['subcategories'] != null) {
-      for (var element in data['subcategories']) {
-        subcategory.add(Subcategory.fromJson(element));
-      }
-    }
-    return Activities(false, id, description, photo, subcategory, engDescription);
-  }
-}
-
-class Subcategory {
-  bool isSelect;
-  int id;
-  String? description;
-  String? engDescription;
-
-  Subcategory(this.isSelect, {required this.id, required this.description, required this.engDescription});
-
-  factory Subcategory.fromJson(Map<String, dynamic> data) {
-    int id = data['id'];
-    String? engDescription = data['description_eng'];
-    String? description = data['description'];
-    return Subcategory(false, id: id, description: description, engDescription: engDescription);
-  }
-}
 
 class DocumentInfo {
   String? serial, documentNumber, whoGiveDocument, documentData;

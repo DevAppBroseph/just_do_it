@@ -244,7 +244,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             errorsFlag = true;
                           }
                           if (errorsFlag) {
-                            CustomAlert().showMessage(error, context);
+                            CustomAlert().showMessage(error);
                           } else {
                             user!.copyWith(isEntity: physics);
                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));

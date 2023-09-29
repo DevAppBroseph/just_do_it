@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
+      useInheritedMediaQuery: true,
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
@@ -70,14 +71,19 @@ class MyApp extends StatelessWidget {
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
             BlocProvider<ChatBloc>(create: (context) => ChatBloc())
           ],
-          child: MaterialApp(
-            builder: FlutterSmartDialog.init(),
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppRoute.home,
-            onGenerateRoute: AppRoute.onGenerateRoute,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
+          child: GestureDetector(
+            onTap: (){
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+            },
+            child: MaterialApp(
+              builder: FlutterSmartDialog.init(),
+              debugShowCheckedModeBanner: false,
+              initialRoute: AppRoute.home,
+              onGenerateRoute: AppRoute.onGenerateRoute,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+            ),
           ),
         );
       },

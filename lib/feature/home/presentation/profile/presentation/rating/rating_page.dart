@@ -62,7 +62,6 @@ class _RatingPageState extends State<RatingPage> {
                           style: CustomTextStyle.black_17_w800,
                         ),
                         SizedBox(height: 30.h),
-                        //TODO Эта логика для сервера
 
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -75,7 +74,6 @@ class _RatingPageState extends State<RatingPage> {
                             return null;
                           }),
 
-                          //TODO Эта логика для сервера
 
                           // ListView.builder(
                           //   physics: const NeverScrollableScrollPhysics(),
@@ -207,7 +205,6 @@ class _RatingPageState extends State<RatingPage> {
   }
 
   Widget itemComment(ReviewsDetail review) {
-    log('${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}');
     double width = MediaQuery.of(context).size.width - (24 * 2);
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
@@ -373,7 +370,6 @@ class _RatingPageState extends State<RatingPage> {
                       const Spacer(),
                       Container(
                         height: 76.h,
-                        width: 130.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                         decoration: BoxDecoration(
                           color: ColorStyles.greyF3F3F3,
@@ -383,7 +379,7 @@ class _RatingPageState extends State<RatingPage> {
                           ),
                         ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(

@@ -20,26 +20,28 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum CountryCode { ru, oae }
 
-class Contractor extends StatefulWidget {
+class ContractorRegisterPage extends StatefulWidget {
   Function(int) stage;
 
-  Contractor(this.stage, {super.key});
+  ContractorRegisterPage(this.stage, {super.key});
+
   @override
-  State<Contractor> createState() => _ContractorState();
+  State<ContractorRegisterPage> createState() => _ContractorRegisterPageState();
 }
 
-class _ContractorState extends State<Contractor> {
+class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
   TextEditingController experienceController = TextEditingController();
 
-  int groupValue = 0;
   int page = 0;
   bool visiblePassword = false;
   bool visiblePasswordRepeat = false;
@@ -57,7 +59,6 @@ class _ContractorState extends State<Contractor> {
   TextEditingController documentTypeController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
 
-  String? gender;
   final GlobalKey _countryKey = GlobalKey();
   final GlobalKey _categoryButtonKey = GlobalKey();
   final GlobalKey _regionKey = GlobalKey();
@@ -72,8 +73,8 @@ class _ContractorState extends State<Contractor> {
   bool confirmTermsPolicy = false;
   DateTime? dateTimeStart;
   DateTime? dateTimeEnd;
-  UserRegModel user = UserRegModel(isEntity: false);
-  List<Activities> listCategories = [];
+  UserRegModel user = UserRegModel(isEntity: false, sex: true);
+  List<TaskCategory> listCategories = [];
   bool physics = false;
 
   CountryCode countryCode = CountryCode.ru;
@@ -147,25 +148,32 @@ class _ContractorState extends State<Contractor> {
   void requestNextEmptyFocusStage1() {
     if (firstnameController.text.isEmpty) {
       focusNodeName.requestFocus();
-      scrollController1.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(0,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (lastnameController.text.isEmpty) {
       focusNodeName.unfocus();
       focusNodeLastName.requestFocus();
-      scrollController1.animateTo(50.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(50.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (phoneController.text.isEmpty) {
       focusNodePhone.requestFocus();
-      scrollController1.animateTo(100.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(100.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (emailController.text.isEmpty) {
       focusNodeEmail.requestFocus();
-      scrollController1.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(150.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (passwordController.text.isEmpty) {
       focusNodePassword1.requestFocus();
-      scrollController1.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(200.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (repeatPasswordController.text.isEmpty) {
       focusNodePassword2.requestFocus();
-      scrollController1.animateTo(250.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(250.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     } else if (!confirmTermsPolicy) {
-      scrollController1.animateTo(90.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      scrollController1.animateTo(90.h,
+          duration: const Duration(milliseconds: 100), curve: Curves.linear);
     }
   }
 
@@ -173,13 +181,16 @@ class _ContractorState extends State<Contractor> {
     if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -193,40 +204,52 @@ class _ContractorState extends State<Contractor> {
         Loader.hide();
         if (current is CheckUserState) {
           if (current.error != null) {
-            CustomAlert().showMessage('a_user_with_such_an_email_or_phone_number_is_already_registered'.tr(), context);
+            CustomAlert().showMessage(
+                'a_user_with_such_an_email_or_phone_number_is_already_registered'
+                    .tr());
           } else {
             page = 1;
             widget.stage(2);
           }
         } else if (current is SendProfileSuccessState) {
-          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister, arguments: [phoneController.text]);
+          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+              arguments: [phoneController.text]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
           String messageError = '${'error'.tr()}\n';
-          if (current.error!['email'] != null && current.error!['email'][0] != null) {
+          if (current.error!['email'] != null &&
+              current.error!['email'][0] != null) {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
+              messageError =
+                  'a_user_with_such_an_email_is_already_registered'.tr();
             } else if (email.contains('Enter a valid email address.')) {
               messageError = 'enter_the_correct_email_address'.tr();
             }
-          } else if (current.error!['phone_number'] != null && current.error!['phone_number'][0] != null) {
+          } else if (current.error!['phone_number'] != null &&
+              current.error!['phone_number'][0] != null) {
             String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber.contains('custom user with this Телефон already exists.')) {
-              messageError = 'a_user_with_such_a_phone_is_already_registered'.tr();
-            } else if (phoneNumber.contains('The phone number entered is not valid.')) {
+            if (phoneNumber
+                .contains('custom user with this Телефон already exists.')) {
+              messageError =
+                  'a_user_with_such_a_phone_is_already_registered'.tr();
+            } else if (phoneNumber
+                .contains('The phone number entered is not valid.')) {
               messageError = 'enter_the_correct_phone_number'.tr();
             }
           }
-          CustomAlert().showMessage(messageError, context);
+          CustomAlert().showMessage(messageError);
         }
         return false;
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(child: page == 0 ? firstStage(heightKeyBoard) : secondStage(heightKeyBoard)),
+            Expanded(
+                child: page == 0
+                    ? firstStage(heightKeyBoard)
+                    : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () async {
@@ -245,7 +268,8 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
 
-                  if (phoneController.text.isEmpty || phoneController.text == '+') {
+                  if (phoneController.text.isEmpty ||
+                      phoneController.text == '+') {
                     error += '\n- ${'mobile_number'.tr()}';
                     errorsFlag = true;
                   }
@@ -255,27 +279,32 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
 
-                  if (passwordController.text.isEmpty || repeatPasswordController.text.isEmpty) {
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
                     error += '\n- ${'password'.tr()}';
                     errorsFlag = true;
                   }
 
                   String email = emailController.text;
-                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$').hasMatch(passwordController.text);
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
+                      .hasMatch(passwordController.text);
                   if (!passwordValid && passwordController.text.isNotEmpty) {
                     error += '\n- ${'correct_password'.tr()}';
                     errorsFlag = true;
                   }
-                  bool emailValid =
-                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(email);
 
                   if (!emailValid && emailController.text.isNotEmpty) {
                     error += '\n- ${'correct_email'.tr()}';
                     errorsFlag = true;
                   }
 
-                  if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text != repeatPasswordController.text)) {
+                  if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
                     if (errorsFlag == true) {
                       error += '\n\n${'passwords_dont_match'.tr()}';
                     } else {
@@ -284,45 +313,62 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
-                    error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
+                    error +=
+                        '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (errorsFlag) {
-                    CustomAlert().showMessage(error, context);
+                    CustomAlert().showMessage(error);
                   } else if (phoneController.text.length < 12) {
-                    CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}.', context);
-                  } else if (emailController.text.split('@').last.split('.').last.length < 2) {
-                    CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}', context);
-                  } else if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text != repeatPasswordController.text)) {
-                    CustomAlert()
-                        .showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
+                    CustomAlert().showMessage(
+                      '- ${'incorrect_phone_number'.tr()}.',
+                    );
+                  } else if (emailController.text
+                          .split('@')
+                          .last
+                          .split('.')
+                          .last
+                          .length <
+                      2) {
+                    CustomAlert().showMessage(
+                        '- ${'enter_the_correct_email_address'.tr()}');
+                  } else if ((passwordController.text.isNotEmpty &&
+                          repeatPasswordController.text.isNotEmpty) &&
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
+                    CustomAlert().showMessage(
+                      '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}',
+                    );
                   } else if (passwordController.text.length < 6) {
-                    CustomAlert()
-                        .showMessage('- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}', context);
+                    CustomAlert().showMessage(
+                      '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}',
+                    );
                   } else if (!emailValid) {
-                    CustomAlert().showMessage('enter_the_correct_email_address'.tr(), context);
+                    CustomAlert().showMessage(
+                      'enter_the_correct_email_address'.tr(),
+                    );
                   } else if (!confirmTermsPolicy) {
                     CustomAlert().showMessage(
                         'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'
-                            .tr(),
-                        context);
+                            .tr());
                   } else {
                     showLoaderWrapper(context);
 
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(CheckUserExistEvent(phoneController.text, emailController.text));
+                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
+                        phoneController.text, emailController.text));
                   }
                 } else {
                   List<int> categorySelect = [];
                   for (int i = 0; i < typeCategories.length; i++) {
                     for (int j = 0; j < listCategories.length; j++) {
                       if (context.locale.languageCode == 'ru') {
-                        if (typeCategories[i] == listCategories[j].description) {
+                        if (typeCategories[i] ==
+                            listCategories[j].description) {
                           categorySelect.add(listCategories[j].id);
                         } else {
-                          if (typeCategories[i] == listCategories[j].engDescription) {
+                          if (typeCategories[i] ==
+                              listCategories[j].engDescription) {
                             categorySelect.add(listCategories[j].id);
                           }
                         }
@@ -330,7 +376,8 @@ class _ContractorState extends State<Contractor> {
                     }
                   }
                   requestNextEmptyFocusStage2();
-                  user.copyWith(activitiesDocument: categorySelect, groups: [4]);
+                  user.copyWith(
+                      activitiesDocument: categorySelect, groups: [4]);
                   String error = 'specify'.tr();
                   bool errorsFlag = false;
 
@@ -347,7 +394,8 @@ class _ContractorState extends State<Contractor> {
                     errorsFlag = true;
                   }
                   if (additionalInfo) {
-                    if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
+                    if (serialDocController.text.isEmpty &&
+                        user.docType != 'Resident_ID') {
                       error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
                     }
@@ -357,7 +405,8 @@ class _ContractorState extends State<Contractor> {
                     }
                     if (whoGiveDocController.text.isEmpty) {
                       if (user.docType != 'Passport') {
-                        error += '\n- ${'validity_period_of_the_document'.tr()}';
+                        error +=
+                            '\n- ${'validity_period_of_the_document'.tr()}';
                         errorsFlag = true;
                       } else if (user.docType != 'Resident_ID') {
                         error += '\n- ${'who_issued_the_document'.tr()}';
@@ -370,7 +419,8 @@ class _ContractorState extends State<Contractor> {
                     }
                     if (whoGiveDocController.text.length < 3) {
                       if (user.docType == 'Resident_ID') {
-                        error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                        error +=
+                            '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                         errorsFlag = true;
                       }
                     }
@@ -383,18 +433,22 @@ class _ContractorState extends State<Contractor> {
                       errorsFlag = true;
                     }
                   }
-                  if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                  if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
                     error += '\n\n ${'your_document_is_overdue'.tr()}';
                     errorsFlag = true;
                   }
 
                   if (errorsFlag) {
-                    CustomAlert().showMessage(error, context);
+                    CustomAlert().showMessage(error);
                   } else {
-                    if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                      CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
+                    if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      CustomAlert().showMessage(
+                          'your_document_is_overdue'.tr());
                     } else if (checkExpireDate(dateTimeEnd) != null) {
-                      CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
+                      CustomAlert()
+                          .showMessage(checkExpireDate(dateTimeEnd)!);
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
                       showLoaderWrapper(context);
@@ -404,7 +458,8 @@ class _ContractorState extends State<Contractor> {
                       if (context.locale.languageCode == 'ru') {
                         user.rus = true;
                       }
-                      BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(user, token.toString()));
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SendProfileEvent(user, token.toString()));
                     }
                   }
                 }
@@ -413,7 +468,9 @@ class _ContractorState extends State<Contractor> {
                   ? confirmTermsPolicy
                       ? ColorStyles.yellowFFD70A
                       : ColorStyles.greyE0E6EE
-                  : countryController.text.isNotEmpty && regionController.text.isNotEmpty && typeCategories.isNotEmpty
+                  : countryController.text.isNotEmpty &&
+                          regionController.text.isNotEmpty &&
+                          typeCategories.isNotEmpty
                       ? ColorStyles.yellowFFD70A
                       : ColorStyles.greyE0E6EE,
               textLabel: Text(
@@ -462,7 +519,8 @@ class _ContractorState extends State<Contractor> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -481,7 +539,8 @@ class _ContractorState extends State<Contractor> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -489,46 +548,7 @@ class _ContractorState extends State<Contractor> {
             requestNextEmptyFocusStage1();
           },
         ),
-        SizedBox(height: 30.h),
-        Row(
-          children: [
-            Text(
-              'your_gender'.tr(),
-              style: CustomTextStyle.black_14_w400_171716,
-            ),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  groupValue = 0;
-                  gender = 'Мужчина';
-                  user.copyWith(sex: groupValue == 0 ? true : false);
-                });
-              },
-              child: CustomCircleRadioButtonItem(
-                label: 'male'.tr(),
-                value: 0,
-                groupValue: groupValue,
-              ),
-            ),
-            SizedBox(width: 15.w),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  groupValue = 1;
-                  gender = 'Женщина';
-                  user.copyWith(sex: groupValue == 0 ? true : false);
-                });
-              },
-              child: CustomCircleRadioButtonItem(
-                label: 'female'.tr(),
-                value: 1,
-                groupValue: groupValue,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 30.h),
+        SizedBox(height: 16.h),
         CustomTextField(
           focusNode: focusNodePhone,
           hintText: '${'phone_number'.tr()}*',
@@ -547,7 +567,8 @@ class _ContractorState extends State<Contractor> {
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
           },
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -563,21 +584,26 @@ class _ContractorState extends State<Contractor> {
           height: 50.h,
           textEditingController: emailController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            bool emailValid =
-                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
             if (!emailValid) {
-              CustomAlert().showMessage('the_email_address_is_incorrect'.tr(), context);
+              CustomAlert()
+                  .showMessage('the_email_address_is_incorrect'.tr());
             }
             if (emailValid) requestNextEmptyFocusStage1();
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 250), () {
-              scrollController1.animateTo(500.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+              scrollController1.animateTo(500.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -606,7 +632,8 @@ class _ContractorState extends State<Contractor> {
           ),
           textEditingController: passwordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -615,7 +642,9 @@ class _ContractorState extends State<Contractor> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController1.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+              scrollController1.animateTo(300.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -644,7 +673,8 @@ class _ContractorState extends State<Contractor> {
           ),
           textEditingController: repeatPasswordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -653,7 +683,9 @@ class _ContractorState extends State<Contractor> {
           },
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
-              scrollController1.animateTo(350.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+              scrollController1.animateTo(350.h,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -668,7 +700,8 @@ class _ContractorState extends State<Contractor> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: confirmTermsPolicy,
               onChanged: (value) {
                 setState(() {
@@ -680,7 +713,17 @@ class _ContractorState extends State<Contractor> {
             ),
             Flexible(
               child: GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  final about = await Repository().aboutList();
+                  if (context.mounted) {
+                    launchUrl(
+                        Uri.parse(user.rus ??
+                                true && context.locale.languageCode == 'ru'
+                            ? server + about!.agreement
+                            : server + about!.agreementEng),
+                        mode: LaunchMode.externalApplication);
+                  }
+                },
                 child: Text(
                   'agree_to_the_processing'.tr(),
                   style: CustomTextStyle.black_14_w400_515150
@@ -745,7 +788,8 @@ class _ContractorState extends State<Contractor> {
               ],
             ),
             textEditingController: TextEditingController(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
         if (image != null) SizedBox(height: 6.h),
@@ -786,7 +830,9 @@ class _ContractorState extends State<Contractor> {
                             width: 15.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
                                 borderRadius: BorderRadius.circular(40.r)),
                             child: Center(
                               child: Icon(
@@ -811,7 +857,9 @@ class _ContractorState extends State<Contractor> {
             _countryKey,
             (value) async {
               countryController.text = regionController.text =
-                  context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
+                  context.locale.languageCode == 'ru'
+                      ? value.name ?? '-'
+                      : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -827,7 +875,8 @@ class _ContractorState extends State<Contractor> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -841,7 +890,9 @@ class _ContractorState extends State<Contractor> {
                 _regionKey,
                 (value) {
                   regionController.text = regionController.text =
-                      context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
+                      context.locale.languageCode == 'ru'
+                          ? value.name ?? '-'
+                          : value.engName ?? '-';
                   user.copyWith(region: regionController.text);
                   setState(() {});
                 },
@@ -849,7 +900,8 @@ class _ContractorState extends State<Contractor> {
                 'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr(), context);
+              CustomAlert().showMessage(
+                  'to_select_a_region_first_specify_the_country'.tr());
             }
           },
           child: CustomTextField(
@@ -858,7 +910,8 @@ class _ContractorState extends State<Contractor> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -879,7 +932,11 @@ class _ContractorState extends State<Contractor> {
               );
               setState(() {});
             },
-            ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
+            [
+              'passport_of_the_RF'.tr(),
+              'foreign_passport'.tr(),
+              'resident_ID'.tr()
+            ],
             'document'.tr(),
           ),
           child: Stack(
@@ -892,7 +949,8 @@ class _ContractorState extends State<Contractor> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: documentTypeController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -963,7 +1021,8 @@ class _ContractorState extends State<Contractor> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: categoryController,
-                contentPadding: EdgeInsets.only(left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
+                contentPadding: EdgeInsets.only(
+                    left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -1013,8 +1072,12 @@ class _ContractorState extends State<Contractor> {
                       user.copyWith(activity: value);
                       setState(() {});
                     },
-                    formatters: [LengthLimitingTextInputFormatter(500), UpperEveryTextInputFormatter()],
-                    contentPadding: EdgeInsets.only(left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
+                    formatters: [
+                      LengthLimitingTextInputFormatter(250),
+                      UpperEveryTextInputFormatter()
+                    ],
+                    contentPadding: EdgeInsets.only(
+                        left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),
                 ),
               ),
@@ -1023,7 +1086,7 @@ class _ContractorState extends State<Contractor> {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    '${aboutMeController.text.length}/500',
+                    '${aboutMeController.text.length}/250',
                     style: CustomTextStyle.grey_12_w400,
                   ),
                 ),
@@ -1077,8 +1140,11 @@ class _ContractorState extends State<Contractor> {
                                         width: 15.h,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
-                                            boxShadow: const [BoxShadow(color: Colors.black)],
-                                            borderRadius: BorderRadius.circular(40.r)),
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(40.r)),
                                         child: Center(
                                           child: Icon(
                                             Icons.close,
@@ -1111,7 +1177,9 @@ class _ContractorState extends State<Contractor> {
                             width: 50.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Center(
                               child: SvgPicture.asset(
@@ -1134,7 +1202,9 @@ class _ContractorState extends State<Contractor> {
                               width: 15.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [BoxShadow(color: Colors.black)],
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
                                   borderRadius: BorderRadius.circular(40.r)),
                               child: Center(
                                 child: Icon(
@@ -1166,7 +1236,8 @@ class _ContractorState extends State<Contractor> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1203,7 +1274,8 @@ class _ContractorState extends State<Contractor> {
                             child: Center(
                                 child: Text(
                               photos.length.toString(),
-                              style: CustomTextStyle.white_11.copyWith(fontSize: 10.sp),
+                              style: CustomTextStyle.white_11
+                                  .copyWith(fontSize: 10.sp),
                             )),
                           ),
                         ),
@@ -1226,7 +1298,8 @@ class _ContractorState extends State<Contractor> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1241,7 +1314,8 @@ class _ContractorState extends State<Contractor> {
                               SizedBox(width: 4.w),
                               Text(
                                 'upload_a_resume'.tr(),
-                                style: CustomTextStyle.black_12_w400.copyWith(fontSize: 12.sp),
+                                style: CustomTextStyle.black_12_w400
+                                    .copyWith(fontSize: 12.sp),
                               )
                             ],
                           ),
@@ -1277,7 +1351,8 @@ class _ContractorState extends State<Contractor> {
         Row(
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
                 user.copyWith(isEntity: value);
@@ -1323,21 +1398,26 @@ class _ContractorState extends State<Contractor> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
                 textEditingController: serialDocController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user.docType != 'Resident_ID' ? 'number'.tr() : 'id_number'.tr(),
+              hintText: user.docType != 'Resident_ID'
+                  ? 'number'.tr()
+                  : 'id_number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
@@ -1347,7 +1427,9 @@ class _ContractorState extends State<Contractor> {
               textInputType: TextInputType.number,
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  scrollController2.animateTo(200.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  scrollController2.animateTo(200.h,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear);
                 });
               },
               formatters: [
@@ -1355,9 +1437,11 @@ class _ContractorState extends State<Contractor> {
               ],
               width: user.docType == 'Resident_ID'
                   ? MediaQuery.of(context).size.width - 30.w - 18.w
-                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w,
               textEditingController: numberDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -1368,7 +1452,9 @@ class _ContractorState extends State<Contractor> {
             hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1381,7 +1467,8 @@ class _ContractorState extends State<Contractor> {
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
@@ -1396,7 +1483,8 @@ class _ContractorState extends State<Contractor> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1412,7 +1500,8 @@ class _ContractorState extends State<Contractor> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1427,7 +1516,9 @@ class _ContractorState extends State<Contractor> {
             hintText: 'place_of_issue'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1440,7 +1531,8 @@ class _ContractorState extends State<Contractor> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -1450,21 +1542,31 @@ class _ContractorState extends State<Contractor> {
   void _showDatePicker(ctx, int index, bool isInternational) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
-        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(
+            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -1494,18 +1596,26 @@ class _ContractorState extends State<Contractor> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   }
@@ -1533,9 +1643,11 @@ class _ContractorState extends State<Contractor> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1546,9 +1658,11 @@ class _ContractorState extends State<Contractor> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1575,7 +1689,9 @@ class _ContractorState extends State<Contractor> {
 
   void documentEdit() {
     user.copyWith(
-      docInfo: serialDocController.text.isEmpty && numberDocController.text.isEmpty && dateDocController.text.isEmpty
+      docInfo: serialDocController.text.isEmpty &&
+              numberDocController.text.isEmpty &&
+              dateDocController.text.isEmpty
           ? ''
           : 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}',
     );

@@ -9,21 +9,21 @@ class CloseSlidingPanelEvent extends ChatEvent {}
 class StartSocket extends ChatEvent {
   BuildContext context;
   String? access;
-
-  StartSocket(this.context, this.access);
+  VoidCallback updateData;
+  StartSocket(this.context, this.access,this.updateData);
 }
 
 class SendMessageEvent extends ChatEvent {
   String message;
   String id;
   String myId;
-  SendMessageEvent(this.message, this.id, this.myId);
+  int? categoryId;
+  SendMessageEvent(this.message, this.id, this.myId,{this.categoryId});
 }
 
 class GetListMessage extends ChatEvent {}
 class CloseSocketEvent extends ChatEvent {}
 
-class UpdateProfileChatEvent extends ChatEvent {}
 
 class GetListMessageItem extends ChatEvent {
   String access;

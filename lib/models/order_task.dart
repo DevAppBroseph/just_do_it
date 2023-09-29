@@ -57,6 +57,7 @@ class Owner {
   double? ranking;
   bool? isBanned;
   bool? isPassportExist;
+  bool? isVerified;
   int? countOrdersCreate;
   String? activity;
   List<String> listPhoto;
@@ -77,6 +78,7 @@ class Owner {
     this.ranking,
     this.activities,
     this.isPassportExist,
+    this.isVerified,
     this.countOrdersCreate,
     this.activity,
     this.hasReview,
@@ -120,6 +122,7 @@ class Owner {
       isLiked: json["is_liked"],
       isBanned: json["is_banned"],
       isPassportExist: json["is_passport_exist"],
+      isVerified: json["is_verified"],
       countOrdersCreate: json["count_orders_create"],
       activity: json["activity"],
       countOrdersComplete: json["count_orders_complete"],

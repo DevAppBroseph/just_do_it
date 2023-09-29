@@ -73,16 +73,19 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
             Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-
             scoreDialog(context, '50', 'registrations'.tr());
+            if(context.read<AuthBloc>().refCode!=null){
+              scoreDialog(context, '200', 'registrations_by_referral_link'.tr());
+            }
+
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
             Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is ConfirmCodeRegisterErrorState) {
-            CustomAlert().showMessage('invalid_code'.tr(), context);
+            CustomAlert().showMessage('invalid_code'.tr());
           } else if (current is ConfirmRestoreErrorState) {
-            CustomAlert().showMessage('invalid_code'.tr(), context);
+            CustomAlert().showMessage('invalid_code'.tr(),);
           }
           return false;
         },
@@ -183,7 +186,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                 BlocProvider.of<AuthBloc>(context)
                                     .add(ConfirmCodeEvent(widget.phone, codeController.text));
                               } else {
-                                CustomAlert().showMessage('enter_the_code'.tr(), context);
+                                CustomAlert().showMessage('enter_the_code'.tr());
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,

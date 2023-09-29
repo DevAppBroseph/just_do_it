@@ -142,11 +142,11 @@ class _ContactUsState extends State<ContactUs> {
                         errorsFlag = true;
                       }
                       if (errorsFlag == true) {
-                        CustomAlert().showMessage(error, context);
+                        CustomAlert().showMessage(error);
                       } else {
                         Repository().sendMessageToSupport(BlocProvider.of<ProfileBloc>(context).access,
                             controllerEmail.text, controllerMessage.text, controllerTheme.text);
-                        CustomAlert().showMessage('the_message_has_been_sent'.tr(), context);
+                        CustomAlert().showMessage('the_message_has_been_sent'.tr());
                         controllerTheme.text = '';
                         controllerEmail.text = '';
                         controllerMessage.text = '';

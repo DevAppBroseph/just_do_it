@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,12 +13,15 @@ import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as response_bloc;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart' as response_fav_bloc;
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/countries.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -27,10 +29,11 @@ import 'package:scale_button/scale_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingPanelResponse extends StatefulWidget {
+  final bool isShowedFromFavPage;
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask});
+  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask, required this.isShowedFromFavPage});
 
   @override
   State<SlidingPanelResponse> createState() => _SlidingPanelResponseState();
@@ -38,95 +41,132 @@ class SlidingPanelResponse extends StatefulWidget {
 
 class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   double heightPanel = 637.h;
-  bool slide = false;
   FocusNode focusNodeDiscription = FocusNode();
   FocusNode focusCoastMax = FocusNode();
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController coastController = TextEditingController();
-  TypeFilter typeFilter = TypeFilter.main;
-  int groupValue = 0;
-  int page = 0;
-  bool isGraded = false;
-  bool visiblePassword = false;
-  bool visiblePasswordRepeat = false;
-  bool additionalInfo = false;
-
-  bool confirmTermsPolicy = false;
-  DateTime? dateTimeStart;
-  DateTime? dateTimeEnd;
-  List<Activities> listCategories = [];
-  bool physics = false;
-
-  ScrollController scrollController2 = ScrollController();
   late UserRegModel? user;
-  List<Countries> listCountries = [];
-  Countries? selectCountries;
-
-  List<Regions> listRegions = [];
-  Regions? selectRegions;
-
-  String region = '';
-  String docinfo = '';
-  String docType = '';
-
-  TextEditingController coastMinController = TextEditingController();
-  TextEditingController coastMaxController = TextEditingController();
-  TextEditingController keyWordController = TextEditingController();
-
   ScrollController mainScrollController = ScrollController();
-  bool proverka = false;
-  bool customerFlag = true;
-  bool contractorFlag = true;
-  bool res = false;
   void getProfile() {
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
+  Future<void> respond(bool raiseToTop)async {
+    if (user!.isBanned!) {
+      if (widget.selectTask!.isTask!) {
+        banDialog(context, 'responses_to_tasks_is'.tr());
+      } else {
+        banDialog(context, 'responses_to_offers_is'.tr());
+      }
+    } else {
+      final access = await Storage().getAccessToken();
+      if (widget.selectTask != null) {
+        String error = 'specify'.tr();
+        bool errorsFlag = false;
+        if (coastController.text.isEmpty) {
+          error += '\n- ${'amount'.tr()}';
+          errorsFlag = true;
+        }
+        if (descriptionTextController.text.isEmpty) {
+          error += '\n- ${'description'.tr().toLowerCase()}';
+          errorsFlag = true;
+        }
+        if (errorsFlag == true) {
+          CustomAlert().showMessage(error);
+        } else {
+            final createAnswerSuccess = await Repository().createAnswer(
+                widget.selectTask!.id!,
+                access,
+                int.parse(coastController.text.replaceAll(' ', '')),
+                descriptionTextController.text,
+                widget.selectTask!.isTask! ? 'Progress' : "Selected",
+                raiseToTop);
+            if (context.mounted) {
+              if (createAnswerSuccess) {
+                widget.panelController.animatePanelToPosition(0);
+                coastController.clear();
+                descriptionTextController.clear();
+                context.read<TasksBloc>().add(UpdateTaskEvent());
+                BlocProvider.of<ProfileBloc>(context).add(
+                    UpdateProfileEvent(user));
+                setState(() {});
+                if (raiseToTop) {
+                  onTopDialog(context, 'put_on_top'.tr(),
+                      'response_is_fixed_in_the_top'.tr(),
+                      'your_ad_is_now_above_others'.tr());
+                }
+              } else {
+                if (raiseToTop) {
+                  noMoney(context, 'raise_response'.tr(),
+                      'response_to_the_top'.tr());
+                } else {
+                  CustomAlert().showMessage("error".tr());
+                }
+              }
+          }
+        }
+      }
+    }
+  }
+  void openSlidingEvent(double height){
+    if(widget.isShowedFromFavPage){
+      context.read<response_fav_bloc.ResponseBlocFromFav>().add(response_fav_bloc.OpenSlidingPanelToEvent(height));
+    }else{
+      context.read<response_bloc.ResponseBloc>().add(response_bloc.OpenSlidingPanelToEvent(height));
+    }
 
+  }
   @override
   Widget build(BuildContext context) {
-    log(proverka.toString());
-    if (proverka == false) {
-      focusNodeDiscription.unfocus();
-      focusCoastMax.unfocus();
-    }
     user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-    log(bottomInsets.toString());
-    return BlocBuilder<ResponseBloc, ResponseState>(buildWhen: (previous, current) {
-      if (current is OpenSlidingPanelToState) {
-        heightPanel = current.height;
-        widget.panelController.animatePanelToPosition(1);
-
-        return true;
-      } else {
-        heightPanel = 500.h;
-      }
-      return true;
-    }, builder: (context, snapshot) {
-      return SlidingUpPanel(
-        controller: widget.panelController,
-        renderPanelSheet: false,
-        panel: panel(context, bottomInsets),
-        onPanelSlide: (position) {
-          if (position == 0) {
-            isGraded = false;
-
-            BlocProvider.of<ResponseBloc>(context).add(HideSlidingPanelEvent());
-            typeFilter = TypeFilter.main;
-            slide = false;
-            focusNodeDiscription.unfocus();
-            focusCoastMax.unfocus();
-            proverka = false;
-          }
+    if(widget.isShowedFromFavPage){
+      return BlocBuilder<response_fav_bloc.ResponseBlocFromFav,response_fav_bloc.ResponseState>(
+        builder: (context,state){
+          return SlidingUpPanel(
+            controller: widget.panelController,
+            renderPanelSheet: false,
+            panel: panel(context, bottomInsets),
+            onPanelSlide: (position) {
+              if (position == 0) {
+                BlocProvider.of<response_fav_bloc.ResponseBlocFromFav>(context).add(response_fav_bloc.HideSlidingPanelEvent());
+                focusNodeDiscription.unfocus();
+                focusCoastMax.unfocus();
+              }
+            },
+            maxHeight: heightPanel,
+            minHeight: 0.h,
+            backdropEnabled: true,
+            backdropColor: Colors.black,
+            backdropOpacity: 0.8,
+            defaultPanelState: PanelState.CLOSED,
+          );
         },
-        maxHeight: heightPanel,
-        minHeight: 0.h,
-        backdropEnabled: true,
-        backdropColor: Colors.black,
-        backdropOpacity: 0.8,
-        defaultPanelState: PanelState.CLOSED,
       );
-    });
+    }else{
+      return BlocBuilder<response_bloc.ResponseBloc,response_bloc.ResponseState>(
+        builder: (context,state){
+          return SlidingUpPanel(
+            controller: widget.panelController,
+            renderPanelSheet: false,
+            panel: panel(context, bottomInsets),
+            onPanelSlide: (position) {
+              if (position == 0) {
+                  BlocProvider.of<response_bloc.ResponseBloc>(context).add(response_bloc.HideSlidingPanelEvent());
+                focusNodeDiscription.unfocus();
+                focusCoastMax.unfocus();
+              }
+            },
+            maxHeight: heightPanel,
+            minHeight: 0.h,
+            backdropEnabled: true,
+            backdropColor: Colors.black,
+            backdropOpacity: 0.8,
+            defaultPanelState: PanelState.CLOSED,
+          );
+        },
+      );
+    }
+
   }
 
   Widget panel(BuildContext context, double bottomInsets) {
@@ -156,117 +196,61 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                       ],
                     ),
                   ),
-                  if (widget.selectTask?.asCustomer != null)
+                  if (widget.selectTask?.isTask != null)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: CustomButton(
                         onTap: () async {
-                          if (user!.isBanned!) {
-                            if (widget.selectTask!.asCustomer!) {
-                              banDialog(context, 'responses_to_tasks_is'.tr());
-                            } else {
-                              banDialog(context, 'responses_to_offers_is'.tr());
-                            }
-                          } else {
-                            final access = await Storage().getAccessToken();
-                            if (widget.selectTask != null) {
-                              String error = 'specify'.tr();
-                              bool errorsFlag = false;
-                              if (coastController.text.isEmpty) {
-                                error += '\n- ${'amount'.tr()}';
-                                errorsFlag = true;
-                              }
-                              if (descriptionTextController.text.isEmpty) {
-                                error += '\n- ${'description'.tr().toLowerCase()}';
-                                errorsFlag = true;
-                              }
-                              if (errorsFlag == true) {
-                                CustomAlert().showMessage(error, context);
-                              } else {
-                                if (widget.selectTask!.asCustomer!) {
-                                  res = await Repository().createAnswer(
-                                      widget.selectTask!.id!,
-                                      access,
-                                      int.parse(coastController.text.replaceAll(' ', '')),
-                                      descriptionTextController.text,
-                                      'Progress',
-                                      isGraded);
-                                } else {
-                                  res = await Repository().createAnswer(
-                                      widget.selectTask!.id!,
-                                      access,
-                                      int.parse(coastController.text.replaceAll(' ', '')),
-                                      descriptionTextController.text,
-                                      'Selected',
-                                      isGraded);
-                                }
-                                isGraded = false;
-
-                                widget.panelController.animatePanelToPosition(0);
-                                coastController.clear();
-                                descriptionTextController.clear();
-                                context.read<TasksBloc>().add(UpdateTaskEvent());
-                                BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                                setState(() {});
-                              }
-                            }
-                          }
+                          await respond(false);
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask!.asCustomer! ? 'respond'.tr() : 'accept_the_offer'.tr(),
+                          widget.selectTask?.isTask??false ? 'respond'.tr() : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
                     ),
-                  SizedBox(height: 10.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        CustomButton(
-                          onTap: () async {
-                            final res =
-                                await Repository().isEnoughUserOnTop(BlocProvider.of<ProfileBloc>(context).access);
-                            if (res!) {
-                              if (isGraded) {
-                              } else {
-                                onTopDialog(context, 'put_on_top'.tr(), 'response_is_fixed_in_the_top'.tr(),
-                                    'your_ad_is_now_above_others'.tr());
-                                setState(() {
-                                  isGraded = true;
-                                });
-                              }
-                            } else {
-                              noMoney(context, 'raise_response'.tr(), 'response_to_the_top'.tr());
-                            }
-                          },
-                          btnColor: isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
-                          textLabel: Text(
-                            'become_the_first'.tr(),
-                            style: isGraded ? CustomTextStyle.grey_14_w600 : CustomTextStyle.white_14,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 150.w),
-                          child: Align(
-                            child: GestureDetector(
-                              onTap: () {
-                                helpOnTopDialog(context, 'put_on_top'.tr(), 'the_visibility_of_your_response'.tr());
+                  if( widget.selectTask?.isTask??false)...[
+                    SizedBox(height: 10.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              onTap: () async {
+                                await respond(true);
                               },
-                              child: SvgPicture.asset(
-                                SvgImg.help,
-                                color: Colors.white,
-                                width: 20,
-                                height: 20,
+                              btnColor: ColorStyles.purpleA401C4,
+                              textLabel: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'respond_and_become_the_first'.tr(),
+                                    style: CustomTextStyle.white_14,
+                                  ),
+                                  const SizedBox(width: 4,),
+                                  GestureDetector(
+                                    onTap: () {
+                                      helpOnTopDialog(context, 'put_on_top'.tr(), 'the_visibility_of_your_response'.tr());
+                                    },
+                                    child: SvgPicture.asset(
+                                      SvgImg.help,
+                                      color: Colors.white,
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
+
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
+
                   SizedBox(height: 30.h),
                 ],
               ),
@@ -282,12 +266,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         const Spacer(),
                         CupertinoButton(
                           onPressed: () {
-                            proverka = false;
                             FocusScope.of(context).unfocus();
-                            context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(500.h));
+                            openSlidingEvent(500.h);
                           },
                           child: Text(
-                            'done'.tr(),
+                            "done".tr(),
                             style: CustomTextStyle.black_empty,
                           ),
                         ),
@@ -332,7 +315,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
-                'your_response_to_the_task'.tr(),
+                widget.selectTask?.isTask??false?'your_response_to_the_task'.tr():'your_response_to_the_offer'.tr(),
                 style: CustomTextStyle.black_22_w700_171716,
               ),
               SizedBox(height: 30.h),
@@ -350,31 +333,11 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (widget.selectTask?.currency?.name == null)
                         Text(
-                          '${'budget_from'.tr()} ',
+                          '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
                           style: CustomTextStyle.grey_14_w400,
                         ),
-                      if (widget.selectTask?.currency?.name == 'Российский рубль')
-                        Text(
-                          '${'budget_from'.tr()} ₽',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                      if (widget.selectTask?.currency?.name == 'Доллар США')
-                        Text(
-                          '${'budget_from'.tr()} \$',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                      if (widget.selectTask?.currency?.name == 'Евро')
-                        Text(
-                          '${'budget_from'.tr()} €',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-                      if (widget.selectTask?.currency?.name == 'Дирхам')
-                        Text(
-                          '${'budget_from'.tr()} AED',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
+
                       SizedBox(height: 3.h),
                       Row(
                         children: [
@@ -385,8 +348,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             actionButton: false,
                             focusNode: focusCoastMax,
                             onTap: () {
-                              proverka = true;
-                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(600.h));
+                              openSlidingEvent(600.h);
                               setState(() {});
                             },
                             onChanged: (value) {},
@@ -412,7 +374,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 onTap: () {},
                 bound: 0.02,
                 child: Container(
-                  height: 165.h,
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
@@ -427,34 +388,28 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         style: CustomTextStyle.grey_14_w400,
                       ),
                       SizedBox(height: 3.h),
-                      Row(
-                        children: [
-                          CustomTextField(
-                            height: 90.h,
-                            width: 285.w,
-                            autocorrect: true,
-                            actionButton: false,
-                            focusNode: focusNodeDiscription,
-                            maxLines: 3,
-                            onTap: () {
-                              proverka = true;
-                              log(bottomInsets.toString());
-                              context.read<ResponseBloc>().add(OpenSlidingPanelToEvent(700.h));
-                              setState(() {});
-                            },
-                            style: CustomTextStyle.black_14_w400_171716,
-                            textEditingController: descriptionTextController,
-                            fillColor: ColorStyles.greyF9F9F9,
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            formatters: [
-                              UpperEveryTextInputFormatter(),
-                              LengthLimitingTextInputFormatter(100),
-                            ],
-                            hintText: '',
-                          ),
+                      CustomTextField(
+                        height: 90.h,
+                        width: 285.w,
+                        autocorrect: true,
+                        actionButton: false,
+                        focusNode: focusNodeDiscription,
+                        maxLines: 3,
+                        onTap: () {
+                          openSlidingEvent(700.h);
+                          setState(() {});
+                        },
+                        style: CustomTextStyle.black_14_w400_171716,
+                        textEditingController: descriptionTextController,
+                        fillColor: ColorStyles.greyF9F9F9,
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        formatters: [
+                          UpperEveryTextInputFormatter(),
+                          LengthLimitingTextInputFormatter(100),
                         ],
+                        hintText: '',
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

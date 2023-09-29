@@ -32,7 +32,7 @@ class ConfirmRestoreSuccessState extends AuthState {
 class ConfirmRestoreErrorState extends AuthState {}
 
 class GetCategoriesState extends AuthState {
-  List<Activities> res;
+  List<TaskCategory> res;
 
   GetCategoriesState(this.res);
 }

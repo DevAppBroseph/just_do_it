@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
 
   Function onTap;
   Color btnColor;
-  Text textLabel;
+  Widget textLabel;
 
   @override
   Widget build(BuildContext context) {

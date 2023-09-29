@@ -6,7 +6,7 @@ import 'package:just_do_it/constants/text_style.dart';
 class CustomAlert {
   void showMessage(
     String text,
-    BuildContext context1, {
+     {
     String? id,
     String? name,
     String? idWithChat,

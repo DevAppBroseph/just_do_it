@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -20,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<EditPasswordEvent>(_editPassword);
   }
 
-  List<Activities> activities = [];
+  List<TaskCategory> categories = [];
 
   int? refCode;
 
@@ -51,13 +52,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _getCategories(GetCategoriesEvent event, Emitter<AuthState> emit) async {
-    List<Activities>? res = await Repository().getCategories();
-    activities = res;
+    List<TaskCategory>? res = await Repository().getCategories();
+    categories = res;
     emit(GetCategoriesState(res));
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    log('dwdededesadsdadasdasdasdsadededed ${event.userRegModel.rus}');
     Map<String, dynamic>? res =
         await Repository().confirmRegister(event.userRegModel, event.token);
     if (res == null) {

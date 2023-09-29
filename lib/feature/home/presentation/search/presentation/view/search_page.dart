@@ -14,12 +14,14 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -47,7 +49,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Subcategory? selectSubCategory;
+  TaskSubcategory? selectSubCategory;
   List<Task> taskList = [];
 
   Task? selectTask;
@@ -83,7 +85,6 @@ class _SearchPageState extends State<SearchPage> {
     widget.clearId();
     setState(() {
       selectTask = task;
-      log(selectTask!.isLiked.toString());
     });
   }
 
@@ -119,7 +120,6 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-    log('${taskList.isEmpty}');
     return Scaffold(
                 resizeToAvoidBottomInset: false,
            backgroundColor: ColorStyles.greyEAECEE,
@@ -222,7 +222,7 @@ class _SearchPageState extends State<SearchPage> {
                                         if (value.isEmpty) {
                                           getHistoryList();
                                         }
-                                        List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                        List<TaskCategory> activities = BlocProvider.of<ProfileBloc>(context).activities;
                                         searchChoose.clear();
                                         if (value.isNotEmpty) {
                                           for (var element1 in activities) {
@@ -329,72 +329,73 @@ class _SearchPageState extends State<SearchPage> {
                                 'all_tasks'.tr(),
                                 style: CustomTextStyle.black_18_w800,
                               ),
-                              const Spacer(),
-                              ScaleButton(
-                                bound: 0.01,
-                                onTap: () {
-                                  BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent());
-                                },
-                                child: SizedBox(
-                                  height: 40.h,
-                                  width: 95.h,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Container(
-                                        height: 36.h,
-                                        width: 100.h,
-                                        decoration: BoxDecoration(
-                                          color: ColorStyles.greyF7F7F8,
-                                          borderRadius: BorderRadius.circular(10.r),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 10.h),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons/candle.svg',
-                                                height: 16.h,
-                                                color: ColorStyles.yellowFFD70B,
-                                              ),
-                                              SizedBox(width: 4.w),
-                                              Text(
-                                                'filter'.tr(),
-                                                style: CustomTextStyle.black_14_w400_171716,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          height: 15.h,
-                                          width: 15.h,
+                              Spacer(),
+                              Flexible(
+                                child: ScaleButton(
+                                  bound: 0.01,
+                                  onTap: () {
+                                    BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent());
+                                  },
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          height: 36.h,
+                                          width: 110.h,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(369.r),
-                                            color: ColorStyles.black171716,
+                                            color: ColorStyles.greyF7F7F8,
+                                            borderRadius: BorderRadius.circular(10.r),
                                           ),
-                                          child: Center(
-                                            child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
-                                              if (state is TasksLoaded) {
-                                                return Text(
-                                                  state.countFilter != 0 && state.countFilter != null
-                                                      ? state.countFilter.toString()
-                                                      : '0',
-                                                  style: CustomTextStyle.white_10_w700,
-                                                );
-                                              } else {
-                                                return Text(
-                                                  '',
-                                                  style: CustomTextStyle.white_10_w700,
-                                                );
-                                              }
-                                            }),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/icons/candle.svg',
+                                                  height: 16.h,
+                                                  color: ColorStyles.yellowFFD70B,
+                                                ),
+                                                SizedBox(width: 4.w),
+                                                Text(
+                                                  'filter'.tr(),
+                                                  style: CustomTextStyle.black_14_w400_171716,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      )
-                                    ],
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 15.h,
+                                            width: 15.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(369.r),
+                                              color: ColorStyles.black171716,
+                                            ),
+                                            child: Center(
+                                              child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
+                                                if (state is TasksLoaded) {
+                                                  return Text(
+                                                    state.countFilter != 0 && state.countFilter != null
+                                                        ? state.countFilter.toString()
+                                                        : '0',
+                                                    style: CustomTextStyle.white_10_w700,
+                                                  );
+                                                } else {
+                                                  return Text(
+                                                    '',
+                                                    style: CustomTextStyle.white_10_w700,
+                                                  );
+                                                }
+                                              }),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -402,7 +403,6 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                 if (selectTask == null && !searchList) SizedBox(height: 30.h),
-                // if (selectTask == null && !searchList)
                 Expanded(
                   child: Stack(
                     children: [
@@ -431,8 +431,6 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             );
                           }
-                          if (taskList.isEmpty) return Container();
-    
                           return ListView(
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
@@ -475,14 +473,13 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     if (selectTask != null) {
-      return  TaskView(
-          selectTask: selectTask!,
+      return  TaskPage(
+          task: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
             setState(() {});
           },
-          canSelect: true,
-       
+
       );
     }
     return const SizedBox();

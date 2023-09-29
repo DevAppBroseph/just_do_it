@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,110 +6,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
-import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
-class ChatPage extends StatefulWidget {
-  final Function()? onBackPressed;
-  final Function(int) onSelect;
+class ChatCard extends StatelessWidget {
+  const ChatCard({super.key, required this.chat});
 
-  const ChatPage(this.onBackPressed, this.onSelect, {super.key});
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
-  @override
-  void initState() {
-    super.initState();
-    getInitMessage();
-  }
-
-  void getInitMessage() async {
-    BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-  }
+  final ChatList chat;
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 66.h),
-            Padding(
-              padding: EdgeInsets.only(left: 25.w, right: 28.w),
-              child: Row(
-                children: [
-                  if (widget.onBackPressed != null)
-                    CustomIconButton(
-                      onBackPressed: widget.onBackPressed!,
-                      icon: SvgImg.arrowRight,
-                    ),
-                  if (widget.onBackPressed != null) SizedBox(width: 15.w),
-                  const Spacer(),
-                  Text(
-                    'message'.tr(),
-                    style: CustomTextStyle.black_22_w700,
-                  ),
-                  const Spacer(),
-                  SizedBox(width: 23.w),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
-                        if (value != null) {
-                          if (value == 'create') {
-                            widget.onSelect(0);
-                          }
-                          if (value == 'search') {
-                            widget.onSelect(1);
-                          }
-                          if (value == 'chat') {
-                            widget.onSelect(3);
-                          }
-                        }
-                      });
-                    },
-                    child: SvgPicture.asset('assets/icons/category.svg'),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: BlocBuilder<ChatBloc, ChatState>(
-                buildWhen: (previous, current) {
-                  log('message $current');
-                  if (current is UpdateListMessageState) return true;
-                  return false;
-                },
-                builder: (context, snapshot) {
-                  List<ChatList> listChat = BlocProvider.of<ChatBloc>(context).chatList;
-                  return ListView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: listChat.length,
-                    itemBuilder: ((context, index) {
-                      return itemChatMessage(listChat[index]);
-                    }),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget itemChatMessage(ChatList chat) {
-    final user = BlocProvider.of<ProfileBloc>(context).user;
+    final user = context.read<ProfileBloc>().user;
+    final category = (chat.category != null &&
+            context.read<AuthBloc>().categories.isNotEmpty)
+        ? context
+            .read<AuthBloc>()
+            .categories
+            .firstWhere((element) => element.description == chat.category)
+        : null;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: ScaleButton(
@@ -132,12 +49,14 @@ class _ChatPageState extends State<ChatPage> {
                     ? ''
                     : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                 '${chat.chatWith?.id}',
-                '${chat.chatWith?.photo}',
+                '${server}${chat.chatWith?.photo}',
               ],
             );
             chatBloc.editShowPersonChat(true);
             chatBloc.editChatId(null);
-            getInitMessage();
+            if (context.mounted) {
+              context.read<ChatBloc>().add(GetListMessage());
+            }
           }
         },
         duration: const Duration(milliseconds: 50),
@@ -147,6 +66,7 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               SizedBox(height: 20.h),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   chat.chatWith?.photo != null
                       ? SizedBox(
@@ -173,7 +93,8 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 height: 24.h,
                                 width: 24.h,
-                                child: SvgPicture.asset('assets/icons/user.svg'),
+                                child:
+                                    SvgPicture.asset('assets/icons/user.svg'),
                               ),
                             ],
                           ),
@@ -192,7 +113,8 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(
                                 width: 180.w,
                                 child: AutoSizeText(
-                                  chat.chatWith != null && chat.chatWith!.firstname!.isEmpty
+                                  chat.chatWith != null &&
+                                          chat.chatWith!.firstname!.isEmpty
                                       ? 'Аккаунт удален'
                                       : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                                   style: CustomTextStyle.black_14_w400_000000,
@@ -201,7 +123,11 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               const Spacer(),
                               Text(
-                                _textData(chat.lastMsg?.time?.toUtc().toString().substring(0, 10) ?? '-'),
+                                _textData(chat.lastMsg?.time
+                                        ?.toUtc()
+                                        .toString()
+                                        .substring(0, 10) ??
+                                    '-'),
                                 style: CustomTextStyle.grey_12_w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -220,7 +146,8 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               if (chat.lastMsg?.unread != null &&
                                   chat.lastMsg!.unread! &&
-                                  (user != null && user.id != chat.lastMsg?.sender?.id) &&
+                                  (user != null &&
+                                      user.id != chat.lastMsg?.sender?.id) &&
                                   chat.countUnreadMessage != 0)
                                 Container(
                                   height: 15.h,
@@ -239,6 +166,38 @@ class _ChatPageState extends State<ChatPage> {
                             ],
                           ),
                           SizedBox(height: 8.h),
+                          if (chat.category != null) ...[
+                            () {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  // color: Colors.teal,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (category!.photo != null) ...[
+                                      SizedBox(
+                                          height: 16,
+                                          width: 16,
+                                          child: Image.network(
+                                              server + category!.photo!)),
+                                    ],
+                                    const SizedBox(width: 4,),
+                                    Text(
+                                      user?.rus ?? true && context.locale.languageCode == 'ru' ? category?.description ?? '-' : category?.engDescription ?? '-',
+                                      style:
+                                          CustomTextStyle.black_12_w400_292D32,
+                                      softWrap: true,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }()
+                          ]
                         ],
                       ),
                     ),

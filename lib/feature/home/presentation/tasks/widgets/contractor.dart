@@ -18,7 +18,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/or
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_complete_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_in_progress_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 import '../../../../../models/order_task.dart';
@@ -87,12 +87,10 @@ class _ContractorState extends State<Contractor> {
             BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
               if (current is LoadProfileSuccessState) {
                 user = BlocProvider.of<ProfileBloc>(context).user;
-                log('LoadProfileSuccessState');
                 return true;
               }
               if (current is UpdateProfileSuccessState) {
                 user = BlocProvider.of<ProfileBloc>(context).user;
-                log('UpdateProfileSuccessState');
                 return true;
               }
               if (previous != current) {
@@ -787,7 +785,7 @@ class _ContractorState extends State<Contractor> {
                     final res = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CeateTasks(
+                          return CreateTaskPage(
                             customer: true,
                             doublePop: true,
                             currentPage: 3,

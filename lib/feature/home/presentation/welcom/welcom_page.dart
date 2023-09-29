@@ -23,6 +23,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart'
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/language.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/services/notification_service/notifications_service.dart';
@@ -88,7 +89,6 @@ class _WelcomPageState extends State<WelcomPage> {
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
     if (user?.rus != null) {
-      log('fvbt ${user!.rus!.toString()}');
       if (user!.rus!) {
         selectLanguage = 'RU';
         context.setLocale(const Locale('ru', 'RU'));
@@ -121,7 +121,6 @@ class _WelcomPageState extends State<WelcomPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: 100.h,
               decoration: BoxDecoration(
                 color: ColorStyles.greyEAECEE,
                 boxShadow: [
@@ -133,6 +132,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 ],
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     height: 60.h,
@@ -393,7 +393,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         if (value.isEmpty) {
                                           getHistoryList();
                                         }
-                                        List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                        List<TaskCategory> activities = BlocProvider.of<ProfileBloc>(context).activities;
                                         searchChoose.clear();
                                         if (value.isNotEmpty) {
                                           for (var element1 in activities) {
@@ -601,6 +601,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           SizedBox(height: 8.h),
                                                           AutoSizeText(
                                                             '${bloc.user?.firstname} ${bloc.user?.lastname}',
+                                                            wrapWords: false,
                                                             style: CustomTextStyle.black_24_w800,
                                                             maxLines: 2,
                                                           ),
@@ -742,67 +743,65 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(AppRoute.rating);
                                                   },
-                                                  child: SizedBox(
-                                                    height: 69.h,
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 7.5.h),
-                                                          child: ScaleButton(
-                                                            onTap: () {
-                                                              Navigator.of(context).pushNamed(AppRoute.rating);
-                                                            },
-                                                            bound: 0.02,
-                                                            child: Container(
-                                                              height: 25.h,
-                                                              width: 90.w,
-                                                              decoration: BoxDecoration(
-                                                                color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
-                                                                borderRadius: BorderRadius.circular(30.r),
-                                                              ),
-                                                              child: Center(
-                                                                child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  children: [
-                                                                    Text(
-                                                                      'rating'.tr(),
-                                                                      style: CustomTextStyle.gold_12_w400,
-                                                                    ),
-                                                                    SizedBox(width: 3.w),
-                                                                    Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width: 12.w,
-                                                                          height: 12.h,
-                                                                          child: SvgPicture.asset(
-                                                                            'assets/icons/star.svg',
-                                                                          ),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets.only(bottom: 7.5.h),
+                                                        child: ScaleButton(
+                                                          onTap: () {
+                                                            Navigator.of(context).pushNamed(AppRoute.rating);
+                                                          },
+                                                          bound: 0.02,
+                                                          child: Container(
+                                                            height: 25.h,
+                                                            width: 90.w,
+                                                            decoration: BoxDecoration(
+                                                              color: ColorStyles.yellowFFCA0D.withOpacity(0.2),
+                                                              borderRadius: BorderRadius.circular(30.r),
+                                                            ),
+                                                            child: Center(
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  Text(
+                                                                    'rating'.tr(),
+                                                                    style: CustomTextStyle.gold_12_w400,
+                                                                  ),
+                                                                  SizedBox(width: 3.w),
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: 12.w,
+                                                                        height: 12.h,
+                                                                        child: SvgPicture.asset(
+                                                                          'assets/icons/star.svg',
                                                                         ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          height: 10.h,
-                                                        ),
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 4.h),
-                                                          child: SizedBox(
-                                                            child: Text(
-                                                              reviews?.ranking == null
-                                                                  ? '0'
-                                                                  : reviews!.ranking!.toString(),
-                                                              style: CustomTextStyle.gold_16_w600_171716,
-                                                            ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(bottom: 4.h),
+                                                        child: SizedBox(
+                                                          child: Text(
+                                                            reviews?.ranking == null
+                                                                ? '0'
+                                                                : reviews!.ranking!.toString(),
+                                                            style: CustomTextStyle.gold_16_w600_171716,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -812,48 +811,46 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(AppRoute.rating);
                                                   },
-                                                  child: SizedBox(
-                                                    height: 69.h,
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 17.h),
-                                                          child: ScaleButton(
-                                                            onTap: () {
-                                                              Navigator.of(context).pushNamed(AppRoute.rating);
-                                                            },
-                                                            bound: 0.02,
-                                                            child: Container(
-                                                              height: 25.h,
-                                                              width: 75.w,
-                                                              decoration: BoxDecoration(
-                                                                color: ColorStyles.blue336FEE.withOpacity(0.2),
-                                                                borderRadius: BorderRadius.circular(30.r),
-                                                              ),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  'reviews'.tr(),
-                                                                  style: CustomTextStyle.blue_12_w400,
-                                                                ),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets.only(bottom: 17.h),
+                                                        child: ScaleButton(
+                                                          onTap: () {
+                                                            Navigator.of(context).pushNamed(AppRoute.rating);
+                                                          },
+                                                          bound: 0.02,
+                                                          child: Container(
+                                                            height: 25.h,
+                                                            width: 75.w,
+                                                            decoration: BoxDecoration(
+                                                              color: ColorStyles.blue336FEE.withOpacity(0.2),
+                                                              borderRadius: BorderRadius.circular(30.r),
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                'reviews'.tr(),
+                                                                style: CustomTextStyle.blue_12_w400,
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 4.0.h),
-                                                          child: SizedBox(
-                                                            child: Text(
-                                                              reviews?.reviewsDetail == null
-                                                                  ? ''
-                                                                  : reviews!.reviewsDetail.length.toString(),
-                                                              style: CustomTextStyle.blue_16_w600_171716,
-                                                              textAlign: TextAlign.left,
-                                                            ),
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(bottom: 4.0.h),
+                                                        child: SizedBox(
+                                                          child: Text(
+                                                            reviews?.reviewsDetail == null
+                                                                ? ''
+                                                                : reviews!.reviewsDetail.length.toString(),
+                                                            style: CustomTextStyle.blue_16_w600_171716,
+                                                            textAlign: TextAlign.left,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ],

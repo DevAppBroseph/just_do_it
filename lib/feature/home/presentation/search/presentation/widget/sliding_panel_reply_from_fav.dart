@@ -14,7 +14,8 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -59,7 +60,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   bool confirmTermsPolicy = false;
   DateTime? dateTimeStart;
   DateTime? dateTimeEnd;
-  List<Activities> listCategories = [];
+  List<TaskCategory> listCategories = [];
   bool physics = false;
 
   FocusNode focusNodeAbout = FocusNode();
@@ -165,13 +166,13 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                     child: CustomButton(
                       onTap: () {
                         if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш паспорт просрочен', context);
+                          CustomAlert().showMessage('Ваш паспорт просрочен');
                         } else if (dateTimeEnd != null &&
                             DateTime.now().isAfter(dateTimeEnd!) &&
                             docType == 'Resident_ID') {
-                          CustomAlert().showMessage('Ваш документ просрочен', context);
+                          CustomAlert().showMessage('Ваш документ просрочен');
                         } else if (checkExpireDate(dateTimeEnd) != null) {
-                          CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
+                          CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
                         } else {
                           if (additionalInfo) {
                             additionalInfo = true;
@@ -209,7 +210,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                               Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                               widget.panelController.animatePanelToPosition(0);
                             } else {
-                              CustomAlert().showMessage(error, context);
+                              CustomAlert().showMessage(error);
                             }
                           } else {
                             user?.copyWith(docInfo: '', docType: '');
@@ -298,13 +299,13 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             children: [
               if (widget.selectTask != null)
                 Text(
-                  widget.selectTask!.asCustomer! ? 'become_a_performer'.tr() : 'become_a_customer'.tr(),
+                  widget.selectTask!.isTask! ? 'become_a_performer'.tr() : 'become_a_customer'.tr(),
                   style: CustomTextStyle.black_22_w700_171716,
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
                 Text(
-                  !widget.selectTask!.asCustomer! ? 'to_accept_the_offer'.tr() : 'to_complete_tasks'.tr(),
+                  !widget.selectTask!.isTask! ? 'to_accept_the_offer'.tr() : 'to_complete_tasks'.tr(),
                   style: CustomTextStyle.black_13_w400_515150,
                 ),
               SizedBox(height: 30.h),

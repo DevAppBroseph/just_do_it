@@ -13,24 +13,27 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category_selector.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_status.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CeateTasks extends StatefulWidget {
-  Activities? selectCategory;
-  bool customer;
+class CreateTaskPage extends StatefulWidget {
+  TaskCategory? selectCategory;
+ final bool customer;
   bool doublePop;
   final int currentPage;
-  CeateTasks({
+  CreateTaskPage({
     super.key,
     this.selectCategory,
     required this.customer,
@@ -39,15 +42,14 @@ class CeateTasks extends StatefulWidget {
   });
 
   @override
-  State<CeateTasks> createState() => _CeateTasksState();
+  State<CreateTaskPage> createState() => _CreateTaskPageState();
 }
 
-class _CeateTasksState extends State<CeateTasks> {
+class _CreateTaskPageState extends State<CreateTaskPage> {
   int type = 1;
 
   bool state = false;
-  bool proverka = true;
-
+  late bool isTask=widget.customer;
   PageController pageController = PageController();
 
   PanelController panelController = PanelController();
@@ -66,8 +68,8 @@ class _CeateTasksState extends State<CeateTasks> {
   bool isGraded = false;
   Currency? currency;
   late UserRegModel? user;
-  Activities? selectCategory;
-  Subcategory? selectSubCategory;
+  TaskCategory? selectCategory;
+  TaskSubcategory? selectSubCategory;
 
   DateTime? startDate;
   DateTime? endDate;
@@ -152,7 +154,6 @@ class _CeateTasksState extends State<CeateTasks> {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
     selectCategory = widget.selectCategory;
-    log(selectCategory!.selectSubcategory.toString());
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
         if (widget.selectCategory!.selectSubcategory.contains(
@@ -171,13 +172,13 @@ class _CeateTasksState extends State<CeateTasks> {
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
-    if ((widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 4) && proverka == true) {
-      if (widget.customer == false) {
-        type = 2;
-        state = true;
-      }
-      proverka = false;
-    }
+    // if ((widget.currentPage == 2 || widget.currentPage == 1 || widget.currentPage == 4) && proverka == true) {
+    //   if (isTask == false) {
+    //     type = 2;
+    //     state = true;
+    //   }
+    //   proverka = false;
+    // }
 
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
@@ -207,12 +208,12 @@ class _CeateTasksState extends State<CeateTasks> {
                         icon: SvgImg.arrowRight,
                       ),
                       SizedBox(width: 12.w),
-                      if (widget.customer)
+                      if (isTask)
                         Text(
                           'creating_a_task'.tr(),
                           style: CustomTextStyle.black_22_w700,
                         ),
-                      if (!widget.customer)
+                      if (!isTask)
                         Text(
                           'creating_an_offer'.tr(),
                           style: CustomTextStyle.black_22_w700,
@@ -263,7 +264,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                         const Duration(milliseconds: 50),
                                         (() {
                                           setState(() {
-                                            widget.customer = true;
+                                            isTask = true;
                                             state = !state;
                                           });
                                         }),
@@ -289,7 +290,7 @@ class _CeateTasksState extends State<CeateTasks> {
                                         const Duration(milliseconds: 50),
                                         (() {
                                           setState(() {
-                                            widget.customer = false;
+                                            isTask = false;
                                             state = !state;
                                           });
                                         }),
@@ -325,7 +326,7 @@ class _CeateTasksState extends State<CeateTasks> {
                       setState(() {});
                     },
                     children: [
-                      Category(
+                      CategorySelector(
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
                         document: documents,
@@ -347,10 +348,10 @@ class _CeateTasksState extends State<CeateTasks> {
 
                           setState(() {});
                         },
-                        customer: widget.customer,
+                        customer: isTask,
                       ),
                       DatePicker(
-                        asCustomer: widget.customer,
+                        asCustomer: isTask,
                         bottomInsets: bottomInsets,
                         coastMaxController: coastMaxController,
                         coastMinController: coastMinController,
@@ -434,10 +435,10 @@ class _CeateTasksState extends State<CeateTasks> {
 
                         if (errorsFlag) {
                           // showAlertToast(error);
-                          CustomAlert().showMessage(error, context);
+                          CustomAlert().showMessage(error);
                         } else {
                           if (user!.isBanned!) {
-                            if (widget.customer) {
+                            if (isTask) {
                               banDialog(context, 'respond_to_the_task'.tr());
                             } else {
                               banDialog(context, 'respond_to_the_offer'.tr());
@@ -470,9 +471,8 @@ class _CeateTasksState extends State<CeateTasks> {
                                 }
                               }
                             }
-                            log('dsdddff $isGraded');
                             Task newTask = Task(
-                              asCustomer: widget.customer,
+                              isTask: isTask,
                               name: titleController.text,
                               description: aboutController.text,
                               subcategory: selectSubCategory!,
@@ -494,7 +494,8 @@ class _CeateTasksState extends State<CeateTasks> {
                               whenStart: '',
                               coast: '',
                               currency: currency,
-                              isGraded: isGraded,
+                              isGraded: isGraded, status: TaskStatus.undefined,
+                              canAppellate: false
                             );
                             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                             final profileBloc = BlocProvider.of<ProfileBloc>(context);
@@ -507,18 +508,18 @@ class _CeateTasksState extends State<CeateTasks> {
                               if (widget.currentPage == 1 || widget.currentPage == 2) {
                                 if (res) Navigator.of(context).pop();
                                 if (res) {
-                                  Navigator.of(context).pop(!widget.customer);
+                                  Navigator.of(context).pop(!isTask);
                                 }
                               }
                               if (widget.currentPage == 3 || widget.currentPage == 4) {
                                 if (res) {
-                                  Navigator.of(context).pop(!widget.customer);
+                                  Navigator.of(context).pop(!isTask);
                                 }
                               }
 
                               Loader.hide();
 
-                              if (widget.customer) {
+                              if (isTask) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) {
                                     return TaskAdditional(
@@ -532,20 +533,20 @@ class _CeateTasksState extends State<CeateTasks> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) {
                                     return TaskAdditional(
-                                        title: 'opens'.tr(), asCustomer: widget.customer, scoreTrue: true);
+                                        title: 'opens'.tr(), asCustomer: isTask, scoreTrue: true);
                                   }),
                                 );
                               }
                             } else {
                               Loader.hide();
-                              if (widget.customer) {
+                              if (isTask) {
                                 noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
                               } else {
                                 noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
                               }
                             }
 
-                            // if (widget.customer) {
+                            // if (isTask) {
                             //   await Navigator.of(context).push(
                             //     MaterialPageRoute(builder: (context) {
                             //       return OrdersCreateAsCustomerView(
@@ -583,7 +584,7 @@ class _CeateTasksState extends State<CeateTasks> {
                         }
 
                         if (errorsFlag) {
-                          CustomAlert().showMessage(error, context);
+                          CustomAlert().showMessage(error);
                         } else {
                           pageController.animateToPage(
                             1,
@@ -597,7 +598,7 @@ class _CeateTasksState extends State<CeateTasks> {
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()
-                          : widget.customer
+                          : isTask
                               ? 'сreate_a_task'.tr()
                               : 'create_offer'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,

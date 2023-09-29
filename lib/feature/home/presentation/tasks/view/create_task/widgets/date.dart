@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -32,7 +33,7 @@ class DatePicker extends StatefulWidget {
   bool asCustomer;
   List<Countries> allCountries;
   Currency? currecy;
-
+  bool isBanned;
   DatePicker({
     super.key,
     required this.onEdit,
@@ -45,6 +46,7 @@ class DatePicker extends StatefulWidget {
     required this.endDate,
     required this.allCountries,
     required this.currecy,
+     this.isBanned=false,
   });
 
   @override
@@ -95,11 +97,18 @@ class _DatePickerState extends State<DatePicker> {
                             style: CustomTextStyle.black_15,
                           ),
                           onPressed: () {
+
                             if (index == 0 && widget.startDate == null) {
+                              if(widget.endDate!=null){
+                                widget.startDate = widget.endDate;
+                                return;
+                              }
                               widget.startDate = DateTime.now();
-                            } else if (index == 1 && widget.endDate == null && widget.startDate != null) {
-                              widget.endDate = widget.startDate;
-                            } else if (index == 1 && widget.endDate == null && widget.startDate == null) {
+                            }else if (index == 1 && widget.endDate == null) {
+                              if(widget.startDate!=null){
+                                widget.endDate = widget.startDate;
+                                return;
+                              }
                               widget.endDate = DateTime.now();
                             }
                             setState(() {});
@@ -164,7 +173,6 @@ class _DatePickerState extends State<DatePicker> {
                       widget.startDate = val;
                     } else if (index == 1) {
                       widget.endDate = val;
-                      log(widget.endDate.toString());
                     }
                     widget.onEdit(
                       widget.startDate,
@@ -181,9 +189,10 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
+    final todayDate=DateTime.now();
+    bool canRaise=((widget.endDate!=null&&(widget.endDate?.add(const Duration(days: 1)))!.isAfter(DateTime(todayDate.year,todayDate.month,todayDate.day))))&&!widget.isGraded&&!widget.isBanned;
     int countCountry = widget.allCountries.length;
 
     int countRegion = 0;
@@ -581,31 +590,10 @@ class _DatePickerState extends State<DatePicker> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (widget.currecy?.name == null)
-                          Text(
-                            '${'budget_from'.tr()} ',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Российский рубль')
-                          Text(
-                            '${'budget_from'.tr()} ₽',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Доллар США')
-                          Text(
-                            '${'budget_from'.tr()} \$',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Евро')
-                          Text(
-                            '${'budget_from'.tr()} €',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Дирхам')
-                          Text(
-                            '${'budget_from'.tr()} AED',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
+                        Text(
+                          '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
                         SizedBox(height: 3.h),
                         Row(
                           children: [
@@ -666,31 +654,10 @@ class _DatePickerState extends State<DatePicker> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (widget.currecy?.name == null)
-                          Text(
-                            '${'budget_up_to'.tr()} ',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Российский рубль')
-                          Text(
-                            '${'budget_up_to'.tr()} ₽',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Доллар США')
-                          Text(
-                            '${'budget_up_to'.tr()} \$',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Евро')
-                          Text(
-                            '${'budget_up_to'.tr()} €',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
-                        if (widget.currecy?.name == 'Дирхам')
-                          Text(
-                            '${'budget_up_to'.tr()} AED',
-                            style: CustomTextStyle.grey_14_w400,
-                          ),
+                        Text(
+                          '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
+                          style: CustomTextStyle.grey_14_w400,
+                        ),
                         SizedBox(height: 3.h),
                         Row(
                           children: [
@@ -1059,53 +1026,43 @@ class _DatePickerState extends State<DatePicker> {
               ),
             ),
           ),
-          Row(
-            children: [
-              const Spacer(),
-              GestureDetector(
-                  onTap: () {
-                    helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
-                  },
-                  child: SvgPicture.asset(SvgImg.help)),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          CustomButton(
-            onTap: () async {
-              final res = await Repository().isEnoughOrdersOnTop(BlocProvider.of<ProfileBloc>(context).access);
-              
-              if (res!) {
-                if (widget.isGraded) {
-                } else {
-                  onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
-                  setState(() {
-                    widget.isGraded = true;
-                  });
-                  widget.onEdit(
-                    widget.startDate,
-                    widget.endDate,
-                    widget.allCountries,
-                    widget.currecy,
-                    widget.isGraded,
-                  );
-                  setState(() {
-                    widget.isGraded = false;
-                  });
-                }
-              } else {
-                if (widget.asCustomer) {
-                  noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
-                } else {
-                  noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
-                }
-              }
-            },
-            btnColor: widget.isGraded ? ColorStyles.greyDADADA : ColorStyles.purpleA401C4,
-            textLabel: Text(
-              'raise_ad'.tr(),
-              style: widget.isGraded ? CustomTextStyle.grey_14_w600 : CustomTextStyle.white_14,
+            Row(
+              children: [
+                const Spacer(),
+                GestureDetector(
+                    onTap: () {
+                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                    },
+                    child: SvgPicture.asset(SvgImg.help)),
+              ],
             ),
-          ),
+            SizedBox(height: 8.h),
+            CustomButton(
+              onTap: () async {
+                if(canRaise){
+                      onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
+                      setState(() {
+                        widget.isGraded = true;
+                      });
+                      widget.onEdit(
+                        widget.startDate,
+                        widget.endDate,
+                        widget.allCountries,
+                        widget.currecy,
+                        widget.isGraded,
+                      );
+                      setState(() {
+                        widget.isGraded = false;
+                      });
+                    }
+              },
+              btnColor:canRaise? ColorStyles.purpleA401C4 :ColorStyles.greyDADADA ,
+              textLabel: Text(
+                'raise_ad'.tr(),
+                style: canRaise? CustomTextStyle.white_14: CustomTextStyle.grey_14_w600 ,
+              ),
+            ),
+
           SizedBox(height: widget.bottomInsets),
         ],
       ),

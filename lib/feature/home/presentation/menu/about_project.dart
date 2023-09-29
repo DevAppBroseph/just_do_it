@@ -155,16 +155,9 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            // String? res = await Repository().getFile(
-                            //     user?.rus ?? true && context.locale.languageCode == 'ru'
-                            //         ? about!.confidence
-                            //         : about?.confidenceEng ?? '');
                             launch(user?.rus ?? true && context.locale.languageCode == 'ru'
                                 ? server + about!.confidence
                                 : server + about!.confidenceEng);
-
-                            // res = res?.replaceAll(' ', '');
-                            log(server + about!.confidence.toString());
                             // if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
@@ -181,12 +174,6 @@ class _AboutProjectState extends State<AboutProject> {
                             launch(user?.rus ?? true && context.locale.languageCode == 'ru'
                                 ? server + about!.agreement
                                 : server + about!.agreementEng);
-                            // String? res = await Repository().getFile(
-                            //     user?.rus ?? true && context.locale.languageCode == 'ru'
-                            //         ? about?.agreement ?? ''
-                            //         : about?.agreementEng ?? '');
-                            // res = res?.replaceAll(' ', '');
-                            // if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),
@@ -207,7 +194,6 @@ class _AboutProjectState extends State<AboutProject> {
   }
 
   List<Widget> itemQuestion(int index, String question, String answer) {
-    log(question);
     return [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.w),

@@ -10,13 +10,13 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart'as res;
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply_from_fav.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response_from_fav.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_favourite_task.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -149,7 +149,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                   } else if (snapshot is res.CloseSlidingPanelState) {
                     panelControllerResponseFromFav.animatePanelToPosition(0.0);
                   }
-                  return SlidingPanelResponseFromFav(panelControllerResponseFromFav, selectTask: selectTask);
+                  return SlidingPanelResponse(panelControllerResponseFromFav, selectTask: selectTask, isShowedFromFavPage: true,);
                 },
               ),
               BlocBuilder<rep.ReplyFromFavBloc, rep.ReplyState>(
@@ -176,10 +176,8 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     final task = await Repository().getTaskById(selectFavouriteTask!.order!.id!, access);
-    log(task.toString());
     setState(() {
       selectTask = task;
-      log(selectTask!.isLiked.toString());
     });
   }
 
@@ -191,14 +189,13 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
     if (selectTask != null) {
       return Scaffold(
         backgroundColor: ColorStyles.greyEAECEE,
-        body: TaskView(
-          selectTask: selectTask!,
+        body: TaskPage(
+          task: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
             setState(() {});
           },
           canEdit: false,
-          canSelect: true,
           fromFav: true,
         ),
       );

@@ -48,29 +48,23 @@ class _ScorePageState extends State<ScorePage> {
         for (int i = 0; i < levels!.length; i++) {
           if (user!.allbalance! >= levels[i].mustCoins!) {
             proverka = levels[i].name;
-            log(proverka.toString());
           } else if (user!.allbalance! <= levels[0].mustCoins!) {
             proverka = levels[0].name;
-            log(proverka.toString());
             break;
           }
         }
         for (int i = 0; i < levels.length; i++) {
           if (user!.allbalance! >= levels.last.mustCoins!) {
             proverkaNext = levels.last.name;
-            log(proverka.toString());
             break;
           } else if (1300 <= levels[0].mustCoins!) {
             proverkaNext = levels[0].name;
-            log(proverka.toString());
             break;
           } else if (user!.allbalance! >= levels.last.mustCoins!) {
             proverkaNext = levels.last.name;
-            log(proverka.toString());
             break;
           } else if (user!.allbalance! >= levels[i].mustCoins! && levels[i + 1].name != null) {
             proverkaNext = levels[i + 1].name;
-            log(proverkaNext.toString());
           }
         }
         return user?.allbalance != null

@@ -22,11 +22,7 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  List<notifModel.Notification> notification = [
-    notifModel.Notification(title: 'Вас выбрали исполнителем', date: '12.09.2022'),
-    notifModel.Notification(title: 'У Вас новый отклик', date: '22.02.2022'),
-    notifModel.Notification(title: 'У Вас новый отклик', date: '14:32'),
-  ];
+
 
   List<NotificationsOnDevice>? notifications;
 
@@ -47,13 +43,11 @@ class _NotificationPageState extends State<NotificationPage> {
         body: BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
           if (state is NotificationsLoaded) {
             notifications = state.notifications;
-            log('${notifications?.isEmpty}');
             if (notifications!.isEmpty) {
               proverka = true;
             } else {
               proverka = false;
             }
-            log('ddddd$proverka'.toString());
             return SafeArea(
               child: Stack(
                 children: [

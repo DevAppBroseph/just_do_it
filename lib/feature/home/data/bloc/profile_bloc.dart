@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
@@ -25,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   String? access;
   UserRegModel? user;
-  List<Activities> activities = [];
+  List<TaskCategory> activities = [];
 
   void setAccess(String? accessToken) async {
     await Storage().setAccessToken(accessToken);
@@ -84,7 +85,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void _getCategories(GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
-    List<Activities>? res = await Repository().getCategories();
+    List<TaskCategory>? res = await Repository().getCategories();
     activities = res;
     emit(GetCategoriesProfileState(activities: res));
   }
@@ -145,11 +146,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());
     String? accessToken = await Storage().getAccessToken();
+    print("AccessToken $accessToken");
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().getProfile(access!);
+      print("resIsNotNull ${res!=null}");
       if (res != null) {
         user = res;
+        print("_getProfile ${user?.ordersCreateAsCustomer?.first.verifyStatus}");
         emit(LoadProfileSuccessState());
       }
     }

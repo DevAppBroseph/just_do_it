@@ -9,7 +9,7 @@ import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:share_plus/share_plus.dart';

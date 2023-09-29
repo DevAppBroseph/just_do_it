@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -15,12 +14,15 @@ import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_page.dart';
+import 'package:just_do_it/feature/home/presentation/chat/presentation/chat_overview_page.dart';
 import 'package:just_do_it/feature/home/presentation/create/presentation/view/create_page.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart' as rep;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as res;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart' as search;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart'
+    as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart'
+    as res;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart'
+    as search;
 import 'package:just_do_it/feature/home/presentation/search/presentation/view/search_page.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
@@ -28,10 +30,12 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/widget/
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
+import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -47,7 +51,6 @@ class _HomePageState extends State<HomePage> {
   PanelController panelController = PanelController();
   PanelController panelControllerReply = PanelController();
   PanelController panelControllerResponse = PanelController();
-  final streamController = StreamController<int>();
   int page = 5;
   int? idTask;
   Task? selectTask;
@@ -62,7 +65,8 @@ class _HomePageState extends State<HomePage> {
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
-      final owner = await Repository().getRanking(int.parse(userProfile), access);
+      final owner =
+          await Repository().getRanking(int.parse(userProfile), access);
       if (owner != null) {
         Navigator.push(
           context,
@@ -84,7 +88,6 @@ class _HomePageState extends State<HomePage> {
   void selectUser(int value) {
     pageController.jumpToPage(value);
     page = value;
-    streamController.add(value);
   }
 
   @override
@@ -100,9 +103,11 @@ class _HomePageState extends State<HomePage> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
       if (accessToken != null && accessToken.isNotEmpty) {
-        log('1');
         timer.cancel();
-        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, accessToken));
+        BlocProvider.of<ChatBloc>(context)
+            .add(StartSocket(context, accessToken, () {
+          DataUpdater().updateTasksAndProfileData(context);
+        }));
       }
     });
 
@@ -121,7 +126,6 @@ class _HomePageState extends State<HomePage> {
     if (panelController.isPanelOpen) panelController.close();
     if (panelControllerReply.isPanelOpen) panelControllerReply.close();
     if (panelControllerResponse.isPanelOpen) panelControllerResponse.close();
-    streamController.close();
     pageController.dispose();
     super.dispose();
   }
@@ -133,145 +137,134 @@ class _HomePageState extends State<HomePage> {
       child: Stack(
         children: [
           Scaffold(
-            body: BlocBuilder<ProfileBloc, ProfileState>(
-              buildWhen: (previous, current) {
-                if (current is EditPageState) {
-                  searchQuery = current.text;
-                  page = current.page;
-                  pageController.jumpToPage(page);
-                  streamController.add(page);
-                }
-
-                return true;
-              },
-              builder: (context, snapshot) {
-                if (snapshot is LoadProfileState) {
-                  return const Center(child: CupertinoActivityIndicator());
-                }
-                return PageView(
-                  controller: pageController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    CreatePage(
-                      onBackPressed: () {
+              body: BlocBuilder<ProfileBloc, ProfileState>(
+                buildWhen: (previous, current) {
+                  if (current is EditPageState) {
+                    searchQuery = current.text;
+                    page = current.page;
+                    pageController.jumpToPage(page);
+                  }
+                  return true;
+                },
+                builder: (context, snapshot) {
+                  if (snapshot is LoadProfileState) {
+                    return const Center(child: CupertinoActivityIndicator());
+                  }
+                  return PageView(
+                    controller: pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      CreatePage(
+                        onBackPressed: () {
+                          pageController.jumpToPage(4);
+                          page = 5;
+                        },
+                        onSelect: selectUser,
+                      ),
+                      SearchPage(
+                        taskId: idTask,
+                        text: searchQuery,
+                        onBackPressed: () {
+                          pageController.jumpToPage(4);
+                          page = 5;
+                        },
+                        clearId: () {
+                          idTask = null;
+                        },
+                        onSelect: selectUser,
+                      ),
+                      TasksPage(
+                        onSelect: (page) {
+                          setState(() {
+                            this.page = page;
+                            pageController.jumpToPage(this.page);
+                          });
+                        },
+                        customer: 0,
+                      ),
+                      ChatOverviewPage(() {
                         pageController.jumpToPage(4);
                         page = 5;
-                        streamController.add(4);
-                      },
-                      onSelect: selectUser,
-                    ),
-                    SearchPage(
-                      taskId: idTask,
-                      text: searchQuery,
-                      onBackPressed: () {
-                        pageController.jumpToPage(4);
-                        page = 5;
-                        streamController.add(4);
-                      },
-                      clearId: () {
-                        idTask = null;
-                      },
-                      onSelect: selectUser,
-                    ),
-                    TasksPage(
-                      onSelect: (page) {
-                        setState(() {
-                          this.page = page;
-                          pageController.jumpToPage(this.page);
-                        });
-                      },
-                      customer: 0,
-                    ),
-                    ChatPage(() {
-                      pageController.jumpToPage(4);
-                      page = 5;
-                      streamController.add(4);
-                    }, selectUser),
-                    WelcomPage(selectUser)
-                  ],
-                );
-              },
-            ),
-            bottomNavigationBar: StreamBuilder<int>(
-              stream: streamController.stream,
-              builder: (context, snapshot) {
-                return MediaQuery(
-                  data: const MediaQueryData(textScaleFactor: 1.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorStyles.shadowFC6554,
-                          offset: const Offset(0, -4),
-                          blurRadius: 55.r,
-                        )
-                      ],
-                    ),
-                    height: 96.h,
-                    child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
-                      log('$current');
-                      if (current is UpdateMenuState) {
-                        return true;
-                      }
-                      if (current is UpdateProfileChatState) {
-                        context.read<TasksBloc>().add(UpdateTaskEvent());
-                        BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
-                        return false;
-                      }
-                      if (current is ReconnectState) {
-                        BlocProvider.of<ChatBloc>(context).add(StartSocket(context, null));
-                      }
-                      if (current is UpdateListPersonState) {
-                        return false;
-                      }
-                      return true;
-                    }, builder: (context, snapshot) {
-                      int undreadMessage = 0;
-                      for (var element in BlocProvider.of<ChatBloc>(context).chatList) {
-                        undreadMessage += element.countUnreadMessage ?? 0;
-                      }
-                      return Padding(
-                        padding: EdgeInsets.only(top: 20.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            itemBottomNavigatorBar(
-                              'assets/icons/add.svg',
-                              'create'.tr(),
-                              0,
-                            ),
-                            itemBottomNavigatorBar(
-                              'assets/icons/search.svg',
-                              'find'.tr(),
-                              1,
-                            ),
-                            itemBottomNavigatorBar(
-                              'assets/icons/tasks.svg',
-                              'tasks'.tr(),
-                              2,
-                            ),
-                            itemBottomNavigatorBar(
-                              'assets/icons/messages.svg',
-                              'chat'.tr(),
-                              3,
-                              counderMessage: undreadMessage != 0 ? undreadMessage : null,
-                            ),
-                            itemBottomNavigatorBar(
-                              'assets/icons/profile.svg',
-                              'office'.tr(),
-                              4,
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+                      }, selectUser),
+                      WelcomPage(selectUser)
+                    ],
+                  );
+                },
+              ),
+              bottomNavigationBar: MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 1.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorStyles.shadowFC6554,
+                        offset: const Offset(0, -4),
+                        blurRadius: 55.r,
+                      )
+                    ],
                   ),
-                );
-              },
-            ),
-          ),
+                  height: 96.h,
+                  child: BlocBuilder<ChatBloc, ChatState>(
+                      buildWhen: (previous, current) {
+                    if (current is UpdateMenuState) {
+                      return true;
+                    }
+                    if (current is ReconnectState) {
+                      BlocProvider.of<ChatBloc>(context)
+                          .add(StartSocket(context, null, () {
+                        DataUpdater().updateTasksAndProfileData(context);
+                      }));
+                    }
+                    if (current is UpdateListPersonState) {
+                      return false;
+                    }
+                    return true;
+                  }, builder: (context, snapshot) {
+                    int undreadMessage = 0;
+                    for (var element
+                        in BlocProvider.of<ChatBloc>(context).chatList) {
+                      undreadMessage += element.countUnreadMessage ?? 0;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          itemBottomNavigatorBar(
+                            'assets/icons/add.svg',
+                            'create'.tr(),
+                            0,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/search.svg',
+                            'find'.tr(),
+                            1,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/tasks.svg',
+                            'tasks'.tr(),
+                            2,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/messages.svg',
+                            'chat'.tr(),
+                            3,
+                            counderMessage:
+                                undreadMessage != 0 ? undreadMessage : null,
+                          ),
+                          itemBottomNavigatorBar(
+                            'assets/icons/profile.svg',
+                            'office'.tr(),
+                            4,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              )),
           BlocBuilder<search.SearchBloc, search.SearchState>(
             builder: (context, snapshot) {
               if (snapshot is search.OpenSlidingPanelState) {
@@ -304,7 +297,8 @@ class _HomePageState extends State<HomePage> {
               } else if (snapshot is res.CloseSlidingPanelState) {
                 panelControllerResponse.animatePanelToPosition(0.0);
               }
-              return SlidingPanelResponse(panelControllerResponse, selectTask: selectTask);
+              return SlidingPanelResponse(panelControllerResponse,
+                  selectTask: selectTask, isShowedFromFavPage: false,);
             },
           ),
         ],
@@ -312,9 +306,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget itemBottomNavigatorBar(String icon, String label, int index, {int? counderMessage}) {
+  Widget itemBottomNavigatorBar(String icon, String label, int index,
+      {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
+
         searchQuery = '';
         setState(() {});
         final bloc = BlocProvider.of<ProfileBloc>(context);
@@ -334,11 +330,11 @@ class _HomePageState extends State<HomePage> {
             ]);
           } else {
             if (index == 1) {
-              BlocProvider.of<search.SearchBloc>(context).add(search.ClearFilterEvent());
+              BlocProvider.of<search.SearchBloc>(context)
+                  .add(search.ClearFilterEvent());
             }
             pageController.jumpToPage(index);
             page = index;
-            streamController.add(index);
           }
         }
       },
@@ -356,12 +352,14 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   SvgPicture.asset(
                     icon,
-                    color: index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                    color:
+                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     label,
-                    style: CustomTextStyle.black_12_w400_292D32.copyWith(fontSize: 12.sp),
+                    style: CustomTextStyle.black_12_w400_292D32
+                        .copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),

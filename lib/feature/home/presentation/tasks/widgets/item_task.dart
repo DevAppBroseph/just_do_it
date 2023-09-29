@@ -7,7 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/helpers/data_formatter.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -29,7 +30,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
           // )
           // ],
         ),
-        height: 130.h,
+        height: 145.h,
         width: 327.h,
         child: Row(
           children: [
@@ -44,17 +45,16 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                       height: 50.h,
                       child: Column(
                         children: [
-                          if (task.activities != null)
-                            Row(
-                              children: [
-                                if (task.activities?.photo != null)
-                                  Image.network(
-                                    task.activities!.photo!,
-                                    height: 34.h,
-                                    width: 34.h,
-                                  ),
-                              ],
-                            ),
+                          if (task.category != null)
+                            if (task.category?.photo != null)
+                              SizedBox(
+                                width:34.h,
+                                child: Image.network(
+                                  task.category!.photo!,
+                                  height: 34.h,
+                                  width: 34.h,
+                                ),
+                              ),
                         ],
                       ),
                     ),
@@ -108,36 +108,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                           child: Row(
                             children: [
                               const Spacer(),
-                              if (task.currency?.name == null)
-                                SizedBox(
-                                  width: 230.w,
-                                  child: Text(
-                                    'до ${_textCurrency(task.priceTo)} ',
-                                    maxLines: 1,
-                                    style: CustomTextStyle.black_14_w500_171716,
-                                  ),
-                                ),
-                              if (task.currency?.name == 'Дирхам')
                                 Text(
-                                  'до ${_textCurrency(task.priceTo)} AED',
-                                  maxLines: 1,
-                                  style: CustomTextStyle.black_14_w500_171716,
-                                ),
-                              if (task.currency?.name == 'Российский рубль')
-                                Text(
-                                  'до ${_textCurrency(task.priceTo)}  ₽',
-                                  maxLines: 1,
-                                  style: CustomTextStyle.black_14_w500_171716,
-                                ),
-                              if (task.currency?.name == 'Доллар США')
-                                Text(
-                                  'до ${_textCurrency(task.priceTo)} \$',
-                                  maxLines: 1,
-                                  style: CustomTextStyle.black_14_w500_171716,
-                                ),
-                              if (task.currency?.name == 'Евро')
-                                Text(
-                                  'до ${_textCurrency(task.priceTo)} €',
+                                  'до ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
                                   maxLines: 1,
                                   style: CustomTextStyle.black_14_w500_171716,
                                 ),

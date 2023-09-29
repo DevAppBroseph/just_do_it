@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "500466658590",
-    "project_id": "justdoit-4873d",
-    "storage_bucket": "justdoit-4873d.appspot.com"
+    "project_number": "897432149892",
+    "project_id": "jobyfine-8ea7d",
+    "storage_bucket": "jobyfine-8ea7d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:500466658590:android:833c8550074e8bf98fad0f",
+        "mobilesdk_app_id": "1:897432149892:android:6c2a60fc0d18943c3f07d1",
         "android_client_info": {
           "package_name": "dev.broseph.justDoIt"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "500466658590-dqumjh58jc4thanlq7lae6vi19c4c46r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ7MqFh5VY42BivlJNhmhLq1QHOzeBGgw"
+          "current_key": "AIzaSyAjSrhgM9BQ-CVB_30ShYhL4Zrv1QElVS0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "500466658590-dqumjh58jc4thanlq7lae6vi19c4c46r.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -50,20 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCZ7MqFh5VY42BivlJNhmhLq1QHOzeBGgw',
-    appId: '1:500466658590:android:833c8550074e8bf98fad0f',
-    messagingSenderId: '500466658590',
-    projectId: 'justdoit-4873d',
-    storageBucket: 'justdoit-4873d.appspot.com',
+    apiKey: 'AIzaSyAjSrhgM9BQ-CVB_30ShYhL4Zrv1QElVS0',
+    appId: '1:897432149892:android:6c2a60fc0d18943c3f07d1',
+    messagingSenderId: '897432149892',
+    projectId: 'jobyfine-8ea7d',
+    storageBucket: 'jobyfine-8ea7d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCdBTvS2_4mWe5fLGOVAcfjyhLk7rFq6tI',
-    appId: '1:500466658590:ios:7a9c2ce7ac42589d8fad0f',
-    messagingSenderId: '500466658590',
-    projectId: 'justdoit-4873d',
-    storageBucket: 'justdoit-4873d.appspot.com',
-    iosClientId: '500466658590-4uigvpoknbhsa6s5eo533c9anvrbgs74.apps.googleusercontent.com',
-    iosBundleId: 'dev.broseph.justDoIt',
+    apiKey: 'AIzaSyCwDfp4_D4I6sZD1toCImDxH7FUg9ozhZA',
+    appId: '1:897432149892:ios:9e1b0cd233dc443a3f07d1',
+    messagingSenderId: '897432149892',
+    projectId: 'jobyfine-8ea7d',
+    storageBucket: 'jobyfine-8ea7d.appspot.com',
+    iosBundleId: 'aigam.com.jobyfine',
   );
 }

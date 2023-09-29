@@ -22,7 +22,7 @@ class LoadProfileSuccessState extends ProfileState {}
 class LoadProfileErrorState extends ProfileState {}
 
 class GetCategoriesProfileState extends ProfileState {
-  List<Activities> activities;
+  List<TaskCategory> activities;
 
   GetCategoriesProfileState({required this.activities});
 }

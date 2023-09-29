@@ -1,6 +1,6 @@
 import 'package:just_do_it/models/favourites_info.dart';
 
-class Answers {
+class Answer {
   String? description;
   int? id;
   bool? isGraded;
@@ -8,18 +8,19 @@ class Answers {
   int? price;
   OwnerOrder? owner;
   int? chatId;
-
-  Answers(
+  DateTime createdAt;
+  Answer(
       {required this.description,
       required this.id,
       required this.status,
       required this.price,
       required this.isGraded,
+        required this.createdAt,
       this.owner,
       this.chatId});
 
-  factory Answers.fromJson(Map<String, dynamic> json) {
-    return Answers(
+  factory Answer.fromJson(Map<String, dynamic> json) {
+    return Answer(
       description: json['description'],
       id: json['id'],
       status: json['status'],
@@ -27,6 +28,7 @@ class Answers {
       price: json['price'],
       owner: json['owner'] == null ? null : OwnerOrder.fromJson(json['owner']),
       isGraded: json['is_graded'],
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
   Map<String, dynamic> toJson() => {

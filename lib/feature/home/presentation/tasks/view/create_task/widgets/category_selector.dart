@@ -9,23 +9,25 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:open_file/open_file.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Category extends StatefulWidget {
+class CategorySelector extends StatefulWidget {
   TextEditingController titleController;
   TextEditingController aboutController;
-  Activities? selectCategory;
+  TaskCategory? selectCategory;
   bool customer;
-  Subcategory? selectSubCategory;
+  TaskSubcategory? selectSubCategory;
   double bottomInsets;
   Function onAttach;
   List<ArrayImages> document;
   Function(int?, int?) removefiles;
-  Function(Activities?, Subcategory?, String?, String?) onEdit;
-  Category({
+  Function(TaskCategory?, TaskSubcategory?, String?, String?) onEdit;
+  CategorySelector({
     super.key,
     required this.titleController,
     required this.aboutController,
@@ -40,11 +42,11 @@ class Category extends StatefulWidget {
   });
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<CategorySelector> createState() => _CategorySelectorState();
 }
 
-class _CategoryState extends State<Category> {
-  List<Activities> activities = [];
+class _CategorySelectorState extends State<CategorySelector> {
+  List<TaskCategory> activities = [];
 
   bool openCategory = false;
   bool openSubCategory = false;
@@ -55,7 +57,7 @@ class _CategoryState extends State<Category> {
   @override
   void initState() {
     super.initState();
-    activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    activities.addAll(BlocProvider.of<AuthBloc>(context).categories);
     user = BlocProvider.of<ProfileBloc>(context).user;
   }
 

@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:just_do_it/models/answers.dart';
+import 'package:just_do_it/models/answer.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_status.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 class Task {
   int? id;
-  bool? asCustomer;
+  bool? isTask;
   bool? isGraded;
   bool? isGradedNow;
   bool? isBanned;
@@ -17,15 +20,15 @@ class Task {
   int? chatId;
   String name;
   String description;
-  Activities? activities;
-  Subcategory? subcategory;
+  TaskCategory? category;
+  TaskSubcategory? subcategory;
   String dateStart;
   String dateEnd;
   int priceFrom;
-  String? status;
+  TaskStatus status;
   bool? isButtonPressed;
   int priceTo;
-  Answers? isAnswered;
+  Answer? isAnswered;
   List<Countries> countries;
   List<Regions> regions;
   List<ArrayImages>? files;
@@ -36,12 +39,13 @@ class Task {
   String? typeLocation;
   String? whenStart;
   String? coast;
-  List<Answers> answers;
-
+  String? verifyStatus;
+  List<Answer> answers;
+  bool canAppellate;
   Task(
       {this.id,
       this.owner,
-      this.asCustomer,
+      this.isTask,
       this.isLiked,
       this.lastUpgrade,
       this.chatId,
@@ -49,7 +53,7 @@ class Task {
       this.isBanned,
       required this.name,
       required this.description,
-      this.activities,
+      this.category,
       this.subcategory,
       this.banReason,
       required this.dateStart,
@@ -62,7 +66,9 @@ class Task {
       this.towns = const [],
       this.countries = const [],
       this.files,
-      this.status,
+        required this.canAppellate,
+     required this.status,
+      this.verifyStatus,
       this.isAnswered,
       this.icon,
       this.isButtonPressed,
@@ -73,10 +79,10 @@ class Task {
       this.answers = const []});
 
   factory Task.fromJson(Map<String, dynamic> json) {
-    List<Answers> answers = [];
+    List<Answer> answers = [];
     if (json['answers'] != null) {
       for (var element in json['answers']) {
-        answers.add(Answers.fromJson(element));
+        answers.add(Answer.fromJson(element));
       }
     }
 
@@ -106,31 +112,33 @@ class Task {
         files.add(ArrayImages(element['file'], null, id: element['id']));
       }
     }
-    Answers? isAnswered;
+    Answer? isAnswered;
     if (json["is_answered"] != null) {
-      isAnswered = Answers.fromJson(json["is_answered"]);
+      isAnswered = Answer.fromJson(json["is_answered"]);
     }
 
     return Task(
         id: json["id"],
         lastUpgrade: json['last_grade'],
         isGraded: json["is_graded"],
-        isBanned: json["is_banned"],
+        isBanned: ((json["is_banned"]??false)||(json["verify_status"]=="Failed")),
+        verifyStatus: json["verify_status"],
         banReason: json["ban_reason"],
+        canAppellate: json["canApellate"],
         owner: Owner.fromJson(json["owner"]),
         isLiked: json["is_liked"],
         currency: Currency.fromJson(json['currency']),
         name: json["name"],
         description: json["description"],
         chatId: json["chat_id"],
-        activities: Activities.fromJson(json['category']),
-        subcategory: Subcategory.fromJson(json["subcategory"]),
+        category: TaskCategory.fromJson(json['category']),
+        subcategory: TaskSubcategory.fromJson(json["subcategory"]),
         dateStart: json["date_start"],
         dateEnd: json["date_end"],
         priceFrom: json["price_from"],
         priceTo: json["price_to"],
-        asCustomer: json['as_customer'],
-        status: json['status'],
+        isTask: json['as_customer'],
+        status: TaskStatusX.fromString(json['status'],DateTime.parse(json["date_end"])),
         isButtonPressed: json['is_button_pressed'],
         countries: countries,
         regions: regions,
@@ -149,13 +157,12 @@ class Task {
     data['date_end'] = dateEnd;
     data['is_button_pressed'] = isButtonPressed;
     data['price_from'] = priceFrom;
-    data['status'] = status;
     data['is_liked'] = isLiked;
     data['price_to'] = priceTo;
     data['is_graded'] = isGraded;
     data['regions'] = regions.map((e) => e.id).toList();
     data['answers'] = answers.map((e) => e.id).toList();
-    data['as_customer'] = asCustomer;
+    data['as_customer'] = isTask;
     data['currency'] = currency!.id;
     data['towns'] = towns.map((e) => e.id).toList();
     data['countries'] = countries.map((e) => e.id).toList();

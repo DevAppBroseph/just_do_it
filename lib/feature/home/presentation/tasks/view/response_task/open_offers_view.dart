@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -139,14 +139,13 @@ class _OpenOffersState extends State<OpenOffers> {
     if (selectTask != null) {
       return Scaffold(
         backgroundColor: ColorStyles.greyEAECEE,
-        body: TaskView(
-          selectTask: selectTask!,
+        body: TaskPage(
+          task: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
             setState(() {});
           },
           canEdit: true,
-          canSelect: true,
         ),
       );
     }

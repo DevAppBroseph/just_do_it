@@ -12,6 +12,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -48,8 +49,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   bool confirmTermsPolicy = false;
   DateTime? dateTimeStart;
   DateTime? dateTimeEnd;
-  List<Activities> listCategories = [];
-  bool physics = false;
+  List<TaskCategory> listCategories = [];
 
   FocusNode focusNodeAbout = FocusNode();
   FocusNode focusNodePassword1 = FocusNode();
@@ -120,15 +120,15 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 onTap: () {
                   if ((passwordController.text.isNotEmpty && repeatPasswordController.text.isNotEmpty) &&
                       (passwordController.text != repeatPasswordController.text)) {
-                    CustomAlert().showMessage('passwords_dont_match'.tr(), context);
+                    CustomAlert().showMessage('passwords_dont_match'.tr());
                   } else if (passwordController.text.length < 6 && passwordController.text.isNotEmpty) {
-                    CustomAlert().showMessage('the_minimum_password_length_is_6_characters'.tr(), context);
+                    CustomAlert().showMessage('the_minimum_password_length_is_6_characters'.tr());
                   } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
-                    CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
+                    CustomAlert().showMessage('your_document_is_overdue'.tr());
                   } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType == 'Resident_ID') {
-                    CustomAlert().showMessage('your_document_is_overdue'.tr(), context);
+                    CustomAlert().showMessage('your_document_is_overdue'.tr());
                   } else if (checkExpireDate(dateTimeEnd) != null) {
-                    CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!, context);
+                    CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
                   } else {
                     if (additionalInfo) {
                       additionalInfo = true;
@@ -165,25 +165,21 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                         user!.copyWith(
                             docInfo: docinfo,
                             region: regionController.text,
-                            isButtonPressed: false,
-                            docType: mapDocumentType(documentTypeController.text));
-                        user!.copyWith(isEntity: physics, isButtonPressed: false);
-                        user!.copyWith(isEntity: physics, isButtonPressed: false);
+                            docType: mapDocumentType(documentTypeController.text),isEntity: false,canAppellate: true);
                         BlocProvider.of<ProfileBloc>(context).setUser(user);
                         Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
 
                         Navigator.of(context).pop();
                       } else {
-                        CustomAlert().showMessage(error, context);
+                        CustomAlert().showMessage(error);
                       }
                     } else {
-                      user!.copyWith(docInfo: '', region: regionController.text, docType: '');
-                      user!.copyWith(isEntity: physics,isButtonPressed: false);
+                      user!.copyWith(docInfo: '', region: regionController.text, docType: '',isEntity: false,canAppellate: true);
                       BlocProvider.of<ProfileBloc>(context).setUser(user);
                       Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
                                           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-  
+
                       Navigator.of(context).pop();
                     }
                   }
@@ -385,7 +381,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr(), context);
+              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr());
             }
           },
           child: CustomTextField(

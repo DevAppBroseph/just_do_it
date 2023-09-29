@@ -16,8 +16,10 @@ import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.da
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -48,14 +50,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
   String strcat2 = '';
   String strcat3 = '';
   int? groupValueCountry;
-  Activities? selectActivities;
+  TaskCategory? selectActivities;
   Currency? selectCurrency;
   List<int> selectSubCategory = [];
-  List<Activities> activities = [];
+  List<TaskCategory> activities = [];
   List<Countries> countries = [];
   int? selectCountriesIndex;
   int? selecRegionIndex;
-  Activities? selectCategory;
+  TaskCategory? selectCategory;
   int? currencySelect;
   // int passportAndCVSelect = 0;
   bool slide = false;
@@ -702,31 +704,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (currencyString == '' || currencyString == null)
-                              Text(
-                                '${'budget_from'.tr()} ',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Российский рубль' || currencyString == 'Russian Rouble')
-                              Text(
-                                '${'budget_from'.tr()} ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Доллар США' || currencyString == 'USA Dollar')
-                              Text(
-                                '${'budget_from'.tr()} \$',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Евро' || currencyString == 'Euro')
-                              Text(
-                                '${'budget_from'.tr()} €',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Дирхам' || currencyString == 'UAE Dirham')
-                              Text(
-                                '${'budget_from'.tr()} AED',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
+                            Text(
+                              '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
                             SizedBox(height: 3.h),
                             Row(
                               children: [
@@ -785,31 +766,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (currencyString == '' || currencyString == null)
-                              Text(
-                                '${'budget_up_to'.tr()} ',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Российский рубль' || currencyString == 'Russian Rouble')
-                              Text(
-                                '${'budget_up_to'.tr()} ₽',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Доллар США' || currencyString == 'USA Dollar')
-                              Text(
-                                '${'budget_up_to'.tr()} \$',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Евро' || currencyString == 'Euro')
-                              Text(
-                                '${'budget_up_to'.tr()} €',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
-                            if (currencyString == 'Дирхам' || currencyString == 'UAE Dirham')
-                              Text(
-                                '${'budget_up_to'.tr()} AED',
-                                style: CustomTextStyle.grey_14_w400,
-                              ),
+                            Text(
+                              '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
+                              style: CustomTextStyle.grey_14_w400,
+                            ),
                             SizedBox(height: 3.h),
                             Row(
                               children: [
@@ -1093,7 +1053,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
 
   Widget categoryFirst() {
     activities.clear();
-    activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    activities.addAll(BlocProvider.of<AuthBloc>(context).categories);
 
     int countCategory = 0;
     for (var element in activities) {
@@ -1281,7 +1241,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget categorySecond(Activities? selectActivity) {
+  Widget categorySecond(TaskCategory? selectActivity) {
     int countSubcategory = 0;
     for (var element in selectActivity!.subcategory) {
       if (element.isSelect) {
@@ -1381,7 +1341,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     );
   }
 
-  Widget item(int index, Activities? selectActivity) {
+  Widget item(int index, TaskCategory? selectActivity) {
     return GestureDetector(
       onTap: () {
         selectActivities!.subcategory[index].isSelect = !selectActivities!.subcategory[index].isSelect;

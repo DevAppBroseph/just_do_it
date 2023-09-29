@@ -7,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_task.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -36,6 +36,9 @@ class _AllTasksViewState extends State<AllTasksView> {
   void getListTask() async {
     List<Task> res = await Repository().getMyTaskList(
         BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
+    for(final element in res){
+      print("getListTaskFronPage ${element.banReason} ${element.name} ${element.isBanned}");
+    }
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -106,7 +109,6 @@ class _AllTasksViewState extends State<AllTasksView> {
                                   EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                log(taskList[index].id.toString());
                                 return itemTask(
                                   taskList[index],
                                   (task) {
@@ -142,14 +144,13 @@ class _AllTasksViewState extends State<AllTasksView> {
     if (selectTask != null) {
       return Scaffold(
         backgroundColor: ColorStyles.greyEAECEE,
-        body: TaskView(
-          selectTask: selectTask!,
+        body: TaskPage(
+          task: selectTask!,
           openOwner: (owner) {
             this.owner = owner;
             setState(() {});
           },
           canEdit: true,
-          canSelect: true,
         ),
       );
     }

@@ -14,6 +14,8 @@ import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
@@ -34,8 +36,8 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   int openCategory = -1;
-  List<Activities> activities = [];
-  Activities? selectCategory;
+  List<TaskCategory> activities = [];
+  TaskCategory? selectCategory;
   ScrollController scrollController = ScrollController();
   bool searchList = false;
   bool searchListEnable = false;
@@ -46,7 +48,7 @@ class _CreatePageState extends State<CreatePage> {
   void initState() {
     super.initState();
     user = BlocProvider.of<ProfileBloc>(context).user;
-    activities.addAll(BlocProvider.of<AuthBloc>(context).activities);
+    activities.addAll(BlocProvider.of<AuthBloc>(context).categories);
   }
 
   void getHistoryList() async {
@@ -58,7 +60,6 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    log(context.locale.languageCode.toString());
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
 
@@ -136,7 +137,7 @@ class _CreatePageState extends State<CreatePage> {
                                       if (value.isEmpty) {
                                         getHistoryList();
                                       }
-                                      List<Activities> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                      List<TaskCategory> activities = BlocProvider.of<ProfileBloc>(context).activities;
                                       searchChoose.clear();
                                       if (value.isNotEmpty) {
                                         for (var element1 in activities) {
@@ -257,8 +258,7 @@ class _CreatePageState extends State<CreatePage> {
                                     await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
-                                   
-                                          return CeateTasks(
+                                          return CreateTaskPage(
                                             customer: true,
                                             selectCategory: selectCategory,
                                             currentPage: 6,
@@ -437,7 +437,7 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Widget info(List<Subcategory> list, bool open, int index) {
+  Widget info(List<TaskSubcategory> list, bool open, int index) {
     ScrollController controllerScroll = ScrollController();
     double height = 0;
     if (open) {
@@ -510,7 +510,6 @@ class _CreatePageState extends State<CreatePage> {
             activities[i].selectSubcategory.clear();
           }
         }
-        log(activities[index].selectSubcategory.toString());
         setState(() {});
       },
       child: Padding(

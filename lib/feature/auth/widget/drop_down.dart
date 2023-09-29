@@ -6,6 +6,7 @@ import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
+import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
 showIconModal(
@@ -157,7 +158,7 @@ showIconModalCategories(
   BuildContext context,
   GlobalKey key,
   Function(List<String>) onTap,
-  List<Activities> list,
+  List<TaskCategory> list,
   String label,
   List<String> selectCategories,
 ) async {
@@ -175,7 +176,7 @@ void iconSelectModalCategories(
   BuildContext context,
   Function(List<String>) onTap,
   Offset offset,
-  List<Activities> list,
+  List<TaskCategory> list,
   String label,
   List<String> selectCategories,
 ) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,13 +18,14 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/op
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/orders_complete_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/selected_offers_view.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
 class Customer extends StatefulWidget {
   final Function(int) callBacK;
   final Function() callBackFlag;
+
   const Customer({
     Key? key,
     required this.size,
@@ -45,17 +44,19 @@ class _CustomerState extends State<Customer> {
   late UserRegModel? user;
   Task? selectTask;
   Owner? owner;
+
   @override
   void initState() {
     super.initState();
+    print("Customer initState");
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     user = BlocProvider.of<ProfileBloc>(context).user;
-
     getListTask();
   }
 
   void getListTask() async {
-    List<Task> res = await Repository().getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
+    List<Task> res = await Repository()
+        .getMyTaskList(BlocProvider.of<ProfileBloc>(context).access!, false);
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -64,6 +65,8 @@ class _CustomerState extends State<Customer> {
 
   @override
   Widget build(BuildContext context) {
+    print((user?.finishedOffers?.length ?? 9).toString() +
+        " ordersCreateAsCustomerLength");
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
@@ -77,16 +80,14 @@ class _CustomerState extends State<Customer> {
       }, builder: (context, state) {
         return Stack(
           children: [
-            BlocBuilder<ProfileBloc, ProfileState>(buildWhen: (previous, current) {
-              log('$current');
+            BlocBuilder<ProfileBloc, ProfileState>(
+                buildWhen: (previous, current) {
               if (current is UpdateProfileSuccessState) {
                 user = BlocProvider.of<ProfileBloc>(context).user;
-                log('UpdateProfileSuccessState');
                 return true;
               }
               if (current is LoadProfileSuccessState) {
                 user = BlocProvider.of<ProfileBloc>(context).user;
-                log('LoadProfileSuccessState');
                 return true;
               }
               if (previous != current) {
@@ -146,17 +147,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'all_responses'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'tasks_that_i_have_responded_to'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'tasks_that_i_have_responded_to'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -166,10 +171,14 @@ class _CustomerState extends State<Customer> {
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user?.countMyAnswersAsExecutor != null
-                                                  ? user!.countMyAnswersAsExecutor.toString()
+                                              user?.countMyAnswersAsExecutor !=
+                                                      null
+                                                  ? user!
+                                                      .countMyAnswersAsExecutor
+                                                      .toString()
                                                   : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -207,17 +216,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'confirmed'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'i_was_chosen_as_a_performer'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'i_was_chosen_as_a_performer'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -227,10 +240,14 @@ class _CustomerState extends State<Customer> {
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user?.countMyAnswersSelectedAsExecutor != null
-                                                  ? user!.countMyAnswersSelectedAsExecutor.toString()
+                                              user?.countMyAnswersSelectedAsExecutor !=
+                                                      null
+                                                  ? user!
+                                                      .countMyAnswersSelectedAsExecutor
+                                                      .toString()
                                                   : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -268,17 +285,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'tasks_that_were_completed_by_me'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'tasks_that_were_completed_by_me'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -288,10 +309,14 @@ class _CustomerState extends State<Customer> {
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user?.countOrdersCompleteAsExecutor != null
-                                                  ? user!.countOrdersCompleteAsExecutor.toString()
+                                              user?.countOrdersCompleteAsExecutor !=
+                                                      null
+                                                  ? user!
+                                                      .countOrdersCompleteAsExecutor
+                                                      .toString()
                                                   : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -325,9 +350,14 @@ class _CustomerState extends State<Customer> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
-                            child: Text(
-                              'my_offers'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                            child: GestureDetector(
+                              onTap: () {
+                                context.read<ProfileBloc>().add(GetProfileEvent());
+                              },
+                              child: Text(
+                                'my_offers'.tr(),
+                                style: CustomTextStyle.black_16_w600_515150,
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -353,17 +383,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'open'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'waiting_for_the_customer_response'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'waiting_for_the_customer_response'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -373,8 +407,12 @@ class _CustomerState extends State<Customer> {
                                           child: SizedBox(
                                             width: 35.w,
                                             child: Text(
-                                              user?.openOffers != null ? user!.openOffers!.length.toString() : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              user?.openOffers != null
+                                                  ? user!.openOffers!.length
+                                                      .toString()
+                                                  : '0',
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -412,17 +450,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'accepted'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'there_is_a_response_from_the_customer'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'there_is_a_response_from_the_customer'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -433,9 +475,11 @@ class _CustomerState extends State<Customer> {
                                             width: 35.w,
                                             child: Text(
                                               user?.selectedOffers != null
-                                                  ? user!.selectedOffers!.length.toString()
+                                                  ? user!.selectedOffers!.length
+                                                      .toString()
                                                   : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -473,17 +517,21 @@ class _CustomerState extends State<Customer> {
                                     child: Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
-                                                'the_deal_has_been_implemented'.tr(),
-                                                style: CustomTextStyle.grey_12_w400,
+                                                'the_deal_has_been_implemented'
+                                                    .tr(),
+                                                style: CustomTextStyle
+                                                    .grey_12_w400,
                                               ),
                                             ),
                                           ],
@@ -494,9 +542,11 @@ class _CustomerState extends State<Customer> {
                                             width: 35.w,
                                             child: Text(
                                               user?.finishedOffers != null
-                                                  ? user!.finishedOffers!.length.toString()
+                                                  ? user!.finishedOffers!.length
+                                                      .toString()
                                                   : '0',
-                                              style: CustomTextStyle.black_13_w400_171716,
+                                              style: CustomTextStyle
+                                                  .black_13_w400_171716,
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -564,19 +614,26 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'tasks'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
+                                            style: CustomTextStyle
+                                                .black_13_w400_171716,
                                           ),
                                         ),
-                                        BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+                                        BlocBuilder<FavouritesBloc,
+                                                FavouritesState>(
+                                            builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders = state.favourite!.favouriteOrder;
+                                            final favouritesOrders =
+                                                state.favourite!.favouriteOrder;
                                             return Padding(
-                                              padding: EdgeInsets.only(right: 6.w),
+                                              padding:
+                                                  EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length.toString(),
-                                                  style: CustomTextStyle.black_13_w400_171716,
+                                                  favouritesOrders!.length
+                                                      .toString(),
+                                                  style: CustomTextStyle
+                                                      .black_13_w400_171716,
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -618,19 +675,26 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'customers'.tr(),
-                                            style: CustomTextStyle.black_13_w400_171716,
+                                            style: CustomTextStyle
+                                                .black_13_w400_171716,
                                           ),
                                         ),
-                                        BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+                                        BlocBuilder<FavouritesBloc,
+                                                FavouritesState>(
+                                            builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders = state.favourite!.favoriteUsers;
+                                            final favouritesOrders =
+                                                state.favourite!.favoriteUsers;
                                             return Padding(
-                                              padding: EdgeInsets.only(right: 6.w),
+                                              padding:
+                                                  EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length.toString(),
-                                                  style: CustomTextStyle.black_13_w400_171716,
+                                                  favouritesOrders!.length
+                                                      .toString(),
+                                                  style: CustomTextStyle
+                                                      .black_13_w400_171716,
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -665,7 +729,7 @@ class _CustomerState extends State<Customer> {
                     final res = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CeateTasks(
+                          return CreateTaskPage(
                             customer: false,
                             doublePop: true,
                             currentPage: 4,

@@ -60,6 +60,7 @@ class ReviewerDetails {
 class ReviewsDetail {
   ReviewsDetail({
     required this.id,
+     this.taskId,
     required this.date,
     required this.reviewerDetails,
     required this.message,
@@ -67,6 +68,7 @@ class ReviewsDetail {
   });
 
   int id;
+  int? taskId;
   ReviewerDetails reviewerDetails;
   String message;
   int mark;
@@ -74,6 +76,7 @@ class ReviewsDetail {
 
   factory ReviewsDetail.fromJson(Map<String, dynamic> json) => ReviewsDetail(
         id: json["id"],
+        taskId: json["task_id"],
         reviewerDetails: ReviewerDetails.fromJson(json["reviewer_details"]),
         message: json["message"],
         mark: json["mark"],
@@ -82,7 +85,8 @@ class ReviewsDetail {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "reviewer_details": reviewerDetails.toJson(),
+    "task_id": taskId,
+    "reviewer_details": reviewerDetails.toJson(),
         "message": message,
         "mark": mark,
       };

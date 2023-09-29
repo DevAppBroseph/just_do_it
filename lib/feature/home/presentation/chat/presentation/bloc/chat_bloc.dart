@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:just_do_it/widget/dialog.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'chat_event.dart';
+
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -21,7 +21,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<UpdateMenuEvent>(_updateMenu);
     on<StartSocket>(_startSocket);
     on<CloseSocketEvent>(_closeSocket);
-    on<UpdateProfileChatEvent>(_updateprofile);
     on<GetListMessage>(_getListMessage);
     on<GetListMessageItem>(_getListMessageItem);
     on<SendMessageEvent>(_sendMessage);
@@ -46,9 +45,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
-    String newMessage = '{"message": "${event.message}", "to": "${event.id}"}';
+    String newMessage = '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId!=null?', "category":${event.categoryId}':''}}';
+    print("_sendMessage ${newMessage}");
     channel?.sink.add(newMessage.toString());
-
     List<ChatMessage> reversedList = List.from(messages.reversed);
 
     reversedList.add(
@@ -63,7 +62,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     add(RefreshTripEvent());
   }
 
-  void _getListMessageItem(GetListMessageItem event, Emitter<ChatState> emit) async {
+  void _getListMessageItem(
+      GetListMessageItem event, Emitter<ChatState> emit) async {
     final res = await Repository().getListMessageItem(event.access, '$idChat');
 
     messages.clear();
@@ -84,7 +84,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
     final res = await Repository().getListMessage(token ?? '');
-    // log('message ${res.length}');
 
     chatList.clear();
     chatList.addAll(res);
@@ -92,37 +91,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(UpdateListMessageState(idChat));
   }
 
-  void _updateprofile(UpdateProfileChatEvent eventBloc, Emitter<ChatState> emit) async {
-    emit(UpdateProfileChatState());
-  }
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     final token = await Storage().getAccessToken();
-
+    channel?.sink.close();
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
         try {
-          log('messreferferfreage new $event');
+          print("SOCKET EVENT: $event");
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
-          log('fdfff ${newMessageTask.action}');
           if (newMessageTask.action.isNotEmpty) {
             TaskDialogs().showTaskMessage(
               newMessageTask.message,
             );
           }
-
-          add(UpdateProfileChatEvent());
-        } catch (e) {
-          log('$e');
-        }
+          eventBloc.updateData();
+          return;
+        } catch (_) {}
         try {
-          log('message new $event');
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
             var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
-
             if (showPersonChat) {
               MessageDialogs().showMessage(
                 newMessage.fromName,
@@ -145,9 +136,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           add(GetListMessage());
           add(RefreshPersonChatEvent());
-        } catch (e) {
-          log('$e');
-        }
+        } catch (_) {}
       },
       onDone: () {
         _tryConnect();
@@ -165,7 +154,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(ReconnectState());
   }
 
-  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) => emit(UpdateListMessageItemState(chatId: idChat));
+  void _refresh(RefreshTripEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListMessageItemState(chatId: idChat));
 
-  void _refreshPersonChat(RefreshPersonChatEvent event, Emitter<ChatState> emit) => emit(UpdateListPersonState());
+  void _refreshPersonChat(
+          RefreshPersonChatEvent event, Emitter<ChatState> emit) =>
+      emit(UpdateListPersonState());
 }

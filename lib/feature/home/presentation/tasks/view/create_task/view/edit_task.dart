@@ -15,12 +15,15 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category_selector.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
-import 'package:just_do_it/models/task.dart';
+import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/models/task/task_category.dart';
+import 'package:just_do_it/models/task/task_status.dart';
+import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -55,8 +58,8 @@ class _EditTasksState extends State<EditTasks> {
   bool isGraded = false;
   List<Countries> countries = [];
   Currency? currency;
-  Activities? selectCategory;
-  Subcategory? selectSubCategory;
+  TaskCategory? selectCategory;
+  TaskSubcategory? selectSubCategory;
   late UserRegModel? user;
   DateTime? startDate;
   DateTime? endDate;
@@ -69,8 +72,8 @@ class _EditTasksState extends State<EditTasks> {
         isGraded = true;
       });
     }
-    for (var element in BlocProvider.of<AuthBloc>(context).activities) {
-      if (widget.task.activities?.id == element.id) {
+    for (var element in BlocProvider.of<AuthBloc>(context).categories) {
+      if (widget.task.category?.id == element.id) {
         selectCategory = element;
         break;
       }
@@ -265,12 +268,12 @@ class _EditTasksState extends State<EditTasks> {
                       setState(() {});
                     },
                     children: [
-                      Category(
+                      CategorySelector(
                         customer: widget.customer,
                         bottomInsets: bottomInsets,
                         onAttach: () => onAttach(),
                         document: document,
-                        selectCategory: selectCategory ?? widget.task.activities,
+                        selectCategory: selectCategory ?? widget.task.category,
                         selectSubCategory: selectSubCategory,
                         titleController: titleController,
                         aboutController: aboutController,
@@ -306,6 +309,7 @@ class _EditTasksState extends State<EditTasks> {
                           this.isGraded = isGraded;
                           setState(() {});
                         },
+                        isBanned: widget.task.isBanned??false,
                         isGraded: isGraded,
                       ),
                     ],
@@ -366,10 +370,10 @@ class _EditTasksState extends State<EditTasks> {
                         }
 
                         if (errorsFlag) {
-                          CustomAlert().showMessage(error, context);
+                          CustomAlert().showMessage(error);
                         } else {
                           if (user!.isBanned!) {
-                            if (widget.task.asCustomer!) {
+                            if (widget.task.isTask!) {
                               banDialog(context, 'respond_to_the_task'.tr());
                             } else {
                               banDialog(context, 'respond_to_the_offer'.tr());
@@ -405,9 +409,10 @@ class _EditTasksState extends State<EditTasks> {
 
                             Task newTask = Task(
                               id: widget.task.id,
-                              asCustomer: widget.task.asCustomer,
+                              isTask: widget.task.isTask,
                               name: titleController.text,
                               description: aboutController.text,
+                              status: TaskStatus.undefined,
                               subcategory: selectSubCategory!,
                               dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
                               dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
@@ -428,6 +433,7 @@ class _EditTasksState extends State<EditTasks> {
                               coast: '',
                               currency: currency,
                               isGraded: isGraded,
+                              canAppellate: true
                             );
 
                             final profileBloc = BlocProvider.of<ProfileBloc>(context);
@@ -473,7 +479,7 @@ class _EditTasksState extends State<EditTasks> {
                         }
 
                         if (errorsFlag) {
-                          CustomAlert().showMessage(error, context);
+                          CustomAlert().showMessage(error);
                         } else {
                           pageController.animateToPage(
                             1,
@@ -487,7 +493,7 @@ class _EditTasksState extends State<EditTasks> {
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()
-                          : widget.task.asCustomer!
+                          : widget.task.isTask!
                               ? 'edit_task'.tr()
                               : 'edit_offer'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -38,10 +39,14 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
                       Row(
                         children: [
                           if(task.order?.category?.photo != null)
-                          Image.network(
-                            task.order!.category!.photo!,
-                            height: 34.h,
+                          SizedBox(
                             width: 34.h,
+                            height: 34.h,
+                            child: Image.network(
+                              task.order!.category!.photo!,
+                              height: double.infinity,
+                              width: double.infinity,
+                            ),
                           ),
                         ],
                       ),
@@ -94,39 +99,11 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
                     child: Row(
                       children: [
                         const Spacer(),
-                        if (task.order?.currency?.name == null)
-                          SizedBox(
-                            width: 245.w,
-                            child: Text(
-                              'до ${task.order?.priceTo} ',
-                              maxLines: 1,
-                              style: CustomTextStyle.black_14_w500_171716,
-                            ),
-                          ),
-                        if (task.order?.currency?.name == 'Дирхам')
-                          Text(
-                            'до ${task.order?.priceTo} AED',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.order?.currency?.name == 'Российский рубль')
-                          Text(
-                            'до ${task.order?.priceTo}  ₽',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.order?.currency?.name == 'Доллар США')
-                          Text(
-                            'до ${task.order?.priceTo} \$',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
-                        if (task.order?.currency?.name == 'Евро')
-                          Text(
-                            'до ${task.order?.priceTo} €',
-                            maxLines: 1,
-                            style: CustomTextStyle.black_14_w500_171716,
-                          ),
+                        Text(
+                          'до ${DataFormatter.addSpacesToNumber(task.order!.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.order!.currency!.name)} ',
+                          maxLines: 1,
+                          style: CustomTextStyle.black_14_w500_171716,
+                        ),
                         SizedBox(width: 5.w),
                         SvgPicture.asset(
                           'assets/icons/card.svg',
