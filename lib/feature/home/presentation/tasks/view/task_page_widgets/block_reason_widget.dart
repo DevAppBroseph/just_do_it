@@ -28,7 +28,6 @@ class _BlocReasonWidgetState extends State<BlocReasonWidget> {
           children: [
             if (isOpen)
               AnimatedContainer(
-                height: 150.h,
                 width: 330.w,
                 duration: const Duration(milliseconds: 300),
                 decoration: BoxDecoration(
@@ -36,7 +35,7 @@ class _BlocReasonWidgetState extends State<BlocReasonWidget> {
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 50.h, left: 16.w, right: 16.w),
+                  padding: EdgeInsets.only(top: 50.h,bottom: 12.h, left: 16.w, right: 16.w),
                   child: SizedBox(
                     width: 250.w,
                     child: Text(
@@ -52,7 +51,7 @@ class _BlocReasonWidgetState extends State<BlocReasonWidget> {
                 color: ColorStyles.redFC6554.withOpacity(0.19),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   if (isOpen) {
                     isOpen = false;

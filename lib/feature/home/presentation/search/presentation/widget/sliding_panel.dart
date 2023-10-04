@@ -306,7 +306,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           GetTasksEvent(
                               passport: passport,
                               cv: cv,
-                              // access: access,
+                              access: access,
                               query: keyWordController.text,
                               dateEnd: format1,
                               dateStart: format2,

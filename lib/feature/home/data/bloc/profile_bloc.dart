@@ -146,14 +146,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());
     String? accessToken = await Storage().getAccessToken();
-    print("AccessToken $accessToken");
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().getProfile(access!);
-      print("resIsNotNull ${res!=null}");
       if (res != null) {
         user = res;
-        print("_getProfile ${user?.ordersCreateAsCustomer?.first.verifyStatus}");
         emit(LoadProfileSuccessState());
       }
     }

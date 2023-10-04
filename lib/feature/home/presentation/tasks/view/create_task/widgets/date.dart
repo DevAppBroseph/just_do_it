@@ -23,6 +23,8 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class DatePicker extends StatefulWidget {
+  Function(bool) saveTask;
+  bool isCreating;
   double bottomInsets;
   TextEditingController coastMinController;
   TextEditingController coastMaxController;
@@ -30,14 +32,15 @@ class DatePicker extends StatefulWidget {
   DateTime? startDate;
   DateTime? endDate;
   bool isGraded;
-  bool asCustomer;
+  bool isTask;
   List<Countries> allCountries;
   Currency? currecy;
   bool isBanned;
   DatePicker({
     super.key,
     required this.onEdit,
-    required this.asCustomer,
+    required this.isCreating,
+    required this.isTask,
     required this.isGraded,
     required this.bottomInsets,
     required this.coastMinController,
@@ -46,6 +49,7 @@ class DatePicker extends StatefulWidget {
     required this.endDate,
     required this.allCountries,
     required this.currecy,
+    required this.saveTask,
      this.isBanned=false,
   });
 
@@ -1038,27 +1042,12 @@ class _DatePickerState extends State<DatePicker> {
             ),
             SizedBox(height: 8.h),
             CustomButton(
-              onTap: () async {
-                if(canRaise){
-                      onTopDialog(context, 'raise_ad'.tr(), 'ad_is_fixed_in_the_top'.tr(), 'ad_is_now_above'.tr());
-                      setState(() {
-                        widget.isGraded = true;
-                      });
-                      widget.onEdit(
-                        widget.startDate,
-                        widget.endDate,
-                        widget.allCountries,
-                        widget.currecy,
-                        widget.isGraded,
-                      );
-                      setState(() {
-                        widget.isGraded = false;
-                      });
-                    }
+              onTap: ()  {
+                widget.saveTask(true);
               },
               btnColor:canRaise? ColorStyles.purpleA401C4 :ColorStyles.greyDADADA ,
               textLabel: Text(
-                'raise_ad'.tr(),
+                  (widget.isCreating?(widget.isTask?"сreate_a_task_and_raise":"create_offer_and_raise"):(widget.isTask?"edit_task_and_raise":"edit_offer_and_raise")).tr(),
                 style: canRaise? CustomTextStyle.white_14: CustomTextStyle.grey_14_w600 ,
               ),
             ),

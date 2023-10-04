@@ -20,6 +20,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page_widgets/block_reason_widget.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
+import 'package:just_do_it/models/answer.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_status.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -39,7 +40,10 @@ class TaskStatusActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("TaskActionWidgetIsAnswered ${task.isAnswered}");
+    final user = BlocProvider.of<ProfileBloc>(context).user;
+    final answerIndex =
+        task.answers.indexWhere((element) => element.owner?.id == user?.id);
+    final Answer? answer = answerIndex != -1 ? task.answers[answerIndex] : null;
     if (isTaskOwner) {
       if (task.isBanned!) {
         return Column(
@@ -54,7 +58,13 @@ class TaskStatusActionWidget extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                     onTap: () {
-                      helpOnTopDialog(context, ''.tr(), 'comply_with'.tr());
+                      helpOnTopDialog(
+                          context,
+                          (task.isTask!
+                                  ? "your_task_is_blocked"
+                                  : "your_offer_is_blocked")
+                              .tr(),
+                          'comply_with'.tr());
                     },
                     child: SvgPicture.asset(SvgImg.help)),
               ],
@@ -62,30 +72,36 @@ class TaskStatusActionWidget extends StatelessWidget {
             SizedBox(height: 5.h),
             CustomButton(
               onTap: () async {
-                if (task.canAppellate) {
+                if (task.canAppellate&&task.verifyStatus!="Progress") {
                   final isSuccess = await Repository().resendTaskForModeration(
                       BlocProvider.of<ProfileBloc>(context).access, task.id!);
-                  if (isSuccess&&context.mounted) {
+                  if (isSuccess && context.mounted) {
                     DataUpdater().updateTasksAndProfileData(context);
                     updateTask();
                   }
                 }
               },
-              btnColor: task.canAppellate
-                  ? ColorStyles.yellowFFD70A
-                  : ColorStyles.greyDADADA,
+              btnColor: task.verifyStatus == "Progress"
+                  ? ColorStyles.greyDADADA
+                  : task.canAppellate
+                      ? ColorStyles.yellowFFD70A
+                      : ColorStyles.greyDADADA,
               textLabel: Text(
-                'resend'.tr(),
-                style: task.canAppellate
+                task.verifyStatus == "Progress"
+                    ? "on_inspection".tr()
+                    : 'resend'.tr(),
+                style: task.verifyStatus == "Progress"
                     ? CustomTextStyle.black_16_w600_171716
-                    : CustomTextStyle.grey_14_w600.copyWith(fontSize: 16),
+                    : task.canAppellate
+                        ? CustomTextStyle.black_16_w600_171716
+                        : CustomTextStyle.grey_14_w600.copyWith(fontSize: 16),
               ),
             ),
           ],
         );
       }
     } else {
-      if (task.isAnswered?.status == 'Progress') {
+      if (answer?.status == 'Progress') {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -130,7 +146,7 @@ class TaskStatusActionWidget extends StatelessWidget {
             ]
           ],
         );
-      } else if (task.isAnswered?.status == 'Selected' &&
+      } else if (answer?.status == 'Selected' &&
           task.status != TaskStatus.completed) {
         CustomButton(
           onTap: () async {},
@@ -140,7 +156,7 @@ class TaskStatusActionWidget extends StatelessWidget {
             style: CustomTextStyle.black_16_w600_171716,
           ),
         );
-      } else if (task.isAnswered == null && !task.isBanned!) {
+      } else if (answer == null && !task.isBanned!) {
         return CustomButton(
           onTap: () async {
             final user = context.read<ProfileBloc>().user;

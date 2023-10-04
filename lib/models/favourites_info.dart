@@ -187,6 +187,7 @@ class Category {
   int? id;
   String? description;
   String? photo;
+
   Category({
     required this.id,
     required this.description,
@@ -220,6 +221,13 @@ class OwnerOrder {
     this.hasReview,
     this.countOrdersComplete,
   });
+
+  factory OwnerOrder.fromOwner(Owner owner){
+    return OwnerOrder(id: owner.id,
+        firstname: owner.firstname,
+        lastname: owner.lastname,
+        photo: owner.photo);
+  }
 
   factory OwnerOrder.fromJson(Map<String, dynamic> json) {
     return OwnerOrder(

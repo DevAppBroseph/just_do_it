@@ -6,7 +6,7 @@ class InitialState extends ChatState {}
 
 class UpdateMenuState extends ChatState {}
 
-
+class SocketEventReceivedState extends ChatState{}
 class UpdateListMessageState extends ChatState {
   int? chatId;
 

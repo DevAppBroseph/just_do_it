@@ -37,7 +37,6 @@ class _AllTasksViewState extends State<AllTasksView> {
     List<Task> res = await Repository().getMyTaskList(
         BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
     for(final element in res){
-      print("getListTaskFronPage ${element.banReason} ${element.name} ${element.isBanned}");
     }
     taskList.clear();
     taskList.addAll(res);

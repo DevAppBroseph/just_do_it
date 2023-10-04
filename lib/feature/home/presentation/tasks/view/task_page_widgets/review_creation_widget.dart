@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
+import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_status.dart';
@@ -50,7 +51,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
       .user;
   late final agentOrCustomer=widget.isTaskOwner?widget.task.answers
       .firstWhere((element) => element.status == "Selected")
-      .owner:widget.task.isAnswered!.owner;
+      .owner:OwnerOrder.fromOwner(widget.task.owner!);
   Future<void> sendReview() async {
     if (user!.isBanned!) {
       banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
@@ -80,10 +81,10 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
               DataUpdater().updateTasksAndProfileData(context);
               widget.openOwner(widget.task.owner);
               scoreDialog(context, '50', 'left_a_review'.tr());
-              Future.delayed(const Duration(seconds: 2), () {
-                Loader.hide();
-              });
             }
+            Future.delayed(const Duration(seconds: 2), () {
+              Loader.hide();
+            });
           }
         }
       }
@@ -95,8 +96,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
   Widget build(BuildContext context) {
     if (widget.task.answers.isNotEmpty&&
     widget.task.status == TaskStatus.completed &&
-        !widget.task.isBanned!) {
-
+        !widget.task.isBanned!&&widget.task.answers.any((answer) => answer.status=="Selected")) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -4,7 +4,6 @@ import 'package:just_do_it/feature/auth/view/confirm_phone_code.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone_register.dart';
 import 'package:just_do_it/feature/auth/view/sign_up.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/personal_chat.dart';
-import 'package:just_do_it/feature/home/presentation/create/presentation/view/list_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/home_page.dart';
 import 'package:just_do_it/feature/home/presentation/menu/about_project.dart';
 import 'package:just_do_it/feature/home/presentation/menu/contact_us.dart';
@@ -43,7 +42,6 @@ class AppRoute {
   static const tasks = '/tasks';
   static const allTasks = '/all_tasks';
   static const archiveTasks = '/archive_tasks';
-  static const createTasks = '/createTasks';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings route) {
     switch (route.name) {
@@ -64,8 +62,7 @@ class AppRoute {
             onSelect: arg[0], customer: 0,
           ),
         );
-      case createTasks:
-        return MaterialPageRoute(builder: (_) => ListTasks());
+
       case contactus:
         List<String> arg = route.arguments as List<String>;
         return MaterialPageRoute(builder: (_) => ContactUs(name: arg[0], theme: arg[1],));

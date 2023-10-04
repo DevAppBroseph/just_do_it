@@ -97,7 +97,6 @@ class _OrdersCreateAsCustomerViewState
                             child: BlocBuilder<ProfileBloc, ProfileState>(
   builder: (context, state) {
     final user=context.read<ProfileBloc>().user;
-    print("_getProfile Update Builder ${user?.ordersCreateAsCustomer?.first.verifyStatus}");
     return ListView.builder(
                               itemCount: user?.ordersCreateAsCustomer?.length,
                               padding:

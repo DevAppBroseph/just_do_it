@@ -63,6 +63,11 @@ class _TaskPageState extends State<TaskPage> {
     task = widget.task;
     user = BlocProvider.of<ProfileBloc>(context).user;
     getTask();
+    context.read<ChatBloc>().stream.listen((state) {
+      if(state is SocketEventReceivedState){
+        getTask();
+      }
+    });
   }
 
   void getTask() async {
@@ -95,7 +100,6 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("TASK PAGE ${task.id}");
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: FutureBuilder(
@@ -109,7 +113,6 @@ class _TaskPageState extends State<TaskPage> {
               );
             }
             task = snapshot.data!;
-            print("TaskIsAnswered ${task.isAnswered}");
             return MediaQuery(
               data: const MediaQueryData(
                 textScaleFactor: 1.0,
@@ -575,7 +578,7 @@ class _TaskPageState extends State<TaskPage> {
             wrapWords: false,
             style:  CustomTextStyle
                 .black_12_w400_292D32,
-            maxLines: 2,
+            maxLines: null,
             ),
 
                                     ],

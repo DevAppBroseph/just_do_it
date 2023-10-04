@@ -63,7 +63,139 @@ class _EditTasksState extends State<EditTasks> {
   late UserRegModel? user;
   DateTime? startDate;
   DateTime? endDate;
+  Future<void> editTask(bool isGraded )async{
+    String error = 'specify'.tr();
+    bool errorsFlag = false;
 
+    if (startDate == null) {
+      error += '\n- ${'starts_date'.tr().toLowerCase()}';
+      errorsFlag = true;
+    }
+    if (endDate == null) {
+      error += '\n- ${'completions_date'.tr().toLowerCase()}';
+      errorsFlag = true;
+    }
+    if (coastMinController.text.isEmpty) {
+      error += '\n- ${'minimum_price'.tr()}';
+      errorsFlag = true;
+    }
+    if (coastMaxController.text.isEmpty) {
+      error += '\n- ${'maximum_price'.tr()}';
+      errorsFlag = true;
+    }
+    // bool countriesIsSelect = false;
+    // for (var element in countries) {
+    //   if (element.select) {
+    //     countriesIsSelect = true;
+    //   }
+    // }
+    // if (!countriesIsSelect) {
+    //   error += '\n- страну';
+    //   errorsFlag = true;
+    // }
+
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
+        error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
+        errorsFlag = true;
+      }
+    }
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMinController.text) > 1000000000) {
+        error += '\n- themaximum_budget_should_not_exceed'.tr();
+        errorsFlag = true;
+      }
+    }
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMaxController.text) > 1000000000) {
+        error += '\n- themaximum_budget_should_not_exceed'.tr();
+        errorsFlag = true;
+      }
+    }
+
+    if (errorsFlag) {
+      CustomAlert().showMessage(error);
+    } else {
+      if (user!.isBanned!) {
+        if (widget.task.isTask!) {
+          banDialog(context, 'respond_to_the_task'.tr());
+        } else {
+          banDialog(context, 'respond_to_the_offer'.tr());
+        }
+      } else {
+        showLoaderWrapper(context);
+
+        List<Countries> country = [];
+        List<Regions> regions = [];
+        List<Town> towns = [];
+
+        for (var element in countries) {
+          if (element.select) {
+            country.add(element);
+          }
+        }
+
+        for (var element in country) {
+          for (var element1 in element.region) {
+            if (element1.select) {
+              regions.add(element1);
+            }
+          }
+        }
+
+        for (var element in regions) {
+          for (var element1 in element.town) {
+            if (element1.select) {
+              towns.add(element1);
+            }
+          }
+        }
+
+        Task newTask = Task(
+            id: widget.task.id,
+            isTask: widget.task.isTask,
+            name: titleController.text,
+            description: aboutController.text,
+            status: TaskStatus.undefined,
+            subcategory: selectSubCategory!,
+            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
+            priceFrom: int.parse(
+              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+            ),
+            priceTo: int.parse(
+              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+            ),
+            regions: regions,
+            countries: country,
+            towns: towns,
+            files: document,
+            currency: currency,
+            isGraded: isGraded,
+            canAppellate: true
+        );
+
+        final profileBloc = BlocProvider.of<ProfileBloc>(context);
+        bool res = await Repository().editTask(profileBloc.access!, newTask);
+        if (res) {
+          if (res) {
+            Navigator.of(context)
+              ..pop();
+          }
+          context.read<TasksBloc>().add(UpdateTaskEvent());
+          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+          Loader.hide();
+        } else {
+          Loader.hide();
+          if (widget.customer) {
+            noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+          } else {
+            noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+          }
+        }
+      }
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -293,7 +425,7 @@ class _EditTasksState extends State<EditTasks> {
                         },
                       ),
                       DatePicker(
-                        asCustomer: widget.customer,
+                        isTask: widget.customer,
                         bottomInsets: bottomInsets,
                         coastMaxController: coastMaxController,
                         coastMinController: coastMinController,
@@ -310,7 +442,7 @@ class _EditTasksState extends State<EditTasks> {
                           setState(() {});
                         },
                         isBanned: widget.task.isBanned??false,
-                        isGraded: isGraded,
+                        isGraded: isGraded, saveTask: editTask, isCreating: false,
                       ),
                     ],
                   ),
@@ -320,143 +452,7 @@ class _EditTasksState extends State<EditTasks> {
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
-                        String error = 'specify'.tr();
-                        bool errorsFlag = false;
-
-                        if (startDate == null) {
-                          error += '\n- ${'starts_date'.tr().toLowerCase()}';
-                          errorsFlag = true;
-                        }
-                        if (endDate == null) {
-                          error += '\n- ${'completions_date'.tr().toLowerCase()}';
-                          errorsFlag = true;
-                        }
-                        if (coastMinController.text.isEmpty) {
-                          error += '\n- ${'minimum_price'.tr()}';
-                          errorsFlag = true;
-                        }
-                        if (coastMaxController.text.isEmpty) {
-                          error += '\n- ${'maximum_price'.tr()}';
-                          errorsFlag = true;
-                        }
-                        // bool countriesIsSelect = false;
-                        // for (var element in countries) {
-                        //   if (element.select) {
-                        //     countriesIsSelect = true;
-                        //   }
-                        // }
-                        // if (!countriesIsSelect) {
-                        //   error += '\n- страну';
-                        //   errorsFlag = true;
-                        // }
-
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-                            error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
-                            errorsFlag = true;
-                          }
-                        }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > 1000000000) {
-                            error += '\n- themaximum_budget_should_not_exceed'.tr();
-                            errorsFlag = true;
-                          }
-                        }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMaxController.text) > 1000000000) {
-                            error += '\n- themaximum_budget_should_not_exceed'.tr();
-                            errorsFlag = true;
-                          }
-                        }
-
-                        if (errorsFlag) {
-                          CustomAlert().showMessage(error);
-                        } else {
-                          if (user!.isBanned!) {
-                            if (widget.task.isTask!) {
-                              banDialog(context, 'respond_to_the_task'.tr());
-                            } else {
-                              banDialog(context, 'respond_to_the_offer'.tr());
-                            }
-                          } else {
-                            showLoaderWrapper(context);
-
-                            List<Countries> country = [];
-                            List<Regions> regions = [];
-                            List<Town> towns = [];
-
-                            for (var element in countries) {
-                              if (element.select) {
-                                country.add(element);
-                              }
-                            }
-
-                            for (var element in country) {
-                              for (var element1 in element.region) {
-                                if (element1.select) {
-                                  regions.add(element1);
-                                }
-                              }
-                            }
-
-                            for (var element in regions) {
-                              for (var element1 in element.town) {
-                                if (element1.select) {
-                                  towns.add(element1);
-                                }
-                              }
-                            }
-
-                            Task newTask = Task(
-                              id: widget.task.id,
-                              isTask: widget.task.isTask,
-                              name: titleController.text,
-                              description: aboutController.text,
-                              status: TaskStatus.undefined,
-                              subcategory: selectSubCategory!,
-                              dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
-                              dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
-                              priceFrom: int.parse(
-                                coastMinController.text.isEmpty ? '0' : coastMinController.text,
-                              ),
-                              priceTo: int.parse(
-                                coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
-                              ),
-                              regions: regions,
-                              countries: country,
-                              towns: towns,
-                              files: document,
-                              icon: '',
-                              task: '',
-                              typeLocation: '',
-                              whenStart: '',
-                              coast: '',
-                              currency: currency,
-                              isGraded: isGraded,
-                              canAppellate: true
-                            );
-
-                            final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                            bool res = await Repository().editTask(profileBloc.access!, newTask);
-                            if (res) {
-                              if (res) {
-                                Navigator.of(context)
-                                  ..pop()
-                                  ..pop();
-                              }
-                              context.read<TasksBloc>().add(UpdateTaskEvent());
-                              BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                              Loader.hide();
-                            } else {
-                              Loader.hide();
-                              if (widget.customer) {
-                                noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
-                              } else {
-                                noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
-                              }
-                            }
-                          }
-                        }
+                        editTask(false);
                       } else {
                         String error = 'specify'.tr();
                         bool errorsFlag = false;

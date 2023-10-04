@@ -26,19 +26,12 @@ class Task {
   String dateEnd;
   int priceFrom;
   TaskStatus status;
-  bool? isButtonPressed;
   int priceTo;
-  Answer? isAnswered;
   List<Countries> countries;
   List<Regions> regions;
   List<ArrayImages>? files;
   Currency? currency;
   List<Town> towns;
-  String? icon;
-  String? task;
-  String? typeLocation;
-  String? whenStart;
-  String? coast;
   String? verifyStatus;
   List<Answer> answers;
   bool canAppellate;
@@ -69,13 +62,6 @@ class Task {
         required this.canAppellate,
      required this.status,
       this.verifyStatus,
-      this.isAnswered,
-      this.icon,
-      this.isButtonPressed,
-      this.task,
-      this.typeLocation,
-      this.whenStart,
-      this.coast,
       this.answers = const []});
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -112,10 +98,6 @@ class Task {
         files.add(ArrayImages(element['file'], null, id: element['id']));
       }
     }
-    Answer? isAnswered;
-    if (json["is_answered"] != null) {
-      isAnswered = Answer.fromJson(json["is_answered"]);
-    }
 
     return Task(
         id: json["id"],
@@ -139,13 +121,12 @@ class Task {
         priceTo: json["price_to"],
         isTask: json['as_customer'],
         status: TaskStatusX.fromString(json['status'],DateTime.parse(json["date_end"])),
-        isButtonPressed: json['is_button_pressed'],
         countries: countries,
         regions: regions,
         files: files,
         towns: towns,
         answers: answers,
-        isAnswered: isAnswered, isGradedNow:  json["is_graded_now"],);
+         isGradedNow:  json["is_graded_now"],);
   }
 
   Map<String, dynamic> toJson() {
@@ -155,7 +136,6 @@ class Task {
     data['subcategory'] = subcategory?.id;
     data['date_start'] = dateStart;
     data['date_end'] = dateEnd;
-    data['is_button_pressed'] = isButtonPressed;
     data['price_from'] = priceFrom;
     data['is_liked'] = isLiked;
     data['price_to'] = priceTo;

@@ -5,6 +5,7 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
@@ -30,6 +31,7 @@ class Repository {
   var dio = Dio();
 
   Future<Owner?> getRanking(int? id, String? access) async {
+    print("getRanking $id");
     final response = await dio.get(
       '$server/ranking/$id',
       options: Options(
@@ -156,11 +158,10 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-
+    print("endpoint is ${'$server/orders/$id'}");
     Task? task;
     print("getTaskById ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201 || response.statusCode == 200) {
-      print(response.data);
       task = Task.fromJson(response.data);
       return task;
     }
@@ -171,7 +172,6 @@ class Repository {
   Future<bool> createTask(String access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
-
     final response = await dio.post(
       '$server/orders/',
       data: data,
@@ -267,7 +267,8 @@ class Repository {
   Future<bool> editTask(String? access, Task task) async {
     Map<String, dynamic> map = task.toJson();
     FormData data = FormData.fromMap(map);
-
+    print(access);
+    print("Edit Task payload is ${jsonEncode(task.toJson())}");
     final response = await dio.put(
       '$server/orders/${task.id}',
       data: data,
@@ -409,7 +410,21 @@ class Repository {
       return null;
     }
   }
-
+  Future<bool> sendForVerification(
+      String? access, int userId) async {
+    final response = await dio.get(
+      '$server/auth/send_to_verification/$userId/',
+      options: Options(
+          validateStatus: ((status) => status! >= 200),
+          headers: {'Authorization': 'Bearer $access'}),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      CustomAlert().showMessage("error".tr());
+      return false;
+    }
+  }
   Future<UserRegModel?> updateUser(
       String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
@@ -421,8 +436,6 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    print(map);
-    print("updateUser ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {
@@ -584,11 +597,9 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    debugPrint("getProfile ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       final user = UserRegModel.fromJson(response.data);
       // final testUser=user..myAnswersAsExecutor=user.myAnswersAsExecutor!.map((e) => e..isBanned=true..banReason="Inappropriate behaviour.").toList()..ordersCreateAsCustomer=user.ordersCreateAsCustomer!.map((e) => e..isBanned=true..banReason="Inappropriate behaviour.").toList();
-
       return user;
     }
     return null;
@@ -668,7 +679,6 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    print("getListMessage ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
       for (var element in response.data) {
@@ -812,7 +822,6 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    print('$server/orders/$id/resend_for_verification');
     print("resendTaskForModeration ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return true;

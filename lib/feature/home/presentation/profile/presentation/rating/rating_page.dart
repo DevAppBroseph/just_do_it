@@ -33,7 +33,7 @@ class _RatingPageState extends State<RatingPage> {
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      backgroundColor: ColorStyles.whiteFFFFFF,
+      backgroundColor: ColorStyles.greyF7F7F8,
       body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
         if (snapshot is LoadingRatingState) {
           return const CupertinoActivityIndicator();
@@ -46,7 +46,7 @@ class _RatingPageState extends State<RatingPage> {
             data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(
               children: [
-                if (reviews != null) header(reviews),
+                 header(reviews),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -319,11 +319,11 @@ class _RatingPageState extends State<RatingPage> {
     );
   }
 
-  Widget header(Reviews reviews) {
+  Widget header(Reviews? reviews) {
     final bloc = BlocProvider.of<ProfileBloc>(context);
     return SizedBox(
-      height: 300.h,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 60.h),
           Padding(
@@ -347,77 +347,80 @@ class _RatingPageState extends State<RatingPage> {
               ],
             ),
           ),
-          const Spacer(),
-          // SizedBox,(height: 8.h),
-          Container(
-            color: ColorStyles.yellowFFD70A,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 127.h,
-                  child: Row(
-                    children: [
-                      SizedBox(width: 24.w),
-                      SizedBox(
-                        width: 188.w,
-                        child: AutoSizeText(
-                          '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                          style: CustomTextStyle.black_34_w800_171716,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        height: 76.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
-                        decoration: BoxDecoration(
-                          color: ColorStyles.greyF3F3F3,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10.r),
-                            bottomLeft: Radius.circular(10.r),
+        SizedBox(height: 8.h),
+          if(reviews!=null)...[
+            Container(
+              color: ColorStyles.yellowFFD70A,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 127.h,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 24.w),
+                        SizedBox(
+                          width: 188.w,
+                          child: AutoSizeText(
+                            '${bloc.user?.firstname}\n${bloc.user?.lastname}',
+                            style: CustomTextStyle.black_34_w800_171716,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'your_rating'.tr(),
-                              style: CustomTextStyle.black_14_w400_515150,
+                        const Spacer(),
+                        Container(
+                          height: 76.h,
+                          padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                          decoration: BoxDecoration(
+                            color: ColorStyles.greyF3F3F3,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.r),
+                              bottomLeft: Radius.circular(10.r),
                             ),
-                            SizedBox(height: 6.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset('assets/icons/star.svg'),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  reviews.ranking == null ? '-' : (reviews.ranking!).toString(),
-                                  style: CustomTextStyle.black_20_w600,
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'your_rating'.tr(),
+                                style: CustomTextStyle.black_14_w400_515150,
+                              ),
+                              SizedBox(height: 6.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset('assets/icons/star.svg'),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    reviews!.ranking == null ? '-' : (reviews.ranking!).toString(),
+                                    style: CustomTextStyle.black_20_w600,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 53.h,
-                  child: Row(
-                    children: [
-                      SizedBox(width: 24.w),
-                      Text(
-                        '${'you_have_completed'.tr()} ${user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString()} ${'taskss'.tr()}',
-                        style: CustomTextStyle.black_14_w400_515150,
-                      ),
-                    ],
+                  SizedBox(
+                    height: 53.h,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 24.w),
+                        Text(
+                          '${'you_have_completed'.tr()} ${user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString()} ${'taskss'.tr()}',
+                          style: CustomTextStyle.black_14_w400_515150,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ]
+
         ],
       ),
     );

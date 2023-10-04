@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -667,55 +668,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 if (state is ScoreLoaded) {
                                                                   proverkaBalance = bloc.user!.allbalance!;
                                                                   final levels = state.levels;
-                                                                  if (bloc.user!.allbalance! < levels![0].mustCoins!) {
-                                                                    return CachedNetworkImage(
-                                                                      progressIndicatorBuilder:
-                                                                          (context, url, progress) {
-                                                                        return const CupertinoActivityIndicator();
-                                                                      },
-                                                                      imageUrl: '${levels[0].bwImage}',
-                                                                      height: 30.h,
-                                                                      width: 30.w,
-                                                                    );
-                                                                  }
-                                                                  for (int i = 0; i < levels.length; i++) {
-                                                                    if (levels[i + 1].mustCoins == null) {
-                                                                      return CachedNetworkImage(
-                                                                        progressIndicatorBuilder:
-                                                                            (context, url, progress) {
-                                                                          return const CupertinoActivityIndicator();
-                                                                        },
-                                                                        imageUrl: '${levels[i].image}',
-                                                                        height: 30.h,
-                                                                        width: 30.w,
-                                                                      );
-                                                                    } else {
-                                                                      if (bloc.user!.allbalance! >= levels[i].mustCoins! &&
-                                                                          bloc.user!.allbalance! <
-                                                                              levels[i + 1].mustCoins!) {
-                                                                        return CachedNetworkImage(
-                                                                          progressIndicatorBuilder:
-                                                                              (context, url, progress) {
-                                                                            return const CupertinoActivityIndicator();
-                                                                          },
-                                                                          imageUrl: '${levels[i].image}',
-                                                                          height: 30.h,
-                                                                          width: 30.w,
-                                                                        );
-                                                                      } else if (bloc.user!.allbalance! >=
-                                                                          levels.last.mustCoins!) {
-                                                                        return CachedNetworkImage(
-                                                                          progressIndicatorBuilder:
-                                                                              (context, url, progress) {
-                                                                            return const CupertinoActivityIndicator();
-                                                                          },
-                                                                          imageUrl: '${levels.last.image}',
-                                                                          height: 30.h,
-                                                                          width: 30.w,
-                                                                        );
-                                                                      }
-                                                                    }
-                                                                  }
+                                                                  return GradeMascotImage(levels:levels,user: user,);
+
                                                                 }
                                                                 return Container();
                                                               }),

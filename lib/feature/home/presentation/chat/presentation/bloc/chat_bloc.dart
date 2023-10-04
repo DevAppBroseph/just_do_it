@@ -98,8 +98,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
+        print("Socket Event: $event");
         try {
-          print("SOCKET EVENT: $event");
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
           if (newMessageTask.action.isNotEmpty) {
             TaskDialogs().showTaskMessage(
@@ -107,6 +107,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             );
           }
           eventBloc.updateData();
+          emit(SocketEventReceivedState());
           return;
         } catch (_) {}
         try {

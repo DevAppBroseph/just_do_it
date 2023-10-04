@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -161,8 +162,7 @@ class _ScorePageState extends State<ScorePage> {
                                                   width: 113.w,
                                                   fit: BoxFit.fill,
                                                 ),
-                                              if (user!.allbalance! >= levels[0].mustCoins!)
-                                                _scorePicture(levels, user!.allbalance!),
+                                              GradeMascotImage(levels: levels,user: user,size: 113),
                                               SizedBox(
                                                 width: 15.w,
                                               ),

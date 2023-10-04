@@ -17,8 +17,8 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
+import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
-import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -150,12 +150,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       Loader.hide();
-      if (current is UpdateProfileSuccessState||current is LoadProfileSuccessState  ) {
+      if (current is UpdateProfileSuccessState ||
+          current is LoadProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user;
         return true;
       }
       if (current is UpdateProfileTaskState) {
-
         user = BlocProvider.of<ProfileBloc>(context).user;
         if (user!.images != null) {
           photos.clear();
@@ -314,8 +314,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         const Spacer(),
                                         GestureDetector(
                                           onTap: () async {
-                                            final code = await FirebaseDynamicLinksService()
-                                                .shareUserProfile(int.parse(user!.id.toString()));
+                                            final code =
+                                                await FirebaseDynamicLinksService()
+                                                    .shareUserProfile(int.parse(
+                                                        user!.id.toString()));
                                             Share.share(code.toString());
                                           },
                                           child: SvgPicture.asset(
@@ -388,6 +390,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             return true;
                                           }, builder: (context, state) {
                                             if (state is ScoreLoaded) {
+
                                               Future.delayed(
                                                   const Duration(
                                                       milliseconds: 500), () {
@@ -396,70 +399,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               proverkaBalance =
                                                   user!.allbalance!;
                                               final levels = state.levels;
-                                              if (user!.allbalance! <
-                                                  levels![0].mustCoins!) {
-                                                return CachedNetworkImage(
-                                                  progressIndicatorBuilder:
-                                                      (context, url, progress) {
-                                                    return const CupertinoActivityIndicator();
-                                                  },
-                                                  imageUrl:
-                                                      '${levels[0].bwImage}',
-                                                  height: 30.h,
-                                                  width: 30.w,
-                                                );
-                                              }
-                                              for (int i = 0;
-                                                  i < levels.length;
-                                                  i++) {
-                                                if (levels[i + 1].mustCoins ==
-                                                    null) {
-                                                  return CachedNetworkImage(
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                            progress) {
-                                                      return const CupertinoActivityIndicator();
-                                                    },
-                                                    imageUrl:
-                                                        '${levels[i].image}',
-                                                    height: 30.h,
-                                                    width: 30.w,
-                                                  );
-                                                } else {
-                                                  if (user!.allbalance! >=
-                                                          levels[i]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[i + 1]
-                                                              .mustCoins!) {
-                                                    return CachedNetworkImage(
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              progress) {
-                                                        return const CupertinoActivityIndicator();
-                                                      },
-                                                      imageUrl:
-                                                          '${levels[i+1].image}',
-                                                      height: 30.h,
-                                                      width: 30.w,
-                                                    );
-                                                  } else if (user!
-                                                          .allbalance! >=
-                                                      levels.last.mustCoins!) {
-                                                    return CachedNetworkImage(
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              progress) {
-                                                        return const CupertinoActivityIndicator();
-                                                      },
-                                                      imageUrl:
-                                                          '${levels.last.image}',
-                                                      height: 30.h,
-                                                      width: 30.w,
-                                                    );
-                                                  }
-                                                }
-                                              }
+                                             return GradeMascotImage(
+                                                levels: levels,
+                                                user: user,
+                                              );
                                             }
                                             return Container();
                                           }),
@@ -656,7 +599,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 ),
               ),
               SizedBox(height: 16.h),
-              if ((user?.isBanned??false)||(user?.verifyStatus=="Failed")) ...[
+              if ((user?.isBanned ?? false) ||
+                  (user?.verifyStatus == "Failed")) ...[
                 Container(
                   height: 40.h,
                   margin: EdgeInsets.symmetric(horizontal: 20),
@@ -681,7 +625,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 11.h),
                           child: Text(
-      "ban_reason".tr(),
+                            "ban_reason".tr(),
                             textAlign: TextAlign.start,
                             style: CustomTextStyle.red_11_w400_171716,
                           ),
@@ -709,7 +653,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: SizedBox(
                         width: 250.w,
                         child: Text(
-                          (user?.verifyStatus=="Failed")?"${user?.banReason??"TATUU"}":("unknown_reason".tr()),
+                          (user?.verifyStatus == "Failed")
+                              ? "${user?.banReason ?? "failed_verification".tr()}"
+                              : ("unknown_reason".tr()),
                           style: CustomTextStyle.black_14_w400_515150,
                         ),
                       ),
@@ -826,19 +772,21 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     )
                                   ] else ...[
                                     ScaleButton(
-                                      onTap: () async{
-                                        if(user!.canAppellate!){
-                                          user!.copyWith(isButtonPressed: true);
-                                          BlocProvider.of<ProfileBloc>(context)
-                                              .setUser(user);
-                                          final newUser=await Repository().updateUser(
-                                              BlocProvider.of<ProfileBloc>(
-                                                  context)
-                                                  .access,
-                                              user!);
-                                          if(newUser!=null){
+                                      onTap: () async {
+                                        if (user!.canAppellate!) {
+
+                                          final sendForVerificationSuccess = await Repository()
+                                              .sendForVerification(
+                                                  BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .access,
+                                                  user!.id!);
+                                          if (sendForVerificationSuccess) {
+                                            BlocProvider.of<ProfileBloc>(context)
+                                                .setUser(user);
                                             setState(() {
-                                              user=newUser;
+                                              user!.copyWith(verifyStatus: "Progress");
+                                              // user = newUser;
                                             });
                                           }
                                         }
@@ -848,20 +796,24 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         height: 22.h,
                                         width: 86.w,
                                         decoration: BoxDecoration(
-                                          color: user!.canAppellate!?ColorStyles.yellowFFCA0D:ColorStyles.greyBDBDBD,
+                                          color: user!.canAppellate!
+                                              ? ColorStyles.yellowFFCA0D
+                                              : ColorStyles.greyBDBDBD,
                                           borderRadius:
                                               BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
                                           child: Text(
                                             'send'.tr(),
-                                            style:CustomTextStyle
+                                            style: CustomTextStyle
                                                 .black_11_w400_171716
                                                 .copyWith(
-                                                    color:user!.canAppellate!?( user?.verifyStatus ==
-                                                            "Progress"
-                                                        ? Colors.white
-                                                        : Colors.black):Colors.white),
+                                                    color: user!.canAppellate!
+                                                        ? (user?.verifyStatus ==
+                                                                "Progress"
+                                                            ? Colors.white
+                                                            : Colors.black)
+                                                        : Colors.white),
                                           ),
                                         ),
                                       ),
@@ -1274,7 +1226,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: AnimatedContainer(
-
                   width: 327.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),

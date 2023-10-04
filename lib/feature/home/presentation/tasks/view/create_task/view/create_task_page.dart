@@ -65,7 +65,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   // List<ArrayImages> photo = [];
 
   List<Countries> countries = [];
-  bool isGraded = false;
   Currency? currency;
   late UserRegModel? user;
   TaskCategory? selectCategory;
@@ -73,7 +72,161 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   DateTime? startDate;
   DateTime? endDate;
+  Future<void> createTask(bool isGraded)async{
+    String error = 'specify'.tr();
+    bool errorsFlag = false;
+    if (startDate == null) {
+      error += '\n- ${'starts_date'.tr().toLowerCase()}';
+      errorsFlag = true;
+    }
+    if (endDate == null) {
+      error += '\n- ${'completions_date'.tr().toLowerCase()}';
+      errorsFlag = true;
+    }
+    if (coastMinController.text.isEmpty) {
+      error += '\n- ${'minimum_price'.tr()}';
+      errorsFlag = true;
+    }
+    if (coastMaxController.text.isEmpty) {
+      error += '\n- ${'maximum_price'.tr()}';
+      errorsFlag = true;
+    }
 
+    if (currency == null) {
+      error += '\n- ${'currency'.tr().toLowerCase()}';
+      errorsFlag = true;
+    }
+    coastMaxController.text = coastMaxController.text.replaceAll(' ', '');
+    coastMinController.text = coastMinController.text.replaceAll(' ', '');
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
+        error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
+        errorsFlag = true;
+      }
+    }
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMinController.text) > 1000000000) {
+        error += '\n- themaximum_budget_should_not_exceed'.tr();
+        errorsFlag = true;
+      }
+    }
+    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMaxController.text) > 1000000000) {
+        error += '\n- themaximum_budget_should_not_exceed'.tr();
+        errorsFlag = true;
+      }
+    }
+
+    if (errorsFlag) {
+      // showAlertToast(error);
+      CustomAlert().showMessage(error);
+    } else {
+      if (user!.isBanned!) {
+        if (isTask) {
+          banDialog(context, 'respond_to_the_task'.tr());
+        } else {
+          banDialog(context, 'respond_to_the_offer'.tr());
+        }
+      } else {
+        showLoaderWrapper(context);
+
+        List<Countries> country = [];
+        List<Regions> regions = [];
+        List<Town> towns = [];
+
+        for (var element in countries) {
+          if (element.select) {
+            country.add(element);
+          }
+        }
+
+        for (var element in country) {
+          for (var element1 in element.region) {
+            if (element1.select) {
+              regions.add(element1);
+            }
+          }
+        }
+
+        for (var element in regions) {
+          for (var element1 in element.town) {
+            if (element1.select) {
+              towns.add(element1);
+            }
+          }
+        }
+        Task newTask = Task(
+            isTask: isTask,
+            name: titleController.text,
+            description: aboutController.text,
+            subcategory: selectSubCategory!,
+            dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
+            dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
+            priceFrom: int.parse(
+              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+            ),
+            priceTo: int.parse(
+              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+            ),
+            regions: regions,
+            countries: country,
+            towns: towns,
+            files: documents,
+            currency: currency,
+            isGraded: isGraded, status: TaskStatus.undefined,
+            canAppellate: false
+        );
+        BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+        final profileBloc = BlocProvider.of<ProfileBloc>(context);
+        bool res = await Repository().createTask(profileBloc.access!, newTask);
+        if (res) {
+          if (widget.currentPage == 6) {
+            if (res) Navigator.of(context).pop();
+          }
+
+          if (widget.currentPage == 1 || widget.currentPage == 2) {
+            if (res) Navigator.of(context).pop();
+            if (res) {
+              Navigator.of(context).pop(!isTask);
+            }
+          }
+          if (widget.currentPage == 3 || widget.currentPage == 4) {
+            if (res) {
+              Navigator.of(context).pop(!isTask);
+            }
+          }
+
+          Loader.hide();
+
+          if (isTask) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return TaskAdditional(
+                  title: 'my_task'.tr(),
+                  asCustomer: true,
+                  scoreTrue: true,
+                );
+              }),
+            );
+          } else {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return TaskAdditional(
+                    title: 'opens'.tr(), asCustomer: isTask, scoreTrue: true);
+              }),
+            );
+          }
+        } else {
+          Loader.hide();
+          if (isTask) {
+            noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
+          } else {
+            noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
+          }
+        }
+      }
+    }
+  }
   _selectImages() async {
     final getMedia = await ImagePicker().pickMultiImage();
     if (getMedia.isNotEmpty) {
@@ -351,23 +504,22 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         customer: isTask,
                       ),
                       DatePicker(
-                        asCustomer: isTask,
+                        isTask: isTask,
                         bottomInsets: bottomInsets,
                         coastMaxController: coastMaxController,
                         coastMinController: coastMinController,
                         startDate: startDate,
                         endDate: endDate,
                         allCountries: countries,
-                        isGraded: isGraded,
+                        isGraded: false,
                         currecy: currency,
                         onEdit: (startDate, endDate, countries, currency, isGraded) {
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.currency = currency;
-                          this.isGraded = isGraded;
                           setState(() {});
-                        },
+                        }, saveTask: createTask, isCreating: true,
                       ),
                     ],
                   ),
@@ -378,190 +530,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {
-                        String error = 'specify'.tr();
-                        bool errorsFlag = false;
-
-                        if (startDate == null) {
-                          error += '\n- ${'starts_date'.tr().toLowerCase()}';
-                          errorsFlag = true;
-                        }
-                        if (endDate == null) {
-                          error += '\n- ${'completions_date'.tr().toLowerCase()}';
-                          errorsFlag = true;
-                        }
-                        if (coastMinController.text.isEmpty) {
-                          error += '\n- ${'minimum_price'.tr()}';
-                          errorsFlag = true;
-                        }
-                        if (coastMaxController.text.isEmpty) {
-                          error += '\n- ${'maximum_price'.tr()}';
-                          errorsFlag = true;
-                        }
-
-                        // bool countriesIsSelect = false;
-                        // for (var element in countries) {
-                        //   if (element.select) {
-                        //     countriesIsSelect = true;
-                        //   }
-                        // }
-                        // if (!countriesIsSelect) {
-                        //   error += '\n- страну';
-                        //   errorsFlag = true;
-                        // }
-                        if (currency == null) {
-                          error += '\n- ${'currency'.tr().toLowerCase()}';
-                          errorsFlag = true;
-                        }
-                        coastMaxController.text = coastMaxController.text.replaceAll(' ', '');
-                        coastMinController.text = coastMinController.text.replaceAll(' ', '');
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-                            error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
-                            errorsFlag = true;
-                          }
-                        }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMinController.text) > 1000000000) {
-                            error += '\n- themaximum_budget_should_not_exceed'.tr();
-                            errorsFlag = true;
-                          }
-                        }
-                        if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-                          if (int.parse(coastMaxController.text) > 1000000000) {
-                            error += '\n- themaximum_budget_should_not_exceed'.tr();
-                            errorsFlag = true;
-                          }
-                        }
-
-                        if (errorsFlag) {
-                          // showAlertToast(error);
-                          CustomAlert().showMessage(error);
-                        } else {
-                          if (user!.isBanned!) {
-                            if (isTask) {
-                              banDialog(context, 'respond_to_the_task'.tr());
-                            } else {
-                              banDialog(context, 'respond_to_the_offer'.tr());
-                            }
-                          } else {
-                            showLoaderWrapper(context);
-
-                            List<Countries> country = [];
-                            List<Regions> regions = [];
-                            List<Town> towns = [];
-
-                            for (var element in countries) {
-                              if (element.select) {
-                                country.add(element);
-                              }
-                            }
-
-                            for (var element in country) {
-                              for (var element1 in element.region) {
-                                if (element1.select) {
-                                  regions.add(element1);
-                                }
-                              }
-                            }
-
-                            for (var element in regions) {
-                              for (var element1 in element.town) {
-                                if (element1.select) {
-                                  towns.add(element1);
-                                }
-                              }
-                            }
-                            Task newTask = Task(
-                              isTask: isTask,
-                              name: titleController.text,
-                              description: aboutController.text,
-                              subcategory: selectSubCategory!,
-                              dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
-                              dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
-                              priceFrom: int.parse(
-                                coastMinController.text.isEmpty ? '0' : coastMinController.text,
-                              ),
-                              priceTo: int.parse(
-                                coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
-                              ),
-                              regions: regions,
-                              countries: country,
-                              towns: towns,
-                              files: documents,
-                              icon: '',
-                              task: '',
-                              typeLocation: '',
-                              whenStart: '',
-                              coast: '',
-                              currency: currency,
-                              isGraded: isGraded, status: TaskStatus.undefined,
-                              canAppellate: false
-                            );
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-                            final profileBloc = BlocProvider.of<ProfileBloc>(context);
-                            bool res = await Repository().createTask(profileBloc.access!, newTask);
-                            if (res) {
-                              if (widget.currentPage == 6) {
-                                if (res) Navigator.of(context).pop();
-                              }
-
-                              if (widget.currentPage == 1 || widget.currentPage == 2) {
-                                if (res) Navigator.of(context).pop();
-                                if (res) {
-                                  Navigator.of(context).pop(!isTask);
-                                }
-                              }
-                              if (widget.currentPage == 3 || widget.currentPage == 4) {
-                                if (res) {
-                                  Navigator.of(context).pop(!isTask);
-                                }
-                              }
-
-                              Loader.hide();
-
-                              if (isTask) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) {
-                                    return TaskAdditional(
-                                      title: 'my_task'.tr(),
-                                      asCustomer: true,
-                                      scoreTrue: true,
-                                    );
-                                  }),
-                                );
-                              } else {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) {
-                                    return TaskAdditional(
-                                        title: 'opens'.tr(), asCustomer: isTask, scoreTrue: true);
-                                  }),
-                                );
-                              }
-                            } else {
-                              Loader.hide();
-                              if (isTask) {
-                                noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
-                              } else {
-                                noMoney(context, 'raise_offer'.tr(), 'the_offer_to_the_top'.tr());
-                              }
-                            }
-
-                            // if (isTask) {
-                            //   await Navigator.of(context).push(
-                            //     MaterialPageRoute(builder: (context) {
-                            //       return OrdersCreateAsCustomerView(
-                            //           title: 'my_task'.tr());
-                            //     }),
-                            //   );
-                            // } else {
-                            //   await Navigator.of(context).push(
-                            //     MaterialPageRoute(builder: (context) {
-                            //       return OpenOffers(title: 'open'.tr());
-                            //     }),
-                            //   );
-                            // }
-                          }
-                        }
+                        createTask(false);
                       } else {
                         String error = 'specify'.tr();
                         bool errorsFlag = false;

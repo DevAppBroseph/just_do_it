@@ -28,7 +28,7 @@ extension TaskStatusX on TaskStatus{
           return TaskStatus.progress;
       }
     }else {
-      if (DateTime.now().isAfter(deadline)) {
+      if (DateTime.now().isAfter(deadline.add(const Duration(days: 2)))) {
         return TaskStatus.inactiveAfterDeadline;
       }
       //TODO check for "inactiveAfter10Days" of last answer date and last grade

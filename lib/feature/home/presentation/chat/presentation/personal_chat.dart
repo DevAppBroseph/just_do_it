@@ -44,14 +44,20 @@ class _PersonalChatState extends State<PersonalChat> {
 
   void getInitMessage() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    if (widget.id != null) {
+    final chatBloc=BlocProvider.of<ChatBloc>(context);
+    if(widget.id=="null"){
+      final chatElementIndex=chatBloc.chatList.indexWhere((element) => element.chatWith?.id==int.parse(widget.idWithChat));
+      if(chatElementIndex!=-1) {
+        final chatId=chatBloc.chatList[chatElementIndex].id;
+        widget.id = chatId.toString();
+        chatBloc.editShowPersonChat(false);
+        chatBloc.editChatId(chatId);
+        chatBloc.messages = [];
+      }
+    }
+    if (widget.id != "null") {
       BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
       BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-    } else {
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        BlocProvider.of<ChatBloc>(context).add(GetListMessageItem(access!));
-        BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-      });
     }
   }
 
@@ -179,7 +185,8 @@ class _PersonalChatState extends State<PersonalChat> {
                 }
                 return true;
               },
-              builder: (context, snapshot) {
+              builder: (context, state) {
+
                 List<ChatMessage> messages =
                     BlocProvider.of<ChatBloc>(context).messages;
                 return GestureDetector(

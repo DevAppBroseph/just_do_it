@@ -62,15 +62,23 @@ class _ReviewOverviewWidgetState extends State<ReviewOverviewWidget> {
                 }
                 return false;
               }, builder: (context, stateProfile) {
-                widget.task.answers=widget.task.answers..sort((a,b){
-                  if ((a.isGraded ?? false) && !(b.isGraded ?? false)) {
-                    return -1; // a comes before b
-                  } else if (!(a.isGraded ?? false) && (b.isGraded ?? false)) {
-                    return 1; // b comes before a
-                  } else {
-                    return 0; // no change in order
-                  }
-                });
+                final selectedAnswerIndex =widget.task.answers.indexWhere((element) =>element.status=="Selected");
+                if(selectedAnswerIndex!=-1){
+                  final selectedAnswer=widget.task.answers[selectedAnswerIndex];
+                  widget.task.answers.clear();
+                  widget.task.answers.add(selectedAnswer);
+                }else{
+                  widget.task.answers=widget.task.answers..sort((a,b){
+                    if ((a.isGraded ?? false) && !(b.isGraded ?? false)) {
+                      return -1; // a comes before b
+                    } else if (!(a.isGraded ?? false) && (b.isGraded ?? false)) {
+                      return 1; // b comes before a
+                    } else {
+                      return 0; // no change in order
+                    }
+                  });
+                }
+
             return ListView.builder(
               padding: const EdgeInsets.only(bottom: 24),
               physics: const NeverScrollableScrollPhysics(),
