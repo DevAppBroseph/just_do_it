@@ -41,7 +41,6 @@ class WelcomPage extends StatefulWidget {
 }
 
 class _WelcomPageState extends State<WelcomPage> {
-  late UserRegModel? user;
   bool state = true;
   int indexLanguage = 0;
   int index = 0;
@@ -88,7 +87,14 @@ class _WelcomPageState extends State<WelcomPage> {
 
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<ProfileBloc>(context).user;
+
+
+    double heightScreen = MediaQuery.of(context).size.height;
+    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+    return BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
+    UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
+    print("HasNotifications ${user?.hasNotifications}");
     if (user?.rus != null) {
       if (user!.rus!) {
         selectLanguage = 'RU';
@@ -111,9 +117,6 @@ class _WelcomPageState extends State<WelcomPage> {
         BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
       }
     }
-
-    double heightScreen = MediaQuery.of(context).size.height;
-    double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -427,7 +430,7 @@ class _WelcomPageState extends State<WelcomPage> {
                         SizedBox(width: 12.w),
                         GestureDetector(
                           onTap: () {
-                            if (user != null) {
+                            if (Storage.isAuthorized) {
                               Navigator.of(context).pushNamed(AppRoute.menu, arguments: [
                                 (page) {},
                                 false,
@@ -1026,6 +1029,8 @@ class _WelcomPageState extends State<WelcomPage> {
         ),
       ),
     );
+  },
+);
   }
 
   Widget elementCategory(String icon, String title, int currentIndex, {String choice = ''}) {

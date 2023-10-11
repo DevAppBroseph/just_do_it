@@ -145,7 +145,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken =  Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().getProfile(access!);

@@ -87,7 +87,10 @@ class _HomePageState extends State<HomePage> {
 
   void selectUser(int value) {
     pageController.jumpToPage(value);
-    page = value;
+    setState(() {
+      page = value;
+
+    });
   }
 
   @override
@@ -310,11 +313,10 @@ class _HomePageState extends State<HomePage> {
       {int? counderMessage}) {
     return GestureDetector(
       onTap: () {
-
         searchQuery = '';
         setState(() {});
         final bloc = BlocProvider.of<ProfileBloc>(context);
-        if ((index == 2 || index == 3 || index == 4) && bloc.user == null) {
+        if ((index == 2 || index == 3 || index == 4) && !Storage.isAuthorized) {
           Navigator.of(context).pushNamed(AppRoute.auth);
         } else {
           if (index == 4) {

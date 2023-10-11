@@ -65,8 +65,6 @@ class _CustomerState extends State<Customer> {
 
   @override
   Widget build(BuildContext context) {
-    print((user?.finishedOffers?.length ?? 9).toString() +
-        " ordersCreateAsCustomerLength");
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {

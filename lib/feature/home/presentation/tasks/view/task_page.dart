@@ -100,6 +100,10 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    // print("Task isLiked ${task.isLiked}");
+    print("IS task ${widget.task.isTask}");
+    print("Owner FirstName ${widget.task.owner?.firstname}");
+    print("User FirstName ${user?.firstname}");
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: FutureBuilder(

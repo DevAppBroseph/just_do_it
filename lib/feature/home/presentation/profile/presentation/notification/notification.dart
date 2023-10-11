@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,21 +27,30 @@ class _NotificationPageState extends State<NotificationPage> {
 
   List<NotificationsOnDevice>? notifications;
 
-  late UserRegModel? user;
+  late String? access = BlocProvider.of<ProfileBloc>(context).access;
 
   bool proverka = true;
-
+  @override
+  void initState() {
+    BlocProvider.of<NotificationsBloc>(context).add(GetNotificationsEvent(access,(){
+      context.read<ProfileBloc>().add(GetProfileEvent());
+    }));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    String? access = BlocProvider.of<ProfileBloc>(context).access;
-    BlocProvider.of<NotificationsBloc>(context).add(GetNotificationsEvent(access));
-    user = BlocProvider.of<ProfileBloc>(context).user;
-    BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
-        body: BlocBuilder<NotificationsBloc, NotificationsState>(builder: (context, state) {
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
+    final user=context.read<ProfileBloc>().user;
+    if(user==null){
+      return const Center(child: CupertinoActivityIndicator(),);
+    }
+    return BlocBuilder<NotificationsBloc, NotificationsState>(
+        builder: (context, state) {
           if (state is NotificationsLoaded) {
             notifications = state.notifications;
             if (notifications!.isEmpty) {
@@ -147,7 +157,9 @@ class _NotificationPageState extends State<NotificationPage> {
                         padding: EdgeInsets.only(bottom: 32.h),
                         child: CustomButton(
                           onTap: () {
-                            BlocProvider.of<NotificationsBloc>(context).add(DeleteNotificationsEvent(access));
+                            BlocProvider.of<NotificationsBloc>(context).add(DeleteNotificationsEvent(access,(){
+                              context.read<ProfileBloc>().add(GetProfileEvent());
+                            }));
                           },
                           btnColor: proverka ? ColorStyles.greyE0E6EE : ColorStyles.yellowFFD70A,
                           textLabel: Text(
@@ -164,7 +176,9 @@ class _NotificationPageState extends State<NotificationPage> {
           } else {
             return Container();
           }
-        }),
+        });
+  },
+),
       ),
     );
   }

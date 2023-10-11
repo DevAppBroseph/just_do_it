@@ -49,7 +49,7 @@ class TaskStatusActionWidget extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            BlocReasonWidget(
+            BlockReasonWidget(
               task: task,
               isTaskOwner: isTaskOwner,
             ),

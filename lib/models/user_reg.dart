@@ -220,6 +220,60 @@ class UserRegModel {
     link = link ?? link;
   }
 
+  UserRegModel duplicate() {
+    return UserRegModel(
+      phoneNumber: phoneNumber,
+      email: email,
+      firstname: firstname,
+      lastname: lastname,
+      password: password,
+      docType: docType,
+      activity: activity,
+      region: region,
+      country: country,
+      photoLink: photoLink,
+      cvLink: cvLink,
+      docInfo: docInfo,
+      photo: photo,
+      sex: sex,
+      isEntity: isEntity,
+      verifyStatus: verifyStatus,
+      images: images,
+      cv: cv,
+      hasNotifications: hasNotifications,
+      cvType: cvType,
+      isBanned: isBanned,
+      banReason: banReason,
+      rus: rus,
+      groups: groups,
+      activities: activities,
+      activitiesDocument: activitiesDocument,
+      ordersInProgressAsCustomer: ordersInProgressAsCustomer,
+      ordersCompleteAsCustomer: ordersCompleteAsCustomer,
+      myAnswersSelectedAsExecutor: myAnswersSelectedAsExecutor,
+      ordersCompleteAsExecutor: ordersCompleteAsExecutor,
+      id: id,
+      activitiesInfo: activitiesInfo,
+      countMyAnswersAsExecutor: countMyAnswersAsExecutor,
+      countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
+      countOrdersCompleteACustomer: countOrdersCompleteACustomer,
+      balance: balance,
+      allbalance: allbalance,
+      link: link,
+      countOrderComplete: countOrderComplete,
+      countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
+      countOrdersCompleteAsExecutor: countOrdersCompleteAsExecutor,
+      countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
+      ordersCreateAsCustomer: ordersCreateAsCustomer,
+      openOffers: openOffers,
+      selectedOffers: selectedOffers,
+      finishedOffers: finishedOffers,
+      selectedOffersAsCustomer: selectedOffersAsCustomer,
+      finishedOffersAsCustomer: finishedOffersAsCustomer,
+      myAnswersAsExecutor: myAnswersAsExecutor,
+      canAppellate: canAppellate,
+    );
+  }
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
     bool isBanned = data['is_banned'];
@@ -252,7 +306,7 @@ class UserRegModel {
     int? balance = data['actual_balance'];
     int? allbalance = data['balance'];
     String? link = data['link'];
-    String? banReason = data['failed_verify_reason'];
+    String? banReason = data['ban_reason'];
     if (data['activities_info'] != null) {
       for (var element in data['activities_info']) {
         list.add(ActivitiesInfo.fromJson(element));

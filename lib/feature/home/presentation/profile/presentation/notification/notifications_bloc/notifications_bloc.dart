@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/notofications.dart';
 import 'package:just_do_it/network/repository.dart';
-
+import 'package:flutter/material.dart';
 part 'notifications_event.dart';
 part 'notifications_state.dart';
 
@@ -16,7 +16,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     // emit(FavouritesLoading());
     if (event.access != null) {
       notifications = await Repository().getMyNotifications(event.access);
-
+      event.loadProfile();
       emit(NotificationsLoaded(notifications: notifications));
     } else {
       emit(NotificationsError());
@@ -28,6 +28,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     if (event.access != null) {
       await Repository().deleteNotifications(event.access);
       notifications = await Repository().getMyNotifications(event.access);
+      event.loadProfile();
       emit(NotificationsLoaded(notifications: notifications));
     } else {
       emit(NotificationsError());

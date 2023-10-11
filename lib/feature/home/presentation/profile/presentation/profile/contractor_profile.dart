@@ -640,7 +640,6 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: AnimatedContainer(
-                    height: 150.h,
                     width: 330.w,
                     duration: const Duration(milliseconds: 300),
                     decoration: BoxDecoration(
@@ -648,15 +647,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Padding(
-                      padding:
-                          EdgeInsets.only(top: 50.h, left: 16.w, right: 16.w),
+                      padding: EdgeInsets.only(top: 12.h,bottom: 12.h, left: 16.w, right: 16.w),
                       child: SizedBox(
                         width: 250.w,
                         child: Text(
                           (user?.verifyStatus == "Failed")
-                              ? "${user?.banReason ?? "failed_verification".tr()}"
-                              : ("unknown_reason".tr()),
-                          style: CustomTextStyle.black_14_w400_515150,
+                              ? user?.banReason ?? "failed_verification".tr()
+                              : ("unknown_reason".tr()),                        style: CustomTextStyle.black_14_w400_515150,
                         ),
                       ),
                     ),

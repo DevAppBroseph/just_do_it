@@ -30,7 +30,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
   late UserRegModel? user;
   @override
   void initState() {
-    user = BlocProvider.of<ProfileBloc>(context).user;
+    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate() ;
     fillData(user);
 
     super.initState();

@@ -12,19 +12,7 @@ class GradeMascotImage extends StatelessWidget {
  final double size;
   @override
   Widget build(BuildContext context) {
-    if (user!.allbalance! <
-        levels![0].mustCoins!) {
-      return CachedNetworkImage(
-        progressIndicatorBuilder:
-            (context, url, progress) {
-          return const CupertinoActivityIndicator();
-        },
-        imageUrl:
-        '${levels![0].bwImage}',
-        height: size.h,
-        width: size.w,
-      );
-    }else if(user!.allbalance! >=
+   if(user!.allbalance! >=
         levels!.last.mustCoins!){
       return CachedNetworkImage(
         progressIndicatorBuilder:
@@ -37,7 +25,7 @@ class GradeMascotImage extends StatelessWidget {
         width: size.w,
       );
     }
-    for (int i = 1;
+    for (int i =0;
     i < levels!.length;
     i++) {
         if (user!.allbalance! >=

@@ -6,18 +6,18 @@ import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/models/task/task.dart';
 
-class BlocReasonWidget extends StatefulWidget {
-  const BlocReasonWidget(
+class BlockReasonWidget extends StatefulWidget {
+  const BlockReasonWidget(
       {super.key, required this.task, required this.isTaskOwner});
 
   final Task task;
   final bool isTaskOwner;
 
   @override
-  State<BlocReasonWidget> createState() => _BlocReasonWidgetState();
+  State<BlockReasonWidget> createState() => _BlockReasonWidgetState();
 }
 
-class _BlocReasonWidgetState extends State<BlocReasonWidget> {
+class _BlockReasonWidgetState extends State<BlockReasonWidget> {
   bool isOpen = false;
   @override
   Widget build(BuildContext context) {

@@ -4,10 +4,12 @@ class NotificationsEvent {}
 
 class GetNotificationsEvent extends NotificationsEvent {
   String? access;
-  GetNotificationsEvent(this.access);
+  final VoidCallback loadProfile;
+  GetNotificationsEvent(this.access,this.loadProfile);
 }
 
 class DeleteNotificationsEvent extends NotificationsEvent {
   String? access;
-  DeleteNotificationsEvent(this.access);
+  final VoidCallback loadProfile;
+  DeleteNotificationsEvent(this.access,this.loadProfile);
 }

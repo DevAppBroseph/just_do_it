@@ -24,14 +24,12 @@ class ScorePage extends StatefulWidget {
 }
 
 class _ScorePageState extends State<ScorePage> {
-  late UserRegModel? user;
   final PageController _pageController = PageController(initialPage: 0);
   int page = 0;
 
   @override
   void initState() {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
-    user = BlocProvider.of<ProfileBloc>(context).user;
     context.read<ScoreBloc>().add(GetScoreEvent(access));
     super.initState();
   }
@@ -41,8 +39,12 @@ class _ScorePageState extends State<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    user = BlocProvider.of<ProfileBloc>(context).user;
+    return BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
+    final user=context.read<ProfileBloc>().user;
+    if(user==null){
+      return Scaffold(body: const Center(child: CupertinoActivityIndicator()));
+    }
     return BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
       if (state is ScoreLoaded) {
         final levels = state.levels;
@@ -697,6 +699,8 @@ class _ScorePageState extends State<ScorePage> {
       }
       return _loadingindicator();
     });
+  },
+);
   }
 
   Widget _scorePicture(List<Levels>? levels, int allbalance) {

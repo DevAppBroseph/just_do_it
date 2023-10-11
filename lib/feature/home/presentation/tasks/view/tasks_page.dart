@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/contractor.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/customer.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -134,44 +136,45 @@ class _TasksPageState extends State<TasksPage> {
                         const Spacer(),
                       ],
                     ),
-                    Expanded(
+                    BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
+    final user=context.read<ProfileBloc>().user;
+    if(user==null){
+      return const Expanded(child: Center(child: CupertinoActivityIndicator(),),);
+    }
+    return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 20),
-                        child: Stack(
+                        child: PageView(
+                          controller: pageController,
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            PageView(
-                              controller: pageController,
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: [
-                                Contractor(
-                                    size: size,
-                                    callBacK: callBacK,
-                                    callBackFlag: () {
-                                      setState(() {
-                                        contractorFlag = true;
-                                      });
-                                      
-                                    }),
-                                Customer(
-                                  size: size,
-                                  callBacK: callBacK,
-                                  callBackFlag: () {
-                                    setState(() {
-                                       customerFlag = true;
-                                    });
-                                   
-                                  },
-                                ),
-                              ],
+                            Contractor(
+                                size: size,
+                                callBacK: callBacK,
+                                callBackFlag: () {
+                                  setState(() {
+                                    contractorFlag = true;
+                                  });
+                                }),
+                            Customer(
+                              size: size,
+                              callBacK: callBacK,
+                              callBackFlag: () {
+                                setState(() {
+                                   customerFlag = true;
+                                });
+
+                              },
                             ),
-            
                           ],
                         ),
                       ),
-                    ),
+                    );
+  },
+),
                   ],
                 ),
-                 if (!contractorFlag && !customerFlag) Container(color: Colors.white, child: const Center(child: CupertinoActivityIndicator()))
               ],
             );
           },

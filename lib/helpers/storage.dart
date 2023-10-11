@@ -1,31 +1,32 @@
+import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
+  static final _sharedPreferences = getIt<SharedPreferences>();
+
   Future<void> setAccessToken(String? accessToken) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (accessToken == null) {
-      await prefs.remove('access');
+      await _sharedPreferences.remove('access');
       return;
     }
-    await prefs.setString('access', accessToken);
+    await _sharedPreferences.setString('access', accessToken);
   }
 
-  Future<String?> getAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('access');
+  static bool get isAuthorized => _sharedPreferences.getString("access") != null;
+
+  String? getAccessToken() {
+    return _sharedPreferences.getString('access');
   }
 
   Future<void> setListHistory(String value) async {
     if (value.isNotEmpty) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> list = prefs.getStringList('history') ?? [];
+      List<String> list = _sharedPreferences.getStringList('history') ?? [];
       list.add(value);
-      await prefs.setStringList('history', list);
+      await _sharedPreferences.setStringList('history', list);
     }
   }
 
   Future<List<String>> getListHistory() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList('history') ?? [];
+    return _sharedPreferences.getStringList('history') ?? [];
   }
 }

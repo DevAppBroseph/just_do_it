@@ -24,6 +24,8 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
+import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
 
 void main() async {
@@ -43,6 +45,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  await getItSetup();
 
   runApp(
     EasyLocalization(

@@ -27,14 +27,18 @@ class _RatingPageState extends State<RatingPage> {
   bool state = false;
   PageController pageController = PageController();
   int stageRegistration = 1;
-  late UserRegModel? user;
 
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
       backgroundColor: ColorStyles.greyF7F7F8,
-      body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+  builder: (context, state) {
+    final user=context.read<ProfileBloc>().user;
+    if(user==null){
+      return const Center(child: CupertinoActivityIndicator());
+    }
+    return BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
         if (snapshot is LoadingRatingState) {
           return const CupertinoActivityIndicator();
         }
@@ -46,7 +50,7 @@ class _RatingPageState extends State<RatingPage> {
             data: const MediaQueryData(textScaleFactor: 1.0),
             child: Column(
               children: [
-                 header(reviews),
+                 header(reviews,user),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -92,7 +96,9 @@ class _RatingPageState extends State<RatingPage> {
             ),
           ),
         );
-      }),
+      });
+  },
+),
     );
   }
 
@@ -319,7 +325,7 @@ class _RatingPageState extends State<RatingPage> {
     );
   }
 
-  Widget header(Reviews? reviews) {
+  Widget header(Reviews? reviews,UserRegModel? user) {
     final bloc = BlocProvider.of<ProfileBloc>(context);
     return SizedBox(
       child: Column(

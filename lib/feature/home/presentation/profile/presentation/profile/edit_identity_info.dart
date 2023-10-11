@@ -73,7 +73,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
   @override
   void initState() {
     super.initState();
-    user = BlocProvider.of<ProfileBloc>(context).user!;
+    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate() ;
     fillData(user);
   }
 
@@ -129,7 +129,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     CustomAlert().showMessage('your_document_is_overdue'.tr());
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
-                  } else {
+                  } else if(regionController.text.isEmpty){
+                    CustomAlert().showMessage('select_a_region'.tr());
+                  }
+                  else {
                     if (additionalInfo) {
                       additionalInfo = true;
                       String error = 'specify'.tr();
@@ -147,6 +150,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                         }
                       }
+
                       if (whoGiveDocController.text.isEmpty) {
                         if (docType == 'Passport') {
                           error += '\n- ${'who_issued_the_document'.tr().toLowerCase()}';

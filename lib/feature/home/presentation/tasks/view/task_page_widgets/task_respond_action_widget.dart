@@ -20,18 +20,18 @@ import 'package:just_do_it/models/task/task_status.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
-class OwnerTaskRespondActionWidget extends StatefulWidget {
-  const OwnerTaskRespondActionWidget({super.key, required this.task, required this.index, required this.openOwner, required this.canEdit});
+class TaskRespondActionWidget extends StatefulWidget {
+  const TaskRespondActionWidget({super.key, required this.task, required this.index, required this.openOwner, required this.canEdit});
   final Task task;
   final int index;
   final Function(Owner?) openOwner;
   final bool canEdit;
 
   @override
-  State<OwnerTaskRespondActionWidget> createState() => _OwnerTaskRespondActionWidgetState();
+  State<TaskRespondActionWidget> createState() => _TaskRespondActionWidgetState();
 }
 
-class _OwnerTaskRespondActionWidgetState extends State<OwnerTaskRespondActionWidget> {
+class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
   late final index=widget.index;
   late final user = BlocProvider.of<ProfileBloc>(context).user;
   @override

@@ -197,21 +197,30 @@ class _CreatePageState extends State<CreatePage> {
                                   : Container(),
                           SizedBox(width: 10.w),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
-                                if (value != null) {
-                                  if (value == 'create') {
-                                    widget.onSelect(0);
-                                  }
-                                  if (value == 'search') {
-                                    widget.onSelect(1);
-                                  }
-                                  if (value == 'chat') {
-                                    widget.onSelect(3);
-                                  }
+                            onTap: () async{
+                              final accessToken = await Storage().getAccessToken();
+                              if(context.mounted){
+
+                                if(accessToken!=null){
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
+                                    if (value != null) {
+                                      if (value == 'create') {
+                                        widget.onSelect(0);
+                                      }
+                                      if (value == 'search') {
+                                        widget.onSelect(1);
+                                      }
+                                      if (value == 'chat') {
+                                        widget.onSelect(3);
+                                      }
+                                    }
+                                  });
+                                }else{
+                                  Navigator.of(context).pushNamed(AppRoute.auth);
                                 }
-                              });
+                              }
+
                             },
                             child: SvgPicture.asset('assets/icons/category2.svg'),
                           ),

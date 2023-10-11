@@ -46,9 +46,9 @@ class CreateTaskPage extends StatefulWidget {
 }
 
 class _CreateTaskPageState extends State<CreateTaskPage> {
-  int type = 1;
+  late int type = widget.customer?1:2;
 
-  bool state = false;
+  late bool state = widget.customer?false:true;
   late bool isTask=widget.customer;
   PageController pageController = PageController();
 

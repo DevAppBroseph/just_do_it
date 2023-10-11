@@ -5,7 +5,6 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
@@ -204,12 +203,11 @@ class Repository {
     print("addReviewsDetail ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
-    }else if(response.statusCode==400&&response.data["non_field_errors"]!=null){
-      CustomAlert()
-          .showMessage('you_have_already_left_a_review'.tr());
-    }else{
-      CustomAlert()
-          .showMessage('error'.tr());
+    } else if (response.statusCode == 400 &&
+        response.data["non_field_errors"] != null) {
+      CustomAlert().showMessage('you_have_already_left_a_review'.tr());
+    } else {
+      CustomAlert().showMessage('error'.tr());
     }
     return false;
   }
@@ -236,7 +234,6 @@ class Repository {
 
   Future<bool> createAnswer(int id, String? access, int price,
       String description, String status, bool isGraded) async {
-
     final response = await dio.post(
       '$server/answers/',
       options: Options(
@@ -410,8 +407,8 @@ class Repository {
       return null;
     }
   }
-  Future<bool> sendForVerification(
-      String? access, int userId) async {
+
+  Future<bool> sendForVerification(String? access, int userId) async {
     final response = await dio.get(
       '$server/auth/send_to_verification/$userId/',
       options: Options(
@@ -425,6 +422,7 @@ class Repository {
       return false;
     }
   }
+
   Future<UserRegModel?> updateUser(
       String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
@@ -436,6 +434,7 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
+    print("updateUser ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {
@@ -589,6 +588,7 @@ class Repository {
     } catch (e) {}
     return null;
   }
+
   // profile/ get
   Future<UserRegModel?> getProfile(String access) async {
     final response = await dio.get(
@@ -778,6 +778,11 @@ class Repository {
         "order": id,
       },
     );
+    print("Server ${"$server/orders/like_order"} ");
+    print("$access");
+    print("Payload: ${jsonEncode({
+          "order": id,
+        })}");
     print("ORDER like ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
@@ -815,6 +820,7 @@ class Repository {
       return false;
     }
   }
+
   Future<bool> resendTaskForModeration(String? access, int id) async {
     final response = await dio.post(
       '$server/orders/$id/resend_for_verification',
@@ -822,7 +828,8 @@ class Repository {
           validateStatus: ((status) => status! >= 200),
           headers: {'Authorization': 'Bearer $access'}),
     );
-    print("resendTaskForModeration ${response.statusCode} and ${response.data}");
+    print(
+        "resendTaskForModeration ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return true;
     } else {
