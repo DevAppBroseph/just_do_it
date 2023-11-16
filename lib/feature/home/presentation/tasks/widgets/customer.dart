@@ -48,7 +48,6 @@ class _CustomerState extends State<Customer> {
   @override
   void initState() {
     super.initState();
-    print("Customer initState");
     BlocProvider.of<ProfileBloc>(context).add(GetCategorieProfileEvent());
     user = BlocProvider.of<ProfileBloc>(context).user;
     getListTask();
@@ -621,7 +620,7 @@ class _CustomerState extends State<Customer> {
                                             builder: (context, state) {
                                           if (state is FavouritesLoaded) {
                                             final favouritesOrders =
-                                                state.favourite!.favouriteOrder;
+                                                state.favourite?.favouriteOrder??[];
                                             return Padding(
                                               padding:
                                                   EdgeInsets.only(right: 6.w),
@@ -682,7 +681,7 @@ class _CustomerState extends State<Customer> {
                                             builder: (context, state) {
                                           if (state is FavouritesLoaded) {
                                             final favouritesOrders =
-                                                state.favourite!.favoriteUsers;
+                                                state.favourite?.favoriteUsers??[];
                                             return Padding(
                                               padding:
                                                   EdgeInsets.only(right: 6.w),

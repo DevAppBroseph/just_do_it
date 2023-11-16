@@ -492,8 +492,10 @@ class _DatePickerState extends State<DatePicker> {
           ),
           SizedBox(height: 14.h),
           BlocBuilder<CurrencyBloc, CurrencyState>(builder: (context, state) {
+            print("CurrencyBloc state $state");
             if (state is CurrencyLoaded) {
               final currecy = state.currency;
+              print(currecy?.length);
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: openCurrency ? 160.h : 0.h,

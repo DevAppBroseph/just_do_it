@@ -109,7 +109,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                             children: [
                               const Spacer(),
                                 Text(
-                                  'до ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
+                                  '${"before".tr()} ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
                                   maxLines: 1,
                                   style: CustomTextStyle.black_14_w500_171716,
                                 ),

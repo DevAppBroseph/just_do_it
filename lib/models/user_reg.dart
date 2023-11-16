@@ -238,7 +238,7 @@ class UserRegModel {
       sex: sex,
       isEntity: isEntity,
       verifyStatus: verifyStatus,
-      images: images,
+      images: images!.toList(),
       cv: cv,
       hasNotifications: hasNotifications,
       cvType: cvType,
@@ -471,7 +471,7 @@ class UserRegModel {
         }
       }
 
-      data['images'] = files;
+      data['images'] = files.isNotEmpty?files:"null";
     }
 
     if (cv != null) {

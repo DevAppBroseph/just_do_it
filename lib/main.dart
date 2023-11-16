@@ -27,8 +27,10 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -46,7 +48,6 @@ void main() async {
     sound: true,
   );
   await getItSetup();
-
   runApp(
     EasyLocalization(
       supportedLocales: MainConfigApp.languages.map((e) => Locale(e.langCode, e.langCountryCode)).toList(),

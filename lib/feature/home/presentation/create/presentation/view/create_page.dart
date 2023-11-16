@@ -208,10 +208,13 @@ class _CreatePageState extends State<CreatePage> {
                                       if (value == 'create') {
                                         widget.onSelect(0);
                                       }
-                                      if (value == 'search') {
+                                      else if (value == 'search') {
                                         widget.onSelect(1);
                                       }
-                                      if (value == 'chat') {
+                                      else if (value == 'tasks') {
+                                        widget.onSelect(2);
+                                      }
+                                      else if (value == 'chat') {
                                         widget.onSelect(3);
                                       }
                                     }

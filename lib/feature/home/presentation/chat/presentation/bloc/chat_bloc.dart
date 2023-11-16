@@ -46,7 +46,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage = '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId!=null?', "category":${event.categoryId}':''}}';
-    print("_sendMessage ${newMessage}");
     channel?.sink.add(newMessage.toString());
     List<ChatMessage> reversedList = List.from(messages.reversed);
 
@@ -64,7 +63,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
-    final res = await Repository().getListMessageItem(event.access, '$idChat');
+    final token = await Storage().getAccessToken()!;
+    final res = await Repository().getListMessageItem(token, '$idChat');
 
     messages.clear();
     for (var element in res) {
@@ -111,6 +111,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           return;
         } catch (_) {}
         try {
+          print("0");
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {

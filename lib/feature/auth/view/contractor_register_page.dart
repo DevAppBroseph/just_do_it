@@ -123,7 +123,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(ArrayImages(null, file.readAsBytesSync(), file: file));
+        files.add(ArrayImages(null, file.readAsBytesSync(), file: file, type: file.path.split('.').last));
       }
       setState(() {
         photos.addAll(files);
@@ -281,7 +281,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
 
                   if (passwordController.text.isEmpty ||
                       repeatPasswordController.text.isEmpty) {
-                    error += '\n- ${'password'.tr()}';
+                    error += '\n- ${'password'.tr().toLowerCase()}';
                     errorsFlag = true;
                   }
 
@@ -1563,10 +1563,10 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
                 dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+            : DateTime(DateTime.now().year - 100, DateTime.now().month,
                 DateTime.now().day + 1)
         : DateTime(
-            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,

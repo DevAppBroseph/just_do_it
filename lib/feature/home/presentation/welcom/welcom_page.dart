@@ -94,7 +94,6 @@ class _WelcomPageState extends State<WelcomPage> {
     return BlocBuilder<ProfileBloc, ProfileState>(
   builder: (context, state) {
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
-    print("HasNotifications ${user?.hasNotifications}");
     if (user?.rus != null) {
       if (user!.rus!) {
         selectLanguage = 'RU';
@@ -174,24 +173,19 @@ class _WelcomPageState extends State<WelcomPage> {
                                               if (value == 'RU') {
                                                 context.setLocale(const Locale('ru', 'RU'));
                                                 if (user != null) {
-                                                  user = await Repository().editRusProfile(
-                                                      BlocProvider.of<ProfileBloc>(context).access, true);
-                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                  user!.rus=true;
+                                                  user = await Repository()
+                                                      .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, true);
                                                 }
                                               }
-                                              if (value == 'EN') {
+                                              else if (value == 'EN') {
                                                 context.setLocale(const Locale('en', 'US'));
                                                 if (user != null) {
-                                                  user = await Repository().editRusProfile(
-                                                      BlocProvider.of<ProfileBloc>(context).access, false);
-                                                  BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                                                  user!.rus=false;
+                                                  user = await Repository()
+                                                      .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, false);
                                                 }
                                               }
-                                              if (user != null) {}
-                                              BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-                                              setState(() {
-                                                selectLanguage = value!;
-                                              });
                                             },
                                             items: listLanguage.map<DropdownMenuItem<String>>((e) {
                                               return DropdownMenuItem<String>(
@@ -441,6 +435,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                   }
                                   if (value == 'search') {
                                     widget.onSelect(1);
+                                  }
+                                  else if (value == 'tasks') {
+                                    widget.onSelect(2);
                                   }
                                   if (value == 'chat') {
                                     widget.onSelect(3);

@@ -17,7 +17,6 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
     // emit(FavouritesLoading());
     if (event.access != null) {
       favourite = await Repository().getLikeInfo(event.access);
-
       emit(FavouritesLoaded(favourite: favourite));
     } else {
       emit(FavouritesError());

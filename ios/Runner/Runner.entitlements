@@ -7,6 +7,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks: justdoit.page.link</string>
+		<string>applinks: jobyfine.me</string>
 	</array>
 </dict>
 </plist>

@@ -46,7 +46,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
   PageController pageController = PageController(initialPage: 4);
   PanelController panelController = PanelController();
   PanelController panelControllerReply = PanelController();
@@ -85,12 +85,32 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void selectUser(int value) {
-    pageController.jumpToPage(value);
-    setState(() {
-      page = value;
-
-    });
+  void selectTab(int index) {
+    searchQuery = '';
+    setState(() {});
+    if ((index == 2 || index == 3 || index == 4) && !Storage.isAuthorized) {
+      Navigator.of(context).pushNamed(AppRoute.auth);
+    } else {
+      if (index == 4) {
+        Navigator.of(context).pushNamed(AppRoute.personalAccount);
+      } else if (index == 2) {
+        Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
+              (page) {
+            setState(() {
+              this.page = page;
+              pageController.jumpToPage(this.page);
+            });
+          },
+        ]);
+      } else {
+        if (index == 1) {
+          BlocProvider.of<search.SearchBloc>(context)
+              .add(search.ClearFilterEvent());
+        }
+        pageController.jumpToPage(index);
+        page = index;
+      }
+    }
   }
 
   @override
@@ -132,7 +152,15 @@ class _HomePageState extends State<HomePage> {
     pageController.dispose();
     super.dispose();
   }
-
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
+      BlocProvider.of<ChatBloc>(context)
+          .add(StartSocket(context, accessToken, () {
+        DataUpdater().updateTasksAndProfileData(context);
+      }));    }
+  }
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -162,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                           pageController.jumpToPage(4);
                           page = 5;
                         },
-                        onSelect: selectUser,
+                        onSelect: selectTab,
                       ),
                       SearchPage(
                         taskId: idTask,
@@ -174,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                         clearId: () {
                           idTask = null;
                         },
-                        onSelect: selectUser,
+                        onSelect: selectTab,
                       ),
                       TasksPage(
                         onSelect: (page) {
@@ -188,8 +216,8 @@ class _HomePageState extends State<HomePage> {
                       ChatOverviewPage(() {
                         pageController.jumpToPage(4);
                         page = 5;
-                      }, selectUser),
-                      WelcomPage(selectUser)
+                      }, selectTab),
+                      WelcomPage(selectTab)
                     ],
                   );
                 },
@@ -312,34 +340,7 @@ class _HomePageState extends State<HomePage> {
   Widget itemBottomNavigatorBar(String icon, String label, int index,
       {int? counderMessage}) {
     return GestureDetector(
-      onTap: () {
-        searchQuery = '';
-        setState(() {});
-        final bloc = BlocProvider.of<ProfileBloc>(context);
-        if ((index == 2 || index == 3 || index == 4) && !Storage.isAuthorized) {
-          Navigator.of(context).pushNamed(AppRoute.auth);
-        } else {
-          if (index == 4) {
-            Navigator.of(context).pushNamed(AppRoute.personalAccount);
-          } else if (index == 2) {
-            Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
-              (page) {
-                setState(() {
-                  this.page = page;
-                  pageController.jumpToPage(this.page);
-                });
-              },
-            ]);
-          } else {
-            if (index == 1) {
-              BlocProvider.of<search.SearchBloc>(context)
-                  .add(search.ClearFilterEvent());
-            }
-            pageController.jumpToPage(index);
-            page = index;
-          }
-        }
-      },
+      onTap: ()=>selectTab(index),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(

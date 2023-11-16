@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/colors.dart';
@@ -219,13 +220,14 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                               'access_to_chat_is_currently_restricted'
                                   .tr());
                         } else {
+                          print("Chat id through button is ${widget.task.chatId}");
                           final chatBloc =
                           BlocProvider.of<
                               ChatBloc>(context);
                           chatBloc.editShowPersonChat(
                               false);
                           chatBloc.editChatId(
-                              widget.task.chatId);
+                              widget.task.answers[index].chatId);
                           chatBloc.messages = [];
                           final idChat =
                           await Navigator.of(
@@ -305,7 +307,8 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                       width: 140.w,
                       child: CustomButton(
                         onTap: () async {
-                          Repository()
+                          Loader.show(context);
+                          await Repository()
                               .updateStatusResponse(
                               BlocProvider.of<
                                   ProfileBloc>(
@@ -316,17 +319,14 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                   .answers[index]
                                   .id!,
                               'Selected');
-                          context
-                              .read<TasksBloc>()
-                              .add(UpdateTaskEvent());
-                          BlocProvider.of<ProfileBloc>(
-                              context)
-                              .add(UpdateProfileEvent(
-                              user));
-
-                          if (widget.canEdit) {
-                            Navigator.pop(context);
+                          Loader.hide();
+                          if(context.mounted){
+                            context.read<ProfileBloc>().add(GetProfileEvent());
+                            if (widget.canEdit) {
+                              Navigator.pop(context);
+                            }
                           }
+
                         },
                         btnColor:
                         ColorStyles.yellowFFD70A,

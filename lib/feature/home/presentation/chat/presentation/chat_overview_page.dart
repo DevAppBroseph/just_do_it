@@ -11,6 +11,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/widgets/chat_card.dart';
+import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
@@ -30,7 +31,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   @override
   void initState() {
     super.initState();
-   // getInitMessage();
+    final access = BlocProvider.of<ProfileBloc>(context).access;
+    context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
   }
 
 
@@ -72,6 +74,9 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                           }
                           if (value == 'search') {
                             widget.onSelect(1);
+                          }
+                          else if (value == 'tasks') {
+                            widget.onSelect(2);
                           }
                           if (value == 'chat') {
                             widget.onSelect(3);

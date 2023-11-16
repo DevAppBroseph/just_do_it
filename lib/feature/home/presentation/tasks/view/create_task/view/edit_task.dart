@@ -63,7 +63,7 @@ class _EditTasksState extends State<EditTasks> {
   late UserRegModel? user;
   DateTime? startDate;
   DateTime? endDate;
-  Future<void> editTask(bool isGraded )async{
+  Future<void> editTask(bool isGraded)async{
     String error = 'specify'.tr();
     bool errorsFlag = false;
 
@@ -95,19 +95,19 @@ class _EditTasksState extends State<EditTasks> {
     // }
 
     if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-      if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
+      if (int.parse(coastMinController.text.replaceAll(" ", "")) > int.parse(coastMaxController.text.replaceAll(" ", ""))) {
         error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
         errorsFlag = true;
       }
     }
     if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-      if (int.parse(coastMinController.text) > 1000000000) {
+      if (int.parse(coastMinController.text.replaceAll(" ", "")) > 1000000000) {
         error += '\n- themaximum_budget_should_not_exceed'.tr();
         errorsFlag = true;
       }
     }
     if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-      if (int.parse(coastMaxController.text) > 1000000000) {
+      if (int.parse(coastMaxController.text.replaceAll(" ", "")) > 1000000000) {
         error += '\n- themaximum_budget_should_not_exceed'.tr();
         errorsFlag = true;
       }
@@ -161,17 +161,17 @@ class _EditTasksState extends State<EditTasks> {
             dateStart: DateFormat('yyyy-MM-dd').format(startDate!),
             dateEnd: DateFormat('yyyy-MM-dd').format(endDate!),
             priceFrom: int.parse(
-              coastMinController.text.isEmpty ? '0' : coastMinController.text,
+              coastMinController.text.isEmpty ? '0' : coastMinController.text.replaceAll(" ", ""),
             ),
             priceTo: int.parse(
-              coastMaxController.text.isEmpty ? '0' : coastMaxController.text,
+              coastMaxController.text.isEmpty ? '0' : coastMaxController.text.replaceAll(" ", ""),
             ),
             regions: regions,
             countries: country,
             towns: towns,
             files: document,
             currency: currency,
-            isGraded: isGraded,
+            isGraded: widget.task.isGraded!?true:isGraded,
             canAppellate: true
         );
 
@@ -180,7 +180,7 @@ class _EditTasksState extends State<EditTasks> {
         if (res) {
           if (res) {
             Navigator.of(context)
-              ..pop();
+              ..pop(true);
           }
           context.read<TasksBloc>().add(UpdateTaskEvent());
           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));

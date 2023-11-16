@@ -200,6 +200,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               }, builder:
                                                                       (context,
                                                                           state) {
+                                                                    print("Favorites Bloc is ${state}");
                                                                 if (state
                                                                     is FavouritesLoaded) {
                                                                   favouritesUsers = state

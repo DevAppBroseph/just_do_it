@@ -146,6 +146,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Current page is ${page}");
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
       Loader.hide();
@@ -267,7 +268,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
 
                 if (passwordController.text.isEmpty ||
                     repeatPasswordController.text.isEmpty) {
-                  error += '\n- ${'password'.tr()}';
+                  error += '\n- ${'password'.tr().toLowerCase()}';
                   errorsFlag = true;
                 }
 
@@ -1144,10 +1145,10 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
                 dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month,
+            : DateTime(DateTime.now().year - 100, DateTime.now().month,
                 DateTime.now().day + 1)
         : DateTime(
-            DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,

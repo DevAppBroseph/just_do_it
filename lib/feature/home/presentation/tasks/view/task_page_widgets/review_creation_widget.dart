@@ -66,6 +66,9 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
         if ((hasAlreadyReviewed??false)||hasJustReviewed) {
           CustomAlert()
               .showMessage('you_have_already_left_a_review'.tr());
+        }else if(descriptionTextController.text.trim().isEmpty){
+          CustomAlert()
+              .showMessage('leave_comment_on_review'.tr());
         } else {
           showLoaderWrapperWhite(context);
           hasJustReviewed = true;

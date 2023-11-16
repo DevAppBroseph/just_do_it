@@ -573,8 +573,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
             ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 15, DateTime.now().month, DateTime.now().day);
+            : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,

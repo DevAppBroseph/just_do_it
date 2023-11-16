@@ -30,7 +30,8 @@ class UpdateProfilePhotoEvent extends ProfileEvent {
 
 class UpdateProfileCvEvent extends ProfileEvent {
   File? file;
-  UpdateProfileCvEvent({required this.file});
+  List<String> images;
+  UpdateProfileCvEvent({required this.file,required this.images});
 }
 
 class UpdateProfileWithoutLoadingEvent extends ProfileEvent {

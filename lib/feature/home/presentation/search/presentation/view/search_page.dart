@@ -283,16 +283,19 @@ class _SearchPageState extends State<SearchPage> {
                                 onTap: () async{
                                   final accessToken = await Storage().getAccessToken();
                                   if(context.mounted){
-
                                   if(accessToken!=null){
                                     Navigator.of(context)
                                         .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
+                                          print("Search page ${value}");
                                       if (value != null) {
                                         if (value == 'create') {
                                           widget.onSelect(0);
                                         }
                                         if (value == 'search') {
                                           widget.onSelect(1);
+                                        }
+                                        else if (value == 'tasks') {
+                                          widget.onSelect(2);
                                         }
                                         if (value == 'chat') {
                                           widget.onSelect(3);

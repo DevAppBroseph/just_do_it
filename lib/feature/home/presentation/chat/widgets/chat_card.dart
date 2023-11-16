@@ -55,7 +55,7 @@ class ChatCard extends StatelessWidget {
             chatBloc.editShowPersonChat(true);
             chatBloc.editChatId(null);
             if (context.mounted) {
-              context.read<ChatBloc>().add(GetListMessage());
+              context.read<ChatBloc>().add(GetListMessageItem());
             }
           }
         },

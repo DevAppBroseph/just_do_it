@@ -17,17 +17,19 @@ class DataFormatter {
   }
 
   static String convertCurrencyNameIntoSymbol(String? currencyName) {
-    switch (currencyName) {
-      case "Дирхам":
+    switch (currencyName?.toLowerCase()) {
+      case "дирхам":
         return "AED";
-      case "Биткоин":
+      case "биткоин":
         return "BTC";
-      case "Российский рубль":
+      case "российский рубль":
         return "₽";
-      case "Доллар США":
+      case "доллар сша":
         return "\$";
-      case "Евро":
+      case "евро":
         return "€";
+      case "usdt":
+        return "USDt";
       default:
         return "";
     }

@@ -62,7 +62,7 @@ class _TaskPageState extends State<TaskPage> {
     super.initState();
     task = widget.task;
     user = BlocProvider.of<ProfileBloc>(context).user;
-    getTask();
+    _data=Repository().getTaskById(task.id!,BlocProvider.of<ProfileBloc>(context).access);
     context.read<ChatBloc>().stream.listen((state) {
       if(state is SocketEventReceivedState){
         getTask();
@@ -72,7 +72,7 @@ class _TaskPageState extends State<TaskPage> {
 
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    _data = (Repository().getTaskById(task.id!, access));
+    task =(await (Repository().getTaskById(task.id!, access)))!;
     if (mounted) {
       setState(() {});
     }
@@ -80,9 +80,6 @@ class _TaskPageState extends State<TaskPage> {
 
   void getTaskList() {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    context.read<TasksBloc>().add(
-          GetTasksEvent(),
-        );
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
   }
 
@@ -90,20 +87,21 @@ class _TaskPageState extends State<TaskPage> {
   bool showMore = false;
   FavouriteOffers? selectFavouriteTask;
   Owner? ownerw;
-
+  bool taskSnapshotWasInitialized=false;
   getPersonAndTask(bool res, UserRegModel? user) {
     context.read<TasksBloc>().add(UpdateTaskEvent());
     BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     if (res) Navigator.pop(context);
     Navigator.pop(context);
   }
-
+  void assignSnapshotDataToTaskWhenInitialized(AsyncSnapshot<Task?> snapshot){
+    if(!taskSnapshotWasInitialized){
+      task=snapshot.data!;
+      taskSnapshotWasInitialized=true;
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    // print("Task isLiked ${task.isLiked}");
-    print("IS task ${widget.task.isTask}");
-    print("Owner FirstName ${widget.task.owner?.firstname}");
-    print("User FirstName ${user?.firstname}");
     return Scaffold(
       backgroundColor: ColorStyles.greyEAECEE,
       body: FutureBuilder(
@@ -116,7 +114,7 @@ class _TaskPageState extends State<TaskPage> {
                 child: Text('error'.tr()),
               );
             }
-            task = snapshot.data!;
+            assignSnapshotDataToTaskWhenInitialized(snapshot);
             return MediaQuery(
               data: const MediaQueryData(
                 textScaleFactor: 1.0,
@@ -148,12 +146,10 @@ class _TaskPageState extends State<TaskPage> {
                               buildWhen: (previous, current) {
                             if (current is UpdateTask) {
                               getTask();
-
                               return true;
                             }
                             if (current is TasksLoaded) {
                               getTask();
-
                               return true;
                             }
                             if (previous != current) {
@@ -170,6 +166,7 @@ class _TaskPageState extends State<TaskPage> {
                                   onTap: () async {
                                     final access =
                                         await Storage().getAccessToken();
+
                                     if (task?.isLiked != null) {
                                       Repository()
                                           .deleteLikeOrder(
@@ -233,14 +230,17 @@ class _TaskPageState extends State<TaskPage> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () async {
-                                await Navigator.of(context).push(
+                                final needsUpdateTaskData=await Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return EditTasks(
                                           task: task, customer: task.isTask!);
                                     },
                                   ),
-                                );
+                                )??false;
+                                if(needsUpdateTaskData){
+                                  getTask();
+                                }
                               },
                               child: Text(
                                 'edit'.tr(),
@@ -510,8 +510,7 @@ class _TaskPageState extends State<TaskPage> {
                                                             fit: BoxFit.cover,
                                                           )
                                                         : CachedNetworkImage(
-                                                            imageUrl: widget
-                                                                .task
+                                                            imageUrl: task
                                                                 .files![index]
                                                                 .linkUrl!,
                                                             fit: BoxFit.cover,

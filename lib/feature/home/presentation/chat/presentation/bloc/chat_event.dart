@@ -26,8 +26,7 @@ class CloseSocketEvent extends ChatEvent {}
 
 
 class GetListMessageItem extends ChatEvent {
-  String access;
-  GetListMessageItem(this.access);
+  GetListMessageItem();
 }
 
 class ChatStarted extends ChatEvent {

@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/models/task/task.dart';
+import 'package:just_do_it/services/dio/dio_client.dart';
 
 class TaskRepository{
-  var dio = Dio();
 
   Future<List<Task>> getTaskList(
       String? query,
@@ -40,7 +42,6 @@ class TaskRepository{
       '$server/orders/',
       queryParameters: queryParameters,
       options: Options(
-        validateStatus: ((status) => status! >= 200),
         headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );

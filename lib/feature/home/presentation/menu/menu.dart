@@ -39,6 +39,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     if (user != null) {
       if (user.rus!) {
@@ -47,6 +48,7 @@ class _MenuPageState extends State<MenuPage> {
         selectLanguage = 'EN';
       }
     }
+
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.0),
       child: Scaffold(
@@ -91,7 +93,7 @@ class _MenuPageState extends State<MenuPage> {
                     if (widget.inTask) {
                       Navigator.pop(context);
                     } else {
-                      Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [(page) {}]);
+                      Navigator.pop(context,"tasks");
                     }
                   }),
                   itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(), () {
@@ -142,26 +144,21 @@ class _MenuPageState extends State<MenuPage> {
                                     ),
                                     onChanged: (value) async {
                                       if (value == 'RU') {
-                                        context.setLocale(const Locale('ru', 'RU'));
                                         if (user != null) {
+                                          user!.rus=true;
+                                          context.setLocale(const Locale('ru', 'RU'));
                                           user = await Repository()
                                               .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, true);
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                         }
                                       }
-                                      if (value == 'EN') {
-                                        context.setLocale(const Locale('en', 'US'));
+                                      else if (value == 'EN') {
                                         if (user != null) {
+                                          user!.rus=false;
+                                          context.setLocale(const Locale('en', 'US'));
                                           user = await Repository()
                                               .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, false);
-                                          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
                                         }
                                       }
-                                      if (user != null) {}
-                                      BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-                                      setState(() {
-                                        selectLanguage = value!;
-                                      });
                                     },
                                     items: listLanguage.map<DropdownMenuItem<String>>((e) {
                                       return DropdownMenuItem<String>(

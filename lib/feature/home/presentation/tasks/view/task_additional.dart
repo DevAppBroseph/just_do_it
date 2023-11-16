@@ -61,6 +61,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
+        backgroundColor: ColorStyles.greyEAECEE,
         body: Stack(
           children: [
             SafeArea(

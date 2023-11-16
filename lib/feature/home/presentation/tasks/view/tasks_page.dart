@@ -73,13 +73,17 @@ class _TasksPageState extends State<TasksPage> {
                                 onTap: () {
                                   Navigator.of(context)
                                       .pushNamed(AppRoute.menu, arguments: [widget.onSelect, true]).then((value) {
-                                    if (value != null) {
+
+                                        if (value != null) {
                                       Navigator.of(context).pop();
                                       if (value == 'create') {
                                         widget.onSelect(0);
                                       }
                                       if (value == 'search') {
                                         widget.onSelect(1);
+                                      }
+                                      else if (value == 'tasks') {
+                                        widget.onSelect(2);
                                       }
                                       if (value == 'chat') {
                                         widget.onSelect(3);

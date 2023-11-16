@@ -511,7 +511,7 @@ class _ContractorState extends State<Contractor> {
                                         ),
                                         BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders = state.favourite!.favouriteOffers;
+                                            final favouritesOrders = state.favourite?.favouriteOffers??[];
                                             return Padding(
                                               padding: EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
@@ -565,13 +565,13 @@ class _ContractorState extends State<Contractor> {
                                         ),
                                         BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders = state.favourite!.favoriteUsers;
+                                            final favouritesOrders = state.favourite?.favoriteUsers??[];
                                             return Padding(
                                               padding: EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length.toString(),
+                                                  favouritesOrders.length.toString(),
                                                   style: CustomTextStyle.black_13_w400_171716,
                                                   textAlign: TextAlign.end,
                                                 ),

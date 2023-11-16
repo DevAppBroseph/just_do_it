@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
 part 'profile_event.dart';
+
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -27,6 +27,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String? access;
   UserRegModel? user;
   List<TaskCategory> activities = [];
+
+  void logout() async {
+    await Storage().clearData();
+  }
 
   void setAccess(String? accessToken) async {
     await Storage().setAccessToken(accessToken);
@@ -56,15 +60,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(LoadProfileState());
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
-    user = event.newUser;
+    print("updateProfile----0");
     if (access != null) {
-      UserRegModel? res = await Repository().updateUser(access!, user!);
-      
+      print("updateProfile----1");
+      UserRegModel? res =
+          await Repository().updateUser(access!, event.newUser!);
       if (res != null) {
-  
+        print("updateProfile----2");
         user = res;
-        emit(UpdateProfileSuccessState());
       }
+      emit(UpdateProfileSuccessState());
+      print("updateProfile----3");
     }
   }
 
@@ -84,7 +90,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  void _getCategories(GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
+  void _getCategories(
+      GetCategorieProfileEvent event, Emitter<ProfileState> emit) async {
     List<TaskCategory>? res = await Repository().getCategories();
     activities = res;
     emit(GetCategoriesProfileState(activities: res));
@@ -98,7 +105,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
-      UserRegModel? res = await Repository().updateUserPhoto(access!, event.photo);
+      UserRegModel? res =
+          await Repository().updateUserPhoto(access!, event.photo);
       if (res != null) {
         user?.copyWith(photoLink: res.photoLink);
         emit(UpdateProfileSuccessState());
@@ -116,7 +124,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String? accessToken = await Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
-      UserRegModel? res = await Repository().updateUserCv(access!, event.file);
+      UserRegModel? res = await Repository().updateUserCv(
+          access!, event.file, event.images.isNotEmpty ? event.images : null);
       if (res != null) {
         user = res;
         emit(UpdateProfileSuccessState());
@@ -145,7 +154,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void _getProfile(GetProfileEvent event, Emitter<ProfileState> emit) async {
     emit(LoadProfileState());
-    String? accessToken =  Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().getProfile(access!);

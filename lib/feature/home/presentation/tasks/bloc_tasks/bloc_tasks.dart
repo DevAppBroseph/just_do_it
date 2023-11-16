@@ -23,9 +23,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final regions = event.isSelectRegions.map((e) => e.id!).toList();
     final towns = event.isSelectTown.map((e) => e.id!).toList();
     final countries = event.isSelectCountry.map((e) => e.id!).toList();
-
     tasks = await TaskRepository().getTaskList(
- 
       event.query,
       event.priceFrom,
       event.priceTo,

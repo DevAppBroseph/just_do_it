@@ -28,6 +28,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
 
   ScrollController scrollController1 = ScrollController();
   late UserRegModel? user;
+  bool isDataFilled=false;
   @override
   void initState() {
     user = BlocProvider.of<ProfileBloc>(context).user!.duplicate() ;
@@ -46,7 +47,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
             backgroundColor: ColorStyles.whiteFFFFFF,
             body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
-                return const CupertinoActivityIndicator();
+                return const Center(child: CupertinoActivityIndicator());
+              }
+              if(!isDataFilled){
+                fillData(context.read<ProfileBloc>().user);
+                isDataFilled=true;
               }
               return SafeArea(
                 child: Column(
@@ -131,11 +136,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textEditingController: phoneController,
                             hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [
-                              MaskTextInputFormatter(
-                                initialText: '+ ',
-                                mask: '+###############',
-                                filter: {"#": RegExp(r'[0-9]')},
-                              ),
+                              // MaskTextInputFormatter(
+                              //   initialText: '+ ',
+                              //   mask: '+###############',
+                              //   filter: {"#": RegExp(r'[0-9]')},
+                              // ),
                               LengthLimitingTextInputFormatter(16),
                             ],
                             onTap: () {
