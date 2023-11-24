@@ -178,8 +178,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         );
         BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
         final profileBloc = BlocProvider.of<ProfileBloc>(context);
+
         bool res = await Repository().createTask(profileBloc.access!, newTask);
         if (res) {
+          BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
           if (widget.currentPage == 6) {
             if (res) Navigator.of(context).pop();
           }
