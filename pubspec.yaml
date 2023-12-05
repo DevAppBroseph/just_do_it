@@ -18,7 +18,7 @@ dependencies:
   auto_size_text: ^3.0.0
   dash_chat_2: 0.0.17
   flutter_overlay_loader: ^2.0.0
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.0
   cupertino_rounded_corners: ^2.1.1
   pinput: ^2.2.31
   mask_text_input_formatter: ^2.4.0

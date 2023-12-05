@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -36,8 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _confirmCodeReset(
-      ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
+  void _confirmCodeReset(ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
     String? res = await Repository().confirmCodeReset(event.phone, event.code);
     if (res != null) {
       emit(ConfirmCodeResetSuccessState(res));
@@ -58,8 +57,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    Map<String, dynamic>? res =
-        await Repository().confirmRegister(event.userRegModel, event.token);
+    print('1---');
+      Map<String, dynamic>? res = await Repository()
+          .confirmRegister(event.userRegModel, event.token, event.registerConfirmationMethod);
+
+    print('2---');
     if (res == null) {
       emit(SendProfileSuccessState());
     } else {
@@ -68,8 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository()
-        .confirmCodeRegistration(event.phone, event.code, refCode);
+    String? res = await Repository().confirmCodeRegistration(event.phone, event.code, refCode);
     if (res != null) {
       emit(ConfirmCodeRegistrSuccessState(res));
     } else {
@@ -86,10 +87,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _restoreCodeConfirm(
-      RestoreCodeCheckEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository()
-        .confirmRestorePassword(event.code, event.phone, event.updatePassword);
+  void _restoreCodeConfirm(RestoreCodeCheckEvent event, Emitter<AuthState> emit) async {
+    String? res =
+        await Repository().confirmRestorePassword(event.code, event.phone, event.updatePassword);
     if (res != null) {
       emit(ConfirmRestoreSuccessState(res));
     } else {

@@ -5,8 +5,8 @@ class AuthEvent {}
 class SendProfileEvent extends AuthEvent {
   UserRegModel userRegModel;
   String token;
-
-  SendProfileEvent(this.userRegModel, this.token);
+  final RegisterConfirmationMethod registerConfirmationMethod;
+  SendProfileEvent(this.userRegModel, this.token, this.registerConfirmationMethod);
 }
 
 class ConfirmCodeResetEvent extends AuthEvent {

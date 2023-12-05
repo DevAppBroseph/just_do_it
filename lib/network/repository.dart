@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
+import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/answer.dart';
 import 'package:just_do_it/models/chat.dart';
@@ -63,9 +64,7 @@ class Repository {
       ),
     );
 
-    if (res.statusCode == 200 ||
-        res.statusCode == 201 ||
-        res.statusCode == 204) {
+    if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
       return true;
     }
     if (res.statusCode == 403) {}
@@ -109,9 +108,7 @@ class Repository {
       ),
     );
 
-    if (res.statusCode == 200 ||
-        res.statusCode == 201 ||
-        res.statusCode == 204) {
+    if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
       return true;
     }
     return false;
@@ -172,8 +169,8 @@ class Repository {
     return false;
   }
 
-  Future<bool> addReviewsDetail(String? access, int? receiver, String? message,
-      double? mark, int? taskId) async {
+  Future<bool> addReviewsDetail(
+      String? access, int? receiver, String? message, double? mark, int? taskId) async {
     final response = await dio.post(
       '$server/ranking/',
       data: {
@@ -189,8 +186,7 @@ class Repository {
     print("addReviewsDetail ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 400 &&
-        response.data["non_field_errors"] != null) {
+    } else if (response.statusCode == 400 && response.data["non_field_errors"] != null) {
       CustomAlert().showMessage('you_have_already_left_a_review'.tr());
     } else {
       CustomAlert().showMessage('error'.tr());
@@ -217,8 +213,8 @@ class Repository {
     return false;
   }
 
-  Future<bool> createAnswer(int id, String? access, int price,
-      String description, String status, bool isGraded) async {
+  Future<bool> createAnswer(
+      int id, String? access, int price, String description, String status, bool isGraded) async {
     final response = await dio.post(
       '$server/answers/',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
@@ -313,17 +309,17 @@ class Repository {
   // регистрация профиля
   // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(
-      UserRegModel userRegModel, String token) async {
+    UserRegModel userRegModel,
+    String token,
+    RegisterConfirmationMethod registerConfirmationMethod,
+  ) async {
     Map<String, dynamic> map = userRegModel.toJson();
-    FormData data = FormData.fromMap(map
-      ..addAll({
-        "fcm_token": token,
-      }));
+    FormData data = FormData.fromMap(
+        map..addAll({"fcm_token": token, 'confirmation_method': registerConfirmationMethod.name}));
     final response = await dio.post(
       '$server/auth/',
       data: data,
     );
-    print("confirmRegister ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201) {
       return null;
     }
@@ -356,7 +352,7 @@ class Repository {
     }
   }
 
-  Future<UserRegModel?> updateUserCv(String? access, File? file,List<String>? images) async {
+  Future<UserRegModel?> updateUserCv(String? access, File? file, List<String>? images) async {
     FormData data = FormData.fromMap({
       'CV': file != null
           ? MultipartFile.fromFileSync(
@@ -366,7 +362,7 @@ class Repository {
           : 0,
     });
 
-    final map = {'CV': null,"images":images};
+    final map = {'CV': null, "images": images};
     print(images);
     final response = await dio.patch(
       '$server/profile/',
@@ -395,8 +391,7 @@ class Repository {
     }
   }
 
-  Future<UserRegModel?> updateUser(
-      String? access, UserRegModel userRegModel) async {
+  Future<UserRegModel?> updateUser(String? access, UserRegModel userRegModel) async {
     Map<String, dynamic> map = userRegModel.toJson();
     FormData data = FormData.fromMap(map);
     final response = await dio.patch(
@@ -406,17 +401,15 @@ class Repository {
     );
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
-    }else if(response.statusCode==400&&response.data["phone_number"]!=null){
+    } else if (response.statusCode == 400 && response.data["phone_number"] != null) {
       CustomAlert().showMessage('a_user_with_such_a_phone_is_already_registered'.tr());
       return null;
-    }
-    else {
+    } else {
       return null;
     }
   }
 
-  Future<Answer?> updateStatusResponse(
-      String? access, int id, String status) async {
+  Future<Answer?> updateStatusResponse(String? access, int id, String status) async {
     final response = await dio.patch(
       '$server/answers/$id',
       data: {
@@ -432,16 +425,12 @@ class Repository {
   }
 
   // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(
-      String phone, String code, int? refCode) async {
-    final response = await dio.put(
-      '$server/auth/',
-      data: {
-        "phone_number": phone,
-        "code": code,
-        "ref_code": refCode,
-      }
-    );
+  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
+    final response = await dio.put('$server/auth/', data: {
+      "phone_number": phone,
+      "code": code,
+      "ref_code": refCode,
+    });
     if (response.statusCode == 200) {
       String? accessToken = response.data['access'];
       final refreshToken = response.data['refresh'];
@@ -607,8 +596,7 @@ class Repository {
   }
 
   // новый пароль
-  Future<bool> editPassword(
-      String password, String access, String token) async {
+  Future<bool> editPassword(String password, String access, String token) async {
     final response = await dio.post(
       '$server/auth/reset_password_confirm',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
@@ -636,10 +624,9 @@ class Repository {
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
       for (var element in response.data) {
-        try{
-        chatList.add(ChatList.fromJson(element));
-        }catch(_){}
-
+        try {
+          chatList.add(ChatList.fromJson(element));
+        } catch (_) {}
       }
       return chatList;
     }
@@ -656,15 +643,15 @@ class Repository {
     );
     // print("getListMessageItem ${response.statusCode}, chat id is $id");
     if (response.statusCode == 200) {
-      print("getListMessageItem ${id} status is ${response.statusCode} and data is ${response.data}");
+      print(
+          "getListMessageItem ${id} status is ${response.statusCode} and data is ${response.data}");
       List<ChatMessage> chatList = [];
       for (var element in response.data['messages_list']) {
         chatList.add(
           ChatMessage(
             user: element['sender'] == null
                 ? ChatUser(id: '-1')
-                : ChatUser(
-                    id: Sender.fromJson(element['sender']).id.toString()),
+                : ChatUser(id: Sender.fromJson(element['sender']).id.toString()),
             createdAt: DateTime.parse(element['time']),
             text: element['text'],
           ),
@@ -712,9 +699,7 @@ class Repository {
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
     if (response.statusCode == 200) {
-      return response.data
-          .map<Levels>((article) => Levels.fromJson(article))
-          .toList();
+      return response.data.map<Levels>((article) => Levels.fromJson(article)).toList();
     }
     return [];
   }
@@ -769,8 +754,7 @@ class Repository {
       '$server/orders/$id/resend_for_verification',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
-    print(
-        "resendTaskForModeration ${response.statusCode} and ${response.data}");
+    print("resendTaskForModeration ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -809,9 +793,7 @@ class Repository {
       ),
     );
 
-    if (res.statusCode == 200 ||
-        res.statusCode == 201 ||
-        res.statusCode == 204) {
+    if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
       return true;
     }
     return false;
@@ -825,9 +807,7 @@ class Repository {
       ),
     );
     print("ORDER delete ${res.statusCode} and ${res.data}");
-    if (res.statusCode == 200 ||
-        res.statusCode == 201 ||
-        res.statusCode == 204) {
+    if (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204) {
       return true;
     }
     return false;
@@ -847,12 +827,9 @@ class Repository {
   }
 
   Future<List<Currency>> currency() async {
-    final response =
-        await dio.get('$server/orders/currencies', options: Options());
+    final response = await dio.get('$server/orders/currencies', options: Options());
     if (response.statusCode == 200) {
-      return response.data
-          .map<Currency>((article) => Currency.fromJson(article))
-          .toList();
+      return response.data.map<Currency>((article) => Currency.fromJson(article)).toList();
     }
     return [];
   }
@@ -863,9 +840,7 @@ class Repository {
       options: Options(),
     );
     if (response.statusCode == 200) {
-      return response.data
-          .map<Countries>((article) => Countries.fromJson(article))
-          .toList();
+      return response.data.map<Countries>((article) => Countries.fromJson(article)).toList();
     }
     return [];
   }
@@ -876,9 +851,7 @@ class Repository {
       options: Options(),
     );
     if (response.statusCode == 200) {
-      return response.data['regions']
-          .map<Regions>((article) => Regions.fromJson(article))
-          .toList();
+      return response.data['regions'].map<Regions>((article) => Regions.fromJson(article)).toList();
     }
     return [];
   }
@@ -890,9 +863,7 @@ class Repository {
     );
 
     if (response.statusCode == 200) {
-      return response.data['towns']
-          .map<Town>((article) => Town.fromJson(article))
-          .toList();
+      return response.data['towns'].map<Town>((article) => Town.fromJson(article)).toList();
     }
     return [];
   }
@@ -931,9 +902,7 @@ class Repository {
 
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = (await getExternalStorageDirectories(
-              type: StorageDirectory.downloads))
-          ?.first;
+      dir = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
     } else {
       dir = await getApplicationDocumentsDirectory();
     }

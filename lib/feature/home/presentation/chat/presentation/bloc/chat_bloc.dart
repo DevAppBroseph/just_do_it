@@ -93,58 +93,57 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
-    final token = await Storage().getAccessToken();
-    channel?.sink.close();
-    channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
-    channel?.stream.listen(
-      (event) async {
-        print("Socket Event: $event");
-        try {
-          var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
-          if (newMessageTask.action.isNotEmpty) {
-            TaskDialogs().showTaskMessage(
-              newMessageTask.message,
-            );
-          }
-          eventBloc.updateData();
-          emit(SocketEventReceivedState());
-          return;
-        } catch (_) {}
-        try {
-          print("0");
-          if (jsonDecode(event)['chat_id'] != null) {
-            idChat = jsonDecode(event)['chat_id'];
-          } else {
-            var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
-            if (showPersonChat) {
-              MessageDialogs().showMessage(
-                newMessage.fromName,
-                newMessage.message,
-                eventBloc.context,
-                id: newMessage.id,
-                name: newMessage.fromName,
-                idWithChat: newMessage.from,
-                image: newMessage.image,
-              );
-              editChatId(int.parse(newMessage.id!));
-            }
-            messages.add(
-              ChatMessage(
-                user: ChatUser(id: newMessage.from),
-                createdAt: DateTime.now(),
-                text: newMessage.message,
-              ),
-            );
-          }
-          add(GetListMessage());
-          add(RefreshPersonChatEvent());
-        } catch (_) {}
-      },
-      onDone: () {
-        _tryConnect();
-      },
-      cancelOnError: false,
-    );
+    // final token = await Storage().getAccessToken();
+    // channel?.sink.close();
+    // channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
+    // channel?.stream.listen(
+    //   (event) async {
+    //     try {
+    //       var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
+    //       if (newMessageTask.action.isNotEmpty) {
+    //         TaskDialogs().showTaskMessage(
+    //           newMessageTask.message,
+    //         );
+    //       }
+    //       eventBloc.updateData();
+    //       emit(SocketEventReceivedState());
+    //       return;
+    //     } catch (_) {}
+    //     try {
+    //       print("0");
+    //       if (jsonDecode(event)['chat_id'] != null) {
+    //         idChat = jsonDecode(event)['chat_id'];
+    //       } else {
+    //         var newMessage = NewMessageAnswer.fromJson(jsonDecode(event));
+    //         if (showPersonChat) {
+    //           MessageDialogs().showMessage(
+    //             newMessage.fromName,
+    //             newMessage.message,
+    //             eventBloc.context,
+    //             id: newMessage.id,
+    //             name: newMessage.fromName,
+    //             idWithChat: newMessage.from,
+    //             image: newMessage.image,
+    //           );
+    //           editChatId(int.parse(newMessage.id!));
+    //         }
+    //         messages.add(
+    //           ChatMessage(
+    //             user: ChatUser(id: newMessage.from),
+    //             createdAt: DateTime.now(),
+    //             text: newMessage.message,
+    //           ),
+    //         );
+    //       }
+    //       add(GetListMessage());
+    //       add(RefreshPersonChatEvent());
+    //     } catch (_) {}
+    //   },
+    //   onDone: () {
+    //     _tryConnect();
+    //   },
+    //   cancelOnError: false,
+    // );
   }
 
   void _closeSocket(CloseSocketEvent eventBloc, Emitter<ChatState> emit) async {
