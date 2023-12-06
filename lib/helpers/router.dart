@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/view/auth_page.dart';
 import 'package:just_do_it/feature/auth/view/confirm_phone_code.dart';
-import 'package:just_do_it/feature/auth/view/confirm_phone_register.dart';
+import 'package:just_do_it/feature/auth/view/confirm_code_register_page.dart';
 import 'package:just_do_it/feature/auth/view/sign_up.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/personal_chat.dart';
 import 'package:just_do_it/feature/home/presentation/home_page.dart';
@@ -59,13 +60,18 @@ class AppRoute {
         List<dynamic> arg = route.arguments as List<dynamic>;
         return MaterialPageRoute(
           builder: (_) => TasksPage(
-            onSelect: arg[0], customer: 0,
+            onSelect: arg[0],
+            customer: 0,
           ),
         );
 
       case contactus:
         List<String> arg = route.arguments as List<String>;
-        return MaterialPageRoute(builder: (_) => ContactUs(name: arg[0], theme: arg[1],));
+        return MaterialPageRoute(
+            builder: (_) => ContactUs(
+                  name: arg[0],
+                  theme: arg[1],
+                ));
       case score:
         return MaterialPageRoute(builder: (_) => const ScorePage());
       case about:
@@ -84,9 +90,10 @@ class AppRoute {
       case notification:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalChat:
-        List<dynamic> arg = route.arguments  as List<dynamic>;
+        List<dynamic> arg = route.arguments as List<dynamic>;
         return MaterialPageRoute(
-            builder: (_) => PersonalChat(arg[0], arg[1], arg[2], arg[3],categoryId:arg.length==5?arg[4]:null));
+            builder: (_) => PersonalChat(arg[0], arg[1], arg[2], arg[3],
+                categoryId: arg.length == 5 ? arg[4] : null));
       case rating:
         return MaterialPageRoute(builder: (_) => const RatingPage());
       case auth:
@@ -100,13 +107,13 @@ class AppRoute {
             builder: (_) => ConfirmCodePhonePage(phone: phone));
       case confirmCodeRegister:
         final list = route.arguments as List<dynamic>;
-        String phone = list[0] as String;
+        SendProfileEvent phone = list[0] as SendProfileEvent;
         return MaterialPageRoute(
-            builder: (_) => ConfirmCodeRegisterPage(phone: phone));
+            builder: (_) => ConfirmCodeRegisterPage(sendProfileEvent: phone));
       case personalAccount:
         return MaterialPageRoute(builder: (_) => const PersonalAccountPage());
       case profile:
-        return MaterialPageRoute(builder: (_) => ProfilePage());
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       case editBasicInfo:
         return MaterialPageRoute(builder: (_) => const EditBasicInfo());
       case editIdentityInfo:

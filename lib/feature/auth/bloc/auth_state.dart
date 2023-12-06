@@ -4,13 +4,17 @@ class AuthState {}
 
 class AuthInitState extends AuthState {}
 
-class SendProfileSuccessState extends AuthState {}
+class SendProfileSuccessState extends AuthState {
+  SendProfileEvent sendProfileEvent;
+  SendProfileSuccessState(this.sendProfileEvent);
+}
 
 class SendProfileErrorState extends AuthState {
   Map<String, dynamic>? error;
-
   SendProfileErrorState(this.error);
 }
+
+class ConfirmCodeRegisterInitialState extends AuthState {}
 
 class ConfirmCodeRegistrSuccessState extends AuthState {
   String access;

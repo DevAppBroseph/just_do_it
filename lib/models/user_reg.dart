@@ -80,7 +80,7 @@ class UserRegModel {
     this.ordersCreateAsCustomer,
     this.phoneNumber,
     this.email,
-     this.canAppellate,
+    this.canAppellate,
     this.firstname,
     this.verifyStatus,
     this.lastname,
@@ -179,11 +179,15 @@ class UserRegModel {
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
     this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
-    this.selectedOffersAsCustomer = selectedOffersAsCustomer ?? this.selectedOffersAsCustomer;
-    this.finishedOffersAsCustomer = finishedOffersAsCustomer ?? this.finishedOffersAsCustomer;
-    this.countOrdersCreateAsCustomer = countOrdersCreateAsCustomer ?? this.countOrdersCreateAsCustomer;
+    this.selectedOffersAsCustomer =
+        selectedOffersAsCustomer ?? this.selectedOffersAsCustomer;
+    this.finishedOffersAsCustomer =
+        finishedOffersAsCustomer ?? this.finishedOffersAsCustomer;
+    this.countOrdersCreateAsCustomer =
+        countOrdersCreateAsCustomer ?? this.countOrdersCreateAsCustomer;
     this.openOffers = openOffers ?? this.openOffers;
-    this.ordersCreateAsCustomer = ordersCreateAsCustomer ?? this.ordersCreateAsCustomer;
+    this.ordersCreateAsCustomer =
+        ordersCreateAsCustomer ?? this.ordersCreateAsCustomer;
     this.email = email ?? this.email;
     this.firstname = firstname ?? this.firstname;
     this.lastname = lastname ?? this.lastname;
@@ -195,15 +199,23 @@ class UserRegModel {
     this.isEntity = isEntity ?? this.isEntity;
     this.activity = activity ?? this.activity;
     this.images = images ?? this.images;
-    this.ordersCompleteAsExecutor = ordersCompleteAsExecutor ?? this.ordersCompleteAsExecutor;
+    this.ordersCompleteAsExecutor =
+        ordersCompleteAsExecutor ?? this.ordersCompleteAsExecutor;
     this.cv = cv ?? this.cv;
-    this.countMyAnswersAsExecutor = countMyAnswersAsExecutor ?? this.countMyAnswersAsExecutor;
-    this.countOrdersCompleteAsExecutor = countOrdersCompleteAsExecutor ?? this.countOrdersCompleteAsExecutor;
-    this.myAnswersSelectedAsExecutor = myAnswersSelectedAsExecutor ?? this.myAnswersSelectedAsExecutor;
-    this.countOrdersCompleteACustomer = countOrdersCompleteACustomer ?? this.countOrdersCompleteACustomer;
-    this.ordersInProgressAsCustomer = ordersInProgressAsCustomer ?? this.ordersInProgressAsCustomer;
-    this.countMyAnswersSelectedAsExecutor = countMyAnswersSelectedAsExecutor ?? this.countMyAnswersSelectedAsExecutor;
-    this.ordersCompleteAsCustomer = ordersCompleteAsCustomer ?? this.ordersCompleteAsCustomer;
+    this.countMyAnswersAsExecutor =
+        countMyAnswersAsExecutor ?? this.countMyAnswersAsExecutor;
+    this.countOrdersCompleteAsExecutor =
+        countOrdersCompleteAsExecutor ?? this.countOrdersCompleteAsExecutor;
+    this.myAnswersSelectedAsExecutor =
+        myAnswersSelectedAsExecutor ?? this.myAnswersSelectedAsExecutor;
+    this.countOrdersCompleteACustomer =
+        countOrdersCompleteACustomer ?? this.countOrdersCompleteACustomer;
+    this.ordersInProgressAsCustomer =
+        ordersInProgressAsCustomer ?? this.ordersInProgressAsCustomer;
+    this.countMyAnswersSelectedAsExecutor = countMyAnswersSelectedAsExecutor ??
+        this.countMyAnswersSelectedAsExecutor;
+    this.ordersCompleteAsCustomer =
+        ordersCompleteAsCustomer ?? this.ordersCompleteAsCustomer;
     this.cvType = cvType ?? this.cvType;
     this.groups = groups ?? this.groups;
     this.activities = activities ?? this.activities;
@@ -274,16 +286,21 @@ class UserRegModel {
       canAppellate: canAppellate,
     );
   }
+
   factory UserRegModel.fromJson(Map<String, dynamic> data) {
     String? email = data['email'];
     bool isBanned = data['is_banned'];
     String? verifyStatus = data['verify_status'];
     int? countOrdersCreateAsCustomer = data['count_orders_create_as_customer'];
     int? countMyAnswersAsExecutor = data['count_my_answers_as_executor'];
-    int? countOrdersCompleteAsExecutor = data['count_orders_complete_as_executor'];
-    int? countOrdersInProgressAsCustomer = data['count_orders_in_progress_as_customer'];
-    int? countMyAnswersSelectedAsExecutor = data['count_my_answers_selected_as_executor'];
-    int? countOrdersCompleteACustomer = data['count_orders_complete_as_customer'];
+    int? countOrdersCompleteAsExecutor =
+        data['count_orders_complete_as_executor'];
+    int? countOrdersInProgressAsCustomer =
+        data['count_orders_in_progress_as_customer'];
+    int? countMyAnswersSelectedAsExecutor =
+        data['count_my_answers_selected_as_executor'];
+    int? countOrdersCompleteACustomer =
+        data['count_orders_complete_as_customer'];
     bool? hasNotifications = data['has_notifications'];
     int? countOrderComplete = data['count_orders_complete'];
     String? phoneNumber = data['phone_number'];
@@ -385,50 +402,50 @@ class UserRegModel {
       }
     }
     return UserRegModel(
-      openOffers: listOpenOffers,
-      countOrderComplete: countOrderComplete,
-      selectedOffersAsCustomer: listSelectedOffersAsCustomer,
-      selectedOffers: listSelectedOffers,
-      finishedOffers: listFinishedOffers,
-      finishedOffersAsCustomer: listFinishedOffersAsCustomer,
-      email: email,
-      hasNotifications: hasNotifications,
-      myAnswersAsExecutor: listMyAnswersAsExecutor,
-      countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
-      countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
-      phoneNumber: phoneNumber,
-      firstname: firstname,
-      lastname: lastname,
-      groups: groups,
-      rus: rus,
-      isBanned: isBanned,
-      photoLink: photoLink,
-      sex: sex,
-      allbalance: allbalance,
-      countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
-      ordersCreateAsCustomer: listOrdersCreateAsCustomer,
-      ordersCompleteAsExecutor: listOrdersCompleteAsExecutor,
-      countOrdersCompleteAsExecutor: countOrdersCompleteAsExecutor,
-      myAnswersSelectedAsExecutor: listMyAnswersSelectedAsExecutor,
-      countOrdersCompleteACustomer: countOrdersCompleteACustomer,
-      ordersInProgressAsCustomer: listTaskOrdersInProgressAsCustomer,
-      ordersCompleteAsCustomer: listTaskOrdersCompleteAsCustomer,
-      region: region,
-      docType: docType,
-      verifyStatus: verifyStatus,
-      docInfo: docInfo,
-      country: country,
-      isEntity: isEntity,
-      activity: activity,
-      cvLink: cvLink,
-      id: id,
-      activitiesInfo: list,
-      images: listImages,
-      countMyAnswersAsExecutor: countMyAnswersAsExecutor,
-      balance: balance,
-      link: link, canAppellate: canAppellate??false,
-      banReason: banReason
-    );
+        openOffers: listOpenOffers,
+        countOrderComplete: countOrderComplete,
+        selectedOffersAsCustomer: listSelectedOffersAsCustomer,
+        selectedOffers: listSelectedOffers,
+        finishedOffers: listFinishedOffers,
+        finishedOffersAsCustomer: listFinishedOffersAsCustomer,
+        email: email,
+        hasNotifications: hasNotifications,
+        myAnswersAsExecutor: listMyAnswersAsExecutor,
+        countMyAnswersSelectedAsExecutor: countMyAnswersSelectedAsExecutor,
+        countOrdersInProgressAsCustomer: countOrdersInProgressAsCustomer,
+        phoneNumber: phoneNumber,
+        firstname: firstname,
+        lastname: lastname,
+        groups: groups,
+        rus: rus,
+        isBanned: isBanned,
+        photoLink: photoLink,
+        sex: sex,
+        allbalance: allbalance,
+        countOrdersCreateAsCustomer: countOrdersCreateAsCustomer,
+        ordersCreateAsCustomer: listOrdersCreateAsCustomer,
+        ordersCompleteAsExecutor: listOrdersCompleteAsExecutor,
+        countOrdersCompleteAsExecutor: countOrdersCompleteAsExecutor,
+        myAnswersSelectedAsExecutor: listMyAnswersSelectedAsExecutor,
+        countOrdersCompleteACustomer: countOrdersCompleteACustomer,
+        ordersInProgressAsCustomer: listTaskOrdersInProgressAsCustomer,
+        ordersCompleteAsCustomer: listTaskOrdersCompleteAsCustomer,
+        region: region,
+        docType: docType,
+        verifyStatus: verifyStatus,
+        docInfo: docInfo,
+        country: country,
+        isEntity: isEntity,
+        activity: activity,
+        cvLink: cvLink,
+        id: id,
+        activitiesInfo: list,
+        images: listImages,
+        countMyAnswersAsExecutor: countMyAnswersAsExecutor,
+        balance: balance,
+        link: link,
+        canAppellate: canAppellate ?? false,
+        banReason: banReason);
   }
 
   Map<String, dynamic> toJson() {
@@ -471,7 +488,7 @@ class UserRegModel {
         }
       }
 
-      data['images'] = files.isNotEmpty?files:"null";
+      data['images'] = files.isNotEmpty ? files : "null";
     }
 
     if (cv != null) {
@@ -503,21 +520,19 @@ class ActivitiesInfo {
   }
 }
 
-
-
-
-
 class DocumentInfo {
   String? serial, documentNumber, whoGiveDocument, documentData;
-  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument, this.documentData);
+  DocumentInfo(this.serial, this.documentNumber, this.whoGiveDocument,
+      this.documentData);
   factory DocumentInfo.fromJson(String data) {
     List<String> list = data.split('\n');
     list.map((e) => e.split(' ').length > 1 ? e.split(' ')[1] : e);
 
     String? serial = list[0].split(':').last.replaceAll(' ', '');
     String? documentNumber = list[1].split(':').last.replaceAll(' ', '');
-    String? whoGiveDocument =
-        list[2].split(':').last != ' ' ? list[2].split(':').last.substring(1, list[2].split(':').last.length) : '';
+    String? whoGiveDocument = list[2].split(':').last != ' '
+        ? list[2].split(':').last.substring(1, list[2].split(':').last.length)
+        : '';
 
     String? documentData = list[3].split(':').last.replaceAll(' ', '');
     return DocumentInfo(serial, documentNumber, whoGiveDocument, documentData);

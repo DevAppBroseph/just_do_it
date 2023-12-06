@@ -91,21 +91,28 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   List<Regions> listRegions = [];
 
   GlobalKey key1 = GlobalKey();
-  Future<void> submitRegisterMethod(String? token)async{
-    if (registerConfirmationMethod == RegisterConfirmationMethod.phone||registerConfirmationMethod == RegisterConfirmationMethod.whatsapp) {
+  Future<void> submitRegisterMethod(String? token) async {
+    if (registerConfirmationMethod == RegisterConfirmationMethod.phone ||
+        registerConfirmationMethod == RegisterConfirmationMethod.whatsapp) {
       final phoneConfirmationTypeResult =
           await showPhoneConfirmationMethodSelectionDialog(
-          context, user, token ?? "");
+              context, user, token ?? "");
       if (phoneConfirmationTypeResult != null) {
         registerConfirmationMethod = phoneConfirmationTypeResult;
       } else {
         return;
       }
     }
-    showLoaderWrapper(context);
-    BlocProvider.of<AuthBloc>(context)
-        .add(SendProfileEvent(user, token ?? '', registerConfirmationMethod));
+    // showLoaderWrapper(context);
+    // Loader.hide();
+    BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
+      user,
+      token ?? '',
+      registerConfirmationMethod,
+      null,
+    ));
   }
+
   _selectImage() async {
     final getMedia = await ImagePicker().getImage(source: ImageSource.gallery);
     if (getMedia != null) {
@@ -168,33 +175,39 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
       if (current is CheckUserState) {
         if (current.error != null) {
-          CustomAlert()
-              .showMessage('a_user_with_such_an_email_or_phone_number_is_already_registered'.tr());
+          CustomAlert().showMessage(
+              'a_user_with_such_an_email_or_phone_number_is_already_registered'
+                  .tr());
         } else {
           page = 1;
           widget.stage(2);
         }
       } else if (current is SendProfileSuccessState) {
-        Navigator.of(context)
-            .pushNamed(AppRoute.confirmCodeRegister, arguments: [phoneController.text]);
+        Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+            arguments: [current.sendProfileEvent]);
       } else if (current is GetCategoriesState) {
         listCategories.clear();
         listCategories.addAll(current.res);
       } else if (current is SendProfileErrorState) {
         String messageError = '${'error'.tr()}\n';
-        if (current.error!['email'] != null && current.error!['email'][0] != null) {
+        if (current.error!['email'] != null &&
+            current.error!['email'][0] != null) {
           String email = current.error!['email'][0];
           if (email.contains('custom user with this Email already exists.')) {
-            messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
+            messageError =
+                'a_user_with_such_an_email_is_already_registered'.tr();
           } else if (email.contains('Enter a valid email address.')) {
             messageError = 'enter_the_correct_email_address'.tr();
           }
         } else if (current.error!['phone_number'] != null &&
             current.error!['phone_number'][0] != null) {
           String phoneNumber = current.error!['phone_number'][0];
-          if (phoneNumber.contains('custom user with this Телефон already exists.')) {
-            messageError = 'a_user_with_such_a_phone_is_already_registered'.tr();
-          } else if (phoneNumber.contains('The phone number entered is not valid.')) {
+          if (phoneNumber
+              .contains('custom user with this Телефон already exists.')) {
+            messageError =
+                'a_user_with_such_a_phone_is_already_registered'.tr();
+          } else if (phoneNumber
+              .contains('The phone number entered is not valid.')) {
             messageError = 'enter_the_correct_phone_number'.tr();
           }
         }
@@ -204,7 +217,10 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     }, builder: (context, snapshot) {
       return Column(
         children: [
-          Expanded(child: page == 0 ? firstStage(heightKeyBoard) : secondStage(heightKeyBoard)),
+          Expanded(
+              child: page == 0
+                  ? firstStage(heightKeyBoard)
+                  : secondStage(heightKeyBoard)),
           SizedBox(height: 10.h),
           CustomButton(
             onTap: () async {
@@ -220,7 +236,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   error += '\n- ${'surname'.tr()}';
                   errorsFlag = true;
                 }
-                if (phoneController.text.isEmpty || phoneController.text == '+') {
+                if (phoneController.text.isEmpty ||
+                    phoneController.text == '+') {
                   error += '\n- ${'mobile_number'.tr()}';
                   errorsFlag = true;
                 }
@@ -231,9 +248,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
 
                 String email = emailController.text;
 
-                bool emailValid =
-                    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(email);
+                bool emailValid = RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(email);
 
                 if (!emailValid && emailController.text.isNotEmpty) {
                   error += '\n- ${'correct_email'.tr()}';
@@ -243,19 +260,28 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 if (errorsFlag) {
                   CustomAlert().showMessage(error);
                 } else if (!emailValid) {
-                  CustomAlert().showMessage('enter_the_correct_email_address'.tr());
-                } else if (emailController.text.split('@').last.split('.').last.length < 2) {
-                  CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}');
+                  CustomAlert()
+                      .showMessage('enter_the_correct_email_address'.tr());
+                } else if (emailController.text
+                        .split('@')
+                        .last
+                        .split('.')
+                        .last
+                        .length <
+                    2) {
+                  CustomAlert().showMessage(
+                      '- ${'enter_the_correct_email_address'.tr()}');
                 } else if (phoneController.text.length < 12) {
-                  CustomAlert().showMessage('- ${'incorrect_phone_number'.tr()}');
+                  CustomAlert()
+                      .showMessage('- ${'incorrect_phone_number'.tr()}');
                 } else if (!confirmTermsPolicy) {
                   CustomAlert().showMessage(
                       'it_is_necessary_to_give_consent_to_the_processing_of_personal_data_and_the_user_agreement'
                           .tr());
                 } else {
                   showLoaderWrapper(context);
-                  BlocProvider.of<AuthBloc>(context)
-                      .add(CheckUserExistEvent(phoneController.text, emailController.text));
+                  BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
+                      phoneController.text, emailController.text));
                 }
               } else {
                 requestNextEmptyFocusStage2();
@@ -263,7 +289,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 String error = 'specify'.tr();
                 bool errorsFlag = false;
 
-                if (passwordController.text.isEmpty || repeatPasswordController.text.isEmpty) {
+                if (passwordController.text.isEmpty ||
+                    repeatPasswordController.text.isEmpty) {
                   error += '\n- ${'password'.tr().toLowerCase()}';
                   errorsFlag = true;
                 }
@@ -276,26 +303,29 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   error += '\n- ${'region'.tr().toLowerCase()}';
                   errorsFlag = true;
                 }
-                bool passwordValid =
-                    RegExp(r'^(?:[a-zA-Z0-9]*)$').hasMatch(passwordController.text);
+                bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
+                    .hasMatch(passwordController.text);
                 if (!passwordValid && passwordController.text.isNotEmpty) {
                   error += '\n- ${'correct_password'.tr()}';
                   errorsFlag = true;
                 }
                 if (passwordController.text.length < 6) {
-                  error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
+                  error +=
+                      '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                   errorsFlag = true;
                 }
                 if ((passwordController.text.isNotEmpty &&
                         repeatPasswordController.text.isNotEmpty) &&
-                    (passwordController.text != repeatPasswordController.text)) {
+                    (passwordController.text !=
+                        repeatPasswordController.text)) {
                   error += '\n${'passwords_dont_match'.tr()}';
                   errorsFlag = true;
                 }
 
                 if (whoGiveDocController.text.length < 3) {
                   if (user.docType == 'Resident_ID') {
-                    error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                    error +=
+                        '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                     errorsFlag = true;
                   }
                 }
@@ -305,7 +335,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                     error += '\n- ${'number_document'.tr()}';
                     errorsFlag = true;
                   }
-                  if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
+                  if (serialDocController.text.isEmpty &&
+                      user.docType != 'Resident_ID') {
                     error += '\n- ${'document_series'.tr()}';
                     errorsFlag = true;
                   }
@@ -339,9 +370,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                         '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text != repeatPasswordController.text)) {
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
                     CustomAlert().showMessage('passwords_dont_match'.tr());
-                  } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                  } else if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
                     CustomAlert().showMessage('your_document_is_overdue'.tr());
                   } else if (checkExpireDate(dateTimeEnd) != null) {
                     CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
@@ -355,14 +388,16 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                       user.rus = true;
                     }
                     await submitRegisterMethod(token);
-                 }
+                  }
                 } else if (errorsFlag) {
                   CustomAlert().showMessage(error);
                 } else if ((passwordController.text.isNotEmpty &&
                         repeatPasswordController.text.isNotEmpty) &&
-                    (passwordController.text != repeatPasswordController.text)) {
+                    (passwordController.text !=
+                        repeatPasswordController.text)) {
                   CustomAlert().showMessage('passwords_dont_match'.tr());
-                } else if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                } else if (dateTimeEnd != null &&
+                    DateTime.now().isAfter(dateTimeEnd!)) {
                   CustomAlert().showMessage('your_document_is_overdue'.tr());
                 } else if (checkExpireDate(dateTimeEnd) != null) {
                   CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
@@ -434,7 +469,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -453,7 +489,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -477,7 +514,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             ),
             LengthLimitingTextInputFormatter(16),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -488,14 +526,17 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
         UsedForRegistrationCheckbox(
-          isSelected: registerConfirmationMethod == RegisterConfirmationMethod.phone,
+          isSelected:
+              registerConfirmationMethod == RegisterConfirmationMethod.phone,
           onSelected: () {
-            if (registerConfirmationMethod != RegisterConfirmationMethod.phone) {
+            if (registerConfirmationMethod !=
+                RegisterConfirmationMethod.phone) {
               setState(() {
                 registerConfirmationMethod = RegisterConfirmationMethod.phone;
               });
@@ -508,14 +549,15 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            bool emailValid =
-                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
             if (!emailValid) {
               CustomAlert().showMessage('the_email_address_is_incorrect'.tr());
             }
@@ -524,14 +566,17 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(250.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
         UsedForRegistrationCheckbox(
-          isSelected: registerConfirmationMethod == RegisterConfirmationMethod.email,
+          isSelected:
+              registerConfirmationMethod == RegisterConfirmationMethod.email,
           onSelected: () {
-            if (registerConfirmationMethod != RegisterConfirmationMethod.email) {
+            if (registerConfirmationMethod !=
+                RegisterConfirmationMethod.email) {
               setState(() {
                 registerConfirmationMethod = RegisterConfirmationMethod.email;
               });
@@ -546,7 +591,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             enabled: false,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             suffixIcon: Stack(
               alignment: Alignment.centerRight,
               children: [
@@ -617,7 +663,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                             width: 15.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
                                 borderRadius: BorderRadius.circular(40.r)),
                             child: Center(
                               child: Icon(
@@ -645,7 +693,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: confirmTermsPolicy,
               onChanged: (value) {
                 setState(() {
@@ -661,7 +710,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   final about = await Repository().aboutList();
                   if (context.mounted) {
                     launchUrl(
-                        Uri.parse(user.rus ?? true && context.locale.languageCode == 'ru'
+                        Uri.parse(user.rus ??
+                                true && context.locale.languageCode == 'ru'
                             ? server + about!.agreement
                             : server + about!.agreementEng),
                         mode: LaunchMode.externalApplication);
@@ -718,7 +768,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   ),
           ),
           textEditingController: passwordController,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -728,7 +779,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(0.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -760,11 +812,13 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             requestNextEmptyFocusStage2();
           },
           textEditingController: repeatPasswordController,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
               scrollController2.animateTo(50.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -775,8 +829,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             context,
             _countryKey,
             (value) async {
-              countryController.text =
-                  context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
+              countryController.text = context.locale.languageCode == 'ru'
+                  ? value.name ?? '-'
+                  : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -792,7 +847,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -815,7 +871,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr());
+              CustomAlert().showMessage(
+                  'to_select_a_region_first_specify_the_country'.tr());
             }
           },
           child: CustomTextField(
@@ -824,7 +881,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -845,7 +903,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               );
               setState(() {});
             },
-            ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
+            [
+              'passport_of_the_RF'.tr(),
+              'foreign_passport'.tr(),
+              'resident_ID'.tr()
+            ],
             'document'.tr(),
           ),
           child: Stack(
@@ -860,7 +922,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 onTap: () {},
                 fillColor: Colors.grey[200],
                 textEditingController: documentTypeController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -903,7 +966,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         Row(
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
                 setState(() {
@@ -949,21 +1013,26 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
                 textEditingController: serialDocController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user.docType != 'Resident_ID' ? 'number'.tr() : 'id_number'.tr(),
+              hintText: user.docType != 'Resident_ID'
+                  ? 'number'.tr()
+                  : 'id_number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
@@ -974,7 +1043,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear);
                 });
               },
               formatters: [
@@ -982,9 +1052,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               ],
               width: user.docType == 'Resident_ID'
                   ? MediaQuery.of(context).size.width - 30.w - 18.w
-                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w,
               textEditingController: numberDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -996,7 +1068,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1009,7 +1082,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
@@ -1024,7 +1098,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1040,7 +1115,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1056,7 +1132,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1069,7 +1146,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -1079,22 +1157,31 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   void _showDatePicker(ctx, int index, bool isInternational) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 2)
         : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 100, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 100, DateTime.now().month,
+            DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -1125,10 +1212,12 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
                                         dateDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   } else {
@@ -1136,10 +1225,12 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
                                         dateDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   }
@@ -1167,9 +1258,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1180,9 +1273,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&

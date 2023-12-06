@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,22 +10,21 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
-import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:pinput/pinput.dart';
 
 class ConfirmCodeRegisterPage extends StatefulWidget {
-  final String phone;
+  // final String phone;
+  final SendProfileEvent sendProfileEvent;
   const ConfirmCodeRegisterPage({
     super.key,
-    required this.phone,
+    required this.sendProfileEvent,
   });
 
   @override
-  State<ConfirmCodeRegisterPage> createState() => _ConfirmCodeRegisterPageState();
+  State<ConfirmCodeRegisterPage> createState() =>
+      _ConfirmCodeRegisterPageState();
 }
 
 class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
@@ -63,7 +61,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    late final int refCode;
+    // late final int refCode;
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -72,24 +70,28 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
-            Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
             scoreDialog(context, '50', 'registrations'.tr());
-            if(context.read<AuthBloc>().refCode!=null){
-              scoreDialog(context, '200', 'registrations_by_referral_link'.tr());
+            if (context.read<AuthBloc>().refCode != null) {
+              scoreDialog(
+                  context, '200', 'registrations_by_referral_link'.tr());
             }
-
           } else if (current is ConfirmRestoreSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
-            Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is ConfirmCodeRegisterErrorState) {
             CustomAlert().showMessage('invalid_code'.tr());
           } else if (current is ConfirmRestoreErrorState) {
-            CustomAlert().showMessage('invalid_code'.tr(),);
+            CustomAlert().showMessage(
+              'invalid_code'.tr(),
+            );
           }
           return false;
         },
-        builder: (context, snapshot) {
+        builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             body: Stack(
@@ -122,7 +124,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   style: CustomTextStyle.black_16_w400_515150,
                                 ),
                                 TextSpan(
-                                  text: widget.phone,
+                                  text: widget.sendProfileEvent.userRegModel
+                                      .phoneNumber,
                                   style: CustomTextStyle.black_16_w400_171716,
                                 ),
                               ])),
@@ -133,7 +136,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               pinAnimationType: PinAnimationType.none,
                               showCursor: false,
                               length: 4,
-                              androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+                              androidSmsAutofillMethod:
+                                  AndroidSmsAutofillMethod.smsRetrieverApi,
                               controller: codeController,
                               focusNode: focusNode,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,10 +187,23 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               if (codeController.text.isNotEmpty) {
                                 showLoaderWrapper(context);
 
-                                BlocProvider.of<AuthBloc>(context)
-                                    .add(ConfirmCodeEvent(widget.phone, codeController.text));
+                                BlocProvider.of<AuthBloc>(context).add(
+                                  ConfirmCodeEvent(
+                                    widget.sendProfileEvent.userRegModel
+                                            .phoneNumber ??
+                                        '',
+                                    codeController.text,
+                                    widget.sendProfileEvent.userRegModel,
+                                    widget.sendProfileEvent
+                                        .registerConfirmationMethod,
+                                    widget.sendProfileEvent.sendCodeServer ??
+                                        '',
+                                    codeController.text,
+                                  ),
+                                );
                               } else {
-                                CustomAlert().showMessage('enter_the_code'.tr());
+                                CustomAlert()
+                                    .showMessage('enter_the_code'.tr());
                               }
                             },
                             btnColor: ColorStyles.yellowFFD70A,
@@ -210,20 +227,23 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                     SizedBox(height: 34.h),
                   ],
                 ),
-                if (MediaQuery.of(context).viewInsets.bottom > 0 && focusNode.hasFocus)
+                if (MediaQuery.of(context).viewInsets.bottom > 0 &&
+                    focusNode.hasFocus)
                   Column(
                     children: [
                       const Spacer(),
                       AnimatedPadding(
                         duration: const Duration(milliseconds: 0),
-                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
                         child: Row(
                           children: [
                             Expanded(
                               child: Container(
                                 color: Colors.grey[200],
                                 child: MediaQuery(
-                                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                                  data: MediaQuery.of(context)
+                                      .copyWith(textScaleFactor: 1.0),
                                   child: Align(
                                     alignment: Alignment.centerRight,
                                     child: Padding(

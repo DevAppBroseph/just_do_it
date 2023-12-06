@@ -28,22 +28,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void setRef(int? value) => refCode = value;
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    Map<String, dynamic>? res = await Repository().confirmRegister(
-        event.userRegModel, event.token, event.registerConfirmationMethod);
-    if (res == null) {
-      emit(SendProfileSuccessState());
+    if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone) {
+      final otp = await Repository().sendCodeForConfirmation(
+        confirmMethod: 'phone',
+        value: event.userRegModel.phoneNumber!,
+      );
+
+      if (otp != null) {
+        event.sendCodeServer = otp;
+
+        emit(SendProfileSuccessState(event));
+      } else {
+        emit(SendProfileErrorState({}));
+      }
     } else {
-      emit(SendProfileErrorState(res));
+      Map<String, dynamic>? res = await Repository().confirmRegister(
+        event.userRegModel,
+        event.token,
+        event.registerConfirmationMethod,
+      );
+      if (res == null) {
+        emit(SendProfileSuccessState(event));
+      } else {
+        emit(SendProfileErrorState(res));
+      }
     }
   }
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository()
-        .confirmCodeRegistration(event.phone, event.code, refCode);
+    String? res = await Repository().register(event);
     if (res != null) {
-      emit(ConfirmCodeRegistrSuccessState(res));
+      emit(ConfirmCodeResetSuccessState(res));
     } else {
-      emit(ConfirmCodeRegisterErrorState());
+      emit(ConfirmCodeResetErrorState());
     }
   }
 

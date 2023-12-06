@@ -6,7 +6,13 @@ class SendProfileEvent extends AuthEvent {
   UserRegModel userRegModel;
   String token;
   final RegisterConfirmationMethod registerConfirmationMethod;
-  SendProfileEvent(this.userRegModel, this.token, this.registerConfirmationMethod);
+  String? sendCodeServer;
+  SendProfileEvent(
+    this.userRegModel,
+    this.token,
+    this.registerConfirmationMethod,
+    this.sendCodeServer,
+  );
 }
 
 class ConfirmCodeResetEvent extends AuthEvent {
@@ -20,9 +26,20 @@ class ConfirmCodeEvent extends AuthEvent {
   String phone;
   String code;
   int? refCode;
+  UserRegModel userRegModel;
 
+  RegisterConfirmationMethod registerConfirmationMethod;
+  String sendCodeServer;
+  String confirmationCodeUser;
 
-  ConfirmCodeEvent(this.phone, this.code,);
+  ConfirmCodeEvent(
+    this.phone,
+    this.code,
+    this.userRegModel,
+    this.registerConfirmationMethod,
+    this.sendCodeServer,
+    this.confirmationCodeUser,
+  );
 }
 
 class EditPasswordEvent extends AuthEvent {

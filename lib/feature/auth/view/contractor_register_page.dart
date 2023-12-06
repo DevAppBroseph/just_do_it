@@ -125,7 +125,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
     if (registerConfirmationMethod == RegisterConfirmationMethod.phone ||
         registerConfirmationMethod == RegisterConfirmationMethod.whatsapp) {
       final phoneConfirmationTypeResult =
-          await showPhoneConfirmationMethodSelectionDialog(context, user, token ?? "");
+          await showPhoneConfirmationMethodSelectionDialog(
+              context, user, token ?? "");
       print("phoneConfirmationTypeResult ${phoneConfirmationTypeResult}");
       if (phoneConfirmationTypeResult != null) {
         registerConfirmationMethod = phoneConfirmationTypeResult;
@@ -134,8 +135,12 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       }
     }
     showLoaderWrapper(context);
-    BlocProvider.of<AuthBloc>(context)
-        .add(SendProfileEvent(user, token ?? '', registerConfirmationMethod));
+    BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
+      user,
+      token ?? '',
+      registerConfirmationMethod,
+      null,
+    ));
   }
 
   _selectImages() async {
@@ -144,8 +149,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       List<ArrayImages> files = [];
       for (var pickedFile in getMedia) {
         File? file = File(pickedFile.path);
-        files.add(
-            ArrayImages(null, file.readAsBytesSync(), file: file, type: file.path.split('.').last));
+        files.add(ArrayImages(null, file.readAsBytesSync(),
+            file: file, type: file.path.split('.').last));
       }
       setState(() {
         photos.addAll(files);
@@ -227,32 +232,38 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         if (current is CheckUserState) {
           if (current.error != null) {
             CustomAlert().showMessage(
-                'a_user_with_such_an_email_or_phone_number_is_already_registered'.tr());
+                'a_user_with_such_an_email_or_phone_number_is_already_registered'
+                    .tr());
           } else {
             page = 1;
             widget.stage(2);
           }
         } else if (current is SendProfileSuccessState) {
-          Navigator.of(context)
-              .pushNamed(AppRoute.confirmCodeRegister, arguments: [phoneController.text]);
+          Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
+              arguments: [phoneController.text]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
         } else if (current is SendProfileErrorState) {
           String messageError = '${'error'.tr()}\n';
-          if (current.error!['email'] != null && current.error!['email'][0] != null) {
+          if (current.error!['email'] != null &&
+              current.error!['email'][0] != null) {
             String email = current.error!['email'][0];
             if (email.contains('custom user with this Email already exists.')) {
-              messageError = 'a_user_with_such_an_email_is_already_registered'.tr();
+              messageError =
+                  'a_user_with_such_an_email_is_already_registered'.tr();
             } else if (email.contains('Enter a valid email address.')) {
               messageError = 'enter_the_correct_email_address'.tr();
             }
           } else if (current.error!['phone_number'] != null &&
               current.error!['phone_number'][0] != null) {
             String phoneNumber = current.error!['phone_number'][0];
-            if (phoneNumber.contains('custom user with this Телефон already exists.')) {
-              messageError = 'a_user_with_such_a_phone_is_already_registered'.tr();
-            } else if (phoneNumber.contains('The phone number entered is not valid.')) {
+            if (phoneNumber
+                .contains('custom user with this Телефон already exists.')) {
+              messageError =
+                  'a_user_with_such_a_phone_is_already_registered'.tr();
+            } else if (phoneNumber
+                .contains('The phone number entered is not valid.')) {
               messageError = 'enter_the_correct_phone_number'.tr();
             }
           }
@@ -262,7 +273,10 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       }, builder: (context, snapshot) {
         return Column(
           children: [
-            Expanded(child: page == 0 ? firstStage(heightKeyBoard) : secondStage(heightKeyBoard)),
+            Expanded(
+                child: page == 0
+                    ? firstStage(heightKeyBoard)
+                    : secondStage(heightKeyBoard)),
             SizedBox(height: 10.h),
             CustomButton(
               onTap: () async {
@@ -281,7 +295,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     errorsFlag = true;
                   }
 
-                  if (phoneController.text.isEmpty || phoneController.text == '+') {
+                  if (phoneController.text.isEmpty ||
+                      phoneController.text == '+') {
                     error += '\n- ${'mobile_number'.tr()}';
                     errorsFlag = true;
                   }
@@ -291,21 +306,22 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     errorsFlag = true;
                   }
 
-                  if (passwordController.text.isEmpty || repeatPasswordController.text.isEmpty) {
+                  if (passwordController.text.isEmpty ||
+                      repeatPasswordController.text.isEmpty) {
                     error += '\n- ${'password'.tr().toLowerCase()}';
                     errorsFlag = true;
                   }
 
                   String email = emailController.text;
-                  bool passwordValid =
-                      RegExp(r'^(?:[a-zA-Z0-9]*)$').hasMatch(passwordController.text);
+                  bool passwordValid = RegExp(r'^(?:[a-zA-Z0-9]*)$')
+                      .hasMatch(passwordController.text);
                   if (!passwordValid && passwordController.text.isNotEmpty) {
                     error += '\n- ${'correct_password'.tr()}';
                     errorsFlag = true;
                   }
-                  bool emailValid =
-                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(email);
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(email);
 
                   if (!emailValid && emailController.text.isNotEmpty) {
                     error += '\n- ${'correct_email'.tr()}';
@@ -314,7 +330,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
 
                   if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text != repeatPasswordController.text)) {
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
                     if (errorsFlag == true) {
                       error += '\n\n${'passwords_dont_match'.tr()}';
                     } else {
@@ -323,7 +340,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     errorsFlag = true;
                   }
                   if (passwordController.text.length < 6) {
-                    error += '\n${'the_minimum_password_length_is_6_characters'.tr()}';
+                    error +=
+                        '\n${'the_minimum_password_length_is_6_characters'.tr()}';
                     errorsFlag = true;
                   }
 
@@ -333,11 +351,19 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     CustomAlert().showMessage(
                       '- ${'incorrect_phone_number'.tr()}.',
                     );
-                  } else if (emailController.text.split('@').last.split('.').last.length < 2) {
-                    CustomAlert().showMessage('- ${'enter_the_correct_email_address'.tr()}');
+                  } else if (emailController.text
+                          .split('@')
+                          .last
+                          .split('.')
+                          .last
+                          .length <
+                      2) {
+                    CustomAlert().showMessage(
+                        '- ${'enter_the_correct_email_address'.tr()}');
                   } else if ((passwordController.text.isNotEmpty &&
                           repeatPasswordController.text.isNotEmpty) &&
-                      (passwordController.text != repeatPasswordController.text)) {
+                      (passwordController.text !=
+                          repeatPasswordController.text)) {
                     CustomAlert().showMessage(
                       '- ${'the_minimum_password_length_is_6_characters'.tr().toLowerCase()}',
                     );
@@ -356,18 +382,20 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   } else {
                     showLoaderWrapper(context);
 
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(CheckUserExistEvent(phoneController.text, emailController.text));
+                    BlocProvider.of<AuthBloc>(context).add(CheckUserExistEvent(
+                        phoneController.text, emailController.text));
                   }
                 } else {
                   List<int> categorySelect = [];
                   for (int i = 0; i < typeCategories.length; i++) {
                     for (int j = 0; j < listCategories.length; j++) {
                       if (context.locale.languageCode == 'ru') {
-                        if (typeCategories[i] == listCategories[j].description) {
+                        if (typeCategories[i] ==
+                            listCategories[j].description) {
                           categorySelect.add(listCategories[j].id);
                         } else {
-                          if (typeCategories[i] == listCategories[j].engDescription) {
+                          if (typeCategories[i] ==
+                              listCategories[j].engDescription) {
                             categorySelect.add(listCategories[j].id);
                           }
                         }
@@ -375,7 +403,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     }
                   }
                   requestNextEmptyFocusStage2();
-                  user.copyWith(activitiesDocument: categorySelect, groups: [4]);
+                  user.copyWith(
+                      activitiesDocument: categorySelect, groups: [4]);
                   String error = 'specify'.tr();
                   bool errorsFlag = false;
 
@@ -392,7 +421,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     errorsFlag = true;
                   }
                   if (additionalInfo) {
-                    if (serialDocController.text.isEmpty && user.docType != 'Resident_ID') {
+                    if (serialDocController.text.isEmpty &&
+                        user.docType != 'Resident_ID') {
                       error += '\n- ${'document_series'.tr()}';
                       errorsFlag = true;
                     }
@@ -402,7 +432,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     }
                     if (whoGiveDocController.text.isEmpty) {
                       if (user.docType != 'Passport') {
-                        error += '\n- ${'validity_period_of_the_document'.tr()}';
+                        error +=
+                            '\n- ${'validity_period_of_the_document'.tr()}';
                         errorsFlag = true;
                       } else if (user.docType != 'Resident_ID') {
                         error += '\n- ${'who_issued_the_document'.tr()}';
@@ -415,7 +446,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     }
                     if (whoGiveDocController.text.length < 3) {
                       if (user.docType == 'Resident_ID') {
-                        error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                        error +=
+                            '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                         errorsFlag = true;
                       }
                     }
@@ -428,7 +460,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                       errorsFlag = true;
                     }
                   }
-                  if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
+                  if (dateTimeEnd != null &&
+                      DateTime.now().isAfter(dateTimeEnd!)) {
                     error += '\n\n ${'your_document_is_overdue'.tr()}';
                     errorsFlag = true;
                   }
@@ -436,8 +469,10 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   if (errorsFlag) {
                     CustomAlert().showMessage(error);
                   } else {
-                    if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!)) {
-                      CustomAlert().showMessage('your_document_is_overdue'.tr());
+                    if (dateTimeEnd != null &&
+                        DateTime.now().isAfter(dateTimeEnd!)) {
+                      CustomAlert()
+                          .showMessage('your_document_is_overdue'.tr());
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
                     } else {
@@ -509,7 +544,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(firstname: value);
           },
@@ -528,7 +564,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
           ],
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(lastname: value);
           },
@@ -555,7 +592,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: () {
             if (phoneController.text.isEmpty) phoneController.text = '+';
           },
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
@@ -565,9 +603,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           },
         ),
         UsedForRegistrationCheckbox(
-          isSelected: registerConfirmationMethod == RegisterConfirmationMethod.phone,
+          isSelected:
+              registerConfirmationMethod == RegisterConfirmationMethod.phone,
           onSelected: () {
-            if (registerConfirmationMethod != RegisterConfirmationMethod.phone) {
+            if (registerConfirmationMethod !=
+                RegisterConfirmationMethod.phone) {
               setState(() {
                 registerConfirmationMethod = RegisterConfirmationMethod.phone;
               });
@@ -580,14 +620,15 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           height: 50.h,
           textEditingController: emailController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(email: value);
           },
           onFieldSubmitted: (value) {
-            bool emailValid =
-                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
             if (!emailValid) {
               CustomAlert().showMessage('the_email_address_is_incorrect'.tr());
             }
@@ -596,14 +637,17 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: () {
             Future.delayed(const Duration(milliseconds: 250), () {
               scrollController1.animateTo(500.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
         UsedForRegistrationCheckbox(
-          isSelected: registerConfirmationMethod == RegisterConfirmationMethod.email,
+          isSelected:
+              registerConfirmationMethod == RegisterConfirmationMethod.email,
           onSelected: () {
-            if (registerConfirmationMethod != RegisterConfirmationMethod.email) {
+            if (registerConfirmationMethod !=
+                RegisterConfirmationMethod.email) {
               setState(() {
                 registerConfirmationMethod = RegisterConfirmationMethod.email;
               });
@@ -634,7 +678,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           ),
           textEditingController: passwordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -644,7 +689,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(300.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -673,7 +719,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           ),
           textEditingController: repeatPasswordController,
           hintStyle: CustomTextStyle.grey_14_w400,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(password: value);
           },
@@ -683,7 +730,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: () {
             Future.delayed(const Duration(milliseconds: 300), () {
               scrollController1.animateTo(350.h,
-                  duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.linear);
             });
           },
         ),
@@ -698,7 +746,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: confirmTermsPolicy,
               onChanged: (value) {
                 setState(() {
@@ -714,7 +763,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   final about = await Repository().aboutList();
                   if (context.mounted) {
                     launchUrl(
-                        Uri.parse(user.rus ?? true && context.locale.languageCode == 'ru'
+                        Uri.parse(user.rus ??
+                                true && context.locale.languageCode == 'ru'
                             ? server + about!.agreement
                             : server + about!.agreementEng),
                         mode: LaunchMode.externalApplication);
@@ -784,7 +834,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               ],
             ),
             textEditingController: TextEditingController(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           ),
         ),
         if (image != null) SizedBox(height: 6.h),
@@ -825,7 +876,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                             width: 15.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
                                 borderRadius: BorderRadius.circular(40.r)),
                             child: Center(
                               child: Icon(
@@ -850,7 +903,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             _countryKey,
             (value) async {
               countryController.text = regionController.text =
-                  context.locale.languageCode == 'ru' ? value.name ?? '-' : value.engName ?? '-';
+                  context.locale.languageCode == 'ru'
+                      ? value.name ?? '-'
+                      : value.engName ?? '-';
               selectCountries = value;
               regionController.text = '';
               listRegions = await Repository().regions(selectCountries!);
@@ -866,7 +921,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -890,7 +946,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 'select_a_region'.tr(),
               );
             } else {
-              CustomAlert().showMessage('to_select_a_region_first_specify_the_country'.tr());
+              CustomAlert().showMessage(
+                  'to_select_a_region_first_specify_the_country'.tr());
             }
           },
           child: CustomTextField(
@@ -899,7 +956,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) {},
           ),
         ),
@@ -920,7 +978,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               );
               setState(() {});
             },
-            ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
+            [
+              'passport_of_the_RF'.tr(),
+              'foreign_passport'.tr(),
+              'resident_ID'.tr()
+            ],
             'document'.tr(),
           ),
           child: Stack(
@@ -933,7 +995,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: documentTypeController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16.w),
@@ -1004,7 +1067,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 enabled: false,
                 onTap: () {},
                 textEditingController: categoryController,
-                contentPadding: EdgeInsets.only(left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
+                contentPadding: EdgeInsets.only(
+                    left: 18.w, right: 45.w, top: 18.h, bottom: 18.h),
               ),
               Stack(
                 alignment: Alignment.centerRight,
@@ -1058,8 +1122,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                       LengthLimitingTextInputFormatter(250),
                       UpperEveryTextInputFormatter()
                     ],
-                    contentPadding:
-                        EdgeInsets.only(left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
+                    contentPadding: EdgeInsets.only(
+                        left: 15.h, right: 15.h, top: 15.h, bottom: 20.h),
                   ),
                 ),
               ),
@@ -1122,8 +1186,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                                         width: 15.h,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
-                                            boxShadow: const [BoxShadow(color: Colors.black)],
-                                            borderRadius: BorderRadius.circular(40.r)),
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black)
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(40.r)),
                                         child: Center(
                                           child: Icon(
                                             Icons.close,
@@ -1156,7 +1223,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                             width: 50.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [BoxShadow(color: Colors.black)],
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black)
+                                ],
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Center(
                               child: SvgPicture.asset(
@@ -1179,7 +1248,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                               width: 15.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [BoxShadow(color: Colors.black)],
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
                                   borderRadius: BorderRadius.circular(40.r)),
                               child: Center(
                                 child: Icon(
@@ -1211,7 +1282,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1248,7 +1320,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                             child: Center(
                                 child: Text(
                               photos.length.toString(),
-                              style: CustomTextStyle.white_11.copyWith(fontSize: 10.sp),
+                              style: CustomTextStyle.white_11
+                                  .copyWith(fontSize: 10.sp),
                             )),
                           ),
                         ),
@@ -1271,7 +1344,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 11.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.h, vertical: 11.h),
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
@@ -1286,7 +1360,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                               SizedBox(width: 4.w),
                               Text(
                                 'upload_a_resume'.tr(),
-                                style: CustomTextStyle.black_12_w400.copyWith(fontSize: 12.sp),
+                                style: CustomTextStyle.black_12_w400
+                                    .copyWith(fontSize: 12.sp),
                               )
                             ],
                           ),
@@ -1322,7 +1397,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         Row(
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.r)),
               value: physics,
               onChanged: (value) {
                 user.copyWith(isEntity: value);
@@ -1368,21 +1444,26 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
                 textEditingController: serialDocController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (user.docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: user.docType != 'Resident_ID' ? 'number'.tr() : 'id_number'.tr(),
+              hintText: user.docType != 'Resident_ID'
+                  ? 'number'.tr()
+                  : 'id_number'.tr(),
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
               onFieldSubmitted: (value) {
@@ -1393,7 +1474,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               onTap: () {
                 Future.delayed(const Duration(milliseconds: 300), () {
                   scrollController2.animateTo(200.h,
-                      duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear);
                 });
               },
               formatters: [
@@ -1401,9 +1483,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               ],
               width: user.docType == 'Resident_ID'
                   ? MediaQuery.of(context).size.width - 30.w - 18.w
-                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w,
+                  : ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w,
               textEditingController: numberDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -1415,7 +1499,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1428,7 +1513,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (user.docType != 'Resident_ID') SizedBox(height: 16.h),
@@ -1443,7 +1529,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: dateDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1459,7 +1546,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ),
@@ -1475,7 +1563,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
                 scrollController2.animateTo(300.h,
-                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -1488,7 +1577,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -1498,22 +1588,31 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
   void _showDatePicker(ctx, int index, bool isInternational) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 2)
         : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 100, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 100, DateTime.now().month,
+            DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -1544,10 +1643,12 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
                                         dateDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   } else {
@@ -1555,10 +1656,12 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
                                         dateDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
                                         whoGiveDocController.text =
-                                            DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   }
@@ -1586,9 +1689,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
@@ -1599,9 +1704,11 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             user.copyWith(
                                 docInfo: serialDocController.text.isEmpty &&
