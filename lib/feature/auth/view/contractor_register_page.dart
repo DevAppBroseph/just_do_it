@@ -239,7 +239,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           }
         } else if (current is SendProfileSuccessState) {
           Navigator.of(context).pushNamed(AppRoute.confirmCodeRegister,
-              arguments: [phoneController.text]);
+              arguments: [current.sendProfileEvent]);
         } else if (current is GetCategoriesState) {
           listCategories.clear();
           listCategories.addAll(current.res);
@@ -476,7 +476,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                       CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
                     } else {
                       final token = await FirebaseMessaging.instance.getToken();
-                      showLoaderWrapper(context);
+                      // showLoaderWrapper(context);
                       if (context.locale.languageCode == 'en') {
                         user.rus = false;
                       }
