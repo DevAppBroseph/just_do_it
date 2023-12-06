@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
@@ -106,7 +107,11 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${'confrim_phone'.tr()} ',
+                            widget.sendProfileEvent
+                                        .registerConfirmationMethod ==
+                                    RegisterConfirmationMethod.email
+                                ? '${'confrim_email'.tr()} '
+                                : '${'confrim_phone'.tr()} ',
                             style: CustomTextStyle.black_22_w700,
                           )
                         ],
@@ -118,18 +123,26 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                       child: Column(
                         children: [
                           RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(children: [
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
                                 TextSpan(
                                   text: '${'code_confirm_sent'.tr()}\n',
                                   style: CustomTextStyle.black_16_w400_515150,
                                 ),
                                 TextSpan(
-                                  text: widget.sendProfileEvent.userRegModel
-                                      .phoneNumber,
+                                  text: widget.sendProfileEvent
+                                              .registerConfirmationMethod ==
+                                          RegisterConfirmationMethod.email
+                                      ? widget
+                                          .sendProfileEvent.userRegModel.email
+                                      : widget.sendProfileEvent.userRegModel
+                                          .phoneNumber,
                                   style: CustomTextStyle.black_16_w400_171716,
                                 ),
-                              ])),
+                              ],
+                            ),
+                          ),
                           SizedBox(height: 18.h),
                           SizedBox(
                             height: 70.h,
