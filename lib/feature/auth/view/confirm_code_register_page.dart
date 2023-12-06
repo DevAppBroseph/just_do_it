@@ -29,11 +29,17 @@ class ConfirmCodeRegisterPage extends StatefulWidget {
 }
 
 class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
+  late SendProfileEvent lastSendProfileEvent;
+
   TextEditingController codeController = TextEditingController();
   FocusNode focusNode = FocusNode();
   Timer? timer;
   int currentSecond = 59;
+
+  CustomAlert customAlert = CustomAlert();
+
   void _startTimer() {
+    timer?.cancel();
     if (timer == null || !timer!.isActive) {
       currentSecond = 59;
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -51,6 +57,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   @override
   void initState() {
     super.initState();
+    lastSendProfileEvent = widget.sendProfileEvent;
     _startTimer();
   }
 
@@ -58,6 +65,44 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   void dispose() {
     timer?.cancel();
     super.dispose();
+  }
+
+  onTapConfirm() async {
+    if (codeController.text.isNotEmpty) {
+      showLoaderWrapper(context);
+
+      final authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+      authBloc.add(
+        ConfirmCodeEvent(
+          lastSendProfileEvent.userRegModel.phoneNumber ?? '',
+          codeController.text,
+          lastSendProfileEvent.userRegModel,
+          lastSendProfileEvent.registerConfirmationMethod,
+          authBloc.sendCodeServer ?? '',
+          codeController.text,
+        ),
+      );
+    } else {
+      CustomAlert().showMessage('enter_the_code'.tr());
+    }
+  }
+
+  resendCode() async {
+    if (timer?.isActive ?? false) {
+      customAlert.showMessage(
+          '${'please_wait'.tr()}, $currentSecond ${'seconds'.tr()}');
+      return;
+    }
+
+    showLoaderWrapper(context);
+    String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
+        .sendCodeForConfirmation(widget.sendProfileEvent);
+    Loader.hide();
+    if (code != null) {
+      _startTimer();
+    } else {
+      customAlert.showMessage('invalid_code'.tr());
+    }
   }
 
   @override
@@ -69,6 +114,9 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
+          // if (current is SendProfileSuccessState) {
+          //   lastSendProfileEvent = current.sendProfileEvent;
+          // } else
           if (current is ConfirmCodeRegistrSuccessState) {
             BlocProvider.of<ProfileBloc>(context).setAccess(null);
 
@@ -87,9 +135,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           } else if (current is ConfirmCodeRegisterErrorState) {
             CustomAlert().showMessage('invalid_code'.tr());
           } else if (current is ConfirmRestoreErrorState) {
-            CustomAlert().showMessage(
-              'invalid_code'.tr(),
-            );
+            CustomAlert().showMessage('invalid_code'.tr());
           }
           return false;
         },
@@ -107,8 +153,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.sendProfileEvent
-                                        .registerConfirmationMethod ==
+                            lastSendProfileEvent.registerConfirmationMethod ==
                                     RegisterConfirmationMethod.email
                                 ? '${'confrim_email'.tr()} '
                                 : '${'confrim_phone'.tr()} ',
@@ -131,13 +176,13 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   style: CustomTextStyle.black_16_w400_515150,
                                 ),
                                 TextSpan(
-                                  text: widget.sendProfileEvent
+                                  text: lastSendProfileEvent
                                               .registerConfirmationMethod ==
                                           RegisterConfirmationMethod.email
                                       ? widget
                                           .sendProfileEvent.userRegModel.email
-                                      : widget.sendProfileEvent.userRegModel
-                                          .phoneNumber,
+                                      : lastSendProfileEvent
+                                          .userRegModel.phoneNumber,
                                   style: CustomTextStyle.black_16_w400_171716,
                                 ),
                               ],
@@ -173,18 +218,26 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             ),
                           ),
                           SizedBox(height: 40.h),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '${'resend_code'.tr()} ',
-                                  style: CustomTextStyle.grey_16_w400,
-                                ),
-                                TextSpan(
-                                  text: '$currentSecond ${'sec'.tr()}.',
-                                  style: CustomTextStyle.black_16_w400_171716,
-                                ),
-                              ],
+                          GestureDetector(
+                            // onTap: (){
+                            //   resendCode();
+                            // },
+                            onTap: resendCode,
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${'resend_code'.tr()} ',
+                                    style: CustomTextStyle.grey_16_w400,
+                                    // recognizer: TapGestureRecognizer()
+                                    //   ..onTap = resendCode,
+                                  ),
+                                  TextSpan(
+                                    text: '$currentSecond ${'sec'.tr()}.',
+                                    style: CustomTextStyle.black_16_w400_171716,
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -197,29 +250,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         children: [
                           SizedBox(height: 20.h),
                           CustomButton(
-                            onTap: () {
-                              if (codeController.text.isNotEmpty) {
-                                showLoaderWrapper(context);
-
-                                BlocProvider.of<AuthBloc>(context).add(
-                                  ConfirmCodeEvent(
-                                    widget.sendProfileEvent.userRegModel
-                                            .phoneNumber ??
-                                        '',
-                                    codeController.text,
-                                    widget.sendProfileEvent.userRegModel,
-                                    widget.sendProfileEvent
-                                        .registerConfirmationMethod,
-                                    widget.sendProfileEvent.sendCodeServer ??
-                                        '',
-                                    codeController.text,
-                                  ),
-                                );
-                              } else {
-                                CustomAlert()
-                                    .showMessage('enter_the_code'.tr());
-                              }
-                            },
+                            onTap: onTapConfirm,
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
                               'confirm'.tr(),

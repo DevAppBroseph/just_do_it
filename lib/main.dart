@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
+import 'package:just_do_it/feature/auth/view/confirm_code_register_page.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -25,12 +27,12 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/se
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
+import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -50,7 +52,9 @@ void main() async {
   await getItSetup();
   runApp(
     EasyLocalization(
-      supportedLocales: MainConfigApp.languages.map((e) => Locale(e.langCode, e.langCountryCode)).toList(),
+      supportedLocales: MainConfigApp.languages
+          .map((e) => Locale(e.langCode, e.langCountryCode))
+          .toList(),
       path: 'assets/translations',
       fallbackLocale: const Locale('ru', 'RU'),
       startLocale: const Locale('ru', 'RU'),
@@ -71,12 +75,15 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
-            BlocProvider<NotificationsBloc>(create: (context) => NotificationsBloc()),
+            BlocProvider<NotificationsBloc>(
+                create: (context) => NotificationsBloc()),
             BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
             BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
-            BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),
+            BlocProvider<ReplyFromFavBloc>(
+                create: (context) => ReplyFromFavBloc()),
             BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
-            BlocProvider<ResponseBlocFromFav>(create: (context) => ResponseBlocFromFav()),
+            BlocProvider<ResponseBlocFromFav>(
+                create: (context) => ResponseBlocFromFav()),
             BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
             BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
             BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
@@ -87,7 +94,7 @@ class MyApp extends StatelessWidget {
             BlocProvider<ChatBloc>(create: (context) => ChatBloc())
           ],
           child: GestureDetector(
-            onTap: (){
+            onTap: () {
               WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
             },
             child: MaterialApp(
@@ -95,6 +102,15 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               initialRoute: AppRoute.home,
               onGenerateRoute: AppRoute.onGenerateRoute,
+              // home: ConfirmCodeRegisterPage(
+              //     sendProfileEvent: SendProfileEvent(
+              //   UserRegModel(
+              //     email: 'some@gmail.com',
+              //   ),
+              //   'token',
+              //   RegisterConfirmationMethod.email,
+              //   'sendCodeServer',
+              // )),
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,

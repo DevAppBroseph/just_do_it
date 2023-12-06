@@ -103,13 +103,12 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         return;
       }
     }
-    // showLoaderWrapper(context);
+    showLoaderWrapper(context);
     // Loader.hide();
     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
       user,
       token ?? '',
       registerConfirmationMethod,
-      null,
     ));
   }
 
@@ -173,6 +172,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
+      Loader.hide();
       if (current is CheckUserState) {
         if (current.error != null) {
           CustomAlert().showMessage(

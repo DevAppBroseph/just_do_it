@@ -6,12 +6,11 @@ class SendProfileEvent extends AuthEvent {
   UserRegModel userRegModel;
   String token;
   final RegisterConfirmationMethod registerConfirmationMethod;
-  String? sendCodeServer;
+
   SendProfileEvent(
     this.userRegModel,
     this.token,
     this.registerConfirmationMethod,
-    this.sendCodeServer,
   );
 }
 
