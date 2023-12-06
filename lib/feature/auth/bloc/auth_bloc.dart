@@ -27,8 +27,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void setRef(int? value) => refCode = value;
 
+  void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
+    Map<String, dynamic>? res = await Repository().confirmRegister(
+        event.userRegModel, event.token, event.registerConfirmationMethod);
+    if (res == null) {
+      emit(SendProfileSuccessState());
+    } else {
+      emit(SendProfileErrorState(res));
+    }
+  }
+
+  void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
+    String? res = await Repository()
+        .confirmCodeRegistration(event.phone, event.code, refCode);
+    if (res != null) {
+      emit(ConfirmCodeRegistrSuccessState(res));
+    } else {
+      emit(ConfirmCodeRegisterErrorState());
+    }
+  }
+
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
-    bool res = await Repository().editPassword(event.password, event.token, event.fcmToken);
+    bool res = await Repository()
+        .editPassword(event.password, event.token, event.fcmToken);
     if (res) {
       emit(EditPasswordSuccessState());
     } else {
@@ -36,7 +57,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _confirmCodeReset(ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
+  void _confirmCodeReset(
+      ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
     String? res = await Repository().confirmCodeReset(event.phone, event.code);
     if (res != null) {
       emit(ConfirmCodeResetSuccessState(res));
@@ -56,28 +78,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(GetCategoriesState(res));
   }
 
-  void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    print('1---');
-      Map<String, dynamic>? res = await Repository()
-          .confirmRegister(event.userRegModel, event.token, event.registerConfirmationMethod);
-
-    print('2---');
-    if (res == null) {
-      emit(SendProfileSuccessState());
-    } else {
-      emit(SendProfileErrorState(res));
-    }
-  }
-
-  void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository().confirmCodeRegistration(event.phone, event.code, refCode);
-    if (res != null) {
-      emit(ConfirmCodeRegistrSuccessState(res));
-    } else {
-      emit(ConfirmCodeRegisterErrorState());
-    }
-  }
-
   void _restoreProfile(RestoreCodeEvent event, Emitter<AuthState> emit) async {
     bool res = await Repository().resetPassword(event.login);
     if (res) {
@@ -87,9 +87,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _restoreCodeConfirm(RestoreCodeCheckEvent event, Emitter<AuthState> emit) async {
-    String? res =
-        await Repository().confirmRestorePassword(event.code, event.phone, event.updatePassword);
+  void _restoreCodeConfirm(
+      RestoreCodeCheckEvent event, Emitter<AuthState> emit) async {
+    String? res = await Repository()
+        .confirmRestorePassword(event.code, event.phone, event.updatePassword);
     if (res != null) {
       emit(ConfirmRestoreSuccessState(res));
     } else {
@@ -98,7 +99,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _signIn(SignInEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository().signIn(event.phone, event.password, event.token);
+    String? res =
+        await Repository().signIn(event.phone, event.password, event.token);
     if (res != null) {
       emit(SignInSuccessState(res));
     } else {

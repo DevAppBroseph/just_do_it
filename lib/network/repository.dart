@@ -29,6 +29,125 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Repository {
+  final Dio _dio = Dio();
+  Future<bool> sendConfirmationCode(String method, String value) async {
+    try {
+      final response = await _dio.post(
+        '$server/send_code_for_confirmation/',
+        data: method == 'phone'
+            ? {"confirmation_method": "phone", "phone": value}
+            : {"confirmation_method": "email", "email": value},
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } on DioError catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  // регистрация профиля
+  // auth/ post
+  Future<Map<String, dynamic>?> confirmRegister(
+      UserRegModel userRegModel,
+      String token,
+      RegisterConfirmationMethod registerConfirmationMethod,
+      ) async {
+    Map<String, dynamic> map = userRegModel.toJson();
+    FormData data = FormData.fromMap(
+        map..addAll({"fcm_token": token, 'confirmation_method': registerConfirmationMethod.name}));
+    final response = await dio.post(
+      '$server/auth/',
+      data: data,
+    );
+    if (response.statusCode == 201) {
+      return null;
+    }
+    return response.data;
+  }
+  // подтвердить регистраци
+  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
+    final response = await dio.put('$server/auth/', data: {
+      "phone_number": phone,
+      "code": code,
+      "ref_code": refCode,
+    });
+    if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      final refreshToken = response.data['refresh'];
+      await Storage().setAccessToken(accessToken);
+      await Storage().setRefreshToken(refreshToken);
+      return response.data['access'];
+    }
+    return null;
+  }
+
+
+
+
+
+
+
+  // забыли пароль, сбросить код
+  Future<bool> resetPassword(String login) async {
+    final response = await dio.post(
+      '$server/auth/reset_password',
+      data: {"phone_number": login},
+      options: Options(),
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    }
+    return false;
+  }
+
+  // подтвердить код в забыли пароль
+  Future<String?> confirmRestorePassword(
+      String code,
+      String phone,
+      String updatePassword,
+      ) async {
+    final response = await dio.put(
+      '$server/auth/',
+      data: {
+        "code": code,
+        "phone_number": phone,
+        "update_passwd": true,
+        "password": updatePassword
+      },
+    );
+
+    if (response.statusCode == 200) {
+      String? accessToken = response.data['access'];
+      final refreshToken = response.data['refresh'];
+      await Storage().setAccessToken(accessToken);
+      await Storage().setRefreshToken(refreshToken);
+      return response.data['access'];
+    }
+    return null;
+  }
+
+  // подтвердить код в забыли пароль
+  Future<List<TaskCategory>> getCategories() async {
+    final response = await dio.get(
+      '$server/auth/categories',
+      options: Options(),
+    );
+
+    if (response.statusCode == 200) {
+      List<TaskCategory> list = [];
+      for (var element in response.data) {
+        list.add(TaskCategory.fromJson(element));
+      }
+      return list;
+    }
+    return [];
+  }
+
+
   Future<Owner?> getRanking(int? id, String? access) async {
     final response = await dio.get(
       '$server/ranking/$id',
@@ -306,25 +425,6 @@ class Repository {
     return null;
   }
 
-  // регистрация профиля
-  // auth/ post
-  Future<Map<String, dynamic>?> confirmRegister(
-    UserRegModel userRegModel,
-    String token,
-    RegisterConfirmationMethod registerConfirmationMethod,
-  ) async {
-    Map<String, dynamic> map = userRegModel.toJson();
-    FormData data = FormData.fromMap(
-        map..addAll({"fcm_token": token, 'confirmation_method': registerConfirmationMethod.name}));
-    final response = await dio.post(
-      '$server/auth/',
-      data: data,
-    );
-    if (response.statusCode == 201) {
-      return null;
-    }
-    return response.data;
-  }
 
   // auth/ put
   Future<UserRegModel?> updateUserPhoto(String? access, XFile? photo) async {
@@ -424,79 +524,6 @@ class Repository {
     }
   }
 
-  // подтвердить регистраци
-  Future<String?> confirmCodeRegistration(String phone, String code, int? refCode) async {
-    final response = await dio.put('$server/auth/', data: {
-      "phone_number": phone,
-      "code": code,
-      "ref_code": refCode,
-    });
-    if (response.statusCode == 200) {
-      String? accessToken = response.data['access'];
-      final refreshToken = response.data['refresh'];
-      await Storage().setAccessToken(accessToken);
-      await Storage().setRefreshToken(refreshToken);
-      return response.data['access'];
-    }
-    return null;
-  }
-
-  // забыли пароль, сбросить код
-  Future<bool> resetPassword(String login) async {
-    final response = await dio.post(
-      '$server/auth/reset_password',
-      data: {"phone_number": login},
-      options: Options(),
-    );
-
-    if (response.statusCode == 201) {
-      return true;
-    }
-    return false;
-  }
-
-  // подтвердить код в забыли пароль
-  Future<String?> confirmRestorePassword(
-    String code,
-    String phone,
-    String updatePassword,
-  ) async {
-    final response = await dio.put(
-      '$server/auth/',
-      data: {
-        "code": code,
-        "phone_number": phone,
-        "update_passwd": true,
-        "password": updatePassword
-      },
-    );
-
-    if (response.statusCode == 200) {
-      String? accessToken = response.data['access'];
-      final refreshToken = response.data['refresh'];
-      await Storage().setAccessToken(accessToken);
-      await Storage().setRefreshToken(refreshToken);
-      return response.data['access'];
-    }
-    return null;
-  }
-
-  // подтвердить код в забыли пароль
-  Future<List<TaskCategory>> getCategories() async {
-    final response = await dio.get(
-      '$server/auth/categories',
-      options: Options(),
-    );
-
-    if (response.statusCode == 200) {
-      List<TaskCategory> list = [];
-      for (var element in response.data) {
-        list.add(TaskCategory.fromJson(element));
-      }
-      return list;
-    }
-    return [];
-  }
 
   // get reviews
   Future<Reviews?> getReviews(String? access) async {

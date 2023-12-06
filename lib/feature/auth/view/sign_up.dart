@@ -18,7 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
   int type = 1;
   bool state = false;
   PageController pageController = PageController();
-  int stageRegistragion = 1;
+  int stageRegistration = 1;
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void stage(int index) {
     setState(() {
-      stageRegistragion = index;
+      stageRegistration = index;
     });
   }
 
@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: CustomTextStyle.black_22_w700,
                       ),
                       TextSpan(
-                        text: '$stageRegistragion/2',
+                        text: '$stageRegistration/2',
                         style: CustomTextStyle.grey_22_w700,
                       ),
                     ],
@@ -113,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   const Duration(milliseconds: 50),
                                   (() {
                                     setState(() {
-                                      stageRegistragion = 1;
+                                      stageRegistration = 1;
                                       state = !state;
                                     });
                                     pageController.animateToPage(0,
@@ -148,7 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   const Duration(milliseconds: 50),
                                   (() {
                                     setState(() {
-                                      stageRegistragion = 1;
+                                      stageRegistration = 1;
                                       state = !state;
                                     });
                                     pageController.animateToPage(1,
