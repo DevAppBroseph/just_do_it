@@ -17,12 +17,15 @@ class SendProfileErrorState extends AuthState {
 class ConfirmCodeRegisterInitialState extends AuthState {}
 
 class ConfirmCodeRegistrSuccessState extends AuthState {
-  String access;
+  // String access;
 
-  ConfirmCodeRegistrSuccessState(this.access);
+  ConfirmCodeRegistrSuccessState();
 }
 
-class ConfirmCodeRegisterErrorState extends AuthState {}
+class ConfirmCodeRegisterErrorState extends AuthState {
+  String errorMessage;
+  ConfirmCodeRegisterErrorState(this.errorMessage);
+}
 
 class ResetPasswordSuccessState extends AuthState {}
 
@@ -54,8 +57,8 @@ class CheckUserState extends AuthState {
 }
 
 class ConfirmCodeResetSuccessState extends AuthState {
-  String access;
-  ConfirmCodeResetSuccessState(this.access);
+  // String access;
+  ConfirmCodeResetSuccessState();
 }
 
 class ConfirmCodeResetErrorState extends AuthState {}

@@ -75,10 +75,9 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is EditPasswordErrorState) {
-            CustomAlert()
-                .showMessage('Ошибка. Неправильный ввод пароля');
+            CustomAlert().showMessage('Ошибка. Неправильный ввод пароля');
           } else if (current is ConfirmCodeResetSuccessState) {
-            BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+            BlocProvider.of<ProfileBloc>(context).setAccess(null);
             confirmCode = true;
             return true;
           } else if (current is ConfirmCodeResetErrorState) {
@@ -105,8 +104,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                             onTap: () async {
                               if (!confirmCode) {
                                 if (codeController.text.isEmpty) {
-                                  CustomAlert()
-                                      .showMessage('Введите код');
+                                  CustomAlert().showMessage('Введите код');
                                 } else {
                                   showLoaderWrapper(context);
                                   BlocProvider.of<AuthBloc>(context).add(
@@ -119,8 +117,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                               } else {
                                 if (passwordController.text.isEmpty ||
                                     passwordRepeatController.text.isEmpty) {
-                                  CustomAlert()
-                                      .showMessage('Укажите пароль');
+                                  CustomAlert().showMessage('Укажите пароль');
                                 } else if (passwordController.text.length < 6) {
                                   CustomAlert().showMessage(
                                       'Минимальная длина пароля 6 символов');
@@ -130,8 +127,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                             .text.isNotEmpty) &&
                                     (passwordController.text !=
                                         passwordRepeatController.text)) {
-                                  CustomAlert().showMessage(
-                                      'Пароли не совпадают');
+                                  CustomAlert()
+                                      .showMessage('Пароли не совпадают');
                                 } else {
                                   final token = await FirebaseMessaging.instance
                                       .getToken();

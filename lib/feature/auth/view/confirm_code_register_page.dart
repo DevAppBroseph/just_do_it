@@ -62,13 +62,14 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
   @override
   Widget build(BuildContext context) {
     // late final int refCode;
+
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
           if (current is ConfirmCodeRegistrSuccessState) {
-            BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
+            BlocProvider.of<ProfileBloc>(context).setAccess(null);
 
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));

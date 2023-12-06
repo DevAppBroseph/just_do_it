@@ -134,7 +134,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         return;
       }
     }
-    showLoaderWrapper(context);
+    // showLoaderWrapper(context);
     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
       user,
       token ?? '',

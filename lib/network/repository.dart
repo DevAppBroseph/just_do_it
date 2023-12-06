@@ -108,7 +108,9 @@ class Repository {
   }
 
   Future<String?> register(ConfirmCodeEvent confirmCodeEvent) async {
-    Map<String, dynamic> map = confirmCodeEvent.userRegModel.toJson();
+    print('hey there remove true');
+    Map<String, dynamic> map =
+        confirmCodeEvent.userRegModel.toJson(removeExtraFields: true);
 
     FormData data = FormData.fromMap(
       map
@@ -130,9 +132,9 @@ class Repository {
       data: data,
     );
     if (response.statusCode == 201) {
-      return 'null';
+      return null;
     }
-    return null;
+    return response.data['status'].toString();
   }
 
   // подтвердить регистраци

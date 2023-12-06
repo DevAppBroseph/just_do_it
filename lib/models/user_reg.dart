@@ -448,58 +448,59 @@ class UserRegModel {
         banReason: banReason);
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool removeExtraFields = false}) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['phone_number'] = phoneNumber;
     data['email'] = email;
-    data['rus'] = rus;
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['password'] = password;
-    data['count_orders_complete'] = countOrderComplete;
-    if (photo != null) {
-      data['photo'] = MultipartFile.fromBytes(
-        photo!,
-        filename: '${DateTime.now()}.jpg',
-      );
-    } else {
-      data['photo'] = null;
-    }
-    data['sex'] = sex;
-    data['doc_type'] = docType;
-    data['doc_info'] = docInfo;
-    data['region'] = region;
-    data['country'] = country;
-    data['is_entity'] = isEntity;
-    data['activity'] = activity;
-
-    if (images != null) {
-      List<MultipartFile> files = [];
-      for (var element in images!) {
-        if (element.byte != null) {
-          files.add(
-            MultipartFile.fromBytes(
-              element.byte!,
-              filename: '${DateTime.now()}.${element.type}',
-            ),
-          );
-        } else {
-          files.add(MultipartFile.fromString(element.id.toString()));
-        }
-      }
-
-      data['images'] = files.isNotEmpty ? files : "null";
-    }
-
-    if (cv != null) {
-      data['CV'] = MultipartFile.fromBytes(
-        cv!,
-        filename: '${DateTime.now()}.$cvType',
-      );
-    }
     data['groups'] = groups;
-    if (activitiesDocument != null) data['activities'] = activitiesDocument;
 
+    print(removeExtraFields);
+
+    if (!removeExtraFields) {
+      data['rus'] = rus;
+      data['sex'] = sex;
+      data['doc_type'] = docType;
+      data['doc_info'] = docInfo;
+      data['region'] = region;
+      data['country'] = country;
+      data['is_entity'] = isEntity;
+      data['activity'] = activity;
+      if (activitiesDocument != null) data['activities'] = activitiesDocument;
+      if (cv != null) {
+        data['CV'] = MultipartFile.fromBytes(
+          cv!,
+          filename: '${DateTime.now()}.$cvType',
+        );
+      }
+      if (images != null) {
+        List<MultipartFile> files = [];
+        for (var element in images!) {
+          if (element.byte != null) {
+            files.add(
+              MultipartFile.fromBytes(
+                element.byte!,
+                filename: '${DateTime.now()}.${element.type}',
+              ),
+            );
+          } else {
+            files.add(MultipartFile.fromString(element.id.toString()));
+          }
+        }
+        data['images'] = files.isNotEmpty ? files : "null";
+      }
+      data['count_orders_complete'] = countOrderComplete;
+      if (photo != null) {
+        data['photo'] = MultipartFile.fromBytes(
+          photo!,
+          filename: '${DateTime.now()}.jpg',
+        );
+      } else {
+        data['photo'] = null;
+      }
+    }
     return data;
   }
 }

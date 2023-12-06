@@ -28,39 +28,64 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void setRef(int? value) => refCode = value;
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
-    if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone) {
-      final otp = await Repository().sendCodeForConfirmation(
+    String? otp;
+    if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone ||
+        event.registerConfirmationMethod ==
+            RegisterConfirmationMethod.whatsapp) {
+      otp = await Repository().sendCodeForConfirmation(
         confirmMethod: 'phone',
         value: event.userRegModel.phoneNumber!,
       );
-
-      if (otp != null) {
-        event.sendCodeServer = otp;
-
-        emit(SendProfileSuccessState(event));
-      } else {
-        emit(SendProfileErrorState({}));
-      }
-    } else {
-      Map<String, dynamic>? res = await Repository().confirmRegister(
-        event.userRegModel,
-        event.token,
-        event.registerConfirmationMethod,
+    } else if (event.registerConfirmationMethod ==
+        RegisterConfirmationMethod.email) {
+      otp = await Repository().sendCodeForConfirmation(
+        confirmMethod: 'email',
+        value: event.userRegModel.email!,
       );
-      if (res == null) {
-        emit(SendProfileSuccessState(event));
-      } else {
-        emit(SendProfileErrorState(res));
-      }
+    }
+
+    if (otp != null) {
+      event.sendCodeServer = otp;
+
+      emit(SendProfileSuccessState(event));
+    } else {
+      emit(SendProfileErrorState({}));
     }
   }
+  // void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
+  //   if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone) {
+  //     final otp = await Repository().sendCodeForConfirmation(
+  //       confirmMethod: 'phone',
+  //       value: event.userRegModel.phoneNumber!,
+  //     );
+
+  //     if (otp != null) {
+  //       event.sendCodeServer = otp;
+
+  //       emit(SendProfileSuccessState(event));
+  //     } else {
+  //       emit(SendProfileErrorState({}));
+  //     }
+  //   } else {
+  //     Map<String, dynamic>? res = await Repository().confirmRegister(
+  //       event.userRegModel,
+  //       event.token,
+  //       event.registerConfirmationMethod,
+  //     );
+  //     if (res == null) {
+  //       emit(SendProfileSuccessState(event));
+  //     } else {
+  //       emit(SendProfileErrorState(res));
+  //     }
+  //   }
+  // }
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
-    String? res = await Repository().register(event);
-    if (res != null) {
-      emit(ConfirmCodeResetSuccessState(res));
+    String? error = await Repository().register(event);
+    if (error == null) {
+      emit(ConfirmCodeRegistrSuccessState());
     } else {
-      emit(ConfirmCodeResetErrorState());
+      emit(ConfirmCodeRegisterErrorState(error));
     }
   }
 
@@ -78,7 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
     String? res = await Repository().confirmCodeReset(event.phone, event.code);
     if (res != null) {
-      emit(ConfirmCodeResetSuccessState(res));
+      emit(ConfirmCodeResetSuccessState());
     } else {
       emit(ConfirmCodeResetErrorState());
     }
