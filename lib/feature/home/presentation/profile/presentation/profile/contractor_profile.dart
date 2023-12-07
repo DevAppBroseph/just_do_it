@@ -30,10 +30,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContractorProfile extends StatefulWidget {
-  double padding;
-  Function() callBackFlag;
+  final double padding;
+  final Function() callBackFlag;
 
-  ContractorProfile(
+  const ContractorProfile(
       {super.key, required this.padding, required this.callBackFlag});
 
   @override
@@ -53,16 +53,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
   @override
   void initState() {
     super.initState();
-    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate();
+    user = BlocProvider.of<ProfileBloc>(context).user?.duplicate();
     listCategories = BlocProvider.of<ProfileBloc>(context).activities;
     List<int> activityIndexes = [];
 
-    for (int i = 0; i < listCategories.length; i++) {
-      for (int j = 0; j < user!.activitiesInfo!.length; j++) {
-        if (listCategories[i].description ==
-            user!.activitiesInfo?[j].description) {
-          typeCategories.add(listCategories[i].description!);
-          activityIndexes.add(user!.activitiesInfo![j].id!);
+    if (user != null && user!.activitiesInfo != null) {
+      for (int i = 0; i < listCategories.length; i++) {
+        for (int j = 0; j < user!.activitiesInfo!.length; j++) {
+          if (listCategories[i].description ==
+              user!.activitiesInfo?[j].description) {
+            typeCategories.add(listCategories[i].description!);
+            activityIndexes.add(user!.activitiesInfo![j].id!);
+          }
         }
       }
     }
@@ -72,18 +74,20 @@ class _ContractorProfileState extends State<ContractorProfile> {
       groups: [4],
     );
 
-    experienceController.text = user?.activity == null ? '' : user!.activity!;
-    for (var element in user!.images!) {
-      print("Element ${element.linkUrl}");
-      photos.add(
-        ArrayImages(
-          element.linkUrl!.contains(server)
-              ? element.linkUrl
-              : server + element.linkUrl!,
-          null,
-          id: element.id,
-        ),
-      );
+    experienceController.text = user?.activity ?? '';
+    if (user != null && user!.images != null) {
+      for (var element in user!.images!) {
+        print("Element ${element.linkUrl}");
+        photos.add(
+          ArrayImages(
+            element.linkUrl!.contains(server)
+                ? element.linkUrl
+                : server + element.linkUrl!,
+            null,
+            id: element.id,
+          ),
+        );
+      }
     }
   }
 
@@ -165,7 +169,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       }
       return true;
     }, builder: (context, data) {
-      double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
+      // double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
       return MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
         child: GestureDetector(
@@ -225,7 +229,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         child: ClipOval(
                                           child: SizedBox.fromSize(
                                               size: Size.fromRadius(40.r),
-                                              child: user!.photoLink == null
+                                              child: user?.photoLink == null
                                                   ? Container(
                                                       height: 60.h,
                                                       width: 60.h,
@@ -249,7 +253,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                     )),
                                         ),
                                       ),
-                                      if (user!.photoLink != null)
+                                      if (user?.photoLink != null)
                                         Align(
                                           alignment: Alignment.topRight,
                                           child: GestureDetector(
@@ -308,7 +312,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${(user!.firstname ?? '')}\n${(user!.lastname ?? '')}',
+                                                '${(user?.firstname ?? '')}\n${(user?.lastname ?? '')}',
                                                 textAlign: TextAlign.start,
                                                 style: CustomTextStyle
                                                     .black_18_w800,
@@ -388,7 +392,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         children: [
                                           BlocBuilder<ScoreBloc, ScoreState>(
                                               buildWhen: (previous, current) {
-                                            if (user!.allbalance! ==
+                                            if (user?.allbalance ==
                                                 proverkaBalance) {
                                               return false;
                                             }
@@ -401,7 +405,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 widget.callBackFlag();
                                               });
                                               proverkaBalance =
-                                                  user!.allbalance!;
+                                                  user?.allbalance;
                                               final levels = state.levels;
                                               return GradeMascotImage(
                                                 levels: levels,
@@ -416,7 +420,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           Padding(
                                             padding: EdgeInsets.only(top: 2.h),
                                             child: Text(
-                                              user!.balance.toString(),
+                                              user?.balance.toString() ?? '',
                                               style: CustomTextStyle
                                                   .purple_15_w600,
                                             ),
@@ -801,7 +805,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         height: 22.h,
                                         width: 86.w,
                                         decoration: BoxDecoration(
-                                          color: user!.canAppellate!
+                                          color: user?.canAppellate ?? false
                                               ? ColorStyles.yellowFFCA0D
                                               : ColorStyles.greyBDBDBD,
                                           borderRadius:
@@ -813,7 +817,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             style: CustomTextStyle
                                                 .black_11_w400_171716
                                                 .copyWith(
-                                                    color: user!.canAppellate!
+                                                    color: user?.canAppellate ??
+                                                            false
                                                         ? (user?.verifyStatus ==
                                                                 "Progress"
                                                             ? Colors.white
@@ -1308,7 +1313,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             )
                           ],
                         ),
-                        if (user!.images!.isNotEmpty && change)
+                        if ((user?.images?.isNotEmpty ?? false) && change)
                           SizedBox(
                             width: 400.w,
                             child: const Divider(
@@ -1316,11 +1321,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               thickness: 1,
                             ),
                           ),
-                        if (user!.images!.isNotEmpty)
+                        if (user?.images?.isNotEmpty ?? false)
                           SizedBox(
                             height: 5.h,
                           ),
-                        if (user!.images!.isNotEmpty)
+                        if (user?.images?.isNotEmpty ?? false)
                           Builder(builder: (context) {
                             return SizedBox(
                               height: user!.images!.isEmpty ? 0 : 82.h,
