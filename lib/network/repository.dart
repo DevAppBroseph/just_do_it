@@ -108,7 +108,6 @@ class Repository {
   }
 
   Future<String?> register(ConfirmCodeEvent confirmCodeEvent) async {
-    print('hey there remove true');
     Map<String, dynamic> map =
         confirmCodeEvent.userRegModel.toJson(removeExtraFields: true);
 
@@ -121,20 +120,19 @@ class Repository {
           // 'confirmation_method': registerConfirmationMethod.name
         }),
     );
-    // print(map);
-    // print(token);
-    // print(registerConfirmationMethod);
-
-    // return {'error': 'error'};
 
     final response = await dio.post(
       '$server/auth/',
       data: data,
     );
     if (response.statusCode == 201) {
-      return null;
+      String? accessToken = response.data['access_token'];
+      final refreshToken = response.data['refresh_token'];
+      await Storage().setAccessToken(accessToken);
+      await Storage().setRefreshToken(refreshToken);
+      return response.data['access_token'];
     }
-    return response.data['status'].toString();
+    return null;
   }
 
   // подтвердить регистраци

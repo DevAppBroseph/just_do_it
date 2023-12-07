@@ -87,6 +87,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       CustomAlert().showMessage('enter_the_code'.tr());
     }
   }
+
   resendCode() async {
     if (timer?.isActive ?? false) {
       customAlert.showMessage(
@@ -98,7 +99,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
     if (selectedMethod != null) {
       showLoaderWrapper(context);
       String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
-          .sendCodeForConfirmation(widget.sendProfileEvent, method: selectedMethod);
+          .sendCodeForConfirmation(widget.sendProfileEvent,
+              method: selectedMethod);
       Loader.hide();
       if (code != null) {
         _startTimer();
@@ -107,7 +109,6 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       }
     }
   }
-
 
   // resendCode() async {
   //   if (timer?.isActive ?? false) {
@@ -140,7 +141,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           //   lastSendProfileEvent = current.sendProfileEvent;
           // } else
           if (current is ConfirmCodeRegistrSuccessState) {
-            BlocProvider.of<ProfileBloc>(context).setAccess(null);
+            BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
 
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
@@ -343,7 +344,9 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       ),
     );
   }
-  Future<RegisterConfirmationMethod?> showConfirmationMethodDialog(BuildContext context) async {
+
+  Future<RegisterConfirmationMethod?> showConfirmationMethodDialog(
+      BuildContext context) async {
     return showDialog<RegisterConfirmationMethod>(
       context: context,
       builder: (context) {
@@ -354,5 +357,4 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       },
     );
   }
-
 }

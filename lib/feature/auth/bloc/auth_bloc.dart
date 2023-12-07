@@ -34,13 +34,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(SendProfileErrorState({}));
     }
   }
-  Future<String?> sendCodeForConfirmation(SendProfileEvent event, {RegisterConfirmationMethod? method, bool useMethodParameter = false}) async {
+
+  Future<String?> sendCodeForConfirmation(SendProfileEvent event,
+      {RegisterConfirmationMethod? method,
+      bool useMethodParameter = false}) async {
     if (useMethodParameter && method != null) {
-      String confirmationMethod = method.toString().split('.').last; // Преобразовать Enum в String
+      String confirmationMethod =
+          method.toString().split('.').last; // Преобразовать Enum в String
       if (confirmationMethod == 'phone' || confirmationMethod == 'whatsapp') {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: confirmationMethod,
-          value: event.userRegModel.phoneNumber!, // Утверждение, что значение не null
+          value: event
+              .userRegModel.phoneNumber!, // Утверждение, что значение не null
         );
       } else if (confirmationMethod == 'email') {
         sendCodeServer = await Repository().sendCodeForConfirmation(
@@ -50,13 +55,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } else {
       // Старый метод
-      if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone ||
-          event.registerConfirmationMethod == RegisterConfirmationMethod.whatsapp) {
+      if (event.registerConfirmationMethod ==
+              RegisterConfirmationMethod.phone ||
+          event.registerConfirmationMethod ==
+              RegisterConfirmationMethod.whatsapp) {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'phone',
           value: event.userRegModel.phoneNumber!,
         );
-      } else if (event.registerConfirmationMethod == RegisterConfirmationMethod.email) {
+      } else if (event.registerConfirmationMethod ==
+          RegisterConfirmationMethod.email) {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'email',
           value: event.userRegModel.email!,
@@ -65,7 +73,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     return sendCodeServer;
   }
-
 
   // Future<String?> sendCodeForConfirmation(SendProfileEvent event) async {
   //   if (event.registerConfirmationMethod == RegisterConfirmationMethod.phone ||
@@ -115,21 +122,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _confirmCode(ConfirmCodeEvent event, Emitter<AuthState> emit) async {
     Repository repo = Repository();
-    String? error = await repo.register(event);
-    if (error == null) {
-      emit(ConfirmCodeRegistrSuccessState());
-      // String? access = await repo.confirmCodeRegistration(
-      //   event.phone,
-      //   event.sendCodeServer,
-      //   null,
-      // );
-      // if (access != null) {
-      //   emit(ConfirmCodeRegistrSuccessState(access));
-      // } else {
-      //   emit(ConfirmCodeRegisterErrorState(''));
-      // }
+    String? accessToken = await repo.register(event);
+    if (accessToken != null) {
+      emit(ConfirmCodeRegistrSuccessState(accessToken ?? ''));
     } else {
-      emit(ConfirmCodeRegisterErrorState(error));
+      emit(ConfirmCodeRegisterErrorState(''));
     }
   }
 
