@@ -9,6 +9,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
+import 'package:just_do_it/feature/auth/widget/phone_confirmation_method_selection_dialog.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
@@ -86,7 +87,6 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       CustomAlert().showMessage('enter_the_code'.tr());
     }
   }
-
   resendCode() async {
     if (timer?.isActive ?? false) {
       customAlert.showMessage(
@@ -94,16 +94,38 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       return;
     }
 
-    showLoaderWrapper(context);
-    String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
-        .sendCodeForConfirmation(widget.sendProfileEvent);
-    Loader.hide();
-    if (code != null) {
-      _startTimer();
-    } else {
-      customAlert.showMessage('invalid_code'.tr());
+    final selectedMethod = await showConfirmationMethodDialog(context);
+    if (selectedMethod != null) {
+      showLoaderWrapper(context);
+      String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
+          .sendCodeForConfirmation(widget.sendProfileEvent, method: selectedMethod);
+      Loader.hide();
+      if (code != null) {
+        _startTimer();
+      } else {
+        customAlert.showMessage('invalid_code'.tr());
+      }
     }
   }
+
+
+  // resendCode() async {
+  //   if (timer?.isActive ?? false) {
+  //     customAlert.showMessage(
+  //         '${'please_wait'.tr()}, $currentSecond ${'seconds'.tr()}');
+  //     return;
+  //   }
+  //
+  //   showLoaderWrapper(context);
+  //   String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
+  //       .sendCodeForConfirmation(widget.sendProfileEvent);
+  //   Loader.hide();
+  //   if (code != null) {
+  //     _startTimer();
+  //   } else {
+  //     customAlert.showMessage('invalid_code'.tr());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -321,4 +343,16 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       ),
     );
   }
+  Future<RegisterConfirmationMethod?> showConfirmationMethodDialog(BuildContext context) async {
+    return showDialog<RegisterConfirmationMethod>(
+      context: context,
+      builder: (context) {
+        return PhoneConfirmationMethodSelectionDialog(
+          user: widget.sendProfileEvent.userRegModel,
+          token: widget.sendProfileEvent.token,
+        );
+      },
+    );
+  }
+
 }
