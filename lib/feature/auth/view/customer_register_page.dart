@@ -1251,7 +1251,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                     color: Colors.white,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: initialDateTime,
+                        // initialDateTime: initialDateTime,
+                        initialDateTime: minimumDate,
                         minimumDate: minimumDate,
                         maximumDate: maximumDate,
                         onDateTimeChanged: (val) {

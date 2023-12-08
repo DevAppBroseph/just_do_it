@@ -109,8 +109,7 @@ class Repository {
   }
 
   Future<String?> register(ConfirmCodeEvent confirmCodeEvent) async {
-    Map<String, dynamic> map =
-        confirmCodeEvent.userRegModel.toJson(removeExtraFields: true);
+    Map<String, dynamic> map = confirmCodeEvent.userRegModel.toJson();
 
     FormData data = FormData.fromMap(
       map
