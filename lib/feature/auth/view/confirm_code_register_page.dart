@@ -97,10 +97,12 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
 
     final selectedMethod = await showConfirmationMethodDialog(context);
     if (selectedMethod != null) {
+      lastSendProfileEvent = BlocProvider.of<AuthBloc>(context, listen: false)
+          .updateConfirmationMethod(widget.sendProfileEvent, selectedMethod);
+
       showLoaderWrapper(context);
       String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
-          .sendCodeForConfirmation(widget.sendProfileEvent,
-              method: selectedMethod);
+          .sendCodeForConfirmation(lastSendProfileEvent);
       Loader.hide();
       if (code != null) {
         _startTimer();
@@ -110,28 +112,10 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
     }
   }
 
-  // resendCode() async {
-  //   if (timer?.isActive ?? false) {
-  //     customAlert.showMessage(
-  //         '${'please_wait'.tr()}, $currentSecond ${'seconds'.tr()}');
-  //     return;
-  //   }
-  //
-  //   showLoaderWrapper(context);
-  //   String? code = await BlocProvider.of<AuthBloc>(context, listen: false)
-  //       .sendCodeForConfirmation(widget.sendProfileEvent);
-  //   Loader.hide();
-  //   if (code != null) {
-  //     _startTimer();
-  //   } else {
-  //     customAlert.showMessage('invalid_code'.tr());
-  //   }
-  // }
+
 
   @override
   Widget build(BuildContext context) {
-    // late final int refCode;
-
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
