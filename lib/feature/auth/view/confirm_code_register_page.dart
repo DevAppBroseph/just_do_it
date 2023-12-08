@@ -112,10 +112,23 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    String title = '';
+    String value = '';
+    if (lastSendProfileEvent.registerConfirmationMethod ==
+        RegisterConfirmationMethod.email) {
+      title = '${'confrim_email'.tr()} ';
+      value = lastSendProfileEvent.userRegModel.email ?? '';
+    } else if (lastSendProfileEvent.registerConfirmationMethod ==
+        RegisterConfirmationMethod.whatsapp) {
+      title = '${'confrim_whatsapp'.tr()} ';
+      value = lastSendProfileEvent.userRegModel.phoneNumber ?? '';
+    } else {
+      title = '${'confrim_phone'.tr()} ';
+      value = lastSendProfileEvent.userRegModel.phoneNumber ?? '';
+    }
+
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -160,10 +173,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            lastSendProfileEvent.registerConfirmationMethod ==
-                                    RegisterConfirmationMethod.email
-                                ? '${'confrim_email'.tr()} '
-                                : '${'confrim_phone'.tr()} ',
+                            title,
                             style: CustomTextStyle.black_22_w700,
                           )
                         ],
@@ -183,13 +193,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   style: CustomTextStyle.black_16_w400_515150,
                                 ),
                                 TextSpan(
-                                  text: lastSendProfileEvent
-                                              .registerConfirmationMethod ==
-                                          RegisterConfirmationMethod.email
-                                      ? widget
-                                          .sendProfileEvent.userRegModel.email
-                                      : lastSendProfileEvent
-                                          .userRegModel.phoneNumber,
+                                  text: value,
                                   style: CustomTextStyle.black_16_w400_171716,
                                 ),
                               ],
