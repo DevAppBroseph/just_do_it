@@ -34,50 +34,56 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(SendProfileErrorState({}));
     }
   }
-  SendProfileEvent updateConfirmationMethod(SendProfileEvent event, RegisterConfirmationMethod newMethod) {
+
+  SendProfileEvent updateConfirmationMethod(
+      SendProfileEvent event, RegisterConfirmationMethod newMethod) {
     return SendProfileEvent(event.userRegModel, event.token, newMethod);
   }
-
-
-
 
   Future<String?> sendCodeForConfirmation(SendProfileEvent event,
       {RegisterConfirmationMethod? method,
       bool useMethodParameter = false}) async {
     if (useMethodParameter && method != null) {
-      String confirmationMethod =
-          method.toString().split('.').last;
-      if (confirmationMethod == 'phone' || confirmationMethod == 'whatsapp') {
+      String confirmationMethod = method.toString().split('.').last;
+      if (confirmationMethod == 'phone') {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: confirmationMethod,
-          value: event
-              .userRegModel.phoneNumber!,
+          valueKey: confirmationMethod,
+          value: event.userRegModel.phoneNumber!,
         );
-
+      } else if (confirmationMethod == 'whatsapp') {
+        sendCodeServer = await Repository().sendCodeForConfirmation(
+          confirmMethod: confirmationMethod,
+          valueKey: 'phone',
+          value: event.userRegModel.phoneNumber!,
+        );
       } else if (confirmationMethod == 'email') {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'email',
+          valueKey: 'email',
           value: event.userRegModel.email!,
         );
       }
     } else {
       if (event.registerConfirmationMethod ==
-              RegisterConfirmationMethod.phone ) {
+          RegisterConfirmationMethod.phone) {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'phone',
+          valueKey: 'phone',
           value: event.userRegModel.phoneNumber!,
         );
       } else if (event.registerConfirmationMethod ==
           RegisterConfirmationMethod.email) {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'email',
+          valueKey: 'email',
           value: event.userRegModel.email!,
         );
-      }
-      else if (event.registerConfirmationMethod ==
+      } else if (event.registerConfirmationMethod ==
           RegisterConfirmationMethod.whatsapp) {
         sendCodeServer = await Repository().sendCodeForConfirmation(
           confirmMethod: 'whatsapp',
+          valueKey: 'phone',
           value: event.userRegModel.phoneNumber!,
         );
       }

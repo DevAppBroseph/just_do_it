@@ -84,13 +84,14 @@ class Repository {
   Future<String?> sendCodeForConfirmation({
     required String confirmMethod,
     required String value,
+    required String valueKey,
   }) async {
     try {
       final response = await dio.post(
         '$server/auth/send_code_for_confirmation/',
         data: {
           'confirmation_method': confirmMethod,
-          confirmMethod: value,
+          valueKey: value,
         },
       );
       if (response.statusCode == 200 &&
