@@ -8,6 +8,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -117,13 +118,15 @@ class _MainAuthPageState extends State<AuthPage> {
                             BlocProvider.of<AuthBloc>(context)
                                 .add(RestoreCodeEvent(loginController.text));
                           } else {
-                            final token =
-                                await FirebaseMessaging.instance.getToken();
+                            final token = await getFcmToken();
                             showLoaderWrapper(context);
-                            BlocProvider.of<AuthBloc>(context).add(SignInEvent(
+                            BlocProvider.of<AuthBloc>(context).add(
+                              SignInEvent(
                                 signinLoginController.text,
                                 signinPasswordController.text,
-                                token.toString()));
+                                token.toString(),
+                              ),
+                            );
                           }
                         },
                         textLabel: Text(

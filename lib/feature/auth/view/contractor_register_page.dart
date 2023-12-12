@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
@@ -475,7 +475,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     } else if (checkExpireDate(dateTimeEnd) != null) {
                       CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
                     } else {
-                      final token = await FirebaseMessaging.instance.getToken();
+                      final token = await getFcmToken();
                       // showLoaderWrapper(context);
                       if (context.locale.languageCode == 'en') {
                         user.rus = false;

@@ -126,11 +126,13 @@ class Repository {
       data: data,
     );
     if (response.statusCode == 201) {
-      String? accessToken = response.data['access_token'];
-      final refreshToken = response.data['refresh_token'];
+      // String? accessToken = response.data['access_token'];
+      // final refreshToken = response.data['refresh_token'];
+      String? accessToken = response.data['token']?['access'];
+      final refreshToken = response.data['token']?['refresh'];
       await Storage().setAccessToken(accessToken);
       await Storage().setRefreshToken(refreshToken);
-      return response.data['access_token'];
+      return accessToken;
     }
     return null;
   }
