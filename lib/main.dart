@@ -49,6 +49,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  FirebaseMessaging.instance.getToken().then((val) => print(val));
   await getItSetup();
   runApp(
     EasyLocalization(

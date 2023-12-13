@@ -95,7 +95,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     debugPrint('starting socket...');
     final token = await Storage().getAccessToken();
+    debugPrint('access token: $token');
     channel?.sink.close();
+    if (token == null) {
+      return;
+    }
     channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
@@ -111,7 +115,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           return;
         } catch (_) {}
         try {
-          print("0");
+          // print("0");
           if (jsonDecode(event)['chat_id'] != null) {
             idChat = jsonDecode(event)['chat_id'];
           } else {
@@ -141,6 +145,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } catch (_) {}
       },
       onDone: () {
+        debugPrint('on done in websocket');
         _tryConnect();
       },
       cancelOnError: false,

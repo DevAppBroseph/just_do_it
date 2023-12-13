@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/firebase_options.dart';
 import 'package:just_do_it/services/notification_service/i_notifications_service.dart';
@@ -10,8 +10,9 @@ import 'package:just_do_it/services/notification_service/i_notifications_service
 class NotificationService implements INotificationService {
   Future<void> inject() async {
     try {
+      debugPrint('initing firebase notification service...');
       final plugin = FlutterLocalNotificationsPlugin();
-      await fcmInit(plugin);
+      // await fcmInit(plugin);
       await getToken();
       await plugin
           .resolvePlatformSpecificImplementation<
@@ -25,7 +26,7 @@ class NotificationService implements INotificationService {
 
       await plugin.initialize(
         const InitializationSettings(
-          android: AndroidInitializationSettings(SvgImg.justDoIt),
+          android: AndroidInitializationSettings('app_icon'),
           iOS: DarwinInitializationSettings(),
         ),
       );
@@ -33,7 +34,9 @@ class NotificationService implements INotificationService {
       onTapWhenAppBg(
         onTap: () {},
       );
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('error initing firebase local notifications: $e');
+    }
   }
 
   @override
@@ -74,7 +77,7 @@ class NotificationService implements INotificationService {
               'default_notification_channel',
               'Notifications',
               channelDescription: 'This channel is used for notifications.',
-              icon: SvgImg.justDoIt,
+              // icon: SvgImg.justDoIt,
             ),
           ),
         );

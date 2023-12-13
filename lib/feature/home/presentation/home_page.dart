@@ -46,7 +46,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   PageController pageController = PageController(initialPage: 4);
   PanelController panelController = PanelController();
   PanelController panelControllerReply = PanelController();
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
         Navigator.of(context).pushNamed(AppRoute.personalAccount);
       } else if (index == 2) {
         Navigator.of(context).pushNamed(AppRoute.tasks, arguments: [
-              (page) {
+          (page) {
             setState(() {
               this.page = page;
               pageController.jumpToPage(this.page);
@@ -152,15 +152,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
     pageController.dispose();
     super.dispose();
   }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
-      BlocProvider.of<ChatBloc>(context)
-          .add(StartSocket(context, accessToken, () {
-        DataUpdater().updateTasksAndProfileData(context);
-      }));    }
+      if (accessToken != null) {
+        BlocProvider.of<ChatBloc>(context)
+            .add(StartSocket(context, accessToken, () {
+          DataUpdater().updateTasksAndProfileData(context);
+        }));
+      }
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -328,8 +333,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
               } else if (snapshot is res.CloseSlidingPanelState) {
                 panelControllerResponse.animatePanelToPosition(0.0);
               }
-              return SlidingPanelResponse(panelControllerResponse,
-                  selectTask: selectTask, isShowedFromFavPage: false,);
+              return SlidingPanelResponse(
+                panelControllerResponse,
+                selectTask: selectTask,
+                isShowedFromFavPage: false,
+              );
             },
           ),
         ],
@@ -340,7 +348,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
   Widget itemBottomNavigatorBar(String icon, String label, int index,
       {int? counderMessage}) {
     return GestureDetector(
-      onTap: ()=>selectTab(index),
+      onTap: () => selectTab(index),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.h),
         child: Container(
