@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
+    // double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double insetsBottom = MediaQuery.of(context).viewInsets.bottom;
     return Stack(
       children: [

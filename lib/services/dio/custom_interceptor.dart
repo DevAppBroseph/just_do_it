@@ -4,13 +4,12 @@ import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/services/dio/dio_client.dart';
 
 class CustomInterceptors extends Interceptor {
-
-
   @override
   Future onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401 &&
-        err.response?.data["code"] == "token_not_valid" &&
-        Storage().getAccessToken() != null) {
+        (err.response?.data["code"] == "token_not_valid" ||
+            err.response?.data["code"] == "user_not_found")) {
+      // Storage().getAccessToken() != null) {
       try {
         final newAccessToken = await getRefreshedToken();
         await Storage().setAccessToken(newAccessToken);
@@ -29,7 +28,7 @@ class CustomInterceptors extends Interceptor {
 }
 
 Future<String> getRefreshedToken() async {
-  final refreshToken = Storage();
+  final refreshToken = Storage().getRefreshToken();
   final response = await Dio().post(
     '$server/auth/api/token/refresh/',
     data: FormData.fromMap({"refresh": refreshToken}),

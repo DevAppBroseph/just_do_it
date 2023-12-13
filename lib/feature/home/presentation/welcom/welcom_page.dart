@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -20,7 +17,6 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/rating
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/language.dart';
@@ -32,9 +28,9 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class WelcomPage extends StatefulWidget {
-  Function(int) onSelect;
+  final Function(int) onSelect;
 
-  WelcomPage(this.onSelect, {super.key});
+  const WelcomPage(this.onSelect, {super.key});
 
   @override
   State<WelcomPage> createState() => _WelcomPageState();

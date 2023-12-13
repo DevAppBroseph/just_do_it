@@ -9,8 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
-import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
-import 'package:just_do_it/feature/auth/view/confirm_code_register_page.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
@@ -26,11 +24,8 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/helpers/router.dart';
-import 'package:just_do_it/helpers/storage.dart';
-import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
