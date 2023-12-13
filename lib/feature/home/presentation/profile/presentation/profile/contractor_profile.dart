@@ -348,6 +348,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               BlocProvider.of<RatingBloc>(context).reviews;
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               GestureDetector(
                                 onTap: () {
@@ -356,11 +357,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 0.5.h),
+                                  // padding: EdgeInsets.zero,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(bottom: 2.8.h),
+                                        padding: EdgeInsets.only(bottom: 5.0.h),
                                         child: ScaleButton(
                                           onTap: () {
                                             Navigator.of(context)

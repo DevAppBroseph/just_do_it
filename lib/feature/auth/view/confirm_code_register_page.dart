@@ -230,23 +230,25 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                           ),
                           SizedBox(height: 40.h),
                           GestureDetector(
-                            // onTap: (){
-                            //   resendCode();
-                            // },
                             onTap: resendCode,
                             child: RichText(
                               text: TextSpan(
                                 children: [
                                   TextSpan(
                                     text: '${'resend_code'.tr()} ',
-                                    style: CustomTextStyle.grey_16_w400,
-                                    // recognizer: TapGestureRecognizer()
-                                    //   ..onTap = resendCode,
+                                    style:
+                                        CustomTextStyle.grey_16_w400.copyWith(
+                                      color: timer?.isActive ?? false
+                                          ? ColorStyles.greyDADADA
+                                          : ColorStyles.black292D32,
+                                    ),
                                   ),
-                                  TextSpan(
-                                    text: '$currentSecond ${'sec'.tr()}.',
-                                    style: CustomTextStyle.black_16_w400_171716,
-                                  ),
+                                  if (timer?.isActive ?? false)
+                                    TextSpan(
+                                      text: '$currentSecond ${'sec'.tr()}.',
+                                      style:
+                                          CustomTextStyle.black_16_w400_171716,
+                                    ),
                                 ],
                               ),
                             ),

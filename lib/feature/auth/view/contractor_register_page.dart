@@ -1592,15 +1592,14 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             : DateTime(DateTime.now().year, DateTime.now().month,
                 DateTime.now().day + 2)
         : dateTimeStart ??
-            DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day + 1);
+            DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
     DateTime maximumDate = index == 1
         ? DateTime(
             DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(
-                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day)
             : DateTime(
                 DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
