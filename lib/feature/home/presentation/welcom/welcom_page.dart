@@ -766,7 +766,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                               padding: EdgeInsets
                                                                   .only(
                                                                       bottom:
-                                                                          7.5.h),
+                                                                          2.5.h),
                                                               child:
                                                                   ScaleButton(
                                                                 onTap: () {
@@ -839,7 +839,15 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 SizedBox(
                                                                   width: 4.w,
                                                                 ),
-                                                                Padding(
+                                                                Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  constraints:
+                                                                      BoxConstraints(
+                                                                    minHeight:
+                                                                        30.h,
+                                                                  ),
                                                                   padding: EdgeInsets
                                                                       .only(
                                                                           bottom:

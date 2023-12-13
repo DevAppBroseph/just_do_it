@@ -362,7 +362,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(bottom: 5.0.h),
+                                        padding: EdgeInsets.only(bottom: 1.5.h),
                                         child: ScaleButton(
                                           onTap: () {
                                             Navigator.of(context)
@@ -419,7 +419,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           const SizedBox(
                                             width: 4,
                                           ),
-                                          Padding(
+                                          Container(
+                                            constraints:
+                                                BoxConstraints(minHeight: 30.h),
+                                            alignment: Alignment.center,
                                             padding: EdgeInsets.only(top: 2.h),
                                             child: Text(
                                               user?.balance.toString() ?? '',
