@@ -50,6 +50,7 @@ class ChatCard extends StatelessWidget {
                     : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                 '${chat.chatWith?.id}',
                 '${server}${chat.chatWith?.photo}',
+                chat.category,
               ],
             );
             chatBloc.editShowPersonChat(true);
@@ -186,9 +187,16 @@ class ChatCard extends StatelessWidget {
                                           child: Image.network(
                                               server + category!.photo!)),
                                     ],
-                                    const SizedBox(width: 4,),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
                                     Text(
-                                      user?.rus ?? true && context.locale.languageCode == 'ru' ? category?.description ?? '-' : category?.engDescription ?? '-',
+                                      user?.rus ??
+                                              true &&
+                                                  context.locale.languageCode ==
+                                                      'ru'
+                                          ? category?.description ?? '-'
+                                          : category?.engDescription ?? '-',
                                       style:
                                           CustomTextStyle.black_12_w400_292D32,
                                       softWrap: true,

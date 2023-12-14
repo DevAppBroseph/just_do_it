@@ -46,8 +46,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage =
-        '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId != null ? ', "category":${event.categoryId}' : ''}}';
-
+        '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId != null ? ', "category_id":${event.categoryId}' : ''}}';
+    print(newMessage);
     if (channel == null) {
       debugPrint('channel is null cant send message!!!');
     }

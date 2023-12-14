@@ -3,22 +3,28 @@ class ChatList {
   ChatWith? chatWith;
   LastMsg? lastMsg;
   int? countUnreadMessage;
-  String? category;
-  ChatList({
-    required this.id,
-    required this.chatWith,
-    required this.lastMsg,
-    required this.countUnreadMessage,
-    this.category
-  });
+  int? category;
+  ChatList(
+      {required this.id,
+      required this.chatWith,
+      required this.lastMsg,
+      required this.countUnreadMessage,
+      this.category});
 
   factory ChatList.fromJson(Map<String, dynamic> json) {
+    int? categoryId;
+    if (json['category_id'] != null) {
+      categoryId = int.tryParse(json['category_id'].toString());
+    }
+    if (json['category'] != null) {
+      categoryId = int.tryParse(json['category'].toString());
+    }
     return ChatList(
       id: json['id'],
       chatWith: ChatWith.fromJson(json['chat_with']),
       lastMsg: LastMsg.fromJson(json['last_msg']),
       countUnreadMessage: json['count_unread_messages'],
-      category: json['category'],
+      category: categoryId,
     );
   }
 }
