@@ -47,9 +47,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage =
         '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId != null ? ', "category":${event.categoryId}' : ''}}';
+
+    if (channel == null) {
+      debugPrint('channel is null cant send message!!!');
+    }
+    debugPrint(channel?.protocol);
     channel?.sink.add(newMessage.toString());
     List<ChatMessage> reversedList = List.from(messages.reversed);
-
+    debugPrint('message sinked to socket, message:${event.message}');
     reversedList.add(
       ChatMessage(
         user: ChatUser(id: event.myId),
@@ -148,6 +153,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         debugPrint('on done in websocket');
         _tryConnect();
       },
+      onError: (e) {
+        debugPrint(e.toString());
+      },
       cancelOnError: false,
     );
   }
@@ -157,7 +165,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _tryConnect() async {
-    await Future.delayed(const Duration(milliseconds: 10800));
+    await Future.delayed(const Duration(milliseconds: 1800));
     emit(ReconnectState());
   }
 
