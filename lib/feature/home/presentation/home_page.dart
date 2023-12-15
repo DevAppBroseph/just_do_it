@@ -27,10 +27,8 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/view/se
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -127,6 +125,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
       if (accessToken != null && accessToken.isNotEmpty) {
         timer.cancel();
+        print('initing chat inside timer...');
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken, () {
           DataUpdater().updateTasksAndProfileData(context);
@@ -155,8 +154,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('did change dependency home page');
     if (state == AppLifecycleState.resumed) {
+      print('home page state resumed');
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
+      print('access token: $accessToken');
       if (accessToken != null) {
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken, () {

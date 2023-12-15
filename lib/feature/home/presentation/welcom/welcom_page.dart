@@ -53,9 +53,9 @@ class _WelcomPageState extends State<WelcomPage> {
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
 
-  Future<void> notificationInit() async {
-    await NotificationService().inject();
-  }
+  // Future<void> notificationInit() async {
+  //   await NotificationService().inject();
+  // }
 
   int? proverkaBalance;
   String? access;
@@ -64,7 +64,7 @@ class _WelcomPageState extends State<WelcomPage> {
   void initState() {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    notificationInit();
+    // notificationInit();
     getScore();
   }
 

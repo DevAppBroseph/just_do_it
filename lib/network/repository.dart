@@ -116,7 +116,7 @@ class Repository {
         ..addAll({
           'sent_code_server': confirmCodeEvent.sendCodeServer,
           'confirmation_code_user': confirmCodeEvent.confirmationCodeUser,
-          // "fcm_token": confirmCodeEvent.token,
+          "fcm_token": confirmCodeEvent.fcmToken,
           // 'confirmation_method': registerConfirmationMethod.name
         }),
     );

@@ -26,6 +26,7 @@ class ConfirmCodeEvent extends AuthEvent {
   String code;
   int? refCode;
   UserRegModel userRegModel;
+  String fcmToken;
 
   RegisterConfirmationMethod registerConfirmationMethod;
   String sendCodeServer;
@@ -38,6 +39,7 @@ class ConfirmCodeEvent extends AuthEvent {
     this.registerConfirmationMethod,
     this.sendCodeServer,
     this.confirmationCodeUser,
+    this.fcmToken,
   );
 }
 
