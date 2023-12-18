@@ -105,7 +105,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (token == null) {
       return;
     }
-    channel = WebSocketChannel.connect(Uri.parse('wss://$webSocket/ws/$token'));
+    channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
         try {
