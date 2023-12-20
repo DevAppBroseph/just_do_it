@@ -109,6 +109,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     channel?.stream.listen(
       (event) async {
         try {
+          debugPrint(event);
           var newMessageTask = NewMessageAnswerTask.fromJson(jsonDecode(event));
           if (newMessageTask.action.isNotEmpty) {
             TaskDialogs().showTaskMessage(
@@ -161,6 +162,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _closeSocket(CloseSocketEvent eventBloc, Emitter<ChatState> emit) async {
+    debugPrint('closing socket intentianally');
     channel?.sink.close();
   }
 

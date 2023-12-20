@@ -6,7 +6,31 @@
 // import 'package:just_do_it/core/firebase/fcm.dart';
 // import 'package:just_do_it/firebase_options.dart';
 // import 'package:just_do_it/services/notification_service/i_notifications_service.dart';
+// import 'dart:io';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:just_do_it/core/firebase/fcm.dart';
+// import 'package:just_do_it/firebase_options.dart';
+// import 'package:just_do_it/services/notification_service/i_notifications_service.dart';
 
+// class NotificationService implements INotificationService {
+//   Future<void> inject() async {
+//     try {
+//       debugPrint('initing firebase notification service...');
+//       final plugin = FlutterLocalNotificationsPlugin();
+//       await fcmInit(plugin);
+//       await getToken();
+//       await plugin
+//           .resolvePlatformSpecificImplementation<
+//               AndroidFlutterLocalNotificationsPlugin>()
+//           ?.createNotificationChannel(const AndroidNotificationChannel(
+//             'default_notification_channel',
+//             'Notifications',
+//             description: 'This channel is used for notifications.',
+//             importance: Importance.max,
+//           ));
 // class NotificationService implements INotificationService {
 //   Future<void> inject() async {
 //     try {
@@ -38,7 +62,25 @@
 //       debugPrint('error initing firebase local notifications: $e');
 //     }
 //   }
+//       await plugin.initialize(
+//         const InitializationSettings(
+//           android: AndroidInitializationSettings('app_icon'),
+//           iOS: DarwinInitializationSettings(),
+//         ),
+//       );
+//       listener(plugin: plugin);
+//       onTapWhenAppBg(
+//         onTap: () {},
+//       );
+//     } catch (e) {
+//       debugPrint('error initing firebase local notifications: $e');
+//     }
+//   }
 
+//   @override
+//   Future<void> fcmInit(FlutterLocalNotificationsPlugin plugin) async {
+//     await Firebase.initializeApp(
+//         options: DefaultFirebaseOptions.currentPlatform);
 //   @override
 //   Future<void> fcmInit(FlutterLocalNotificationsPlugin plugin) async {
 //     await Firebase.initializeApp(
@@ -55,7 +97,23 @@
 //       sound: true,
 //     );
 //   }
+//     FirebaseMessaging fcm = FirebaseMessaging.instance;
+//     final result = await fcm.requestPermission(
+//       alert: true,
+//       announcement: false,
+//       badge: true,
+//       carPlay: false,
+//       criticalAlert: false,
+//       provisional: false,
+//       sound: true,
+//     );
+//   }
 
+//   @override
+//   Future getToken() async {
+//     final token = await getFcmToken();
+//     return token;
+//   }
 //   @override
 //   Future getToken() async {
 //     final token = await getFcmToken();
@@ -97,6 +155,18 @@
 //       },
 //     );
 //   }
+//   @override
+//   Future<void> backgroundHandler() async {
+//     FirebaseMessaging.onBackgroundMessage(
+//       (RemoteMessage message) async {
+//         if (Platform.isIOS) {
+//           await Firebase.initializeApp(options: DefaultFirebaseOptions.ios);
+//         } else {
+//           await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+//         }
+//       },
+//     );
+//   }
 
 //   @override
 //   Future<void> onTapWhenAppBg({Function()? onTap}) async {
@@ -104,7 +174,22 @@
 //       onTap;
 //     });
 //   }
+//   @override
+//   Future<void> onTapWhenAppBg({Function()? onTap}) async {
+//     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+//       onTap;
+//     });
+//   }
 
+//   @override
+//   Future<void> onTapWhenAppClosed({Function()? onTap}) async {
+//     FirebaseMessaging.instance.getInitialMessage().then((message) {
+//       if (message != null) {
+//         onTap;
+//       }
+//     });
+//   }
+// }
 //   @override
 //   Future<void> onTapWhenAppClosed({Function()? onTap}) async {
 //     FirebaseMessaging.instance.getInitialMessage().then((message) {
