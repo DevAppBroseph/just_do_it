@@ -39,7 +39,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="justdoit.page.link"
+                    android:host="jobyfine.page.link"
                 />
             </intent-filter>
         </activity>

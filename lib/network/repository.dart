@@ -108,7 +108,8 @@ class Repository {
     }
   }
 
-  Future<String?> register(ConfirmCodeEvent confirmCodeEvent) async {
+  Future<String?> register(
+      ConfirmCodeEvent confirmCodeEvent, int? refCode) async {
     Map<String, dynamic> map = confirmCodeEvent.userRegModel.toJson();
 
     FormData data = FormData.fromMap(
@@ -117,6 +118,7 @@ class Repository {
           'sent_code_server': confirmCodeEvent.sendCodeServer,
           'confirmation_code_user': confirmCodeEvent.confirmationCodeUser,
           "fcm_token": confirmCodeEvent.fcmToken,
+          "ref_code": refCode,
           // 'confirmation_method': registerConfirmationMethod.name
         }),
     );
