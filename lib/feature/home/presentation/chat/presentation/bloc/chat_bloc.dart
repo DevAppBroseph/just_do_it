@@ -101,11 +101,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     debugPrint('starting socket...');
     final token = await Storage().getAccessToken();
     debugPrint('access token: $token');
-    channel?.sink.close();
+    await channel?.sink.close();
     if (token == null) {
       return;
     }
-    channel = WebSocketChannel.connect(Uri.parse('wss://$webSocket/ws/$token'));
+    channel = WebSocketChannel.connect(Uri.parse('ws://$webSocket/ws/$token'));
     channel?.stream.listen(
       (event) async {
         try {

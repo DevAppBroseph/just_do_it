@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
@@ -73,6 +74,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
       showLoaderWrapper(context);
 
       final authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+      String fcmToken = await getFcmToken() ?? '';
       authBloc.add(
         ConfirmCodeEvent(
           lastSendProfileEvent.userRegModel.phoneNumber ?? '',
@@ -81,6 +83,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
           lastSendProfileEvent.registerConfirmationMethod,
           authBloc.sendCodeServer ?? '',
           codeController.text,
+          fcmToken,
         ),
       );
     } else {

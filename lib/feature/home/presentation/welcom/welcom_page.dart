@@ -23,7 +23,6 @@ import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
-import 'package:just_do_it/services/notification_service/notifications_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
@@ -53,9 +52,9 @@ class _WelcomPageState extends State<WelcomPage> {
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
 
-  Future<void> notificationInit() async {
-    await NotificationService().inject();
-  }
+  // Future<void> notificationInit() async {
+  //   await NotificationService().inject();
+  // }
 
   int? proverkaBalance;
   String? access;
@@ -64,7 +63,7 @@ class _WelcomPageState extends State<WelcomPage> {
   void initState() {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    notificationInit();
+    // notificationInit();
     getScore();
   }
 
