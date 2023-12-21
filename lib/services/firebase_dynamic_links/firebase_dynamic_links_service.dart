@@ -10,7 +10,7 @@ class FirebaseDynamicLinksService {
   final IOSParameters iosParams = const IOSParameters(
     bundleId: 'aigam.com.jobyfine',
     appStoreId: '6466744212',
-    // minimumVersion: '1',
+    // minimumVersion: '1.6.3',
   );
   String urlPrefix = 'https://jobyfine.page.link';
 
