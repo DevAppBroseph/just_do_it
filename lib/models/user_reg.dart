@@ -464,10 +464,6 @@ class UserRegModel {
 
     data['rus'] = rus;
     data['sex'] = sex;
-    // data['doc_type'] = docType;
-    // data['doc_info'] = docInfo;
-    // data['region'] = region;
-    // data['country'] = country;
     data['is_entity'] = isEntity;
     data['activity'] = activity;
     if (activitiesDocument != null) data['activities'] = activitiesDocument;
