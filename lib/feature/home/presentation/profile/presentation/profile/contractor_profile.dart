@@ -20,7 +20,6 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/score/
 import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
-import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -92,6 +91,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }
   }
 
+  @override
+  didChangeDependencies() {
+    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+    super.didChangeDependencies();
+  }
+
   Future<String> getFilePath(uniqueFileName) async {
     String path = '';
 
@@ -156,9 +161,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
     return BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) {
       Loader.hide();
+
       if (current is UpdateProfileSuccessState ||
           current is LoadProfileSuccessState) {
         user = BlocProvider.of<ProfileBloc>(context).user!.duplicate();
+
         return true;
       }
       if (current is UpdateProfileTaskState) {
@@ -229,29 +236,30 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         },
                                         child: ClipOval(
                                           child: SizedBox.fromSize(
-                                              size: Size.fromRadius(40.r),
-                                              child: user?.photoLink == null
-                                                  ? Container(
-                                                      height: 60.h,
-                                                      width: 60.h,
-                                                      padding:
-                                                          EdgeInsets.all(10.h),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: ColorStyles
-                                                            .shadowFC6554,
-                                                      ),
-                                                      child: Image.asset(
-                                                          'assets/images/camera.png'),
-                                                    )
-                                                  : CachedNetworkImage(
-                                                      imageUrl: user!.photoLink!
-                                                              .contains(server)
-                                                          ? user!.photoLink!
-                                                          : server +
-                                                              user!.photoLink!,
-                                                      fit: BoxFit.cover,
-                                                    )),
+                                            size: Size.fromRadius(40.r),
+                                            child: user?.photoLink == null
+                                                ? Container(
+                                                    height: 60.h,
+                                                    width: 60.h,
+                                                    padding:
+                                                        EdgeInsets.all(10.h),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: ColorStyles
+                                                          .shadowFC6554,
+                                                    ),
+                                                    child: Image.asset(
+                                                        'assets/images/camera.png'),
+                                                  )
+                                                : CachedNetworkImage(
+                                                    imageUrl: user!.photoLink!
+                                                            .contains(server)
+                                                        ? user!.photoLink!
+                                                        : server +
+                                                            user!.photoLink!,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                       if (user?.photoLink != null)
@@ -617,7 +625,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   (user?.verifyStatus == "Failed")) ...[
                 Container(
                   height: 40.h,
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     color: ColorStyles.redFC6554.withOpacity(0.19),
                     borderRadius: BorderRadius.circular(8.r),
@@ -648,9 +656,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: AnimatedContainer(
@@ -666,16 +672,18 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: SizedBox(
                         width: 250.w,
                         child: Text(
-                          (user?.verifyStatus == "Failed")
-                              ? user?.banReason ?? "failed_verification".tr()
-                              : ("unknown_reason".tr()),
+                          (user?.isBanned ?? false)
+                              ? user?.banReason ?? ""
+                              : (user?.verifyStatus == "Failed")
+                                  ? "failed_verification".tr()
+                                  : ("unknown_reason".tr()),
                           style: CustomTextStyle.black_14_w400_515150,
                         ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
               ],
@@ -758,7 +766,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 .red_11_w400_171716),
                                   ),
                                   if (user?.verifyStatus == 'Success') ...[
-                                    Icon(
+                                    const Icon(
                                       Icons.check,
                                       color: Colors.green,
                                     )

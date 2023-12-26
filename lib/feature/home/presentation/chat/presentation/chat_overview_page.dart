@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,11 +8,9 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/widgets/chat_card.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:scale_button/scale_button.dart';
 
 class ChatOverviewPage extends StatefulWidget {
   final Function()? onBackPressed;
@@ -34,8 +28,6 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +59,15 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   SizedBox(width: 23.w),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
+                      Navigator.of(context).pushNamed(AppRoute.menu,
+                          arguments: [(page) {}, false]).then((value) {
                         if (value != null) {
                           if (value == 'create') {
                             widget.onSelect(0);
                           }
                           if (value == 'search') {
                             widget.onSelect(1);
-                          }
-                          else if (value == 'tasks') {
+                          } else if (value == 'tasks') {
                             widget.onSelect(2);
                           }
                           if (value == 'chat') {
@@ -96,12 +88,13 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   return false;
                 },
                 builder: (context, snapshot) {
-                  List<ChatList> listChat = BlocProvider.of<ChatBloc>(context).chatList;
+                  List<ChatList> listChat =
+                      BlocProvider.of<ChatBloc>(context).chatList;
                   return ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     itemCount: listChat.length,
                     itemBuilder: ((context, index) {
-                      return ChatCard(chat:listChat[index]);
+                      return ChatCard(chat: listChat[index]);
                     }),
                   );
                 },
@@ -112,8 +105,4 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
       ),
     );
   }
-
-
-
-
 }

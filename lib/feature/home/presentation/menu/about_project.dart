@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +8,6 @@ import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutProject extends StatefulWidget {
@@ -97,11 +94,14 @@ class _AboutProjectState extends State<AboutProject> {
                             Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 50.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 50.w),
                                   child: Center(
                                     child: Text(
                                       'jobyfine'.toUpperCase(),
-                                      style: CustomTextStyle.black_39_w900_171716.copyWith(color: ColorStyles.black),
+                                      style: CustomTextStyle
+                                          .black_39_w900_171716
+                                          .copyWith(color: ColorStyles.black),
                                     ),
                                   ),
                                 ),
@@ -111,7 +111,9 @@ class _AboutProjectState extends State<AboutProject> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 40.w),
                               child: Text(
-                                user?.rus ?? true && context.locale.languageCode == 'ru'
+                                user?.rus ??
+                                        true &&
+                                            context.locale.languageCode == 'ru'
                                     ? about?.about ?? ''
                                     : about?.aboutEng ?? '',
                                 style: CustomTextStyle.black_14_w400_515150,
@@ -140,10 +142,14 @@ class _AboutProjectState extends State<AboutProject> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: itemQuestion(
                                 index,
-                                user?.rus ?? true && context.locale.languageCode == 'ru'
+                                user?.rus ??
+                                        true &&
+                                            context.locale.languageCode == 'ru'
                                     ? about!.question[index].question
                                     : about!.question[index].questionEng,
-                                user?.rus ?? true && context.locale.languageCode == 'ru'
+                                user?.rus ??
+                                        true &&
+                                            context.locale.languageCode == 'ru'
                                     ? about!.question[index].answer
                                     : about!.question[index].answerEng,
                               ),
@@ -155,14 +161,16 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            launch(user?.rus ?? true && context.locale.languageCode == 'ru'
+                            launch(user?.rus ??
+                                    true && context.locale.languageCode == 'ru'
                                 ? server + about!.confidence
                                 : server + about!.confidenceEng);
                             // if (res != null) await OpenFile.open(server + res);
                           },
                           child: Text(
                             "user_agreement".tr(),
-                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
+                            style: CustomTextStyle.blue_16_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
@@ -171,13 +179,15 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: GestureDetector(
                           onTap: () async {
-                            launch(user?.rus ?? true && context.locale.languageCode == 'ru'
+                            launch(user?.rus ??
+                                    true && context.locale.languageCode == 'ru'
                                 ? server + about!.agreement
                                 : server + about!.agreementEng);
                           },
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),
-                            style: CustomTextStyle.blue_16_w400_336FEE.copyWith(decoration: TextDecoration.underline),
+                            style: CustomTextStyle.blue_16_w400_336FEE
+                                .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
