@@ -158,10 +158,16 @@ class Repository {
   }
 
   // забыли пароль, сбросить код
-  Future<bool> resetPassword(String login) async {
+  Future<bool> resetPassword({
+    required String codeType,
+    required String value,
+  }) async {
     final response = await dio.post(
       '$server/auth/reset_password',
-      data: {"phone_number": login},
+      data: {
+        "phone_number": value,
+        "code_type": codeType,
+      },
       options: Options(),
     );
 

@@ -367,5 +367,7 @@
   "themaximum_budget_should_not_exceed": "the maximum budget should not exceed 1 000 000 000",
   "is_used_for_registration": "Is used for registration",
   "please_wait": "Please wait",
-  "seconds": "seconds"
+  "seconds": "seconds",
+  "user_not_found": "User not found",
+  "wrong_credentials_or_usernotfound": "Wrong credentials or user not found"
 }

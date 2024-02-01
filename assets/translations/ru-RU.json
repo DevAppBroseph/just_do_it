@@ -368,5 +368,7 @@
     "themaximum_budget_should_not_exceed": "максимальный бюджет не должен превышать 1 000 000 000",
     "is_used_for_registration": "Использовать для регистрации",
     "please_wait": "Пожалуйста, подождите",
-    "seconds": "cекунд"
+    "seconds": "cекунд",
+    "user_not_found": "Пользователь не найден",
+    "wrong_credentials_or_usernotfound": "Введены неверные данные или пользователь не найден"
 }

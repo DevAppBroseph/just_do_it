@@ -33,8 +33,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void setAccess(String? accessToken) async {
-    await Storage().setAccessToken(accessToken);
     access = accessToken;
+    await Storage().setAccessToken(accessToken);
   }
 
   void setUser(UserRegModel? user) => this.user = user;

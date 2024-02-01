@@ -56,8 +56,8 @@ class CheckUserState extends AuthState {
 }
 
 class ConfirmCodeResetSuccessState extends AuthState {
-  // String access;
-  ConfirmCodeResetSuccessState();
+  String access;
+  ConfirmCodeResetSuccessState(this.access);
 }
 
 class ConfirmCodeResetErrorState extends AuthState {}

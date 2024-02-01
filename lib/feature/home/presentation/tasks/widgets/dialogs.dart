@@ -27,7 +27,8 @@ void iconSelectTranslate(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
+            insetPadding: EdgeInsets.only(
+                top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -86,7 +87,8 @@ void taskMoreDialog(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -97,7 +99,7 @@ void taskMoreDialog(
                 children: [
                   Container(
                     width: 125.w,
-                    height: selectTask.owner?.id != user?.id? 72.h: 36.h,
+                    height: selectTask.owner?.id != user?.id ? 72.h : 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [
@@ -118,7 +120,8 @@ void taskMoreDialog(
                           GestureDetector(
                             onTap: () async {
                               final code = await FirebaseDynamicLinksService()
-                                  .shareUserTask(int.parse(selectTask.id.toString()));
+                                  .shareUserTask(
+                                      int.parse(selectTask.id.toString()));
                               Share.share(code.toString());
                             },
                             child: Text(
@@ -129,7 +132,8 @@ void taskMoreDialog(
                           if (selectTask.owner?.id != user?.id)
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushNamed(AppRoute.contactus, arguments: [
+                                Navigator.of(context)
+                                    .pushNamed(AppRoute.contactus, arguments: [
                                   '${selectTask.name}, ${selectTask.owner!.firstname} ${selectTask.owner!.lastname}',
                                   'task_complaint'.tr()
                                 ]);
@@ -150,7 +154,8 @@ void taskMoreDialog(
         );
       },
     );
-void scoreDialog(BuildContext context, String score, String action) => showDialog(
+void scoreDialog(BuildContext context, String score, String action) =>
+    showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: false,
@@ -163,70 +168,69 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
             elevation: 0,
-            content: GestureDetector(
-              child: Stack(
+            content: Container(
+              width: 500.w,
+              // height: 350.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+              padding: EdgeInsets.all(17.h),
+
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 500.w,
-                    height: 350.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.1),
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(15.r),
+                  // Image.asset('assets/images/ranking.png'),
+                  // SizedBox(
+                  //   height: 30.h,
+                  // ),
+                  // if (context.locale.languageCode == 'en')
+                  //   Text(
+                  //     '$score points ${'accrued'.tr()}',
+                  //     style: CustomTextStyle.black_20_w700,
+                  //   ),
+                  // if (context.locale.languageCode == 'ru')
+                  Text(
+                    // '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                    "Спасибо за доверие!",
+                    textAlign: TextAlign.center,
+                    style: CustomTextStyle.black_20_w700,
+                  ),
+                  // SizedBox(
+                  //   height: 15.h,
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 15.h,
+                      bottom: 15.h,
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 17.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Center(
-                            child: Column(
-                              children: [
-                                Image.asset('assets/images/ranking.png'),
-                                SizedBox(
-                                  height: 30.h,
-                                ),
-                                if (context.locale.languageCode == 'en')
-                                  Text(
-                                    '$score points ${'accrued'.tr()}',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
-                                if (context.locale.languageCode == 'ru')
-                                  Text(
-                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                Text(
-                                  '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-                                  style: CustomTextStyle.grey_13_w400,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          CustomButton(
-                            onTap: () async {
-                              BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
-                              Navigator.of(context).pop();
-                            },
-                            btnColor: ColorStyles.purpleA401C4,
-                            textLabel: Text(
-                              'well'.tr(),
-                              style: CustomTextStyle.white_14_w400,
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: Text(
+                      // '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
+                      "Вы стали одним из первых участников!Дарим вам 300 баллов и другие бенефиты. Узнайте о них в разделе «О проекте»",
+                      style: CustomTextStyle.grey_13_w400,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  CustomButton(
+                    onTap: () async {
+                      BlocProvider.of<ProfileBloc>(context)
+                          .add(GetProfileEvent());
+                      Navigator.of(context).pop();
+                    },
+                    btnColor: ColorStyles.purpleA401C4,
+                    textLabel: Text(
+                      // 'well'.tr(),
+                      'about_the_project'.tr(),
+                      style: CustomTextStyle.white_14_w400,
                     ),
                   ),
                 ],
@@ -236,6 +240,92 @@ void scoreDialog(BuildContext context, String score, String action) => showDialo
         );
       },
     );
+// void scoreDialog(BuildContext context, String score, String action) => showDialog(
+//       useSafeArea: false,
+//       barrierColor: Colors.black.withOpacity(0.1),
+//       barrierDismissible: false,
+//       context: context,
+//       builder: (context) {
+//         return MediaQuery(
+//           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+//           child: AlertDialog(
+//             alignment: Alignment.center,
+//             contentPadding: EdgeInsets.zero,
+//             backgroundColor: Colors.transparent,
+//             elevation: 0,
+//             content: GestureDetector(
+//               child: Stack(
+//                 children: [
+//                   Container(
+//                     width: 500.w,
+//                     height: 350.h,
+//                     decoration: BoxDecoration(
+//                       color: Colors.white,
+//                       boxShadow: const [
+//                         BoxShadow(
+//                           color: Color.fromRGBO(0, 0, 0, 0.1),
+//                           blurRadius: 10,
+//                           offset: Offset(0, 4),
+//                         )
+//                       ],
+//                       borderRadius: BorderRadius.circular(15.r),
+//                     ),
+//                     child: Padding(
+//                       padding: EdgeInsets.symmetric(horizontal: 17.w),
+//                       child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                         children: [
+//                           Center(
+//                             child: Column(
+//                               children: [
+//                                 Image.asset('assets/images/ranking.png'),
+//                                 SizedBox(
+//                                   height: 30.h,
+//                                 ),
+//                                 if (context.locale.languageCode == 'en')
+//                                   Text(
+//                                     '$score points ${'accrued'.tr()}',
+//                                     style: CustomTextStyle.black_20_w700,
+//                                   ),
+//                                 if (context.locale.languageCode == 'ru')
+//                                   Text(
+//                                     '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+//                                     style: CustomTextStyle.black_20_w700,
+//                                   ),
+//                                 SizedBox(
+//                                   height: 15.h,
+//                                 ),
+//                                 Text(
+//                                   '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
+//                                   style: CustomTextStyle.grey_13_w400,
+//                                   textAlign: TextAlign.center,
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                           CustomButton(
+//                             onTap: () async {
+//                               BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+//                               Navigator.of(context).pop();
+//                             },
+//                             btnColor: ColorStyles.purpleA401C4,
+//                             textLabel: Text(
+//                               'well'.tr(),
+//                               style: CustomTextStyle.white_14_w400,
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
 void noMoney(BuildContext context, String action, String text) => showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
@@ -399,7 +489,9 @@ void banDialog(BuildContext context, String action) => showDialog(
                           CustomButton(
                             onTap: () {
                               Navigator.of(context).pop();
-                              Navigator.of(context).pushNamed(AppRoute.contactus, arguments: ['', '']);
+                              Navigator.of(context).pushNamed(
+                                  AppRoute.contactus,
+                                  arguments: ['', '']);
                             },
                             btnColor: ColorStyles.yellowFFCA0D,
                             textLabel: Text(
@@ -418,7 +510,8 @@ void banDialog(BuildContext context, String action) => showDialog(
         );
       },
     );
-void helpOnTopDialog(BuildContext context, String title, String description) => showDialog(
+void helpOnTopDialog(BuildContext context, String title, String description) =>
+    showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: false,
@@ -465,7 +558,8 @@ void helpOnTopDialog(BuildContext context, String title, String description) => 
                                   height: 18.h,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Text(
                                     title,
                                     style: CustomTextStyle.black_20_w700,
@@ -476,7 +570,8 @@ void helpOnTopDialog(BuildContext context, String title, String description) => 
                                   height: 18.h,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 24.w),
                                   child: Text(
                                     description,
                                     style: CustomTextStyle.black_14_w500_171716,
@@ -507,7 +602,9 @@ void helpOnTopDialog(BuildContext context, String title, String description) => 
         );
       },
     );
-void onTopDialog(BuildContext context, String title, String action, String description) => showDialog(
+void onTopDialog(BuildContext context, String title, String action,
+        String description) =>
+    showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: false,
@@ -554,7 +651,8 @@ void onTopDialog(BuildContext context, String title, String action, String descr
                                   height: 18.h,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Text(
                                     title,
                                     style: CustomTextStyle.black_20_w700,
@@ -573,7 +671,8 @@ void onTopDialog(BuildContext context, String title, String action, String descr
                                   height: 18.h,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 24.w),
                                   child: Text(
                                     description,
                                     style: CustomTextStyle.grey_12_w400,
@@ -610,7 +709,6 @@ void taskMoreDialogForProfile(
   Function(int index) onTap,
   Owner? owner,
   UserRegModel? user,
-
 ) =>
     showDialog(
       useSafeArea: false,
@@ -620,7 +718,8 @@ void taskMoreDialogForProfile(
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -631,7 +730,7 @@ void taskMoreDialogForProfile(
                 children: [
                   Container(
                     width: 125.w,
-                    height:owner?.id != user?.id? 72.h: 36.h,
+                    height: owner?.id != user?.id ? 72.h : 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [
@@ -651,8 +750,9 @@ void taskMoreDialogForProfile(
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              final code =
-                                  await FirebaseDynamicLinksService().shareUserProfile(int.parse(owner!.id.toString()));
+                              final code = await FirebaseDynamicLinksService()
+                                  .shareUserProfile(
+                                      int.parse(owner!.id.toString()));
                               Share.share(code.toString());
                             },
                             child: Text(
@@ -661,17 +761,19 @@ void taskMoreDialogForProfile(
                             ),
                           ),
                           if (owner?.id != user?.id)
-
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(AppRoute.contactus,
-                                  arguments: ['${owner!.firstname} ${owner.lastname}', 'user_complaint'.tr()]);
-                            },
-                            child: Text(
-                              'complain'.tr(),
-                              style: CustomTextStyle.black_12_w400_292D32,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(AppRoute.contactus, arguments: [
+                                  '${owner!.firstname} ${owner.lastname}',
+                                  'user_complaint'.tr()
+                                ]);
+                              },
+                              child: Text(
+                                'complain'.tr(),
+                                style: CustomTextStyle.black_12_w400_292D32,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
