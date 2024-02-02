@@ -215,7 +215,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                     ),
                     child: Text(
                       // '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-                      "Вы стали одним из первых участников!Дарим вам 300 баллов и другие бенефиты. Узнайте о них в разделе «О проекте»",
+                      "Вы стали одним из первых участников!Дарим вам 300 баллов и другие бенефиты. Узнайте о них в разделе \n«О проекте»",
                       style: CustomTextStyle.grey_13_w400,
                       textAlign: TextAlign.center,
                     ),
