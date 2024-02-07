@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +12,15 @@ import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart' as response_bloc;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart' as response_fav_bloc;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response/response_bloc.dart'
+    as response_bloc;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart'
+    as response_fav_bloc;
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/storage.dart';
-import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task/task.dart';
-import 'package:just_do_it/models/task/task_category.dart';
-import 'package:just_do_it/models/type_filter.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
@@ -33,7 +31,8 @@ class SlidingPanelResponse extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
 
-  const SlidingPanelResponse(this.panelController, {super.key, required this.selectTask, required this.isShowedFromFavPage});
+  const SlidingPanelResponse(this.panelController,
+      {super.key, required this.selectTask, required this.isShowedFromFavPage});
 
   @override
   State<SlidingPanelResponse> createState() => _SlidingPanelResponseState();
@@ -50,7 +49,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   void getProfile() {
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
-  Future<void> respond(bool raiseToTop)async {
+
+  Future<void> respond(bool raiseToTop) async {
     if (user!.isBanned!) {
       if (widget.selectTask!.isTask!) {
         banDialog(context, 'responses_to_tasks_is'.tr());
@@ -73,62 +73,71 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         if (errorsFlag == true) {
           CustomAlert().showMessage(error);
         } else {
-            final createAnswerSuccess = await Repository().createAnswer(
-                widget.selectTask!.id!,
-                access,
-                int.parse(coastController.text.replaceAll(' ', '')),
-                descriptionTextController.text,
-                widget.selectTask!.isTask! ? 'Progress' : "Selected",
-                raiseToTop);
-            if (context.mounted) {
-              if (createAnswerSuccess) {
-                widget.panelController.animatePanelToPosition(0);
-                coastController.clear();
-                descriptionTextController.clear();
-                context.read<TasksBloc>().add(UpdateTaskEvent());
-                BlocProvider.of<ProfileBloc>(context).add(
-                    UpdateProfileEvent(user));
-                setState(() {});
-                if (raiseToTop) {
-                  onTopDialog(context, 'put_on_top'.tr(),
-                      'response_is_fixed_in_the_top'.tr(),
-                      'your_ad_is_now_above_others'.tr());
-                }
-              } else {
-                if (raiseToTop) {
-                  noMoney(context, 'raise_response'.tr(),
-                      'response_to_the_top'.tr());
-                } else {
-                  CustomAlert().showMessage("error".tr());
-                }
+          final createAnswerSuccess = await Repository().createAnswer(
+              widget.selectTask!.id!,
+              access,
+              int.parse(coastController.text.replaceAll(' ', '')),
+              descriptionTextController.text,
+              widget.selectTask!.isTask! ? 'Progress' : "Selected",
+              raiseToTop);
+          if (context.mounted) {
+            if (createAnswerSuccess) {
+              widget.panelController.animatePanelToPosition(0);
+              coastController.clear();
+              descriptionTextController.clear();
+              context.read<TasksBloc>().add(UpdateTaskEvent());
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(UpdateProfileEvent(user));
+              setState(() {});
+              if (raiseToTop) {
+                onTopDialog(
+                    context,
+                    'put_on_top'.tr(),
+                    'response_is_fixed_in_the_top'.tr(),
+                    'your_ad_is_now_above_others'.tr());
               }
+            } else {
+              if (raiseToTop) {
+                noMoney(
+                    context, 'raise_response'.tr(), 'response_to_the_top'.tr());
+              } else {
+                CustomAlert().showMessage("error".tr());
+              }
+            }
           }
         }
       }
     }
   }
-  void openSlidingEvent(double height){
-    if(widget.isShowedFromFavPage){
-      context.read<response_fav_bloc.ResponseBlocFromFav>().add(response_fav_bloc.OpenSlidingPanelToEvent(height));
-    }else{
-      context.read<response_bloc.ResponseBloc>().add(response_bloc.OpenSlidingPanelToEvent(height));
-    }
 
+  void openSlidingEvent(double height) {
+    if (widget.isShowedFromFavPage) {
+      context
+          .read<response_fav_bloc.ResponseBlocFromFav>()
+          .add(response_fav_bloc.OpenSlidingPanelToEvent(height));
+    } else {
+      context
+          .read<response_bloc.ResponseBloc>()
+          .add(response_bloc.OpenSlidingPanelToEvent(height));
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-    if(widget.isShowedFromFavPage){
-      return BlocBuilder<response_fav_bloc.ResponseBlocFromFav,response_fav_bloc.ResponseState>(
-        builder: (context,state){
+    if (widget.isShowedFromFavPage) {
+      return BlocBuilder<response_fav_bloc.ResponseBlocFromFav,
+          response_fav_bloc.ResponseState>(
+        builder: (context, state) {
           return SlidingUpPanel(
             controller: widget.panelController,
             renderPanelSheet: false,
             panel: panel(context, bottomInsets),
             onPanelSlide: (position) {
               if (position == 0) {
-                BlocProvider.of<response_fav_bloc.ResponseBlocFromFav>(context).add(response_fav_bloc.HideSlidingPanelEvent());
+                BlocProvider.of<response_fav_bloc.ResponseBlocFromFav>(context)
+                    .add(response_fav_bloc.HideSlidingPanelEvent());
                 focusNodeDiscription.unfocus();
                 focusCoastMax.unfocus();
               }
@@ -142,16 +151,18 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
           );
         },
       );
-    }else{
-      return BlocBuilder<response_bloc.ResponseBloc,response_bloc.ResponseState>(
-        builder: (context,state){
+    } else {
+      return BlocBuilder<response_bloc.ResponseBloc,
+          response_bloc.ResponseState>(
+        builder: (context, state) {
           return SlidingUpPanel(
             controller: widget.panelController,
             renderPanelSheet: false,
             panel: panel(context, bottomInsets),
             onPanelSlide: (position) {
               if (position == 0) {
-                  BlocProvider.of<response_bloc.ResponseBloc>(context).add(response_bloc.HideSlidingPanelEvent());
+                BlocProvider.of<response_bloc.ResponseBloc>(context)
+                    .add(response_bloc.HideSlidingPanelEvent());
                 focusNodeDiscription.unfocus();
                 focusCoastMax.unfocus();
               }
@@ -166,7 +177,6 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         },
       );
     }
-
   }
 
   Widget panel(BuildContext context, double bottomInsets) {
@@ -205,12 +215,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         },
                         btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
-                          widget.selectTask?.isTask??false ? 'respond'.tr() : 'accept_the_offer'.tr(),
+                          widget.selectTask?.isTask ?? false
+                              ? 'respond'.tr()
+                              : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
                       ),
                     ),
-                  if( widget.selectTask?.isTask??false)...[
+                  if (widget.selectTask?.isTask ?? false) ...[
                     SizedBox(height: 10.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -229,10 +241,16 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                                     'respond_and_become_the_first'.tr(),
                                     style: CustomTextStyle.white_14,
                                   ),
-                                  const SizedBox(width: 4,),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
                                   GestureDetector(
                                     onTap: () {
-                                      helpOnTopDialog(context, 'put_on_top'.tr(), 'the_visibility_of_your_response'.tr());
+                                      helpOnTopDialog(
+                                          context,
+                                          'put_on_top'.tr(),
+                                          'the_visibility_of_your_response'
+                                              .tr());
                                     },
                                     child: SvgPicture.asset(
                                       SvgImg.help,
@@ -245,12 +263,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),
                   ],
-
                   SizedBox(height: 30.h),
                 ],
               ),
@@ -315,7 +331,9 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             children: [
               Text(
-                widget.selectTask?.isTask??false?'your_response_to_the_task'.tr():'your_response_to_the_offer'.tr(),
+                widget.selectTask?.isTask ?? false
+                    ? 'your_response_to_the_task'.tr()
+                    : 'your_response_to_the_offer'.tr(),
                 style: CustomTextStyle.black_22_w700_171716,
               ),
               SizedBox(height: 30.h),
@@ -333,11 +351,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        Text(
-                          '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
-                          style: CustomTextStyle.grey_14_w400,
-                        ),
-
+                      Text(
+                        '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
+                        style: CustomTextStyle.grey_14_w400,
+                      ),
                       SizedBox(height: 3.h),
                       Row(
                         children: [
@@ -355,7 +372,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             onFieldSubmitted: (value) {
                               setState(() {});
                             },
-                            formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
+                            formatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FormatterCurrency()
+                            ],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
@@ -374,7 +394,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 onTap: () {},
                 bound: 0.02,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
                     color: ColorStyles.greyF9F9F9,
                     borderRadius: BorderRadius.circular(10.r),

@@ -7,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -16,9 +15,10 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 
 class MenuPage extends StatefulWidget {
   final Function(String page) onBackPressed;
-  bool inTask;
+  final bool inTask;
 
-  MenuPage({
+  const MenuPage({
+    super.key,
     required this.onBackPressed,
     required this.inTask,
   });
@@ -39,7 +39,6 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     if (user != null) {
       if (user.rus!) {
@@ -83,7 +82,8 @@ class _MenuPageState extends State<MenuPage> {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(), () {
+                  itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(),
+                      () {
                     Navigator.pop(context, 'create');
                   }),
                   itemMenu('assets/icons/search2.svg', 'find_tasks'.tr(), () {
@@ -93,27 +93,34 @@ class _MenuPageState extends State<MenuPage> {
                     if (widget.inTask) {
                       Navigator.pop(context);
                     } else {
-                      Navigator.pop(context,"tasks");
+                      Navigator.pop(context, "tasks");
                     }
                   }),
-                  itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(), () {
+                  itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(),
+                      () {
                     Navigator.pop(context, 'chat');
                   }),
-                  itemMenu('assets/icons/profile-circle.svg', 'personal_account'.tr(), () {
+                  itemMenu('assets/icons/profile-circle.svg',
+                      'personal_account'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.personalAccount);
                   }),
-                  itemMenu('assets/icons/user_circle_add.svg', 'referral_system'.tr(), () {
+                  itemMenu('assets/icons/user_circle_add.svg',
+                      'referral_system'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.referal);
                   }),
-                  itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(), () {
+                  itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(),
+                      () {
                     showLoaderWrapperWhite(context);
                     Navigator.of(context).pushNamed(AppRoute.about);
                     Future.delayed(const Duration(seconds: 1), () {
                       Loader.hide();
                     });
                   }),
-                  itemMenu('assets/icons/message-favorite.svg', 'contact_us'.tr(), () {
-                    Navigator.of(context).pushNamed(AppRoute.contactus, arguments: ['', '']);
+                  itemMenu(
+                      'assets/icons/message-favorite.svg', 'contact_us'.tr(),
+                      () {
+                    Navigator.of(context)
+                        .pushNamed(AppRoute.contactus, arguments: ['', '']);
                   }),
                   itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {}),
                   SizedBox(height: 15.h),
@@ -145,22 +152,32 @@ class _MenuPageState extends State<MenuPage> {
                                     onChanged: (value) async {
                                       if (value == 'RU') {
                                         if (user != null) {
-                                          user!.rus=true;
-                                          context.setLocale(const Locale('ru', 'RU'));
+                                          user!.rus = true;
+                                          context.setLocale(
+                                              const Locale('ru', 'RU'));
                                           user = await Repository()
-                                              .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, true);
+                                              .editRusProfile(
+                                                  BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .access,
+                                                  true);
                                         }
-                                      }
-                                      else if (value == 'EN') {
+                                      } else if (value == 'EN') {
                                         if (user != null) {
-                                          user!.rus=false;
-                                          context.setLocale(const Locale('en', 'US'));
+                                          user!.rus = false;
+                                          context.setLocale(
+                                              const Locale('en', 'US'));
                                           user = await Repository()
-                                              .editRusProfile(BlocProvider.of<ProfileBloc>(context).access, false);
+                                              .editRusProfile(
+                                                  BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .access,
+                                                  false);
                                         }
                                       }
                                     },
-                                    items: listLanguage.map<DropdownMenuItem<String>>((e) {
+                                    items: listLanguage
+                                        .map<DropdownMenuItem<String>>((e) {
                                       return DropdownMenuItem<String>(
                                           value: e.title,
                                           child: Row(
@@ -168,10 +185,13 @@ class _MenuPageState extends State<MenuPage> {
                                               SizedBox(
                                                 height: 20.h,
                                                 width: 25.w,
-                                                child: e.title == 'EN' ? Image.asset(e.icon) : SvgPicture.asset(e.icon),
+                                                child: e.title == 'EN'
+                                                    ? Image.asset(e.icon)
+                                                    : SvgPicture.asset(e.icon),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.only(left: 5.w),
+                                                padding:
+                                                    EdgeInsets.only(left: 5.w),
                                                 child: Text(e.title),
                                               ),
                                             ],

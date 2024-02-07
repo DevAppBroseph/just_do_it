@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,72 +31,72 @@ class _RatingPageState extends State<RatingPage> {
     return Scaffold(
       backgroundColor: ColorStyles.greyF7F7F8,
       body: BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    final user=context.read<ProfileBloc>().user;
-    if(user==null){
-      return const Center(child: CupertinoActivityIndicator());
-    }
-    return BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
-        if (snapshot is LoadingRatingState) {
-          return const CupertinoActivityIndicator();
-        }
-        Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
-        return SafeArea(
-          top: false,
-          bottom: false,
-          child: MediaQuery(
-            data: const MediaQueryData(textScaleFactor: 1.0),
-            child: Column(
-              children: [
-                 header(reviews,user),
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: ColorStyles.greyF7F7F8,
-                    ),
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      shrinkWrap: true,
-                      children: [
-                        SizedBox(height: 30.h),
-                        Text(
-                          'reviews_of_your_work'.tr(),
-                          style: CustomTextStyle.black_17_w800,
+        builder: (context, state) {
+          final user = context.read<ProfileBloc>().user;
+          if (user == null) {
+            return const Center(child: CupertinoActivityIndicator());
+          }
+          return BlocBuilder<RatingBloc, RatingState>(
+              builder: (context, snapshot) {
+            if (snapshot is LoadingRatingState) {
+              return const CupertinoActivityIndicator();
+            }
+            Reviews? reviews = BlocProvider.of<RatingBloc>(context).reviews;
+            return SafeArea(
+              top: false,
+              bottom: false,
+              child: MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 1.0),
+                child: Column(
+                  children: [
+                    header(reviews, user),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: ColorStyles.greyF7F7F8,
                         ),
-                        SizedBox(height: 30.h),
-
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(horizontal: 24.w),
                           shrinkWrap: true,
-                          itemCount: reviews?.reviewsDetail.length,
-                          itemBuilder: ((context, index) {
-                            if (reviews != null) {
-                              return itemComment(reviews.reviewsDetail[index]);
-                            }
-                            return null;
-                          }),
+                          children: [
+                            SizedBox(height: 30.h),
+                            Text(
+                              'reviews_of_your_work'.tr(),
+                              style: CustomTextStyle.black_17_w800,
+                            ),
+                            SizedBox(height: 30.h),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: reviews?.reviewsDetail.length,
+                              itemBuilder: ((context, index) {
+                                if (reviews != null) {
+                                  return itemComment(
+                                      reviews.reviewsDetail[index]);
+                                }
+                                return null;
+                              }),
 
-
-                          // ListView.builder(
-                          //   physics: const NeverScrollableScrollPhysics(),
-                          //   shrinkWrap: true,
-                          //   itemCount: _reviews.length,
-                          //   itemBuilder: ((context, index) {
-                          //     return itemCommentNew(_reviews[index]);
-                          //   }),
+                              // ListView.builder(
+                              //   physics: const NeverScrollableScrollPhysics(),
+                              //   shrinkWrap: true,
+                              //   itemCount: _reviews.length,
+                              //   itemBuilder: ((context, index) {
+                              //     return itemCommentNew(_reviews[index]);
+                              //   }),
+                            ),
+                            SizedBox(height: 50.h),
+                          ],
                         ),
-                        SizedBox(height: 50.h),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      });
-  },
-),
+              ),
+            );
+          });
+        },
+      ),
     );
   }
 
@@ -121,7 +119,8 @@ class _RatingPageState extends State<RatingPage> {
                   ? Container(
                       height: 34.h,
                       width: 34.h,
-                      decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
+                      decoration:
+                          const BoxDecoration(color: ColorStyles.shadowFC6554),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -215,7 +214,8 @@ class _RatingPageState extends State<RatingPage> {
     return Container(
       margin: EdgeInsets.only(bottom: 18.h),
       width: width.w,
-      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
+      padding:
+          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: ColorStyles.whiteFFFFFF,
@@ -230,7 +230,8 @@ class _RatingPageState extends State<RatingPage> {
                     ? Container(
                         height: 34.h,
                         width: 34.h,
-                        decoration: const BoxDecoration(color: ColorStyles.shadowFC6554),
+                        decoration: const BoxDecoration(
+                            color: ColorStyles.shadowFC6554),
                       )
                     : CachedNetworkImage(
                         height: 34.h,
@@ -325,7 +326,7 @@ class _RatingPageState extends State<RatingPage> {
     );
   }
 
-  Widget header(Reviews? reviews,UserRegModel? user) {
+  Widget header(Reviews? reviews, UserRegModel? user) {
     final bloc = BlocProvider.of<ProfileBloc>(context);
     return SizedBox(
       child: Column(
@@ -353,8 +354,8 @@ class _RatingPageState extends State<RatingPage> {
               ],
             ),
           ),
-        SizedBox(height: 8.h),
-          if(reviews!=null)...[
+          SizedBox(height: 8.h),
+          if (reviews != null) ...[
             Container(
               color: ColorStyles.yellowFFD70A,
               child: Column(
@@ -377,7 +378,8 @@ class _RatingPageState extends State<RatingPage> {
                         const Spacer(),
                         Container(
                           height: 76.h,
-                          padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
+                          padding: EdgeInsets.only(
+                              left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                           decoration: BoxDecoration(
                             color: ColorStyles.greyF3F3F3,
                             borderRadius: BorderRadius.only(
@@ -399,7 +401,9 @@ class _RatingPageState extends State<RatingPage> {
                                   SvgPicture.asset('assets/icons/star.svg'),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    reviews!.ranking == null ? '-' : (reviews.ranking!).toString(),
+                                    reviews!.ranking == null
+                                        ? '-'
+                                        : (reviews.ranking!).toString(),
                                     style: CustomTextStyle.black_20_w600,
                                   ),
                                 ],
@@ -426,7 +430,6 @@ class _RatingPageState extends State<RatingPage> {
               ),
             ),
           ]
-
         ],
       ),
     );

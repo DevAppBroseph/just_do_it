@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task/task.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/network/task_repository.dart';
 
 part 'event_tasks.dart';
@@ -42,5 +41,4 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoaded(event.countFilter, tasks: tasks));
   }
-
 }

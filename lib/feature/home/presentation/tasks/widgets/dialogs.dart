@@ -201,7 +201,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                   // if (context.locale.languageCode == 'ru')
                   Text(
                     // '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                    "Спасибо за доверие!",
+                    "thank_you_for_trust".tr(),
                     textAlign: TextAlign.center,
                     style: CustomTextStyle.black_20_w700,
                   ),
@@ -214,8 +214,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                       bottom: 15.h,
                     ),
                     child: Text(
-                      // '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-                      "Вы стали одним из первых участников!Дарим вам 300 баллов и другие бенефиты. Узнайте о них в разделе \n«О проекте»",
+                      'dialog_bonus_info'.tr(args: ['300']),
                       style: CustomTextStyle.grey_13_w400,
                       textAlign: TextAlign.center,
                     ),
@@ -224,12 +223,14 @@ void scoreDialog(BuildContext context, String score, String action) =>
                     onTap: () async {
                       BlocProvider.of<ProfileBloc>(context)
                           .add(GetProfileEvent());
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRoute.about);
                     },
                     btnColor: ColorStyles.purpleA401C4,
                     textLabel: Text(
                       // 'well'.tr(),
-                      'about_the_project'.tr(),
+                      'about_project'.tr(),
                       style: CustomTextStyle.white_14_w400,
                     ),
                   ),
