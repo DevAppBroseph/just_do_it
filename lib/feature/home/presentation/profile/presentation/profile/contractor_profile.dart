@@ -672,11 +672,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                       child: SizedBox(
                         width: 250.w,
                         child: Text(
-                          (user?.isBanned ?? false)
-                              ? user?.banReason ?? ""
-                              : (user?.verifyStatus == "Failed")
-                                  ? "failed_verification".tr()
-                                  : ("unknown_reason".tr()),
+                          (user?.verifyStatus == "Failed")
+                              ? user?.banReason ?? "failed_verification".tr()
+                              : user?.banReason ?? ("unknown_reason".tr()),
                           style: CustomTextStyle.black_14_w400_515150,
                         ),
                       ),
