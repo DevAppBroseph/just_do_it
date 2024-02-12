@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -36,6 +35,8 @@ class _MainAuthPageState extends State<AuthPage> {
   FocusNode focusNodePassword = FocusNode();
   FocusNode focusNodeResetLogin = FocusNode();
 
+  CustomAlert customAlert = CustomAlert();
+
   @override
   void dispose() {
     visiblePasswordController.close();
@@ -60,14 +61,13 @@ class _MainAuthPageState extends State<AuthPage> {
           Navigator.of(context).pushNamed(AppRoute.confirmPhoneCode,
               arguments: [loginController.text]);
         } else if (current is ResetPasswordErrorState) {
-          CustomAlert().showMessage('Пользователь не найден');
+          customAlert.showMessage('user_not_found'.tr());
         } else if (current is SignInSuccessState) {
           BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
         } else if (current is SignInErrorState) {
-          CustomAlert().showMessage(
-              'Введены неверные данные или пользователь не найден');
+          customAlert.showMessage('wrong_credentials_or_usernotfound'.tr());
         }
         return false;
       }, builder: (context, snapshot) {
@@ -144,6 +144,8 @@ class _MainAuthPageState extends State<AuthPage> {
                               forgotPassword = false;
                             });
                           } else {
+                            // scoreDialog(context, '50', 'registrations'.tr());
+                            // //KTODO
                             Navigator.of(context).pushNamed(AppRoute.signUp);
                           }
                         },

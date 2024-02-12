@@ -10,7 +10,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitState()) {
     on<SendProfileEvent>(_sendProfile);
     on<ConfirmCodeEvent>(_confirmCode);
-    on<RestoreCodeEvent>(_restoreProfile);
+    on<RestoreCodeEvent>(_restorePassword);
     on<RestoreCodeCheckEvent>(_restoreCodeConfirm);
     on<GetCategoriesEvent>(_getCategories);
     on<SignInEvent>(_signIn);
@@ -130,6 +130,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
+    print('editing password');
     bool res = await Repository()
         .editPassword(event.password, event.token, event.fcmToken);
     if (res) {
@@ -143,7 +144,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ConfirmCodeResetEvent event, Emitter<AuthState> emit) async {
     String? res = await Repository().confirmCodeReset(event.phone, event.code);
     if (res != null) {
-      emit(ConfirmCodeResetSuccessState());
+      emit(ConfirmCodeResetSuccessState(res));
     } else {
       emit(ConfirmCodeResetErrorState());
     }
@@ -160,13 +161,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(GetCategoriesState(res));
   }
 
-  void _restoreProfile(RestoreCodeEvent event, Emitter<AuthState> emit) async {
-    bool res = await Repository().resetPassword(event.login);
+  _restorePassword(RestoreCodeEvent event, Emitter<AuthState> emit) async {
+    bool res = await sendCodeForRestorePassword(event.login);
     if (res) {
       emit(ResetPasswordSuccessState());
     } else {
       emit(ResetPasswordErrorState());
     }
+  }
+
+  Future<bool> sendCodeForRestorePassword(String credential) async {
+    String type = 'phone', value = credential;
+    if (credential.contains('@')) {
+      type = 'email';
+    }
+    bool res = await Repository().resetPassword(
+      codeType: type,
+      value: value,
+    );
+    return res;
   }
 
   void _restoreCodeConfirm(

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -36,6 +38,21 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
   int currentSecond = 59;
   bool confirmCode = false;
 
+  CustomAlert customAlert = CustomAlert();
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    BlocProvider.of<ProfileBloc>(context).setAccess(null);
+    super.dispose();
+  }
+
   void _startTimer() {
     if (timer == null || !timer!.isActive) {
       currentSecond = 59;
@@ -51,17 +68,59 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
+  resendCode() async {
+    if (timer?.isActive ?? false) {
+      customAlert.showMessage(
+          '${'please_wait'.tr()}, $currentSecond ${'seconds'.tr()}');
+      return;
+    }
+    showLoaderWrapper(context);
+    setState(() {});
+    bool res = await BlocProvider.of<AuthBloc>(context)
+        .sendCodeForRestorePassword(widget.phone);
+    Loader.hide();
+    if (res) {
+      _startTimer();
+    } else {
+      customAlert.showMessage('invalid_code'.tr());
+    }
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    BlocProvider.of<ProfileBloc>(context).setAccess(null);
-    super.dispose();
+  onTapBtn() async {
+    if (!confirmCode) {
+      if (codeController.text.isEmpty) {
+        customAlert.showMessage('Введите код');
+      } else {
+        showLoaderWrapper(context);
+        BlocProvider.of<AuthBloc>(context).add(
+          ConfirmCodeResetEvent(
+            widget.phone,
+            codeController.text,
+          ),
+        );
+      }
+    } else {
+      if (passwordController.text.isEmpty ||
+          passwordRepeatController.text.isEmpty) {
+        customAlert.showMessage('Укажите пароль');
+      } else if (passwordController.text.length < 6) {
+        customAlert.showMessage('Минимальная длина пароля 6 символов');
+      } else if ((passwordController.text.isNotEmpty &&
+              passwordRepeatController.text.isNotEmpty) &&
+          (passwordController.text != passwordRepeatController.text)) {
+        customAlert.showMessage('Пароли не совпадают');
+      } else {
+        final fcmToken = await FirebaseMessaging.instance.getToken();
+        showLoaderWrapper(context);
+        BlocProvider.of<AuthBloc>(context).add(
+          EditPasswordEvent(
+            passwordController.text,
+            BlocProvider.of<ProfileBloc>(context).access ?? '',
+            fcmToken.toString(),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -75,13 +134,13 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
           } else if (current is EditPasswordErrorState) {
-            CustomAlert().showMessage('Ошибка. Неправильный ввод пароля');
+            customAlert.showMessage('Ошибка. Неправильный ввод пароля');
           } else if (current is ConfirmCodeResetSuccessState) {
-            BlocProvider.of<ProfileBloc>(context).setAccess(null);
+            BlocProvider.of<ProfileBloc>(context).setAccess(current.access);
             confirmCode = true;
             return true;
           } else if (current is ConfirmCodeResetErrorState) {
-            CustomAlert().showMessage('Неверный код');
+            customAlert.showMessage('Неверный код');
           }
           return false;
         },
@@ -101,48 +160,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                         children: [
                           SizedBox(height: 20.h),
                           CustomButton(
-                            onTap: () async {
-                              if (!confirmCode) {
-                                if (codeController.text.isEmpty) {
-                                  CustomAlert().showMessage('Введите код');
-                                } else {
-                                  showLoaderWrapper(context);
-                                  BlocProvider.of<AuthBloc>(context).add(
-                                    ConfirmCodeResetEvent(
-                                      widget.phone,
-                                      codeController.text,
-                                    ),
-                                  );
-                                }
-                              } else {
-                                if (passwordController.text.isEmpty ||
-                                    passwordRepeatController.text.isEmpty) {
-                                  CustomAlert().showMessage('Укажите пароль');
-                                } else if (passwordController.text.length < 6) {
-                                  CustomAlert().showMessage(
-                                      'Минимальная длина пароля 6 символов');
-                                } else if ((passwordController
-                                            .text.isNotEmpty &&
-                                        passwordRepeatController
-                                            .text.isNotEmpty) &&
-                                    (passwordController.text !=
-                                        passwordRepeatController.text)) {
-                                  CustomAlert()
-                                      .showMessage('Пароли не совпадают');
-                                } else {
-                                  final token = await FirebaseMessaging.instance
-                                      .getToken();
-                                  showLoaderWrapper(context);
-                                  BlocProvider.of<AuthBloc>(context).add(
-                                    EditPasswordEvent(
-                                        passwordController.text,
-                                        BlocProvider.of<ProfileBloc>(context)
-                                            .access!,
-                                        token.toString()),
-                                  );
-                                }
-                              }
-                            },
+                            onTap: onTapBtn,
                             btnColor: ColorStyles.yellowFFD70A,
                             textLabel: Text(
                               confirmCode
@@ -287,23 +305,26 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 ),
               ),
               SizedBox(height: 40.h),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${'resend_code'.tr()} ',
-                      style: CustomTextStyle.grey_16_w400.copyWith(
-                        color: timer?.isActive ?? false
-                            ? ColorStyles.greyDADADA
-                            : ColorStyles.black292D32,
-                      ),
-                    ),
-                    if (timer?.isActive ?? false)
+              GestureDetector(
+                onTap: resendCode,
+                child: RichText(
+                  text: TextSpan(
+                    children: [
                       TextSpan(
-                        text: '$currentSecond ${'sec'.tr()}.',
-                        style: CustomTextStyle.black_16_w400_171716,
+                        text: '${'resend_code'.tr()} ',
+                        style: CustomTextStyle.grey_16_w400.copyWith(
+                          color: timer?.isActive ?? false
+                              ? ColorStyles.greyDADADA
+                              : ColorStyles.black292D32,
+                        ),
                       ),
-                  ],
+                      if (timer?.isActive ?? false)
+                        TextSpan(
+                          text: '$currentSecond ${'sec'.tr()}.',
+                          style: CustomTextStyle.black_16_w400_171716,
+                        ),
+                    ],
+                  ),
                 ),
               )
             ],

@@ -75,7 +75,7 @@ class AppRoute {
       case score:
         return MaterialPageRoute(builder: (_) => const ScorePage());
       case about:
-        return MaterialPageRoute(builder: (_) => AboutProject());
+        return MaterialPageRoute(builder: (_) => const AboutProject());
       case menu:
         List<dynamic> arg = route.arguments as List<dynamic>;
 

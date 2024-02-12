@@ -10,7 +10,6 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditBasicInfo extends StatefulWidget {
   const EditBasicInfo({Key? key}) : super(key: key);
@@ -28,10 +27,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
 
   ScrollController scrollController1 = ScrollController();
   late UserRegModel? user;
-  bool isDataFilled=false;
+  bool isDataFilled = false;
   @override
   void initState() {
-    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate() ;
+    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate();
     fillData(user);
 
     super.initState();
@@ -45,13 +44,14 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
         children: [
           Scaffold(
             backgroundColor: ColorStyles.whiteFFFFFF,
-            body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, snapshot) {
+            body: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
                 return const Center(child: CupertinoActivityIndicator());
               }
-              if(!isDataFilled){
+              if (!isDataFilled) {
                 fillData(context.read<ProfileBloc>().user);
-                isDataFilled=true;
+                isDataFilled = true;
               }
               return SafeArea(
                 child: Column(
@@ -91,7 +91,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textEditingController: firstnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
-                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(firstname: value);
                             },
@@ -109,7 +110,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textEditingController: lastnameController,
                             hintStyle: CustomTextStyle.grey_14_w400,
                             formatters: [UpperTextInputFormatter()],
-                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(lastname: value);
                             },
@@ -144,14 +146,17 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               LengthLimitingTextInputFormatter(16),
                             ],
                             onTap: () {
-                              if (phoneController.text.isEmpty) phoneController.text = '+';
+                              if (phoneController.text.isEmpty)
+                                phoneController.text = '+';
                             },
-                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(phoneNumber: value);
                             },
                             onFieldSubmitted: (value) {
-                              if (phoneController.text == '+') phoneController.text = '';
+                              if (phoneController.text == '+')
+                                phoneController.text = '';
                               requestNextEmptyFocusStage1();
                             },
                           ),
@@ -164,7 +169,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textEditingController: emailController,
                             hintStyle: CustomTextStyle.grey_14_w400,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
                               user?.copyWith(email: value);
                             },
@@ -172,9 +178,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               requestNextEmptyFocusStage1();
                             },
                             onTap: () {
-                              Future.delayed(const Duration(milliseconds: 250), () {
+                              Future.delayed(const Duration(milliseconds: 250),
+                                  () {
                                 scrollController1.animateTo(500.h,
-                                    duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.linear);
                               });
                             },
                           ),
@@ -185,7 +193,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           child: Row(
                             children: [
                               Checkbox(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.r)),
                                 value: physics,
                                 onChanged: (value) {
                                   setState(() {
@@ -225,7 +234,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             errorsFlag = true;
                           }
 
-                          if (phoneController.text.isEmpty || phoneController.text == '+') {
+                          if (phoneController.text.isEmpty ||
+                              phoneController.text == '+') {
                             error += '\n- ${'mobile_number'.tr()}';
                             errorsFlag = true;
                           }
@@ -234,15 +244,15 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             error += '\n- email';
                             errorsFlag = true;
                           }
-                          if (phoneController.text.length < 12)  {
+                          if (phoneController.text.length < 12) {
                             error += '\n- ${'incorrect_phone_number'.tr()}';
                             errorsFlag = true;
                           }
                           String email = emailController.text;
 
-                          bool emailValid =
-                              RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(email);
+                          bool emailValid = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(email);
 
                           if (!emailValid && emailController.text.isNotEmpty) {
                             error += '\n- ${'correct_email'.tr()}';
@@ -252,7 +262,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             CustomAlert().showMessage(error);
                           } else {
                             user!.copyWith(isEntity: physics);
-                            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(UpdateProfileEvent(user));
                             Navigator.of(context).pop();
                           }
                         },

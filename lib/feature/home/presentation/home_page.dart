@@ -60,6 +60,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     String? refCode = event.link.queryParameters['ref_code'];
     String? userProfile = event.link.queryParameters['user_profile'];
     String? taskId = event.link.queryParameters['task_id'];
+
+    String? channelCode = event.link.queryParameters['channel_code'];
+    if (channelCode != null) {
+      print('hey man found channel code: $channelCode');
+    }
     if (refCode != null) {
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {

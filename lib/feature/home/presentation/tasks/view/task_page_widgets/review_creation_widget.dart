@@ -25,16 +25,20 @@ import 'package:scale_button/scale_button.dart';
 
 class ReviewCreationWidget extends StatefulWidget {
   const ReviewCreationWidget(
-      {super.key, required this.task, required this.isTaskOwner, required this.openOwner});
+      {super.key,
+      required this.task,
+      required this.isTaskOwner,
+      required this.openOwner});
 
   final Task task;
   final bool isTaskOwner;
   final Function(Owner?) openOwner;
 
-  factory ReviewCreationWidget.customer(Task task, Function(Owner?) openOwner)=>
+  factory ReviewCreationWidget.customer(
+          Task task, Function(Owner?) openOwner) =>
       ReviewCreationWidget(task: task, isTaskOwner: true, openOwner: openOwner);
 
-  factory ReviewCreationWidget.agent(Task task, Function(Owner?) openOwner)=>
+  factory ReviewCreationWidget.agent(Task task, Function(Owner?) openOwner) =>
       ReviewCreationWidget(
           task: task, isTaskOwner: false, openOwner: openOwner);
 
@@ -46,39 +50,34 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
   bool hasJustReviewed = false;
   double reviewRating = 1;
   final descriptionTextController = TextEditingController();
-  late final user = BlocProvider
-      .of<ProfileBloc>(context)
-      .user;
-  late final agentOrCustomer=widget.isTaskOwner?widget.task.answers
-      .firstWhere((element) => element.status == "Selected")
-      .owner:OwnerOrder.fromOwner(widget.task.owner!);
+  late final user = BlocProvider.of<ProfileBloc>(context).user;
+  late final agentOrCustomer = widget.isTaskOwner
+      ? widget.task.answers
+          .firstWhere((element) => element.status == "Selected")
+          .owner
+      : OwnerOrder.fromOwner(widget.task.owner!);
   Future<void> sendReview() async {
     if (user!.isBanned!) {
       banDialog(context, 'giving_feedback_is_currently_restricted'.tr());
     } else {
-      final owner = await Repository()
-          .getRanking(
-          agentOrCustomer?.id,
-          BlocProvider.of<ProfileBloc>(context)
-              .access);
-      final hasAlreadyReviewed=owner?.reviews?.any((element) => element.taskId==widget.task.id);
-      if(context.mounted){
-        if ((hasAlreadyReviewed??false)||hasJustReviewed) {
-          CustomAlert()
-              .showMessage('you_have_already_left_a_review'.tr());
-        }else if(descriptionTextController.text.trim().isEmpty){
-          CustomAlert()
-              .showMessage('leave_comment_on_review'.tr());
+      final owner = await Repository().getRanking(
+          agentOrCustomer?.id, BlocProvider.of<ProfileBloc>(context).access);
+      final hasAlreadyReviewed =
+          owner?.reviews?.any((element) => element.taskId == widget.task.id);
+      if (context.mounted) {
+        if ((hasAlreadyReviewed ?? false) || hasJustReviewed) {
+          CustomAlert().showMessage('you_have_already_left_a_review'.tr());
+        } else if (descriptionTextController.text.trim().isEmpty) {
+          CustomAlert().showMessage('leave_comment_on_review'.tr());
         } else {
           showLoaderWrapperWhite(context);
           hasJustReviewed = true;
           final addReviewsDetailSuccess = await Repository().addReviewsDetail(
-              BlocProvider
-                  .of<ProfileBloc>(context)
-                  .access,
+              BlocProvider.of<ProfileBloc>(context).access,
               agentOrCustomer?.id,
               descriptionTextController.text,
-              reviewRating,widget.task.id);
+              reviewRating,
+              widget.task.id);
           if (context.mounted) {
             if (addReviewsDetailSuccess) {
               DataUpdater().updateTasksAndProfileData(context);
@@ -91,36 +90,32 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
           }
         }
       }
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.task.answers.isNotEmpty&&
-    widget.task.status == TaskStatus.completed &&
-        !widget.task.isBanned!&&widget.task.answers.any((answer) => answer.status=="Selected")) {
+    if (widget.task.answers.isNotEmpty &&
+        widget.task.status == TaskStatus.completed &&
+        !widget.task.isBanned! &&
+        widget.task.answers.any((answer) => answer.status == "Selected")) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Container(color: Colors.red,height: 100,),
-          if(widget.isTaskOwner)...[
+          if (widget.isTaskOwner) ...[
             Padding(
               padding: EdgeInsets.only(top: 15.h),
               child: ScaleButton(
                 bound: 0.02,
                 onTap: () async {
                   if (user!.isBanned!) {
-                    banDialog(
-                        context,
-                        'profile_viewing_is_currently_restricted'
-                            .tr());
+                    banDialog(context,
+                        'profile_viewing_is_currently_restricted'.tr());
                   } else {
-                    final owner = await Repository()
-                        .getRanking(
+                    final owner = await Repository().getRanking(
                         agentOrCustomer?.id,
-                        BlocProvider.of<ProfileBloc>(context)
-                            .access);
+                        BlocProvider.of<ProfileBloc>(context).access);
                     widget.openOwner(owner);
                   }
                 },
@@ -136,18 +131,16 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                       )
                     ],
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.w, vertical: 13.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          if (agentOrCustomer?.photo !=
-                              null)
+                          if (agentOrCustomer?.photo != null)
                             ClipRRect(
-                              borderRadius:
-                              BorderRadius.circular(1000.r),
+                              borderRadius: BorderRadius.circular(1000.r),
                               child: Image.network(
                                 agentOrCustomer!.photo!,
                                 height: 48.h,
@@ -158,35 +151,27 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                           SizedBox(width: 15.w),
                           Expanded(
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width: 300.w,
                                   child: Text(
-                                    '${agentOrCustomer?.firstname ??
-                                        '-'} ${agentOrCustomer
-                                        ?.lastname ?? '-'}',
-                                    style: CustomTextStyle
-                                        .black_15_w600_171716,
+                                    '${agentOrCustomer?.firstname ?? '-'} ${agentOrCustomer?.lastname ?? '-'}',
+                                    style: CustomTextStyle.black_15_w600_171716,
                                     softWrap: true,
                                   ),
                                 ),
                                 SizedBox(height: 6.h),
                                 Row(
                                   children: [
-                                    SvgPicture.asset(
-                                        'assets/icons/star.svg'),
+                                    SvgPicture.asset('assets/icons/star.svg'),
                                     SizedBox(width: 4.w),
                                     Text(
-    (agentOrCustomer
-                                          ?.ranking ==
-                                          null)
+                                      (agentOrCustomer?.ranking == null)
                                           ? '0'
-                                          : agentOrCustomer!.ranking
-                                          .toString(),
-                                      style: CustomTextStyle
-                                          .black_13_w500_171716,
+                                          : agentOrCustomer!.ranking.toString(),
+                                      style:
+                                          CustomTextStyle.black_13_w500_171716,
                                     ),
                                   ],
                                 ),
@@ -218,8 +203,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             onTap: () {},
             bound: 0.02,
             child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.w, vertical: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
               decoration: BoxDecoration(
                 color: ColorStyles.greyF9F9F9,
                 borderRadius: BorderRadius.circular(10.r),
@@ -232,10 +216,9 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                 onTap: () {
                   setState(() {});
                 },
-                hintStyle: TextStyle(color: Colors.black),
+                hintStyle: const TextStyle(color: Colors.black),
                 style: CustomTextStyle.black_14_w400_171716,
-                textEditingController:
-                descriptionTextController,
+                textEditingController: descriptionTextController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {},
                 formatters: [
@@ -249,7 +232,10 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
           Row(
             children: [
               Text(
-                (widget.isTaskOwner?'rate_the_executor':'evaluate_the_customer').tr(),
+                (widget.isTaskOwner
+                        ? 'rate_the_executor'
+                        : 'evaluate_the_customer')
+                    .tr(),
                 style: CustomTextStyle.black_17_w800,
               ),
               SizedBox(width: 15.h),
@@ -257,7 +243,10 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                 onTap: () {
                   helpOnTopDialog(
                       context,
-                      (widget.isTaskOwner?'rate_the_executor':'evaluate_the_customer').tr(),
+                      (widget.isTaskOwner
+                              ? 'rate_the_executor'
+                              : 'evaluate_the_customer')
+                          .tr(),
                       'please_provide_a_rating'.tr());
                 },
                 child: SvgPicture.asset(
@@ -276,8 +265,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             direction: Axis.horizontal,
             itemCount: 5,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) =>
-            const Icon(
+            itemBuilder: (context, _) => const Icon(
               Icons.star,
               color: ColorStyles.yellowFFCA0D,
             ),
@@ -302,6 +290,6 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
         ],
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }
