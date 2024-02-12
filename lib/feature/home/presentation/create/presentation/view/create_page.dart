@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +84,8 @@ class _CreatePageState extends State<CreatePage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
+                      padding:
+                          EdgeInsets.only(top: 60.h, left: 15.w, right: 28.w),
                       child: Row(
                         children: [
                           searchListEnable
@@ -131,20 +130,30 @@ class _CreatePageState extends State<CreatePage> {
                                       });
                                       Storage().setListHistory(value);
                                       FocusScope.of(context).unfocus();
-                                      BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .add(EditPageSearchEvent(1, value));
                                     },
                                     onChanged: (value) {
                                       if (value.isEmpty) {
                                         getHistoryList();
                                       }
-                                      List<TaskCategory> activities = BlocProvider.of<ProfileBloc>(context).activities;
+                                      List<TaskCategory> activities =
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .activities;
                                       searchChoose.clear();
                                       if (value.isNotEmpty) {
                                         for (var element1 in activities) {
-                                          for (var element2 in element1.subcategory) {
-                                            if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
-                                                !searchChoose.contains(element2.description!.toLowerCase())) {
-                                              searchChoose.add(element2.description!);
+                                          for (var element2
+                                              in element1.subcategory) {
+                                            if (element2.description!
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        value.toLowerCase()) &&
+                                                !searchChoose.contains(element2
+                                                    .description!
+                                                    .toLowerCase())) {
+                                              searchChoose
+                                                  .add(element2.description!);
                                             }
                                           }
                                         }
@@ -152,9 +161,12 @@ class _CreatePageState extends State<CreatePage> {
                                       setState(() {});
                                     },
                                     hintText: 'search'.tr(),
-                                    hintStyle: CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis),
+                                    hintStyle: CustomTextStyle.grey_14_w400
+                                        .copyWith(
+                                            overflow: TextOverflow.ellipsis),
                                     textEditingController: searchController,
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 11.w, vertical: 11.h),
                                   ),
                                 )
                               : user != null
@@ -162,7 +174,8 @@ class _CreatePageState extends State<CreatePage> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.of(context).pushNamed(AppRoute.notification);
+                                            Navigator.of(context).pushNamed(
+                                                AppRoute.notification);
                                           },
                                           child: Stack(
                                             alignment: Alignment.topRight,
@@ -175,8 +188,11 @@ class _CreatePageState extends State<CreatePage> {
                                                       height: 10.w,
                                                       width: 10.w,
                                                       decoration: BoxDecoration(
-                                                        color: ColorStyles.yellowFFD70B,
-                                                        borderRadius: BorderRadius.circular(20.r),
+                                                        color: ColorStyles
+                                                            .yellowFFD70B,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.r),
                                                       ),
                                                     )
                                                   : Container()
@@ -190,42 +206,44 @@ class _CreatePageState extends State<CreatePage> {
                                               searchListEnable = true;
                                             });
                                           },
-                                          child: SvgPicture.asset('assets/icons/search3.svg'),
+                                          child: SvgPicture.asset(
+                                              'assets/icons/search3.svg'),
                                         ),
                                       ],
                                     )
                                   : Container(),
                           SizedBox(width: 10.w),
                           GestureDetector(
-                            onTap: () async{
-                              final accessToken = await Storage().getAccessToken();
-                              if(context.mounted){
-
-                                if(accessToken!=null){
-                                  Navigator.of(context)
-                                      .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
+                            onTap: () async {
+                              final accessToken =
+                                  await Storage().getAccessToken();
+                              if (context.mounted) {
+                                if (accessToken != null) {
+                                  Navigator.of(context).pushNamed(AppRoute.menu,
+                                      arguments: [
+                                        (page) {},
+                                        false
+                                      ]).then((value) {
                                     if (value != null) {
                                       if (value == 'create') {
                                         widget.onSelect(0);
-                                      }
-                                      else if (value == 'search') {
+                                      } else if (value == 'search') {
                                         widget.onSelect(1);
-                                      }
-                                      else if (value == 'tasks') {
+                                      } else if (value == 'tasks') {
                                         widget.onSelect(2);
-                                      }
-                                      else if (value == 'chat') {
+                                      } else if (value == 'chat') {
                                         widget.onSelect(3);
                                       }
                                     }
                                   });
-                                }else{
-                                  Navigator.of(context).pushNamed(AppRoute.auth);
+                                } else {
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoute.auth);
                                 }
                               }
-
                             },
-                            child: SvgPicture.asset('assets/icons/category2.svg'),
+                            child:
+                                SvgPicture.asset('assets/icons/category2.svg'),
                           ),
                         ],
                       ),
@@ -240,7 +258,8 @@ class _CreatePageState extends State<CreatePage> {
                       bottomInsets,
                       (value) {
                         Storage().setListHistory(value);
-                        BlocProvider.of<ProfileBloc>(context).add(EditPageSearchEvent(1, value));
+                        BlocProvider.of<ProfileBloc>(context)
+                            .add(EditPageSearchEvent(1, value));
                       },
                       searchChoose,
                     )
@@ -260,12 +279,15 @@ class _CreatePageState extends State<CreatePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.h, vertical: 20.h),
                               child: CustomButton(
                                 onTap: () async {
-                                  final bloc = BlocProvider.of<ProfileBloc>(context);
+                                  final bloc =
+                                      BlocProvider.of<ProfileBloc>(context);
                                   if (bloc.user == null) {
-                                    Navigator.of(context).pushNamed(AppRoute.auth);
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoute.auth);
                                   } else {
                                     await Navigator.of(context).push(
                                       MaterialPageRoute(
@@ -350,7 +372,8 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Widget elementCategory(String icon, String title, int currentIndex, {List<String> choice = const []}) {
+  Widget elementCategory(String icon, String title, int currentIndex,
+      {List<String> choice = const []}) {
     String selectWork = '';
     if (choice.isNotEmpty) {
       selectWork = '- ${choice.first}';
@@ -527,8 +550,14 @@ class _CreatePageState extends State<CreatePage> {
       child: Padding(
         padding: EdgeInsets.only(
             left: 20.w,
-            bottom: activities[index].subcategory[0].description == label && label.length > 32 ? 7.h : 0.h,
-            top: activities[index].subcategory[0].description == label && label.length > 32 ? 10.h : 0.h,
+            bottom: activities[index].subcategory[0].description == label &&
+                    label.length > 32
+                ? 7.h
+                : 0.h,
+            top: activities[index].subcategory[0].description == label &&
+                    label.length > 32
+                ? 10.h
+                : 0.h,
             right: 20.w),
         child: Container(
           color: Colors.transparent,
@@ -546,7 +575,8 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                   const Spacer(),
-                  if (activities[index].selectSubcategory.contains(label)) const Icon(Icons.check)
+                  if (activities[index].selectSubcategory.contains(label))
+                    const Icon(Icons.check)
                 ],
               ),
             ],

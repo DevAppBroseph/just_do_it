@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -16,7 +15,6 @@ import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart'
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
-import 'package:just_do_it/widget/dialog.dart';
 
 class PersonalChat extends StatefulWidget {
   String? id;
@@ -47,14 +45,15 @@ class _PersonalChatState extends State<PersonalChat> {
 
   void getInitMessage() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    final chatBloc=BlocProvider.of<ChatBloc>(context);
-    if(widget.id=="null"){
-      final chatElementIndex=chatBloc.chatList.indexWhere((element) => element.chatWith?.id==int.parse(widget.idWithChat));
-      if(chatElementIndex!=-1) {
-        final chatId=chatBloc.chatList[chatElementIndex].id;
+    final chatBloc = BlocProvider.of<ChatBloc>(context);
+    if (widget.id == "null") {
+      final chatElementIndex = chatBloc.chatList.indexWhere(
+          (element) => element.chatWith?.id == int.parse(widget.idWithChat));
+      if (chatElementIndex != -1) {
+        final chatId = chatBloc.chatList[chatElementIndex].id;
         widget.id = chatId.toString();
         chatBloc.editChatId(chatId);
-      }else{
+      } else {
         chatBloc.editChatId(null);
       }
       chatBloc.messages = [];
@@ -125,8 +124,7 @@ class _PersonalChatState extends State<PersonalChat> {
   Widget build(BuildContext context) {
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return WillPopScope(
-
-      onWillPop: () async{
+      onWillPop: () async {
         context.read<ChatBloc>().editShowPersonChat(true);
         return true;
       },
@@ -143,7 +141,8 @@ class _PersonalChatState extends State<PersonalChat> {
                   CustomIconButton(
                     onBackPressed: () {
                       context.read<ChatBloc>().editShowPersonChat(true);
-                      Navigator.of(context).pop(widget.id);},
+                      Navigator.of(context).pop(widget.id);
+                    },
                     icon: SvgImg.arrowRight,
                   ),
                   SizedBox(width: 8.w),
@@ -167,7 +166,6 @@ class _PersonalChatState extends State<PersonalChat> {
                   ),
                   const Spacer(),
                   GestureDetector(
-
                     onTap: () => iconSelectTranslate(
                       context,
                       getWidgetPosition(iconBtn),
@@ -201,7 +199,6 @@ class _PersonalChatState extends State<PersonalChat> {
                   return true;
                 },
                 builder: (context, state) {
-
                   List<ChatMessage> messages =
                       BlocProvider.of<ChatBloc>(context).messages;
                   return GestureDetector(
@@ -214,8 +211,8 @@ class _PersonalChatState extends State<PersonalChat> {
                       reverse: true,
                       controller: scrollController,
                       physics: const ClampingScrollPhysics(),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.w, vertical: 24.w),
                       itemBuilder: (context, index) {
                         if (user?.id != int.parse(messages[index].user.id)) {
                           return Padding(
@@ -261,7 +258,8 @@ class _PersonalChatState extends State<PersonalChat> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             CupertinoCard(
-                                              radius: BorderRadius.circular(25.r),
+                                              radius:
+                                                  BorderRadius.circular(25.r),
                                               color: ColorStyles.greyF9F9F9,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
@@ -385,7 +383,8 @@ class _PersonalChatState extends State<PersonalChat> {
                                               if (textController
                                                   .text.isNotEmpty) {
                                                 // BlocProvider.of<ChatBloc>(context).messages.isEmpty
-                                                BlocProvider.of<ChatBloc>(context)
+                                                BlocProvider.of<ChatBloc>(
+                                                        context)
                                                     .add(
                                                   SendMessageEvent(
                                                       textController.text,
@@ -394,11 +393,14 @@ class _PersonalChatState extends State<PersonalChat> {
                                                       categoryId:
                                                           widget.categoryId),
                                                 );
-                                                if(widget.id=="null"){
-                                                  DataUpdater().updateTasksAndProfileData(context);
-                                                }else{
-                                                  BlocProvider.of<ChatBloc>(context).add(GetListMessage());
-
+                                                if (widget.id == "null") {
+                                                  DataUpdater()
+                                                      .updateTasksAndProfileData(
+                                                          context);
+                                                } else {
+                                                  BlocProvider.of<ChatBloc>(
+                                                          context)
+                                                      .add(GetListMessage());
                                                 }
                                               }
                                               textController.text = '';
