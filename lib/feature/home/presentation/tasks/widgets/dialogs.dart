@@ -214,7 +214,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                       bottom: 15.h,
                     ),
                     child: Text(
-                      'dialog_bonus_info'.tr(args: ['300']),
+                      'dialog_bonus_info'.tr(args: [score]),
                       style: CustomTextStyle.grey_13_w400,
                       textAlign: TextAlign.center,
                     ),
