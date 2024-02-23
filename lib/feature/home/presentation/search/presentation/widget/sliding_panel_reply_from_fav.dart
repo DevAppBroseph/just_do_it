@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -24,10 +23,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class SlidingPanelReplyFromFav extends StatefulWidget {
   final PanelController panelController;
   final Task? selectTask;
-  const SlidingPanelReplyFromFav(this.panelController, {super.key, this.selectTask});
+  const SlidingPanelReplyFromFav(this.panelController,
+      {super.key, this.selectTask});
 
   @override
-  State<SlidingPanelReplyFromFav> createState() => _SlidingPanelReplyFromFavState();
+  State<SlidingPanelReplyFromFav> createState() =>
+      _SlidingPanelReplyFromFavState();
 }
 
 class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
@@ -103,7 +104,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
       additionalInfo = false;
     }
 
-    return BlocBuilder<ReplyFromFavBloc, ReplyState>(buildWhen: (previous, current) {
+    return BlocBuilder<ReplyFromFavBloc, ReplyState>(
+        buildWhen: (previous, current) {
       if (current is OpenSlidingPanelToState) {
         heightPanel = current.height;
         widget.panelController.animatePanelToPosition(1);
@@ -119,7 +121,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
         panel: panel(context),
         onPanelSlide: (position) {
           if (position == 0) {
-            BlocProvider.of<ReplyFromFavBloc>(context).add(HideSlidingPanelEvent());
+            BlocProvider.of<ReplyFromFavBloc>(context)
+                .add(HideSlidingPanelEvent());
             typeFilter = TypeFilter.main;
             slide = false;
           }
@@ -165,19 +168,23 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: CustomButton(
                       onTap: () {
-                        if (dateTimeEnd != null && DateTime.now().isAfter(dateTimeEnd!) && docType != 'Resident_ID') {
+                        if (dateTimeEnd != null &&
+                            DateTime.now().isAfter(dateTimeEnd!) &&
+                            docType != 'Resident_ID') {
                           CustomAlert().showMessage('Ваш паспорт просрочен');
                         } else if (dateTimeEnd != null &&
                             DateTime.now().isAfter(dateTimeEnd!) &&
                             docType == 'Resident_ID') {
                           CustomAlert().showMessage('Ваш документ просрочен');
                         } else if (checkExpireDate(dateTimeEnd) != null) {
-                          CustomAlert().showMessage(checkExpireDate(dateTimeEnd)!);
+                          CustomAlert()
+                              .showMessage(checkExpireDate(dateTimeEnd)!);
                         } else {
                           if (additionalInfo) {
                             additionalInfo = true;
                             String error = 'specify'.tr();
-                            if (docType != 'Resident_ID' && serialDocController.text.isEmpty) {
+                            if (docType != 'Resident_ID' &&
+                                serialDocController.text.isEmpty) {
                               error += '\n- серию документа';
                             }
                             if (numberDocController.text.isEmpty) {
@@ -188,7 +195,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                             }
                             if (whoGiveDocController.text.length < 3) {
                               if (docType == 'Resident_ID') {
-                                error += '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
+                                error +=
+                                    '\n- ${'who_issued_the_document_more'.tr().toLowerCase()}';
                               }
                             }
                             if (whoGiveDocController.text.isEmpty) {
@@ -204,10 +212,16 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                               error += '\n- срок действия документа';
                             }
                             if (error == 'specify'.tr()) {
-                              user?.copyWith(docInfo: docinfo, docType: mapDocumentType(documentTypeController.text));
-                              BlocProvider.of<ProfileBloc>(context).setUser(user);
-                       
-                              Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                              user?.copyWith(
+                                  docInfo: docinfo,
+                                  docType: mapDocumentType(
+                                      documentTypeController.text));
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .setUser(user);
+
+                              Repository().updateUser(
+                                  BlocProvider.of<ProfileBloc>(context).access,
+                                  user!);
                               widget.panelController.animatePanelToPosition(0);
                             } else {
                               CustomAlert().showMessage(error);
@@ -215,7 +229,9 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                           } else {
                             user?.copyWith(docInfo: '', docType: '');
                             BlocProvider.of<ProfileBloc>(context).setUser(user);
-                            Repository().updateUser(BlocProvider.of<ProfileBloc>(context).access, user!);
+                            Repository().updateUser(
+                                BlocProvider.of<ProfileBloc>(context).access,
+                                user!);
                             widget.panelController.animatePanelToPosition(0);
                           }
                         }
@@ -243,7 +259,9 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                         CupertinoButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            context.read<ReplyFromFavBloc>().add(OpenSlidingPanelToEvent(637.h));
+                            context
+                                .read<ReplyFromFavBloc>()
+                                .add(OpenSlidingPanelToEvent(637.h));
                           },
                           child: Text(
                             'done'.tr(),
@@ -265,8 +283,10 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     String date = '';
     if (startDate == null && endDate == null) {
     } else {
-      date = startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
-      date += ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
+      date =
+          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
+      date +=
+          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
     }
 
     return ListView(
@@ -299,13 +319,17 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             children: [
               if (widget.selectTask != null)
                 Text(
-                  widget.selectTask!.isTask! ? 'become_a_performer'.tr() : 'become_a_customer'.tr(),
+                  widget.selectTask!.isTask!
+                      ? 'become_a_performer'.tr()
+                      : 'become_a_customer'.tr(),
                   style: CustomTextStyle.black_22_w700_171716,
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
                 Text(
-                  !widget.selectTask!.isTask! ? 'to_accept_the_offer'.tr() : 'to_complete_tasks'.tr(),
+                  !widget.selectTask!.isTask!
+                      ? 'to_accept_the_offer'.tr()
+                      : 'to_complete_tasks'.tr(),
                   style: CustomTextStyle.black_13_w400_515150,
                 ),
               SizedBox(height: 30.h),
@@ -319,7 +343,11 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                     docType = mapDocumentType(value);
                     setState(() {});
                   },
-                  ['passport_of_the_RF'.tr(), 'foreign_passport'.tr(), 'resident_ID'.tr()],
+                  [
+                    'passport_of_the_RF'.tr(),
+                    'foreign_passport'.tr(),
+                    'resident_ID'.tr()
+                  ],
                   'document'.tr(),
                 ),
                 child: Stack(
@@ -335,7 +363,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                       onTap: () {},
                       fillColor: Colors.grey[200],
                       textEditingController: documentTypeController,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 16.w),
@@ -400,21 +429,25 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                 onTap: () {
                   Future.delayed(const Duration(milliseconds: 300), () {
                     scrollController2.animateTo(200.h,
-                        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.linear);
                   });
                 },
                 formatters: [
                   LengthLimitingTextInputFormatter(15),
                 ],
                 textInputType: TextInputType.number,
-                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 - 6.w,
+                width: ((MediaQuery.of(context).size.width - 48.w) * 40) / 100 -
+                    6.w,
                 textEditingController: serialDocController,
-                contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 onChanged: (value) => documentEdit(),
               ),
             if (docType != 'Resident_ID') SizedBox(width: 12.w),
             CustomTextField(
-              hintText: docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
+              hintText:
+                  docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
               hintStyle: CustomTextStyle.grey_14_w400,
@@ -432,10 +465,12 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                 });
               },
               width: docType != 'Resident_ID'
-                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 - 6.w
+                  ? ((MediaQuery.of(context).size.width - 48.w) * 60) / 100 -
+                      6.w
                   : MediaQuery.of(context).size.width - 48.w,
               textEditingController: numberDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               onChanged: (value) => documentEdit(),
             ),
           ],
@@ -446,7 +481,9 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             hintText: 'issued_by_whom'.tr(),
             onTap: () {
               Future.delayed(const Duration(milliseconds: 300), () {
-                scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+                scrollController2.animateTo(300.h,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.linear);
               });
             },
             focusNode: focusNodeWhoTake,
@@ -459,7 +496,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
         if (docType == 'International Passport') SizedBox(height: 16.h),
@@ -479,7 +517,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               hintStyle: CustomTextStyle.grey_14_w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               formatters: [
                 LengthLimitingTextInputFormatter(15),
               ],
@@ -506,7 +545,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             hintStyle: CustomTextStyle.grey_14_w400,
             height: 50.h,
             textEditingController: dateDocController,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             formatters: [
               LengthLimitingTextInputFormatter(15),
             ],
@@ -527,7 +567,9 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               //   scrollController2.animateTo(300.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
               // });
 
-              context.read<ReplyFromFavBloc>().add(OpenSlidingPanelToEvent(720.h));
+              context
+                  .read<ReplyFromFavBloc>()
+                  .add(OpenSlidingPanelToEvent(720.h));
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
@@ -540,7 +582,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             onFieldSubmitted: (value) {
               requestNextEmptyFocusStage2();
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             onChanged: (value) => documentEdit(),
           ),
       ],
@@ -550,21 +593,31 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   void _showDatePicker(ctx, int index, bool isInternational, {String? title}) {
     DateTime initialDateTime = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 2)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2)
-        : dateTimeStart ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 2)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 2)
+        : dateTimeStart ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime maximumDate = index == 1
-        ? DateTime(DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
+        ? DateTime(
+            DateTime.now().year + 15, DateTime.now().month, DateTime.now().day)
         : dateTimeEnd != null
-            ? DateTime(dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
-            : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
+            ? DateTime(
+                dateTimeEnd!.year, dateTimeEnd!.month, dateTimeEnd!.day - 1)
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day + 1);
 
     DateTime minimumDate = index == 1
         ? dateTimeStart != null
-            ? DateTime(dateTimeStart!.year, dateTimeStart!.month, dateTimeStart!.day + 1)
-            : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day + 1)
-        : DateTime(DateTime.now().year - 100, DateTime.now().month, DateTime.now().day);
+            ? DateTime(dateTimeStart!.year, dateTimeStart!.month,
+                dateTimeStart!.day + 1)
+            : DateTime(DateTime.now().year - 100, DateTime.now().month,
+                DateTime.now().day + 1)
+        : DateTime(DateTime.now().year - 100, DateTime.now().month,
+            DateTime.now().day);
 
     showCupertinoModalPopup(
         context: ctx,
@@ -594,18 +647,26 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                                     if (dateTimeStart == null) {
                                       dateTimeStart = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   } else {
                                     if (dateTimeEnd == null) {
                                       dateTimeEnd = DateTime.now();
                                       if (isInternational) {
-                                        dateDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        dateDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       } else {
-                                        whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                                        whoGiveDocController.text =
+                                            DateFormat('dd.MM.yyyy')
+                                                .format(DateTime.now());
                                       }
                                     }
                                   }
@@ -633,9 +694,11 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                           if (index == 0) {
                             dateTimeStart = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
@@ -645,9 +708,11 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                           } else {
                             dateTimeEnd = val;
                             if (isInternational) {
-                              dateDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              dateDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             } else {
-                              whoGiveDocController.text = DateFormat('dd.MM.yyyy').format(val);
+                              whoGiveDocController.text =
+                                  DateFormat('dd.MM.yyyy').format(val);
                             }
                             docinfo =
                                 'Серия: ${serialDocController.text}\nНомер: ${numberDocController.text}\nКем выдан: ${whoGiveDocController.text}\nДата выдачи: ${dateDocController.text}';
@@ -684,13 +749,16 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     if (additionalInfo) {
       if (serialDocController.text.isEmpty) {
         focusNodeSerial.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (numberDocController.text.isEmpty) {
         focusNodeNumber.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       } else if (whoGiveDocController.text.isEmpty) {
         focusNodeWhoTake.requestFocus();
-        scrollController2.animateTo(150.h, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+        scrollController2.animateTo(150.h,
+            duration: const Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -699,7 +767,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     if (userRegModel == null) return;
 
     if (userRegModel.docType != null && userRegModel.docType!.isNotEmpty) {
-      documentTypeController.text = reverseMapDocumentType(userRegModel.docType!);
+      documentTypeController.text =
+          reverseMapDocumentType(userRegModel.docType!);
       docType = userRegModel.docType!;
     }
     if (userRegModel.region != null) {
@@ -720,7 +789,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     final start = dateDocController.text.split('.');
     final regDate = RegExp(r'\d{2}.\d{2}.\d{4}');
     if (start.isNotEmpty && regDate.hasMatch(dateDocController.text)) {
-      dateTimeStart = DateTime(int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
+      dateTimeStart = DateTime(
+          int.parse(start[2]), int.parse(start[1]), int.parse(start[0]));
     }
 
     final end = whoGiveDocController.text.split('.');

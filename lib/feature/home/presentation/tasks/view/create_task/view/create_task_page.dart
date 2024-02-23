@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -30,7 +29,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateTaskPage extends StatefulWidget {
   TaskCategory? selectCategory;
- final bool customer;
+  final bool customer;
   bool doublePop;
   final int currentPage;
   CreateTaskPage({
@@ -46,10 +45,10 @@ class CreateTaskPage extends StatefulWidget {
 }
 
 class _CreateTaskPageState extends State<CreateTaskPage> {
-  late int type = widget.customer?1:2;
+  late int type = widget.customer ? 1 : 2;
 
-  late bool state = widget.customer?false:true;
-  late bool isTask=widget.customer;
+  late bool state = widget.customer ? false : true;
+  late bool isTask = widget.customer;
   PageController pageController = PageController();
 
   PanelController panelController = PanelController();
@@ -72,7 +71,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   DateTime? startDate;
   DateTime? endDate;
-  Future<void> createTask(bool isGraded)async{
+  Future<void> createTask(bool isGraded) async {
     String error = 'specify'.tr();
     bool errorsFlag = false;
     if (startDate == null) {
@@ -98,19 +97,24 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     }
     coastMaxController.text = coastMaxController.text.replaceAll(' ', '');
     coastMinController.text = coastMinController.text.replaceAll(' ', '');
-    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
-      if (int.parse(coastMinController.text) > int.parse(coastMaxController.text)) {
-        error += '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
+    if (coastMinController.text.isNotEmpty &&
+        coastMaxController.text.isNotEmpty) {
+      if (int.parse(coastMinController.text) >
+          int.parse(coastMaxController.text)) {
+        error +=
+            '\n- ${'the_minimum_budget_must_be_less_than_the_maximum'.tr()}';
         errorsFlag = true;
       }
     }
-    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+    if (coastMinController.text.isNotEmpty &&
+        coastMaxController.text.isNotEmpty) {
       if (int.parse(coastMinController.text) > 1000000000) {
         error += '\n- themaximum_budget_should_not_exceed'.tr();
         errorsFlag = true;
       }
     }
-    if (coastMinController.text.isNotEmpty && coastMaxController.text.isNotEmpty) {
+    if (coastMinController.text.isNotEmpty &&
+        coastMaxController.text.isNotEmpty) {
       if (int.parse(coastMaxController.text) > 1000000000) {
         error += '\n- themaximum_budget_should_not_exceed'.tr();
         errorsFlag = true;
@@ -173,9 +177,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             towns: towns,
             files: documents,
             currency: currency,
-            isGraded: isGraded, status: TaskStatus.undefined,
-            canAppellate: false
-        );
+            isGraded: isGraded,
+            status: TaskStatus.undefined,
+            canAppellate: false);
         BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
         final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
@@ -229,12 +233,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       }
     }
   }
+
   _selectImages() async {
     final getMedia = await ImagePicker().pickMultiImage();
     if (getMedia.isNotEmpty) {
       for (var element in getMedia) {
         final byte = await element.readAsBytes();
-        documents.add(ArrayImages(null, byte, file: File(element.path), type: element.path.split('.').last));
+        documents.add(ArrayImages(null, byte,
+            file: File(element.path), type: element.path.split('.').last));
       }
     }
     setState(() {});
@@ -248,7 +254,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
     if (result != null) {
       for (var element in result.files) {
-        documents.add(ArrayImages(null, element.bytes, file: File(element.path!), type: element.path?.split('.').last));
+        documents.add(ArrayImages(null, element.bytes,
+            file: File(element.path!), type: element.path?.split('.').last));
       }
       setState(() {});
     }
@@ -312,7 +319,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     if (widget.selectCategory != null) {
       for (var element in widget.selectCategory!.subcategory) {
         if (widget.selectCategory!.selectSubcategory.contains(
-            user?.rus ?? true  ? element.description : element.engDescription)) {
+            user?.rus ?? true ? element.description : element.engDescription)) {
           selectSubCategory = element;
         }
       }
@@ -357,7 +364,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                             Navigator.of(context).pop();
                           } else {
                             pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 600),
+                                curve: Curves.easeInOut);
                           }
                         },
                         icon: SvgImg.arrowRight,
@@ -393,17 +401,25 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       children: [
                         AnimatedAlign(
                           duration: const Duration(milliseconds: 100),
-                          alignment: type == 1 ? Alignment.centerLeft : Alignment.centerRight,
+                          alignment: type == 1
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
                           child: Container(
                             height: 40.h,
                             width: widthTabBarItem,
                             decoration: BoxDecoration(
                               color: ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
-                                topLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                bottomLeft: !state ? Radius.circular(20.r) : Radius.zero,
-                                topRight: state ? Radius.circular(20.r) : Radius.zero,
-                                bottomRight: state ? Radius.circular(20.r) : Radius.zero,
+                                topLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                bottomLeft: !state
+                                    ? Radius.circular(20.r)
+                                    : Radius.zero,
+                                topRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
+                                bottomRight:
+                                    state ? Radius.circular(20.r) : Radius.zero,
                               ),
                             ),
                           ),
@@ -431,7 +447,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('as_a_customer'.tr(), style: CustomTextStyle.black_14_w400_171716),
+                                    child: Text('as_a_customer'.tr(),
+                                        style: CustomTextStyle
+                                            .black_14_w400_171716),
                                   ),
                                 ),
                               ),
@@ -459,7 +477,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   child: Center(
                                     child: Text(
                                       'as_an_executor'.tr(),
-                                      style: CustomTextStyle.black_14_w400_171716,
+                                      style:
+                                          CustomTextStyle.black_14_w400_171716,
                                     ),
                                   ),
                                 ),
@@ -515,20 +534,24 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         allCountries: countries,
                         isGraded: false,
                         currecy: currency,
-                        onEdit: (startDate, endDate, countries, currency, isGraded) {
+                        onEdit: (startDate, endDate, countries, currency,
+                            isGraded) {
                           this.startDate = startDate;
                           this.endDate = endDate;
                           this.countries = countries;
                           this.currency = currency;
                           setState(() {});
-                        }, saveTask: createTask, isCreating: true,
+                        },
+                        saveTask: createTask,
+                        isCreating: true,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 20.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
+                  padding:
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 60.h),
                   child: CustomButton(
                     onTap: () async {
                       if (page == 1) {

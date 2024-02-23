@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,8 +73,7 @@ class _SearchPageState extends State<SearchPage> {
     if (widget.taskId != null) getTask();
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-      user = BlocProvider.of<ProfileBloc>(context).user;
-   
+    user = BlocProvider.of<ProfileBloc>(context).user;
   }
 
   void getTask() async {
@@ -121,180 +118,194 @@ class _SearchPageState extends State<SearchPage> {
     double heightScreen = MediaQuery.of(context).size.height;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-                resizeToAvoidBottomInset: false,
-           backgroundColor: ColorStyles.greyEAECEE,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: ColorStyles.greyEAECEE,
       body: MediaQuery(
         data: const MediaQueryData(textScaleFactor: 1.0),
-        child:  BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
-            if (current is UpdateListMessageItemState) {
-              if (current.chatId != null) {
-                for (int i = 0; i < taskList.length; i++) {
-                  if (taskList[i].id == selectTask!.id) {
-                    taskList[i].chatId = current.chatId;
-                    selectTask?.chatId = current.chatId;
-                    break;
-                  }
+        child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
+          if (current is UpdateListMessageItemState) {
+            if (current.chatId != null) {
+              for (int i = 0; i < taskList.length; i++) {
+                if (taskList[i].id == selectTask!.id) {
+                  taskList[i].chatId = current.chatId;
+                  selectTask?.chatId = current.chatId;
+                  break;
                 }
-                return true;
               }
-              return false;
+              return true;
             }
             return false;
-          }, builder: (context, snapshot) {
-            return Column(
-              children: [
-                Container(
-                  height: searchList ? 100.h : 120.h,
-                  decoration: const BoxDecoration(
-                
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 60.h,
-                      
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15.w, right: 28.w),
-                        child: Row(
-                          children: [
-                            searchListEnable
-                                ? CustomIconButton(
-                                    onBackPressed: () {
+          }
+          return false;
+        }, builder: (context, snapshot) {
+          return Column(
+            children: [
+              Container(
+                height: searchList ? 100.h : 120.h,
+                decoration: const BoxDecoration(),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 60.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15.w, right: 28.w),
+                      child: Row(
+                        children: [
+                          searchListEnable
+                              ? CustomIconButton(
+                                  onBackPressed: () {
+                                    setState(() {
+                                      searchListEnable = false;
+                                      searchList = false;
+                                    });
+                                  },
+                                  icon: SvgImg.arrowRight,
+                                )
+                              : CustomIconButton(
+                                  onBackPressed: () {
+                                    if (owner != null) {
                                       setState(() {
-                                        searchListEnable = false;
+                                        owner = null;
+                                      });
+                                    } else if (selectTask != null) {
+                                      setState(() {
+                                        selectTask = null;
+                                      });
+                                    } else {
+                                      widget.onBackPressed();
+                                    }
+                                  },
+                                  icon: SvgImg.arrowRight,
+                                ),
+                          const Spacer(),
+                          searchListEnable
+                              ? SizedBox(
+                                  width: 240.w,
+                                  height: 36.h,
+                                  child: CustomTextField(
+                                    fillColor: ColorStyles.greyF7F7F8,
+                                    prefixIcon: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/search1.svg',
+                                          height: 12.h,
+                                        ),
+                                      ],
+                                    ),
+                                    hintText: 'search'.tr(),
+                                    textEditingController: searchController,
+                                    onTap: () async {
+                                      owner = null;
+                                      selectTask = null;
+                                      searchList = true;
+                                      setState(() {});
+                                      getHistoryList();
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      setState(() {
                                         searchList = false;
                                       });
+                                      FocusScope.of(context).unfocus();
+                                      searchController.text = value;
+                                      Storage().setListHistory(value);
+                                      getTaskList();
                                     },
-                                    icon: SvgImg.arrowRight,
-                                  )
-                                : CustomIconButton(
-                                    onBackPressed: () {
-                                      if (owner != null) {
-                                        setState(() {
-                                          owner = null;
-                                        });
-                                      } else if (selectTask != null) {
-                                        setState(() {
-                                          selectTask = null;
-                                        });
-                                      } else {
-                                        widget.onBackPressed();
-                                      }
-                                    },
-                                    icon: SvgImg.arrowRight,
-                                  ),
-                            const Spacer(),
-                            searchListEnable
-                                ? SizedBox(
-                                    width: 240.w,
-                                    height: 36.h,
-                                    child: CustomTextField(
-                                      fillColor: ColorStyles.greyF7F7F8,
-                                      prefixIcon: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/search1.svg',
-                                            height: 12.h,
-                                          ),
-                                        ],
-                                      ),
-                                      hintText: 'search'.tr(),
-                                      textEditingController: searchController,
-                                      onTap: () async {
-                                        owner = null;
-                                        selectTask = null;
-                                        searchList = true;
-                                        setState(() {});
+                                    onChanged: (value) async {
+                                      if (value.isEmpty) {
                                         getHistoryList();
-                                      },
-                                      onFieldSubmitted: (value) {
-                                        setState(() {
-                                          searchList = false;
-                                        });
-                                        FocusScope.of(context).unfocus();
-                                        searchController.text = value;
-                                        Storage().setListHistory(value);
-                                        getTaskList();
-                                      },
-                                      onChanged: (value) async {
-                                        if (value.isEmpty) {
-                                          getHistoryList();
-                                        }
-                                        List<TaskCategory> activities = BlocProvider.of<ProfileBloc>(context).activities;
-                                        searchChoose.clear();
-                                        if (value.isNotEmpty) {
-                                          for (var element1 in activities) {
-                                            for (var element2 in element1.subcategory) {
-                                              if (element2.description!.toLowerCase().contains(value.toLowerCase()) &&
-                                                  !searchChoose.contains(element2.description!.toLowerCase())) {
-                                                searchChoose.add(element2.description!);
-                                              }
+                                      }
+                                      List<TaskCategory> activities =
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .activities;
+                                      searchChoose.clear();
+                                      if (value.isNotEmpty) {
+                                        for (var element1 in activities) {
+                                          for (var element2
+                                              in element1.subcategory) {
+                                            if (element2.description!
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        value.toLowerCase()) &&
+                                                !searchChoose.contains(element2
+                                                    .description!
+                                                    .toLowerCase())) {
+                                              searchChoose
+                                                  .add(element2.description!);
                                             }
                                           }
                                         }
-                                        setState(() {});
-                                      },
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 11.h),
-                                    ),
-                                  )
-                                :
-                                user != null
-                                ?
-                                 Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(AppRoute.notification);
-                                        },
-                                        child: Stack(
-                                          alignment: Alignment.topRight,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/icons/notification_main.svg',
-                                            ),
-                                            user!.hasNotifications!
-                                                ? Container(
-                                                    height: 10.w,
-                                                    width: 10.w,
-                                                    decoration: BoxDecoration(
-                                                      color: ColorStyles.yellowFFD70B,
-                                                      borderRadius: BorderRadius.circular(20.r),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
+                                      }
+                                      setState(() {});
+                                    },
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 11.w, vertical: 11.h),
+                                  ),
+                                )
+                              : user != null
+                                  ? Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(
+                                                AppRoute.notification);
+                                          },
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/notification_main.svg',
+                                              ),
+                                              user!.hasNotifications!
+                                                  ? Container(
+                                                      height: 10.w,
+                                                      width: 10.w,
+                                                      decoration: BoxDecoration(
+                                                        color: ColorStyles
+                                                            .yellowFFD70B,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.r),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 12.w),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          setState(() {
-                                            searchListEnable = true;
-                                          });
-                                        },
-                                        child: SvgPicture.asset('assets/icons/search3.svg'),
-                                      ),
-                                    ],
-                                  ): Container(),
-                            SizedBox(width: 10.w),
-                            GestureDetector(
-                                onTap: () async{
-                                  final accessToken = await Storage().getAccessToken();
-                                  if(context.mounted){
-                                  if(accessToken!=null){
+                                        SizedBox(width: 12.w),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            setState(() {
+                                              searchListEnable = true;
+                                            });
+                                          },
+                                          child: SvgPicture.asset(
+                                              'assets/icons/search3.svg'),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
+                          SizedBox(width: 10.w),
+                          GestureDetector(
+                              onTap: () async {
+                                final accessToken =
+                                    await Storage().getAccessToken();
+                                if (context.mounted) {
+                                  if (accessToken != null) {
                                     Navigator.of(context)
-                                        .pushNamed(AppRoute.menu, arguments: [(page) {}, false]).then((value) {
-                                          print("Search page ${value}");
+                                        .pushNamed(AppRoute.menu, arguments: [
+                                      (page) {},
+                                      false
+                                    ]).then((value) {
+                                      print("Search page ${value}");
                                       if (value != null) {
                                         if (value == 'create') {
                                           widget.onSelect(0);
                                         }
                                         if (value == 'search') {
                                           widget.onSelect(1);
-                                        }
-                                        else if (value == 'tasks') {
+                                        } else if (value == 'tasks') {
                                           widget.onSelect(2);
                                         }
                                         if (value == 'chat') {
@@ -302,183 +313,191 @@ class _SearchPageState extends State<SearchPage> {
                                         }
                                       }
                                     });
-                                  }else{
-                                    Navigator.of(context).pushNamed(AppRoute.auth);
+                                  } else {
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoute.auth);
                                   }
-                                  }
-
-
-                                },
-                                child: SvgPicture.asset('assets/icons/category2.svg')),
-                          ],
-                        ),
+                                }
+                              },
+                              child: SvgPicture.asset(
+                                  'assets/icons/category2.svg')),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-    
-                if (selectTask == null)
-                  searchList
-                      ? SearchList(
-                          heightScreen,
-                          bottomInsets,
-                          (value) {
-                            setState(() {
-                              searchList = false;
-                            });
-                            FocusScope.of(context).unfocus();
-                            Storage().setListHistory(value);
-    
-                            searchController.text = value;
-                            getTaskList();
-                          },
-                          searchChoose,
-                        )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          child: Row(
-                            children: [
-                              Text(
-                                'all_tasks'.tr(),
-                                style: CustomTextStyle.black_18_w800,
-                              ),
-                              Spacer(),
-                              Flexible(
-                                child: ScaleButton(
-                                  bound: 0.01,
-                                  onTap: () {
-                                    BlocProvider.of<SearchBloc>(context).add(OpenSlidingPanelEvent());
-                                  },
-                                  child: SizedBox(
-                                    height: 40.h,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          height: 36.h,
-                                          width: 110.h,
-                                          decoration: BoxDecoration(
-                                            color: ColorStyles.greyF7F7F8,
-                                            borderRadius: BorderRadius.circular(10.r),
-                                          ),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 10.h),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  'assets/icons/candle.svg',
-                                                  height: 16.h,
-                                                  color: ColorStyles.yellowFFD70B,
-                                                ),
-                                                SizedBox(width: 4.w),
-                                                Text(
-                                                  'filter'.tr(),
-                                                  style: CustomTextStyle.black_14_w400_171716,
-                                                ),
-                                              ],
-                                            ),
+              ),
+              if (selectTask == null)
+                searchList
+                    ? SearchList(
+                        heightScreen,
+                        bottomInsets,
+                        (value) {
+                          setState(() {
+                            searchList = false;
+                          });
+                          FocusScope.of(context).unfocus();
+                          Storage().setListHistory(value);
+
+                          searchController.text = value;
+                          getTaskList();
+                        },
+                        searchChoose,
+                      )
+                    : Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Row(
+                          children: [
+                            Text(
+                              'all_tasks'.tr(),
+                              style: CustomTextStyle.black_18_w800,
+                            ),
+                            const Spacer(),
+                            Flexible(
+                              child: ScaleButton(
+                                bound: 0.01,
+                                onTap: () {
+                                  BlocProvider.of<SearchBloc>(context)
+                                      .add(OpenSlidingPanelEvent());
+                                },
+                                child: SizedBox(
+                                  height: 40.h,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        height: 36.h,
+                                        width: 110.h,
+                                        decoration: BoxDecoration(
+                                          color: ColorStyles.greyF7F7F8,
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.h),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/candle.svg',
+                                                height: 16.h,
+                                                color: ColorStyles.yellowFFD70B,
+                                              ),
+                                              SizedBox(width: 4.w),
+                                              Text(
+                                                'filter'.tr(),
+                                                style: CustomTextStyle
+                                                    .black_14_w400_171716,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                            height: 15.h,
-                                            width: 15.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(369.r),
-                                              color: ColorStyles.black171716,
-                                            ),
-                                            child: Center(
-                                              child: BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
-                                                if (state is TasksLoaded) {
-                                                  return Text(
-                                                    state.countFilter != 0 && state.countFilter != null
-                                                        ? state.countFilter.toString()
-                                                        : '0',
-                                                    style: CustomTextStyle.white_10_w700,
-                                                  );
-                                                } else {
-                                                  return Text(
-                                                    '',
-                                                    style: CustomTextStyle.white_10_w700,
-                                                  );
-                                                }
-                                              }),
-                                            ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          height: 15.h,
+                                          width: 15.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(369.r),
+                                            color: ColorStyles.black171716,
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                          child: Center(
+                                            child: BlocBuilder<TasksBloc,
+                                                    TasksState>(
+                                                builder: (context, state) {
+                                              if (state is TasksLoaded) {
+                                                return Text(
+                                                  state.countFilter != 0 &&
+                                                          state.countFilter !=
+                                                              null
+                                                      ? state.countFilter
+                                                          .toString()
+                                                      : '0',
+                                                  style: CustomTextStyle
+                                                      .white_10_w700,
+                                                );
+                                              } else {
+                                                return Text(
+                                                  '',
+                                                  style: CustomTextStyle
+                                                      .white_10_w700,
+                                                );
+                                              }
+                                            }),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                if (selectTask == null && !searchList) SizedBox(height: 30.h),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      BlocBuilder<TasksBloc, TasksState>(
-                        builder: (context, state) {
-                          taskList = BlocProvider.of<TasksBloc>(context).tasks;
-                          if (state is TasksLoading) {
-                            return SkeletonLoader(
-                              items: 4,
-                              baseColor: ColorStyles.whiteFFFFFF,
-                              highlightColor: ColorStyles.greyF3F3F3,
-                              builder: Container(
-                                margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
-                                height: 100.h,
-                                decoration: BoxDecoration(
-                                  color: ColorStyles.whiteFFFFFF,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorStyles.shadowFC6554,
-                                      offset: const Offset(0, -4),
-                                      blurRadius: 55.r,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-                          return ListView(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            controller: scrollController,
-                            padding: EdgeInsets.zero,
-                            children: taskList
-                                .map((e) => itemTask(
-                                      e,
-                                      (task) {
-                                        if(Storage.isAuthorized){
-                                          setState(() {
-                                            selectTask = task;
-
-                                            lastPosition = scrollController.offset;
-                                          });
-                                        }else{
-                                          Navigator.of(context).pushNamed(AppRoute.auth);
-                                        }
-
-                                      },
-                                      BlocProvider.of<ProfileBloc>(context).user,context
-                                    ))
-                                .toList(),
-                          );
-                        },
                       ),
-                      view(),
-                    ],
-                  ),
+              if (selectTask == null && !searchList) SizedBox(height: 30.h),
+              Expanded(
+                child: Stack(
+                  children: [
+                    BlocBuilder<TasksBloc, TasksState>(
+                      builder: (context, state) {
+                        taskList = BlocProvider.of<TasksBloc>(context).tasks;
+                        if (state is TasksLoading) {
+                          return SkeletonLoader(
+                            items: 4,
+                            baseColor: ColorStyles.whiteFFFFFF,
+                            highlightColor: ColorStyles.greyF3F3F3,
+                            builder: Container(
+                              margin: EdgeInsets.only(
+                                  left: 24.w, right: 24.w, bottom: 24.w),
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: ColorStyles.whiteFFFFFF,
+                                borderRadius: BorderRadius.circular(10.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: ColorStyles.shadowFC6554,
+                                    offset: const Offset(0, -4),
+                                    blurRadius: 55.r,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return ListView(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          controller: scrollController,
+                          padding: EdgeInsets.zero,
+                          children: taskList
+                              .map((e) => itemTask(e, (task) {
+                                    if (Storage.isAuthorized) {
+                                      setState(() {
+                                        selectTask = task;
+
+                                        lastPosition = scrollController.offset;
+                                      });
+                                    } else {
+                                      Navigator.of(context)
+                                          .pushNamed(AppRoute.auth);
+                                    }
+                                  }, BlocProvider.of<ProfileBloc>(context).user,
+                                      context))
+                              .toList(),
+                        );
+                      },
+                    ),
+                    view(),
+                  ],
                 ),
-              ],
-            );
-          }),
-        ),
-  
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 
@@ -491,13 +510,12 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     if (selectTask != null) {
-      return  TaskPage(
-          task: selectTask!,
-          openOwner: (owner) {
-            this.owner = owner;
-            setState(() {});
-          },
-
+      return TaskPage(
+        task: selectTask!,
+        openOwner: (owner) {
+          this.owner = owner;
+          setState(() {});
+        },
       );
     }
     return const SizedBox();

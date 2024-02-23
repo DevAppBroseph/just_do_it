@@ -10,7 +10,6 @@ import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
@@ -22,18 +21,24 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:scale_button/scale_button.dart';
 
 class TaskRespondActionWidget extends StatefulWidget {
-  const TaskRespondActionWidget({super.key, required this.task, required this.index, required this.openOwner, required this.canEdit});
+  const TaskRespondActionWidget(
+      {super.key,
+      required this.task,
+      required this.index,
+      required this.openOwner,
+      required this.canEdit});
   final Task task;
   final int index;
   final Function(Owner?) openOwner;
   final bool canEdit;
 
   @override
-  State<TaskRespondActionWidget> createState() => _TaskRespondActionWidgetState();
+  State<TaskRespondActionWidget> createState() =>
+      _TaskRespondActionWidgetState();
 }
 
 class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
-  late final index=widget.index;
+  late final index = widget.index;
   late final user = BlocProvider.of<ProfileBloc>(context).user;
   @override
   Widget build(BuildContext context) {
@@ -43,18 +48,11 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
         bound: 0.02,
         onTap: () async {
           if (user!.isBanned!) {
-            banDialog(
-                context,
-                'profile_viewing_is_currently_restricted'
-                    .tr());
+            banDialog(context, 'profile_viewing_is_currently_restricted'.tr());
           } else {
-            final owner = await Repository()
-                .getRanking(
-                widget.task.answers[index].owner
-                    ?.id,
-                BlocProvider.of<ProfileBloc>(
-                    context)
-                    .access);
+            final owner = await Repository().getRanking(
+                widget.task.answers[index].owner?.id,
+                BlocProvider.of<ProfileBloc>(context).access);
             widget.openOwner(owner);
           }
         },
@@ -70,13 +68,11 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
               )
             ],
           ),
-          padding: EdgeInsets.symmetric(
-              horizontal: 16.w, vertical: 13.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if(widget.task.answers[index].isGraded??false)...[
+              if (widget.task.answers[index].isGraded ?? false) ...[
                 Align(
                   alignment: Alignment.centerRight,
                   child: SvgPicture.asset(
@@ -84,19 +80,13 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                   ),
                 ),
               ],
-
               Row(
                 children: [
-                  if (widget.task.answers[index].owner
-                      ?.photo !=
-                      null)
+                  if (widget.task.answers[index].owner?.photo != null)
                     ClipRRect(
-                      borderRadius:
-                      BorderRadius.circular(
-                          1000.r),
+                      borderRadius: BorderRadius.circular(1000.r),
                       child: Image.network(
-                        widget.task.answers[index]
-                            .owner!.photo!,
+                        widget.task.answers[index].owner!.photo!,
                         height: 48.h,
                         width: 48.w,
                         fit: BoxFit.cover,
@@ -105,49 +95,57 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                   SizedBox(width: 15.w),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
                             Expanded(
-                              child: Column(crossAxisAlignment:CrossAxisAlignment.start,mainAxisSize:MainAxisSize.min,children: [
-                                AutoSizeText(
-                                  "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
-                                  wrapWords: false,
-                                  style: CustomTextStyle.black_17_w600_171716,
-                                  maxLines: 2,
-                                ),
-                                SizedBox(height: 6.h),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'rating'.tr(),
-                                      style: CustomTextStyle.grey_14_w400,
-                                    ),
-                                    SizedBox(width: 8.w),
-                                    SvgPicture.asset('assets/icons/star.svg'),
-                                    SizedBox(width: 4.w),
-                                    Text(
-                                      widget.task.answers[index].owner?.ranking == null
-                                          ? '0'
-                                          : widget.task.answers[index].owner!.ranking.toString(),
-                                      style: CustomTextStyle.black_13_w500_171716,
-                                    ),
-                                  ],
-                                ),
-                              ],),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AutoSizeText(
+                                    "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
+                                    wrapWords: false,
+                                    style: CustomTextStyle.black_17_w600_171716,
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'rating'.tr(),
+                                        style: CustomTextStyle.grey_14_w400,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      SvgPicture.asset('assets/icons/star.svg'),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        widget.task.answers[index].owner
+                                                    ?.ranking ==
+                                                null
+                                            ? '0'
+                                            : widget.task.answers[index].owner!
+                                                .ranking
+                                                .toString(),
+                                        style: CustomTextStyle
+                                            .black_13_w500_171716,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             Text(
                               'before'.tr(),
-                              style: CustomTextStyle
-                                  .black_15_w600_171716,
+                              style: CustomTextStyle.black_15_w600_171716,
                             ),
-                            const SizedBox(width: 6,),
+                            const SizedBox(
+                              width: 6,
+                            ),
                             Text(
-                              '${DataFormatter.addSpacesToNumber(widget.task.answers[index].price??0)} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.task.currency?.name)} ',
-                              style: CustomTextStyle
-                                  .black_15_w600_171716,
+                              '${DataFormatter.addSpacesToNumber(widget.task.answers[index].price ?? 0)} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.task.currency?.name)} ',
+                              style: CustomTextStyle.black_15_w600_171716,
                             ),
                           ],
                         ),
@@ -156,52 +154,35 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           children: [
                             Text(
                               'completed_tasks'.tr(),
-                              style: CustomTextStyle
-                                  .grey_12_w400,
+                              style: CustomTextStyle.grey_12_w400,
                             ),
                             SizedBox(width: 4.w),
-                            if (widget
-                                .task
-                                .answers[index]
-                                .owner !=
-                                null)
+                            if (widget.task.answers[index].owner != null)
                               Text(
-                                widget
-                                    .task
-                                    .answers[index]
-                                    .owner!
+                                widget.task.answers[index].owner!
                                     .countOrdersComplete
                                     .toString(),
-                                style: CustomTextStyle
-                                    .black_12_w400,
+                                style: CustomTextStyle.black_12_w400,
                               ),
                           ],
                         ),
                       ],
                     ),
                   ),
-
                 ],
               ),
-              if (widget.task.answers[index]
-                  .description !=
-                  null)
+              if (widget.task.answers[index].description != null)
                 SizedBox(
                   height: 15.h,
                 ),
-              if (widget.task.answers[index]
-                  .description !=
-                  null)
+              if (widget.task.answers[index].description != null)
                 Padding(
-                  padding:
-                  EdgeInsets.only(left: 10.w),
+                  padding: EdgeInsets.only(left: 10.w),
                   child: Text(
-                    widget.task.answers[index]
-                        .description!,
+                    widget.task.answers[index].description!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: CustomTextStyle
-                        .black_12_w400_292D32,
+                    style: CustomTextStyle.black_12_w400_292D32,
                   ),
                 ),
               SizedBox(
@@ -215,24 +196,17 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                     child: CustomButton(
                       onTap: () async {
                         if (user!.isBanned!) {
-                          banDialog(
-                              context,
-                              'access_to_chat_is_currently_restricted'
-                                  .tr());
+                          banDialog(context,
+                              'access_to_chat_is_currently_restricted'.tr());
                         } else {
-                          print("Chat id through button is ${widget.task.chatId}");
-                          final chatBloc =
-                          BlocProvider.of<
-                              ChatBloc>(context);
-                          chatBloc.editShowPersonChat(
-                              false);
-                          chatBloc.editChatId(
-                              widget.task.answers[index].chatId);
+                          print(
+                              "Chat id through button is ${widget.task.chatId}");
+                          final chatBloc = BlocProvider.of<ChatBloc>(context);
+                          chatBloc.editShowPersonChat(false);
+                          chatBloc
+                              .editChatId(widget.task.answers[index].chatId);
                           chatBloc.messages = [];
-                          final idChat =
-                          await Navigator.of(
-                              context)
-                              .pushNamed(
+                          final idChat = await Navigator.of(context).pushNamed(
                             AppRoute.personalChat,
                             arguments: [
                               '${widget.task.answers[index].chatId}',
@@ -242,33 +216,30 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                               widget.task.category?.id,
                             ],
                           );
-                          chatBloc.editShowPersonChat(
-                              true);
+                          chatBloc.editShowPersonChat(true);
                           chatBloc.editChatId(null);
                         }
                       },
-                      btnColor:
-                      ColorStyles.greyDADADA,
+                      btnColor: ColorStyles.greyDADADA,
                       textLabel: Text(
                         'write_to_the_chat'.tr(),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 12.sp,
-                            fontWeight:
-                            FontWeight.w500),
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                   SizedBox(
                     width: 10.w,
                   ),
-                  if(widget.task.answers[index].status=="Selected")...[
+                  if (widget.task.answers[index].status == "Selected") ...[
                     SizedBox(
                       height: 50.h,
                       width: 140.w,
                       child: CustomButton(
                         onTap: () {
-                          widget.task.status=TaskStatus.completed;
+                          widget.task.status = TaskStatus.completed;
                           Repository().editTaskPatch(
                               BlocProvider.of<ProfileBloc>(context).access,
                               widget.task);
@@ -285,7 +256,8 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                         ),
                       ),
                     ),
-                  ]else if(!widget.task.isTask!&&widget.task.owner?.id==user?.id)...[
+                  ] else if (!widget.task.isTask! &&
+                      widget.task.owner?.id == user?.id) ...[
                     SizedBox(
                       height: 50.h,
                       width: 140.w,
@@ -301,47 +273,36 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                         ),
                       ),
                     ),
-                  ]else...[
+                  ] else ...[
                     SizedBox(
                       height: 50.h,
                       width: 140.w,
                       child: CustomButton(
                         onTap: () async {
                           Loader.show(context);
-                          await Repository()
-                              .updateStatusResponse(
-                              BlocProvider.of<
-                                  ProfileBloc>(
-                                  context)
-                                  .access,
-                              widget
-                                  .task
-                                  .answers[index]
-                                  .id!,
+                          await Repository().updateStatusResponse(
+                              BlocProvider.of<ProfileBloc>(context).access,
+                              widget.task.answers[index].id!,
                               'Selected');
                           Loader.hide();
-                          if(context.mounted){
+                          if (context.mounted) {
                             context.read<ProfileBloc>().add(GetProfileEvent());
                             if (widget.canEdit) {
                               Navigator.pop(context);
                             }
                           }
-
                         },
-                        btnColor:
-                        ColorStyles.yellowFFD70A,
+                        btnColor: ColorStyles.yellowFFD70A,
                         textLabel: Text(
                           'choose_a_executor'.tr(),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12.sp,
-                              fontWeight:
-                              FontWeight.w500),
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
                   ]
-
                 ],
               ),
             ],

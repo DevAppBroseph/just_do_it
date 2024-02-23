@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
@@ -12,7 +9,8 @@ import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildContext context) {
+Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
+    BuildContext context) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
     child: ScaleButton(
@@ -20,7 +18,9 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
       onTap: () => onSelect(task),
       child: Container(
         decoration: BoxDecoration(
-          color: task.isBanned == null || !task.isBanned! ? ColorStyles.whiteFFFFFF : ColorStyles.grey939393.withOpacity(0.06),
+          color: task.isBanned == null || !task.isBanned!
+              ? ColorStyles.whiteFFFFFF
+              : ColorStyles.grey939393.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
           // boxShadow: [
           // BoxShadow(
@@ -48,7 +48,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                           if (task.category != null)
                             if (task.category?.photo != null)
                               SizedBox(
-                                width:34.h,
+                                width: 34.h,
                                 child: Image.network(
                                   task.category!.photo!,
                                   height: 34.h,
@@ -87,7 +87,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                                     width: 230.w,
                                     child: Text(
                                       _textCountry(task, user),
-                                      style: CustomTextStyle.black_12_w500_515150,
+                                      style:
+                                          CustomTextStyle.black_12_w500_515150,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -108,11 +109,11 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
                           child: Row(
                             children: [
                               const Spacer(),
-                                Text(
-                                  '${"before".tr()} ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
-                                  maxLines: 1,
-                                  style: CustomTextStyle.black_14_w500_171716,
-                                ),
+                              Text(
+                                '${"before".tr()} ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
+                                maxLines: 1,
+                                style: CustomTextStyle.black_14_w500_171716,
+                              ),
                               SizedBox(width: 5.w),
                               SvgPicture.asset(
                                 'assets/icons/card.svg',
@@ -130,7 +131,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user, BuildCon
             task.isGradedNow!
                 ? GestureDetector(
                     onTap: () {
-                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
+                      helpOnTopDialog(
+                          context, 'raise_ad'.tr(), 'the_impact'.tr());
                     },
                     child: Padding(
                       padding: EdgeInsets.only(

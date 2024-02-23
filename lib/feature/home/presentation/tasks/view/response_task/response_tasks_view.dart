@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,10 +15,12 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 class SelectedOffersAsCustomer extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const SelectedOffersAsCustomer({super.key, required this.asCustomer, required this.title});
+  const SelectedOffersAsCustomer(
+      {super.key, required this.asCustomer, required this.title});
 
   @override
-  State<SelectedOffersAsCustomer> createState() => _SelectedOffersAsCustomerState();
+  State<SelectedOffersAsCustomer> createState() =>
+      _SelectedOffersAsCustomerState();
 }
 
 class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
@@ -43,7 +43,7 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
@@ -94,23 +94,24 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
                       child: Stack(
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                            height: MediaQuery.of(context).size.height -
+                                20.h -
+                                10.h -
+                                82.h,
                             child: ListView.builder(
                               itemCount: user?.selectedOffersAsCustomer?.length,
-                              padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                              padding:
+                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.selectedOffersAsCustomer != []) {
-                                  
                                   return itemTask(
-                                    user!.selectedOffersAsCustomer![index],
-                                    (task) {
-                                      setState(() {
-                                        selectTask = task;
-                                      });
-                                    },
-                                    user!,context
-                                  );
+                                      user!.selectedOffersAsCustomer![index],
+                                      (task) {
+                                    setState(() {
+                                      selectTask = task;
+                                    });
+                                  }, user!, context);
                                 }
                                 return Container();
                               },
@@ -132,7 +133,9 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(

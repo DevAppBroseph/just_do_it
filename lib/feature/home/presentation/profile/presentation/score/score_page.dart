@@ -37,40 +37,44 @@ class _ScorePageState extends State<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScoreBloc scoreBloc = BlocProvider.of<ScoreBloc>(context);
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         final user = context.read<ProfileBloc>().user;
         if (user == null) {
-          return Scaffold(
-              body: const Center(child: CupertinoActivityIndicator()));
+          return const Scaffold(
+              body: Center(child: CupertinoActivityIndicator()));
         }
         return BlocBuilder<ScoreBloc, ScoreState>(builder: (context, state) {
           if (state is ScoreLoaded) {
             final levels = state.levels;
             for (int i = 0; i < levels!.length; i++) {
-              if (user!.allbalance! >= levels[i].mustCoins!) {
+              if (user.allbalance! >= levels[i].mustCoins!) {
                 proverka = levels[i].name;
-              } else if (user!.allbalance! <= levels[0].mustCoins!) {
+              } else if (user.allbalance! <= levels[0].mustCoins!) {
                 proverka = levels[0].name;
                 break;
               }
             }
             for (int i = 0; i < levels.length; i++) {
-              if (user!.allbalance! >= levels.last.mustCoins!) {
+              if (user.allbalance! >= levels.last.mustCoins!) {
                 proverkaNext = levels.last.name;
                 break;
               } else if (1300 <= levels[0].mustCoins!) {
                 proverkaNext = levels[0].name;
                 break;
-              } else if (user!.allbalance! >= levels.last.mustCoins!) {
+              } else if (user.allbalance! >= levels.last.mustCoins!) {
                 proverkaNext = levels.last.name;
                 break;
-              } else if (user!.allbalance! >= levels[i].mustCoins! &&
+              } else if (user.allbalance! >= levels[i].mustCoins! &&
                   levels[i + 1].name != null) {
                 proverkaNext = levels[i + 1].name;
               }
             }
-            return user?.allbalance != null
+
+            String gradeName = scoreBloc.evaluateGradeName(user, levels);
+
+            return user.allbalance != null
                 ? MediaQuery(
                     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                     child: Scaffold(
@@ -136,471 +140,71 @@ class _ScorePageState extends State<ScorePage> {
                                         SizedBox(height: 10.h),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 33.w),
+                                            horizontal: 30.w,
+                                          ),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
                                             children: [
-                                              Row(
-                                                children: [
-                                                  SizedBox(
-                                                    child: Column(
-                                                      children: [
-                                                        AutoSizeText(
-                                                          user!.balance!
-                                                              .toString(),
-                                                          style: CustomTextStyle
-                                                              .white_21_w700,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                        ),
-                                                        AutoSizeText(
-                                                          'points'.tr(),
-                                                          style: CustomTextStyle
-                                                              .white_21_w700,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                        ),
-                                                      ],
-                                                    ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 15.w),
+                                                  child: Column(
+                                                    children: [
+                                                      AutoSizeText(
+                                                        user.balance!
+                                                            .toString(),
+                                                        style: CustomTextStyle
+                                                            .white_21_w700,
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                      ),
+                                                      AutoSizeText(
+                                                        'points'.tr(),
+                                                        style: CustomTextStyle
+                                                            .white_21_w700,
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  SizedBox(
-                                                    width: 27.w,
+                                                ),
+                                              ),
+                                              // SizedBox(
+                                              //   width: 27.w,
+                                              // ),
+                                              if (user.allbalance! <
+                                                  levels[0].mustCoins!)
+                                                CachedNetworkImage(
+                                                  progressIndicatorBuilder:
+                                                      (context, url, progress) {
+                                                    return const CupertinoActivityIndicator();
+                                                  },
+                                                  imageUrl: levels[0].bwImage !=
+                                                          null
+                                                      ? '${levels[0].bwImage}'
+                                                      : '',
+                                                  height: 113.h,
+                                                  width: 113.w,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              GradeMascotImage(
+                                                  levels: levels,
+                                                  user: user,
+                                                  size: 113),
+                                              Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 15.w),
+                                                  // width: 88.5.w,
+                                                  child: AutoSizeText(
+                                                    gradeName,
+                                                    // 'Zorro',
+                                                    style: CustomTextStyle
+                                                        .white_21_w700,
+                                                    textAlign: TextAlign.start,
+                                                    maxLines: 2,
                                                   ),
-                                                  if (user!.allbalance! <
-                                                      levels[0].mustCoins!)
-                                                    CachedNetworkImage(
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              progress) {
-                                                        return const CupertinoActivityIndicator();
-                                                      },
-                                                      imageUrl: levels[0]
-                                                                  .bwImage !=
-                                                              null
-                                                          ? '${levels[0].bwImage}'
-                                                          : '',
-                                                      height: 113.h,
-                                                      width: 113.w,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  GradeMascotImage(
-                                                      levels: levels,
-                                                      user: user,
-                                                      size: 113),
-                                                  SizedBox(
-                                                    width: 15.w,
-                                                  ),
-                                                  if (user!.allbalance! <
-                                                      levels[0].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        levels[0].name ?? '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[0]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[1].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[0].name ??
-                                                                ''
-                                                            : levels[0]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[1]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[2].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[1].name ??
-                                                                ''
-                                                            : levels[1]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[2]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[3].mustCoins!)
-                                                    SizedBox(
-                                                      width: 60.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[2].name ??
-                                                                ''
-                                                            : levels[2]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[3]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[4].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[3].name ??
-                                                                ''
-                                                            : levels[3]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[4]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[5].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[4].name ??
-                                                                ''
-                                                            : levels[4]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[5]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[6].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[5].name ??
-                                                                ''
-                                                            : levels[5]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[6]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[7].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[6].name ??
-                                                                ''
-                                                            : levels[6]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[7]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[8].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[7].name ??
-                                                                ''
-                                                            : levels[7]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[8]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[9].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[8].name ??
-                                                                ''
-                                                            : levels[8]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[9]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[10].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[9].name ??
-                                                                ''
-                                                            : levels[9]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[10]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[11].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[10].name ??
-                                                                ''
-                                                            : levels[10]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[11]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[12].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[11].name ??
-                                                                ''
-                                                            : levels[11]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[12]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[13].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[12].name ??
-                                                                ''
-                                                            : levels[12]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[13]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[14].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[13].name ??
-                                                                ''
-                                                            : levels[13]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[14]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[15].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[14].name ??
-                                                                ''
-                                                            : levels[14]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[15]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[16].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[15].name ??
-                                                                ''
-                                                            : levels[15]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[16]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[17].mustCoins!)
-                                                    SizedBox(
-                                                      width: 60.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[16].name ??
-                                                                ''
-                                                            : levels[16]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[17]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[18].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[17].name ??
-                                                                ''
-                                                            : levels[17]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                          levels[18]
-                                                              .mustCoins! &&
-                                                      user!.allbalance! <
-                                                          levels[19].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[18].name ??
-                                                                ''
-                                                            : levels[18]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                  if (user!.allbalance! >=
-                                                      levels[19].mustCoins!)
-                                                    SizedBox(
-                                                      width: 88.5.w,
-                                                      child: AutoSizeText(
-                                                        user!.rus!
-                                                            ? levels[19].name ??
-                                                                ''
-                                                            : levels[19]
-                                                                    .engName ??
-                                                                '',
-                                                        style: CustomTextStyle
-                                                            .white_21_w700,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    ),
-                                                ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -687,7 +291,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[0]
                                                                         .mustCoins! ||
                                                                 levels[0]
@@ -695,16 +299,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[0].image}'
                                                             : '${levels[0].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[0].name ??
                                                                 ''
                                                             : levels[0]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[0].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[1]
                                                                         .mustCoins! ||
                                                                 levels[1]
@@ -712,16 +316,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[1].image}'
                                                             : '${levels[1].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[1].name ??
                                                                 ''
                                                             : levels[1]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[1].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[2]
                                                                         .mustCoins! ||
                                                                 levels[2]
@@ -729,16 +333,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[2].image}'
                                                             : '${levels[2].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[2].name ??
                                                                 ''
                                                             : levels[2]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[2].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[3]
                                                                         .mustCoins! ||
                                                                 levels[3]
@@ -746,13 +350,13 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[3].image}'
                                                             : '${levels[3].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[3].name ??
                                                                 ''
                                                             : levels[3]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[3].mustCoins!),
                                                   ],
                                                 ),
@@ -770,7 +374,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[7]
                                                                         .mustCoins! ||
                                                                 levels[7]
@@ -778,16 +382,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[7].image}'
                                                             : '${levels[7].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[7].name ??
                                                                 ''
                                                             : levels[7]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[7].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[6]
                                                                         .mustCoins! ||
                                                                 levels[6]
@@ -795,16 +399,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[6].image}'
                                                             : '${levels[6].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[6].name ??
                                                                 ''
                                                             : levels[6]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[6].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[5]
                                                                         .mustCoins! ||
                                                                 levels[5]
@@ -812,16 +416,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[5].image}'
                                                             : '${levels[5].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[5].name ??
                                                                 ''
                                                             : levels[5]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[5].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[4]
                                                                         .mustCoins! ||
                                                                 levels[4]
@@ -829,13 +433,13 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[4].image}'
                                                             : '${levels[4].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[4].name ??
                                                                 ''
                                                             : levels[4]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[4].mustCoins!),
                                                   ],
                                                 ),
@@ -853,7 +457,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[8]
                                                                         .mustCoins! ||
                                                                 levels[8]
@@ -861,17 +465,17 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[8].image}'
                                                             : '${levels[8].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[8].name ??
                                                                 ''
                                                             : levels[8]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[8].mustCoins!),
                                                     // const Spacer(),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[9]
                                                                         .mustCoins! ||
                                                                 levels[9]
@@ -879,17 +483,17 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[9].image}'
                                                             : '${levels[9].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[9].name ??
                                                                 ''
                                                             : levels[9]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[9].mustCoins!),
                                                     // const Spacer(),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[10]
                                                                         .mustCoins! ||
                                                                 levels[10]
@@ -897,17 +501,17 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[10].image}'
                                                             : '${levels[10].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[10].name ??
                                                                 ''
                                                             : levels[10]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[10].mustCoins!),
                                                     // const Spacer(),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[11]
                                                                         .mustCoins! ||
                                                                 levels[11]
@@ -915,13 +519,13 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[11].image}'
                                                             : '${levels[11].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[11].name ??
                                                                 ''
                                                             : levels[11]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[11].mustCoins!),
                                                   ],
                                                 ),
@@ -936,7 +540,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[15]
                                                                         .mustCoins! ||
                                                                 levels[15]
@@ -944,16 +548,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[15].image}'
                                                             : '${levels[15].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[15].name ??
                                                                 ''
                                                             : levels[15]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[15].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[14]
                                                                         .mustCoins! ||
                                                                 levels[14]
@@ -961,16 +565,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[14].image}'
                                                             : '${levels[14].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[14].name ??
                                                                 ''
                                                             : levels[14]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[14].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[13]
                                                                         .mustCoins! ||
                                                                 levels[13]
@@ -978,16 +582,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[13].image}'
                                                             : '${levels[13].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[13].name ??
                                                                 ''
                                                             : levels[13]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[13].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[12]
                                                                         .mustCoins! ||
                                                                 levels[12]
@@ -995,13 +599,13 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[12].image}'
                                                             : '${levels[12].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[12].name ??
                                                                 ''
                                                             : levels[12]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[12].mustCoins!),
                                                   ],
                                                 ),
@@ -1016,7 +620,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[16]
                                                                         .mustCoins! ||
                                                                 levels[16]
@@ -1024,16 +628,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[16].image}'
                                                             : '${levels[16].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[16].name ??
                                                                 ''
                                                             : levels[16]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[16].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[17]
                                                                         .mustCoins! ||
                                                                 levels[17]
@@ -1041,16 +645,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[17].image}'
                                                             : '${levels[17].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[17].name ??
                                                                 ''
                                                             : levels[17]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[17].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[18]
                                                                         .mustCoins! ||
                                                                 levels[18]
@@ -1058,16 +662,16 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[18].image}'
                                                             : '${levels[18].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[18].name ??
                                                                 ''
                                                             : levels[18]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[18].mustCoins!),
                                                     firstPageItemScore(
-                                                        user!.allbalance! >=
+                                                        user.allbalance! >=
                                                                     levels[19]
                                                                         .mustCoins! ||
                                                                 levels[19]
@@ -1075,13 +679,13 @@ class _ScorePageState extends State<ScorePage> {
                                                                     proverkaNext
                                                             ? '${levels[19].image}'
                                                             : '${levels[19].bwImage}',
-                                                        user!.rus!
+                                                        user.rus!
                                                             ? levels[19].name ??
                                                                 ''
                                                             : levels[19]
                                                                     .engName ??
                                                                 '',
-                                                        user!.allbalance!,
+                                                        user.allbalance!,
                                                         levels[19].mustCoins!),
                                                   ],
                                                 ),
@@ -1101,7 +705,7 @@ class _ScorePageState extends State<ScorePage> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 24.w, vertical: 30.h),
                                         child: Text(
-                                          user!.rus!
+                                          user.rus!
                                               ? 'Наша система грейдов создана для активных пользователей. Создавайте новые заказы или привлекайте друзей, а мы начислим Вам баллы.\n\nБаллы можно использовать для оплаты сервисов и заказов.  Чем больше баллов Вы потратите, тем выше будет Ваш грейд, тем больше доверия со стороны заказчиков и полезных бонусов и привилегий от приложения.\n\nИтак, будьте активными, создавайте новые заказы, привлекайте друзей и зарабатывайте баллы.\n\nБолее подробно о том как заработать баллы - смотрите в разделе «вопрос-ответ»'
                                               : 'Our grading system is designed for active users. Create new orders or refer friends, and we will reward you with points.\n\nThese points can be used to pay for services and orders. The more points you spend, the higher your grade will be, leading to increased trust from customers and valuable bonuses and privileges from the application.\n\nSo, be active, create new orders, refer friends, and earn points.\n\nFor more details on how to earn points, please refer to the "FAQ" section.',
                                           style: CustomTextStyle
@@ -1121,11 +725,11 @@ class _ScorePageState extends State<ScorePage> {
                                                 levels[index].image != null
                                                     ? '${levels[index].image}'
                                                     : '',
-                                                user!.rus!
+                                                user.rus!
                                                     ? levels[index].name ?? ''
                                                     : levels[index].engName ??
                                                         '',
-                                                user!.rus!
+                                                user.rus!
                                                     ? levels[index].desc ?? ''
                                                     : levels[index].descEng ??
                                                         '');
@@ -1335,3 +939,415 @@ class _ScorePageState extends State<ScorePage> {
     );
   }
 }
+
+
+
+ // if (user.allbalance! <
+                                                  //     levels[0].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       levels[0].name ?? '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[0]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[1].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[0].name ??
+                                                  //               ''
+                                                  //           : levels[0]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[1]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[2].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[1].name ??
+                                                  //               ''
+                                                  //           : levels[1]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[2]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[3].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 60.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[2].name ??
+                                                  //               ''
+                                                  //           : levels[2]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[3]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[4].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[3].name ??
+                                                  //               ''
+                                                  //           : levels[3]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[4]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[5].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[4].name ??
+                                                  //               ''
+                                                  //           : levels[4]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[5]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[6].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[5].name ??
+                                                  //               ''
+                                                  //           : levels[5]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[6]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[7].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[6].name ??
+                                                  //               ''
+                                                  //           : levels[6]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[7]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[8].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[7].name ??
+                                                  //               ''
+                                                  //           : levels[7]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[8]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[9].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[8].name ??
+                                                  //               ''
+                                                  //           : levels[8]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[9]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[10].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[9].name ??
+                                                  //               ''
+                                                  //           : levels[9]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[10]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[11].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[10].name ??
+                                                  //               ''
+                                                  //           : levels[10]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[11]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[12].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[11].name ??
+                                                  //               ''
+                                                  //           : levels[11]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[12]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[13].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[12].name ??
+                                                  //               ''
+                                                  //           : levels[12]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[13]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[14].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[13].name ??
+                                                  //               ''
+                                                  //           : levels[13]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[14]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[15].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[14].name ??
+                                                  //               ''
+                                                  //           : levels[14]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[15]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[16].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[15].name ??
+                                                  //               ''
+                                                  //           : levels[15]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[16]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[17].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 60.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[16].name ??
+                                                  //               ''
+                                                  //           : levels[16]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[17]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[18].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[17].name ??
+                                                  //               ''
+                                                  //           : levels[17]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //         levels[18]
+                                                  //             .mustCoins! &&
+                                                  //     user.allbalance! <
+                                                  //         levels[19].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[18].name ??
+                                                  //               ''
+                                                  //           : levels[18]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),
+                                                  // if (user.allbalance! >=
+                                                  //     levels[19].mustCoins!)
+                                                  //   SizedBox(
+                                                  //     width: 88.5.w,
+                                                  //     child: AutoSizeText(
+                                                  //       user.rus!
+                                                  //           ? levels[19].name ??
+                                                  //               ''
+                                                  //           : levels[19]
+                                                  //                   .engName ??
+                                                  //               '',
+                                                  //       style: CustomTextStyle
+                                                  //           .white_21_w700,
+                                                  //       textAlign:
+                                                  //           TextAlign.start,
+                                                  //     ),
+                                                  //   ),

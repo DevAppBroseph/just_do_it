@@ -61,17 +61,17 @@ class _ArchivePageState extends State<ArchivePage> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(15)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Column(
-                        children: const [
+                        children: [
                           Icon(Icons.pending_actions_sharp),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text('Сделать инфографику'),
                           Text('Можно выполнить удаленно'),
                           Text('Начать сегодня'),
@@ -79,13 +79,13 @@ class _ArchivePageState extends State<ArchivePage> {
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
+                        children: [
                           Text('до 1000'),
                         ],
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
+                        children: [
                           Icon(Icons.card_giftcard_outlined),
                         ],
                       )

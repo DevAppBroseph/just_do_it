@@ -8,8 +8,6 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
-import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class OrdersCreateAsCustomerView extends StatefulWidget {
@@ -28,13 +26,13 @@ class _OrdersCreateAsCustomerViewState
   @override
   void initState() {
     super.initState();
-     BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
@@ -71,8 +69,9 @@ class _OrdersCreateAsCustomerViewState
                             ),
                           ),
                           GestureDetector(
-                            onTap: (){
-                              BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
+                            onTap: () {
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(GetProfileEvent());
                             },
                             child: Align(
                               alignment: Alignment.center,
@@ -95,30 +94,29 @@ class _OrdersCreateAsCustomerViewState
                                 10.h -
                                 82.h,
                             child: BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    final user=context.read<ProfileBloc>().user;
-    return ListView.builder(
-                              itemCount: user?.ordersCreateAsCustomer?.length,
-                              padding:
-                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                if (user?.ordersCreateAsCustomer != []) {
-                                  return itemTask(
-                                    user!.ordersCreateAsCustomer![index],
-                                    (task) {
-                                      setState(() {
-                                        selectTask = task;
-                                      });
-                                    },
-                                    user!,context
-                                  );
-                                }
-                                return Container();
+                              builder: (context, state) {
+                                final user = context.read<ProfileBloc>().user;
+                                return ListView.builder(
+                                  itemCount:
+                                      user?.ordersCreateAsCustomer?.length,
+                                  padding:
+                                      EdgeInsets.only(top: 15.h, bottom: 100.h),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    if (user?.ordersCreateAsCustomer != []) {
+                                      return itemTask(
+                                          user!.ordersCreateAsCustomer![index],
+                                          (task) {
+                                        setState(() {
+                                          selectTask = task;
+                                        });
+                                      }, user!, context);
+                                    }
+                                    return Container();
+                                  },
+                                );
                               },
-                            );
-  },
-),
+                            ),
                           ),
                           view(),
                         ],

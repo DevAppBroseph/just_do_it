@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart' as rep;
-import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart'as res;
-import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply.dart';
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply_from_favourite/reply_fav_bloc.dart'
+    as rep;
+import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart'
+    as res;
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply_from_fav.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
@@ -24,7 +23,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class FavouriteTasks extends StatefulWidget {
   final String title;
   final bool asCustomer;
-  const FavouriteTasks({super.key, required this.title, required this.asCustomer});
+  const FavouriteTasks(
+      {super.key, required this.title, required this.asCustomer});
 
   @override
   State<FavouriteTasks> createState() => _FavouriteTasksState();
@@ -44,14 +44,17 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
   PanelController panelControllerResponseFromFav = PanelController();
   @override
   void dispose() {
-    if (panelControllerReplyFromFav.isPanelOpen) panelControllerReplyFromFav.close();
-    if (panelControllerResponseFromFav.isPanelOpen) panelControllerResponseFromFav.close();
+    if (panelControllerReplyFromFav.isPanelOpen)
+      panelControllerReplyFromFav.close();
+    if (panelControllerResponseFromFav.isPanelOpen)
+      panelControllerResponseFromFav.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+    return BlocBuilder<FavouritesBloc, FavouritesState>(
+        builder: (context, state) {
       if (state is FavouritesLoaded) {
         if (widget.asCustomer == false) {
           favouritesOrders = state.favourite!.favouriteOffers;
@@ -111,10 +114,14 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                             child: Stack(
                               children: [
                                 SizedBox(
-                                  height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                                  height: MediaQuery.of(context).size.height -
+                                      20.h -
+                                      10.h -
+                                      82.h,
                                   child: ListView.builder(
                                     itemCount: favouritesOrders!.length,
-                                    padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                                    padding: EdgeInsets.only(
+                                        top: 15.h, bottom: 100.h),
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       return itemFavouriteTask(
@@ -122,7 +129,8 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                                         (task) {
                                           setState(() {
                                             selectFavouriteTask = task;
-                                            if (selectFavouriteTask?.order != null) {
+                                            if (selectFavouriteTask?.order !=
+                                                null) {
                                               getTask();
                                             }
                                           });
@@ -149,7 +157,11 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                   } else if (snapshot is res.CloseSlidingPanelState) {
                     panelControllerResponseFromFav.animatePanelToPosition(0.0);
                   }
-                  return SlidingPanelResponse(panelControllerResponseFromFav, selectTask: selectTask, isShowedFromFavPage: true,);
+                  return SlidingPanelResponse(
+                    panelControllerResponseFromFav,
+                    selectTask: selectTask,
+                    isShowedFromFavPage: true,
+                  );
                 },
               ),
               BlocBuilder<rep.ReplyFromFavBloc, rep.ReplyState>(
@@ -160,7 +172,8 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                   } else if (snapshot is rep.CloseSlidingPanelState) {
                     panelControllerReplyFromFav.animatePanelToPosition(0.0);
                   }
-                  return SlidingPanelReplyFromFav(panelControllerReplyFromFav, selectTask: selectTask);
+                  return SlidingPanelReplyFromFav(panelControllerReplyFromFav,
+                      selectTask: selectTask);
                 },
               ),
             ],
@@ -175,7 +188,8 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
 
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    final task = await Repository().getTaskById(selectFavouriteTask!.order!.id!, access);
+    final task =
+        await Repository().getTaskById(selectFavouriteTask!.order!.id!, access);
     setState(() {
       selectTask = task;
     });
@@ -183,7 +197,9 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
 
     if (selectTask != null) {

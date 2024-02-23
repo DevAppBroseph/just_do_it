@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,13 +15,16 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 class FinishedOffersViewAsCustomer extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const FinishedOffersViewAsCustomer({super.key, required this.asCustomer, required this.title});
+  const FinishedOffersViewAsCustomer(
+      {super.key, required this.asCustomer, required this.title});
 
   @override
-  State<FinishedOffersViewAsCustomer> createState() => _FinishedOffersViewAsCustomerState();
+  State<FinishedOffersViewAsCustomer> createState() =>
+      _FinishedOffersViewAsCustomerState();
 }
 
-class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCustomer> {
+class _FinishedOffersViewAsCustomerState
+    extends State<FinishedOffersViewAsCustomer> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
@@ -43,7 +44,7 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
@@ -94,22 +95,24 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
                       child: Stack(
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                            height: MediaQuery.of(context).size.height -
+                                20.h -
+                                10.h -
+                                82.h,
                             child: ListView.builder(
                               itemCount: user?.finishedOffersAsCustomer?.length,
-                              padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                              padding:
+                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.finishedOffersAsCustomer != []) {
                                   return itemTask(
-                                    user!.finishedOffersAsCustomer![index],
-                                    (task) {
-                                      setState(() {
-                                        selectTask = task;
-                                      });
-                                    },
-                                    user!,context
-                                  );
+                                      user!.finishedOffersAsCustomer![index],
+                                      (task) {
+                                    setState(() {
+                                      selectTask = task;
+                                    });
+                                  }, user!, context);
                                 }
                                 return Container();
                               },
@@ -131,7 +134,9 @@ class _FinishedOffersViewAsCustomerState extends State<FinishedOffersViewAsCusto
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(

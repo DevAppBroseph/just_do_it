@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,13 +15,16 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 class ResponseTasksInProgressViewAsCustomer extends StatefulWidget {
   final bool asCustomer;
   final String title;
-  const ResponseTasksInProgressViewAsCustomer({super.key, required this.asCustomer, required this.title});
+  const ResponseTasksInProgressViewAsCustomer(
+      {super.key, required this.asCustomer, required this.title});
 
   @override
-  State<ResponseTasksInProgressViewAsCustomer> createState() => _ResponseTasksInProgressViewAsCustomerState();
+  State<ResponseTasksInProgressViewAsCustomer> createState() =>
+      _ResponseTasksInProgressViewAsCustomerState();
 }
 
-class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInProgressViewAsCustomer> {
+class _ResponseTasksInProgressViewAsCustomerState
+    extends State<ResponseTasksInProgressViewAsCustomer> {
   List<Task> taskList = [];
   Task? selectTask;
   Owner? owner;
@@ -94,23 +95,25 @@ class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInP
                       child: Stack(
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                            height: MediaQuery.of(context).size.height -
+                                20.h -
+                                10.h -
+                                82.h,
                             child: ListView.builder(
-                              itemCount: user?.ordersInProgressAsCustomer?.length,
-                              padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                              itemCount:
+                                  user?.ordersInProgressAsCustomer?.length,
+                              padding:
+                                  EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.ordersInProgressAsCustomer != []) {
-                                  
                                   return itemTask(
-                                    user!.ordersInProgressAsCustomer![index],
-                                    (task) {
-                                      setState(() {
-                                        selectTask = task;
-                                      });
-                                    },
-                                    user!,context
-                                  );
+                                      user!.ordersInProgressAsCustomer![index],
+                                      (task) {
+                                    setState(() {
+                                      selectTask = task;
+                                    });
+                                  }, user!, context);
                                 }
                                 return Container();
                               },
@@ -132,7 +135,9 @@ class _ResponseTasksInProgressViewAsCustomerState extends State<ResponseTasksInP
 
   Widget view() {
     if (owner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: owner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(

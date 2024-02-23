@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +36,8 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
   FavoriteCustomers? selectfavouritesUser;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavouritesBloc, FavouritesState>(builder: (context, state) {
+    return BlocBuilder<FavouritesBloc, FavouritesState>(
+        builder: (context, state) {
       if (state is FavouritesLoaded) {
         favouritesPeople = state.favourite!.favoriteUsers;
         return MediaQuery(
@@ -86,10 +85,14 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
                         child: Stack(
                           children: [
                             SizedBox(
-                              height: MediaQuery.of(context).size.height - 20.h - 10.h - 82.h,
+                              height: MediaQuery.of(context).size.height -
+                                  20.h -
+                                  10.h -
+                                  82.h,
                               child: ListView.builder(
                                 itemCount: favouritesPeople!.length,
-                                padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
+                                padding:
+                                    EdgeInsets.only(top: 15.h, bottom: 100.h),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return itemFavouriteUser(
@@ -97,7 +100,8 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
                                     (user) {
                                       setState(() {
                                         selectfavouritesUser = user;
-                                        if (selectfavouritesUser?.user != null) {
+                                        if (selectfavouritesUser?.user !=
+                                            null) {
                                           getProfile();
                                         }
                                       });
@@ -124,7 +128,8 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
 
   void getProfile() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    final owner = await Repository().getRanking(selectfavouritesUser!.user!.id!, access);
+    final owner =
+        await Repository().getRanking(selectfavouritesUser!.user!.id!, access);
     setState(() {
       selectOwner = owner;
     });
@@ -132,7 +137,9 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
 
   Widget view() {
     if (selectOwner != null) {
-      return Scaffold(backgroundColor: ColorStyles.greyEAECEE, body: ProfileView(owner: selectOwner!));
+      return Scaffold(
+          backgroundColor: ColorStyles.greyEAECEE,
+          body: ProfileView(owner: selectOwner!));
     }
     return Container();
   }

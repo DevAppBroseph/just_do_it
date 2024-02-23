@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:just_do_it/constants/server.dart';
-import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/services/dio/custom_interceptor.dart';
 
 final dio = getDioInstance();

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
-import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_currency.dart';
 import 'package:just_do_it/feature/auth/widget/textfield_currency.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
@@ -50,7 +47,7 @@ class DatePicker extends StatefulWidget {
     required this.allCountries,
     required this.currecy,
     required this.saveTask,
-     this.isBanned=false,
+    this.isBanned = false,
   });
 
   @override
@@ -101,15 +98,14 @@ class _DatePickerState extends State<DatePicker> {
                             style: CustomTextStyle.black_15,
                           ),
                           onPressed: () {
-
                             if (index == 0 && widget.startDate == null) {
-                              if(widget.endDate!=null){
+                              if (widget.endDate != null) {
                                 widget.startDate = widget.endDate;
                                 return;
                               }
                               widget.startDate = DateTime.now();
-                            }else if (index == 1 && widget.endDate == null) {
-                              if(widget.startDate!=null){
+                            } else if (index == 1 && widget.endDate == null) {
+                              if (widget.startDate != null) {
                                 widget.endDate = widget.startDate;
                                 return;
                               }
@@ -193,10 +189,15 @@ class _DatePickerState extends State<DatePicker> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    final todayDate=DateTime.now();
-    bool canRaise=((widget.endDate!=null&&(widget.endDate?.add(const Duration(days: 1)))!.isAfter(DateTime(todayDate.year,todayDate.month,todayDate.day))))&&!widget.isGraded&&!widget.isBanned;
+    final todayDate = DateTime.now();
+    bool canRaise = ((widget.endDate != null &&
+            (widget.endDate?.add(const Duration(days: 1)))!.isAfter(
+                DateTime(todayDate.year, todayDate.month, todayDate.day)))) &&
+        !widget.isGraded &&
+        !widget.isBanned;
     int countCountry = widget.allCountries.length;
 
     int countRegion = 0;
@@ -225,17 +226,21 @@ class _DatePickerState extends State<DatePicker> {
     if (openRegion) {
       for (int i = 0; i < widget.allCountries.length; i++) {
         if (widget.allCountries[i].select) {
-          for (int index = 0; index < widget.allCountries[i].region.length; index++) {
+          for (int index = 0;
+              index < widget.allCountries[i].region.length;
+              index++) {
             regionsListWidget.add(
               Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
                 child: GestureDetector(
                   onTap: () async {
-                    widget.allCountries[i].region[index].select = !widget.allCountries[i].region[index].select;
+                    widget.allCountries[i].region[index].select =
+                        !widget.allCountries[i].region[index].select;
                     if (widget.allCountries[i].region[index].select) {
                       if (widget.allCountries[i].region[index].town.isEmpty) {
                         widget.allCountries[i].region[index].town =
-                            await Repository().towns(widget.allCountries[i].region[index]);
+                            await Repository()
+                                .towns(widget.allCountries[i].region[index]);
                       }
                     } else {
                       widget.allCountries[i].region[index].select = false;
@@ -272,12 +277,14 @@ class _DatePickerState extends State<DatePicker> {
                               child: Text(
                                 user?.rus ?? true
                                     ? widget.allCountries[i].region[index].name!
-                                    : widget.allCountries[i].region[index].engName!,
+                                    : widget
+                                        .allCountries[i].region[index].engName!,
                                 style: CustomTextStyle.black_14_w400_515150,
                               ),
                             ),
                             const Spacer(),
-                            if (widget.allCountries[i].region[index].select) const Icon(Icons.check)
+                            if (widget.allCountries[i].region[index].select)
+                              const Icon(Icons.check)
                           ],
                         ),
                       ],
@@ -297,17 +304,23 @@ class _DatePickerState extends State<DatePicker> {
     if (openTown) {
       for (int i = 0; i < widget.allCountries.length; i++) {
         if (widget.allCountries[i].select) {
-          for (int index = 0; index < widget.allCountries[i].region.length; index++) {
+          for (int index = 0;
+              index < widget.allCountries[i].region.length;
+              index++) {
             if (widget.allCountries[i].region[index].select) {
-              for (int index3 = 0; index3 < widget.allCountries[i].region.length; index3++) {
+              for (int index3 = 0;
+                  index3 < widget.allCountries[i].region.length;
+                  index3++) {
                 if (widget.allCountries[i].region[index].town.isNotEmpty) {
                   townsListWidget.add(
                     Padding(
                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
                       child: GestureDetector(
                         onTap: () {
-                          widget.allCountries[i].region[index].town[index3].select =
-                              !widget.allCountries[i].region[index].town[index3].select;
+                          widget.allCountries[i].region[index].town[index3]
+                                  .select =
+                              !widget.allCountries[i].region[index].town[index3]
+                                  .select;
 
                           widget.onEdit(
                             widget.startDate,
@@ -331,13 +344,18 @@ class _DatePickerState extends State<DatePicker> {
                                     width: 250.w,
                                     child: Text(
                                       user?.rus ?? true
-                                          ? widget.allCountries[i].region[index].town[index3].name!
-                                          : widget.allCountries[i].region[index].town[index3].engName!,
-                                      style: CustomTextStyle.black_14_w400_515150,
+                                          ? widget.allCountries[i].region[index]
+                                              .town[index3].name!
+                                          : widget.allCountries[i].region[index]
+                                              .town[index3].engName!,
+                                      style:
+                                          CustomTextStyle.black_14_w400_515150,
                                     ),
                                   ),
                                   const Spacer(),
-                                  if (widget.allCountries[i].region[index].town[index3].select) const Icon(Icons.check)
+                                  if (widget.allCountries[i].region[index]
+                                      .town[index3].select)
+                                    const Icon(Icons.check)
                                 ],
                               ),
                             ],
@@ -485,9 +503,12 @@ class _DatePickerState extends State<DatePicker> {
                   ),
                 ],
               ),
-              textEditingController:
-                  TextEditingController(text: user?.rus ?? true ? widget.currecy?.name : widget.currecy?.engName),
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              textEditingController: TextEditingController(
+                  text: user?.rus ?? true
+                      ? widget.currecy?.name
+                      : widget.currecy?.engName),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             ),
           ),
           SizedBox(height: 14.h),
@@ -552,12 +573,16 @@ class _DatePickerState extends State<DatePicker> {
                                         SizedBox(
                                           width: 250.w,
                                           child: Text(
-                                            user?.rus ?? true ? e.name! : e.engName!,
-                                            style: CustomTextStyle.black_14_w400_515150,
+                                            user?.rus ?? true
+                                                ? e.name!
+                                                : e.engName!,
+                                            style: CustomTextStyle
+                                                .black_14_w400_515150,
                                           ),
                                         ),
                                         const Spacer(),
-                                        if (widget.currecy?.id == e.id) const Icon(Icons.check)
+                                        if (widget.currecy?.id == e.id)
+                                          const Icon(Icons.check)
                                       ],
                                     ),
                                   ],
@@ -624,7 +649,10 @@ class _DatePickerState extends State<DatePicker> {
                               onFieldSubmitted: (value) {
                                 setState(() {});
                               },
-                              formatters: [FilteringTextInputFormatter.digitsOnly, FormatterCurrency()],
+                              formatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                FormatterCurrency()
+                              ],
                               contentPadding: EdgeInsets.zero,
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
@@ -753,8 +781,10 @@ class _DatePickerState extends State<DatePicker> {
                   ),
                 ],
               ),
-              textEditingController: TextEditingController(text: _countriesString()),
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              textEditingController:
+                  TextEditingController(text: _countriesString()),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             ),
           ),
           SizedBox(height: 14.h),
@@ -834,7 +864,8 @@ class _DatePickerState extends State<DatePicker> {
                                     width: 250.w,
                                     child: Text(
                                       user?.rus ?? true ? e.name! : e.engName!,
-                                      style: CustomTextStyle.black_14_w400_515150,
+                                      style:
+                                          CustomTextStyle.black_14_w400_515150,
                                     ),
                                   ),
                                   const Spacer(),
@@ -897,8 +928,10 @@ class _DatePickerState extends State<DatePicker> {
                         ),
                       ],
                     ),
-                    textEditingController: TextEditingController(text: _regionsString()),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                    textEditingController:
+                        TextEditingController(text: _regionsString()),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                   ),
                 )
               : Container(),
@@ -995,8 +1028,10 @@ class _DatePickerState extends State<DatePicker> {
                         ),
                       ],
                     ),
-                    textEditingController: TextEditingController(text: _townsString()),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                    textEditingController:
+                        TextEditingController(text: _townsString()),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                   ),
                 )
               : Container(),
@@ -1032,28 +1067,38 @@ class _DatePickerState extends State<DatePicker> {
               ),
             ),
           ),
-            Row(
-              children: [
-                const Spacer(),
-                GestureDetector(
-                    onTap: () {
-                      helpOnTopDialog(context, 'raise_ad'.tr(), 'the_impact'.tr());
-                    },
-                    child: SvgPicture.asset(SvgImg.help)),
-              ],
+          Row(
+            children: [
+              const Spacer(),
+              GestureDetector(
+                  onTap: () {
+                    helpOnTopDialog(
+                        context, 'raise_ad'.tr(), 'the_impact'.tr());
+                  },
+                  child: SvgPicture.asset(SvgImg.help)),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          CustomButton(
+            onTap: () {
+              widget.saveTask(true);
+            },
+            btnColor:
+                canRaise ? ColorStyles.purpleA401C4 : ColorStyles.greyDADADA,
+            textLabel: Text(
+              (widget.isCreating
+                      ? (widget.isTask
+                          ? "сreate_a_task_and_raise"
+                          : "create_offer_and_raise")
+                      : (widget.isTask
+                          ? "edit_task_and_raise"
+                          : "edit_offer_and_raise"))
+                  .tr(),
+              style: canRaise
+                  ? CustomTextStyle.white_14
+                  : CustomTextStyle.grey_14_w600,
             ),
-            SizedBox(height: 8.h),
-            CustomButton(
-              onTap: ()  {
-                widget.saveTask(true);
-              },
-              btnColor:canRaise? ColorStyles.purpleA401C4 :ColorStyles.greyDADADA ,
-              textLabel: Text(
-                  (widget.isCreating?(widget.isTask?"сreate_a_task_and_raise":"create_offer_and_raise"):(widget.isTask?"edit_task_and_raise":"edit_offer_and_raise")).tr(),
-                style: canRaise? CustomTextStyle.white_14: CustomTextStyle.grey_14_w600 ,
-              ),
-            ),
-
+          ),
           SizedBox(height: widget.bottomInsets),
         ],
       ),
@@ -1067,7 +1112,8 @@ class _DatePickerState extends State<DatePicker> {
     for (int i = 0; i < widget.allCountries.length; i++) {
       if (widget.allCountries[i].select) {
         selectCount += 1;
-        nameCountriesList.add('${user?.rus ?? true ? widget.allCountries[i].name : widget.allCountries[i].engName}');
+        nameCountriesList.add(
+            '${user?.rus ?? true ? widget.allCountries[i].name : widget.allCountries[i].engName}');
       }
     }
 
@@ -1125,7 +1171,9 @@ class _DatePickerState extends State<DatePicker> {
         for (int j = 0; j < widget.allCountries[i].region.length; j++) {
           if (widget.allCountries[i].region[j].select) {
             {
-              for (int k = 0; k < widget.allCountries[i].region[j].town.length; k++) {
+              for (int k = 0;
+                  k < widget.allCountries[i].region[j].town.length;
+                  k++) {
                 if (widget.allCountries[i].region[j].town[k].select) {
                   {
                     selectCount += 1;

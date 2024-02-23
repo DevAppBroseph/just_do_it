@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,8 +34,7 @@ class _AllTasksViewState extends State<AllTasksView> {
   void getListTask() async {
     List<Task> res = await Repository().getMyTaskList(
         BlocProvider.of<ProfileBloc>(context).access!, widget.asCustomer);
-    for(final element in res){
-    }
+    for (final element in res) {}
     taskList.clear();
     taskList.addAll(res);
     setState(() {});
@@ -108,15 +105,12 @@ class _AllTasksViewState extends State<AllTasksView> {
                                   EdgeInsets.only(top: 15.h, bottom: 100.h),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                return itemTask(
-                                  taskList[index],
-                                  (task) {
-                                    setState(() {
-                                      selectTask = task;
-                                    });
-                                  },
-                                  BlocProvider.of<ProfileBloc>(context).user,context
-                                );
+                                return itemTask(taskList[index], (task) {
+                                  setState(() {
+                                    selectTask = task;
+                                  });
+                                }, BlocProvider.of<ProfileBloc>(context).user,
+                                    context);
                               },
                             ),
                           ),
