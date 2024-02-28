@@ -41,6 +41,9 @@ class _ScorePageState extends State<ScorePage> {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         final user = context.read<ProfileBloc>().user;
+
+        user?.allbalance = 300;
+
         if (user == null) {
           return const Scaffold(
               body: Center(child: CupertinoActivityIndicator()));
@@ -73,6 +76,14 @@ class _ScorePageState extends State<ScorePage> {
             }
 
             String gradeName = scoreBloc.evaluateGradeName(user, levels);
+            int gradeMaxlines = 1;
+            if (gradeName.isNotEmpty) {
+              if (gradeName.contains('Сорвиголова')) {
+                gradeName =
+                    gradeName.replaceFirst('Сорвиголова', 'Сорви голова');
+              }
+              gradeMaxlines = gradeName.split(' ').length;
+            }
 
             return user.allbalance != null
                 ? MediaQuery(
@@ -140,7 +151,7 @@ class _ScorePageState extends State<ScorePage> {
                                         SizedBox(height: 10.h),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                            horizontal: 30.w,
+                                            horizontal: 20.w,
                                           ),
                                           child: Row(
                                             children: [
@@ -198,11 +209,11 @@ class _ScorePageState extends State<ScorePage> {
                                                   // width: 88.5.w,
                                                   child: AutoSizeText(
                                                     gradeName,
-                                                    // 'Zorro',
                                                     style: CustomTextStyle
                                                         .white_21_w700,
                                                     textAlign: TextAlign.start,
-                                                    maxLines: 2,
+                                                    maxLines: gradeMaxlines,
+                                                    // maxLines: 2,
                                                   ),
                                                 ),
                                               ),

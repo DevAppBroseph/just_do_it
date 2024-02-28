@@ -32,13 +32,13 @@ import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TaskPage extends StatefulWidget {
-  Task task;
+  final Task task;
   final Function(Owner?) openOwner;
   final bool canEdit;
   final bool canOnTop;
   final bool fromFav;
 
-  TaskPage({
+  const TaskPage({
     super.key,
     required this.task,
     required this.openOwner,
@@ -62,9 +62,10 @@ class _TaskPageState extends State<TaskPage> {
     super.initState();
     task = widget.task;
     user = BlocProvider.of<ProfileBloc>(context).user;
-    _data=Repository().getTaskById(task.id!,BlocProvider.of<ProfileBloc>(context).access);
+    _data = Repository()
+        .getTaskById(task.id!, BlocProvider.of<ProfileBloc>(context).access);
     context.read<ChatBloc>().stream.listen((state) {
-      if(state is SocketEventReceivedState){
+      if (state is SocketEventReceivedState) {
         getTask();
       }
     });
@@ -72,7 +73,7 @@ class _TaskPageState extends State<TaskPage> {
 
   void getTask() async {
     final access = BlocProvider.of<ProfileBloc>(context).access;
-    task =(await (Repository().getTaskById(task.id!, access)))!;
+    task = (await (Repository().getTaskById(task.id!, access)))!;
     if (mounted) {
       setState(() {});
     }
@@ -87,19 +88,21 @@ class _TaskPageState extends State<TaskPage> {
   bool showMore = false;
   FavouriteOffers? selectFavouriteTask;
   Owner? ownerw;
-  bool taskSnapshotWasInitialized=false;
+  bool taskSnapshotWasInitialized = false;
   getPersonAndTask(bool res, UserRegModel? user) {
     context.read<TasksBloc>().add(UpdateTaskEvent());
     BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     if (res) Navigator.pop(context);
     Navigator.pop(context);
   }
-  void assignSnapshotDataToTaskWhenInitialized(AsyncSnapshot<Task?> snapshot){
-    if(!taskSnapshotWasInitialized){
-      task=snapshot.data!;
-      taskSnapshotWasInitialized=true;
+
+  void assignSnapshotDataToTaskWhenInitialized(AsyncSnapshot<Task?> snapshot) {
+    if (!taskSnapshotWasInitialized) {
+      task = snapshot.data!;
+      taskSnapshotWasInitialized = true;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +144,7 @@ class _TaskPageState extends State<TaskPage> {
                             style: CustomTextStyle.red_11_w400_171716,
                           ),
                         const Spacer(),
-                        if (user?.id != task?.owner?.id)
+                        if (user?.id != task.owner?.id)
                           BlocBuilder<TasksBloc, TasksState>(
                               buildWhen: (previous, current) {
                             if (current is UpdateTask) {
@@ -167,31 +170,31 @@ class _TaskPageState extends State<TaskPage> {
                                     final access =
                                         await Storage().getAccessToken();
 
-                                    if (task?.isLiked != null) {
+                                    if (task.isLiked != null) {
                                       Repository()
                                           .deleteLikeOrder(
-                                              task!.isLiked!, access!)
+                                              task.isLiked!, access!)
                                           .then((isDeleteSuccessful) {
                                         if (isDeleteSuccessful) {
                                           setState(() {
-                                            task?.isLiked = null;
+                                            task.isLiked = null;
                                           });
                                           getTaskList();
                                         }
                                       });
                                     } else {
-                                      task!.isLiked = -1;
+                                      task.isLiked = -1;
                                       final isSuccess = await Repository()
-                                          .addLikeOrder(task!.id!, access!);
+                                          .addLikeOrder(task.id!, access!);
                                       if (isSuccess) {
                                         task = (await Repository()
-                                            .getTaskById(task!.id!, access))!;
+                                            .getTaskById(task.id!, access))!;
                                         setState(() {});
                                         getTaskList();
                                       }
                                     }
                                   },
-                                  child: task?.isLiked != null
+                                  child: task.isLiked != null
                                       ? SvgPicture.asset(
                                           'assets/icons/heart_yellow.svg',
                                           height: 20.h,
@@ -230,15 +233,18 @@ class _TaskPageState extends State<TaskPage> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () async {
-                                final needsUpdateTaskData=await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return EditTasks(
-                                          task: task, customer: task.isTask!);
-                                    },
-                                  ),
-                                )??false;
-                                if(needsUpdateTaskData){
+                                final needsUpdateTaskData =
+                                    await Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return EditTasks(
+                                                  task: task,
+                                                  customer: task.isTask!);
+                                            },
+                                          ),
+                                        ) ??
+                                        false;
+                                if (needsUpdateTaskData) {
                                   getTask();
                                 }
                               },
@@ -576,14 +582,13 @@ class _TaskPageState extends State<TaskPage> {
                                         style: CustomTextStyle.grey_14_w400,
                                       ),
                                       SizedBox(height: 6.h),
-            AutoSizeText(
-            _textCountry(task, user),
-            wrapWords: false,
-            style:  CustomTextStyle
-                .black_12_w400_292D32,
-            maxLines: null,
-            ),
-
+                                      AutoSizeText(
+                                        _textCountry(task, user),
+                                        wrapWords: false,
+                                        style: CustomTextStyle
+                                            .black_12_w400_292D32,
+                                        maxLines: null,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -705,8 +710,8 @@ class _TaskPageState extends State<TaskPage> {
                             chatBloc.editShowPersonChat(false);
                             chatBloc.editChatId(task.chatId);
 
-                            final idChat =
-                                await Navigator.of(context).pushNamed(
+                            // final idChat =
+                            await Navigator.of(context).pushNamed(
                               AppRoute.personalChat,
                               arguments: [
                                 '${task.chatId}',

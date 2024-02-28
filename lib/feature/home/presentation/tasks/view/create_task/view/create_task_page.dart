@@ -28,11 +28,11 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateTaskPage extends StatefulWidget {
-  TaskCategory? selectCategory;
+  final TaskCategory? selectCategory;
   final bool customer;
-  bool doublePop;
+  final bool doublePop;
   final int currentPage;
-  CreateTaskPage({
+  const CreateTaskPage({
     super.key,
     this.selectCategory,
     required this.customer,

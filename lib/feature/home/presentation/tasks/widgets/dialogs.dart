@@ -154,7 +154,8 @@ void taskMoreDialog(
         );
       },
     );
-void scoreDialog(BuildContext context, String score, String action) =>
+void scoreDialogRegistration(BuildContext context, String score, String action,
+        {bool goToAboutProject = false}) =>
     showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),
@@ -241,92 +242,94 @@ void scoreDialog(BuildContext context, String score, String action) =>
         );
       },
     );
-// void scoreDialog(BuildContext context, String score, String action) => showDialog(
-//       useSafeArea: false,
-//       barrierColor: Colors.black.withOpacity(0.1),
-//       barrierDismissible: false,
-//       context: context,
-//       builder: (context) {
-//         return MediaQuery(
-//           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-//           child: AlertDialog(
-//             alignment: Alignment.center,
-//             contentPadding: EdgeInsets.zero,
-//             backgroundColor: Colors.transparent,
-//             elevation: 0,
-//             content: GestureDetector(
-//               child: Stack(
-//                 children: [
-//                   Container(
-//                     width: 500.w,
-//                     height: 350.h,
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       boxShadow: const [
-//                         BoxShadow(
-//                           color: Color.fromRGBO(0, 0, 0, 0.1),
-//                           blurRadius: 10,
-//                           offset: Offset(0, 4),
-//                         )
-//                       ],
-//                       borderRadius: BorderRadius.circular(15.r),
-//                     ),
-//                     child: Padding(
-//                       padding: EdgeInsets.symmetric(horizontal: 17.w),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                         children: [
-//                           Center(
-//                             child: Column(
-//                               children: [
-//                                 Image.asset('assets/images/ranking.png'),
-//                                 SizedBox(
-//                                   height: 30.h,
-//                                 ),
-//                                 if (context.locale.languageCode == 'en')
-//                                   Text(
-//                                     '$score points ${'accrued'.tr()}',
-//                                     style: CustomTextStyle.black_20_w700,
-//                                   ),
-//                                 if (context.locale.languageCode == 'ru')
-//                                   Text(
-//                                     '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-//                                     style: CustomTextStyle.black_20_w700,
-//                                   ),
-//                                 SizedBox(
-//                                   height: 15.h,
-//                                 ),
-//                                 Text(
-//                                   '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-//                                   style: CustomTextStyle.grey_13_w400,
-//                                   textAlign: TextAlign.center,
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                           CustomButton(
-//                             onTap: () async {
-//                               BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent());
-//                               Navigator.of(context).pop();
-//                             },
-//                             btnColor: ColorStyles.purpleA401C4,
-//                             textLabel: Text(
-//                               'well'.tr(),
-//                               style: CustomTextStyle.white_14_w400,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
+void scoreDialog(BuildContext context, String score, String action) =>
+    showDialog(
+      useSafeArea: false,
+      barrierColor: Colors.black.withOpacity(0.1),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            alignment: Alignment.center,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: GestureDetector(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 500.w,
+                    height: 350.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                Image.asset('assets/images/ranking.png'),
+                                SizedBox(
+                                  height: 30.h,
+                                ),
+                                if (context.locale.languageCode == 'en')
+                                  Text(
+                                    '$score points ${'accrued'.tr()}',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
+                                if (context.locale.languageCode == 'ru')
+                                  Text(
+                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                                    style: CustomTextStyle.black_20_w700,
+                                  ),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                Text(
+                                  '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
+                                  style: CustomTextStyle.grey_13_w400,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomButton(
+                            onTap: () async {
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(GetProfileEvent());
+                              Navigator.of(context).pop();
+                            },
+                            btnColor: ColorStyles.purpleA401C4,
+                            textLabel: Text(
+                              'well'.tr(),
+                              style: CustomTextStyle.white_14_w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
 void noMoney(BuildContext context, String action, String text) => showDialog(
       useSafeArea: false,
       barrierColor: Colors.black.withOpacity(0.1),

@@ -14,23 +14,21 @@ import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class TasksPage extends StatefulWidget {
-  Function(int) onSelect;
+  final Function(int) onSelect;
   final int customer;
-  TasksPage({super.key, required this.onSelect, required this.customer});
+  const TasksPage({super.key, required this.onSelect, required this.customer});
 
   @override
   State<TasksPage> createState() => _TasksPageState();
 }
 
 class _TasksPageState extends State<TasksPage> {
-  
   bool customerFlag = false;
   bool contractorFlag = false;
   final streamController = StreamController<int>();
   final PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
-    
     Size size = MediaQuery.of(context).size;
 
     return MediaQuery(
@@ -71,18 +69,19 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(AppRoute.menu, arguments: [widget.onSelect, true]).then((value) {
-
-                                        if (value != null) {
+                                  Navigator.of(context).pushNamed(AppRoute.menu,
+                                      arguments: [
+                                        widget.onSelect,
+                                        true
+                                      ]).then((value) {
+                                    if (value != null) {
                                       Navigator.of(context).pop();
                                       if (value == 'create') {
                                         widget.onSelect(0);
                                       }
                                       if (value == 'search') {
                                         widget.onSelect(1);
-                                      }
-                                      else if (value == 'tasks') {
+                                      } else if (value == 'tasks') {
                                         widget.onSelect(2);
                                       }
                                       if (value == 'chat') {
@@ -92,7 +91,8 @@ class _TasksPageState extends State<TasksPage> {
                                     }
                                   });
                                 },
-                                child: SvgPicture.asset('assets/icons/category2.svg')),
+                                child: SvgPicture.asset(
+                                    'assets/icons/category2.svg')),
                           ),
                         ],
                       ),
@@ -110,13 +110,16 @@ class _TasksPageState extends State<TasksPage> {
                             width: 150.w,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: snapshot.data! == 1 ? ColorStyles.whiteFFFFFF : ColorStyles.yellowFFD70A,
+                              color: snapshot.data! == 1
+                                  ? ColorStyles.whiteFFFFFF
+                                  : ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.r),
                                 bottomLeft: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('i_am_the_customer'.tr(), style: CustomTextStyle.black_14_w400_171716),
+                            child: Text('i_am_the_customer'.tr(),
+                                style: CustomTextStyle.black_14_w400_171716),
                           ),
                         ),
                         GestureDetector(
@@ -128,55 +131,61 @@ class _TasksPageState extends State<TasksPage> {
                             width: 150.w,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: snapshot.data! == 0 ? ColorStyles.whiteFFFFFF : ColorStyles.yellowFFD70A,
+                              color: snapshot.data! == 0
+                                  ? ColorStyles.whiteFFFFFF
+                                  : ColorStyles.yellowFFD70A,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20.r),
                                 bottomRight: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('i_am_executor'.tr(), style: CustomTextStyle.black_14_w400_171716),
+                            child: Text('i_am_executor'.tr(),
+                                style: CustomTextStyle.black_14_w400_171716),
                           ),
                         ),
                         const Spacer(),
                       ],
                     ),
                     BlocBuilder<ProfileBloc, ProfileState>(
-  builder: (context, state) {
-    final user=context.read<ProfileBloc>().user;
-    if(user==null){
-      return const Expanded(child: Center(child: CupertinoActivityIndicator(),),);
-    }
-    return Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: PageView(
-                          controller: pageController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            Contractor(
-                                size: size,
-                                callBacK: callBacK,
-                                callBackFlag: () {
-                                  setState(() {
-                                    contractorFlag = true;
-                                  });
-                                }),
-                            Customer(
-                              size: size,
-                              callBacK: callBacK,
-                              callBackFlag: () {
-                                setState(() {
-                                   customerFlag = true;
-                                });
-
-                              },
+                      builder: (context, state) {
+                        final user = context.read<ProfileBloc>().user;
+                        if (user == null) {
+                          return const Expanded(
+                            child: Center(
+                              child: CupertinoActivityIndicator(),
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-  },
-),
+                          );
+                        }
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: PageView(
+                              controller: pageController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                Contractor(
+                                    size: size,
+                                    callBacK: callBacK,
+                                    callBackFlag: () {
+                                      setState(() {
+                                        contractorFlag = true;
+                                      });
+                                    }),
+                                Customer(
+                                  size: size,
+                                  callBacK: callBacK,
+                                  callBackFlag: () {
+                                    setState(() {
+                                      customerFlag = true;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -189,7 +198,8 @@ class _TasksPageState extends State<TasksPage> {
 
   void callBacK(int page) {
     streamController.sink.add(page);
-    pageController.animateToPage(page, duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+    pageController.animateToPage(page,
+        duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
     setState(() {});
   }
 }

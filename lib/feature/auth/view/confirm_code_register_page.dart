@@ -145,7 +145,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
 
             Navigator.of(context)
                 .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
-            scoreDialog(context, '200', 'registrations'.tr());
+            scoreDialogRegistration(context, '200', 'registrations'.tr());
             if (context.read<AuthBloc>().refCode != null) {
               scoreDialog(
                   context, '100', 'registrations_by_referral_link'.tr());
