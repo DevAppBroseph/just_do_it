@@ -252,7 +252,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${'confrim_phone'.tr()} ',
+                // '${'confrim_phone'.tr()} ',
+                'restoring_access'.tr(),
                 style: CustomTextStyle.black_22_w700,
               )
             ],

@@ -42,8 +42,6 @@ class _ScorePageState extends State<ScorePage> {
       builder: (context, state) {
         final user = context.read<ProfileBloc>().user;
 
-        user?.allbalance = 300;
-
         if (user == null) {
           return const Scaffold(
               body: Center(child: CupertinoActivityIndicator()));
