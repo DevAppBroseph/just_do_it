@@ -50,3 +50,6 @@ analysis_options.yaml
 .metadata
 .packages
 pubspec.lock
+
+# FVM Version Cache
+.fvm/

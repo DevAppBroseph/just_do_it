@@ -30,20 +30,28 @@ import 'package:just_do_it/services/language/main_config_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+  await EasyLocalization.ensureInitialized();
+  // await Firebase.initializeApp();
+
+  // await FirebaseMessaging.instance.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+
+  // await FirebaseMessaging.instance.getToken().then(
+  //   (value) {
+  //     print(value);
+  //   },
+  // );
+
   await getItSetup();
   runApp(
     EasyLocalization(
