@@ -34,23 +34,27 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   await EasyLocalization.ensureInitialized();
-  // await Firebase.initializeApp();
 
-  // await FirebaseMessaging.instance.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
+  try {
+    await Firebase.initializeApp();
 
-  // await FirebaseMessaging.instance.getToken().then(
-  //   (value) {
-  //     print(value);
-  //   },
-  // );
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    await FirebaseMessaging.instance.getToken().then((value) => print(value));
+    FirebaseMessaging.onMessage.listen((event) {
+      print('on message');
+    });
+  } catch (e) {
+    print(e);
+  }
 
   await getItSetup();
   runApp(
