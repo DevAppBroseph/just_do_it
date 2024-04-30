@@ -372,5 +372,6 @@
   "wrong_credentials_or_usernotfound": "Wrong credentials or user not found",
   "dialog_bonus_info": "For being an early adopter! We are granting you {} bonus points and other exclusive benefits! Please check \n“About the project” for details",
   "thank_you_for_trust": "Thank you!",
-  "about_project": "About the project"
+  "about_project": "About the project",
+  "app_version": "App version"
 }

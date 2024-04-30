@@ -191,6 +191,31 @@ class _AboutProjectState extends State<AboutProject> {
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 40.w,
+                          vertical: 27.w,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              '${'app_version'.tr()}: ',
+                              style: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Flexible(
+                              child: Text(
+                                appVersion,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 175.h),
                     ],
                   ),

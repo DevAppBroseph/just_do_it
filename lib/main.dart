@@ -48,12 +48,12 @@ void main() async {
       sound: true,
     );
 
-    await FirebaseMessaging.instance.getToken().then((value) => print(value));
-    FirebaseMessaging.onMessage.listen((event) {
-      print('on message');
-    });
+    // await FirebaseMessaging.instance.getToken().then((value) => print(value));
+    // FirebaseMessaging.onMessage.listen((event) {
+    //   print('on message');
+    // });
   } catch (e) {
-    print(e);
+    // print(e);
   }
 
   await getItSetup();

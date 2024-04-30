@@ -130,7 +130,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _editPassword(EditPasswordEvent event, Emitter<AuthState> emit) async {
-    print('editing password');
     bool res = await Repository()
         .editPassword(event.password, event.token, event.fcmToken);
     if (res) {

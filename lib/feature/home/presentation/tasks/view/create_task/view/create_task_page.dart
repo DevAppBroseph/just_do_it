@@ -519,7 +519,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           if (documentIndex != null) {
                             documents.removeAt(documentIndex);
                           }
-
                           setState(() {});
                         },
                         customer: isTask,
