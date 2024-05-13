@@ -148,6 +148,7 @@ class _OrdersCreateAsCustomerViewState
             setState(() {});
           },
           canEdit: true,
+          showResponses: true,
         ),
       );
     }

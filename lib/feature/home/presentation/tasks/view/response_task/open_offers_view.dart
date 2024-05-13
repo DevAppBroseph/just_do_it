@@ -40,7 +40,7 @@ class _OpenOffersState extends State<OpenOffers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: ColorStyles.greyEAECEE,
       body: Stack(
         children: [
           SafeArea(
@@ -102,15 +102,12 @@ class _OpenOffersState extends State<OpenOffers> {
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 if (user?.openOffers != []) {
-                                  return itemTask(
-                                    user!.openOffers![index],
-                                    (task) {
-                                      setState(() {
-                                        selectTask = task;
-                                      });
-                                    },
-                                    user!,context
-                                  );
+                                  return itemTask(user!.openOffers![index],
+                                      (task) {
+                                    setState(() {
+                                      selectTask = task;
+                                    });
+                                  }, user!, context);
                                 }
                                 return Container();
                               },
@@ -146,6 +143,7 @@ class _OpenOffersState extends State<OpenOffers> {
             setState(() {});
           },
           canEdit: true,
+          showResponses: true,
         ),
       );
     }

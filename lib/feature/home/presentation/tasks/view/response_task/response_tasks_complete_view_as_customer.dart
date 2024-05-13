@@ -147,6 +147,7 @@ class _ResponseTasksCompleteViewAsCustomerState
           },
           canEdit: true,
           canOnTop: false,
+          showResponses: true,
         ),
       );
     }

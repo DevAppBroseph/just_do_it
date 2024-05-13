@@ -134,11 +134,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           maxHeight: heightPanel,
           minHeight: 0.h,
           border: Border.all(color: Colors.transparent),
-          // parallaxEnabled: true,
           backdropEnabled: true,
           backdropColor: Colors.black,
           backdropOpacity: 0.8,
           defaultPanelState: PanelState.CLOSED,
+          parallaxEnabled: true,
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
         );
       });
     });
@@ -345,54 +348,54 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(height: 30.h),
             ],
           ),
-          if (MediaQuery.of(context).viewInsets.bottom > 0 &&
-              (focusCoastMin.hasFocus ||
-                  focusCoastMax.hasFocus ||
-                  focusCoastKeyWord.hasFocus))
-            Column(
-              children: [
-                const Spacer(),
-                AnimatedPadding(
-                  duration: const Duration(milliseconds: 0),
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          color: Colors.grey[200],
-                          child: MediaQuery(
-                            data: MediaQuery.of(context)
-                                .copyWith(textScaleFactor: 1.0),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: InkWell(
-                                  onTap: () {
-                                    FocusScope.of(context).unfocus();
-                                    slide = false;
-                                    proverka = false;
+          // if (MediaQuery.of(context).viewInsets.bottom > 0 &&
+          //     (focusCoastMin.hasFocus ||
+          //         focusCoastMax.hasFocus ||
+          //         focusCoastKeyWord.hasFocus))
+          //   Column(
+          //     children: [
+          //       const Spacer(),
+          //       AnimatedPadding(
+          //         duration: const Duration(milliseconds: 100),
+          //         padding: EdgeInsets.only(
+          //             bottom: MediaQuery.of(context).viewInsets.bottom),
+          //         child: Row(
+          //           children: [
+          //             Expanded(
+          //               child: Container(
+          //                 color: Colors.grey[200],
+          //                 child: MediaQuery(
+          //                   data: MediaQuery.of(context)
+          //                       .copyWith(textScaleFactor: 1.0),
+          //                   child: Align(
+          //                     alignment: Alignment.centerRight,
+          //                     child: Padding(
+          //                       padding: const EdgeInsets.all(5),
+          //                       child: InkWell(
+          //                         onTap: () {
+          //                           FocusScope.of(context).unfocus();
+          //                           slide = false;
+          //                           proverka = false;
 
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 9.0,
-                                        horizontal: 12.0,
-                                      ),
-                                      child: Text('done'.tr())),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
+          //                           setState(() {});
+          //                         },
+          //                         child: Container(
+          //                             padding: const EdgeInsets.symmetric(
+          //                               vertical: 9.0,
+          //                               horizontal: 12.0,
+          //                             ),
+          //                             child: Text('done'.tr())),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   )
         ],
       ),
     );
@@ -891,10 +894,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                                 const Duration(
                                                     milliseconds: 200), () {
                                               mainScrollController.animateTo(
-                                                  heightPanel,
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  curve: Curves.linear);
+                                                heightPanel,
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                curve: Curves.linear,
+                                              );
                                             });
                                             setState(() {});
                                           },

@@ -149,6 +149,7 @@ class _OrdersCompleteAsExecutorViewState
           },
           canEdit: false,
           canOnTop: false,
+          showResponses: true,
         ),
       );
     }

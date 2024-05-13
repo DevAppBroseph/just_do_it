@@ -149,6 +149,7 @@ class _MyAnswersSelectedAsExecutorViewState
             setState(() {});
           },
           canEdit: false,
+          showResponses: true,
         ),
       );
     }

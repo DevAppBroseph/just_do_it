@@ -15,8 +15,11 @@ class MyAnswersAsExecutorView extends StatefulWidget {
   final bool asCustomer;
   final String title;
 
-  const MyAnswersAsExecutorView(
-      {super.key, required this.asCustomer, required this.title});
+  const MyAnswersAsExecutorView({
+    super.key,
+    required this.asCustomer,
+    required this.title,
+  });
 
   @override
   State<MyAnswersAsExecutorView> createState() =>
@@ -155,6 +158,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
             setState(() {});
           },
           canEdit: false,
+          showResponses: true,
         ),
       );
     }

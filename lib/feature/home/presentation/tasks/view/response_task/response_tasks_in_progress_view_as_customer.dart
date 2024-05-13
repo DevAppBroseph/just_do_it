@@ -149,6 +149,7 @@ class _ResponseTasksInProgressViewAsCustomerState
             setState(() {});
           },
           canEdit: false,
+          showResponses: true,
         ),
       );
     }

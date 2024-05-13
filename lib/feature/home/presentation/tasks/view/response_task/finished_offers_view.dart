@@ -145,6 +145,7 @@ class _FinishedOffersState extends State<FinishedOffers> {
             setState(() {});
           },
           canEdit: true,
+          showResponses: true,
         ),
       );
     }

@@ -349,7 +349,9 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: GestureDetector(
                               onTap: () {
-                                context.read<ProfileBloc>().add(GetProfileEvent());
+                                context
+                                    .read<ProfileBloc>()
+                                    .add(GetProfileEvent());
                               },
                               child: Text(
                                 'my_offers'.tr(),
@@ -619,15 +621,17 @@ class _CustomerState extends State<Customer> {
                                                 FavouritesState>(
                                             builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders =
-                                                state.favourite?.favouriteOrder??[];
+                                            final favouritesOrders = state
+                                                    .favourite
+                                                    ?.favouriteOrder ??
+                                                [];
                                             return Padding(
                                               padding:
                                                   EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length
+                                                  favouritesOrders.length
                                                       .toString(),
                                                   style: CustomTextStyle
                                                       .black_13_w400_171716,
@@ -680,15 +684,16 @@ class _CustomerState extends State<Customer> {
                                                 FavouritesState>(
                                             builder: (context, state) {
                                           if (state is FavouritesLoaded) {
-                                            final favouritesOrders =
-                                                state.favourite?.favoriteUsers??[];
+                                            final favouritesOrders = state
+                                                    .favourite?.favoriteUsers ??
+                                                [];
                                             return Padding(
                                               padding:
                                                   EdgeInsets.only(right: 6.w),
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length
+                                                  favouritesOrders.length
                                                       .toString(),
                                                   style: CustomTextStyle
                                                       .black_13_w400_171716,
@@ -726,7 +731,7 @@ class _CustomerState extends State<Customer> {
                     final res = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CreateTaskPage(
+                          return const CreateTaskPage(
                             customer: false,
                             doublePop: true,
                             currentPage: 4,

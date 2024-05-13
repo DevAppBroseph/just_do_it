@@ -147,6 +147,7 @@ class _SelectedOffersAsCustomerState extends State<SelectedOffersAsCustomer> {
             setState(() {});
           },
           canEdit: false,
+          showResponses: false,
         ),
       );
     }

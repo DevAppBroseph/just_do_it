@@ -148,6 +148,7 @@ class _FinishedOffersViewAsCustomerState
             setState(() {});
           },
           canEdit: false,
+          showResponses: false,
         ),
       );
     }

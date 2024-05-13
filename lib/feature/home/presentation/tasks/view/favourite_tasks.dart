@@ -213,6 +213,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
           },
           canEdit: false,
           fromFav: true,
+          showResponses: true,
         ),
       );
     }

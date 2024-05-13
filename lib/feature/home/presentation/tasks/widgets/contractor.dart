@@ -24,13 +24,14 @@ import '../../../../../network/repository.dart';
 
 class Contractor extends StatefulWidget {
   final Size size;
-  Function(int) callBacK;
-  Function() callBackFlag;
-  Contractor(
-      {super.key,
-      required this.size,
-      required this.callBacK,
-      required this.callBackFlag});
+  final Function(int) callBacK;
+  final Function() callBackFlag;
+  const Contractor({
+    super.key,
+    required this.size,
+    required this.callBacK,
+    required this.callBackFlag,
+  });
 
   @override
   State<Contractor> createState() => _ContractorState();
@@ -572,7 +573,7 @@ class _ContractorState extends State<Contractor> {
                                               child: SizedBox(
                                                 width: 35.w,
                                                 child: Text(
-                                                  favouritesOrders!.length
+                                                  favouritesOrders.length
                                                       .toString(),
                                                   style: CustomTextStyle
                                                       .black_13_w400_171716,

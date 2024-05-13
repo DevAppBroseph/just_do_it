@@ -145,6 +145,7 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
             setState(() {});
           },
           canEdit: true,
+          showResponses: true,
         ),
       );
     }

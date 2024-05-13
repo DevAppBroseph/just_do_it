@@ -37,6 +37,7 @@ class TaskPage extends StatefulWidget {
   final bool canEdit;
   final bool canOnTop;
   final bool fromFav;
+  final bool showResponses;
 
   const TaskPage({
     super.key,
@@ -45,6 +46,7 @@ class TaskPage extends StatefulWidget {
     this.canEdit = false,
     this.fromFav = false,
     this.canOnTop = true,
+    this.showResponses = false,
   });
 
   @override
@@ -97,7 +99,7 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   void assignSnapshotDataToTaskWhenInitialized(AsyncSnapshot<Task?> snapshot) {
-    if (!taskSnapshotWasInitialized) {
+    if (!taskSnapshotWasInitialized && snapshot.data != null) {
       task = snapshot.data!;
       taskSnapshotWasInitialized = true;
     }
@@ -110,6 +112,7 @@ class _TaskPageState extends State<TaskPage> {
       body: FutureBuilder(
           future: _data,
           builder: (context, snapshot) {
+            print(snapshot);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CupertinoActivityIndicator());
             } else if (snapshot.hasError) {
@@ -740,21 +743,23 @@ class _TaskPageState extends State<TaskPage> {
                     ),
                     SizedBox(height: 18.h),
                     ReviewCreationWidget(
-                        task: task,
-                        isTaskOwner: isTaskOwner,
-                        openOwner: widget.openOwner),
-                    ReviewOverviewWidget(
                       task: task,
                       isTaskOwner: isTaskOwner,
                       openOwner: widget.openOwner,
-                      canEdit: widget.canEdit,
-                      getTask: getTask,
-                      onNewUser: (newUser) {
-                        setState(() {
-                          user = newUser;
-                        });
-                      },
                     ),
+                    if (widget.showResponses)
+                      ReviewOverviewWidget(
+                        task: task,
+                        isTaskOwner: isTaskOwner,
+                        openOwner: widget.openOwner,
+                        canEdit: widget.canEdit,
+                        getTask: getTask,
+                        onNewUser: (newUser) {
+                          setState(() {
+                            user = newUser;
+                          });
+                        },
+                      ),
                   ],
                 ),
               ),
