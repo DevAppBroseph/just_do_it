@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ConfirmCodeResetEvent>(_confirmCodeReset);
     on<EditPasswordEvent>(_editPassword);
     on<GoogleSignInEvent>(_googleSignIn);
+    on<AppleSignInEvent>(_appleSignIn);
   }
 
   List<TaskCategory> categories = [];
@@ -27,6 +28,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String? sendCodeServer;
 
   void setRef(int? value) => refCode = value;
+
+  void _appleSignIn(AppleSignInEvent event, Emitter<AuthState> emit) async {
+    try {
+      final response = await Repository().appleSignIn(
+        event.email,
+        event.firstname,
+        event.lastname,
+      );
+      if (response != null) {
+        emit(AppleSignInSuccessState(response['token']['access']));
+      } else {
+        emit(AppleSignInErrorState('Error signing in with Apple'));
+      }
+    } catch (e) {
+      emit(AppleSignInErrorState(e.toString()));
+    }
+  }
+
   void _googleSignIn(GoogleSignInEvent event, Emitter<AuthState> emit) async {
     try {
       final response = await Repository().googleSignIn(event.idToken);

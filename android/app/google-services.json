@@ -6,6 +6,10 @@
   },
   "client": [
     {
+      "client_id": "1065752035386-dgquegoolbtns0cbee7t0qtauu7fh23v.apps.googleusercontent.com",
+      "client_type": 3
+    },
+    {
       "client_info": {
         "mobilesdk_app_id": "1:1065752035386:android:07324b22e7bf4d3d75b503",
         "android_client_info": {

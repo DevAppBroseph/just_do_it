@@ -2,6 +2,26 @@ part of 'auth_bloc.dart';
 
 class AuthEvent {}
 
+class AppleSignInEvent extends AuthEvent {
+  final String email;
+  final String firstname;
+  final String lastname;
+
+  AppleSignInEvent(this.email, this.firstname, this.lastname);
+}
+
+class AppleSignInSuccessState extends AuthState {
+  final String accessToken;
+
+  AppleSignInSuccessState(this.accessToken);
+}
+
+class AppleSignInErrorState extends AuthState {
+  final String errorMessage;
+
+  AppleSignInErrorState(this.errorMessage);
+}
+
 class GoogleSignInEvent extends AuthEvent {
   final String idToken;
 

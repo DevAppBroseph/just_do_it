@@ -11,6 +11,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
+import 'package:just_do_it/feature/auth/view/apple_sign_in.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -20,10 +21,10 @@ class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() => _MainAuthPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _MainAuthPageState extends State<AuthPage> {
+class _AuthPageState extends State<AuthPage> {
   final visiblePasswordController = StreamController<bool>();
   bool visiblePassword = false;
   bool forgotPassword = false;
@@ -69,6 +70,12 @@ class _MainAuthPageState extends State<AuthPage> {
               .pushNamedAndRemoveUntil(AppRoute.home, ((route) => false));
         } else if (current is SignInErrorState) {
           customAlert.showMessage('wrong_credentials_or_usernotfound'.tr());
+        } else if (current is GoogleSignInSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.accessToken);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+        } else if (current is GoogleSignInErrorState) {
+          customAlert.showMessage(current.errorMessage);
         }
         return false;
       }, builder: (context, snapshot) {
@@ -145,8 +152,6 @@ class _MainAuthPageState extends State<AuthPage> {
                               forgotPassword = false;
                             });
                           } else {
-                            // scoreDialog(context, '50', 'registrations'.tr());
-                            // //KTODO
                             Navigator.of(context).pushNamed(AppRoute.signUp);
                           }
                         },
@@ -237,7 +242,8 @@ class _MainAuthPageState extends State<AuthPage> {
             ),
           ],
         ),
-        GoogleSignInButton()
+        const GoogleSignInButton(),
+        const AppleSignInButton(),
       ],
     );
   }
@@ -279,20 +285,21 @@ class _MainAuthPageState extends State<AuthPage> {
 }
 
 class GoogleSignInButton extends StatelessWidget {
+  const GoogleSignInButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        // Получаем idToken через GoogleSignIn API
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser!.authentication;
-        final String idToken = googleAuth.idToken!;
-
-        // Отправляем событие GoogleSignInEvent
-        context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth =
+              await googleUser.authentication;
+          final String idToken = googleAuth.idToken!;
+          context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
+        }
       },
-      child: Text('Google'),
+      child: const Text('Sign in with Google'),
     );
   }
 }

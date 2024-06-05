@@ -13,7 +13,6 @@ import 'package:just_do_it/widget/dialog.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'chat_event.dart';
-
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -151,7 +150,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } catch (_) {}
       },
       onDone: () {
-        debugPrint('on done in websocket');
+        //debugPrint('on done in websocket');
         _tryConnect();
       },
       onError: (e) {
@@ -162,7 +161,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _closeSocket(CloseSocketEvent eventBloc, Emitter<ChatState> emit) async {
-    debugPrint('closing socket intentianally');
+    //debugPrint('closing socket intentianally');
     channel?.sink.close();
   }
 

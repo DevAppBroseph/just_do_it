@@ -50,11 +50,42 @@ class Repository {
     }
   }
 
+  Future<Map<String, dynamic>?> appleSignIn(
+    String email,
+    String firstname,
+    String lastname,
+  ) async {
+    try {
+      final response = await _dio.post(
+        'http://app.jobyfine.me/social-auth/apple-signin/',
+        data: {
+          'email': email,
+          'firstname': firstname,
+          'lastname': lastname,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> googleSignIn(String idToken) async {
     try {
       final response = await _dio.post(
-        'http://app.jobyfine.me/social_auth/google-signin/',
+        'http://95.142.45.4/social-auth/google-signin/',
         data: {'id_token': idToken},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
