@@ -50,6 +50,24 @@ class Repository {
     }
   }
 
+  Future<Map<String, dynamic>?> googleSignIn(String idToken) async {
+    try {
+      final response = await _dio.post(
+        'http://app.jobyfine.me/social_auth/google-signin/',
+        data: {'id_token': idToken},
+      );
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return null;
+    }
+  }
+
   // регистрация профиля
   // auth/ post
   Future<Map<String, dynamic>?> confirmRegister(

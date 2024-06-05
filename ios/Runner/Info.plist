@@ -31,10 +31,13 @@
 			<string>jobyfine.page.link</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+                <string>com.googleusercontent.apps.AIzaSyC1J52m6851A8XHGQVNR8h4xMICNzz1Utw</string>
 				<string>https</string>
 			</array>
 		</dict>
 	</array>
+	<key>GIDClientID</key>
+    <string>YOUR_CLIENT_ID</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>

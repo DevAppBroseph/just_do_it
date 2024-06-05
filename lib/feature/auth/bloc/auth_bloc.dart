@@ -3,6 +3,7 @@ import 'package:just_do_it/feature/auth/data/register_confirmation_method.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
+
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -17,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckUserExistEvent>(_checkUser);
     on<ConfirmCodeResetEvent>(_confirmCodeReset);
     on<EditPasswordEvent>(_editPassword);
+    on<GoogleSignInEvent>(_googleSignIn);
   }
 
   List<TaskCategory> categories = [];
@@ -25,6 +27,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String? sendCodeServer;
 
   void setRef(int? value) => refCode = value;
+  void _googleSignIn(GoogleSignInEvent event, Emitter<AuthState> emit) async {
+    try {
+      final response = await Repository().googleSignIn(event.idToken);
+      if (response != null) {
+        emit(GoogleSignInSuccessState(response['token']['access']));
+      } else {
+        emit(GoogleSignInErrorState('Error signing in with Google'));
+      }
+    } catch (e) {
+      emit(GoogleSignInErrorState(e.toString()));
+    }
+  }
 
   void _sendProfile(SendProfileEvent event, Emitter<AuthState> emit) async {
     await sendCodeForConfirmation(event);

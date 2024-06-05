@@ -4,6 +4,18 @@ class AuthState {}
 
 class AuthInitState extends AuthState {}
 
+class GoogleSignInSuccessState extends AuthState {
+  final String accessToken;
+
+  GoogleSignInSuccessState(this.accessToken);
+}
+
+class GoogleSignInErrorState extends AuthState {
+  final String errorMessage;
+
+  GoogleSignInErrorState(this.errorMessage);
+}
+
 class SendProfileSuccessState extends AuthState {
   SendProfileEvent sendProfileEvent;
   SendProfileSuccessState(this.sendProfileEvent);

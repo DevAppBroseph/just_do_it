@@ -2,6 +2,12 @@ part of 'auth_bloc.dart';
 
 class AuthEvent {}
 
+class GoogleSignInEvent extends AuthEvent {
+  final String idToken;
+
+  GoogleSignInEvent(this.idToken);
+}
+
 class SendProfileEvent extends AuthEvent {
   UserRegModel userRegModel;
   String token;

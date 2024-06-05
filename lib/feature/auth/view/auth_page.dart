@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
@@ -236,6 +237,7 @@ class _MainAuthPageState extends State<AuthPage> {
             ),
           ],
         ),
+        GoogleSignInButton()
       ],
     );
   }
@@ -272,6 +274,25 @@ class _MainAuthPageState extends State<AuthPage> {
           ),
         )
       ],
+    );
+  }
+}
+
+class GoogleSignInButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        // Получаем idToken через GoogleSignIn API
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser!.authentication;
+        final String idToken = googleAuth.idToken!;
+
+        // Отправляем событие GoogleSignInEvent
+        context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
+      },
+      child: Text('Google'),
     );
   }
 }
