@@ -4,6 +4,18 @@ class AuthState {}
 
 class AuthInitState extends AuthState {}
 
+class AppleSignInSuccessState extends AuthState {
+  final String accessToken;
+
+  AppleSignInSuccessState(this.accessToken);
+}
+
+class AppleSignInErrorState extends AuthState {
+  final String errorMessage;
+
+  AppleSignInErrorState(this.errorMessage);
+}
+
 class GoogleSignInSuccessState extends AuthState {
   final String accessToken;
 

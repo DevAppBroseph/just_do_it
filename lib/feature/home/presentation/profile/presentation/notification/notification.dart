@@ -113,7 +113,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                   SizedBox(
                                                     width: 190.w,
                                                     child: Text(
-                                                      user!.rus!
+                                                      user.rus!
                                                           ? notifications![
                                                                       index]
                                                                   .text ??

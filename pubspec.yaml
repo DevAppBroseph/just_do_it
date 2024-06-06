@@ -42,15 +42,16 @@ dependencies:
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^6.1.0
   lottie: ^2.0.0
+  firebase_auth: ^5.0.0
   image_picker: ^0.8.5+3
   file_picker: ^4.0.0
   fluttertoast: ^8.0.9
   web_socket_channel: ^2.3.0
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.10.0
-  firebase_messaging: ^14.4.1
+  firebase_core: ^3.0.0
+  firebase_messaging: ^15.0.0
   # flutter_local_notifications: ^12.0.4
-  firebase_dynamic_links: ^5.1.1
+  firebase_dynamic_links: ^6.0.0
   skeleton_loader: ^2.0.0+4
   #firebase_analytics: ^10.7.0
   share_plus: ^4.5.3

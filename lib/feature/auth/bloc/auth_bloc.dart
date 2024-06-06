@@ -28,7 +28,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String? sendCodeServer;
 
   void setRef(int? value) => refCode = value;
-
   void _appleSignIn(AppleSignInEvent event, Emitter<AuthState> emit) async {
     try {
       final response = await Repository().appleSignIn(

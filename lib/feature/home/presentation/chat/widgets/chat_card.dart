@@ -49,7 +49,7 @@ class ChatCard extends StatelessWidget {
                     ? ''
                     : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                 '${chat.chatWith?.id}',
-                '${server}${chat.chatWith?.photo}',
+                '$server${chat.chatWith?.photo}',
                 chat.category,
               ],
             );
@@ -170,7 +170,7 @@ class ChatCard extends StatelessWidget {
                           if (chat.category != null) ...[
                             () {
                               return Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 4),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
@@ -185,7 +185,7 @@ class ChatCard extends StatelessWidget {
                                           height: 16,
                                           width: 16,
                                           child: Image.network(
-                                              server + category!.photo!)),
+                                              server + category.photo!)),
                                     ],
                                     const SizedBox(
                                       width: 4,
@@ -195,8 +195,8 @@ class ChatCard extends StatelessWidget {
                                               true &&
                                                   context.locale.languageCode ==
                                                       'ru'
-                                          ? category?.description ?? '-'
-                                          : category?.engDescription ?? '-',
+                                          ? category.description ?? '-'
+                                          : category.engDescription ?? '-',
                                       style:
                                           CustomTextStyle.black_12_w400_292D32,
                                       softWrap: true,

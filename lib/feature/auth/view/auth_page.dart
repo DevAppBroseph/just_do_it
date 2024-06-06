@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/firebase/fcm.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/view/apple_sign_in.dart';
+import 'package:just_do_it/feature/auth/view/google_sign_in.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
@@ -242,7 +242,13 @@ class _AuthPageState extends State<AuthPage> {
             ),
           ],
         ),
+        const SizedBox(
+          height: 20,
+        ),
         const GoogleSignInButton(),
+        const SizedBox(
+          height: 20,
+        ),
         const AppleSignInButton(),
       ],
     );
@@ -280,26 +286,6 @@ class _AuthPageState extends State<AuthPage> {
           ),
         )
       ],
-    );
-  }
-}
-
-class GoogleSignInButton extends StatelessWidget {
-  const GoogleSignInButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        if (googleUser != null) {
-          final GoogleSignInAuthentication googleAuth =
-              await googleUser.authentication;
-          final String idToken = googleAuth.idToken!;
-          context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
-        }
-      },
-      child: const Text('Sign in with Google'),
     );
   }
 }

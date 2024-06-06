@@ -7,19 +7,11 @@ class AppleSignInEvent extends AuthEvent {
   final String firstname;
   final String lastname;
 
-  AppleSignInEvent(this.email, this.firstname, this.lastname);
-}
-
-class AppleSignInSuccessState extends AuthState {
-  final String accessToken;
-
-  AppleSignInSuccessState(this.accessToken);
-}
-
-class AppleSignInErrorState extends AuthState {
-  final String errorMessage;
-
-  AppleSignInErrorState(this.errorMessage);
+  AppleSignInEvent({
+    required this.email,
+    required this.firstname,
+    required this.lastname,
+  });
 }
 
 class GoogleSignInEvent extends AuthEvent {

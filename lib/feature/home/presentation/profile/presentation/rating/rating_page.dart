@@ -401,7 +401,7 @@ class _RatingPageState extends State<RatingPage> {
                                   SvgPicture.asset('assets/icons/star.svg'),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    reviews!.ranking == null
+                                    reviews.ranking == null
                                         ? '-'
                                         : (reviews.ranking!).toString(),
                                     style: CustomTextStyle.black_20_w600,
