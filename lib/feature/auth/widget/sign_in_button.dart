@@ -29,30 +29,9 @@ class SignInButton extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),
       ),
-      child: ElevatedButton.icon(
-        icon: icon,
-        label: Text(
-          buttonText,
-          style: const TextStyle(
-            fontSize: 16,
-            fontFamily: 'Roboto',
-            color: Colors.black,
-          ),
-        ),
+      child: ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          disabledForegroundColor: Colors.grey.withOpacity(0.38),
-          disabledBackgroundColor: Colors.grey.withOpacity(0.12),
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.04,
-            vertical: 8,
-          ),
-        ),
+        child: icon,
       ),
     );
   }

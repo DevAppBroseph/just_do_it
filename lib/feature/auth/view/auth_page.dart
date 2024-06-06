@@ -76,6 +76,12 @@ class _AuthPageState extends State<AuthPage> {
               .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
         } else if (current is GoogleSignInErrorState) {
           customAlert.showMessage(current.errorMessage);
+        } else if (current is AppleSignInSuccessState) {
+          BlocProvider.of<ProfileBloc>(context).setAccess(current.accessToken);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
+        } else if (current is AppleSignInErrorState) {
+          customAlert.showMessage(current.errorMessage);
         }
         return false;
       }, builder: (context, snapshot) {
@@ -245,11 +251,16 @@ class _AuthPageState extends State<AuthPage> {
         const SizedBox(
           height: 20,
         ),
-        const GoogleSignInButton(),
-        const SizedBox(
-          height: 20,
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GoogleSignInButton(),
+            SizedBox(
+              width: 10,
+            ),
+            AppleSignInButton(),
+          ],
         ),
-        const AppleSignInButton(),
       ],
     );
   }
