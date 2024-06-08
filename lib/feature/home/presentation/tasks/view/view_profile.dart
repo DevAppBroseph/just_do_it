@@ -200,7 +200,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                               }, builder:
                                                                       (context,
                                                                           state) {
-                                                                    print("Favorites Bloc is ${state}");
+                                                                print(
+                                                                    "Favorites Bloc is ${state}");
                                                                 if (state
                                                                     is FavouritesLoaded) {
                                                                   favouritesUsers = state
@@ -1143,7 +1144,7 @@ class _ProfileViewState extends State<ProfileView> {
     return text;
   }
 
-  Widget _categoryItemOwner(ownerActivities activitiy, int index) {
+  Widget _categoryItemOwner(OwnerActivities activitiy, int index) {
     return Container(
       height: 90.h,
       width: 115.w,

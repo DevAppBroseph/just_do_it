@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +79,8 @@ class _DatePickerState extends State<DatePicker> {
     showCupertinoModalPopup(
       context: ctx,
       builder: (_) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(1.0)),
         child: Column(
           children: [
             const Spacer(),
@@ -373,7 +376,7 @@ class _DatePickerState extends State<DatePicker> {
     }
 
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: ListView(
         controller: controller,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -513,10 +516,9 @@ class _DatePickerState extends State<DatePicker> {
           ),
           SizedBox(height: 14.h),
           BlocBuilder<CurrencyBloc, CurrencyState>(builder: (context, state) {
-            print("CurrencyBloc state $state");
+            log("CurrencyBloc state $state");
             if (state is CurrencyLoaded) {
               final currecy = state.currency;
-              print(currecy?.length);
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: openCurrency ? 160.h : 0.h,

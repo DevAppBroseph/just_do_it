@@ -19,7 +19,8 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Container(
         height: widget.heightScreen - 152.h - 220.h,
         color: Colors.white,

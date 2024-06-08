@@ -64,7 +64,7 @@ class _CategorySelectorState extends State<CategorySelector> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: ListView(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -171,12 +171,16 @@ class _CategorySelectorState extends State<CategorySelector> {
                                     SizedBox(
                                       width: 250.w,
                                       child: Text(
-                                        user?.rus ?? true ? e.description ?? '-' : e.engDescription ?? '',
-                                        style: CustomTextStyle.black_14_w400_515150,
+                                        user?.rus ?? true
+                                            ? e.description ?? '-'
+                                            : e.engDescription ?? '',
+                                        style: CustomTextStyle
+                                            .black_14_w400_515150,
                                       ),
                                     ),
                                     const Spacer(),
-                                    if (e.id == widget.selectCategory?.id) const Icon(Icons.check)
+                                    if (e.id == widget.selectCategory?.id)
+                                      const Icon(Icons.check)
                                   ],
                                 ),
                               ],
@@ -228,7 +232,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                           child: Text(
                             user?.rus ?? true
                                 ? widget.selectSubCategory?.description ?? '-'
-                                : widget.selectSubCategory?.engDescription ?? '-',
+                                : widget.selectSubCategory?.engDescription ??
+                                    '-',
                             style: CustomTextStyle.black_14_w400_171716,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -299,12 +304,17 @@ class _CategorySelectorState extends State<CategorySelector> {
                                         SizedBox(
                                           width: 250.w,
                                           child: Text(
-                                            user?.rus ?? true ? e.description ?? '-' : e.engDescription ?? '-',
-                                            style: CustomTextStyle.black_14_w400_515150,
+                                            user?.rus ?? true
+                                                ? e.description ?? '-'
+                                                : e.engDescription ?? '-',
+                                            style: CustomTextStyle
+                                                .black_14_w400_515150,
                                           ),
                                         ),
                                         const Spacer(),
-                                        if (e.id == widget.selectSubCategory?.id) const Icon(Icons.check)
+                                        if (e.id ==
+                                            widget.selectSubCategory?.id)
+                                          const Icon(Icons.check)
                                       ],
                                     ),
                                   ],
@@ -336,7 +346,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                   setState(() {});
                 },
                 style: CustomTextStyle.black_14_w400_171716,
-                hintText:  widget.customer? 'task_name'.tr() : 'offer_name'.tr(),
+                hintText:
+                    widget.customer ? 'task_name'.tr() : 'offer_name'.tr(),
                 textEditingController: widget.titleController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
@@ -372,7 +383,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                   openCategory = false;
                   setState(() {});
                 },
-                hintText: widget.customer? 'description_task'.tr(): 'description_offer'.tr(),
+                hintText: widget.customer
+                    ? 'description_task'.tr()
+                    : 'description_offer'.tr(),
                 style: CustomTextStyle.black_14_w400_171716,
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,
@@ -429,7 +442,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                 ],
               ),
               textEditingController: TextEditingController(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
             ),
           ),
           SizedBox(height: 15.h),
@@ -469,9 +483,11 @@ class _CategorySelectorState extends State<CategorySelector> {
                           GestureDetector(
                             onTap: () {
                               if (widget.document[index].file != null) {
-                                OpenFile.open(widget.document[index].file!.path);
+                                OpenFile.open(
+                                    widget.document[index].file!.path);
                               } else {
-                                launch(widget.document[index].linkUrl!.contains(server)
+                                launch(widget.document[index].linkUrl!
+                                        .contains(server)
                                     ? widget.document[index].linkUrl!
                                     : server + widget.document[index].linkUrl!);
                               }
@@ -481,7 +497,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                               width: 50.h,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [BoxShadow(color: Colors.black)],
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black)
+                                  ],
                                   borderRadius: BorderRadius.circular(10.r)),
                               child: Center(
                                 child: SvgPicture.asset(
@@ -502,7 +520,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 width: 15.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(40.r)),
                                 child: Center(
                                   child: Icon(
@@ -560,7 +580,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 width: 15.h,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    boxShadow: const [BoxShadow(color: Colors.black)],
+                                    boxShadow: const [
+                                      BoxShadow(color: Colors.black)
+                                    ],
                                     borderRadius: BorderRadius.circular(40.r)),
                                 child: Center(
                                   child: Icon(

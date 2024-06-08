@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -77,7 +78,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     experienceController.text = user?.activity ?? '';
     if (user != null && user!.images != null) {
       for (var element in user!.images!) {
-        print("Element ${element.linkUrl}");
+        log("Element ${element.linkUrl}");
         photos.add(
           ArrayImages(
             element.linkUrl!.contains(server)
@@ -179,7 +180,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }, builder: (context, data) {
       // double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
       return MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
+        data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: GestureDetector(
           onTap: () {
             if (focusNode.hasFocus) {

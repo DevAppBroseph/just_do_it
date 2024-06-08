@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,6 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
-import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_status.dart';
@@ -199,23 +200,12 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           banDialog(context,
                               'access_to_chat_is_currently_restricted'.tr());
                         } else {
-                          print(
-                              "Chat id through button is ${widget.task.chatId}");
+                          log("Chat id through button is ${widget.task.chatId}");
                           final chatBloc = BlocProvider.of<ChatBloc>(context);
                           chatBloc.editShowPersonChat(false);
                           chatBloc
                               .editChatId(widget.task.answers[index].chatId);
                           chatBloc.messages = [];
-                          final idChat = await Navigator.of(context).pushNamed(
-                            AppRoute.personalChat,
-                            arguments: [
-                              '${widget.task.answers[index].chatId}',
-                              '${widget.task.answers[index].owner?.firstname ?? ''} ${widget.task.answers[index].owner?.lastname ?? ''}',
-                              '${widget.task.answers[index].owner?.id}',
-                              '${widget.task.answers[index].owner?.photo}',
-                              widget.task.category?.id,
-                            ],
-                          );
                           chatBloc.editShowPersonChat(true);
                           chatBloc.editChatId(null);
                         }

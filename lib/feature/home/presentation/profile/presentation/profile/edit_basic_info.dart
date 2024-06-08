@@ -39,7 +39,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Stack(
         children: [
           Scaffold(
@@ -146,8 +146,9 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               LengthLimitingTextInputFormatter(16),
                             ],
                             onTap: () {
-                              if (phoneController.text.isEmpty)
+                              if (phoneController.text.isEmpty) {
                                 phoneController.text = '+';
+                              }
                             },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -155,8 +156,9 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                               user?.copyWith(phoneNumber: value);
                             },
                             onFieldSubmitted: (value) {
-                              if (phoneController.text == '+')
+                              if (phoneController.text == '+') {
                                 phoneController.text = '';
+                              }
                               requestNextEmptyFocusStage1();
                             },
                           ),

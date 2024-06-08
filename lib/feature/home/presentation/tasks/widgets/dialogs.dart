@@ -25,7 +25,8 @@ void iconSelectTranslate(
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             insetPadding: EdgeInsets.only(
                 top: offset.dy - 10.h, left: offset.dx - 150.w, right: 20.w),
@@ -85,7 +86,8 @@ void taskMoreDialog(
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             insetPadding:
                 EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),
@@ -163,7 +165,8 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -250,7 +253,8 @@ void scoreDialog(BuildContext context, String score, String action) =>
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -337,7 +341,8 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -424,7 +429,8 @@ void banDialog(BuildContext context, String action) => showDialog(
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -522,7 +528,8 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -615,7 +622,8 @@ void onTopDialog(BuildContext context, String title, String action,
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             alignment: Alignment.center,
             contentPadding: EdgeInsets.zero,
@@ -720,7 +728,8 @@ void taskMoreDialogForProfile(
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             insetPadding:
                 EdgeInsets.only(top: offset.dy + 20.h, left: offset.dx - 95.w),

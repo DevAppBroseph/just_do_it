@@ -44,8 +44,7 @@ class Repository {
         return true;
       }
       return false;
-    } on DioError catch (e) {
-      print(e);
+    } on DioError {
       return false;
     }
   }
@@ -71,7 +70,7 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       return null;
     }
   }
@@ -94,7 +93,7 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       return null;
     }
   }
@@ -388,7 +387,7 @@ class Repository {
       ),
     );
     Task? task;
-    print("GetTaskById ${response.statusCode} and ${response.data}");
+    log("GetTaskById ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201 || response.statusCode == 200) {
       task = Task.fromJson(response.data);
       return task;
@@ -427,7 +426,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    print("addReviewsDetail ${response.statusCode} and ${response.data}");
+    log("addReviewsDetail ${response.statusCode} and ${response.data}");
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     } else if (response.statusCode == 400 &&
@@ -471,14 +470,14 @@ class Repository {
         "is_graded": isGraded,
       },
     );
-    print(jsonEncode({
+    log(jsonEncode({
       "order": id,
       "price": price,
       "description": description,
       "status": status,
       "is_graded": isGraded,
     }));
-    print("createAnswer ${response.statusCode} and ${response.data}");
+    log("createAnswer ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     }
@@ -589,14 +588,13 @@ class Repository {
     });
 
     final map = {'CV': null, "images": images};
-    print(images);
     final response = await dio.patch(
       '$server/profile/',
       data: file != null ? data : map,
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
 
-    print("UpdateProfileCvEvent ${response.statusCode} and ${response.data}");
+    log("UpdateProfileCvEvent ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return UserRegModel.fromJson(response.data);
     } else {
@@ -697,10 +695,10 @@ class Repository {
       '$server/profile/',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
-    print("GET PROFILE error is ${response.statusCode} and ${response.data}");
+    log("GET PROFILE error is ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       final user = UserRegModel.fromJson(response.data);
-      print("User InProgress count: ${user.countOrdersInProgressAsCustomer}");
+      log("User InProgress count: ${user.countOrdersInProgressAsCustomer}");
       // final testUser=user..myAnswersAsExecutor=user.myAnswersAsExecutor!.map((e) => e..isBanned=true..banReason="Inappropriate behaviour.").toList()..ordersCreateAsCustomer=user.ordersCreateAsCustomer!.map((e) => e..isBanned=true..banReason="Inappropriate behaviour.").toList();
       return user;
     }
@@ -709,7 +707,7 @@ class Repository {
 
   // проверка на зарегистрированного пользователя
   Future<String?> checkUserExist(String phone, String email) async {
-    print("checkUserExist");
+    log("checkUserExist");
     final response = await dio.post(
       '$server/auth/check',
       options: Options(),
@@ -718,7 +716,7 @@ class Repository {
         "email": email,
       },
     );
-    print("checkUserExist ${response.data}");
+    log("checkUserExist ${response.data}");
 
     if (response.statusCode == 200) {
       return null;
@@ -777,7 +775,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    print("getListMessage ${response.data}");
+    log("getListMessage ${response.data}");
     if (response.statusCode == 200) {
       List<ChatList> chatList = [];
       for (var element in response.data) {
@@ -800,8 +798,7 @@ class Repository {
     );
     // print("getListMessageItem ${response.statusCode}, chat id is $id");
     if (response.statusCode == 200) {
-      print(
-          "getListMessageItem ${id} status is ${response.statusCode} and data is ${response.data}");
+      log("getListMessageItem $id status is ${response.statusCode} and data is ${response.data}");
       List<ChatMessage> chatList = [];
       for (var element in response.data['messages_list']) {
         chatList.add(
@@ -872,10 +869,10 @@ class Repository {
         "order": id,
       },
     );
-    print("Payload: ${jsonEncode({
+    log("Payload: ${jsonEncode({
           "order": id,
         })}");
-    print("ORDER like ${response.statusCode} and ${response.data}");
+    log("ORDER like ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     }
@@ -914,8 +911,7 @@ class Repository {
       '$server/orders/$id/resend_for_verification',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
-    print(
-        "resendTaskForModeration ${response.statusCode} and ${response.data}");
+    log("resendTaskForModeration ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -969,7 +965,7 @@ class Repository {
         headers: {'Authorization': 'Bearer $access'},
       ),
     );
-    print("ORDER delete ${res.statusCode} and ${res.data}");
+    log("ORDER delete ${res.statusCode} and ${res.data}");
     if (res.statusCode == 200 ||
         res.statusCode == 201 ||
         res.statusCode == 204) {
@@ -983,7 +979,7 @@ class Repository {
       '$server/orders/favorites',
       options: Options(headers: {'Authorization': 'Bearer $access'}),
     );
-    print("GetLikeInfo  ${response.statusCode} and ${response.data}");
+    log("GetLikeInfo  ${response.statusCode} and ${response.data}");
     if (response.statusCode == 200) {
       // log(response.data.toString());
       return Favourites.fromJson(response.data);

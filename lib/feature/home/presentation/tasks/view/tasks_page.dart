@@ -32,7 +32,8 @@ class _TasksPageState extends State<TasksPage> {
     Size size = MediaQuery.of(context).size;
 
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.greyEAECEE,
         body: StreamBuilder<int>(

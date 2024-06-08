@@ -46,7 +46,7 @@ class _RatingPageState extends State<RatingPage> {
               top: false,
               bottom: false,
               child: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 1.0),
+                data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: Column(
                   children: [
                     header(reviews, user),

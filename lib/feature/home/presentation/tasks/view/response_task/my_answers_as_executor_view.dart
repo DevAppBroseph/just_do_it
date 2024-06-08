@@ -60,7 +60,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
           SafeArea(
             bottom: false,
             child: MediaQuery(
-              data: const MediaQueryData(textScaleFactor: 1.0),
+              data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
                 decoration: const BoxDecoration(
                   color: ColorStyles.greyEAECEE,

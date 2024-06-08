@@ -155,7 +155,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Repository repo = Repository();
     String? accessToken = await repo.register(event, refCode);
     if (accessToken != null) {
-      emit(ConfirmCodeRegistrSuccessState(accessToken ?? ''));
+      emit(ConfirmCodeRegistrSuccessState(accessToken));
     } else {
       emit(ConfirmCodeRegisterErrorState(''));
     }

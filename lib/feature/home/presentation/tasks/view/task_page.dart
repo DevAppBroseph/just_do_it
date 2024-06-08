@@ -112,7 +112,6 @@ class _TaskPageState extends State<TaskPage> {
       body: FutureBuilder(
           future: _data,
           builder: (context, snapshot) {
-            print(snapshot);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CupertinoActivityIndicator());
             } else if (snapshot.hasError) {
@@ -123,7 +122,7 @@ class _TaskPageState extends State<TaskPage> {
             assignSnapshotDataToTaskWhenInitialized(snapshot);
             return MediaQuery(
               data: const MediaQueryData(
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.linear(1.0),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -170,8 +169,7 @@ class _TaskPageState extends State<TaskPage> {
                               if (state is FavouritesLoaded) {
                                 return GestureDetector(
                                   onTap: () async {
-                                    final access =
-                                        await Storage().getAccessToken();
+                                    final access = Storage().getAccessToken();
 
                                     if (task.isLiked != null) {
                                       Repository()
@@ -288,8 +286,8 @@ class _TaskPageState extends State<TaskPage> {
                                             style: CustomTextStyle.red_16_w400,
                                           ),
                                           onPressed: () async {
-                                            final access = await Storage()
-                                                .getAccessToken();
+                                            final access =
+                                                Storage().getAccessToken();
                                             final res = await Repository()
                                                 .deleteTask(task, access!);
                                             getPersonAndTask(res, user);

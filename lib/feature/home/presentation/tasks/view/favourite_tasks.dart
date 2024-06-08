@@ -10,8 +10,8 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
     as res;
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_reply_from_fav.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_favourite_task.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -44,10 +44,12 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
   PanelController panelControllerResponseFromFav = PanelController();
   @override
   void dispose() {
-    if (panelControllerReplyFromFav.isPanelOpen)
+    if (panelControllerReplyFromFav.isPanelOpen) {
       panelControllerReplyFromFav.close();
-    if (panelControllerResponseFromFav.isPanelOpen)
+    }
+    if (panelControllerResponseFromFav.isPanelOpen) {
       panelControllerResponseFromFav.close();
+    }
     super.dispose();
   }
 
@@ -62,7 +64,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
           favouritesOrders = state.favourite!.favouriteOrder;
         }
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
           child: Stack(
             children: [
               Scaffold(

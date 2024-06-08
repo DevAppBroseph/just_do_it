@@ -2172,7 +2172,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   const Spacer(),

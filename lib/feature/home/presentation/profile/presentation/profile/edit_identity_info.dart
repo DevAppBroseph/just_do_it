@@ -88,7 +88,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
 
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: Column(
@@ -125,13 +126,13 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                           'the_minimum_password_length_is_6_characters'.tr());
                       return;
                     } else if (passwordController.text !=
-                          repeatPasswordController.text) {
-                        CustomAlert().showMessage('passwords_dont_match'.tr());
-                        return;
-                      }
+                        repeatPasswordController.text) {
+                      CustomAlert().showMessage('passwords_dont_match'.tr());
+                      return;
+                    }
                   }
 
-                   if (dateTimeEnd != null &&
+                  if (dateTimeEnd != null &&
                       DateTime.now().isAfter(dateTimeEnd!) &&
                       docType != 'Resident_ID') {
                     CustomAlert().showMessage('your_document_is_overdue'.tr());
@@ -751,7 +752,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   const Spacer(),

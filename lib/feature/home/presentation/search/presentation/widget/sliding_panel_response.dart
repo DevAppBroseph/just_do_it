@@ -58,7 +58,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
         banDialog(context, 'responses_to_offers_is'.tr());
       }
     } else {
-      final access = await Storage().getAccessToken();
+      final access = Storage().getAccessToken();
       if (widget.selectTask != null) {
         String error = 'specify'.tr();
         bool errorsFlag = false;
@@ -182,7 +182,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   Widget panel(BuildContext context, double bottomInsets) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Material(
         color: Colors.transparent,
         child: Container(

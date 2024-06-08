@@ -21,8 +21,6 @@ class SignInButton extends StatelessWidget {
         ? SvgPicture.asset('assets/icons/google.svg', width: 20, height: 20)
         : SvgPicture.asset('assets/icons/apple.svg', width: 20, height: 20);
 
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(

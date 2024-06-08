@@ -54,7 +54,7 @@ class MessageDialogs {
             ],
           ),
           child: MediaQuery(
-            data: const MediaQueryData(textScaleFactor: 1.0),
+            data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
             child: Card(
               elevation: 0,
               child: Column(
@@ -127,7 +127,7 @@ class TaskDialogs {
             ],
           ),
           child: MediaQuery(
-            data: const MediaQueryData(textScaleFactor: 1.0),
+            data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
             child: Card(
               elevation: 0,
               child: Column(

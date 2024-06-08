@@ -11,8 +11,8 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/favour
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -121,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: ColorStyles.greyEAECEE,
       body: MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
+        data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
           if (current is UpdateListMessageItemState) {
             if (current.chatId != null) {
@@ -289,8 +289,7 @@ class _SearchPageState extends State<SearchPage> {
                           SizedBox(width: 10.w),
                           GestureDetector(
                               onTap: () async {
-                                final accessToken =
-                                    await Storage().getAccessToken();
+                                final accessToken = Storage().getAccessToken();
                                 if (context.mounted) {
                                   if (accessToken != null) {
                                     Navigator.of(context)
@@ -298,7 +297,6 @@ class _SearchPageState extends State<SearchPage> {
                                       (page) {},
                                       false
                                     ]).then((value) {
-                                      print("Search page ${value}");
                                       if (value != null) {
                                         if (value == 'create') {
                                           widget.onSelect(0);

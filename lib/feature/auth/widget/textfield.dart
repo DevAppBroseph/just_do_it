@@ -90,7 +90,8 @@ class CustomTextField extends StatelessWidget {
 
     if (!actionButton) {
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(1.0)),
         child: SizedBox(
           key: key,
           height: height,
@@ -165,7 +166,8 @@ class CustomTextField extends StatelessWidget {
       );
     }
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: SizedBox(
         key: key,
         height: height,
@@ -179,7 +181,8 @@ class CustomTextField extends StatelessWidget {
                 FocusScope.of(context).unfocus();
               },
               child: MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: const TextScaler.linear(1.0)),
                 child: Text('done'.tr()),
               ),
             ),

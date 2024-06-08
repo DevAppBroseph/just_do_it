@@ -76,7 +76,7 @@ class _ContractorState extends State<Contractor> {
   Widget build(BuildContext context) {
     user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
         if (current is UpdateTask) {
           return true;
@@ -851,7 +851,7 @@ class _ContractorState extends State<Contractor> {
                     final res = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CreateTaskPage(
+                          return const CreateTaskPage(
                             customer: true,
                             doublePop: true,
                             currentPage: 3,

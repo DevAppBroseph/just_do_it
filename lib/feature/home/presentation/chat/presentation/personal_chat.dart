@@ -191,7 +191,6 @@ class _PersonalChatState extends State<PersonalChat> {
                     widget.id =
                         BlocProvider.of<ChatBloc>(context).idChat.toString();
                   } else if (current is UpdateListPersonState) {
-                    final access = BlocProvider.of<ProfileBloc>(context).access;
                     BlocProvider.of<ChatBloc>(context)
                         .add(GetListMessageItem());
                   }

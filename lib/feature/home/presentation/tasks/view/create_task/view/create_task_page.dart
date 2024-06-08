@@ -266,7 +266,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       context: context,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
             backgroundColor: Colors.transparent,
             content: Container(
@@ -345,7 +346,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     double widthTabBarItem = (MediaQuery.of(context).size.width - 40.w) / 2;
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,

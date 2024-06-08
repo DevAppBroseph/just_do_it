@@ -140,7 +140,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   Widget panel(BuildContext context) {
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Material(
         color: Colors.transparent,
         child: Container(
@@ -280,14 +280,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
   }
 
   Widget mainFilter() {
-    String date = '';
     if (startDate == null && endDate == null) {
-    } else {
-      date =
-          startDate != null ? DateFormat('dd.MM.yyyy').format(startDate!) : '';
-      date +=
-          ' - ${endDate != null ? DateFormat('dd.MM.yyyy').format(endDate!) : ''}';
-    }
+    } else {}
 
     return ListView(
       shrinkWrap: true,
@@ -622,7 +616,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   const Spacer(),

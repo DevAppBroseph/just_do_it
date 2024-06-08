@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Stack(
       children: [
         MediaQuery(
-          data: const MediaQueryData(textScaleFactor: 1.0),
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
           child: Scaffold(
             backgroundColor: ColorStyles.greyEAECEE,
             body: BlocBuilder<ProfileBloc, ProfileState>(

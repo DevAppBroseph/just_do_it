@@ -12,7 +12,6 @@ import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
-import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_status.dart';
@@ -196,16 +195,6 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                           chatBloc.editShowPersonChat(false);
                           chatBloc.editChatId(widget.task.chatId);
                           chatBloc.messages = [];
-                          final idChat = await Navigator.of(context).pushNamed(
-                            AppRoute.personalChat,
-                            arguments: [
-                              '${widget.task.answers[index].chatId}',
-                              '${widget.task.answers[index].owner?.firstname ?? ''} ${widget.task.answers[index].owner?.lastname ?? ''}',
-                              '${widget.task.answers[index].owner?.id}',
-                              '${widget.task.answers[index].owner?.photo}',
-                              widget.task.category?.id,
-                            ],
-                          );
                           chatBloc.editShowPersonChat(true);
                           chatBloc.editChatId(null);
                         }

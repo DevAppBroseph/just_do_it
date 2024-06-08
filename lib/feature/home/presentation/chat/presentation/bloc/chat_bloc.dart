@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _sendMessage(SendMessageEvent event, Emitter<ChatState> emit) async {
     String newMessage =
         '{"message": "${event.message}", "to": "${event.id}" ${event.categoryId != null ? ', "category_id":${event.categoryId}' : ''}}';
-    print(newMessage);
+    log(newMessage);
     if (channel == null) {
       debugPrint('channel is null cant send message!!!');
     }
@@ -68,7 +69,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _getListMessageItem(
       GetListMessageItem event, Emitter<ChatState> emit) async {
-    final token = await Storage().getAccessToken()!;
+    final token = Storage().getAccessToken()!;
     final res = await Repository().getListMessageItem(token, '$idChat');
 
     messages.clear();
@@ -87,7 +88,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _getListMessage(GetListMessage event, Emitter<ChatState> emit) async {
-    final token = await Storage().getAccessToken();
+    final token = Storage().getAccessToken();
     final res = await Repository().getListMessage(token ?? '');
 
     chatList.clear();
@@ -98,7 +99,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     debugPrint('starting socket...');
-    final token = await Storage().getAccessToken();
+    final token = Storage().getAccessToken();
     debugPrint('access token: $token');
     await channel?.sink.close();
     if (token == null) {

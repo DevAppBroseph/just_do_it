@@ -65,7 +65,7 @@ class _CustomerState extends State<Customer> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
         if (current is UpdateTask) {
           return true;

@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
@@ -50,7 +50,7 @@ class _MyAnswersSelectedAsExecutorViewState
           SafeArea(
             bottom: false,
             child: MediaQuery(
-              data: const MediaQueryData(textScaleFactor: 1.0),
+              data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
                 decoration: const BoxDecoration(
                   color: ColorStyles.greyEAECEE,

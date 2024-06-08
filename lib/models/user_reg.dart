@@ -179,8 +179,8 @@ class UserRegModel {
     this.selectedOffers = selectedOffers ?? this.selectedOffers;
     this.finishedOffers = finishedOffers ?? this.finishedOffers;
     this.myAnswersAsExecutor = myAnswersAsExecutor ?? this.myAnswersAsExecutor;
-    this.selectedOffersAsCustomer =
-        selectedOffersAsCustomer ?? this.selectedOffersAsCustomer;
+    selectedOffersAsCustomer =
+        selectedOffersAsCustomer ?? selectedOffersAsCustomer;
     this.finishedOffersAsCustomer =
         finishedOffersAsCustomer ?? this.finishedOffersAsCustomer;
     this.countOrdersCreateAsCustomer =

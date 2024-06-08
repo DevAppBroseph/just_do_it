@@ -41,7 +41,8 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
       if (state is FavouritesLoaded) {
         favouritesPeople = state.favourite!.favoriteUsers;
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: Scaffold(
             backgroundColor: ColorStyles.greyEAECEE,
             body: Stack(

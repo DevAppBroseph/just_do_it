@@ -5,8 +5,8 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
@@ -47,7 +47,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
           SafeArea(
             bottom: false,
             child: MediaQuery(
-              data: const MediaQueryData(textScaleFactor: 1.0),
+              data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   SizedBox(height: 10.h),
@@ -97,16 +97,12 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                             padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return itemTask(
-                                taskList[index],
-                                (task) {
-                                  setState(() {
-                                    selectTask = task;
-                                  });
-                                },
-                                BlocProvider.of<ProfileBloc>(context).user,context
-
-                              );
+                              return itemTask(taskList[index], (task) {
+                                setState(() {
+                                  selectTask = task;
+                                });
+                              }, BlocProvider.of<ProfileBloc>(context).user,
+                                  context);
                             },
                           ),
                         ),

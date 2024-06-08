@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -127,7 +128,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       final phoneConfirmationTypeResult =
           await showPhoneConfirmationMethodSelectionDialog(
               context, user, token ?? "");
-      print("phoneConfirmationTypeResult ${phoneConfirmationTypeResult}");
+      log("phoneConfirmationTypeResult $phoneConfirmationTypeResult");
       if (phoneConfirmationTypeResult != null) {
         registerConfirmationMethod = phoneConfirmationTypeResult;
       } else {
@@ -135,6 +136,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       }
     }
     showLoaderWrapper(context);
+
     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
       user,
       token ?? '',
@@ -225,7 +227,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
   Widget build(BuildContext context) {
     double heightKeyBoard = MediaQuery.of(context).viewInsets.bottom;
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
         Loader.hide();
         if (current is CheckUserState) {
@@ -1615,7 +1618,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   const Spacer(),

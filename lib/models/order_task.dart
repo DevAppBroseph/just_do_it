@@ -38,13 +38,21 @@ class Currency {
   String? name;
   String? shortName;
 
-  Currency(this.isSelect, {required this.id, required this.name, required this.shortName, required this.engName});
+  Currency(this.isSelect,
+      {required this.id,
+      required this.name,
+      required this.shortName,
+      required this.engName});
 
   factory Currency.fromJson(Map<String, dynamic> json) {
     return Currency(false,
-        id: json['id'], name: json['name'], shortName: json['short_name'], engName: json['eng_name']);
+        id: json['id'],
+        name: json['name'],
+        shortName: json['short_name'],
+        engName: json['eng_name']);
   }
-  Map<String, dynamic> toJson() => {"id": id, "name": name, "short_name": shortName, 'eng_name': engName};
+  Map<String, dynamic> toJson() =>
+      {"id": id, "name": name, "short_name": shortName, 'eng_name': engName};
 }
 
 class Owner {
@@ -62,7 +70,7 @@ class Owner {
   String? activity;
   List<String> listPhoto;
   int? balance;
-  List<ownerActivities>? activities;
+  List<OwnerActivities>? activities;
   int? countOrdersComplete;
   List<ReviewsDetail>? reviews;
   ReviewsDetail? lastReviews;
@@ -96,10 +104,10 @@ class Owner {
         listPhoto.add(element['image']);
       }
     }
-    List<ownerActivities> activities = [];
+    List<OwnerActivities> activities = [];
     if (json['activities'] != null) {
       for (var element in json['activities']) {
-        activities.add(ownerActivities.fromJson(element));
+        activities.add(OwnerActivities.fromJson(element));
       }
     }
     List<ReviewsDetail> reviews = [];
@@ -109,7 +117,9 @@ class Owner {
       }
     }
     return Owner(
-      lastReviews: json['last_review'] == null ? null : ReviewsDetail.fromJson(json['last_review']),
+      lastReviews: json['last_review'] == null
+          ? null
+          : ReviewsDetail.fromJson(json['last_review']),
       id: json["id"],
       firstname: json["firstname"],
       lastname: json["lastname"],
@@ -140,29 +150,30 @@ class Owner {
       };
 }
 
-class ownerActivities {
+class OwnerActivities {
   bool isSelect;
   int id;
   String? description;
   String? engDescription;
   String? photo;
-  List<ownerSubcategory> subcategory;
+  List<OwnerSubcategory> subcategory;
   List<String> selectSubcategory = [];
 
-  ownerActivities(this.isSelect, this.engDescription, this.id, this.description, this.photo, this.subcategory);
+  OwnerActivities(this.isSelect, this.engDescription, this.id, this.description,
+      this.photo, this.subcategory);
 
-  factory ownerActivities.fromJson(Map<String, dynamic> data) {
+  factory OwnerActivities.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
     String? engDescription = data['description_eng'];
     String? photo = data['photo'];
-    List<ownerSubcategory> subcategory = [];
+    List<OwnerSubcategory> subcategory = [];
     if (data['subcategories'] != null) {
       for (var element in data['subcategories']) {
-        subcategory.add(ownerSubcategory.fromJson(element));
+        subcategory.add(OwnerSubcategory.fromJson(element));
       }
     }
-    return ownerActivities(
+    return OwnerActivities(
       false,
       engDescription,
       id,
@@ -173,16 +184,17 @@ class ownerActivities {
   }
 }
 
-class ownerSubcategory {
+class OwnerSubcategory {
   bool isSelect;
   int id;
   String? description;
 
-  ownerSubcategory(this.isSelect, {required this.id, required this.description});
+  OwnerSubcategory(this.isSelect,
+      {required this.id, required this.description});
 
-  factory ownerSubcategory.fromJson(Map<String, dynamic> data) {
+  factory OwnerSubcategory.fromJson(Map<String, dynamic> data) {
     int id = data['id'];
     String? description = data['description'];
-    return ownerSubcategory(false, id: id, description: description);
+    return OwnerSubcategory(false, id: id, description: description);
   }
 }
