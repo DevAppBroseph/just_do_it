@@ -7,7 +7,6 @@ class MessageToSupport {
     required this.email,
     required this.title,
     required this.text,
-
   });
 
   factory MessageToSupport.fromJson(Map<String, dynamic> json) {
@@ -15,13 +14,11 @@ class MessageToSupport {
       email: json['email'],
       title: json['title'],
       text: json['text'],
-    
     );
   }
   Map<String, dynamic> toJson() => {
         "email": email,
         "title": title,
         'text': text,
-    
       };
 }

@@ -24,7 +24,8 @@ class Countries {
     return Countries(
       name: json['name'],
       id: json['id'],
-      region: regions, engName: json['eng_name'],
+      region: regions,
+      engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {
@@ -36,7 +37,7 @@ class Countries {
 class Regions {
   String? name;
   String? engName;
-  
+
   int? id;
   List<Town> town;
   bool select;
@@ -58,7 +59,8 @@ class Regions {
     return Regions(
       name: json['name'],
       id: json['id'],
-      town: towns, engName: json['eng_name'],
+      town: towns,
+      engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {
@@ -83,7 +85,8 @@ class Town {
   factory Town.fromJson(Map<String, dynamic> json) {
     return Town(
       name: json['name'],
-      id: json['id'], engName: json['eng_name'],
+      id: json['id'],
+      engName: json['eng_name'],
     );
   }
   Map<String, dynamic> toJson() => {
