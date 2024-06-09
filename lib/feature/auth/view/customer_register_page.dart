@@ -508,7 +508,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           textEditingController: phoneController,
           formatters: [
             MaskTextInputFormatter(
-              mask: '+###############',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
@@ -523,7 +522,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             requestNextEmptyFocusStage1();
           },
           onTap: () {
-            if (phoneController.text.isEmpty) phoneController.text = '+';
             Future.delayed(const Duration(milliseconds: 350), () {
               scrollController1.animateTo(200.h,
                   duration: const Duration(milliseconds: 100),

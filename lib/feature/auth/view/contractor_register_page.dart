@@ -585,22 +585,18 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintStyle: CustomTextStyle.grey_14_w400,
           formatters: [
             MaskTextInputFormatter(
-              mask: '+###############',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.eager,
             ),
             LengthLimitingTextInputFormatter(16),
           ],
-          onTap: () {
-            if (phoneController.text.isEmpty) phoneController.text = '+';
-          },
+          onTap: () {},
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
             user.copyWith(phoneNumber: value);
           },
           onFieldSubmitted: (value) {
-            if (phoneController.text == '+') phoneController.text = '';
             requestNextEmptyFocusStage1();
           },
         ),
