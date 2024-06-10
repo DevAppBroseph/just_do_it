@@ -63,6 +63,17 @@ class _SearchPageState extends State<SearchPage> {
   List<String> searchChoose = [];
 
   double lastPosition = 0;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   searchController.text = widget.text;
+  //   initFunc();
+  //   getTaskList();
+  //   if (widget.taskId != null) getTask();
+  //   final access = BlocProvider.of<ProfileBloc>(context).access;
+  //   context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
+  //   user = BlocProvider.of<ProfileBloc>(context).user;
+  // }
 
   @override
   void initState() {
@@ -385,7 +396,7 @@ class _SearchPageState extends State<SearchPage> {
                                               Text(
                                                 'filter'.tr(),
                                                 style: CustomTextStyle
-                                                    .black_14_w400_171716,
+                                                    .black14w400171716,
                                               ),
                                             ],
                                           ),
@@ -441,7 +452,6 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     BlocBuilder<TasksBloc, TasksState>(
                       builder: (context, state) {
-                        taskList = BlocProvider.of<TasksBloc>(context).tasks;
                         if (state is TasksLoading) {
                           return SkeletonLoader(
                             items: 4,

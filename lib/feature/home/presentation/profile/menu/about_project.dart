@@ -36,7 +36,7 @@ class _AboutProjectState extends State<AboutProject> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,
@@ -99,8 +99,7 @@ class _AboutProjectState extends State<AboutProject> {
                                   child: Center(
                                     child: Text(
                                       'jobyfine'.toUpperCase(),
-                                      style: CustomTextStyle
-                                          .black_39_w900_171716
+                                      style: CustomTextStyle.black39w900171716
                                           .copyWith(color: ColorStyles.black),
                                     ),
                                   ),
@@ -169,7 +168,7 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "user_agreement".tr(),
-                            style: CustomTextStyle.blue_16_w400_336FEE
+                            style: CustomTextStyle.blue16w400336FEE
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -186,7 +185,7 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),
-                            style: CustomTextStyle.blue_16_w400_336FEE
+                            style: CustomTextStyle.blue16w400336FEE
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),

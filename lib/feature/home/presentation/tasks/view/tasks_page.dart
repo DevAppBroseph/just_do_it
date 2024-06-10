@@ -120,7 +120,7 @@ class _TasksPageState extends State<TasksPage> {
                               ),
                             ),
                             child: Text('i_am_the_customer'.tr(),
-                                style: CustomTextStyle.black_14_w400_171716),
+                                style: CustomTextStyle.black14w400171716),
                           ),
                         ),
                         GestureDetector(
@@ -141,7 +141,7 @@ class _TasksPageState extends State<TasksPage> {
                               ),
                             ),
                             child: Text('i_am_executor'.tr(),
-                                style: CustomTextStyle.black_14_w400_171716),
+                                style: CustomTextStyle.black14w400171716),
                           ),
                         ),
                         const Spacer(),

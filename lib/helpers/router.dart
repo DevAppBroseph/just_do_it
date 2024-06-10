@@ -88,7 +88,7 @@ class AppRoute {
       case referal:
         return MaterialPageRoute(builder: (_) => const ReferalPage());
       case notification:
-        return MaterialPageRoute(builder: (_) => NotificationPage());
+        return MaterialPageRoute(builder: (_) => const NotificationPage());
       case personalChat:
         List<dynamic> arg = route.arguments as List<dynamic>;
         return MaterialPageRoute(

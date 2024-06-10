@@ -23,7 +23,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
   Widget build(BuildContext context) {
     if ((widget.task.isBanned ?? false) && widget.isTaskOwner) {
       return Padding(
-        padding: EdgeInsets.only(bottom: 20.h ),
+        padding: EdgeInsets.only(bottom: 20.h),
         child: Stack(
           children: [
             if (isOpen)
@@ -35,7 +35,8 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 50.h,bottom: 12.h, left: 16.w, right: 16.w),
+                  padding: EdgeInsets.only(
+                      top: 50.h, bottom: 12.h, left: 16.w, right: 16.w),
                   child: SizedBox(
                     width: 250.w,
                     child: Text(
@@ -78,7 +79,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                         child: Text(
                           "ban_reason".tr(),
                           textAlign: TextAlign.start,
-                          style: CustomTextStyle.red_11_w400_171716,
+                          style: CustomTextStyle.red11w400171716,
                         ),
                       ),
                       const Spacer(),

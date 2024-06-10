@@ -538,7 +538,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                             child: Text(
                                               'jobyfine'.toUpperCase(),
                                               style: CustomTextStyle
-                                                  .black_39_w900_171716,
+                                                  .black39w900171716,
                                             ),
                                           ),
                                         ),
@@ -586,6 +586,10 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                             ImageSource.gallery);
                                                                 if (image !=
                                                                     null) {
+                                                                  if (!context
+                                                                      .mounted) {
+                                                                    return;
+                                                                  }
                                                                   BlocProvider.of<
                                                                               ProfileBloc>(
                                                                           context)
@@ -705,7 +709,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 'welcome_back'
                                                                     .tr(),
                                                                 style: CustomTextStyle
-                                                                    .grey_12_w400,
+                                                                    .grey12w400,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -718,7 +722,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 wrapWords:
                                                                     false,
                                                                 style: CustomTextStyle
-                                                                    .black_24_w800,
+                                                                    .black24w800,
                                                                 maxLines: 2,
                                                               ),
                                                             ],
@@ -789,7 +793,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       'grades'
                                                                           .tr(),
                                                                       style: CustomTextStyle
-                                                                          .purple_12_w400,
+                                                                          .purple12w400,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -853,7 +857,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                             .toString() ??
                                                                         '0',
                                                                     style: CustomTextStyle
-                                                                        .purple_15_w600,
+                                                                        .purple15w600,
                                                                   ),
                                                                 ),
                                                               ],
@@ -916,7 +920,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                         'rating'
                                                                             .tr(),
                                                                         style: CustomTextStyle
-                                                                            .gold_12_w400,
+                                                                            .gold12w400,
                                                                       ),
                                                                       SizedBox(
                                                                           width:
@@ -1014,7 +1018,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                     'reviews'
                                                                         .tr(),
                                                                     style: CustomTextStyle
-                                                                        .blue_12_w400,
+                                                                        .blue12w400,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1130,7 +1134,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         Text(
                                                           'customer'.tr(),
                                                           style: CustomTextStyle
-                                                              .black_15_bold,
+                                                              .black15bold,
                                                         ),
                                                         Padding(
                                                           padding:
@@ -1150,7 +1154,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     Text(
                                                       'post_the_task'.tr(),
                                                       style: CustomTextStyle
-                                                          .grey_12_w400,
+                                                          .grey12w400,
                                                     ),
                                                   ],
                                                 ),
@@ -1218,7 +1222,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         Text(
                                                           'executor'.tr(),
                                                           style: CustomTextStyle
-                                                              .black_15_bold,
+                                                              .black15bold,
                                                         ),
                                                         Padding(
                                                           padding:
@@ -1238,7 +1242,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     Text(
                                                       'get_the_job_done'.tr(),
                                                       style: CustomTextStyle
-                                                          .grey_12_w400,
+                                                          .grey12w400,
                                                     ),
                                                   ],
                                                 ),
@@ -1376,7 +1380,7 @@ class _WelcomPageState extends State<WelcomPage> {
                       width: 100.w,
                       child: Text(
                         '- $choice',
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),

@@ -28,9 +28,9 @@ import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomerRegisterPage extends StatefulWidget {
-  Function(int) stage;
+  final Function(int) stage;
 
-  CustomerRegisterPage(this.stage, {super.key});
+  const CustomerRegisterPage(this.stage, {super.key});
 
   @override
   State<CustomerRegisterPage> createState() => _CustomerRegisterPageState();
@@ -103,6 +103,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         return;
       }
     }
+    if (!mounted) return;
+
     showLoaderWrapper(context);
     // Loader.hide();
     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
@@ -381,6 +383,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   } else {
                     final token = await getFcmToken();
                     documentEdit();
+                    if (!context.mounted) return;
+
                     if (context.locale.languageCode == 'en') {
                       user.rus = false;
                     }
@@ -404,6 +408,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 } else {
                   final token = await getFcmToken();
                   documentEdit();
+                  if (!context.mounted) return;
+
                   if (context.locale.languageCode == 'en') {
                     user.rus = false;
                   }
@@ -442,7 +448,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             btnColor: ColorStyles.greyE0E6EE,
             textLabel: Text(
               'back'.tr(),
-              style: CustomTextStyle.black_16_w600_515150,
+              style: CustomTextStyle.black16w600515150,
             ),
           ),
           SizedBox(height: 34.h),
@@ -462,7 +468,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         CustomTextField(
           hintText: '${'your_name'.tr()}*',
           focusNode: focusNodeName,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           textEditingController: firstnameController,
           formatters: [
@@ -482,7 +488,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         CustomTextField(
           hintText: '${'your_last_name'.tr()}*',
           focusNode: focusNodeLastName,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           textEditingController: lastnameController,
           formatters: [
@@ -501,7 +507,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: '${'phone_number'.tr()}*',
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           focusNode: focusNodePhone,
           textInputType: TextInputType.phone,
@@ -543,7 +549,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         ),
         CustomTextField(
           hintText: 'E-mail*',
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
@@ -586,7 +592,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'add_a_photo'.tr(),
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             contentPadding:
@@ -706,7 +712,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               child: GestureDetector(
                 onTap: () async {
                   final about = await Repository().aboutList();
-                  if (context.mounted) {
+                  if (mounted) {
                     launchUrl(
                         Uri.parse(user.rus ??
                                 true && context.locale.languageCode == 'ru'
@@ -744,7 +750,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
       children: [
         CustomTextField(
           hintText: '${'password'.tr()}*',
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
@@ -785,7 +791,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: '${'repeat_the_password'.tr()}*',
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           height: 50.h,
           focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
@@ -841,7 +847,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -875,7 +881,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           },
           child: CustomTextField(
             hintText: '${'region'.tr()}*',
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -914,7 +920,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             children: [
               CustomTextField(
                 hintText: 'document'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -1002,7 +1008,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1032,7 +1038,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   ? 'number'.tr()
                   : 'id_number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1071,7 +1077,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1093,7 +1099,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1110,7 +1116,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             child: CustomTextField(
               hintText: 'validity_period'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1121,7 +1127,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red_11_w400_171716,
+            style: CustomTextStyle.red11w400171716,
           ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
@@ -1135,7 +1141,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),

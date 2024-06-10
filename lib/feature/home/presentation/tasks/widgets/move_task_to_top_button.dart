@@ -43,7 +43,7 @@ class MoveTaskToTopButton extends StatelessWidget {
           children: [
             Text(
               'before'.tr(),
-              style: CustomTextStyle.black_17_w500_171716,
+              style: CustomTextStyle.black17w500171716,
             ),
             GestureDetector(
               onTap: () {
@@ -100,7 +100,7 @@ class MoveTaskToTopButton extends StatelessWidget {
           children: [
             Text(
               'before'.tr(),
-              style: CustomTextStyle.black_17_w500_171716,
+              style: CustomTextStyle.black17w500171716,
             ),
             GestureDetector(
               onTap: () async {
@@ -178,7 +178,7 @@ class MoveTaskToTopButton extends StatelessWidget {
       } else {
         return Text(
           'before'.tr(),
-          style: CustomTextStyle.black_17_w500_171716,
+          style: CustomTextStyle.black17w500171716,
         );
       }
     });

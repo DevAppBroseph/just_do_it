@@ -32,7 +32,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,

@@ -16,7 +16,7 @@ class _ArchivePageState extends State<ArchivePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -100,7 +100,7 @@ class _ArchivePageState extends State<ArchivePage> {
                     await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return CreateTaskPage(
+                          return const CreateTaskPage(
                             customer: false,
                             doublePop: true,
                             currentPage: 5,

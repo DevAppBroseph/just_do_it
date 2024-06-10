@@ -17,7 +17,7 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -47,8 +47,8 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
           Text(
             label,
             style: groupValue == value
-                ? CustomTextStyle.black_14_w400_171716
-                : CustomTextStyle.grey_14_w400,
+                ? CustomTextStyle.black14w400171716
+                : CustomTextStyle.grey14w400,
           )
         ],
       ),

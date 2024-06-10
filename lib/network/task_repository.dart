@@ -1,28 +1,25 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/services/dio/dio_client.dart';
 
-class TaskRepository{
-
+class TaskRepository {
   Future<List<Task>> getTaskList(
-      String? query,
-      int? priceFrom,
-      int? priceTo,
-      String? dateStart,
-      String? dateEnd,
-      String? access,
-      List<int> subcategory,
-      List<int> regions,
-      List<int> towns,
-      List<int> countries,
-      bool? customer,
-      int? currency,
-      bool? passport,
-      bool? cv,
-      ) async {
+    String? query,
+    int? priceFrom,
+    int? priceTo,
+    String? dateStart,
+    String? dateEnd,
+    String? access,
+    List<int> subcategory,
+    List<int> regions,
+    List<int> towns,
+    List<int> countries,
+    bool? customer,
+    int? currency,
+    bool? passport,
+    bool? cv,
+  ) async {
     Map<String, dynamic>? queryParameters = {
       if (query != null && query.isNotEmpty) "search": query,
       if (priceTo != null) "price_to": priceTo,

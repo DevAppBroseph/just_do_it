@@ -47,7 +47,7 @@ class _ReferalPageState extends State<ReferalPage> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,
@@ -142,6 +142,8 @@ class _ReferalPageState extends State<ReferalPage> {
                     content: Text('copy'.tr()),
                     duration: const Duration(seconds: 1),
                   );
+                  if (!context.mounted) return;
+
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: Container(

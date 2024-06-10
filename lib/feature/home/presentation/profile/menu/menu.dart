@@ -49,7 +49,7 @@ class _MenuPageState extends State<MenuPage> {
     }
 
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(

@@ -257,7 +257,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   const Spacer(),
                   CustomTextField(
                     hintText: '',
-                    hintStyle: CustomTextStyle.grey_14_w400,
+                    hintStyle: CustomTextStyle.grey14w400,
                     height: 30.h,
                     focusNode: focusNodePassword1,
                     obscureText: !visiblePassword,
@@ -280,7 +280,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'new_password'.tr(),
-                  style: CustomTextStyle.grey_12_w400,
+                  style: CustomTextStyle.grey12w400,
                 ),
               ),
               Align(
@@ -323,7 +323,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   const Spacer(),
                   CustomTextField(
                     hintText: '',
-                    hintStyle: CustomTextStyle.grey_14_w400,
+                    hintStyle: CustomTextStyle.grey14w400,
                     height: 30.h,
                     focusNode: focusNodePassword2,
                     obscureText: !visiblePasswordRepeat,
@@ -346,7 +346,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'repeat_the_password'.tr(),
-                  style: CustomTextStyle.grey_12_w400,
+                  style: CustomTextStyle.grey12w400,
                 ),
               ),
               Align(
@@ -396,7 +396,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           ),
           child: CustomTextField(
             hintText: 'country'.tr(),
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -431,7 +431,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           },
           child: CustomTextField(
             hintText: 'region'.tr(),
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -465,7 +465,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             children: [
               CustomTextField(
                 hintText: 'document'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -543,7 +543,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -572,7 +572,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               hintText:
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -611,7 +611,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -638,7 +638,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -666,7 +666,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -680,7 +680,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red_11_w400_171716,
+            style: CustomTextStyle.red11w400171716,
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -694,7 +694,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],

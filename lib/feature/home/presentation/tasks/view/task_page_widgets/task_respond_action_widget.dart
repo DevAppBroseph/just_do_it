@@ -108,7 +108,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                   AutoSizeText(
                                     "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
                                     wrapWords: false,
-                                    style: CustomTextStyle.black_17_w600_171716,
+                                    style: CustomTextStyle.black17w600171716,
                                     maxLines: 2,
                                   ),
                                   SizedBox(height: 6.h),
@@ -116,7 +116,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                     children: [
                                       Text(
                                         'rating'.tr(),
-                                        style: CustomTextStyle.grey_14_w400,
+                                        style: CustomTextStyle.grey14w400,
                                       ),
                                       SizedBox(width: 8.w),
                                       SvgPicture.asset('assets/icons/star.svg'),
@@ -155,7 +155,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           children: [
                             Text(
                               'completed_tasks'.tr(),
-                              style: CustomTextStyle.grey_12_w400,
+                              style: CustomTextStyle.grey12w400,
                             ),
                             SizedBox(width: 4.w),
                             if (widget.task.answers[index].owner != null)

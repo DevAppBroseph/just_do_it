@@ -22,7 +22,7 @@ class CustomIconButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(200.r),
       clipBehavior: Clip.hardEdge,
       child: MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
+        data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: SizedBox(
           height: 40.h,
           width: 40.w,

@@ -72,7 +72,7 @@ class TaskStatusActionWidget extends StatelessWidget {
             SizedBox(height: 5.h),
             CustomButton(
               onTap: () async {
-                if (task.canAppellate&&task.verifyStatus!="Progress") {
+                if (task.canAppellate && task.verifyStatus != "Progress") {
                   final isSuccess = await Repository().resendTaskForModeration(
                       BlocProvider.of<ProfileBloc>(context).access, task.id!);
                   if (isSuccess && context.mounted) {
@@ -94,7 +94,7 @@ class TaskStatusActionWidget extends StatelessWidget {
                     ? CustomTextStyle.black_16_w600_171716
                     : task.canAppellate
                         ? CustomTextStyle.black_16_w600_171716
-                        : CustomTextStyle.grey_14_w600.copyWith(fontSize: 16),
+                        : CustomTextStyle.grey14w600.copyWith(fontSize: 16),
               ),
             ),
           ],

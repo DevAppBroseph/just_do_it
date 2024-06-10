@@ -131,6 +131,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       }
       user?.copyWith(images: photos);
       setState(() {});
+      if (!mounted) return;
+
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
   }
@@ -146,6 +148,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
       // this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
+      if (!mounted) return;
 
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
@@ -227,6 +230,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               .pickImage(
                                                   source: ImageSource.gallery);
                                           if (image != null) {
+                                            if (!context.mounted) return;
+
                                             BlocProvider.of<ProfileBloc>(
                                                     context)
                                                 .add(
@@ -391,7 +396,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               child: Text(
                                                 'grades'.tr(),
                                                 style: CustomTextStyle
-                                                    .purple_12_w400,
+                                                    .purple12w400,
                                               ),
                                             ),
                                           ),
@@ -436,8 +441,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             padding: EdgeInsets.only(top: 2.h),
                                             child: Text(
                                               user?.balance.toString() ?? '',
-                                              style: CustomTextStyle
-                                                  .purple_15_w600,
+                                              style:
+                                                  CustomTextStyle.purple15w600,
                                             ),
                                           ),
                                         ],
@@ -482,7 +487,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 Text(
                                                   'rating'.tr(),
                                                   style: CustomTextStyle
-                                                      .gold_12_w400,
+                                                      .gold12w400,
                                                 ),
                                                 SizedBox(width: 3.h),
                                                 Row(
@@ -551,8 +556,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           child: Center(
                                             child: Text(
                                               'reviews'.tr(),
-                                              style:
-                                                  CustomTextStyle.blue_12_w400,
+                                              style: CustomTextStyle.blue12w400,
                                             ),
                                           ),
                                         ),
@@ -585,7 +589,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'tasks_created'.tr(),
-                                style: CustomTextStyle.grey_12_w400,
+                                style: CustomTextStyle.grey12w400,
                               ),
                               Text(
                                 user?.countOrdersCreateAsCustomer == null
@@ -603,7 +607,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'completed_tasks'.tr(),
-                                style: CustomTextStyle.grey_12_w400,
+                                style: CustomTextStyle.grey12w400,
                               ),
                               Text(
                                 user?.countOrdersCompleteAsExecutor == null
@@ -650,7 +654,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: Text(
                             "ban_reason".tr(),
                             textAlign: TextAlign.start,
-                            style: CustomTextStyle.red_11_w400_171716,
+                            style: CustomTextStyle.red11w400171716,
                           ),
                         ),
                       ],
@@ -716,7 +720,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               user!.docType != null &&
                                               user!.docType != ''
                                           ? CustomTextStyle.black_11_w400_171716
-                                          : CustomTextStyle.grey_12_w400,
+                                          : CustomTextStyle.grey12w400,
                                     ),
                                   ),
                                   if (user != null &&
@@ -762,7 +766,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 .black_11_w400_171716)
                                         : Text('re_verify'.tr(),
                                             style: CustomTextStyle
-                                                .red_11_w400_171716),
+                                                .red11w400171716),
                                   ),
                                   if (user?.verifyStatus == 'Success') ...[
                                     const Icon(
@@ -803,6 +807,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                           .access,
                                                       user!.id!);
                                           if (sendForVerificationSuccess) {
+                                            if (!context.mounted) return;
+
                                             BlocProvider.of<ProfileBloc>(
                                                     context)
                                                 .setUser(user);
@@ -903,7 +909,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           width: 235.w,
                                           child: Text(
                                             'change_profile_name'.tr(),
-                                            style: CustomTextStyle.grey_12_w400,
+                                            style: CustomTextStyle.grey12w400,
                                           ),
                                         ),
                                       ],
@@ -955,7 +961,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           width: 235.w,
                                           child: Text(
                                             'change_phone_number'.tr(),
-                                            style: CustomTextStyle.grey_12_w400,
+                                            style: CustomTextStyle.grey12w400,
                                           ),
                                         ),
                                       ],
@@ -1017,14 +1023,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 SizedBox(width: 9.17.w),
                                 Text(
                                   'upload_a_resume'.tr(),
-                                  style: CustomTextStyle.blue_12_w400,
+                                  style: CustomTextStyle.blue12w400,
                                 ),
                                 SizedBox(
                                   width: 100.h,
                                 ),
                                 Text(
                                   '.doc, .pdf',
-                                  style: CustomTextStyle.grey_12_w400,
+                                  style: CustomTextStyle.grey12w400,
                                 ),
                               ],
                             ),
@@ -1171,8 +1177,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               padding: EdgeInsets.only(right: 25.w),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  textStyle:
-                                      CustomTextStyle.blue_14_w400_336FEE,
+                                  textStyle: CustomTextStyle.blue14w400336FEE,
                                 ),
                                 onPressed: () {
                                   showIconModalCategories(
@@ -1217,7 +1222,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           child: Text(
                             'you_have_not_selected_any_categories'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                         ),
                       if (user != null && typeCategories.isNotEmpty)
@@ -1283,8 +1288,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 padding: EdgeInsets.only(right: 10.w),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
-                                    textStyle:
-                                        CustomTextStyle.blue_14_w400_336FEE,
+                                    textStyle: CustomTextStyle.blue14w400336FEE,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -1308,7 +1312,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 "describe_your_work_experience_and_attach_images"
                                     .tr(),
                             border: InputBorder.none,
-                            hintStyle: CustomTextStyle.grey_14_w400,
+                            hintStyle: CustomTextStyle.grey14w400,
                           ),
                           controller: experienceController,
                           style: CustomTextStyle.black_14_w400_515150,
@@ -1322,7 +1326,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               '${experienceController.text.length}/250',
-                              style: CustomTextStyle.grey_12_w400,
+                              style: CustomTextStyle.grey12w400,
                             )
                           ],
                         ),
@@ -1499,7 +1503,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               padding: EdgeInsets.only(right: 10.w, top: 15),
                               child: Text(
                                 'save'.tr(),
-                                style: CustomTextStyle.blue_14_w400_336FEE,
+                                style: CustomTextStyle.blue14w400336FEE,
                               ),
                             ),
                           ),
@@ -1539,7 +1543,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             SizedBox(width: 9.17.w),
                             Text(
                               'images'.tr(),
-                              style: CustomTextStyle.blue_12_w400,
+                              style: CustomTextStyle.blue12w400,
                             ),
                           ],
                         ),
@@ -1622,6 +1626,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     } else {
                       await Repository().deleteProfile(
                           BlocProvider.of<ProfileBloc>(context).access!);
+                      if (!context.mounted) return;
+
                       BlocProvider.of<ProfileBloc>(context).logout();
                       BlocProvider.of<ProfileBloc>(context).setUser(null);
                       Navigator.of(context).pushNamedAndRemoveUntil(

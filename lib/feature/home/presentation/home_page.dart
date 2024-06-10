@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -56,21 +57,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String searchQuery = '';
 
   void parseTripRefCode(PendingDynamicLinkData event) async {
-    access = await Storage().getAccessToken();
+    access = Storage().getAccessToken();
     String? refCode = event.link.queryParameters['ref_code'];
     String? userProfile = event.link.queryParameters['user_profile'];
     String? taskId = event.link.queryParameters['task_id'];
 
     String? channelCode = event.link.queryParameters['channel_code'];
     if (channelCode != null) {
-      print('hey man found channel code: $channelCode');
+      log('hey man found channel code: $channelCode');
     }
     if (refCode != null) {
+      if (!mounted) return;
+
       BlocProvider.of<AuthBloc>(context).setRef(int.parse(refCode));
     } else if (userProfile != null) {
       final owner =
           await Repository().getRanking(int.parse(userProfile), access);
       if (owner != null) {
+        if (!mounted) return;
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -130,7 +135,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
       if (accessToken != null && accessToken.isNotEmpty) {
         timer.cancel();
-        print('initing chat inside timer...');
+        log('initing chat inside timer...');
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken, () {
           DataUpdater().updateTasksAndProfileData(context);
@@ -159,11 +164,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print('did change dependency home page');
+    log('did change dependency home page');
     if (state == AppLifecycleState.resumed) {
-      print('home page state resumed');
+      log('home page state resumed');
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
-      print('access token: $accessToken');
+      log('access token: $accessToken');
       if (accessToken != null) {
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken, () {
@@ -176,7 +181,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Stack(
         children: [
           Scaffold(
@@ -235,7 +241,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 },
               ),
               bottomNavigationBar: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 1.0),
+                data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,

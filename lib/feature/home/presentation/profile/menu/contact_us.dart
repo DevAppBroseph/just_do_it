@@ -33,7 +33,7 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         resizeToAvoidBottomInset: false,
@@ -126,7 +126,8 @@ class _ContactUsState extends State<ContactUs> {
                     onTap: () {
                       String error = 'specify'.tr();
                       bool errorsFlag = false;
-                      bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(controllerEmail.text);
 
                       if (!emailValid && controllerEmail.text.isNotEmpty) {
@@ -134,7 +135,8 @@ class _ContactUsState extends State<ContactUs> {
                         errorsFlag = true;
                       }
                       if (controllerTheme.text.isEmpty) {
-                        error += '\n- ${'subject_appeal_second'.tr().toLowerCase()}';
+                        error +=
+                            '\n- ${'subject_appeal_second'.tr().toLowerCase()}';
                         errorsFlag = true;
                       }
                       if (controllerMessage.text.isEmpty) {
@@ -144,9 +146,13 @@ class _ContactUsState extends State<ContactUs> {
                       if (errorsFlag == true) {
                         CustomAlert().showMessage(error);
                       } else {
-                        Repository().sendMessageToSupport(BlocProvider.of<ProfileBloc>(context).access,
-                            controllerEmail.text, controllerMessage.text, controllerTheme.text);
-                        CustomAlert().showMessage('the_message_has_been_sent'.tr());
+                        Repository().sendMessageToSupport(
+                            BlocProvider.of<ProfileBloc>(context).access,
+                            controllerEmail.text,
+                            controllerMessage.text,
+                            controllerTheme.text);
+                        CustomAlert()
+                            .showMessage('the_message_has_been_sent'.tr());
                         controllerTheme.text = '';
                         controllerEmail.text = '';
                         controllerMessage.text = '';
@@ -168,14 +174,16 @@ class _ContactUsState extends State<ContactUs> {
                   const Spacer(),
                   AnimatedPadding(
                     duration: const Duration(milliseconds: 0),
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Row(
                       children: [
                         Expanded(
                           child: Container(
                             color: Colors.grey[200],
                             child: MediaQuery(
-                              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                              data: MediaQuery.of(context).copyWith(
+                                  textScaler: const TextScaler.linear(1.0)),
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Padding(

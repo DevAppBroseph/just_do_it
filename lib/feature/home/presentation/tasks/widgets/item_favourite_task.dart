@@ -6,7 +6,8 @@ import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelect) {
+Widget itemFavouriteTask(
+    FavouriteOffers task, Function(FavouriteOffers) onSelect) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
     child: ScaleButton(
@@ -38,16 +39,16 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
                     if (task.order != null)
                       Row(
                         children: [
-                          if(task.order?.category?.photo != null)
-                          SizedBox(
-                            width: 34.h,
-                            height: 34.h,
-                            child: Image.network(
-                              task.order!.category!.photo!,
-                              height: double.infinity,
-                              width: double.infinity,
+                          if (task.order?.category?.photo != null)
+                            SizedBox(
+                              width: 34.h,
+                              height: 34.h,
+                              child: Image.network(
+                                task.order!.category!.photo!,
+                                height: double.infinity,
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                   ],
@@ -86,7 +87,7 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
                             SizedBox(height: 5.h),
                             Text(
                               _textData(task.order!.dateStart!),
-                              style: CustomTextStyle.grey_12_w400,
+                              style: CustomTextStyle.grey12w400,
                             ),
                           ],
                         ),
@@ -121,20 +122,22 @@ Widget itemFavouriteTask(FavouriteOffers task, Function(FavouriteOffers) onSelec
     ),
   );
 }
-String _textData(String data){
-    String text = '';
-    String day = '';
-    String month = '';
-    String year = '';
-    List<String> parts = [];
-    parts = data.split('-');
-    year = parts[0].trim();   
-    day = parts[2].trim();   
-    month = parts[1].trim();
-   
-    text = '$day.$month.$year';
-    return text;
-  }
+
+String _textData(String data) {
+  String text = '';
+  String day = '';
+  String month = '';
+  String year = '';
+  List<String> parts = [];
+  parts = data.split('-');
+  year = parts[0].trim();
+  day = parts[2].trim();
+  month = parts[1].trim();
+
+  text = '$day.$month.$year';
+  return text;
+}
+
 String _textCountry(FavouriteOffers task) {
   var text = '';
   for (var country in task.order!.countries!) {

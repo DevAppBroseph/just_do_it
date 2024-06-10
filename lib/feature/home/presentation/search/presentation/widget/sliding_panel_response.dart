@@ -51,37 +51,39 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
   }
 
   Future<void> respond(bool raiseToTop) async {
-    if (user!.isBanned!) {
-      if (widget.selectTask!.isTask!) {
-        banDialog(context, 'responses_to_tasks_is'.tr());
-      } else {
-        banDialog(context, 'responses_to_offers_is'.tr());
-      }
-    } else {
-      final access = Storage().getAccessToken();
-      if (widget.selectTask != null) {
-        String error = 'specify'.tr();
-        bool errorsFlag = false;
-        if (coastController.text.isEmpty) {
-          error += '\n- ${'amount'.tr()}';
-          errorsFlag = true;
-        }
-        if (descriptionTextController.text.isEmpty) {
-          error += '\n- ${'description'.tr().toLowerCase()}';
-          errorsFlag = true;
-        }
-        if (errorsFlag == true) {
-          CustomAlert().showMessage(error);
+    {
+      if (user!.isBanned!) {
+        if (widget.selectTask!.isTask!) {
+          banDialog(context, 'responses_to_tasks_is'.tr());
         } else {
-          final createAnswerSuccess = await Repository().createAnswer(
-              widget.selectTask!.id!,
-              access,
-              int.parse(coastController.text.replaceAll(' ', '')),
-              descriptionTextController.text,
-              widget.selectTask!.isTask! ? 'Progress' : "Selected",
-              raiseToTop);
-          if (context.mounted) {
+          banDialog(context, 'responses_to_offers_is'.tr());
+        }
+      } else {
+        final access = Storage().getAccessToken();
+        if (widget.selectTask != null) {
+          String error = 'specify'.tr();
+          bool errorsFlag = false;
+          if (coastController.text.isEmpty) {
+            error += '\n- ${'amount'.tr()}';
+            errorsFlag = true;
+          }
+          if (descriptionTextController.text.isEmpty) {
+            error += '\n- ${'description'.tr().toLowerCase()}';
+            errorsFlag = true;
+          }
+          if (errorsFlag == true) {
+            CustomAlert().showMessage(error);
+          } else {
+            final createAnswerSuccess = await Repository().createAnswer(
+                widget.selectTask!.id!,
+                access,
+                int.parse(coastController.text.replaceAll(' ', '')),
+                descriptionTextController.text,
+                widget.selectTask!.isTask! ? 'Progress' : "Selected",
+                raiseToTop);
             if (createAnswerSuccess) {
+              if (!mounted) return;
+
               widget.panelController.animatePanelToPosition(0);
               coastController.clear();
               descriptionTextController.clear();
@@ -98,6 +100,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
               }
             } else {
               if (raiseToTop) {
+                if (!mounted) return;
+
                 noMoney(
                     context, 'raise_response'.tr(), 'response_to_the_top'.tr());
               } else {
@@ -287,7 +291,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           },
                           child: Text(
                             "done".tr(),
-                            style: CustomTextStyle.black_empty,
+                            style: CustomTextStyle.blackEmpty,
                           ),
                         ),
                       ],
@@ -353,7 +357,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 3.h),
                       Row(
@@ -380,7 +384,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             hintText: '',
                             fillColor: ColorStyles.greyF9F9F9,
                             maxLines: null,
-                            style: CustomTextStyle.black_14_w400_171716,
+                            style: CustomTextStyle.black14w400171716,
                             textEditingController: coastController,
                           ),
                         ],
@@ -406,7 +410,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         'covering_letter'.tr(),
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 3.h),
                       CustomTextField(
@@ -420,7 +424,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           openSlidingEvent(700.h);
                           setState(() {});
                         },
-                        style: CustomTextStyle.black_14_w400_171716,
+                        style: CustomTextStyle.black14w400171716,
                         textEditingController: descriptionTextController,
                         fillColor: ColorStyles.greyF9F9F9,
                         onChanged: (value) {
@@ -437,7 +441,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         children: [
                           Text(
                             '${descriptionTextController.text.length}/100',
-                            style: CustomTextStyle.grey_12_w400,
+                            style: CustomTextStyle.grey12w400,
                           )
                         ],
                       ),

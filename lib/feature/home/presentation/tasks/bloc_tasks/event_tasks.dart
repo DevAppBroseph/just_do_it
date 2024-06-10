@@ -22,7 +22,7 @@ class GetTasksEvent extends TasksEvent {
   bool? cv;
   GetTasksEvent({
     this.currency,
-  this.access,
+    this.access,
     this.query,
     this.dateEnd,
     this.dateStart,

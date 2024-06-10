@@ -70,6 +70,8 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
         } else if (descriptionTextController.text.trim().isEmpty) {
           CustomAlert().showMessage('leave_comment_on_review'.tr());
         } else {
+          if (!mounted) return;
+
           showLoaderWrapperWhite(context);
           hasJustReviewed = true;
           final addReviewsDetailSuccess = await Repository().addReviewsDetail(
@@ -80,6 +82,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
               widget.task.id);
           if (context.mounted) {
             if (addReviewsDetailSuccess) {
+              if (!mounted) return;
               DataUpdater().updateTasksAndProfileData(context);
               widget.openOwner(widget.task.owner);
               scoreDialog(context, '50', 'left_a_review'.tr());
@@ -217,7 +220,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                   setState(() {});
                 },
                 hintStyle: const TextStyle(color: Colors.black),
-                style: CustomTextStyle.black_14_w400_171716,
+                style: CustomTextStyle.black14w400171716,
                 textEditingController: descriptionTextController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {},

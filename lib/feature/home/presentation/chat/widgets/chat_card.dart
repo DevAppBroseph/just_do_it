@@ -129,7 +129,7 @@ class ChatCard extends StatelessWidget {
                                         .toString()
                                         .substring(0, 10) ??
                                     '-'),
-                                style: CustomTextStyle.grey_12_w400,
+                                style: CustomTextStyle.grey12w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -142,7 +142,7 @@ class ChatCard extends StatelessWidget {
                                   chat.lastMsg?.text ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: CustomTextStyle.black_14_w400_171716,
+                                  style: CustomTextStyle.black14w400171716,
                                 ),
                               ),
                               if (chat.lastMsg?.unread != null &&

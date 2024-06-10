@@ -184,6 +184,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
         bool res = await Repository().createTask(profileBloc.access!, newTask);
+        if (!mounted) return;
         if (res) {
           BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
           if (widget.currentPage == 6) {
@@ -384,7 +385,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey_22_w700,
+                        style: CustomTextStyle.grey22w700,
                       )
                     ],
                   ),
@@ -449,8 +450,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   color: Colors.transparent,
                                   child: Center(
                                     child: Text('as_a_customer'.tr(),
-                                        style: CustomTextStyle
-                                            .black_14_w400_171716),
+                                        style:
+                                            CustomTextStyle.black14w400171716),
                                   ),
                                 ),
                               ),
@@ -478,8 +479,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   child: Center(
                                     child: Text(
                                       'as_an_executor'.tr(),
-                                      style:
-                                          CustomTextStyle.black_14_w400_171716,
+                                      style: CustomTextStyle.black14w400171716,
                                     ),
                                   ),
                                 ),
@@ -615,7 +615,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         onPressed: () => FocusScope.of(context).unfocus(),
                         child: Text(
                           'done'.tr(),
-                          style: CustomTextStyle.black_empty,
+                          style: CustomTextStyle.blackEmpty,
                         ),
                       ),
                     ],

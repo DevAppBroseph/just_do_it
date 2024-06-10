@@ -115,7 +115,7 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'my_tasks'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                           GestureDetector(
@@ -157,8 +157,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'tasks_that_i_have_responded_to'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -226,8 +226,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'i_was_chosen_as_a_performer'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -295,8 +295,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'tasks_that_were_completed_by_me'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -355,7 +355,7 @@ class _CustomerState extends State<Customer> {
                               },
                               child: Text(
                                 'my_offers'.tr(),
-                                style: CustomTextStyle.black_16_w600_515150,
+                                style: CustomTextStyle.black16w600515150,
                               ),
                             ),
                           ),
@@ -395,8 +395,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'waiting_for_the_customer_response'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -462,8 +462,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'there_is_a_response_from_the_customer'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -529,8 +529,8 @@ class _CustomerState extends State<Customer> {
                                               child: Text(
                                                 'the_deal_has_been_implemented'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -581,7 +581,7 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'favourites'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                           GestureDetector(

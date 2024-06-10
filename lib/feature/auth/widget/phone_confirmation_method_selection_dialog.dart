@@ -73,32 +73,36 @@ class _PhoneConfirmationMethodSelectionDialogState
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      registerConfirmationMethod = RegisterConfirmationMethod.phone;
+                      registerConfirmationMethod =
+                          RegisterConfirmationMethod.phone;
                     });
                   },
                   child: _PhoneConfirmationMethodItemWidget(
                     icon: "assets/icons/sms.svg",
                     text: 'На телефон по SMS',
-                    isSelected: registerConfirmationMethod == RegisterConfirmationMethod.phone,
+                    isSelected: registerConfirmationMethod ==
+                        RegisterConfirmationMethod.phone,
                   ),
                 ),
                 const SizedBox(height: 16),
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      registerConfirmationMethod = RegisterConfirmationMethod.whatsapp;
+                      registerConfirmationMethod =
+                          RegisterConfirmationMethod.whatsapp;
                     });
                   },
                   child: _PhoneConfirmationMethodItemWidget(
                     icon: "assets/icons/whatsapp.svg",
                     text: 'На WhatsApp',
-                    isSelected: registerConfirmationMethod == RegisterConfirmationMethod.whatsapp,
+                    isSelected: registerConfirmationMethod ==
+                        RegisterConfirmationMethod.whatsapp,
                   ),
                 ),
                 const SizedBox(height: 40),
                 CustomButton(
                     onTap: () {
-                        Navigator.pop(context, registerConfirmationMethod);
+                      Navigator.pop(context, registerConfirmationMethod);
                     },
                     btnColor: registerConfirmationMethod != null
                         ? const Color(0xffFFD70A)
@@ -113,7 +117,6 @@ class _PhoneConfirmationMethodSelectionDialogState
                           fontWeight: FontWeight.bold),
                     )),
                 const SizedBox(height: 24),
-
               ],
             ),
           ),
@@ -125,7 +128,7 @@ class _PhoneConfirmationMethodSelectionDialogState
 
 class _PhoneConfirmationMethodItemWidget extends StatelessWidget {
   const _PhoneConfirmationMethodItemWidget(
-      {super.key, required this.icon, required this.text, required this.isSelected});
+      {required this.icon, required this.text, required this.isSelected});
 
   final String icon;
   final String text;

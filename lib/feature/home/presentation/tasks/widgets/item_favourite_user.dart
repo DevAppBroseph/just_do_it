@@ -4,7 +4,8 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemFavouriteUser(FavoriteCustomers user, Function(FavoriteCustomers) onSelect) {
+Widget itemFavouriteUser(
+    FavoriteCustomers user, Function(FavoriteCustomers) onSelect) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 15.w),
     child: ScaleButton(
@@ -44,7 +45,7 @@ Widget itemFavouriteUser(FavoriteCustomers user, Function(FavoriteCustomers) onS
                     width: 260,
                     child: Text(
                       '${user.user!.firstname ?? '-'} ${user.user!.lastname ?? '-'}',
-                      style: CustomTextStyle.black_17_w600_171716,
+                      style: CustomTextStyle.black17w600171716,
                       softWrap: true,
                     ),
                   ),
@@ -53,7 +54,9 @@ Widget itemFavouriteUser(FavoriteCustomers user, Function(FavoriteCustomers) onS
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 10.w,),
+              padding: EdgeInsets.only(
+                left: 10.w,
+              ),
               child: Icon(
                 Icons.arrow_forward_ios,
                 color: ColorStyles.greyBDBDBD,

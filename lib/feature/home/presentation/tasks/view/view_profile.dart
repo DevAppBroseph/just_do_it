@@ -78,7 +78,7 @@ class _ProfileViewState extends State<ProfileView> {
           : Container(
               color: ColorStyles.greyEAECEE,
               child: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 1.0),
+                data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: owner!.isBanned!
@@ -102,7 +102,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   child: Text(
                                     'user_account_is_currently_blocked'.tr(),
                                     textAlign: TextAlign.center,
-                                    style: CustomTextStyle.grey_16_w800,
+                                    style: CustomTextStyle.grey16w800,
                                   ),
                                 ),
                               ),
@@ -170,7 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                           Text(
                                                             '${owner?.firstname ?? ''}\n${owner?.lastname ?? ''}',
                                                             style: CustomTextStyle
-                                                                .black_17_w600_171716,
+                                                                .black17w600171716,
                                                             softWrap: true,
                                                           ),
                                                         ],
@@ -200,8 +200,6 @@ class _ProfileViewState extends State<ProfileView> {
                                                               }, builder:
                                                                       (context,
                                                                           state) {
-                                                                print(
-                                                                    "Favorites Bloc is ${state}");
                                                                 if (state
                                                                     is FavouritesLoaded) {
                                                                   favouritesUsers = state
@@ -214,7 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                               ?.isLiked !=
                                                                           null) {
                                                                         final access =
-                                                                            await Storage().getAccessToken();
+                                                                            Storage().getAccessToken();
                                                                         if (owner?.isLiked !=
                                                                             null) {
                                                                           await Repository().deleteLikeUser(
@@ -229,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                         });
                                                                       } else {
                                                                         final access =
-                                                                            await Storage().getAccessToken();
+                                                                            Storage().getAccessToken();
                                                                         if (owner?.id !=
                                                                             null) {
                                                                           await Repository().addLikeUser(
@@ -290,10 +288,6 @@ class _ProfileViewState extends State<ProfileView> {
                                           ),
                                           BlocBuilder<RatingBloc, RatingState>(
                                               builder: (context, snapshot) {
-                                            var reviews =
-                                                BlocProvider.of<RatingBloc>(
-                                                        context)
-                                                    .reviews;
                                             return Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -328,7 +322,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               child: Text(
                                                                 'grade'.tr(),
                                                                 style: CustomTextStyle
-                                                                    .purple_12_w400,
+                                                                    .purple12w400,
                                                               ),
                                                             ),
                                                           ),
@@ -478,7 +472,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                     'rating'
                                                                         .tr(),
                                                                     style: CustomTextStyle
-                                                                        .gold_12_w400,
+                                                                        .gold12w400,
                                                                   ),
                                                                   SizedBox(
                                                                       width:
@@ -560,7 +554,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               child: Text(
                                                                 'reviews'.tr(),
                                                                 style: CustomTextStyle
-                                                                    .blue_12_w400,
+                                                                    .blue12w400,
                                                               ),
                                                             ),
                                                           ),
@@ -598,7 +592,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                 Text(
                                                   'tasks_created'.tr(),
                                                   style: CustomTextStyle
-                                                      .grey_12_w400,
+                                                      .grey12w400,
                                                 ),
                                                 Text(
                                                   owner!.countOrdersCreate
@@ -617,7 +611,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                 Text(
                                                   'completed_tasks'.tr(),
                                                   style: CustomTextStyle
-                                                      .grey_12_w400,
+                                                      .grey12w400,
                                                 ),
                                                 Text(
                                                   owner!.countOrdersComplete
@@ -673,7 +667,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               ? CustomTextStyle
                                                                   .black_11_w400_171716
                                                               : CustomTextStyle
-                                                                  .grey_12_w400,
+                                                                  .grey12w400,
                                                         ),
                                                       ),
                                                       if (owner != null &&
@@ -722,7 +716,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                               ? CustomTextStyle
                                                                   .black_11_w400_171716
                                                               : CustomTextStyle
-                                                                  .grey_12_w400,
+                                                                  .grey12w400,
                                                         ),
                                                       ),
                                                       if (owner != null &&
@@ -932,7 +926,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                           Text(
                                                             'translation'.tr(),
                                                             style: CustomTextStyle
-                                                                .blue_14_w400_336FEE,
+                                                                .blue14w400336FEE,
                                                           )
                                                         ],
                                                       ),
@@ -1064,7 +1058,7 @@ class _ProfileViewState extends State<ProfileView> {
                     if (review.date != '')
                       Text(
                         _textData(review.date),
-                        style: CustomTextStyle.grey_12_w400,
+                        style: CustomTextStyle.grey12w400,
                       ),
                   ],
                 ),
@@ -1077,7 +1071,7 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                   ),
                 ],
               ),
@@ -1112,7 +1106,7 @@ class _ProfileViewState extends State<ProfileView> {
                               SizedBox(width: 8.h),
                               Text(
                                 'translation'.tr(),
-                                style: CustomTextStyle.blue_14_w400_336FEE,
+                                style: CustomTextStyle.blue14w400336FEE,
                               )
                             ],
                           ),

@@ -12,7 +12,7 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 
 class NotificationPage extends StatefulWidget {
-  NotificationPage({super.key});
+  const NotificationPage({super.key});
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();
@@ -36,7 +36,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.whiteFFFFFF,
         body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -126,7 +126,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: CustomTextStyle
-                                                          .black_14_w400_171716,
+                                                          .black14w400171716,
                                                     ),
                                                   ),
                                                   const Spacer(),
@@ -140,7 +140,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                                     0, 10) ??
                                                             '-'),
                                                     style: CustomTextStyle
-                                                        .grey_14_w400,
+                                                        .grey14w400,
                                                   ),
                                                 ],
                                               ),
@@ -181,7 +181,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                   : ColorStyles.yellowFFD70A,
                               textLabel: Text(
                                 'clear'.tr(),
-                                style: CustomTextStyle.black_16_w600_515150,
+                                style: CustomTextStyle.black16w600515150,
                               ),
                             ),
                           ),

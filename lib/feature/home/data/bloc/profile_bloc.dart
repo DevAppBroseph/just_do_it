@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -58,19 +58,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     emit(LoadProfileState());
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
-    print("updateProfile----0");
+    log("updateProfile----0");
     if (access != null) {
-      print("updateProfile----1");
+      log("updateProfile----1");
       UserRegModel? res =
           await Repository().updateUser(access!, event.newUser!);
       if (res != null) {
-        print("updateProfile----2");
+        log("updateProfile----2");
         user = res;
       }
       emit(UpdateProfileSuccessState());
-      print("updateProfile----3");
+      log("updateProfile----3");
     }
   }
 
@@ -79,7 +79,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     emit(LoadProfileState());
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().updateUser(access!, user!);
@@ -102,7 +102,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     // emit(LoadProfileState());
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res =
@@ -121,7 +121,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     emit(LoadProfileState());
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
     if (access != null) {
       UserRegModel? res = await Repository().updateUserCv(
@@ -139,7 +139,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfileWithoutLoadingEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    String? accessToken = await Storage().getAccessToken();
+    String? accessToken = Storage().getAccessToken();
     access = accessToken;
     user = event.newUser;
 

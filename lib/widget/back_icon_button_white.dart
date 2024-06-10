@@ -5,11 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomIconButtonWhite extends StatelessWidget {
-  Function onBackPressed;
-  String icon;
+  final Function onBackPressed;
+  final String icon;
   Color color;
 
-  CustomIconButtonWhite({super.key, 
+  CustomIconButtonWhite({
+    super.key,
     required this.onBackPressed,
     required this.icon,
     this.color = Colors.white,
@@ -17,7 +18,7 @@ class CustomIconButtonWhite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: GestureDetector(
         onTap: () => onBackPressed(),
         child: Container(

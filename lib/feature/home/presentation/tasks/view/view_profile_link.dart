@@ -8,8 +8,8 @@ import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ViewProfileLink extends StatefulWidget {
-  Owner owner;
-  ViewProfileLink(this.owner);
+  final Owner owner;
+  const ViewProfileLink(this.owner, {super.key});
 
   @override
   State<ViewProfileLink> createState() => _ViewProfileLinkState();
@@ -19,9 +19,10 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor:  ColorStyles.greyEAECEE,
+        backgroundColor: ColorStyles.greyEAECEE,
         body: Column(
           children: [
             SizedBox(height: 60.h),

@@ -448,7 +448,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     },
                     child: Text(
                       'clear'.tr(),
-                      style: CustomTextStyle.red_16_w400,
+                      style: CustomTextStyle.red16w400,
                     ),
                   ),
                 ],
@@ -538,7 +538,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'categories'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -549,7 +549,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'no_categories_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black_14_w400_171716,
+                              style: CustomTextStyle.black14w400171716,
                             ),
                           ),
                         ],
@@ -589,7 +589,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'countries'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -600,7 +600,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'countries_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black_14_w400_171716,
+                              style: CustomTextStyle.black14w400171716,
                             ),
                           ),
                         ],
@@ -640,12 +640,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'start_and_end_dates'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             date,
-                            style: CustomTextStyle.black_14_w400_171716,
+                            style: CustomTextStyle.black14w400171716,
                           ),
                         ],
                       ),
@@ -684,7 +684,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'currency'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -696,7 +696,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'currency_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black_14_w400_171716,
+                              style: CustomTextStyle.black14w400171716,
                             ),
                           ),
                         ],
@@ -734,7 +734,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
-                              style: CustomTextStyle.grey_14_w400,
+                              style: CustomTextStyle.grey14w400,
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -766,7 +766,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   hintText: '',
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
-                                  style: CustomTextStyle.black_14_w400_171716,
+                                  style: CustomTextStyle.black14w400171716,
                                   textEditingController: coastMinController,
                                 ),
                               ],
@@ -797,7 +797,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
-                              style: CustomTextStyle.grey_14_w400,
+                              style: CustomTextStyle.grey14w400,
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -830,7 +830,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   hintText: '',
                                   fillColor: ColorStyles.greyF9F9F9,
                                   maxLines: null,
-                                  style: CustomTextStyle.black_14_w400_171716,
+                                  style: CustomTextStyle.black14w400171716,
                                   textEditingController: coastMaxController,
                                 ),
                               ],
@@ -873,7 +873,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   children: [
                                     Text(
                                       'keywords'.tr(),
-                                      style: CustomTextStyle.grey_14_w400,
+                                      style: CustomTextStyle.grey14w400,
                                     ),
                                     Row(
                                       children: [
@@ -912,8 +912,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                               'for_example_buying_oranges'.tr(),
                                           fillColor: ColorStyles.greyF9F9F9,
                                           maxLines: 4,
-                                          style: CustomTextStyle
-                                              .black_14_w400_171716,
+                                          style:
+                                              CustomTextStyle.black14w400171716,
                                           textEditingController:
                                               keyWordController,
                                         ),
@@ -938,7 +938,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       Expanded(
                         child: Text(
                           'passport_data_uploaded'.tr(),
-                          style: CustomTextStyle.black_14_w400_171716,
+                          style: CustomTextStyle.black14w400171716,
                         ),
                       ),
                       Switch.adaptive(
@@ -956,7 +956,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       Expanded(
                         child: Text(
                           'there_is_a_resume'.tr(),
-                          style: CustomTextStyle.black_14_w400_171716,
+                          style: CustomTextStyle.black14w400171716,
                         ),
                       ),
                       Switch.adaptive(
@@ -1169,7 +1169,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_categories'.tr(),
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                   ),
                   const Spacer(),
                   Switch.adaptive(
@@ -1272,7 +1272,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_14_w400_171716,
+                style: CustomTextStyle.black14w400171716,
               ),
               if (activities[currentIndex].isSelect)
                 Padding(
@@ -1281,7 +1281,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: title.length > 27 ? 20.w : 70.w,
                     child: Text(
                       '- $selectWork',
-                      style: CustomTextStyle.grey_14_w400,
+                      style: CustomTextStyle.grey14w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -1362,7 +1362,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_subcategories'.tr(),
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                   ),
                   const Spacer(),
                   Switch.adaptive(
@@ -1501,7 +1501,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_countries'.tr(),
-                  style: CustomTextStyle.black_14_w400_171716,
+                  style: CustomTextStyle.black14w400171716,
                 ),
                 const Spacer(),
                 Switch.adaptive(
@@ -1698,7 +1698,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_regions'.tr(),
-                  style: CustomTextStyle.black_14_w400_171716,
+                  style: CustomTextStyle.black14w400171716,
                 ),
                 const Spacer(),
                 Switch.adaptive(
@@ -1903,7 +1903,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_districts'.tr(),
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                   ),
                   const Spacer(),
                   Switch.adaptive(
@@ -2107,14 +2107,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'start_date'.tr(),
-                      style: CustomTextStyle.grey_14_w400,
+                      style: CustomTextStyle.grey14w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       startDate != null
                           ? DateFormat('dd.MM.yyyy').format(startDate!)
                           : 'select_the_start_date_of_the_execution'.tr(),
-                      style: CustomTextStyle.black_14_w400_171716,
+                      style: CustomTextStyle.black14w400171716,
                     ),
                   ],
                 ),
@@ -2148,14 +2148,14 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'completion_date'.tr(),
-                      style: CustomTextStyle.grey_14_w400,
+                      style: CustomTextStyle.grey14w400,
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       endDate != null
                           ? DateFormat('dd.MM.yyyy').format(endDate!)
                           : 'select_the_task_completion_date'.tr(),
-                      style: CustomTextStyle.black_14_w400_171716,
+                      style: CustomTextStyle.black14w400171716,
                     ),
                   ],
                 ),

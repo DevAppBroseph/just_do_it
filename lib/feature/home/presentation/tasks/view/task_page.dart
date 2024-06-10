@@ -143,7 +143,7 @@ class _TaskPageState extends State<TaskPage> {
                         if (task.isBanned != null && task.isBanned!)
                           Text(
                             'blocked'.tr(),
-                            style: CustomTextStyle.red_11_w400_171716,
+                            style: CustomTextStyle.red11w400171716,
                           ),
                         const Spacer(),
                         if (user?.id != task.owner?.id)
@@ -283,7 +283,7 @@ class _TaskPageState extends State<TaskPage> {
                                         CupertinoButton(
                                           child: Text(
                                             'delete'.tr(),
-                                            style: CustomTextStyle.red_16_w400,
+                                            style: CustomTextStyle.red16w400,
                                           ),
                                           onPressed: () async {
                                             final access =
@@ -323,7 +323,7 @@ class _TaskPageState extends State<TaskPage> {
                     SizedBox(height: 12.h),
                     Text(
                       task.name,
-                      style: CustomTextStyle.black_17_w800_171716,
+                      style: CustomTextStyle.black17w800171716,
                     ),
                     SizedBox(height: 18.h),
                     if (task.category != null)
@@ -370,7 +370,7 @@ class _TaskPageState extends State<TaskPage> {
                           children: [
                             Text(
                               'description'.tr(),
-                              style: CustomTextStyle.black_17_w800_171716,
+                              style: CustomTextStyle.black17w800171716,
                             ),
                             SizedBox(
                               height: 10.h,
@@ -391,7 +391,7 @@ class _TaskPageState extends State<TaskPage> {
                                 },
                                 child: Text(
                                   'show_more'.tr(),
-                                  style: CustomTextStyle.blue_11_w400_336FEE,
+                                  style: CustomTextStyle.blue11w400336FEE,
                                 ),
                               ),
                             if (task.files != null && task.files!.isNotEmpty)
@@ -545,7 +545,7 @@ class _TaskPageState extends State<TaskPage> {
                                     children: [
                                       Text(
                                         'term_of_execution'.tr(),
-                                        style: CustomTextStyle.grey_14_w400,
+                                        style: CustomTextStyle.grey14w400,
                                       ),
                                       SizedBox(height: 6.h),
                                       FittedBox(
@@ -580,7 +580,7 @@ class _TaskPageState extends State<TaskPage> {
                                     children: [
                                       Text(
                                         'region'.tr(),
-                                        style: CustomTextStyle.grey_14_w400,
+                                        style: CustomTextStyle.grey14w400,
                                       ),
                                       SizedBox(height: 6.h),
                                       AutoSizeText(
@@ -659,15 +659,15 @@ class _TaskPageState extends State<TaskPage> {
                                       task.isTask ?? false
                                           ? 'customer'.tr()
                                           : 'executor'.tr(),
-                                      style: CustomTextStyle.grey_12_w400,
+                                      style: CustomTextStyle.grey12w400,
                                     ),
                                     SizedBox(
                                       width: 260.w,
                                       child: AutoSizeText(
                                         "${task.owner?.firstname ?? '-'} ${task.owner?.lastname ?? '-'}",
                                         wrapWords: false,
-                                        style: CustomTextStyle
-                                            .black_17_w600_171716,
+                                        style:
+                                            CustomTextStyle.black17w600171716,
                                         maxLines: 2,
                                       ),
                                     ),
@@ -676,7 +676,7 @@ class _TaskPageState extends State<TaskPage> {
                                       children: [
                                         Text(
                                           'rating'.tr(),
-                                          style: CustomTextStyle.grey_14_w400,
+                                          style: CustomTextStyle.grey14w400,
                                         ),
                                         SizedBox(width: 8.w),
                                         SvgPicture.asset(

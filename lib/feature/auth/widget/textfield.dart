@@ -82,9 +82,9 @@ class CustomTextField extends StatelessWidget {
     // Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
-        CustomTextStyle.grey_14_w400.copyWith(overflow: TextOverflow.ellipsis);
+        CustomTextStyle.grey14w400.copyWith(overflow: TextOverflow.ellipsis);
 
-    style = style ?? CustomTextStyle.black_12_ellipsis;
+    style = style ?? CustomTextStyle.black12ellipsis;
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
 
@@ -121,9 +121,9 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              prefixStyle: CustomTextStyle.grey14w400ellipsis,
               suffixIcon: suffixIcon,
-              suffixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              suffixStyle: CustomTextStyle.grey14w400ellipsis,
               errorStyle: CustomTextStyle.black_10,
               contentPadding: contentPadding,
               filled: true,
@@ -218,9 +218,9 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              prefixStyle: CustomTextStyle.grey14w400ellipsis,
               suffixIcon: suffixIcon,
-              suffixStyle: CustomTextStyle.grey_14_w400_ellipsis,
+              suffixStyle: CustomTextStyle.grey14w400ellipsis,
               errorStyle: CustomTextStyle.black_11,
               contentPadding: contentPadding,
               filled: true,

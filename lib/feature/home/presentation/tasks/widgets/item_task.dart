@@ -96,7 +96,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                   SizedBox(height: 5.h),
                                   Text(
                                     _textData(task.dateStart, user),
-                                    style: CustomTextStyle.grey_12_w400,
+                                    style: CustomTextStyle.grey12w400,
                                   ),
                                 ],
                               ),

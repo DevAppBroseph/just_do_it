@@ -60,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       TextSpan(
                         text: '$stageRegistration/2',
-                        style: CustomTextStyle.grey_22_w700,
+                        style: CustomTextStyle.grey22w700,
                       ),
                     ],
                   ),
@@ -90,12 +90,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.only(
-                          topLeft:
-                              !state ? Radius.circular(20.r) : Radius.zero,
+                          topLeft: !state ? Radius.circular(20.r) : Radius.zero,
                           bottomLeft:
                               !state ? Radius.circular(20.r) : Radius.zero,
-                          topRight:
-                              state ? Radius.circular(20.r) : Radius.zero,
+                          topRight: state ? Radius.circular(20.r) : Radius.zero,
                           bottomRight:
                               state ? Radius.circular(20.r) : Radius.zero,
                         ),
@@ -132,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 'customer'.tr(),
                                 style: state
-                                    ? CustomTextStyle.black_14_w400_171716
+                                    ? CustomTextStyle.black14w400171716
                                     : CustomTextStyle.white_14_w400,
                               ),
                             ),
@@ -168,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 'executor'.tr(),
                                 style: state
                                     ? CustomTextStyle.white_14_w400
-                                    : CustomTextStyle.black_14_w400_171716,
+                                    : CustomTextStyle.black14w400171716,
                               ),
                             ),
                           ),

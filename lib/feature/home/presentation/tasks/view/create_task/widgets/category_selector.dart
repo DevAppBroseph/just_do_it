@@ -93,7 +93,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'category'.tr(),
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectCategory != null)
@@ -101,7 +101,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                           user?.rus ?? true
                               ? widget.selectCategory!.description!
                               : widget.selectCategory!.engDescription!,
-                          style: CustomTextStyle.black_14_w400_171716,
+                          style: CustomTextStyle.black14w400171716,
                         ),
                     ],
                   ),
@@ -223,7 +223,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'subcategory'.tr(),
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectSubCategory != null)
@@ -234,7 +234,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 ? widget.selectSubCategory?.description ?? '-'
                                 : widget.selectSubCategory?.engDescription ??
                                     '-',
-                            style: CustomTextStyle.black_14_w400_171716,
+                            style: CustomTextStyle.black14w400171716,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -345,7 +345,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                   openCategory = false;
                   setState(() {});
                 },
-                style: CustomTextStyle.black_14_w400_171716,
+                style: CustomTextStyle.black14w400171716,
                 hintText:
                     widget.customer ? 'task_name'.tr() : 'offer_name'.tr(),
                 textEditingController: widget.titleController,
@@ -386,7 +386,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                 hintText: widget.customer
                     ? 'description_task'.tr()
                     : 'description_offer'.tr(),
-                style: CustomTextStyle.black_14_w400_171716,
+                style: CustomTextStyle.black14w400171716,
                 textEditingController: widget.aboutController,
                 fillColor: ColorStyles.greyF9F9F9,
                 onChanged: (value) {
@@ -409,7 +409,7 @@ class _CategorySelectorState extends State<CategorySelector> {
             child: CustomTextField(
               fillColor: ColorStyles.greyF9F9F9,
               hintText: 'attach_doc'.tr(),
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               enabled: false,
               suffixIcon: Stack(

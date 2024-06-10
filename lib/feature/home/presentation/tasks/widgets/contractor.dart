@@ -126,7 +126,7 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'my_tasks'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                           GestureDetector(
@@ -166,8 +166,8 @@ class _ContractorState extends State<Contractor> {
                                               child: Text(
                                                 'created_by_me_as_a_customer'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -235,8 +235,8 @@ class _ContractorState extends State<Contractor> {
                                               child: Text(
                                                 'tasks_for_which_responses'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -303,8 +303,8 @@ class _ContractorState extends State<Contractor> {
                                               width: 235.w,
                                               child: Text(
                                                 'completed_task'.tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -357,7 +357,7 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'responses_to_offers'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                           GestureDetector(
@@ -399,8 +399,8 @@ class _ContractorState extends State<Contractor> {
                                               child: Text(
                                                 'i_made_a_response_to_the_offer'
                                                     .tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -467,8 +467,8 @@ class _ContractorState extends State<Contractor> {
                                               width: 235.w,
                                               child: Text(
                                                 'completed_task'.tr(),
-                                                style: CustomTextStyle
-                                                    .grey_12_w400,
+                                                style:
+                                                    CustomTextStyle.grey12w400,
                                               ),
                                             ),
                                           ],
@@ -523,7 +523,7 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'favourites'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                           GestureDetector(

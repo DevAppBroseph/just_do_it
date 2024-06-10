@@ -28,7 +28,9 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
     String? access = BlocProvider.of<ProfileBloc>(context).access;
     BlocProvider.of<RatingBloc>(context).add(GetRatingEvent(access));
     timer = Timer.periodic(
-        const Duration(seconds: 30), (Timer t) => BlocProvider.of<RatingBloc>(context).add(UpdateRatingEvent(access)));
+        const Duration(seconds: 30),
+        (Timer t) => BlocProvider.of<RatingBloc>(context)
+            .add(UpdateRatingEvent(access)));
   }
 
   @override
@@ -41,9 +43,10 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
   Widget build(BuildContext context) {
     UserRegModel? user = BlocProvider.of<ProfileBloc>(context).user;
     return MediaQuery(
-      data: const MediaQueryData(textScaleFactor: 1.0),
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        body: BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
+        body:
+            BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
           return SafeArea(
             child: Column(
               children: [
@@ -66,7 +69,8 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoute.notification);
+                          Navigator.of(context)
+                              .pushNamed(AppRoute.notification);
                         },
                         child: Stack(
                           alignment: Alignment.topRight,
@@ -81,7 +85,8 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                                       width: 10.w,
                                       decoration: BoxDecoration(
                                         color: ColorStyles.yellowFFD70B,
-                                        borderRadius: BorderRadius.circular(20.r),
+                                        borderRadius:
+                                            BorderRadius.circular(20.r),
                                       ),
                                     )
                                   : Container()

@@ -265,7 +265,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                           },
                           child: Text(
                             'done'.tr(),
-                            style: CustomTextStyle.black_empty,
+                            style: CustomTextStyle.blackEmpty,
                           ),
                         ),
                       ],
@@ -350,7 +350,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   children: [
                     CustomTextField(
                       hintText: 'document'.tr(),
-                      hintStyle: CustomTextStyle.grey_14_w400,
+                      hintStyle: CustomTextStyle.grey14w400,
                       width: 350.w,
                       height: 50.h,
                       enabled: false,
@@ -413,7 +413,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 actionButton: false,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -444,7 +444,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -481,7 +481,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -508,7 +508,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -536,7 +536,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -550,7 +550,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red_11_w400_171716,
+            style: CustomTextStyle.red11w400171716,
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -567,7 +567,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],

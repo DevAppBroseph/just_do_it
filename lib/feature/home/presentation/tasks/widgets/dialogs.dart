@@ -219,7 +219,7 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                     ),
                     child: Text(
                       'dialog_bonus_info'.tr(args: [score]),
-                      style: CustomTextStyle.grey_13_w400,
+                      style: CustomTextStyle.grey13w400,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -305,7 +305,7 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                 ),
                                 Text(
                                   '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-                                  style: CustomTextStyle.grey_13_w400,
+                                  style: CustomTextStyle.grey13w400,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -395,7 +395,7 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                                 ),
                                 Text(
                                   text,
-                                  style: CustomTextStyle.grey_14_w400,
+                                  style: CustomTextStyle.grey14w400,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -483,14 +483,14 @@ void banDialog(BuildContext context, String action) => showDialog(
                                 ),
                                 Text(
                                   'your_profile_is_blocked'.tr(),
-                                  style: CustomTextStyle.grey_14_w400,
+                                  style: CustomTextStyle.grey14w400,
                                 ),
                                 SizedBox(
                                   height: 18.h,
                                 ),
                                 Text(
                                   'contact_the_administrator_to_unblock'.tr(),
-                                  style: CustomTextStyle.grey_13_w400,
+                                  style: CustomTextStyle.grey13w400,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -687,7 +687,7 @@ void onTopDialog(BuildContext context, String title, String action,
                                       EdgeInsets.symmetric(horizontal: 24.w),
                                   child: Text(
                                     description,
-                                    style: CustomTextStyle.grey_12_w400,
+                                    style: CustomTextStyle.grey12w400,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

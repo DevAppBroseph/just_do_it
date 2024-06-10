@@ -56,7 +56,8 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: BlocBuilder<AuthBloc, AuthState>(buildWhen: (previous, current) {
         Loader.hide();
         if (current is ResetPasswordSuccessState) {
@@ -115,7 +116,7 @@ class _AuthPageState extends State<AuthPage> {
                     child: Center(
                       child: Text(
                         'jobyfine'.toUpperCase(),
-                        style: CustomTextStyle.black_39_w900_171716,
+                        style: CustomTextStyle.black39w900171716,
                       ),
                     ),
                   ),
@@ -126,6 +127,8 @@ class _AuthPageState extends State<AuthPage> {
                     children: [
                       CustomButton(
                         onTap: () async {
+                          if (!mounted) return;
+
                           if (forgotPassword &&
                               loginController.text.isNotEmpty) {
                             showLoaderWrapper(context);
@@ -133,6 +136,8 @@ class _AuthPageState extends State<AuthPage> {
                                 .add(RestoreCodeEvent(loginController.text));
                           } else {
                             final token = await getFcmToken();
+                            if (!context.mounted) return;
+
                             showLoaderWrapper(context);
                             BlocProvider.of<AuthBloc>(context).add(
                               SignInEvent(
@@ -163,7 +168,7 @@ class _AuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'back'.tr() : 'registration'.tr(),
-                          style: CustomTextStyle.black_16_w600_515150,
+                          style: CustomTextStyle.black16w600515150,
                         ),
                         btnColor: ColorStyles.greyE0E6EE,
                       ),
@@ -193,7 +198,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           onFieldSubmitted: (value) {
             requestStage1();
           },
@@ -227,7 +232,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -284,7 +289,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeResetLogin,
           textEditingController: loginController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),

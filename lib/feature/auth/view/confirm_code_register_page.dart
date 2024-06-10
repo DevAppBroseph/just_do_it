@@ -100,6 +100,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
 
     final selectedMethod = await showConfirmationMethodDialog(context);
     if (selectedMethod != null) {
+      if (!mounted) return;
+
       lastSendProfileEvent = BlocProvider.of<AuthBloc>(context, listen: false)
           .updateConfirmationMethod(widget.sendProfileEvent, selectedMethod);
 
@@ -133,7 +135,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
     }
 
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
           Loader.hide();
@@ -193,11 +196,11 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               children: [
                                 TextSpan(
                                   text: '${'code_confirm_sent'.tr()}\n',
-                                  style: CustomTextStyle.black_16_w400_515150,
+                                  style: CustomTextStyle.black16w400515150,
                                 ),
                                 TextSpan(
                                   text: value,
-                                  style: CustomTextStyle.black_16_w400_171716,
+                                  style: CustomTextStyle.black16w400171716,
                                 ),
                               ],
                             ),
@@ -227,7 +230,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   color: ColorStyles.greyEAECEE,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                textStyle: CustomTextStyle.black_26_w600_171716,
+                                textStyle: CustomTextStyle.black26w600171716,
                               ),
                             ),
                           ),
@@ -239,8 +242,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                 children: [
                                   TextSpan(
                                     text: '${'resend_code'.tr()} ',
-                                    style:
-                                        CustomTextStyle.grey_16_w400.copyWith(
+                                    style: CustomTextStyle.grey16w400.copyWith(
                                       color: timer?.isActive ?? false
                                           ? ColorStyles.greyDADADA
                                           : ColorStyles.black292D32,
@@ -249,8 +251,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   if (timer?.isActive ?? false)
                                     TextSpan(
                                       text: '$currentSecond ${'sec'.tr()}.',
-                                      style:
-                                          CustomTextStyle.black_16_w400_171716,
+                                      style: CustomTextStyle.black16w400171716,
                                     ),
                                 ],
                               ),
@@ -279,7 +280,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             btnColor: ColorStyles.greyE0E6EE,
                             textLabel: Text(
                               'back'.tr(),
-                              style: CustomTextStyle.black_16_w600_515150,
+                              style: CustomTextStyle.black16w600515150,
                             ),
                           ),
                         ],
@@ -303,8 +304,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               child: Container(
                                 color: Colors.grey[200],
                                 child: MediaQuery(
-                                  data: MediaQuery.of(context)
-                                      .copyWith(textScaleFactor: 1.0),
+                                  data: MediaQuery.of(context).copyWith(
+                                      textScaler: const TextScaler.linear(1.0)),
                                   child: Align(
                                     alignment: Alignment.centerRight,
                                     child: Padding(

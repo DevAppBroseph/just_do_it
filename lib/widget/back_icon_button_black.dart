@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomIconButtonBlack extends StatelessWidget {
-  Function onBackPressed;
-  Icon icon;
-  Color? color;
+  final Function onBackPressed;
+  final Icon icon;
+  final Color? color;
 
-  CustomIconButtonBlack({
+  const CustomIconButtonBlack({
+    super.key,
     required this.onBackPressed,
     required this.icon,
     this.color,

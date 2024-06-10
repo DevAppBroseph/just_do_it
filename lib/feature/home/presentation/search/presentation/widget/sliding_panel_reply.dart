@@ -272,7 +272,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           },
                           child: Text(
                             'done'.tr(),
-                            style: CustomTextStyle.black_empty,
+                            style: CustomTextStyle.blackEmpty,
                           ),
                         ),
                       ],
@@ -357,7 +357,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   children: [
                     CustomTextField(
                       hintText: 'document'.tr(),
-                      hintStyle: CustomTextStyle.grey_14_w400,
+                      hintStyle: CustomTextStyle.grey14w400,
                       width: 350.w,
                       height: 50.h,
                       enabled: false,
@@ -419,7 +419,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 actionButton: false,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -451,7 +451,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -493,7 +493,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -520,7 +520,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: whoGiveDocumentController,
               contentPadding:
@@ -548,7 +548,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             textEditingController: dateDocumentController,
             contentPadding:
@@ -562,7 +562,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red_11_w400_171716,
+            style: CustomTextStyle.red11w400171716,
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -578,7 +578,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -627,7 +627,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
     showCupertinoModalPopup(
         context: ctx,
         builder: (_) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: Column(
                 children: [
                   const Spacer(),

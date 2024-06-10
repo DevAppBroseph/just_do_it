@@ -89,7 +89,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'your_name'.tr(),
                             height: 50,
                             textEditingController: firstnameController,
-                            hintStyle: CustomTextStyle.grey_14_w400,
+                            hintStyle: CustomTextStyle.grey14w400,
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -108,7 +108,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'your_last_name'.tr(),
                             height: 50.h,
                             textEditingController: lastnameController,
-                            hintStyle: CustomTextStyle.grey_14_w400,
+                            hintStyle: CustomTextStyle.grey14w400,
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -125,7 +125,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
                             'edit_email'.tr(),
-                            style: CustomTextStyle.grey_14_w400,
+                            style: CustomTextStyle.grey14w400,
                           ),
                         ),
                         SizedBox(height: 16.h),
@@ -136,7 +136,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
-                            hintStyle: CustomTextStyle.grey_14_w400,
+                            hintStyle: CustomTextStyle.grey14w400,
                             formatters: [
                               // MaskTextInputFormatter(
                               //   initialText: '+ ',
@@ -170,7 +170,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'E-mail',
                             height: 50.h,
                             textEditingController: emailController,
-                            hintStyle: CustomTextStyle.grey_14_w400,
+                            hintStyle: CustomTextStyle.grey14w400,
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
@@ -295,7 +295,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                     CupertinoButton(
                         child: Text(
                           'done'.tr(),
-                          style: CustomTextStyle.black_empty,
+                          style: CustomTextStyle.blackEmpty,
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();

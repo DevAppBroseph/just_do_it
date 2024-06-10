@@ -11,7 +11,6 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
-import 'package:just_do_it/models/levels.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ScorePage extends StatefulWidget {
@@ -718,8 +717,8 @@ class _ScorePageState extends State<ScorePage> {
                                           user.rus!
                                               ? 'Наша система грейдов создана для активных пользователей. Создавайте новые заказы или привлекайте друзей, а мы начислим Вам баллы.\n\nБаллы можно использовать для оплаты сервисов и заказов.  Чем больше баллов Вы потратите, тем выше будет Ваш грейд, тем больше доверия со стороны заказчиков и полезных бонусов и привилегий от приложения.\n\nИтак, будьте активными, создавайте новые заказы, привлекайте друзей и зарабатывайте баллы.\n\nБолее подробно о том как заработать баллы - смотрите в разделе «вопрос-ответ»'
                                               : 'Our grading system is designed for active users. Create new orders or refer friends, and we will reward you with points.\n\nThese points can be used to pay for services and orders. The more points you spend, the higher your grade will be, leading to increased trust from customers and valuable bonuses and privileges from the application.\n\nSo, be active, create new orders, refer friends, and earn points.\n\nFor more details on how to earn points, please refer to the "FAQ" section.',
-                                          style: CustomTextStyle
-                                              .black_14_w400_171716,
+                                          style:
+                                              CustomTextStyle.black14w400171716,
                                         ),
                                       ),
                                       ListView.separated(
@@ -761,46 +760,6 @@ class _ScorePageState extends State<ScorePage> {
         });
       },
     );
-  }
-
-  Widget _scorePicture(List<Levels>? levels, int allbalance) {
-    for (int i = 0; i < levels!.length; i++) {
-      if (levels[i].mustCoins != null) {
-        if (allbalance >= levels[i].mustCoins! &&
-            allbalance < levels[i + 1].mustCoins!) {
-          return CachedNetworkImage(
-            progressIndicatorBuilder: (context, url, progress) {
-              return const CupertinoActivityIndicator();
-            },
-            imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
-            height: 113.h,
-            width: 113.w,
-            fit: BoxFit.fill,
-          );
-        } else if (allbalance >= levels.last.mustCoins!) {
-          return CachedNetworkImage(
-            progressIndicatorBuilder: (context, url, progress) {
-              return const CupertinoActivityIndicator();
-            },
-            imageUrl: '${levels.last.image}',
-            height: 113.h,
-            width: 113.w,
-            fit: BoxFit.fill,
-          );
-        }
-      } else {
-        return CachedNetworkImage(
-          progressIndicatorBuilder: (context, url, progress) {
-            return const CupertinoActivityIndicator();
-          },
-          imageUrl: levels[i].image != null ? '${levels[i].image}' : '',
-          height: 113.h,
-          width: 113.w,
-          fit: BoxFit.fill,
-        );
-      }
-    }
-    return const CupertinoActivityIndicator();
   }
 
   Widget _loadingindicator() {
@@ -871,8 +830,8 @@ class _ScorePageState extends State<ScorePage> {
                 textAlign: TextAlign.center,
                 title,
                 style: score >= mustCoins || title == proverkaNext
-                    ? CustomTextStyle.purple_12_w600.copyWith(fontSize: 12.sp)
-                    : CustomTextStyle.grey_12_w400.copyWith(fontSize: 12.sp),
+                    ? CustomTextStyle.purple12w600.copyWith(fontSize: 12.sp)
+                    : CustomTextStyle.grey12w400.copyWith(fontSize: 12.sp),
               ),
             ),
           ),
@@ -932,7 +891,7 @@ class _ScorePageState extends State<ScorePage> {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.purple_14_w600,
+                style: CustomTextStyle.purple14w600,
               ),
               SizedBox(height: 3.h),
               SizedBox(

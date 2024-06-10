@@ -14,8 +14,8 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class ArchiveTasksView extends StatefulWidget {
-  bool asCustomer;
-  ArchiveTasksView({super.key, required this.asCustomer});
+  final bool asCustomer;
+  const ArchiveTasksView({super.key, required this.asCustomer});
 
   @override
   State<ArchiveTasksView> createState() => _ArchiveTasksViewState();

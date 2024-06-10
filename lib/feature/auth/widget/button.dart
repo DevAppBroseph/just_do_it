@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scale_button/scale_button.dart';
 
 class CustomButton extends StatelessWidget {
-  CustomButton({
+  const CustomButton({
     super.key,
     required this.onTap,
     required this.btnColor,
     required this.textLabel,
   });
 
-  Function onTap;
-  Color btnColor;
-  Widget textLabel;
+  final Function onTap;
+  final Color btnColor;
+  final Widget textLabel;
 
   @override
   Widget build(BuildContext context) {

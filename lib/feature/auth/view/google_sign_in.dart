@@ -18,6 +18,8 @@ class GoogleSignInButton extends StatelessWidget {
           final GoogleSignInAuthentication googleAuth =
               await googleUser.authentication;
           final String idToken = googleAuth.idToken!;
+          if (!context.mounted) return;
+
           context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
         }
       },

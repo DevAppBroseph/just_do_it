@@ -5,8 +5,7 @@ import 'package:just_do_it/constants/text_style.dart';
 
 class CustomAlert {
   void showMessage(
-    String text,
-     {
+    String text, {
     String? id,
     String? name,
     String? idWithChat,
@@ -33,7 +32,7 @@ class CustomAlert {
           ],
         ),
         child: MediaQuery(
-          data: const MediaQueryData(textScaleFactor: 1.0),
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
           child: Padding(
             padding: EdgeInsets.all(10.h),
             child: Text(

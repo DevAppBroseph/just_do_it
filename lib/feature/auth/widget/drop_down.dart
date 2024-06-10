@@ -42,9 +42,11 @@ void iconSelectModal(
       builder: (context) {
         ScrollController scrollController = ScrollController();
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -83,7 +85,7 @@ void iconSelectModal(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey_14_w300,
+                                      style: CustomTextStyle.grey14w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -116,12 +118,21 @@ void iconSelectModal(
                                   return ElevatedButton(
                                     onPressed: () => onTap(index),
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                                        elevation: const MaterialStatePropertyAll(0),
-                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
-                                        shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
+                                        padding: const WidgetStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const WidgetStatePropertyAll(0),
+                                        overlayColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.grey),
+                                        shape: WidgetStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20.w),
                                       child: SizedBox(
@@ -130,7 +141,8 @@ void iconSelectModal(
                                           children: [
                                             Text(
                                               list[index],
-                                              style: CustomTextStyle.black_14_w300,
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
                                           ],
@@ -188,10 +200,12 @@ void iconSelectModalCategories(
     builder: (context) {
       ScrollController scrollController = ScrollController();
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(1.0)),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -230,7 +244,7 @@ void iconSelectModalCategories(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey_14_w300,
+                                      style: CustomTextStyle.grey14w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -264,47 +278,123 @@ void iconSelectModalCategories(
                                     onPressed: () {
                                       if (selectCategories.length > 1) {
                                         if (selectCategories.length < 3) {
-                                          if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
-                                            selectCategories.remove( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
+                                          if (selectCategories.contains(user
+                                                      ?.rus ??
+                                                  true &&
+                                                      context.locale
+                                                              .languageCode ==
+                                                          'ru'
+                                              ? list[index].description ?? ''
+                                              : list[index].engDescription ??
+                                                  '')) {
+                                            selectCategories.remove(user?.rus ??
+                                                    true &&
+                                                        context.locale
+                                                                .languageCode ==
+                                                            'ru'
+                                                ? list[index].description ?? ''
+                                                : list[index].engDescription ??
+                                                    '');
                                           } else {
-                                            selectCategories.add( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
+                                            selectCategories.add(user?.rus ??
+                                                    true &&
+                                                        context.locale
+                                                                .languageCode ==
+                                                            'ru'
+                                                ? list[index].description ?? ''
+                                                : list[index].engDescription ??
+                                                    '');
                                           }
                                         } else {
-                                          if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
-                                            selectCategories.remove( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
+                                          if (selectCategories.contains(user
+                                                      ?.rus ??
+                                                  true &&
+                                                      context.locale
+                                                              .languageCode ==
+                                                          'ru'
+                                              ? list[index].description ?? ''
+                                              : list[index].engDescription ??
+                                                  '')) {
+                                            selectCategories.remove(user?.rus ??
+                                                    true &&
+                                                        context.locale
+                                                                .languageCode ==
+                                                            'ru'
+                                                ? list[index].description ?? ''
+                                                : list[index].engDescription ??
+                                                    '');
                                           }
                                         }
                                         onTap(selectCategories);
                                       } else if (selectCategories.isEmpty ||
                                           selectCategories.length == 1 &&
-                                              !selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '')) {
-                                        selectCategories.add( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? '');
+                                              !selectCategories.contains(user
+                                                          ?.rus ??
+                                                      true &&
+                                                          context.locale
+                                                                  .languageCode ==
+                                                              'ru'
+                                                  ? list[index].description ??
+                                                      ''
+                                                  : list[index]
+                                                          .engDescription ??
+                                                      '')) {
+                                        selectCategories.add(user?.rus ??
+                                                true &&
+                                                    context.locale
+                                                            .languageCode ==
+                                                        'ru'
+                                            ? list[index].description ?? ''
+                                            : list[index].engDescription ?? '');
                                         onTap(selectCategories);
                                       }
 
                                       setState((() {}));
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                                        elevation: const MaterialStatePropertyAll(0),
-                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
-                                        shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
+                                        padding: const WidgetStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const WidgetStatePropertyAll(0),
+                                        overlayColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.grey),
+                                        shape: WidgetStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true && context.locale.languageCode == 'ru'
+                                              user?.rus ??
+                                                      true &&
+                                                          context.locale
+                                                                  .languageCode ==
+                                                              'ru'
                                                   ? list[index].description!
                                                   : list[index].engDescription!,
-                                              style: CustomTextStyle.black_14_w300,
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
-                                            if (selectCategories.contains( user?.rus ?? true && context.locale.languageCode == 'ru' ? list[index].description ?? '':list[index].engDescription ?? ''))
+                                            if (selectCategories.contains(user
+                                                        ?.rus ??
+                                                    true &&
+                                                        context.locale
+                                                                .languageCode ==
+                                                            'ru'
+                                                ? list[index].description ?? ''
+                                                : list[index].engDescription ??
+                                                    ''))
                                               const Icon(
                                                 Icons.check,
                                                 color: Colors.black,
@@ -363,17 +453,21 @@ void showCountryWidget(
     builder: (context) {
       ScrollController scrollController = ScrollController();
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(1.0)),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h : 200.h,
+              height: list.length < 3
+                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
+                  : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -405,7 +499,7 @@ void showCountryWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey_14_w300,
+                                      style: CustomTextStyle.grey14w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -423,7 +517,9 @@ void showCountryWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h : 150.h,
+                            height: list.length < 3
+                                ? (list.isEmpty ? 1 : list.length) * 50.h
+                                : 150.h,
                             child: Scrollbar(
                               thumbVisibility: true,
                               controller: scrollController,
@@ -441,23 +537,38 @@ void showCountryWidget(
                                       Navigator.of(context).pop();
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                                        elevation: const MaterialStatePropertyAll(0),
-                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
-                                        shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
+                                        padding: const WidgetStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const WidgetStatePropertyAll(0),
+                                        overlayColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.grey),
+                                        shape: WidgetStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ?? true && context.locale.languageCode == 'ru'
+                                              user?.rus ??
+                                                      true &&
+                                                          context.locale
+                                                                  .languageCode ==
+                                                              'ru'
                                                   ? list[index].name ?? "-"
                                                   : list[index].engName ?? "-",
-                                              style: CustomTextStyle.black_14_w300,
+                                              style:
+                                                  CustomTextStyle.black_14_w300,
                                             ),
                                             const Spacer(),
                                           ],
@@ -515,17 +626,21 @@ void showRegionWidget(
     builder: (context) {
       ScrollController scrollController = ScrollController();
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(1.0)),
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
+            insetPadding:
+                EdgeInsets.only(top: offset.dy, left: 20.h, right: 20.h),
             alignment: Alignment.topCenter,
             contentPadding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
             elevation: 0,
             content: Container(
               width: MediaQuery.of(context).size.width - 20.w,
-              height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h : 200.h,
+              height: list.length < 3
+                  ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
+                  : 200.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -557,7 +672,7 @@ void showRegionWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey_14_w300,
+                                      style: CustomTextStyle.grey14w300,
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -575,7 +690,9 @@ void showRegionWidget(
                       Stack(
                         children: [
                           SizedBox(
-                            height: list.length < 3 ? (list.isEmpty ? 1 : list.length) * 50.h : 150.h,
+                            height: list.length < 3
+                                ? (list.isEmpty ? 1 : list.length) * 50.h
+                                : 150.h,
                             child: Scrollbar(
                               thumbVisibility: true,
                               controller: scrollController,
@@ -593,14 +710,24 @@ void showRegionWidget(
                                       Navigator.of(context).pop();
                                     },
                                     style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                                        elevation: const MaterialStatePropertyAll(0),
-                                        overlayColor: const MaterialStatePropertyAll(Colors.grey),
-                                        shape: MaterialStatePropertyAll(
-                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.r)))),
+                                        padding: const WidgetStatePropertyAll(
+                                            EdgeInsets.all(0)),
+                                        backgroundColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.white),
+                                        elevation:
+                                            const WidgetStatePropertyAll(0),
+                                        overlayColor:
+                                            const WidgetStatePropertyAll(
+                                                Colors.grey),
+                                        shape: WidgetStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        0.r)))),
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                      padding: EdgeInsets.only(
+                                          left: 20.w, right: 20.w),
                                       child: SizedBox(
                                         height: 50.h,
                                         child: Row(
@@ -608,10 +735,16 @@ void showRegionWidget(
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                user?.rus ?? true && context.locale.languageCode == 'ru'
+                                                user?.rus ??
+                                                        true &&
+                                                            context.locale
+                                                                    .languageCode ==
+                                                                'ru'
                                                     ? list[index].name ?? '-'
-                                                    : list[index].engName ?? '-',
-                                                style: CustomTextStyle.black_14_w300,
+                                                    : list[index].engName ??
+                                                        '-',
+                                                style: CustomTextStyle
+                                                    .black_14_w300,
                                                 maxLines: null,
                                               ),
                                             ),

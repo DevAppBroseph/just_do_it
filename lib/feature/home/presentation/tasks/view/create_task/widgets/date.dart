@@ -406,13 +406,13 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'start_date'.tr(),
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 0.h),
                       if (widget.startDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
-                          style: CustomTextStyle.black_14_w400_171716,
+                          style: CustomTextStyle.black14w400171716,
                         ),
                     ],
                   ),
@@ -451,13 +451,13 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'completion_date'.tr(),
-                        style: CustomTextStyle.grey_14_w400,
+                        style: CustomTextStyle.grey14w400,
                       ),
                       SizedBox(height: 0.h),
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),
-                          style: CustomTextStyle.black_14_w400_171716,
+                          style: CustomTextStyle.black14w400171716,
                         ),
                     ],
                   ),
@@ -488,10 +488,10 @@ class _DatePickerState extends State<DatePicker> {
               });
             },
             child: CustomTextField(
-              style: CustomTextStyle.black_14_w400_171716,
+              style: CustomTextStyle.black14w400171716,
               fillColor: ColorStyles.greyF9F9F9,
               hintText: 'currency_paid'.tr(),
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -625,7 +625,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.grey_14_w400,
+                          style: CustomTextStyle.grey14w400,
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -659,7 +659,7 @@ class _DatePickerState extends State<DatePicker> {
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
                               maxLines: null,
-                              style: CustomTextStyle.black_14_w400_171716,
+                              style: CustomTextStyle.black14w400171716,
                               textEditingController: widget.coastMinController,
                             ),
                           ],
@@ -692,7 +692,7 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.grey_14_w400,
+                          style: CustomTextStyle.grey14w400,
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -726,7 +726,7 @@ class _DatePickerState extends State<DatePicker> {
                               hintText: '',
                               fillColor: ColorStyles.greyF9F9F9,
                               maxLines: null,
-                              style: CustomTextStyle.black_14_w400_171716,
+                              style: CustomTextStyle.black14w400171716,
                               textEditingController: widget.coastMaxController,
                             ),
                           ],
@@ -759,10 +759,10 @@ class _DatePickerState extends State<DatePicker> {
               });
             },
             child: CustomTextField(
-              style: CustomTextStyle.black_14_w400_171716,
+              style: CustomTextStyle.black14w400171716,
               fillColor: ColorStyles.greyF9F9F9,
               hintText: 'select_country'.tr(),
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -906,10 +906,10 @@ class _DatePickerState extends State<DatePicker> {
                     });
                   },
                   child: CustomTextField(
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                     fillColor: ColorStyles.greyF9F9F9,
                     hintText: 'select_a_region'.tr(),
-                    hintStyle: CustomTextStyle.grey_14_w400,
+                    hintStyle: CustomTextStyle.grey14w400,
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(
@@ -1006,10 +1006,10 @@ class _DatePickerState extends State<DatePicker> {
                     });
                   },
                   child: CustomTextField(
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                     fillColor: ColorStyles.greyF9F9F9,
                     hintText: 'select_an_area'.tr(),
-                    hintStyle: CustomTextStyle.grey_14_w400,
+                    hintStyle: CustomTextStyle.grey14w400,
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(
@@ -1098,7 +1098,7 @@ class _DatePickerState extends State<DatePicker> {
                   .tr(),
               style: canRaise
                   ? CustomTextStyle.white_14
-                  : CustomTextStyle.grey_14_w600,
+                  : CustomTextStyle.grey14w600,
             ),
           ),
           SizedBox(height: widget.bottomInsets),

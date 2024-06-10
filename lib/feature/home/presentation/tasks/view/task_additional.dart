@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
+import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -14,7 +14,7 @@ import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
 class TaskAdditional extends StatefulWidget {
-  String title;
+  final String title;
   bool asCustomer;
   bool scoreTrue;
   TaskAdditional(
@@ -45,6 +45,8 @@ class _TaskAdditionalState extends State<TaskAdditional> {
     taskList.addAll(res);
     setState(() {});
     if (widget.scoreTrue) {
+      if (!mounted) return;
+
       if (widget.asCustomer == true) {
         scoreDialog(context, '50', 'creating_an_order'.tr());
       } else {
@@ -57,9 +59,9 @@ class _TaskAdditionalState extends State<TaskAdditional> {
 
   @override
   Widget build(BuildContext context) {
-    
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      data: MediaQuery.of(context)
+          .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
         backgroundColor: ColorStyles.greyEAECEE,
         body: Stack(
@@ -115,15 +117,12 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                             padding: EdgeInsets.only(top: 15.h, bottom: 100.h),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return itemTask(
-                                taskList[index],
-                                (task) {
-                                  setState(() {
-                                    selectTask = task;
-                                  });
-                                },
-                                BlocProvider.of<ProfileBloc>(context).user, context
-                              );
+                              return itemTask(taskList[index], (task) {
+                                setState(() {
+                                  selectTask = task;
+                                });
+                              }, BlocProvider.of<ProfileBloc>(context).user,
+                                  context);
                             },
                           ),
                         ),

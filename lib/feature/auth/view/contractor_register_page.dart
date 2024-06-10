@@ -35,9 +35,9 @@ import 'package:url_launcher/url_launcher.dart';
 enum CountryCode { ru, oae }
 
 class ContractorRegisterPage extends StatefulWidget {
-  Function(int) stage;
+  final Function(int) stage;
 
-  ContractorRegisterPage(this.stage, {super.key});
+  const ContractorRegisterPage(this.stage, {super.key});
 
   @override
   State<ContractorRegisterPage> createState() => _ContractorRegisterPageState();
@@ -135,6 +135,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         return;
       }
     }
+    if (!mounted) return;
+
     showLoaderWrapper(context);
 
     BlocProvider.of<AuthBloc>(context).add(SendProfileEvent(
@@ -480,6 +482,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                     } else {
                       final token = await getFcmToken();
                       // showLoaderWrapper(context);
+                      if (!context.mounted) return;
+
                       if (context.locale.languageCode == 'en') {
                         user.rus = false;
                       }
@@ -518,7 +522,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               btnColor: ColorStyles.greyE0E6EE,
               textLabel: Text(
                 'back'.tr(),
-                style: CustomTextStyle.black_16_w600_515150,
+                style: CustomTextStyle.black16w600515150,
               ),
             ),
             SizedBox(height: 34.h),
@@ -541,7 +545,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: '${'your_name'.tr()}*',
           height: 50.h,
           textEditingController: firstnameController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -561,7 +565,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: '${'your_last_name'.tr()}*',
           height: 50.h,
           textEditingController: lastnameController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -582,7 +586,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           formatters: [
             MaskTextInputFormatter(
               filter: {"#": RegExp(r'[0-9]')},
@@ -617,7 +621,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: 'E-mail*',
           height: 50.h,
           textEditingController: emailController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -675,7 +679,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ),
           ),
           textEditingController: passwordController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -716,7 +720,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ),
           ),
           textEditingController: repeatPasswordController,
-          hintStyle: CustomTextStyle.grey_14_w400,
+          hintStyle: CustomTextStyle.grey14w400,
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -759,7 +763,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               child: GestureDetector(
                 onTap: () async {
                   final about = await Repository().aboutList();
-                  if (context.mounted) {
+                  if (mounted) {
                     launchUrl(
                         Uri.parse(user.rus ??
                                 true && context.locale.languageCode == 'ru'
@@ -799,7 +803,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'add_a_photo'.tr(),
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -915,7 +919,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -950,7 +954,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           },
           child: CustomTextField(
             hintText: '${'region'.tr()}*',
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -1100,7 +1104,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
                     hintText: 'description_of_your_experience'.tr(),
-                    hintStyle: CustomTextStyle.grey_14_w400,
+                    hintStyle: CustomTextStyle.grey14w400,
                     maxLines: 6,
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
@@ -1131,7 +1135,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/250',
-                    style: CustomTextStyle.grey_12_w400,
+                    style: CustomTextStyle.grey12w400,
                   ),
                 ),
               ),
@@ -1433,7 +1437,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey_14_w400,
+                hintStyle: CustomTextStyle.grey14w400,
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1463,7 +1467,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ? 'number'.tr()
                   : 'id_number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1502,7 +1506,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1524,7 +1528,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1541,7 +1545,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             child: CustomTextField(
               hintText: 'validity_period'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey_14_w400,
+              hintStyle: CustomTextStyle.grey14w400,
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1552,7 +1556,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red_11_w400_171716,
+            style: CustomTextStyle.red11w400171716,
           ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
@@ -1566,7 +1570,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey_14_w400,
+            hintStyle: CustomTextStyle.grey14w400,
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),

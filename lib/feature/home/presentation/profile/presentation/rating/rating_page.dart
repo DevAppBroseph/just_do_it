@@ -145,7 +145,7 @@ class _RatingPageState extends State<RatingPage> {
                     ),
                     Text(
                       '01.04.2023',
-                      style: CustomTextStyle.grey_12_w400,
+                      style: CustomTextStyle.grey12w400,
                     ),
                   ],
                 ),
@@ -158,7 +158,7 @@ class _RatingPageState extends State<RatingPage> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style: CustomTextStyle.black_14_w400_171716,
+                    style: CustomTextStyle.black14w400171716,
                   ),
                 ],
               ),
@@ -192,7 +192,7 @@ class _RatingPageState extends State<RatingPage> {
                               SizedBox(width: 8.h),
                               Text(
                                 'Перевод',
-                                style: CustomTextStyle.blue_14_w400_336FEE,
+                                style: CustomTextStyle.blue14w400336FEE,
                               )
                             ],
                           ),
@@ -258,7 +258,7 @@ class _RatingPageState extends State<RatingPage> {
                       ),
                       Text(
                         _textData(review.date),
-                        style: CustomTextStyle.grey_12_w400,
+                        style: CustomTextStyle.grey12w400,
                       ),
                     ],
                   ),
@@ -270,7 +270,7 @@ class _RatingPageState extends State<RatingPage> {
                       SizedBox(width: 4.w),
                       Text(
                         '${review.mark}/5',
-                        style: CustomTextStyle.black_14_w400_171716,
+                        style: CustomTextStyle.black14w400171716,
                       ),
                     ],
                   ),
@@ -307,7 +307,7 @@ class _RatingPageState extends State<RatingPage> {
                                   height: 25.h,
                                   child: Text(
                                     'Перевод',
-                                    style: CustomTextStyle.blue_14_w400_336FEE,
+                                    style: CustomTextStyle.blue14w400336FEE,
                                   ),
                                 )
                               ],
@@ -370,7 +370,7 @@ class _RatingPageState extends State<RatingPage> {
                           width: 188.w,
                           child: AutoSizeText(
                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                            style: CustomTextStyle.black_34_w800_171716,
+                            style: CustomTextStyle.black34w800171716,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),

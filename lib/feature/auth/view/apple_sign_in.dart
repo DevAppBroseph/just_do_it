@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,16 +18,18 @@ class AppleSignInButton extends StatelessWidget {
         try {
           final appleSignInResult = await signInWithApple(context: context);
           if (appleSignInResult.isNotEmpty) {
+            if (!context.mounted) return;
+
             context.read<AuthBloc>().add(AppleSignInEvent(
                   email: appleSignInResult['email'] ?? "",
                   firstname: appleSignInResult['firstname'] ?? "",
                   lastname: appleSignInResult['lastname'] ?? "",
                 ));
           } else {
-            print('Apple Sign-In: Missing email or name.');
+            log('Apple Sign-In: Missing email or name.');
           }
         } catch (error) {
-          print('Error during Apple Sign-In: $error');
+          log('Error during Apple Sign-In: $error');
         }
       },
     );

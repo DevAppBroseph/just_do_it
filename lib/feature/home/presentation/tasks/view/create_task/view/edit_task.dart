@@ -30,9 +30,9 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class EditTasks extends StatefulWidget {
-  bool customer;
-  Task task;
-  EditTasks({
+  final bool customer;
+  final Task task;
+  const EditTasks({
     required this.customer,
     super.key,
     required this.task,
@@ -186,6 +186,8 @@ class _EditTasksState extends State<EditTasks> {
         final profileBloc = BlocProvider.of<ProfileBloc>(context);
         bool res = await Repository().editTask(profileBloc.access!, newTask);
         if (res) {
+          if (!mounted) return;
+
           if (res) {
             Navigator.of(context).pop(true);
           }
@@ -194,6 +196,8 @@ class _EditTasksState extends State<EditTasks> {
           Loader.hide();
         } else {
           Loader.hide();
+          if (!mounted) return;
+
           if (widget.customer) {
             noMoney(context, 'raise_task'.tr(), 'task_to_the_top'.tr());
           } else {
@@ -400,7 +404,7 @@ class _EditTasksState extends State<EditTasks> {
                       ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey_22_w700,
+                        style: CustomTextStyle.grey22w700,
                       )
                     ],
                   ),
@@ -531,7 +535,7 @@ class _EditTasksState extends State<EditTasks> {
                         onPressed: () => FocusScope.of(context).unfocus(),
                         child: Text(
                           'done'.tr(),
-                          style: CustomTextStyle.black_empty,
+                          style: CustomTextStyle.blackEmpty,
                         ),
                       ),
                     ],

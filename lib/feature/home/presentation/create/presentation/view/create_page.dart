@@ -69,7 +69,7 @@ class _CreatePageState extends State<CreatePage> {
       return true;
     }, builder: (context, snapshot) {
       return MediaQuery(
-        data: const MediaQueryData(textScaleFactor: 1.0),
+        data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: Scaffold(
           backgroundColor: ColorStyles.greyEAECEE,
           resizeToAvoidBottomInset: false,
@@ -161,7 +161,7 @@ class _CreatePageState extends State<CreatePage> {
                                       setState(() {});
                                     },
                                     hintText: 'search'.tr(),
-                                    hintStyle: CustomTextStyle.grey_14_w400
+                                    hintStyle: CustomTextStyle.grey14w400
                                         .copyWith(
                                             overflow: TextOverflow.ellipsis),
                                     textEditingController: searchController,
@@ -215,8 +215,7 @@ class _CreatePageState extends State<CreatePage> {
                           SizedBox(width: 10.w),
                           GestureDetector(
                             onTap: () async {
-                              final accessToken =
-                                  await Storage().getAccessToken();
+                              final accessToken = Storage().getAccessToken();
                               if (context.mounted) {
                                 if (accessToken != null) {
                                   Navigator.of(context).pushNamed(AppRoute.menu,
@@ -427,7 +426,7 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black_14_w400_171716,
+                style: CustomTextStyle.black14w400171716,
               ),
               if (choice.isNotEmpty && title.length < 20)
                 Padding(
@@ -436,7 +435,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 90.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey_14_w400,
+                      style: CustomTextStyle.grey14w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -449,7 +448,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 20.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey_14_w400,
+                      style: CustomTextStyle.grey14w400,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
