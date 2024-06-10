@@ -15,7 +15,7 @@ import 'package:just_do_it/widget/back_icon_button.dart';
 
 class TaskAdditional extends StatefulWidget {
   final String title;
-  bool asCustomer;
+  final bool asCustomer;
   bool scoreTrue;
   TaskAdditional(
       {super.key,

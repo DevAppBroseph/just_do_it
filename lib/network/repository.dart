@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:developer';
 import 'dart:io';
 
@@ -565,7 +566,9 @@ class Repository {
         ),
       );
       return response.data;
-    } catch (e) {}
+    } catch (e, stacktrace) {
+      developer.log('Error downloading file: $e', stackTrace: stacktrace);
+    }
     return null;
   }
 
@@ -704,7 +707,9 @@ class Repository {
         await Storage().setRefreshToken(refreshToken);
         return response.data['access'];
       }
-    } catch (e) {}
+    } catch (e, stacktrace) {
+      developer.log('Error downloading file: $e', stackTrace: stacktrace);
+    }
     return null;
   }
 
@@ -1063,7 +1068,9 @@ class Repository {
         }
         return savePath;
       }
-    } catch (e) {}
+    } catch (e, stacktrace) {
+      developer.log('Error downloading file: $e', stackTrace: stacktrace);
+    }
 
     return null;
   }
