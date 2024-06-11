@@ -33,10 +33,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 class Repository {
   final Dio _dio = Dio();
-
-  Future<List<OrderTask>> getListTasks(String access, {int page = 1}) async {
-    final response = await _dio.get(
-      '$server/orders/?page=$page',
+  Future<List<OrderTask>> getListTasks(String access) async {
+    final response = await dio.get(
+      '$server/orders/',
       options: Options(
         headers: {'Authorization': 'Bearer $access'},
       ),
@@ -44,13 +43,31 @@ class Repository {
 
     if (response.statusCode == 200) {
       List<OrderTask> orderTask = [];
-      for (var element in response.data['results']) {
+      for (var element in response.data) {
         orderTask.add(OrderTask.fromJson(element));
       }
       return orderTask;
     }
     return [];
   }
+
+  // Future<List<OrderTask>> getListTasks(String access, {int page = 1}) async {
+  //   final response = await _dio.get(
+  //     '$server/orders/?page=$page',
+  //     options: Options(
+  //       headers: {'Authorization': 'Bearer $access'},
+  //     ),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     List<OrderTask> orderTask = [];
+  //     for (var element in response.data['results']) {
+  //       orderTask.add(OrderTask.fromJson(element));
+  //     }
+  //     return orderTask;
+  //   }
+  //   return [];
+  // }
 
   Future<bool> sendConfirmationCode(String method, String value) async {
     try {
