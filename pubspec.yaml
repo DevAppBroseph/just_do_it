@@ -32,7 +32,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   shared_preferences: ^2.0.20
   sliding_up_panel: ^2.0.0+1
-  permission_handler: ^10.1.0
+  permission_handler: ^11.3.1
   scale_button: ^2.1.2
   intl: any
   flutter_secure_storage: ^6.0.0
@@ -44,7 +44,9 @@ dependencies:
   lottie: ^2.0.0
   firebase_auth: ^5.0.0
   image_picker: ^0.8.5+3
-  file_picker: ^4.0.0
+  file_picker: ^5.2.6
+
+
   fluttertoast: ^8.0.9
   web_socket_channel: ^2.3.0
   cupertino_icons: ^1.0.2

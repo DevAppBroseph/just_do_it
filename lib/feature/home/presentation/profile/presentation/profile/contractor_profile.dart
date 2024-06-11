@@ -137,13 +137,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
   }
-
-  // Initialize a variable to keep track of the permission request status
   bool _isRequestingPermission = false;
 
   _selectCV() async {
-    await Permission.manageExternalStorage.request();
-
     if (_isRequestingPermission) {
       print('A permission request is already in progress.');
       return;
@@ -151,38 +147,66 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
     _isRequestingPermission = true;
 
-    var status = await Permission.storage.status;
+    try {
+      // Request permission to manage external storage
+      var status = await Permission.manageExternalStorage.request();
 
-    if (status.isDenied) {
+      // Check the status of the permission
+      if (status.isDenied || status.isPermanentlyDenied || status.isRestricted) {
+        throw "Please allow storage permission to upload files";
+      }
 
-      var s = await Permission.storage.request();
-      print(s.isGranted
-      );
+      // Re-check the storage permission status
       status = await Permission.storage.status;
-      print('is Denied');
-      if (status.isGranted) {
+      print('Storage permission status: $status');
+
+      // If permission is still denied, request it
+      if (status.isDenied) {
+        status = await Permission.storage.request();
+      }
+
+      // Check if the permission was granted
+      if (!status.isGranted) {
         print('Storage permission not granted');
         _isRequestingPermission = false;
         return;
       }
-    }
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      withData: true,
-      type: FileType.any,
-      //allowedExtensions: ['pdf', 'doc', 'docx'],
-    );
-    if (result != null) {
-      var cv = File(result.files.first.path!);
-      user!.copyWith(cv: cv.readAsBytesSync());
-      user!.copyWith(cvType: result.files.first.path!.split('.').last);
 
-      if (!mounted) return;
-      BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
-    }
+      // Proceed with file picking if permission is granted
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        withData: true,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
+      );
 
-    _isRequestingPermission = false;
+      if (result != null && result.files.isNotEmpty) {
+        var cv = File(result.files.first.path!);
+        var fileData = await cv.readAsBytes();
+        var fileType = result.files.first.extension;
+
+        if (user != null) {
+          var cv = File(result.files.first.path!);
+          user!.copyWith(cv: cv.readAsBytesSync());
+          user!.copyWith(cvType: result.files.first.path!.split('.').last);
+          if (mounted) {
+            // Notify the bloc about the profile update
+            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user!));
+
+            // Update the UI
+            setState(() {});
+          }
+        } else {
+          print('User is null');
+        }
+      } else {
+        print('File selection cancelled.');
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      _isRequestingPermission = false;
+    }
   }
-
   int? proverkaBalance;
   bool change = false;
   bool openImages = false;
