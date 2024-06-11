@@ -163,10 +163,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
     }
   }
   Future<void> _checkPermission() async {
-    // Проверяем статус разрешения
     PermissionStatus status = await Permission.storage.status;
     if (status.isDenied) {
-      // Запрашиваем разрешение
       await Permission.storage.request();
     }
   }
