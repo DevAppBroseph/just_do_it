@@ -29,6 +29,7 @@ import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -159,6 +160,14 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         photos.addAll(files);
         user.copyWith(images: photos);
       });
+    }
+  }
+  Future<void> _checkPermission() async {
+    // Проверяем статус разрешения
+    PermissionStatus status = await Permission.storage.status;
+    if (status.isDenied) {
+      // Запрашиваем разрешение
+      await Permission.storage.request();
     }
   }
 
@@ -1336,7 +1345,10 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             ScaleButton(
               duration: const Duration(milliseconds: 50),
               bound: 0.01,
-              onTap: _selectCV,
+              onTap:()async{
+                await _checkPermission();
+              _selectCV;
+              },
               child: SizedBox(
                 width: 172.w,
                 height: 40.h,

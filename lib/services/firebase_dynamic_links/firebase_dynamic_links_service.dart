@@ -20,7 +20,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?ref_code=$refCode'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
+          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
       iosParameters: iosParams,
     );
     final dynamicLink =
@@ -35,7 +35,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?user_profile=$id'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
+          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
       iosParameters: iosParams,
     );
     final dynamicLink =
@@ -50,7 +50,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?task_id=$id'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
+          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
       iosParameters: iosParams,
     );
     final dynamicLink =

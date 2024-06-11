@@ -1,4 +1,4 @@
-package dev.broseph.justDoIt
+package aigam.com.jobyfine
 
 import io.flutter.embedding.android.FlutterActivity
 

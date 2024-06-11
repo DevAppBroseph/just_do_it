@@ -29,6 +29,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ContractorProfile extends StatefulWidget {
   final double padding;
@@ -137,21 +138,61 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }
   }
 
+  // Initialize a variable to keep track of the permission request status
+  bool _isRequestingPermission = false;
+
+// Function to select a CV file
   _selectCV() async {
+    // Check if a permission request is already in progress
+    if (_isRequestingPermission) {
+      print('A permission request is already in progress.');
+      return;
+    }
+
+    // Set the flag to indicate that a permission request is in progress
+    _isRequestingPermission = true;
+
+    // Check the current storage permission status
+    var status = await Permission.storage.status;
+
+    // If permission is denied, request permission
+    if (status.isDenied) {
+      await Permission.storage.request();
+
+      // Re-check the permission status after the request
+      status = await Permission.storage.status;
+
+      // If permission is still not granted, print a message and return
+      if (!status.isGranted) {
+        print('Storage permission not granted');
+        // Reset the permission request flag
+        _isRequestingPermission = false;
+        return;
+      }
+    }
+
+    // Proceed with file picking if permission is granted
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       withData: true,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
+
+    // If a file is selected, read the file and update the user profile
     if (result != null) {
       var cv = File(result.files.first.path!);
-      // this.cv = cv;
       user!.copyWith(cv: cv.readAsBytesSync());
       user!.copyWith(cvType: result.files.first.path!.split('.').last);
+
+      // Check if the widget is still mounted before updating the profile
       if (!mounted) return;
 
+      // Update the user profile with the selected CV
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
+
+    // Reset the permission request flag
+    _isRequestingPermission = false;
   }
 
   int? proverkaBalance;
@@ -1026,7 +1067,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   style: CustomTextStyle.blue12w400,
                                 ),
                                 SizedBox(
-                                  width: 100.h,
+                                  width: 80.h,
                                 ),
                                 Text(
                                   '.doc, .pdf',
