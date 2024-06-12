@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -137,6 +138,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user));
     }
   }
+
+
   bool _isRequestingPermission = false;
 
   _selectCV() async {
@@ -148,31 +151,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
     _isRequestingPermission = true;
 
     try {
-      // Request permission to manage external storage
-      var status = await Permission.manageExternalStorage.request();
-
-      // Check the status of the permission
-      if (status.isDenied || status.isPermanentlyDenied || status.isRestricted) {
-        throw "Please allow storage permission to upload files";
-      }
-
-      // Re-check the storage permission status
-      status = await Permission.storage.status;
-      print('Storage permission status: $status');
-
-      // If permission is still denied, request it
-      if (status.isDenied) {
-        status = await Permission.storage.request();
-      }
-
-      // Check if the permission was granted
-      if (!status.isGranted) {
-        print('Storage permission not granted');
-        _isRequestingPermission = false;
-        return;
-      }
-
-      // Proceed with file picking if permission is granted
+      // Directly call the file picker without explicit permission handling
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         withData: true,
@@ -185,9 +164,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
         var fileType = result.files.first.extension;
 
         if (user != null) {
-          var cv = File(result.files.first.path!);
-          user!.copyWith(cv: cv.readAsBytesSync());
-          user!.copyWith(cvType: result.files.first.path!.split('.').last);
+          user!.copyWith(cv: fileData);
+          user!.copyWith(cvType: fileType);
+
           if (mounted) {
             // Notify the bloc about the profile update
             BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user!));
@@ -207,6 +186,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
       _isRequestingPermission = false;
     }
   }
+
+
   int? proverkaBalance;
   bool change = false;
   bool openImages = false;
