@@ -44,10 +44,10 @@ class _WelcomPageState extends State<WelcomPage> {
   List<String> searchChoose = [];
   bool openLanguage = false;
   List<Language> listLanguage = [
+    Language(icon: 'assets/images/england.png', title: 'EN', id: 2),
     Language(icon: 'assets/icons/russia.svg', title: 'RU', id: 1),
-    Language(icon: 'assets/images/england.png', title: 'EN', id: 2)
   ];
-  String selectLanguage = 'RU';
+  String selectLanguage = 'EN';
   Language? selectLenguage;
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
@@ -98,16 +98,10 @@ class _WelcomPageState extends State<WelcomPage> {
             BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
           }
         } else {
-          if (context.locale.languageCode == 'ru') {
-            selectLanguage = 'RU';
-            context.setLocale(const Locale('ru', 'RU'));
-            BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-          }
-          if (context.locale.languageCode == 'en') {
-            selectLanguage = 'EN';
-            context.setLocale(const Locale('en', 'US'));
-            BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
-          }
+          // Initialize with English if no user preference
+          selectLanguage = 'EN';
+          context.setLocale(const Locale('en', 'US'));
+          BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
         }
         return MediaQuery(
           data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
@@ -151,85 +145,56 @@ class _WelcomPageState extends State<WelcomPage> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Padding(
+                                      Padding(
+                                      padding: EdgeInsets.only(left: 5.w),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton(
+                                          value: selectLanguage,
+                                          icon: Padding(
                                             padding: EdgeInsets.only(left: 5.w),
-                                            child: DropdownButtonHideUnderline(
-                                              child: DropdownButton(
-                                                value: selectLanguage,
-                                                icon: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 5.w),
-                                                  child: const Icon(
-                                                    Icons
-                                                        .keyboard_arrow_down_rounded,
-                                                    color:
-                                                        ColorStyles.greyBDBDBD,
-                                                  ),
-                                                ),
-                                                onChanged: (value) async {
-                                                  if (value == 'RU') {
-                                                    context.setLocale(
-                                                        const Locale(
-                                                            'ru', 'RU'));
-                                                    if (user != null) {
-                                                      user!.rus = true;
-                                                      user = await Repository()
-                                                          .editRusProfile(
-                                                              BlocProvider.of<
-                                                                          ProfileBloc>(
-                                                                      context)
-                                                                  .access,
-                                                              true);
-                                                    }
-                                                  } else if (value == 'EN') {
-                                                    context.setLocale(
-                                                        const Locale(
-                                                            'en', 'US'));
-                                                    if (user != null) {
-                                                      user!.rus = false;
-                                                      user = await Repository()
-                                                          .editRusProfile(
-                                                              BlocProvider.of<
-                                                                          ProfileBloc>(
-                                                                      context)
-                                                                  .access,
-                                                              false);
-                                                    }
-                                                  }
-                                                },
-                                                items: listLanguage.map<
-                                                    DropdownMenuItem<
-                                                        String>>((e) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: e.title,
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 20.h,
-                                                            width: 25.w,
-                                                            child: e.title ==
-                                                                    'EN'
-                                                                ? Image.asset(
-                                                                    e.icon)
-                                                                : SvgPicture
-                                                                    .asset(
-                                                                        e.icon),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 5.w),
-                                                            child:
-                                                                Text(e.title),
-                                                          ),
-                                                        ],
-                                                      ));
-                                                }).toList(),
-                                              ),
+                                            child: const Icon(
+                                              Icons.keyboard_arrow_down_rounded,
+                                              color: ColorStyles.greyBDBDBD,
                                             ),
                                           ),
-                                        ],
+                                          onChanged: (value) async {
+                                            if (value == 'RU') {
+                                              context.setLocale(const Locale('ru', 'RU'));
+                                              if (user != null) {
+                                                user!.rus = true;
+                                                user = await Repository().editRusProfile(
+                                                    BlocProvider.of<ProfileBloc>(context).access, true);
+                                              }
+                                            } else if (value == 'EN') {
+                                              context.setLocale(const Locale('en', 'US'));
+                                              if (user != null) {
+                                                user!.rus = false;
+                                                user = await Repository().editRusProfile(
+                                                    BlocProvider.of<ProfileBloc>(context).access, false);
+                                              }
+                                            }
+                                          },
+                                          items: listLanguage.map<DropdownMenuItem<String>>((e) {
+                                            return DropdownMenuItem<String>(
+                                                value: e.title,
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20.h,
+                                                      width: 25.w,
+                                                      child: e.title == 'EN'
+                                                          ? Image.asset(e.icon)
+                                                          : SvgPicture.asset(e.icon),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(left: 5.w),
+                                                      child: Text(e.title),
+                                                    ),
+                                                  ],
+                                                ));
+                                          }).toList(),
+                                        ),
+                                      ),), ],
                                       ),
                                     ),
                                   ),
