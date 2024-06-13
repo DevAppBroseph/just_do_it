@@ -48,7 +48,7 @@ void main() async {
       provisional: false,
       sound: true,
     );
-await FirebaseApi().initNotifications();
+    await FirebaseApi().initNotifications();
     // await FirebaseMessaging.instance.getToken().then((value) => print(value));
     // FirebaseMessaging.onMessage.listen((event) {
     //   print('on message');
@@ -56,6 +56,8 @@ await FirebaseApi().initNotifications();
   } catch (e) {
     // print(e);
   }
+  String? token = await FirebaseMessaging.instance.getToken();
+  print('Registration ID: $token');
 
   await getItSetup();
   runApp(
