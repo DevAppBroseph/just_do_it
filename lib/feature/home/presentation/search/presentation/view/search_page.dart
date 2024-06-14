@@ -452,6 +452,8 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     BlocBuilder<TasksBloc, TasksState>(
                       builder: (context, state) {
+                        taskList = BlocProvider.of<TasksBloc>(context).tasks;
+
                         if (state is TasksLoading) {
                           return SkeletonLoader(
                             items: 4,
