@@ -273,7 +273,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                     2) {
                   CustomAlert().showMessage(
                       '- ${'enter_the_correct_email_address'.tr()}');
-                } else if (phoneController.text.length < 12) {
+                } else if (phoneController.text.length <= 10) {
                   CustomAlert()
                       .showMessage('- ${'incorrect_phone_number'.tr()}');
                 } else if (!confirmTermsPolicy) {

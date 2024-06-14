@@ -246,7 +246,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             error += '\n- email';
                             errorsFlag = true;
                           }
-                          if (phoneController.text.length < 12) {
+                          if (phoneController.text.length <= 10) {
                             error += '\n- ${'incorrect_phone_number'.tr()}';
                             errorsFlag = true;
                           }

@@ -162,6 +162,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
       });
     }
   }
+
   Future<void> _checkPermission() async {
     PermissionStatus status = await Permission.storage.status;
     if (status.isDenied) {
@@ -358,7 +359,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
 
                   if (errorsFlag) {
                     CustomAlert().showMessage(error);
-                  } else if (phoneController.text.length < 12) {
+                  } else if (phoneController.text.length <= 10) {
                     CustomAlert().showMessage(
                       '- ${'incorrect_phone_number'.tr()}.',
                     );
@@ -1343,9 +1344,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             ScaleButton(
               duration: const Duration(milliseconds: 50),
               bound: 0.01,
-              onTap:()async{
+              onTap: () async {
                 await _checkPermission();
-              _selectCV;
+                _selectCV;
               },
               child: SizedBox(
                 width: 172.w,
