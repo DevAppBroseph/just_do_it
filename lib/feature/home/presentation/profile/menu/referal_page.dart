@@ -74,7 +74,8 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           'referral_system'.tr(),
-                          style: CustomTextStyle.black_22_w700,
+                          style: CustomTextStyle.sf22w700(
+                              AppColors.blackSecondary),
                         ),
                       ],
                     ),

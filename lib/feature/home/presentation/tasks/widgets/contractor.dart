@@ -878,7 +878,7 @@ class _ContractorState extends State<Contractor> {
                   btnColor: AppColors.yellowPrimary,
                   textLabel: Text(
                     'сreate_a_task'.tr(),
-                    style: CustomTextStyle.black_16_w600_171716,
+                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                   ),
                 ),
               ),

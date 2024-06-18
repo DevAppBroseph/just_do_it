@@ -34,7 +34,7 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
                     alignment: Alignment.center,
                     child: Text(
                       'Профиль',
-                      style: CustomTextStyle.black_22_w700,
+                      style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                     ),
                   ),
                   CustomIconButton(

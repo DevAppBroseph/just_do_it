@@ -514,7 +514,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                       : AppColors.greyError,
               textLabel: Text(
                 page == 0 ? 'further'.tr() : 'register'.tr(),
-                style: CustomTextStyle.black_16_w600_171716,
+                style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
               ),
             ),
             SizedBox(height: 18.h),
@@ -553,7 +553,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: '${'your_name'.tr()}*',
           height: 50.h,
           textEditingController: firstnameController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -573,7 +573,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: '${'your_last_name'.tr()}*',
           height: 50.h,
           textEditingController: lastnameController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           formatters: [
             UpperTextInputFormatter(),
             FilteringTextInputFormatter.allow(RegExp("[а-яА-Яa-zA-Z- -]")),
@@ -594,7 +594,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           height: 50.h,
           textInputType: TextInputType.phone,
           textEditingController: phoneController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           formatters: [
             MaskTextInputFormatter(
               filter: {"#": RegExp(r'[0-9]')},
@@ -629,7 +629,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           hintText: 'E-mail*',
           height: 50.h,
           textEditingController: emailController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -687,7 +687,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ),
           ),
           textEditingController: passwordController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -728,7 +728,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ),
           ),
           textEditingController: repeatPasswordController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           onChanged: (value) {
@@ -810,7 +810,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'add_a_photo'.tr(),
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             enabled: false,
             suffixIcon: Stack(
@@ -926,7 +926,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -961,7 +961,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
           },
           child: CustomTextField(
             hintText: '${'region'.tr()}*',
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -1111,7 +1111,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   child: CustomTextField(
                     focusNode: focusNodeAbout,
                     hintText: 'description_of_your_experience'.tr(),
-                    hintStyle: CustomTextStyle.grey14w400,
+                    hintStyle:
+                        CustomTextStyle.sf15w400(AppColors.greySecondary),
                     maxLines: 6,
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
@@ -1447,7 +1448,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey14w400,
+                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1477,7 +1478,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   ? 'number'.tr()
                   : 'id_number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1516,7 +1517,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1538,7 +1539,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1555,7 +1556,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
             child: CustomTextField(
               hintText: 'validity_period'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1580,7 +1581,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),

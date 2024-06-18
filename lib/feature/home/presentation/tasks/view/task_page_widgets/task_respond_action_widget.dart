@@ -118,7 +118,8 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                     children: [
                                       Text(
                                         'rating'.tr(),
-                                        style: CustomTextStyle.grey14w400,
+                                        style: CustomTextStyle.sf15w400(
+                                            AppColors.greySecondary),
                                       ),
                                       SizedBox(width: 8.w),
                                       SvgPicture.asset('assets/icons/star.svg'),

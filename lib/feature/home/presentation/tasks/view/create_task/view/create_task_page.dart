@@ -282,7 +282,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   SizedBox(height: 10.h),
                   Text(
                     'choose_what_to_download'.tr(),
-                    style: CustomTextStyle.black_16_w600_171716,
+                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                   ),
                   ListTile(
                     title: Text(
@@ -376,12 +376,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       if (isTask)
                         Text(
                           'creating_a_task'.tr(),
-                          style: CustomTextStyle.black_22_w700,
+                          style: CustomTextStyle.sf22w700(
+                              AppColors.blackSecondary),
                         ),
                       if (!isTask)
                         Text(
                           'creating_an_offer'.tr(),
-                          style: CustomTextStyle.black_22_w700,
+                          style: CustomTextStyle.sf22w700(
+                              AppColors.blackSecondary),
                         ),
                       Text(
                         ' ${page + 1}/2',
@@ -599,7 +601,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           : isTask
                               ? 'сreate_a_task'.tr()
                               : 'create_offer'.tr(),
-                      style: CustomTextStyle.black_16_w600_171716,
+                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                     ),
                   ),
                 ),

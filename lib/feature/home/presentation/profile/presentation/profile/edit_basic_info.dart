@@ -70,7 +70,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           SizedBox(width: 12.w),
                           Text(
                             'basic_information'.tr(),
-                            style: CustomTextStyle.black_22_w700,
+                            style: CustomTextStyle.sf22w700(
+                                AppColors.blackSecondary),
                           ),
                         ],
                       ),
@@ -89,7 +90,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'your_name'.tr(),
                             height: 50,
                             textEditingController: firstnameController,
-                            hintStyle: CustomTextStyle.grey14w400,
+                            hintStyle: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -108,7 +110,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'your_last_name'.tr(),
                             height: 50.h,
                             textEditingController: lastnameController,
-                            hintStyle: CustomTextStyle.grey14w400,
+                            hintStyle: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -125,7 +128,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
                             'edit_email'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                         ),
                         SizedBox(height: 16.h),
@@ -136,7 +140,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
-                            hintStyle: CustomTextStyle.grey14w400,
+                            hintStyle: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                             formatters: [
                               // MaskTextInputFormatter(
                               //   initialText: '+ ',
@@ -170,7 +175,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             hintText: 'E-mail',
                             height: 50.h,
                             textEditingController: emailController,
-                            hintStyle: CustomTextStyle.grey14w400,
+                            hintStyle: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
@@ -273,7 +279,8 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                         btnColor: AppColors.yellowSecondary,
                         textLabel: Text(
                           'save'.tr(),
-                          style: CustomTextStyle.black_16_w600_171716,
+                          style: CustomTextStyle.sf17w600(
+                              AppColors.blackSecondary),
                         ),
                       ),
                     ),

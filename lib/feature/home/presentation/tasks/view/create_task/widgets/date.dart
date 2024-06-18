@@ -408,7 +408,8 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'start_date'.tr(),
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 0.h),
                       if (widget.startDate != null)
@@ -454,7 +455,8 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'completion_date'.tr(),
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 0.h),
                       if (widget.endDate != null)
@@ -495,7 +497,7 @@ class _DatePickerState extends State<DatePicker> {
               style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
               fillColor: AppColors.greyActive,
               hintText: 'currency_paid'.tr(),
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -629,7 +631,8 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.grey14w400,
+                          style:
+                              CustomTextStyle.sf15w400(AppColors.greySecondary),
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -697,7 +700,8 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.grey14w400,
+                          style:
+                              CustomTextStyle.sf15w400(AppColors.greySecondary),
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -768,7 +772,7 @@ class _DatePickerState extends State<DatePicker> {
               style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
               fillColor: AppColors.greyActive,
               hintText: 'select_country'.tr(),
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -915,7 +919,8 @@ class _DatePickerState extends State<DatePicker> {
                     style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                     fillColor: AppColors.greyActive,
                     hintText: 'select_a_region'.tr(),
-                    hintStyle: CustomTextStyle.grey14w400,
+                    hintStyle:
+                        CustomTextStyle.sf15w400(AppColors.greySecondary),
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(
@@ -1015,7 +1020,8 @@ class _DatePickerState extends State<DatePicker> {
                     style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                     fillColor: AppColors.greyActive,
                     hintText: 'select_an_area'.tr(),
-                    hintStyle: CustomTextStyle.grey14w400,
+                    hintStyle:
+                        CustomTextStyle.sf15w400(AppColors.greySecondary),
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(

@@ -53,7 +53,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   const Spacer(),
                   Text(
                     'message'.tr(),
-                    style: CustomTextStyle.black_22_w700,
+                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),

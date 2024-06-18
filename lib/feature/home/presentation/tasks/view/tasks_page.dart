@@ -63,7 +63,8 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             child: Text(
                               'my_task'.tr(),
-                              style: CustomTextStyle.black_22_w700_171716,
+                              style: CustomTextStyle.sf22w700(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                           Align(

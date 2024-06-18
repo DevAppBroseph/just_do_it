@@ -336,7 +336,7 @@ class _EditTasksState extends State<EditTasks> {
                   SizedBox(height: 10.h),
                   Text(
                     'choose_what_to_download'.tr(),
-                    style: CustomTextStyle.black_16_w600_171716,
+                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                   ),
                   ListTile(
                     title: Text(
@@ -400,7 +400,8 @@ class _EditTasksState extends State<EditTasks> {
                       SizedBox(width: 12.w),
                       Text(
                         'edity'.tr(),
-                        style: CustomTextStyle.black_22_w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
                       ),
                       Text(
                         ' ${page + 1}/2',
@@ -516,7 +517,7 @@ class _EditTasksState extends State<EditTasks> {
                           : widget.task.isTask!
                               ? 'edit_task'.tr()
                               : 'edit_offer'.tr(),
-                      style: CustomTextStyle.black_16_w600_171716,
+                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                     ),
                   ),
                 ),

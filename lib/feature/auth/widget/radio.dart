@@ -48,7 +48,7 @@ class CustomCircleRadioButtonItem extends StatelessWidget {
             label,
             style: groupValue == value
                 ? CustomTextStyle.sf17w400(AppColors.blackSecondary)
-                : CustomTextStyle.grey14w400,
+                : CustomTextStyle.sf15w400(AppColors.greySecondary),
           )
         ],
       ),

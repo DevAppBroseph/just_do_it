@@ -56,7 +56,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       TextSpan(
                         text: '${'registration'.tr()} ',
-                        style: CustomTextStyle.black_22_w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
                       ),
                       TextSpan(
                         text: '$stageRegistration/2',

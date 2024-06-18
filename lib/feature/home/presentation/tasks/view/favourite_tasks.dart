@@ -106,7 +106,8 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     widget.title,
-                                    style: CustomTextStyle.black_22_w700_171716,
+                                    style: CustomTextStyle.sf22w700(
+                                        AppColors.blackSecondary),
                                   ),
                                 )
                               ],

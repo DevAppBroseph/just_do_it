@@ -77,7 +77,8 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                           alignment: Alignment.center,
                           child: Text(
                             'В архиве',
-                            style: CustomTextStyle.black_22_w700_171716,
+                            style: CustomTextStyle.sf22w700(
+                                AppColors.blackSecondary),
                           ),
                         )
                       ],
@@ -135,7 +136,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                 btnColor: AppColors.yellowPrimary,
                 textLabel: Text(
                   'Создать новое',
-                  style: CustomTextStyle.black_16_w600_171716,
+                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                 ),
               ),
             ),

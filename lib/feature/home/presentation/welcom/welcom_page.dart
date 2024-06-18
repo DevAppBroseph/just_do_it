@@ -252,7 +252,7 @@ class _WelcomPageState extends State<WelcomPage> {
                             //                 const Spacer(),
                             //                 Text(
                             //                   listLanguage.first.title,
-                            //                   style: CustomTextStyle.black_16_w600_171716,
+                            //                   style: CustomTextStyle.CustomTextStyle.sf17w600(AppColors.blackSecondary),
                             //                 ),
                             //                 const Spacer(),
                             //                 const Icon(
@@ -1329,7 +1329,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                       'find_out_more_about_the_project'
                                                           .tr(),
                                                       style: CustomTextStyle
-                                                          .black_16_w600_171716,
+                                                          .sf17w600(AppColors
+                                                              .blackSecondary),
                                                     ),
                                                     const Spacer(),
                                                     SvgPicture.asset(
@@ -1404,7 +1405,8 @@ class _WelcomPageState extends State<WelcomPage> {
                       width: 100.w,
                       child: Text(
                         '- $choice',
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),

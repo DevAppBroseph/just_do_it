@@ -93,7 +93,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'category'.tr(),
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectCategory != null)
@@ -224,7 +225,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'subcategory'.tr(),
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectSubCategory != null)
@@ -411,7 +413,7 @@ class _CategorySelectorState extends State<CategorySelector> {
             child: CustomTextField(
               fillColor: AppColors.greyActive,
               hintText: 'attach_doc'.tr(),
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 50.h,
               enabled: false,
               suffixIcon: Stack(

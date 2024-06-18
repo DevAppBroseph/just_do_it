@@ -918,7 +918,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         padding: EdgeInsets.only(top: 20.h, left: 20.w),
                         child: Text(
                           'general_settings'.tr(),
-                          style: CustomTextStyle.black_16_w600_171716,
+                          style: CustomTextStyle.sf17w600(
+                              AppColors.blackSecondary),
                         ),
                       ),
                       GestureDetector(
@@ -1216,7 +1217,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               'your_categories'.tr(),
-                              style: CustomTextStyle.black_16_w600_171716,
+                              style: CustomTextStyle.sf17w600(
+                                  AppColors.blackSecondary),
                             ),
                             const Spacer(),
                             Padding(
@@ -1269,7 +1271,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           child: Text(
                             'you_have_not_selected_any_categories'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                         ),
                       if (user != null && typeCategories.isNotEmpty)
@@ -1329,7 +1332,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'your_work_experience'.tr(),
-                                style: CustomTextStyle.black_16_w600_171716,
+                                style: CustomTextStyle.sf17w600(
+                                    AppColors.blackSecondary),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(right: 10.w),
@@ -1360,7 +1364,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 "describe_your_work_experience_and_attach_images"
                                     .tr(),
                             border: InputBorder.none,
-                            hintStyle: CustomTextStyle.grey14w400,
+                            hintStyle: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                           controller: experienceController,
                           style:

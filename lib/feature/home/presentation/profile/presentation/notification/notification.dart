@@ -75,7 +75,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                 const Spacer(),
                                 Text(
                                   'notifications'.tr(),
-                                  style: CustomTextStyle.black_22_w700,
+                                  style: CustomTextStyle.sf22w700(
+                                      AppColors.blackSecondary),
                                 ),
                                 const Spacer(),
                                 SizedBox(width: 12.w)
@@ -141,7 +142,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                                                     0, 10) ??
                                                             '-'),
                                                     style: CustomTextStyle
-                                                        .grey14w400,
+                                                        .sf15w400(AppColors
+                                                            .greySecondary),
                                                   ),
                                                 ],
                                               ),

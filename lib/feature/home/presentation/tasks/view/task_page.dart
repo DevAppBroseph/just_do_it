@@ -552,7 +552,8 @@ class _TaskPageState extends State<TaskPage> {
                                     children: [
                                       Text(
                                         'term_of_execution'.tr(),
-                                        style: CustomTextStyle.grey14w400,
+                                        style: CustomTextStyle.sf15w400(
+                                            AppColors.greySecondary),
                                       ),
                                       SizedBox(height: 6.h),
                                       FittedBox(
@@ -587,7 +588,8 @@ class _TaskPageState extends State<TaskPage> {
                                     children: [
                                       Text(
                                         'region'.tr(),
-                                        style: CustomTextStyle.grey14w400,
+                                        style: CustomTextStyle.sf15w400(
+                                            AppColors.greySecondary),
                                       ),
                                       SizedBox(height: 6.h),
                                       AutoSizeText(
@@ -686,7 +688,8 @@ class _TaskPageState extends State<TaskPage> {
                                       children: [
                                         Text(
                                           'rating'.tr(),
-                                          style: CustomTextStyle.grey14w400,
+                                          style: CustomTextStyle.sf15w400(
+                                              AppColors.greySecondary),
                                         ),
                                         SizedBox(width: 8.w),
                                         SvgPicture.asset(
@@ -741,7 +744,8 @@ class _TaskPageState extends State<TaskPage> {
                         btnColor: AppColors.yellowPrimary,
                         textLabel: Text(
                           'write'.tr(),
-                          style: CustomTextStyle.black_16_w600_171716,
+                          style: CustomTextStyle.sf17w600(
+                              AppColors.blackSecondary),
                         ),
                       ),
                     SizedBox(height: 18.h),

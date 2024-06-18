@@ -402,7 +402,8 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                                 ),
                                 Text(
                                   text,
-                                  style: CustomTextStyle.grey14w400,
+                                  style: CustomTextStyle.sf15w400(
+                                      AppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -492,7 +493,8 @@ void banDialog(BuildContext context, String action) => showDialog(
                                 ),
                                 Text(
                                   'your_profile_is_blocked'.tr(),
-                                  style: CustomTextStyle.grey14w400,
+                                  style: CustomTextStyle.sf15w400(
+                                      AppColors.greySecondary),
                                 ),
                                 SizedBox(
                                   height: 18.h,

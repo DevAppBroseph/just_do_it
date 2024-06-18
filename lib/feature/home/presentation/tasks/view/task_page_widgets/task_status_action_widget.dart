@@ -91,9 +91,9 @@ class TaskStatusActionWidget extends StatelessWidget {
                     ? "on_inspection".tr()
                     : 'resend'.tr(),
                 style: task.verifyStatus == "Progress"
-                    ? CustomTextStyle.black_16_w600_171716
+                    ? CustomTextStyle.sf17w600(AppColors.blackSecondary)
                     : task.canAppellate
-                        ? CustomTextStyle.black_16_w600_171716
+                        ? CustomTextStyle.sf17w600(AppColors.blackSecondary)
                         : CustomTextStyle.sf17w400(AppColors.greyBackdround)
                             .copyWith(fontSize: 16),
               ),
@@ -111,7 +111,7 @@ class TaskStatusActionWidget extends StatelessWidget {
               btnColor: AppColors.greyPrimary,
               textLabel: Text(
                 'you_responded'.tr(),
-                style: CustomTextStyle.black_16_w600_171716,
+                style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
               ),
             ),
             if (task.isBanned!) ...[
@@ -141,7 +141,7 @@ class TaskStatusActionWidget extends StatelessWidget {
                 btnColor: AppColors.yellowPrimary,
                 textLabel: Text(
                   'cance_response'.tr(),
-                  style: CustomTextStyle.black_16_w600_171716,
+                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                 ),
               ),
             ]
@@ -154,7 +154,7 @@ class TaskStatusActionWidget extends StatelessWidget {
           btnColor: AppColors.greyPrimary,
           textLabel: Text(
             'you_have_been_chosen'.tr(),
-            style: CustomTextStyle.black_16_w600_171716,
+            style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
           ),
         );
       } else if (answer == null && !task.isBanned!) {
@@ -198,7 +198,7 @@ class TaskStatusActionWidget extends StatelessWidget {
           btnColor: AppColors.yellowPrimary,
           textLabel: Text(
             task.isTask! ? 'respond'.tr() : 'accept_the_offer'.tr(),
-            style: CustomTextStyle.black_16_w600_171716,
+            style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
           ),
         );
       }

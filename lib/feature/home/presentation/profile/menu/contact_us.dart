@@ -62,7 +62,8 @@ class _ContactUsState extends State<ContactUs> {
                           children: [
                             Text(
                               'contact_us'.tr(),
-                              style: CustomTextStyle.black_22_w700,
+                              style: CustomTextStyle.sf22w700(
+                                  AppColors.blackSecondary),
                             ),
                           ],
                         ),
@@ -161,7 +162,7 @@ class _ContactUsState extends State<ContactUs> {
                     btnColor: AppColors.yellowSecondary,
                     textLabel: Text(
                       'send'.tr(),
-                      style: CustomTextStyle.black_16_w600_171716,
+                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                     ),
                   ),
                 ),

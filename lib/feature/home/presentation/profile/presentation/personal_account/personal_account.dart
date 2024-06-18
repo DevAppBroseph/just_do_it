@@ -64,7 +64,8 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       Text(
                         'personal_account'.tr(),
-                        style: CustomTextStyle.black_22_w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
                       ),
                       const Spacer(),
                       GestureDetector(

@@ -341,7 +341,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   btnColor: AppColors.yellowPrimary,
                   textLabel: Text(
                     'show_tasks'.tr(),
-                    style: CustomTextStyle.black_16_w600_171716,
+                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                   ),
                 ),
               ),
@@ -439,7 +439,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'filters'.tr(),
-                    style: CustomTextStyle.black_22_w700,
+                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -537,7 +537,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'categories'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -589,7 +590,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'countries'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -641,7 +643,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'start_and_end_dates'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           Text(
@@ -686,7 +689,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         children: [
                           Text(
                             'currency'.tr(),
-                            style: CustomTextStyle.grey14w400,
+                            style: CustomTextStyle.sf15w400(
+                                AppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -737,7 +741,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
-                              style: CustomTextStyle.grey14w400,
+                              style: CustomTextStyle.sf15w400(
+                                  AppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -801,7 +806,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           children: [
                             Text(
                               '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
-                              style: CustomTextStyle.grey14w400,
+                              style: CustomTextStyle.sf15w400(
+                                  AppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -878,7 +884,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   children: [
                                     Text(
                                       'keywords'.tr(),
-                                      style: CustomTextStyle.grey14w400,
+                                      style: CustomTextStyle.sf15w400(
+                                          AppColors.greySecondary),
                                     ),
                                     Row(
                                       children: [
@@ -1028,7 +1035,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 12.h),
                   Text(
                     'currency'.tr(),
-                    style: CustomTextStyle.black_22_w700,
+                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -1157,7 +1164,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Text(
                 'categories'.tr(),
-                style: CustomTextStyle.black_22_w700,
+                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
               ),
             ],
           ),
@@ -1290,7 +1297,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: title.length > 27 ? 20.w : 70.w,
                     child: Text(
                       '- $selectWork',
-                      style: CustomTextStyle.grey14w400,
+                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -1352,7 +1359,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   user?.rus ?? true && context.locale.languageCode == 'ru'
                       ? selectActivities?.description ?? ''
                       : selectActivities?.engDescription ?? '',
-                  style: CustomTextStyle.black_22_w700,
+                  style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                 ),
               ),
             ],
@@ -1492,7 +1499,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'countries'.tr(),
-              style: CustomTextStyle.black_22_w700,
+              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
             ),
           ],
         ),
@@ -1691,7 +1698,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'regions'.tr(),
-              style: CustomTextStyle.black_22_w700,
+              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
             ),
           ],
         ),
@@ -1898,7 +1905,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Text(
                 'districts'.tr(),
-                style: CustomTextStyle.black_22_w700,
+                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
               ),
             ],
           ),
@@ -2098,7 +2105,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'start_and_end_dates'.tr(),
-              style: CustomTextStyle.black_22_w700,
+              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
             ),
           ],
         ),
@@ -2122,7 +2129,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'start_date'.tr(),
-                      style: CustomTextStyle.grey14w400,
+                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
                     ),
                     SizedBox(height: 3.h),
                     Text(
@@ -2163,7 +2170,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'completion_date'.tr(),
-                      style: CustomTextStyle.grey14w400,
+                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
                     ),
                     SizedBox(height: 3.h),
                     Text(

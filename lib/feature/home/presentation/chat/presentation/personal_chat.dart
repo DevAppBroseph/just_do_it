@@ -92,7 +92,8 @@ class _PersonalChatState extends State<PersonalChat> {
                         const Spacer(),
                         Text(
                           'profile'.tr(),
-                          style: CustomTextStyle.black_22_w700,
+                          style: CustomTextStyle.sf22w700(
+                              AppColors.blackSecondary),
                         ),
                         const Spacer(),
                         SizedBox(width: 30.w),
@@ -157,7 +158,8 @@ class _PersonalChatState extends State<PersonalChat> {
                         widget.name.isEmpty
                             ? 'account_deleted'.tr()
                             : widget.name,
-                        style: CustomTextStyle.black_22_w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),

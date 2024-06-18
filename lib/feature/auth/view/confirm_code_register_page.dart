@@ -180,7 +180,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                         children: [
                           Text(
                             title,
-                            style: CustomTextStyle.black_22_w700,
+                            style: CustomTextStyle.sf22w700(
+                                AppColors.blackSecondary),
                           )
                         ],
                       ),
@@ -281,7 +282,8 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                             btnColor: AppColors.yellowPrimary,
                             textLabel: Text(
                               'confirm'.tr(),
-                              style: CustomTextStyle.black_16_w600_171716,
+                              style: CustomTextStyle.sf17w600(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                           SizedBox(height: 18.h),

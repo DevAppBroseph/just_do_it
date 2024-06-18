@@ -239,7 +239,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                       btnColor: AppColors.yellowPrimary,
                       textLabel: Text(
                         'done'.tr(),
-                        style: CustomTextStyle.black_16_w600_171716,
+                        style:
+                            CustomTextStyle.sf17w600(AppColors.blackSecondary),
                       ),
                     ),
                   ),
@@ -316,7 +317,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   widget.selectTask!.isTask!
                       ? 'become_a_performer'.tr()
                       : 'become_a_customer'.tr(),
-                  style: CustomTextStyle.black_22_w700_171716,
+                  style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
@@ -350,7 +351,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   children: [
                     CustomTextField(
                       hintText: 'document'.tr(),
-                      hintStyle: CustomTextStyle.grey14w400,
+                      hintStyle:
+                          CustomTextStyle.sf15w400(AppColors.greySecondary),
                       width: 350.w,
                       height: 50.h,
                       enabled: false,
@@ -413,7 +415,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.grey14w400,
+                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
                 actionButton: false,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -444,7 +446,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -481,7 +483,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -508,7 +510,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.grey14w400,
+              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -536,7 +538,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -567,7 +569,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.grey14w400,
+            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],

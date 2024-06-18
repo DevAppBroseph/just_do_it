@@ -36,7 +36,7 @@ Widget itemButton(String title, String subtitle, String icon, Function onTap) {
               SizedBox(height: 6.h),
               Text(
                 subtitle,
-                style: CustomTextStyle.grey14w400,
+                style: CustomTextStyle.sf15w400(AppColors.greySecondary),
               )
             ],
           ),

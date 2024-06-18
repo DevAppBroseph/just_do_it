@@ -161,7 +161,8 @@ class _CreatePageState extends State<CreatePage> {
                                       setState(() {});
                                     },
                                     hintText: 'search'.tr(),
-                                    hintStyle: CustomTextStyle.grey14w400
+                                    hintStyle: CustomTextStyle.sf15w400(
+                                            AppColors.greySecondary)
                                         .copyWith(
                                             overflow: TextOverflow.ellipsis),
                                     textEditingController: searchController,
@@ -304,7 +305,8 @@ class _CreatePageState extends State<CreatePage> {
                                 btnColor: AppColors.yellowPrimary,
                                 textLabel: Text(
                                   'create'.tr(),
-                                  style: CustomTextStyle.black_16_w600_171716,
+                                  style: CustomTextStyle.sf17w600(
+                                      AppColors.blackSecondary),
                                 ),
                               ),
                             ),
@@ -433,7 +435,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 90.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey14w400,
+                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -446,7 +448,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 20.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.grey14w400,
+                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),

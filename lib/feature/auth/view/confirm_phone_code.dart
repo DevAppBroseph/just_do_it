@@ -167,7 +167,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                               confirmCode
                                   ? 'change_password'.tr()
                                   : 'confirm'.tr(),
-                              style: CustomTextStyle.black_16_w600_171716,
+                              style: CustomTextStyle.sf17w600(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                           SizedBox(height: 18.h),
@@ -256,7 +257,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
               Text(
                 // '${'confrim_phone'.tr()} ',
                 'restoring_access'.tr(),
-                style: CustomTextStyle.black_22_w700,
+                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
               )
             ],
           ),
@@ -353,7 +354,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             children: [
               Text(
                 'Изменение пароля ',
-                style: CustomTextStyle.black_22_w700,
+                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
               )
             ],
           ),
@@ -381,7 +382,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePassword,
                 textEditingController: passwordController,
-                hintStyle: CustomTextStyle.grey14w400,
+                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -392,7 +393,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePasswordRepeat,
                 textEditingController: passwordRepeatController,
-                hintStyle: CustomTextStyle.grey14w400,
+                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),

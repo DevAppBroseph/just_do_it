@@ -855,7 +855,12 @@ class _ScorePageState extends State<ScorePage> {
                 textAlign: TextAlign.center,
                 title,
                 style: score >= mustCoins || title == proverkaNext
-                    ? CustomTextStyle.sf12w600.copyWith(fontSize: 12.sp)
+                    ? CustomTextStyle.sf12w400(
+                        AppColors.purplePrimary,
+                      ).copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      )
                     : CustomTextStyle.sf12w400(AppColors.greySecondary),
               ),
             ),

@@ -350,7 +350,7 @@ class _RatingPageState extends State<RatingPage> {
                   alignment: Alignment.center,
                   child: Text(
                     'rating'.tr(),
-                    style: CustomTextStyle.black_22_w700,
+                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
                   ),
                 ),
                 CustomIconButton(

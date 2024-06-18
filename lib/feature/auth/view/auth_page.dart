@@ -156,7 +156,8 @@ class _AuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'send'.tr() : 'sign_in'.tr(),
-                          style: CustomTextStyle.black_16_w600_171716,
+                          style: CustomTextStyle.sf17w600(
+                              AppColors.blackSecondary),
                         ),
                         btnColor: AppColors.yellowPrimary,
                       ),
@@ -197,7 +198,7 @@ class _AuthPageState extends State<AuthPage> {
       children: [
         Text(
           'entrance'.tr(),
-          style: CustomTextStyle.black_22_w700,
+          style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -205,7 +206,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           onFieldSubmitted: (value) {
             requestStage1();
           },
@@ -239,7 +240,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -286,7 +287,7 @@ class _AuthPageState extends State<AuthPage> {
           children: [
             Text(
               'restoring_access'.tr(),
-              style: CustomTextStyle.black_22_w700,
+              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
             ),
           ],
         ),
@@ -296,7 +297,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeResetLogin,
           textEditingController: loginController,
-          hintStyle: CustomTextStyle.grey14w400,
+          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),

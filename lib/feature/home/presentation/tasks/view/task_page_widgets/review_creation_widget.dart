@@ -290,7 +290,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             btnColor: AppColors.yellowPrimary,
             textLabel: Text(
               'send_feedback'.tr(),
-              style: CustomTextStyle.black_16_w600_171716,
+              style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
             ),
           ),
           SizedBox(

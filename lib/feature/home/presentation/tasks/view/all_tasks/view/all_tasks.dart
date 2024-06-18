@@ -84,7 +84,8 @@ class _AllTasksViewState extends State<AllTasksView> {
                               widget.asCustomer
                                   ? 'my_tasks'.tr()
                                   : 'Все офферы',
-                              style: CustomTextStyle.black_22_w700_171716,
+                              style: CustomTextStyle.sf22w700(
+                                  AppColors.blackSecondary),
                             ),
                           )
                         ],

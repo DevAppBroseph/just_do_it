@@ -759,7 +759,7 @@ class _CustomerState extends State<Customer> {
                   btnColor: AppColors.yellowPrimary,
                   textLabel: Text(
                     'create_offer'.tr(),
-                    style: CustomTextStyle.black_16_w600_171716,
+                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
                   ),
                 ),
               ),

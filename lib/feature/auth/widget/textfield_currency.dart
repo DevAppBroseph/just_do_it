@@ -82,9 +82,13 @@ class CustomTextFieldCurrency extends StatelessWidget {
     // Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
-        CustomTextStyle.grey14w400.copyWith(overflow: TextOverflow.ellipsis);
+        CustomTextStyle.sf15w400(AppColors.greySecondary)
+            .copyWith(overflow: TextOverflow.ellipsis);
 
-    style = style ?? CustomTextStyle.black12ellipsis;
+    style = style ??
+        CustomTextStyle.sf13w400(Colors.black).copyWith(
+          overflow: TextOverflow.ellipsis,
+        );
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
 

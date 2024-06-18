@@ -222,7 +222,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           widget.selectTask?.isTask ?? false
                               ? 'respond'.tr()
                               : 'accept_the_offer'.tr(),
-                          style: CustomTextStyle.black_16_w600_171716,
+                          style: CustomTextStyle.sf17w600(
+                              AppColors.blackSecondary),
                         ),
                       ),
                     ),
@@ -339,7 +340,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 widget.selectTask?.isTask ?? false
                     ? 'your_response_to_the_task'.tr()
                     : 'your_response_to_the_offer'.tr(),
-                style: CustomTextStyle.black_22_w700_171716,
+                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
               ),
               SizedBox(height: 30.h),
               ScaleButton(
@@ -358,7 +359,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       Row(
@@ -412,7 +414,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         'covering_letter'.tr(),
-                        style: CustomTextStyle.grey14w400,
+                        style:
+                            CustomTextStyle.sf15w400(AppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       CustomTextField(
