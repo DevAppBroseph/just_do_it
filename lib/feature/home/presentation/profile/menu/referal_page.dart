@@ -49,7 +49,7 @@ class _ReferalPageState extends State<ReferalPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,7 +87,8 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'this_is_your_referral_link'.tr(),
-                style: CustomTextStyle.black_16_w500_000000,
+                style: CustomTextStyle.sf17w400(AppColors.whitePrimary)
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
             ),
             SizedBox(height: 8.h),
@@ -95,14 +96,14 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'for_each_new_user'.tr(),
-                style: CustomTextStyle.black_14_w400_515150,
+                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
               ),
             ),
             SizedBox(height: 50.h),
             Container(
               height: 130.h,
               decoration: BoxDecoration(
-                color: ColorStyles.greyF9F9F9,
+                color: AppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               margin: EdgeInsets.symmetric(horizontal: 24.w),
@@ -112,7 +113,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 children: [
                   Text(
                     'install_the_app'.tr(),
-                    style: CustomTextStyle.black_14_w400_515150,
+                    style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                   ),
                 ],
               ),
@@ -138,7 +139,7 @@ class _ReferalPageState extends State<ReferalPage> {
                           '${'jobfine_is_an_application_for_finding_and_doing_work'.tr()}\n$res'));
 
                   final snackBar = SnackBar(
-                    backgroundColor: ColorStyles.yellowFFCA0D,
+                    backgroundColor: AppColors.yellowBackground,
                     content: Text('copy'.tr()),
                     duration: const Duration(seconds: 1),
                   );
@@ -149,7 +150,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
-                    color: ColorStyles.purpleA401C4,
+                    color: AppColors.purplePrimary,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
@@ -158,7 +159,8 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           user?.link ?? '-',
-                          style: CustomTextStyle.white_16_w600,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.whitePrimary),
                         ),
                         const Spacer(),
                         SvgPicture.asset('assets/icons/copy.svg')
@@ -190,7 +192,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
-                    color: ColorStyles.yellowFFCA0D,
+                    color: AppColors.yellowBackground,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
@@ -200,7 +202,8 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           'share'.tr(),
-                          style: CustomTextStyle.white_16_w600,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.whitePrimary),
                         ),
                       ],
                     ),

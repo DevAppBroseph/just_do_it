@@ -112,10 +112,10 @@ class _WelcomPageState extends State<WelcomPage> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyEAECEE,
+                    color: AppColors.greyPrimary,
                     boxShadow: [
                       BoxShadow(
-                        color: ColorStyles.shadowFC6554,
+                        color: AppColors.shadowPrimary,
                         offset: const Offset(0, -4),
                         blurRadius: 55.r,
                       )
@@ -126,7 +126,7 @@ class _WelcomPageState extends State<WelcomPage> {
                     children: [
                       Container(
                         height: 60.h,
-                        color: ColorStyles.greyEAECEE,
+                        color: AppColors.greyPrimary,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 25.w, right: 28.w),
@@ -139,62 +139,91 @@ class _WelcomPageState extends State<WelcomPage> {
                                     height: 40.h,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: ColorStyles.whiteFFFFFF,
+                                        color: AppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(10.r),
                                       ),
                                       child: Row(
                                         children: [
-                                      Padding(
-                                      padding: EdgeInsets.only(left: 5.w),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          value: selectLanguage,
-                                          icon: Padding(
+                                          Padding(
                                             padding: EdgeInsets.only(left: 5.w),
-                                            child: const Icon(
-                                              Icons.keyboard_arrow_down_rounded,
-                                              color: ColorStyles.greyBDBDBD,
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                                value: selectLanguage,
+                                                icon: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 5.w),
+                                                  child: const Icon(
+                                                    Icons
+                                                        .keyboard_arrow_down_rounded,
+                                                    color:
+                                                        AppColors.greySecondary,
+                                                  ),
+                                                ),
+                                                onChanged: (value) async {
+                                                  if (value == 'RU') {
+                                                    context.setLocale(
+                                                        const Locale(
+                                                            'ru', 'RU'));
+                                                    if (user != null) {
+                                                      user!.rus = true;
+                                                      user = await Repository()
+                                                          .editRusProfile(
+                                                              BlocProvider.of<
+                                                                          ProfileBloc>(
+                                                                      context)
+                                                                  .access,
+                                                              true);
+                                                    }
+                                                  } else if (value == 'EN') {
+                                                    context.setLocale(
+                                                        const Locale(
+                                                            'en', 'US'));
+                                                    if (user != null) {
+                                                      user!.rus = false;
+                                                      user = await Repository()
+                                                          .editRusProfile(
+                                                              BlocProvider.of<
+                                                                          ProfileBloc>(
+                                                                      context)
+                                                                  .access,
+                                                              false);
+                                                    }
+                                                  }
+                                                },
+                                                items: listLanguage.map<
+                                                    DropdownMenuItem<
+                                                        String>>((e) {
+                                                  return DropdownMenuItem<
+                                                          String>(
+                                                      value: e.title,
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 20.h,
+                                                            width: 25.w,
+                                                            child: e.title ==
+                                                                    'EN'
+                                                                ? Image.asset(
+                                                                    e.icon)
+                                                                : SvgPicture
+                                                                    .asset(
+                                                                        e.icon),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 5.w),
+                                                            child:
+                                                                Text(e.title),
+                                                          ),
+                                                        ],
+                                                      ));
+                                                }).toList(),
+                                              ),
                                             ),
                                           ),
-                                          onChanged: (value) async {
-                                            if (value == 'RU') {
-                                              context.setLocale(const Locale('ru', 'RU'));
-                                              if (user != null) {
-                                                user!.rus = true;
-                                                user = await Repository().editRusProfile(
-                                                    BlocProvider.of<ProfileBloc>(context).access, true);
-                                              }
-                                            } else if (value == 'EN') {
-                                              context.setLocale(const Locale('en', 'US'));
-                                              if (user != null) {
-                                                user!.rus = false;
-                                                user = await Repository().editRusProfile(
-                                                    BlocProvider.of<ProfileBloc>(context).access, false);
-                                              }
-                                            }
-                                          },
-                                          items: listLanguage.map<DropdownMenuItem<String>>((e) {
-                                            return DropdownMenuItem<String>(
-                                                value: e.title,
-                                                child: Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 20.h,
-                                                      width: 25.w,
-                                                      child: e.title == 'EN'
-                                                          ? Image.asset(e.icon)
-                                                          : SvgPicture.asset(e.icon),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 5.w),
-                                                      child: Text(e.title),
-                                                    ),
-                                                  ],
-                                                ));
-                                          }).toList(),
-                                        ),
-                                      ),), ],
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -324,8 +353,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         width: 10.w,
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: ColorStyles
-                                                              .yellowFFD70B,
+                                                          color: AppColors
+                                                              .yellowSecondary,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -360,7 +389,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                             });
                                             getHistoryList();
                                           },
-                                          fillColor: ColorStyles.greyF7F7F8,
+                                          fillColor: AppColors.greyAccent,
                                           prefixIcon: Stack(
                                             alignment: Alignment.center,
                                             children: [
@@ -480,14 +509,13 @@ class _WelcomPageState extends State<WelcomPage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 0.h),
                           child: Container(
-                            color: ColorStyles.greyEAECEE,
+                            color: AppColors.greyPrimary,
                             child: ListView(
                               physics: const ClampingScrollPhysics(),
                               shrinkWrap: true,
                               children: [
                                 Container(
-                                    height: 30.h,
-                                    color: ColorStyles.greyEAECEE),
+                                    height: 30.h, color: AppColors.greyPrimary),
                                 BlocBuilder<ProfileBloc, ProfileState>(
                                   builder: (context, snapshot) {
                                     final bloc =
@@ -502,8 +530,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                           child: Center(
                                             child: Text(
                                               'jobyfine'.toUpperCase(),
-                                              style: CustomTextStyle
-                                                  .black39w900171716,
+                                              style: CustomTextStyle.sf22w700(
+                                                      AppColors.blackSecondary)
+                                                  .copyWith(
+                                                fontSize: 39,
+                                                fontWeight: FontWeight.w900,
+                                                fontFamily: 'SFBold',
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -520,7 +553,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                         child: Container(
                                           height: 200.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.whiteFFFFFF,
+                                            color: AppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(30.r),
                                           ),
@@ -578,7 +611,7 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                                 EdgeInsets.all(10.h),
                                                                             decoration:
                                                                                 const BoxDecoration(
-                                                                              color: ColorStyles.shadowFC6554,
+                                                                              color: AppColors.shadowPrimary,
                                                                             ),
                                                                             child:
                                                                                 Image.asset('assets/images/camera.png'),
@@ -674,7 +707,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 'welcome_back'
                                                                     .tr(),
                                                                 style: CustomTextStyle
-                                                                    .grey12w400,
+                                                                    .sf13w400(
+                                                                        AppColors
+                                                                            .greySecondary),
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -686,8 +721,12 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 '${bloc.user?.firstname} ${bloc.user?.lastname}',
                                                                 wrapWords:
                                                                     false,
-                                                                style: CustomTextStyle
-                                                                    .black24w800,
+                                                                style: CustomTextStyle.sf19w800(
+                                                                        AppColors
+                                                                            .greySecondary)
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            24),
                                                                 maxLines: 2,
                                                               ),
                                                             ],
@@ -747,8 +786,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   width: 70.w,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                    color: ColorStyles
-                                                                        .greyEAECEE,
+                                                                    color: AppColors
+                                                                        .greyPrimary,
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             30.r),
@@ -757,8 +796,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                     child: Text(
                                                                       'grades'
                                                                           .tr(),
-                                                                      style: CustomTextStyle
-                                                                          .purple12w400,
+                                                                      style: CustomTextStyle.sf12w400(
+                                                                          AppColors
+                                                                              .purplePrimary),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -821,8 +861,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                             ?.balance
                                                                             .toString() ??
                                                                         '0',
-                                                                    style: CustomTextStyle
-                                                                        .purple15w600,
+                                                                    style: CustomTextStyle.sf17w400(
+                                                                        AppColors
+                                                                            .purplePrimary),
                                                                   ),
                                                                 ),
                                                               ],
@@ -866,8 +907,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 width: 90.w,
                                                                 decoration:
                                                                     BoxDecoration(
-                                                                  color: ColorStyles
-                                                                      .yellowFFCA0D
+                                                                  color: AppColors
+                                                                      .yellowBackground
                                                                       .withOpacity(
                                                                           0.2),
                                                                   borderRadius:
@@ -884,8 +925,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                       Text(
                                                                         'rating'
                                                                             .tr(),
-                                                                        style: CustomTextStyle
-                                                                            .gold12w400,
+                                                                        style: CustomTextStyle.sf12w400(
+                                                                            AppColors.yellowBackground),
                                                                       ),
                                                                       SizedBox(
                                                                           width:
@@ -927,7 +968,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                         .ranking!
                                                                         .toString(),
                                                                 style: CustomTextStyle
-                                                                    .gold_16_w600_171716,
+                                                                    .sf17w400(
+                                                                        AppColors
+                                                                            .yellowBackground),
                                                               ),
                                                             ),
                                                           ),
@@ -969,8 +1012,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                 width: 75.w,
                                                                 decoration:
                                                                     BoxDecoration(
-                                                                  color: ColorStyles
-                                                                      .blue336FEE
+                                                                  color: AppColors
+                                                                      .blueSecondary
                                                                       .withOpacity(
                                                                           0.2),
                                                                   borderRadius:
@@ -982,8 +1025,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                   child: Text(
                                                                     'reviews'
                                                                         .tr(),
-                                                                    style: CustomTextStyle
-                                                                        .blue12w400,
+                                                                    style: CustomTextStyle.sf12w400(
+                                                                        AppColors
+                                                                            .blueSecondary),
                                                                   ),
                                                                 ),
                                                               ),
@@ -1004,7 +1048,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                                                         .length
                                                                         .toString(),
                                                                 style: CustomTextStyle
-                                                                    .blue_16_w600_171716,
+                                                                    .sf17w400(
+                                                                        AppColors
+                                                                            .blueSecondary),
                                                                 textAlign:
                                                                     TextAlign
                                                                         .left,
@@ -1028,10 +1074,9 @@ class _WelcomPageState extends State<WelcomPage> {
                                   padding: EdgeInsets.only(left: 24.w),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        'see_how'.tr(),
-                                        style: CustomTextStyle.black_18_w800,
-                                      ),
+                                      Text('see_how'.tr(),
+                                          style: CustomTextStyle.sf19w800(
+                                              AppColors.blackSecondary)),
                                     ],
                                   ),
                                 ),
@@ -1057,12 +1102,12 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   100) -
                                               25.w,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.whiteFFFFFF,
+                                            color: AppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: ColorStyles.shadowFC6554,
+                                                color: AppColors.shadowPrimary,
                                                 offset: const Offset(0, 4),
                                                 blurRadius: 45.r,
                                               )
@@ -1099,7 +1144,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         Text(
                                                           'customer'.tr(),
                                                           style: CustomTextStyle
-                                                              .black15bold,
+                                                                  .sf17w400(
+                                                                      AppColors
+                                                                          .blackSecondary)
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
                                                         ),
                                                         Padding(
                                                           padding:
@@ -1109,8 +1160,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           child: Icon(
                                                             Icons
                                                                 .arrow_forward_ios,
-                                                            color: ColorStyles
-                                                                .greyBDBDBD,
+                                                            color: AppColors
+                                                                .greySecondary,
                                                             size: 12.h,
                                                           ),
                                                         ),
@@ -1119,7 +1170,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     Text(
                                                       'post_the_task'.tr(),
                                                       style: CustomTextStyle
-                                                          .grey12w400,
+                                                          .sf13w400(AppColors
+                                                              .greySecondary),
                                                     ),
                                                   ],
                                                 ),
@@ -1145,12 +1197,12 @@ class _WelcomPageState extends State<WelcomPage> {
                                                   100) -
                                               25.w,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.whiteFFFFFF,
+                                            color: AppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: ColorStyles.shadowFC6554,
+                                                color: AppColors.shadowPrimary,
                                                 offset: const Offset(0, 4),
                                                 blurRadius: 45.r,
                                               )
@@ -1187,7 +1239,13 @@ class _WelcomPageState extends State<WelcomPage> {
                                                         Text(
                                                           'executor'.tr(),
                                                           style: CustomTextStyle
-                                                              .black15bold,
+                                                                  .sf17w400(
+                                                                      AppColors
+                                                                          .blackSecondary)
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
                                                         ),
                                                         Padding(
                                                           padding:
@@ -1197,8 +1255,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                           child: Icon(
                                                             Icons
                                                                 .arrow_forward_ios,
-                                                            color: ColorStyles
-                                                                .greyBDBDBD,
+                                                            color: AppColors
+                                                                .greySecondary,
                                                             size: 12.h,
                                                           ),
                                                         ),
@@ -1207,7 +1265,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                                     Text(
                                                       'get_the_job_done'.tr(),
                                                       style: CustomTextStyle
-                                                          .grey12w400,
+                                                          .sf13w400(AppColors
+                                                              .greySecondary),
                                                     ),
                                                   ],
                                                 ),
@@ -1246,15 +1305,15 @@ class _WelcomPageState extends State<WelcomPage> {
                                               },
                                               radius:
                                                   BorderRadius.circular(25.r),
-                                              color: ColorStyles.yellowFFD70A,
+                                              color: AppColors.yellowPrimary,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
                                               decoration: BoxDecoration(
-                                                color: ColorStyles.yellowFFD70A,
+                                                color: AppColors.yellowPrimary,
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: ColorStyles
-                                                        .shadowFC6554,
+                                                    color:
+                                                        AppColors.shadowPrimary,
                                                     offset: const Offset(0, -4),
                                                     blurRadius: 55.r,
                                                   )
@@ -1316,11 +1375,11 @@ class _WelcomPageState extends State<WelcomPage> {
           }),
           child: Container(
             decoration: BoxDecoration(
-              color: ColorStyles.whiteFFFFFF,
+              color: AppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
-                  color: ColorStyles.shadowFC6554,
+                  color: AppColors.shadowPrimary,
                   offset: const Offset(0, -4),
                   blurRadius: 55.r,
                 )
@@ -1336,7 +1395,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 SizedBox(width: 9.w),
                 Text(
                   title,
-                  style: CustomTextStyle.black_14_w400_515150,
+                  style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                 ),
                 if (choice.isNotEmpty)
                   Padding(
@@ -1376,7 +1435,7 @@ class _WelcomPageState extends State<WelcomPage> {
         duration: const Duration(milliseconds: 300),
         height: open ? 80.h : 0.h,
         decoration: BoxDecoration(
-          color: ColorStyles.whiteFFFFFF,
+          color: AppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
         ),
         padding: EdgeInsets.zero,
@@ -1409,7 +1468,7 @@ class _WelcomPageState extends State<WelcomPage> {
                 children: [
                   Text(
                     label,
-                    style: CustomTextStyle.black_14_w400_515150,
+                    style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                   ),
                   const Spacer(),
                 ],

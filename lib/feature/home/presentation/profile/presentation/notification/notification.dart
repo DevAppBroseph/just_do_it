@@ -38,7 +38,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             final user = context.read<ProfileBloc>().user;
@@ -126,7 +126,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: CustomTextStyle
-                                                          .black14w400171716,
+                                                          .sf17w400(AppColors
+                                                              .blackSecondary),
                                                     ),
                                                   ),
                                                   const Spacer(),
@@ -147,7 +148,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                               SizedBox(height: 21.h),
                                               Container(
                                                 height: 1.h,
-                                                color: ColorStyles.greyF7F7F8,
+                                                color: AppColors.greyAccent,
                                               )
                                             ],
                                           ),
@@ -177,11 +178,12 @@ class _NotificationPageState extends State<NotificationPage> {
                                 }));
                               },
                               btnColor: proverka
-                                  ? ColorStyles.greyE0E6EE
-                                  : ColorStyles.yellowFFD70A,
+                                  ? AppColors.greyError
+                                  : AppColors.yellowPrimary,
                               textLabel: Text(
                                 'clear'.tr(),
-                                style: CustomTextStyle.black16w600515150,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackAccent),
                               ),
                             ),
                           ),

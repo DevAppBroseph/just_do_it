@@ -34,7 +34,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,

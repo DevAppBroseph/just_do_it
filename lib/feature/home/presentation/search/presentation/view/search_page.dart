@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       body: MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
@@ -195,7 +195,7 @@ class _SearchPageState extends State<SearchPage> {
                                   width: 240.w,
                                   height: 36.h,
                                   child: CustomTextField(
-                                    fillColor: ColorStyles.greyF7F7F8,
+                                    fillColor: AppColors.greyAccent,
                                     prefixIcon: Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -273,8 +273,8 @@ class _SearchPageState extends State<SearchPage> {
                                                       height: 10.w,
                                                       width: 10.w,
                                                       decoration: BoxDecoration(
-                                                        color: ColorStyles
-                                                            .yellowFFD70B,
+                                                        color: AppColors
+                                                            .yellowSecondary,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20.r),
@@ -357,10 +357,9 @@ class _SearchPageState extends State<SearchPage> {
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
                         child: Row(
                           children: [
-                            Text(
-                              'all_tasks'.tr(),
-                              style: CustomTextStyle.black_18_w800,
-                            ),
+                            Text('all_tasks'.tr(),
+                                style: CustomTextStyle.sf19w800(
+                                    AppColors.blackSecondary)),
                             const Spacer(),
                             Flexible(
                               child: ScaleButton(
@@ -378,7 +377,7 @@ class _SearchPageState extends State<SearchPage> {
                                         height: 36.h,
                                         width: 110.h,
                                         decoration: BoxDecoration(
-                                          color: ColorStyles.greyF7F7F8,
+                                          color: AppColors.greyAccent,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                         ),
@@ -390,13 +389,14 @@ class _SearchPageState extends State<SearchPage> {
                                               SvgPicture.asset(
                                                 'assets/icons/candle.svg',
                                                 height: 16.h,
-                                                color: ColorStyles.yellowFFD70B,
+                                                color:
+                                                    AppColors.yellowSecondary,
                                               ),
                                               SizedBox(width: 4.w),
                                               Text(
                                                 'filter'.tr(),
-                                                style: CustomTextStyle
-                                                    .black14w400171716,
+                                                style: CustomTextStyle.sf17w400(
+                                                    AppColors.blackSecondary),
                                               ),
                                             ],
                                           ),
@@ -410,7 +410,7 @@ class _SearchPageState extends State<SearchPage> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(369.r),
-                                            color: ColorStyles.black171716,
+                                            color: AppColors.blackSecondary,
                                           ),
                                           child: Center(
                                             child: BlocBuilder<TasksBloc,
@@ -424,14 +424,18 @@ class _SearchPageState extends State<SearchPage> {
                                                       ? state.countFilter
                                                           .toString()
                                                       : '0',
-                                                  style: CustomTextStyle
-                                                      .white_10_w700,
+                                                  style:
+                                                      CustomTextStyle.sf11w400(
+                                                          AppColors
+                                                              .whitePrimary),
                                                 );
                                               } else {
                                                 return Text(
                                                   '',
-                                                  style: CustomTextStyle
-                                                      .white_10_w700,
+                                                  style:
+                                                      CustomTextStyle.sf11w400(
+                                                          AppColors
+                                                              .whitePrimary),
                                                 );
                                               }
                                             }),
@@ -457,18 +461,18 @@ class _SearchPageState extends State<SearchPage> {
                         if (state is TasksLoading) {
                           return SkeletonLoader(
                             items: 4,
-                            baseColor: ColorStyles.whiteFFFFFF,
-                            highlightColor: ColorStyles.greyF3F3F3,
+                            baseColor: AppColors.whitePrimary,
+                            highlightColor: AppColors.greyActive,
                             builder: Container(
                               margin: EdgeInsets.only(
                                   left: 24.w, right: 24.w, bottom: 24.w),
                               height: 100.h,
                               decoration: BoxDecoration(
-                                color: ColorStyles.whiteFFFFFF,
+                                color: AppColors.whitePrimary,
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: ColorStyles.shadowFC6554,
+                                    color: AppColors.shadowPrimary,
                                     offset: const Offset(0, -4),
                                     blurRadius: 55.r,
                                   )
@@ -514,7 +518,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: ProfileView(owner: owner!),
       );
     }

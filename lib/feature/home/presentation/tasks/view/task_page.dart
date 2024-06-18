@@ -108,7 +108,7 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       body: FutureBuilder(
           future: _data,
           builder: (context, snapshot) {
@@ -138,12 +138,14 @@ class _TaskPageState extends State<TaskPage> {
                             task.status.isInactive
                                 ? 'close'.tr()
                                 : 'openly'.tr(),
-                            style: CustomTextStyle.black_12_w400,
+                            style: CustomTextStyle.sf13w400(
+                                AppColors.blackSecondary),
                           ),
                         if (task.isBanned != null && task.isBanned!)
                           Text(
                             'blocked'.tr(),
-                            style: CustomTextStyle.red11w400171716,
+                            style: CustomTextStyle.sf12w400(
+                                AppColors.redSecondary),
                           ),
                         const Spacer(),
                         if (user?.id != task.owner?.id)
@@ -221,7 +223,7 @@ class _TaskPageState extends State<TaskPage> {
                             'assets/icons/more-circle.svg',
                             key: globalKey,
                             height: 20.h,
-                            color: ColorStyles.greyBDBDBD,
+                            color: AppColors.greySecondary,
                           ),
                         ),
                       ],
@@ -251,7 +253,8 @@ class _TaskPageState extends State<TaskPage> {
                               },
                               child: Text(
                                 'edit'.tr(),
-                                style: CustomTextStyle.black_12_w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.blackSecondary),
                               ),
                             ),
                           ],
@@ -283,7 +286,8 @@ class _TaskPageState extends State<TaskPage> {
                                         CupertinoButton(
                                           child: Text(
                                             'delete'.tr(),
-                                            style: CustomTextStyle.red16w400,
+                                            style: CustomTextStyle.sf17w400(
+                                                AppColors.redSecondary),
                                           ),
                                           onPressed: () async {
                                             final access =
@@ -300,8 +304,7 @@ class _TaskPageState extends State<TaskPage> {
                               },
                               child: Text(
                                 'delete'.tr(),
-                                style: CustomTextStyle.black_12_w400
-                                    .copyWith(color: Colors.red),
+                                style: CustomTextStyle.sf13w400(Colors.red),
                               ),
                             ),
                           ],
@@ -318,13 +321,13 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                     Text(
                       '${DataFormatter.addSpacesToNumber(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
-                      style: CustomTextStyle.black_15_w600_171716,
+                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary)
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 12.h),
-                    Text(
-                      task.name,
-                      style: CustomTextStyle.black17w800171716,
-                    ),
+                    Text(task.name,
+                        style:
+                            CustomTextStyle.sf18w800(AppColors.blackSecondary)),
                     SizedBox(height: 18.h),
                     if (task.category != null)
                       Row(
@@ -341,7 +344,8 @@ class _TaskPageState extends State<TaskPage> {
                             width: 260,
                             child: Text(
                               '${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.category?.description ?? '-' : task.category?.engDescription ?? '-'}, ${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.subcategory?.description ?? '-' : task.subcategory?.engDescription}',
-                              style: CustomTextStyle.black_12_w400_292D32,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackError),
                               softWrap: true,
                             ),
                           ),
@@ -351,11 +355,11 @@ class _TaskPageState extends State<TaskPage> {
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        color: ColorStyles.whiteFFFFFF,
+                        color: AppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                         boxShadow: [
                           BoxShadow(
-                            color: ColorStyles.shadowFC6554,
+                            color: AppColors.shadowPrimary,
                             offset: const Offset(0, 4),
                             blurRadius: 45.r,
                           )
@@ -370,7 +374,8 @@ class _TaskPageState extends State<TaskPage> {
                           children: [
                             Text(
                               'description'.tr(),
-                              style: CustomTextStyle.black17w800171716,
+                              style: CustomTextStyle.sf18w800(
+                                  AppColors.blackSecondary),
                             ),
                             SizedBox(
                               height: 10.h,
@@ -379,7 +384,8 @@ class _TaskPageState extends State<TaskPage> {
                               task.description,
                               overflow: TextOverflow.ellipsis,
                               maxLines: showMore ? 10000000 : 3,
-                              style: CustomTextStyle.black_12_w400_292D32,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackError),
                             ),
                             if (!showMore) SizedBox(height: 8.h),
                             if (!showMore && task.description.length > 105)
@@ -391,7 +397,8 @@ class _TaskPageState extends State<TaskPage> {
                                 },
                                 child: Text(
                                   'show_more'.tr(),
-                                  style: CustomTextStyle.blue11w400336FEE,
+                                  style: CustomTextStyle.sf12w400(
+                                      AppColors.blueSecondary),
                                 ),
                               ),
                             if (task.files != null && task.files!.isNotEmpty)
@@ -553,8 +560,8 @@ class _TaskPageState extends State<TaskPage> {
                                         child: Text(
                                           "${_textData(task.dateStart)}-${_textData(task.dateEnd)}",
                                           maxLines: 1,
-                                          style: CustomTextStyle
-                                              .black_12_w400_292D32,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.blackError),
                                         ),
                                       ),
                                     ],
@@ -566,7 +573,7 @@ class _TaskPageState extends State<TaskPage> {
                                 SizedBox(
                                   height: 40.h,
                                   child: const VerticalDivider(
-                                    color: ColorStyles.greyD9D9D9,
+                                    color: AppColors.greyActive,
                                     thickness: 1,
                                   ),
                                 ),
@@ -586,8 +593,8 @@ class _TaskPageState extends State<TaskPage> {
                                       AutoSizeText(
                                         _textCountry(task, user),
                                         wrapWords: false,
-                                        style: CustomTextStyle
-                                            .black_12_w400_292D32,
+                                        style: CustomTextStyle.sf17w400(
+                                            AppColors.blackError),
                                         maxLines: null,
                                       ),
                                     ],
@@ -623,11 +630,11 @@ class _TaskPageState extends State<TaskPage> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: ColorStyles.whiteFFFFFF,
+                            color: AppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(20.r),
                             boxShadow: [
                               BoxShadow(
-                                color: ColorStyles.shadowFC6554,
+                                color: AppColors.shadowPrimary,
                                 offset: const Offset(0, 4),
                                 blurRadius: 45.r,
                               )
@@ -659,15 +666,18 @@ class _TaskPageState extends State<TaskPage> {
                                       task.isTask ?? false
                                           ? 'customer'.tr()
                                           : 'executor'.tr(),
-                                      style: CustomTextStyle.grey12w400,
+                                      style: CustomTextStyle.sf13w400(
+                                          AppColors.greySecondary),
                                     ),
                                     SizedBox(
                                       width: 260.w,
                                       child: AutoSizeText(
                                         "${task.owner?.firstname ?? '-'} ${task.owner?.lastname ?? '-'}",
                                         wrapWords: false,
-                                        style:
-                                            CustomTextStyle.black17w600171716,
+                                        style: CustomTextStyle.sf18w800(
+                                                AppColors.blackSecondary)
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
                                         maxLines: 2,
                                       ),
                                     ),
@@ -686,8 +696,10 @@ class _TaskPageState extends State<TaskPage> {
                                           task.owner?.ranking == null
                                               ? '0'
                                               : task.owner!.ranking.toString(),
-                                          style: CustomTextStyle
-                                              .black_13_w500_171716,
+                                          style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary)
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500),
                                         ),
                                       ],
                                     ),
@@ -726,7 +738,7 @@ class _TaskPageState extends State<TaskPage> {
                             chatBloc.editChatId(null);
                           }
                         },
-                        btnColor: ColorStyles.yellowFFD70A,
+                        btnColor: AppColors.yellowPrimary,
                         textLabel: Text(
                           'write'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,

@@ -105,7 +105,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: ColorStyles.whiteFFFFFF,
+                        color: AppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -115,7 +115,8 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'my_tasks'.tr(),
-                              style: CustomTextStyle.black16w600515150,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -136,7 +137,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/note2.svg',
-                                    color: ColorStyles.yellowFFCA0D,
+                                    color: AppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -149,16 +150,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'all_responses'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'tasks_that_i_have_responded_to'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -174,8 +175,8 @@ class _CustomerState extends State<Customer> {
                                                       .countMyAnswersAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -205,7 +206,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/clipboard-tick.svg',
-                                    color: ColorStyles.yellowFFCA0D,
+                                    color: AppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -218,16 +219,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'confirmed'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'i_was_chosen_as_a_performer'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -243,8 +244,8 @@ class _CustomerState extends State<Customer> {
                                                       .countMyAnswersSelectedAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -274,7 +275,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/document-like.svg',
-                                    color: ColorStyles.yellowFFCA0D,
+                                    color: AppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -287,16 +288,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'tasks_that_were_completed_by_me'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -312,8 +313,8 @@ class _CustomerState extends State<Customer> {
                                                       .countOrdersCompleteAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -339,7 +340,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: ColorStyles.whiteFFFFFF,
+                        color: AppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -355,7 +356,8 @@ class _CustomerState extends State<Customer> {
                               },
                               child: Text(
                                 'my_offers'.tr(),
-                                style: CustomTextStyle.black16w600515150,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackAccent),
                               ),
                             ),
                           ),
@@ -374,7 +376,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/flash-circle.svg',
-                                    color: ColorStyles.blue336FEE,
+                                    color: AppColors.blueSecondary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -387,16 +389,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'open'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'waiting_for_the_customer_response'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -410,8 +412,8 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.openOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -454,16 +456,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'accepted'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'there_is_a_response_from_the_customer'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -477,8 +479,8 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.selectedOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -508,7 +510,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/verify.svg',
-                                    color: ColorStyles.purpleA401C4,
+                                    color: AppColors.purplePrimary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -521,16 +523,16 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'the_deal_has_been_implemented'
                                                     .tr(),
-                                                style:
-                                                    CustomTextStyle.grey12w400,
+                                                style: CustomTextStyle.sf13w400(
+                                                    AppColors.greySecondary),
                                               ),
                                             ),
                                           ],
@@ -544,8 +546,8 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.finishedOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle
-                                                  .black_13_w400_171716,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -571,7 +573,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: ColorStyles.whiteFFFFFF,
+                        color: AppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -581,7 +583,8 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'favourites'.tr(),
-                              style: CustomTextStyle.black16w600515150,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -602,7 +605,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/edit.svg',
-                                    color: ColorStyles.greyD9D9D9,
+                                    color: AppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -613,8 +616,8 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'tasks'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.sf17w400(
+                                                AppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -633,8 +636,10 @@ class _CustomerState extends State<Customer> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style: CustomTextStyle
-                                                      .black_13_w400_171716,
+                                                  style:
+                                                      CustomTextStyle.sf17w400(
+                                                          AppColors
+                                                              .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -665,7 +670,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user1.svg',
-                                    color: ColorStyles.greyD9D9D9,
+                                    color: AppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -676,8 +681,8 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'customers'.tr(),
-                                            style: CustomTextStyle
-                                                .black_13_w400_171716,
+                                            style: CustomTextStyle.sf17w400(
+                                                AppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -695,8 +700,10 @@ class _CustomerState extends State<Customer> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style: CustomTextStyle
-                                                      .black_13_w400_171716,
+                                                  style:
+                                                      CustomTextStyle.sf17w400(
+                                                          AppColors
+                                                              .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -749,7 +756,7 @@ class _CustomerState extends State<Customer> {
 
                     getListTask();
                   },
-                  btnColor: ColorStyles.yellowFFD70A,
+                  btnColor: AppColors.yellowPrimary,
                   textLabel: Text(
                     'create_offer'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,

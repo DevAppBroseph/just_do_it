@@ -124,11 +124,11 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(20.r),
                     boxShadow: [
                       BoxShadow(
-                        color: ColorStyles.shadowFC6554,
+                        color: AppColors.shadowPrimary,
                         offset: const Offset(0, 4),
                         blurRadius: 45.r,
                       )
@@ -160,7 +160,9 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                                   width: 300.w,
                                   child: Text(
                                     '${agentOrCustomer?.firstname ?? '-'} ${agentOrCustomer?.lastname ?? '-'}',
-                                    style: CustomTextStyle.black_15_w600_171716,
+                                    style: CustomTextStyle.sf17w400(
+                                            AppColors.blackSecondary)
+                                        .copyWith(fontWeight: FontWeight.w600),
                                     softWrap: true,
                                   ),
                                 ),
@@ -173,8 +175,10 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                                       (agentOrCustomer?.ranking == null)
                                           ? '0'
                                           : agentOrCustomer!.ranking.toString(),
-                                      style:
-                                          CustomTextStyle.black_13_w500_171716,
+                                      style: CustomTextStyle.sf17w400(
+                                              AppColors.blackSecondary)
+                                          .copyWith(
+                                              fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -193,13 +197,15 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
           SizedBox(height: 30.h),
           Text(
             'leave_a_review'.tr(),
-            style: CustomTextStyle.black_17_w800,
+            style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
           ),
           SizedBox(height: 15.h),
           Text(
             'points_are_credited_to_your_account_for_leaving_reviews_and_rating'
                 .tr(),
-            style: CustomTextStyle.black_14_w500_171716,
+            style: CustomTextStyle.sf17w400(
+              Colors.black,
+            ).copyWith(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 30.h),
           ScaleButton(
@@ -208,7 +214,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
               decoration: BoxDecoration(
-                color: ColorStyles.greyF9F9F9,
+                color: AppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -220,9 +226,9 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                   setState(() {});
                 },
                 hintStyle: const TextStyle(color: Colors.black),
-                style: CustomTextStyle.black14w400171716,
+                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                 textEditingController: descriptionTextController,
-                fillColor: ColorStyles.greyF9F9F9,
+                fillColor: AppColors.greyActive,
                 onChanged: (value) {},
                 formatters: [
                   UpperEveryTextInputFormatter(),
@@ -239,7 +245,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                         ? 'rate_the_executor'
                         : 'evaluate_the_customer')
                     .tr(),
-                style: CustomTextStyle.black_17_w800,
+                style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
               ),
               SizedBox(width: 15.h),
               GestureDetector(
@@ -270,7 +276,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (context, _) => const Icon(
               Icons.star,
-              color: ColorStyles.yellowFFCA0D,
+              color: AppColors.yellowBackground,
             ),
             onRatingUpdate: (rating) {
               reviewRating = rating;
@@ -281,7 +287,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             onTap: () {
               sendReview();
             },
-            btnColor: ColorStyles.yellowFFD70A,
+            btnColor: AppColors.yellowPrimary,
             textLabel: Text(
               'send_feedback'.tr(),
               style: CustomTextStyle.black_16_w600_171716,

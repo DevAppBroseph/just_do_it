@@ -60,7 +60,9 @@ void iconSelectTranslate(
                         alignment: Alignment.center,
                         child: Text(
                           'show_original'.tr(),
-                          style: CustomTextStyle.black_16_w500_000000,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.whitePrimary)
+                                  .copyWith(fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
@@ -128,7 +130,8 @@ void taskMoreDialog(
                             },
                             child: Text(
                               'share'.tr(),
-                              style: CustomTextStyle.black_12_w400_292D32,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackError),
                             ),
                           ),
                           if (selectTask.owner?.id != user?.id)
@@ -142,7 +145,8 @@ void taskMoreDialog(
                               },
                               child: Text(
                                 'complain'.tr(),
-                                style: CustomTextStyle.black_12_w400_292D32,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackError),
                               ),
                             ),
                         ],
@@ -204,11 +208,11 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                   //   ),
                   // if (context.locale.languageCode == 'ru')
                   Text(
-                    // '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                    "thank_you_for_trust".tr(),
-                    textAlign: TextAlign.center,
-                    style: CustomTextStyle.black_20_w700,
-                  ),
+                      // '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                      "thank_you_for_trust".tr(),
+                      textAlign: TextAlign.center,
+                      style:
+                          CustomTextStyle.sf21w700(AppColors.blackSecondary)),
                   // SizedBox(
                   //   height: 15.h,
                   // ),
@@ -219,7 +223,7 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                     ),
                     child: Text(
                       'dialog_bonus_info'.tr(args: [score]),
-                      style: CustomTextStyle.grey13w400,
+                      style: CustomTextStyle.sf17w400(AppColors.greySecondary),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -231,11 +235,12 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                       Navigator.of(context)
                           .pushReplacementNamed(AppRoute.about);
                     },
-                    btnColor: ColorStyles.purpleA401C4,
+                    btnColor: AppColors.purplePrimary,
                     textLabel: Text(
                       // 'well'.tr(),
                       'about_project'.tr(),
-                      style: CustomTextStyle.white_14_w400,
+                      style: CustomTextStyle.sf17w400(AppColors.whitePrimary)
+                          .copyWith(fontSize: 14.5.sp),
                     ),
                   ),
                 ],
@@ -291,21 +296,21 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                   height: 30.h,
                                 ),
                                 if (context.locale.languageCode == 'en')
-                                  Text(
-                                    '$score points ${'accrued'.tr()}',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
+                                  Text('$score points ${'accrued'.tr()}',
+                                      style: CustomTextStyle.sf21w700(
+                                          AppColors.blackSecondary)),
                                 if (context.locale.languageCode == 'ru')
                                   Text(
-                                    '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
-                                    style: CustomTextStyle.black_20_w700,
-                                  ),
+                                      '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
+                                      style: CustomTextStyle.sf21w700(
+                                          AppColors.blackSecondary)),
                                 SizedBox(
                                   height: 15.h,
                                 ),
                                 Text(
                                   '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
-                                  style: CustomTextStyle.grey13w400,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -317,10 +322,12 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                   .add(GetProfileEvent());
                               Navigator.of(context).pop();
                             },
-                            btnColor: ColorStyles.purpleA401C4,
+                            btnColor: AppColors.purplePrimary,
                             textLabel: Text(
                               'well'.tr(),
-                              style: CustomTextStyle.white_14_w400,
+                              style: CustomTextStyle.sf17w400(
+                                      AppColors.whitePrimary)
+                                  .copyWith(fontSize: 14.5.sp),
                             ),
                           ),
                         ],
@@ -376,18 +383,18 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/alert_circle.svg',
-                                  color: ColorStyles.yellowFFCA0D,
+                                  color: AppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 30.h,
                                 ),
-                                Text(
-                                  'you_can_t'.tr(),
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
+                                Text('you_can_t'.tr(),
+                                    style: CustomTextStyle.sf21w700(
+                                        AppColors.blackSecondary)),
                                 Text(
                                   action,
-                                  style: CustomTextStyle.black_20_w700,
+                                  style: CustomTextStyle.sf21w700(
+                                      AppColors.blackSecondary),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -405,10 +412,12 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: ColorStyles.yellowFFCA0D,
+                            btnColor: AppColors.yellowBackground,
                             textLabel: Text(
                               'back'.tr(),
-                              style: CustomTextStyle.black_14_w800_171716,
+                              style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary,
+                              ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -464,18 +473,18 @@ void banDialog(BuildContext context, String action) => showDialog(
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/alert_circle.svg',
-                                  color: ColorStyles.yellowFFCA0D,
+                                  color: AppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 30.h,
                                 ),
-                                Text(
-                                  'unfortunately'.tr(),
-                                  style: CustomTextStyle.black_20_w700,
-                                ),
+                                Text('unfortunately'.tr(),
+                                    style: CustomTextStyle.sf21w700(
+                                        AppColors.blackSecondary)),
                                 Text(
                                   action,
-                                  style: CustomTextStyle.black_20_w700,
+                                  style: CustomTextStyle.sf21w700(
+                                      AppColors.blackSecondary),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -490,7 +499,8 @@ void banDialog(BuildContext context, String action) => showDialog(
                                 ),
                                 Text(
                                   'contact_the_administrator_to_unblock'.tr(),
-                                  style: CustomTextStyle.grey13w400,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -503,10 +513,12 @@ void banDialog(BuildContext context, String action) => showDialog(
                                   AppRoute.contactus,
                                   arguments: ['', '']);
                             },
-                            btnColor: ColorStyles.yellowFFCA0D,
+                            btnColor: AppColors.yellowBackground,
                             textLabel: Text(
                               'contact'.tr(),
-                              style: CustomTextStyle.black_14_w800_171716,
+                              style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary,
+                              ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -563,7 +575,7 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/help_circle.svg',
-                                  color: ColorStyles.yellowFFCA0D,
+                                  color: AppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 18.h,
@@ -573,7 +585,8 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                                       EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Text(
                                     title,
-                                    style: CustomTextStyle.black_20_w700,
+                                    style: CustomTextStyle.sf21w700(
+                                        AppColors.blackSecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -585,7 +598,9 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                                       EdgeInsets.symmetric(horizontal: 24.w),
                                   child: Text(
                                     description,
-                                    style: CustomTextStyle.black_14_w500_171716,
+                                    style: CustomTextStyle.sf17w400(
+                                      Colors.black,
+                                    ).copyWith(fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -596,10 +611,12 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: ColorStyles.yellowFFCA0D,
+                            btnColor: AppColors.yellowBackground,
                             textLabel: Text(
                               'i_see'.tr(),
-                              style: CustomTextStyle.black_14_w800_171716,
+                              style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary,
+                              ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -657,7 +674,7 @@ void onTopDialog(BuildContext context, String title, String action,
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/arrow_big_up_dash.svg',
-                                  color: ColorStyles.yellowFFCA0D,
+                                  color: AppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 18.h,
@@ -667,7 +684,8 @@ void onTopDialog(BuildContext context, String title, String action,
                                       EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Text(
                                     title,
-                                    style: CustomTextStyle.black_20_w700,
+                                    style: CustomTextStyle.sf21w700(
+                                        AppColors.blackSecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -676,7 +694,9 @@ void onTopDialog(BuildContext context, String title, String action,
                                 ),
                                 Text(
                                   action,
-                                  style: CustomTextStyle.black_14_w500_171716,
+                                  style: CustomTextStyle.sf17w400(
+                                    Colors.black,
+                                  ).copyWith(fontWeight: FontWeight.w500),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -687,7 +707,8 @@ void onTopDialog(BuildContext context, String title, String action,
                                       EdgeInsets.symmetric(horizontal: 24.w),
                                   child: Text(
                                     description,
-                                    style: CustomTextStyle.grey12w400,
+                                    style: CustomTextStyle.sf13w400(
+                                        AppColors.greySecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -698,10 +719,12 @@ void onTopDialog(BuildContext context, String title, String action,
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: ColorStyles.yellowFFCA0D,
+                            btnColor: AppColors.yellowBackground,
                             textLabel: Text(
                               'i_see'.tr(),
-                              style: CustomTextStyle.black_14_w800_171716,
+                              style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary,
+                              ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -770,7 +793,8 @@ void taskMoreDialogForProfile(
                             },
                             child: Text(
                               'share'.tr(),
-                              style: CustomTextStyle.black_12_w400_292D32,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackError),
                             ),
                           ),
                           if (owner?.id != user?.id)
@@ -784,7 +808,8 @@ void taskMoreDialogForProfile(
                               },
                               child: Text(
                                 'complain'.tr(),
-                                style: CustomTextStyle.black_12_w400_292D32,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackError),
                               ),
                             ),
                         ],

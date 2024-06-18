@@ -44,7 +44,7 @@ class _ResponseTasksCompleteViewAsCustomerState
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     return Scaffold(
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       body: Stack(
         children: [
           SafeArea(
@@ -133,12 +133,12 @@ class _ResponseTasksCompleteViewAsCustomerState
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

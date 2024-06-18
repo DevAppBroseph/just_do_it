@@ -78,7 +78,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color filColor = fillColor ?? ColorStyles.greyEAECEE;
+    Color filColor = fillColor ?? AppColors.greyPrimary;
     // Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
@@ -121,10 +121,14 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: CustomTextStyle.grey14w400ellipsis,
+              prefixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
               suffixIcon: suffixIcon,
-              suffixStyle: CustomTextStyle.grey14w400ellipsis,
-              errorStyle: CustomTextStyle.black_10,
+              suffixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
+              errorStyle: CustomTextStyle.sf11w400(AppColors.blackPrimary),
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(
@@ -218,10 +222,14 @@ class CustomTextField extends StatelessWidget {
               suffixText: suffixText,
               suffix: suffix,
               prefixText: prefixText,
-              prefixStyle: CustomTextStyle.grey14w400ellipsis,
+              prefixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
               suffixIcon: suffixIcon,
-              suffixStyle: CustomTextStyle.grey14w400ellipsis,
-              errorStyle: CustomTextStyle.black_11,
+              suffixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
+              errorStyle: CustomTextStyle.sf12w400(AppColors.blackPrimary),
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(

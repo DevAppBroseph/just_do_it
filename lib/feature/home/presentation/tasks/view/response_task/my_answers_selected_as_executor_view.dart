@@ -44,7 +44,7 @@ class _MyAnswersSelectedAsExecutorViewState
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     return Scaffold(
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       body: Stack(
         children: [
           SafeArea(
@@ -53,7 +53,7 @@ class _MyAnswersSelectedAsExecutorViewState
               data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: ColorStyles.greyEAECEE,
+                  color: AppColors.greyPrimary,
                 ),
                 child: Column(
                   children: [
@@ -136,12 +136,12 @@ class _MyAnswersSelectedAsExecutorViewState
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

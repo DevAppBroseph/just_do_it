@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
@@ -46,7 +47,7 @@ class _ReviewOverviewWidgetState extends State<ReviewOverviewWidget> {
               !(widget.task.isBanned ?? false)) ...[
             Text(
               'responses'.tr(),
-              style: CustomTextStyle.black_17_w800,
+              style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
             ),
             BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
               if (current is UpdateTask) {
@@ -118,7 +119,7 @@ class _ReviewOverviewWidgetState extends State<ReviewOverviewWidget> {
               !(widget.task.isBanned ?? false)) ...[
             Text(
               'responses'.tr(),
-              style: CustomTextStyle.black_17_w800,
+              style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
             ),
             BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
               if (current is UpdateTask) {

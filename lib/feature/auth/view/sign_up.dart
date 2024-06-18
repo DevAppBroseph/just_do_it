@@ -60,7 +60,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       TextSpan(
                         text: '$stageRegistration/2',
-                        style: CustomTextStyle.grey22w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.greySecondary),
                       ),
                     ],
                   ),
@@ -74,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Container(
               height: 40.h,
               decoration: BoxDecoration(
-                color: ColorStyles.greyE0E6EE,
+                color: AppColors.greyError,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Stack(
@@ -130,8 +131,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 'customer'.tr(),
                                 style: state
-                                    ? CustomTextStyle.black14w400171716
-                                    : CustomTextStyle.white_14_w400,
+                                    ? CustomTextStyle.sf17w400(
+                                        AppColors.blackSecondary)
+                                    : CustomTextStyle.sf17w400(
+                                            AppColors.whitePrimary)
+                                        .copyWith(fontSize: 14.5.sp),
                               ),
                             ),
                           ),
@@ -165,8 +169,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 'executor'.tr(),
                                 style: state
-                                    ? CustomTextStyle.white_14_w400
-                                    : CustomTextStyle.black14w400171716,
+                                    ? CustomTextStyle.sf17w400(
+                                            AppColors.whitePrimary)
+                                        .copyWith(fontSize: 14.5.sp)
+                                    : CustomTextStyle.sf17w400(
+                                        AppColors.blackSecondary),
                               ),
                             ),
                           ),

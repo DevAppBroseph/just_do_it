@@ -162,7 +162,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: onTapBtn,
-                            btnColor: ColorStyles.yellowFFD70A,
+                            btnColor: AppColors.yellowPrimary,
                             textLabel: Text(
                               confirmCode
                                   ? 'change_password'.tr()
@@ -182,10 +182,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                 Navigator.of(context).pop();
                               }
                             },
-                            btnColor: ColorStyles.greyE0E6EE,
+                            btnColor: AppColors.greyError,
                             textLabel: Text(
                               'back'.tr(),
-                              style: CustomTextStyle.black16w600515150,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackAccent),
                             ),
                           ),
                         ],
@@ -270,11 +271,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   text: TextSpan(children: [
                     TextSpan(
                       text: '${'code_confirm_sent'.tr()}\n',
-                      style: CustomTextStyle.black16w400515150,
+                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                     ),
                     TextSpan(
                       text: widget.phone,
-                      style: CustomTextStyle.black16w400171716,
+                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                     ),
                   ])),
               SizedBox(height: 18.h),
@@ -299,10 +300,14 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     width: 77.h,
                     height: 70.h,
                     decoration: BoxDecoration(
-                      color: ColorStyles.greyEAECEE,
+                      color: AppColors.greyPrimary,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    textStyle: CustomTextStyle.black26w600171716,
+                    textStyle: CustomTextStyle.sf22w700(AppColors.greySecondary)
+                        .copyWith(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -314,16 +319,18 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     children: [
                       TextSpan(
                         text: '${'resend_code'.tr()} ',
-                        style: CustomTextStyle.grey16w400.copyWith(
+                        style: CustomTextStyle.sf17w400(AppColors.greyTernary)
+                            .copyWith(
                           color: timer?.isActive ?? false
-                              ? ColorStyles.greyDADADA
-                              : ColorStyles.black292D32,
+                              ? AppColors.greyTernary
+                              : AppColors.blackError,
                         ),
                       ),
                       if (timer?.isActive ?? false)
                         TextSpan(
                           text: '$currentSecond ${'sec'.tr()}.',
-                          style: CustomTextStyle.black16w400171716,
+                          style: CustomTextStyle.sf17w400(
+                              AppColors.blackSecondary),
                         ),
                     ],
                   ),
@@ -362,7 +369,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   children: [
                     TextSpan(
                       text: 'enter_new_password'.tr(),
-                      style: CustomTextStyle.black16w400515150,
+                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                     ),
                   ],
                 ),

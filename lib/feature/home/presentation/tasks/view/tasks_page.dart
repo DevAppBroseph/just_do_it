@@ -35,7 +35,7 @@ class _TasksPageState extends State<TasksPage> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: StreamBuilder<int>(
           stream: streamController.stream,
           initialData: widget.customer,
@@ -112,15 +112,18 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: snapshot.data! == 1
-                                  ? ColorStyles.whiteFFFFFF
-                                  : ColorStyles.yellowFFD70A,
+                                  ? AppColors.whitePrimary
+                                  : AppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.r),
                                 bottomLeft: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('i_am_the_customer'.tr(),
-                                style: CustomTextStyle.black14w400171716),
+                            child: Text(
+                              'i_am_the_customer'.tr(),
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackSecondary),
+                            ),
                           ),
                         ),
                         GestureDetector(
@@ -133,15 +136,18 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: snapshot.data! == 0
-                                  ? ColorStyles.whiteFFFFFF
-                                  : ColorStyles.yellowFFD70A,
+                                  ? AppColors.whitePrimary
+                                  : AppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20.r),
                                 bottomRight: Radius.circular(20.r),
                               ),
                             ),
-                            child: Text('i_am_executor'.tr(),
-                                style: CustomTextStyle.black14w400171716),
+                            child: Text(
+                              'i_am_executor'.tr(),
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackSecondary),
+                            ),
                           ),
                         ),
                         const Spacer(),

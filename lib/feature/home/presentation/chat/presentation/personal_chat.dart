@@ -70,15 +70,15 @@ class _PersonalChatState extends State<PersonalChat> {
       builder: (context) {
         return Scaffold(
           body: Container(
-            color: ColorStyles.greyEAECEE,
+            color: AppColors.greyPrimary,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                    color: ColorStyles.greyEAECEE,
+                    color: AppColors.greyPrimary,
                     child: SizedBox(height: 66.h)),
                 Container(
-                  color: ColorStyles.greyEAECEE,
+                  color: AppColors.greyPrimary,
                   child: Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: Row(
@@ -129,7 +129,7 @@ class _PersonalChatState extends State<PersonalChat> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 66.h),
@@ -231,7 +231,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                           height: 40.h,
                                           width: 40.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.greyE0E6EE,
+                                            color: AppColors.greyError,
                                             borderRadius:
                                                 BorderRadius.circular(50.r),
                                           ),
@@ -258,7 +258,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                             CupertinoCard(
                                               radius:
                                                   BorderRadius.circular(25.r),
-                                              color: ColorStyles.greyF9F9F9,
+                                              color: AppColors.greyActive,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
                                               child: Padding(
@@ -289,7 +289,7 @@ class _PersonalChatState extends State<PersonalChat> {
                               children: [
                                 CupertinoCard(
                                   radius: BorderRadius.circular(25.r),
-                                  color: ColorStyles.greyF9F9F9,
+                                  color: AppColors.greyActive,
                                   margin: EdgeInsets.zero,
                                   elevation: 0,
                                   child: Padding(
@@ -320,11 +320,11 @@ class _PersonalChatState extends State<PersonalChat> {
                 height: 109.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: ColorStyles.whiteFFFFFF,
+                  color: AppColors.whitePrimary,
                   boxShadow: [
                     BoxShadow(
                       offset: const Offset(0, -4),
-                      color: ColorStyles.shadowFC6554,
+                      color: AppColors.shadowPrimary,
                       blurRadius: 55.r,
                     ),
                   ],
@@ -336,7 +336,8 @@ class _PersonalChatState extends State<PersonalChat> {
                         child: Text(
                           'you_can_t_write_to_the_interlocutor_because_he_deleted_his_account'
                               .tr(),
-                          style: CustomTextStyle.black_14_w400_515150,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.blackAccent),
                           textAlign: TextAlign.center,
                         ),
                       ))
@@ -357,7 +358,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                     actionButton: false,
                                     hintText: 'enter_a_message'.tr(),
                                     textEditingController: textController,
-                                    fillColor: ColorStyles.greyF9F9F9,
+                                    fillColor: AppColors.greyActive,
                                     maxLines: 10,
                                     onTap: () {},
                                     contentPadding: EdgeInsets.only(
@@ -405,7 +406,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/icons/send-2.svg',
-                                              color: ColorStyles.black515150,
+                                              color: AppColors.blackAccent,
                                             ),
                                           ),
                                           SizedBox(width: 16.w),

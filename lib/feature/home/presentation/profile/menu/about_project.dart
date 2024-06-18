@@ -38,7 +38,7 @@ class _AboutProjectState extends State<AboutProject> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -61,7 +61,7 @@ class _AboutProjectState extends State<AboutProject> {
                                 Navigator.of(context).pop();
                               },
                               icon: SvgImg.arrowRight,
-                              color: ColorStyles.greyBDBDBD,
+                              color: AppColors.greySecondary,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +86,7 @@ class _AboutProjectState extends State<AboutProject> {
                     padding: EdgeInsets.zero,
                     children: [
                       Container(
-                        color: ColorStyles.yellowFFD70A,
+                        color: AppColors.yellowPrimary,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -97,11 +97,14 @@ class _AboutProjectState extends State<AboutProject> {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 50.w),
                                   child: Center(
-                                    child: Text(
-                                      'jobyfine'.toUpperCase(),
-                                      style: CustomTextStyle.black39w900171716
-                                          .copyWith(color: ColorStyles.black),
-                                    ),
+                                    child: Text('jobyfine'.toUpperCase(),
+                                        style: CustomTextStyle.sf22w700(
+                                                AppColors.blackPrimary)
+                                            .copyWith(
+                                          fontSize: 39,
+                                          fontWeight: FontWeight.w900,
+                                          fontFamily: 'SFBold',
+                                        )),
                                   ),
                                 ),
                               ],
@@ -115,7 +118,8 @@ class _AboutProjectState extends State<AboutProject> {
                                             context.locale.languageCode == 'ru'
                                     ? about?.about ?? ''
                                     : about?.aboutEng ?? '',
-                                style: CustomTextStyle.black_14_w400_515150,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackAccent),
                               ),
                             ),
                             SizedBox(height: 40.h),
@@ -168,7 +172,8 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "user_agreement".tr(),
-                            style: CustomTextStyle.blue16w400336FEE
+                            style: CustomTextStyle.sf17w400(
+                                    AppColors.blueSecondary)
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -185,7 +190,8 @@ class _AboutProjectState extends State<AboutProject> {
                           },
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),
-                            style: CustomTextStyle.blue16w400336FEE
+                            style: CustomTextStyle.sf17w400(
+                                    AppColors.blueSecondary)
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -254,11 +260,11 @@ class _AboutProjectState extends State<AboutProject> {
               selectIndex == index
                   ? const Icon(
                       Icons.keyboard_arrow_up,
-                      color: ColorStyles.blue336FEE,
+                      color: AppColors.blueSecondary,
                     )
                   : const Icon(
                       Icons.keyboard_arrow_down,
-                      color: ColorStyles.greyD9D9D9,
+                      color: AppColors.greyActive,
                     ),
             ],
           ),
@@ -279,7 +285,7 @@ class _AboutProjectState extends State<AboutProject> {
         duration: const Duration(milliseconds: 300),
         child: Text(
           answer,
-          style: CustomTextStyle.black_14_w400_515150,
+          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
         ),
       ),
       SizedBox(height: 10.h),

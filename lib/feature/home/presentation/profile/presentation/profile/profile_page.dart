@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
         MediaQuery(
           data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
           child: Scaffold(
-            backgroundColor: ColorStyles.greyEAECEE,
+            backgroundColor: AppColors.greyPrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
               return SafeArea(
@@ -210,7 +210,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   CupertinoButton(
                       child: Text(
                         'done'.tr(),
-                        style: CustomTextStyle.black_13,
+                        style: CustomTextStyle.sf17w400(
+                          AppColors.blackPrimary,
+                        ),
                       ),
                       onPressed: () {
                         var bloc = BlocProvider.of<ProfileBloc>(context);

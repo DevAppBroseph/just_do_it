@@ -7,7 +7,7 @@ version: 1.6.8
 # ! Change also in /lib/constans/server.dart appVersion
 
 environment:
-  sdk: '>=2.18.4 <3.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   flutter:

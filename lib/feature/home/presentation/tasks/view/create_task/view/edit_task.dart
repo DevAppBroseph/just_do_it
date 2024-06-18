@@ -327,7 +327,7 @@ class _EditTasksState extends State<EditTasks> {
             backgroundColor: Colors.transparent,
             content: Container(
               decoration: BoxDecoration(
-                color: ColorStyles.whiteF5F5F5,
+                color: AppColors.whiteSecondary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
@@ -341,7 +341,7 @@ class _EditTasksState extends State<EditTasks> {
                   ListTile(
                     title: Text(
                       'photo'.tr(),
-                      style: CustomTextStyle.black_14_w400_292D32,
+                      style: CustomTextStyle.sf17w400(AppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -351,7 +351,7 @@ class _EditTasksState extends State<EditTasks> {
                   ListTile(
                     title: Text(
                       'document'.tr(),
-                      style: CustomTextStyle.black_14_w400_292D32,
+                      style: CustomTextStyle.sf17w400(AppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -374,7 +374,7 @@ class _EditTasksState extends State<EditTasks> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -404,7 +404,8 @@ class _EditTasksState extends State<EditTasks> {
                       ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey22w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.greySecondary),
                       )
                     ],
                   ),
@@ -508,7 +509,7 @@ class _EditTasksState extends State<EditTasks> {
                         }
                       }
                     },
-                    btnColor: ColorStyles.yellowFFD70A,
+                    btnColor: AppColors.yellowPrimary,
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()

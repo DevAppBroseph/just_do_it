@@ -422,14 +422,14 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             },
             btnColor: page == 0
                 ? confirmTermsPolicy
-                    ? ColorStyles.yellowFFD70A
-                    : ColorStyles.greyE0E6EE
+                    ? AppColors.yellowPrimary
+                    : AppColors.greyError
                 : passwordController.text.isNotEmpty &&
                         repeatPasswordController.text.isNotEmpty &&
                         regionController.text.isNotEmpty &&
                         countryController.text.isNotEmpty
-                    ? ColorStyles.yellowFFD70A
-                    : ColorStyles.greyE0E6EE,
+                    ? AppColors.yellowPrimary
+                    : AppColors.greyError,
             textLabel: Text(
               page == 0 ? 'further'.tr() : 'register'.tr(),
               style: CustomTextStyle.black_16_w600_171716,
@@ -445,10 +445,10 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 Navigator.of(context).pop();
               }
             },
-            btnColor: ColorStyles.greyE0E6EE,
+            btnColor: AppColors.greyError,
             textLabel: Text(
               'back'.tr(),
-              style: CustomTextStyle.black16w600515150,
+              style: CustomTextStyle.sf17w400(AppColors.blackAccent),
             ),
           ),
           SizedBox(height: 34.h),
@@ -690,7 +690,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_14_w400_515150,
+          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         Row(
@@ -706,7 +706,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: ColorStyles.yellowFFD70A,
+              activeColor: AppColors.yellowPrimary,
             ),
             Flexible(
               child: GestureDetector(
@@ -723,8 +723,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 },
                 child: Text(
                   'agree_to_the_processing'.tr(),
-                  style: CustomTextStyle.black_14_w400_515150
-                      .copyWith(fontSize: 14.sp)
+                  style: CustomTextStyle.sf14w400(AppColors.blackAccent)
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -964,7 +963,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_14_w400_515150,
+          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         Row(
@@ -980,13 +979,13 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: ColorStyles.yellowFFD70A,
+              activeColor: AppColors.yellowPrimary,
             ),
             Flexible(
               child: Text(
                 'representative_of_a_legal_entity'.tr(),
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_14_w400_515150,
+                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
               ),
             ),
           ],
@@ -1127,7 +1126,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red11w400171716,
+            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
           ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
@@ -1208,7 +1207,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'done'.tr(),
-                                  style: CustomTextStyle.black_15,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

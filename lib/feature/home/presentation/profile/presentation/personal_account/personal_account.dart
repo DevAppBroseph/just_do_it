@@ -84,7 +84,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                                       height: 10.w,
                                       width: 10.w,
                                       decoration: BoxDecoration(
-                                        color: ColorStyles.yellowFFD70B,
+                                        color: AppColors.yellowSecondary,
                                         borderRadius:
                                             BorderRadius.circular(20.r),
                                       ),
@@ -118,12 +118,14 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'profile'.tr(),
-                                style: CustomTextStyle.black_18_w500_171716,
+                                style: CustomTextStyle.sf19w800(
+                                        AppColors.blackSecondary)
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: ColorStyles.greyBDBDBD,
+                                color: AppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],
@@ -145,12 +147,14 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'grades'.tr(),
-                                style: CustomTextStyle.black_18_w500_171716,
+                                style: CustomTextStyle.sf19w800(
+                                        AppColors.blackSecondary)
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: ColorStyles.greyBDBDBD,
+                                color: AppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],
@@ -172,12 +176,14 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'rating_and_reviews'.tr(),
-                                style: CustomTextStyle.black_18_w500_171716,
+                                style: CustomTextStyle.sf19w800(
+                                        AppColors.blackSecondary)
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: ColorStyles.greyBDBDBD,
+                                color: AppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],

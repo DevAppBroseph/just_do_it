@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -122,7 +123,14 @@ class _MenuPageState extends State<MenuPage> {
                     Navigator.of(context)
                         .pushNamed(AppRoute.contactus, arguments: ['', '']);
                   }),
-                  itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {}),
+                  itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {
+                    SettingsScope.themeOf(context).setThemeMode(
+                      SettingsScope.themeOf(context).theme.mode ==
+                              ThemeMode.dark
+                          ? ThemeMode.light
+                          : ThemeMode.dark,
+                    );
+                  }),
                   SizedBox(height: 15.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +140,7 @@ class _MenuPageState extends State<MenuPage> {
                         height: 40.h,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: ColorStyles.whiteFFFFFF,
+                            color: AppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
@@ -146,7 +154,7 @@ class _MenuPageState extends State<MenuPage> {
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: const Icon(
                                         Icons.keyboard_arrow_down_rounded,
-                                        color: ColorStyles.greyBDBDBD,
+                                        color: AppColors.greySecondary,
                                       ),
                                     ),
                                     onChanged: (value) async {
@@ -233,7 +241,8 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_18_w500_171716,
+                style: CustomTextStyle.sf19w800(AppColors.blackSecondary)
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -259,7 +268,8 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.black_18_w500_171716,
+                style: CustomTextStyle.sf19w800(AppColors.blackSecondary)
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),

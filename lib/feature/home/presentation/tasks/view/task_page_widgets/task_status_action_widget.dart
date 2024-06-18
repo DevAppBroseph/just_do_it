@@ -82,10 +82,10 @@ class TaskStatusActionWidget extends StatelessWidget {
                 }
               },
               btnColor: task.verifyStatus == "Progress"
-                  ? ColorStyles.greyDADADA
+                  ? AppColors.greyTernary
                   : task.canAppellate
-                      ? ColorStyles.yellowFFD70A
-                      : ColorStyles.greyDADADA,
+                      ? AppColors.yellowPrimary
+                      : AppColors.greyTernary,
               textLabel: Text(
                 task.verifyStatus == "Progress"
                     ? "on_inspection".tr()
@@ -94,7 +94,8 @@ class TaskStatusActionWidget extends StatelessWidget {
                     ? CustomTextStyle.black_16_w600_171716
                     : task.canAppellate
                         ? CustomTextStyle.black_16_w600_171716
-                        : CustomTextStyle.grey14w600.copyWith(fontSize: 16),
+                        : CustomTextStyle.sf17w400(AppColors.greyBackdround)
+                            .copyWith(fontSize: 16),
               ),
             ),
           ],
@@ -107,7 +108,7 @@ class TaskStatusActionWidget extends StatelessWidget {
           children: [
             CustomButton(
               onTap: () {},
-              btnColor: ColorStyles.greyEAECEE,
+              btnColor: AppColors.greyPrimary,
               textLabel: Text(
                 'you_responded'.tr(),
                 style: CustomTextStyle.black_16_w600_171716,
@@ -137,7 +138,7 @@ class TaskStatusActionWidget extends StatelessWidget {
                     DataUpdater().updateTasksAndProfileData(context);
                   }
                 },
-                btnColor: ColorStyles.yellowFFD70A,
+                btnColor: AppColors.yellowPrimary,
                 textLabel: Text(
                   'cance_response'.tr(),
                   style: CustomTextStyle.black_16_w600_171716,
@@ -150,7 +151,7 @@ class TaskStatusActionWidget extends StatelessWidget {
           task.status != TaskStatus.completed) {
         CustomButton(
           onTap: () async {},
-          btnColor: ColorStyles.greyEAECEE,
+          btnColor: AppColors.greyPrimary,
           textLabel: Text(
             'you_have_been_chosen'.tr(),
             style: CustomTextStyle.black_16_w600_171716,
@@ -194,7 +195,7 @@ class TaskStatusActionWidget extends StatelessWidget {
               }
             }
           },
-          btnColor: ColorStyles.yellowFFD70A,
+          btnColor: AppColors.yellowPrimary,
           textLabel: Text(
             task.isTask! ? 'respond'.tr() : 'accept_the_offer'.tr(),
             style: CustomTextStyle.black_16_w600_171716,

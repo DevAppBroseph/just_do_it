@@ -71,14 +71,14 @@ class _CreatePageState extends State<CreatePage> {
       return MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Container(
                 height: 130.h,
                 decoration: const BoxDecoration(
-                  color: ColorStyles.greyEAECEE,
+                  color: AppColors.greyPrimary,
                   boxShadow: [],
                 ),
                 child: Column(
@@ -108,7 +108,7 @@ class _CreatePageState extends State<CreatePage> {
                                   width: 240.w,
                                   height: 36.h,
                                   child: CustomTextField(
-                                    fillColor: ColorStyles.greyF7F7F8,
+                                    fillColor: AppColors.greyAccent,
                                     prefixIcon: Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -188,8 +188,8 @@ class _CreatePageState extends State<CreatePage> {
                                                       height: 10.w,
                                                       width: 10.w,
                                                       decoration: BoxDecoration(
-                                                        color: ColorStyles
-                                                            .yellowFFD70B,
+                                                        color: AppColors
+                                                            .yellowSecondary,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20.r),
@@ -301,7 +301,7 @@ class _CreatePageState extends State<CreatePage> {
                                     );
                                   }
                                 },
-                                btnColor: ColorStyles.yellowFFD70A,
+                                btnColor: AppColors.yellowPrimary,
                                 textLabel: Text(
                                   'create'.tr(),
                                   style: CustomTextStyle.black_16_w600_171716,
@@ -326,10 +326,8 @@ class _CreatePageState extends State<CreatePage> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
-          child: Text(
-            'what_needs_to_be_done'.tr(),
-            style: CustomTextStyle.black_18_w800,
-          ),
+          child: Text('what_needs_to_be_done'.tr(),
+              style: CustomTextStyle.sf19w800(AppColors.blackSecondary)),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.8,
@@ -402,11 +400,11 @@ class _CreatePageState extends State<CreatePage> {
         }),
         child: Container(
           decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
+            color: AppColors.whitePrimary,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: ColorStyles.shadowFC6554,
+                color: AppColors.shadowPrimary,
                 offset: const Offset(0, -4),
                 blurRadius: 55.r,
               )
@@ -426,7 +424,7 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black14w400171716,
+                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
               ),
               if (choice.isNotEmpty && title.length < 20)
                 Padding(
@@ -462,7 +460,7 @@ class _CreatePageState extends State<CreatePage> {
                     )
                   : const Icon(
                       Icons.keyboard_arrow_down,
-                      color: ColorStyles.greyBDBDBD,
+                      color: AppColors.greySecondary,
                     ),
             ],
           ),
@@ -495,11 +493,11 @@ class _CreatePageState extends State<CreatePage> {
         duration: const Duration(milliseconds: 300),
         height: height,
         decoration: BoxDecoration(
-          color: ColorStyles.whiteFFFFFF,
+          color: AppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: ColorStyles.shadowFC6554,
+              color: AppColors.shadowPrimary,
               offset: const Offset(0, -4),
               blurRadius: 55.r,
             )
@@ -570,7 +568,7 @@ class _CreatePageState extends State<CreatePage> {
                     width: 250.w,
                     child: Text(
                       label,
-                      style: CustomTextStyle.black_14_w400_515150,
+                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                     ),
                   ),
                   const Spacer(),

@@ -23,10 +23,16 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
+import 'package:just_do_it/feature/theme/app_theme.dart';
+import 'package:just_do_it/feature/theme/settings_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
+import 'package:just_do_it/feature/theme/theme_data_source.dart';
+import 'package:just_do_it/feature/theme/theme_repository.dart';
 import 'package:just_do_it/firebaseApi.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,17 +55,22 @@ void main() async {
       sound: true,
     );
     await FirebaseApi().initNotifications();
-    // await FirebaseMessaging.instance.getToken().then((value) => print(value));
-    // FirebaseMessaging.onMessage.listen((event) {
-    //   print('on message');
-    // });
   } catch (e) {
-    // print(e);
+    // Handle error
   }
-  String? token = await FirebaseMessaging.instance.getToken();
-  print('Registration ID: $token');
+  //String? token = await FirebaseMessaging.instance.getToken();
 
   await getItSetup();
+
+  final themeRepository = ThemeRepositoryImpl(
+    themeDataSource: ThemeDataSourceLocal(
+      sharedPreferences: await SharedPreferences.getInstance(),
+      codec: const ThemeModeCodec(),
+    ),
+  );
+  final initialTheme =
+      await themeRepository.getTheme() ?? AppTheme.defaultTheme;
+
   runApp(
     EasyLocalization(
       supportedLocales: MainConfigApp.languages
@@ -68,7 +79,13 @@ void main() async {
       path: 'assets/translations',
       fallbackLocale: const Locale('en', 'US'),
       startLocale: const Locale('en', 'US'),
-      child: const MyApp(),
+      child: SettingsScope(
+        settingsBloc: SettingsBloc(
+          themeRepository: themeRepository,
+          initialState: IdleSettingsState(appTheme: initialTheme),
+        ),
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -78,6 +95,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = SettingsScope.themeOf(context).theme;
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       useInheritedMediaQuery: true,
@@ -101,26 +119,20 @@ class MyApp extends StatelessWidget {
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
             BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
             BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
-            BlocProvider<ChatBloc>(create: (context) => ChatBloc())
+            BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
           ],
           child: GestureDetector(
             onTap: () {
               WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
             },
             child: MaterialApp(
+              themeMode: theme.mode,
+              theme: theme.lightTheme,
+              darkTheme: theme.darkTheme,
               builder: FlutterSmartDialog.init(),
               debugShowCheckedModeBanner: false,
               initialRoute: AppRoute.home,
               onGenerateRoute: AppRoute.onGenerateRoute,
-              // home: ConfirmCodeRegisterPage(
-              //     sendProfileEvent: SendProfileEvent(
-              //   UserRegModel(
-              //     email: 'some@gmail.com',
-              //   ),
-              //   'token',
-              //   RegisterConfirmationMethod.email,
-              //   'sendCodeServer',
-              // )),
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,

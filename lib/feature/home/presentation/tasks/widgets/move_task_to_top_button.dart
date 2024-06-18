@@ -43,7 +43,8 @@ class MoveTaskToTopButton extends StatelessWidget {
           children: [
             Text(
               'before'.tr(),
-              style: CustomTextStyle.black17w500171716,
+              style: CustomTextStyle.sf18w800(AppColors.blackSecondary)
+                  .copyWith(fontWeight: FontWeight.w500),
             ),
             GestureDetector(
               onTap: () {
@@ -58,7 +59,7 @@ class MoveTaskToTopButton extends StatelessWidget {
                 height: 30.h,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: ColorStyles.yellowFFCA0D,
+                  color: AppColors.yellowBackground,
                   borderRadius: BorderRadius.circular(30.r),
                 ),
                 child: Center(
@@ -77,7 +78,8 @@ class MoveTaskToTopButton extends StatelessWidget {
                                 DateTime.now().day
                             ? "raised_in".tr()
                             : 'raised_yesterday_in'.tr(),
-                        style: CustomTextStyle.black_11_w500_171716,
+                        style:
+                            CustomTextStyle.sf17w400(AppColors.blackSecondary),
                       ),
                       SizedBox(
                         width: 4.w,
@@ -85,7 +87,8 @@ class MoveTaskToTopButton extends StatelessWidget {
                       Text(
                         DataFormatter.formatHourAndMinute(
                             DateTime.parse(task.lastUpgrade!).toLocal()),
-                        style: CustomTextStyle.black_11_w500_171716,
+                        style:
+                            CustomTextStyle.sf17w400(AppColors.blackSecondary),
                       ),
                     ],
                   ),
@@ -100,7 +103,8 @@ class MoveTaskToTopButton extends StatelessWidget {
           children: [
             Text(
               'before'.tr(),
-              style: CustomTextStyle.black17w500171716,
+              style: CustomTextStyle.sf18w800(AppColors.blackSecondary)
+                  .copyWith(fontWeight: FontWeight.w500),
             ),
             GestureDetector(
               onTap: () async {
@@ -152,7 +156,7 @@ class MoveTaskToTopButton extends StatelessWidget {
                 height: 30.h,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: ColorStyles.purpleA401C4,
+                  color: AppColors.purplePrimary,
                   borderRadius: BorderRadius.circular(30.r),
                 ),
                 child: Row(
@@ -166,9 +170,10 @@ class MoveTaskToTopButton extends StatelessWidget {
                       width: 4.w,
                     ),
                     Text(
-                      (task.owner?.id == user?.id ? 'raise_ad' : 'up_to').tr(),
-                      style: CustomTextStyle.white_11,
-                    ),
+                        (task.owner?.id == user?.id ? 'raise_ad' : 'up_to')
+                            .tr(),
+                        style:
+                            CustomTextStyle.sf12w400(AppColors.whitePrimary)),
                   ],
                 ),
               ),
@@ -178,7 +183,8 @@ class MoveTaskToTopButton extends StatelessWidget {
       } else {
         return Text(
           'before'.tr(),
-          style: CustomTextStyle.black17w500171716,
+          style: CustomTextStyle.sf18w800(AppColors.blackSecondary)
+              .copyWith(fontWeight: FontWeight.w500),
         );
       }
     });

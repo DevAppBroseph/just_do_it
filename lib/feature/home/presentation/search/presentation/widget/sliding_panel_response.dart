@@ -195,7 +195,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: ColorStyles.whiteFFFFFF,
+            color: AppColors.whitePrimary,
           ),
           child: Stack(
             children: [
@@ -217,7 +217,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         onTap: () async {
                           await respond(false);
                         },
-                        btnColor: ColorStyles.yellowFFD70A,
+                        btnColor: AppColors.yellowPrimary,
                         textLabel: Text(
                           widget.selectTask?.isTask ?? false
                               ? 'respond'.tr()
@@ -237,13 +237,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               onTap: () async {
                                 await respond(true);
                               },
-                              btnColor: ColorStyles.purpleA401C4,
+                              btnColor: AppColors.purplePrimary,
                               textLabel: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'respond_and_become_the_first'.tr(),
-                                    style: CustomTextStyle.white_14,
+                                    style: CustomTextStyle.sf17w400(
+                                        AppColors.whitePrimary),
                                   ),
                                   const SizedBox(
                                     width: 4,
@@ -320,7 +321,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -348,7 +349,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -382,9 +383,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             ],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
-                            fillColor: ColorStyles.greyF9F9F9,
+                            fillColor: AppColors.greyActive,
                             maxLines: null,
-                            style: CustomTextStyle.black14w400171716,
+                            style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary),
                             textEditingController: coastController,
                           ),
                         ],
@@ -401,7 +403,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -424,9 +426,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           openSlidingEvent(700.h);
                           setState(() {});
                         },
-                        style: CustomTextStyle.black14w400171716,
+                        style:
+                            CustomTextStyle.sf17w400(AppColors.blackSecondary),
                         textEditingController: descriptionTextController,
-                        fillColor: ColorStyles.greyF9F9F9,
+                        fillColor: AppColors.greyActive,
                         onChanged: (value) {
                           setState(() {});
                         },
@@ -441,7 +444,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         children: [
                           Text(
                             '${descriptionTextController.text.length}/100',
-                            style: CustomTextStyle.grey12w400,
+                            style: CustomTextStyle.sf13w400(
+                                AppColors.greySecondary),
                           )
                         ],
                       ),

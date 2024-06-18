@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: ColorStyles.shadowFC6554,
+                        color: AppColors.shadowPrimary,
                         offset: const Offset(0, -4),
                         blurRadius: 55.r,
                       )
@@ -377,14 +377,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   SvgPicture.asset(
                     icon,
                     color:
-                        index == page ? ColorStyles.yellowFFD70A : Colors.black,
+                        index == page ? AppColors.yellowPrimary : Colors.black,
                   ),
                   SizedBox(height: 4.h),
-                  Text(
-                    label,
-                    style: CustomTextStyle.black_12_w400_292D32
-                        .copyWith(fontSize: 12.sp),
-                  ),
+                  Text(label,
+                      style: CustomTextStyle.sf12w400(AppColors.blackError)),
                 ],
               ),
               if (counderMessage != null)
@@ -402,7 +399,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       child: Center(
                         child: Text(
                           '$counderMessage',
-                          style: CustomTextStyle.white_10_w700,
+                          style:
+                              CustomTextStyle.sf11w400(AppColors.whitePrimary),
                         ),
                       ),
                     ),

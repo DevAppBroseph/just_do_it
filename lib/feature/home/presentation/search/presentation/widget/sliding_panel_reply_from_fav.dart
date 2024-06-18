@@ -149,7 +149,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: ColorStyles.whiteFFFFFF,
+            color: AppColors.whitePrimary,
           ),
           child: Stack(
             children: [
@@ -236,7 +236,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                           }
                         }
                       },
-                      btnColor: ColorStyles.yellowFFD70A,
+                      btnColor: AppColors.yellowPrimary,
                       textLabel: Text(
                         'done'.tr(),
                         style: CustomTextStyle.black_16_w600_171716,
@@ -297,7 +297,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -324,7 +324,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                   !widget.selectTask!.isTask!
                       ? 'to_accept_the_offer'.tr()
                       : 'to_complete_tasks'.tr(),
-                  style: CustomTextStyle.black_13_w400_515150,
+                  style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                 ),
               SizedBox(height: 30.h),
               GestureDetector(
@@ -550,7 +550,7 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red11w400171716,
+            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -635,7 +635,8 @@ class _SlidingPanelReplyFromFavState extends State<SlidingPanelReplyFromFav> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'done'.tr(),
-                                  style: CustomTextStyle.black_15,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

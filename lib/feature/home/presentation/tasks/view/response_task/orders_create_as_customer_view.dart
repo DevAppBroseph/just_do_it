@@ -32,7 +32,7 @@ class _OrdersCreateAsCustomerViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       body: Stack(
         children: [
           SafeArea(
@@ -41,7 +41,7 @@ class _OrdersCreateAsCustomerViewState
               data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: ColorStyles.greyEAECEE,
+                  color: AppColors.greyPrimary,
                 ),
                 child: Column(
                   children: [
@@ -135,12 +135,12 @@ class _OrdersCreateAsCustomerViewState
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

@@ -15,11 +15,11 @@ Widget itemFavouriteTask(
       onTap: () => onSelect(task),
       child: Container(
         decoration: BoxDecoration(
-          color: ColorStyles.whiteFFFFFF,
+          color: AppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: ColorStyles.shadowFC6554,
+              color: AppColors.shadowPrimary,
               offset: const Offset(0, -4),
               blurRadius: 55.r,
             )
@@ -62,7 +62,9 @@ Widget itemFavouriteTask(
                     width: 245.w,
                     child: Text(
                       task.order!.name!,
-                      style: CustomTextStyle.black_14_w500_171716,
+                      style: CustomTextStyle.sf17w400(
+                        Colors.black,
+                      ).copyWith(fontWeight: FontWeight.w500),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -79,7 +81,8 @@ Widget itemFavouriteTask(
                               width: 245.w,
                               child: Text(
                                 _textCountry(task),
-                                style: CustomTextStyle.black_12_w500_515150,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackAccent),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -87,7 +90,8 @@ Widget itemFavouriteTask(
                             SizedBox(height: 5.h),
                             Text(
                               _textData(task.order!.dateStart!),
-                              style: CustomTextStyle.grey12w400,
+                              style: CustomTextStyle.sf13w400(
+                                  AppColors.greySecondary),
                             ),
                           ],
                         ),
@@ -103,7 +107,9 @@ Widget itemFavouriteTask(
                         Text(
                           'до ${DataFormatter.addSpacesToNumber(task.order!.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.order!.currency!.name)} ',
                           maxLines: 1,
-                          style: CustomTextStyle.black_14_w500_171716,
+                          style: CustomTextStyle.sf17w400(
+                            AppColors.blackSecondary,
+                          ).copyWith(fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 5.w),
                         SvgPicture.asset(

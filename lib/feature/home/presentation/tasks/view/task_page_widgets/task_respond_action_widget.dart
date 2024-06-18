@@ -59,11 +59,11 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
+            color: AppColors.whitePrimary,
             borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: ColorStyles.shadowFC6554,
+                color: AppColors.shadowPrimary,
                 offset: const Offset(0, 4),
                 blurRadius: 45.r,
               )
@@ -108,7 +108,9 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                   AutoSizeText(
                                     "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
                                     wrapWords: false,
-                                    style: CustomTextStyle.black17w600171716,
+                                    style: CustomTextStyle.sf18w800(
+                                            AppColors.blackSecondary)
+                                        .copyWith(fontWeight: FontWeight.w600),
                                     maxLines: 2,
                                   ),
                                   SizedBox(height: 6.h),
@@ -129,8 +131,10 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                             : widget.task.answers[index].owner!
                                                 .ranking
                                                 .toString(),
-                                        style: CustomTextStyle
-                                            .black_13_w500_171716,
+                                        style: CustomTextStyle.sf17w400(
+                                                AppColors.blackSecondary)
+                                            .copyWith(
+                                                fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -139,14 +143,18 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                             ),
                             Text(
                               'before'.tr(),
-                              style: CustomTextStyle.black_15_w600_171716,
+                              style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary)
+                                  .copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
                               width: 6,
                             ),
                             Text(
                               '${DataFormatter.addSpacesToNumber(widget.task.answers[index].price ?? 0)} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.task.currency?.name)} ',
-                              style: CustomTextStyle.black_15_w600_171716,
+                              style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary)
+                                  .copyWith(fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
@@ -155,7 +163,8 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           children: [
                             Text(
                               'completed_tasks'.tr(),
-                              style: CustomTextStyle.grey12w400,
+                              style: CustomTextStyle.sf13w400(
+                                  AppColors.greySecondary),
                             ),
                             SizedBox(width: 4.w),
                             if (widget.task.answers[index].owner != null)
@@ -163,7 +172,8 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                                 widget.task.answers[index].owner!
                                     .countOrdersComplete
                                     .toString(),
-                                style: CustomTextStyle.black_12_w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.blackSecondary),
                               ),
                           ],
                         ),
@@ -183,7 +193,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                     widget.task.answers[index].description!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: CustomTextStyle.black_12_w400_292D32,
+                    style: CustomTextStyle.sf17w400(AppColors.blackError),
                   ),
                 ),
               SizedBox(
@@ -210,7 +220,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           chatBloc.editChatId(null);
                         }
                       },
-                      btnColor: ColorStyles.greyDADADA,
+                      btnColor: AppColors.greyTernary,
                       textLabel: Text(
                         'write_to_the_chat'.tr(),
                         style: TextStyle(
@@ -236,7 +246,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                           DataUpdater().updateTasksAndProfileData(context);
                           Navigator.pop(context);
                         },
-                        btnColor: ColorStyles.yellowFFD70A,
+                        btnColor: AppColors.yellowPrimary,
                         textLabel: Text(
                           'dones'.tr(),
                           style: TextStyle(
@@ -282,7 +292,7 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                             }
                           }
                         },
-                        btnColor: ColorStyles.yellowFFD70A,
+                        btnColor: AppColors.yellowPrimary,
                         textLabel: Text(
                           'choose_a_executor'.tr(),
                           style: TextStyle(

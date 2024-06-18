@@ -43,7 +43,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
       child: Stack(
         children: [
           Scaffold(
-            backgroundColor: ColorStyles.whiteFFFFFF,
+            backgroundColor: AppColors.whitePrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
@@ -204,13 +204,14 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                                   });
                                 },
                                 checkColor: Colors.black,
-                                activeColor: ColorStyles.yellowFFD70A,
+                                activeColor: AppColors.yellowPrimary,
                               ),
                               Flexible(
                                 child: Text(
                                   'representative_of_a_legal_entity'.tr(),
                                   textAlign: TextAlign.justify,
-                                  style: CustomTextStyle.black_14_w400_515150,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackAccent),
                                 ),
                               ),
                             ],
@@ -269,7 +270,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             Navigator.of(context).pop();
                           }
                         },
-                        btnColor: ColorStyles.yellowFFD70B,
+                        btnColor: AppColors.yellowSecondary,
                         textLabel: Text(
                           'save'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,

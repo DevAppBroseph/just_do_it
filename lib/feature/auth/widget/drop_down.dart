@@ -85,7 +85,10 @@ void iconSelectModal(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey14w300,
+
+                                      ///May be null check issue
+                                      style: CustomTextStyle.sf17w400(
+                                          Colors.grey[400]!),
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -141,8 +144,10 @@ void iconSelectModal(
                                           children: [
                                             Text(
                                               list[index],
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              style: CustomTextStyle.sf17w400(
+                                                Colors.black,
+                                              ).copyWith(
+                                                  fontWeight: FontWeight.w300),
                                             ),
                                             const Spacer(),
                                           ],
@@ -244,7 +249,8 @@ void iconSelectModalCategories(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey14w300,
+                                      style: CustomTextStyle.sf17w400(
+                                          Colors.grey[400]!),
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -382,8 +388,10 @@ void iconSelectModalCategories(
                                                               'ru'
                                                   ? list[index].description!
                                                   : list[index].engDescription!,
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              style: CustomTextStyle.sf17w400(
+                                                Colors.black,
+                                              ).copyWith(
+                                                  fontWeight: FontWeight.w300),
                                             ),
                                             const Spacer(),
                                             if (selectCategories.contains(user
@@ -499,7 +507,8 @@ void showCountryWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey14w300,
+                                      style: CustomTextStyle.sf17w400(
+                                          Colors.grey[400]!),
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -567,8 +576,10 @@ void showCountryWidget(
                                                               'ru'
                                                   ? list[index].name ?? "-"
                                                   : list[index].engName ?? "-",
-                                              style:
-                                                  CustomTextStyle.black_14_w300,
+                                              style: CustomTextStyle.sf17w400(
+                                                Colors.black,
+                                              ).copyWith(
+                                                  fontWeight: FontWeight.w300),
                                             ),
                                             const Spacer(),
                                           ],
@@ -672,7 +683,8 @@ void showRegionWidget(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.grey14w300,
+                                      style: CustomTextStyle.sf17w400(
+                                          Colors.grey[400]!),
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -743,8 +755,11 @@ void showRegionWidget(
                                                     ? list[index].name ?? '-'
                                                     : list[index].engName ??
                                                         '-',
-                                                style: CustomTextStyle
-                                                    .black_14_w300,
+                                                style: CustomTextStyle.sf17w400(
+                                                  Colors.black,
+                                                ).copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                                 maxLines: null,
                                               ),
                                             ),

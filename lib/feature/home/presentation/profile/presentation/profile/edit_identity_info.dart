@@ -91,7 +91,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 60.h),
@@ -222,7 +222,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     }
                   }
                 },
-                btnColor: ColorStyles.yellowFFD70B,
+                btnColor: AppColors.yellowSecondary,
                 textLabel: Text(
                   'save'.tr(),
                   style: CustomTextStyle.black_16_w600_171716,
@@ -247,7 +247,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: ColorStyles.greyEAECEE,
+            color: AppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -280,7 +280,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'new_password'.tr(),
-                  style: CustomTextStyle.grey12w400,
+                  style: CustomTextStyle.sf13w400(AppColors.greySecondary),
                 ),
               ),
               Align(
@@ -313,7 +313,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: ColorStyles.greyEAECEE,
+            color: AppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -346,7 +346,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'repeat_the_password'.tr(),
-                  style: CustomTextStyle.grey12w400,
+                  style: CustomTextStyle.sf13w400(AppColors.greySecondary),
                 ),
               ),
               Align(
@@ -680,7 +680,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red11w400171716,
+            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -771,7 +771,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'done'.tr(),
-                                  style: CustomTextStyle.black_15,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

@@ -22,7 +22,7 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: Column(
           children: [
             SizedBox(height: 60.h),

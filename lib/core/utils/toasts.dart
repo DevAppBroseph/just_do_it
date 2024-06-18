@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 
 class CustomAlert {
@@ -37,7 +38,7 @@ class CustomAlert {
             padding: EdgeInsets.all(10.h),
             child: Text(
               text,
-              style: CustomTextStyle.white_14,
+              style: CustomTextStyle.sf17w400(AppColors.whitePrimary),
             ),
           ),
         ),

@@ -71,12 +71,12 @@ class _ProfileViewState extends State<ProfileView> {
 
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      backgroundColor: ColorStyles.greyEAECEE,
+      backgroundColor: AppColors.greyPrimary,
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())
           : Container(
-              color: ColorStyles.greyEAECEE,
+              color: AppColors.greyPrimary,
               child: MediaQuery(
                 data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: SingleChildScrollView(
@@ -102,7 +102,9 @@ class _ProfileViewState extends State<ProfileView> {
                                   child: Text(
                                     'user_account_is_currently_blocked'.tr(),
                                     textAlign: TextAlign.center,
-                                    style: CustomTextStyle.grey16w800,
+                                    style: CustomTextStyle.sf17w400(
+                                            AppColors.greyTernary)
+                                        .copyWith(fontWeight: FontWeight.w800),
                                   ),
                                 ),
                               ),
@@ -126,7 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         EdgeInsets.only(top: 8.h, bottom: 8.h),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: ColorStyles.whiteFFFFFF,
+                                        color: AppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -170,7 +172,13 @@ class _ProfileViewState extends State<ProfileView> {
                                                           Text(
                                                             '${owner?.firstname ?? ''}\n${owner?.lastname ?? ''}',
                                                             style: CustomTextStyle
-                                                                .black17w600171716,
+                                                                    .sf18w800(
+                                                                        AppColors
+                                                                            .blackSecondary)
+                                                                .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
                                                             softWrap: true,
                                                           ),
                                                         ],
@@ -311,8 +319,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 70.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: ColorStyles
-                                                                  .greyEAECEE,
+                                                              color: AppColors
+                                                                  .greyPrimary,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -322,7 +330,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                               child: Text(
                                                                 'grade'.tr(),
                                                                 style: CustomTextStyle
-                                                                    .purple12w400,
+                                                                    .sf12w400(
+                                                                        AppColors
+                                                                            .purplePrimary),
                                                               ),
                                                             ),
                                                           ),
@@ -453,8 +463,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 90.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: ColorStyles
-                                                                  .yellowFFCA0D
+                                                              color: AppColors
+                                                                  .yellowBackground
                                                                   .withOpacity(
                                                                       0.2),
                                                               borderRadius:
@@ -471,8 +481,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                                   Text(
                                                                     'rating'
                                                                         .tr(),
-                                                                    style: CustomTextStyle
-                                                                        .gold12w400,
+                                                                    style: CustomTextStyle.sf12w400(
+                                                                        AppColors
+                                                                            .yellowBackground),
                                                                   ),
                                                                   SizedBox(
                                                                       width:
@@ -512,7 +523,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 : owner!.ranking
                                                                     .toString(),
                                                             style: CustomTextStyle
-                                                                .gold_16_w600_171716,
+                                                                .sf17w400(AppColors
+                                                                    .yellowBackground),
                                                           ),
                                                         ),
                                                       ),
@@ -541,8 +553,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 75.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: ColorStyles
-                                                                  .blue336FEE
+                                                              color: AppColors
+                                                                  .blueSecondary
                                                                   .withOpacity(
                                                                       0.2),
                                                               borderRadius:
@@ -554,7 +566,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                               child: Text(
                                                                 'reviews'.tr(),
                                                                 style: CustomTextStyle
-                                                                    .blue12w400,
+                                                                    .sf12w400(
+                                                                        AppColors
+                                                                            .blueSecondary),
                                                               ),
                                                             ),
                                                           ),
@@ -571,7 +585,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                                     .toString() ??
                                                                 '0',
                                                             style: CustomTextStyle
-                                                                .blue_16_w600_171716,
+                                                                .sf17w400(AppColors
+                                                                    .blueSecondary),
                                                             textAlign:
                                                                 TextAlign.left,
                                                           ),
@@ -591,14 +606,20 @@ class _ProfileViewState extends State<ProfileView> {
                                               children: [
                                                 Text(
                                                   'tasks_created'.tr(),
-                                                  style: CustomTextStyle
-                                                      .grey12w400,
+                                                  style:
+                                                      CustomTextStyle.sf13w400(
+                                                          AppColors
+                                                              .greySecondary),
                                                 ),
                                                 Text(
                                                   owner!.countOrdersCreate
                                                       .toString(),
                                                   style: CustomTextStyle
-                                                      .black_13_w500_171716,
+                                                          .sf17w400(AppColors
+                                                              .blackSecondary)
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w500),
                                                 ),
                                               ],
                                             ),
@@ -610,14 +631,20 @@ class _ProfileViewState extends State<ProfileView> {
                                               children: [
                                                 Text(
                                                   'completed_tasks'.tr(),
-                                                  style: CustomTextStyle
-                                                      .grey12w400,
+                                                  style:
+                                                      CustomTextStyle.sf13w400(
+                                                          AppColors
+                                                              .greySecondary),
                                                 ),
                                                 Text(
                                                   owner!.countOrdersComplete
                                                       .toString(),
                                                   style: CustomTextStyle
-                                                      .black_13_w500_171716,
+                                                          .sf17w400(AppColors
+                                                              .blackSecondary)
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w500),
                                                 ),
                                               ],
                                             ),
@@ -633,7 +660,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Container(
                                       width: 100.w,
                                       decoration: BoxDecoration(
-                                        color: ColorStyles.whiteFFFFFF,
+                                        color: AppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -665,9 +692,13 @@ class _ProfileViewState extends State<ProfileView> {
                                                                   owner!
                                                                       .isPassportExist!
                                                               ? CustomTextStyle
-                                                                  .black_11_w400_171716
+                                                                  .sf12w400(
+                                                                      AppColors
+                                                                          .blackSecondary)
                                                               : CustomTextStyle
-                                                                  .grey12w400,
+                                                                  .sf13w400(
+                                                                      AppColors
+                                                                          .greySecondary),
                                                         ),
                                                       ),
                                                       if (owner != null &&
@@ -714,9 +745,13 @@ class _ProfileViewState extends State<ProfileView> {
                                                                   owner!
                                                                       .isVerified!
                                                               ? CustomTextStyle
-                                                                  .black_11_w400_171716
+                                                                  .sf12w400(
+                                                                      AppColors
+                                                                          .blackSecondary)
                                                               : CustomTextStyle
-                                                                  .grey12w400,
+                                                                  .sf13w400(
+                                                                      AppColors
+                                                                          .greySecondary),
                                                         ),
                                                       ),
                                                       if (owner != null &&
@@ -744,7 +779,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           height: 45.h,
                                           width: 327.w,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.whiteFFFFFF,
+                                            color: AppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                           ),
@@ -757,7 +792,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                 color: owner != null &&
                                                         owner!.cv != null &&
                                                         owner!.cv!.isNotEmpty
-                                                    ? ColorStyles.blue336FEE
+                                                    ? AppColors.blueSecondary
                                                     : Colors.grey,
                                               ),
                                               GestureDetector(
@@ -774,15 +809,16 @@ class _ProfileViewState extends State<ProfileView> {
                                                   child: Text(
                                                     'view_resume'.tr(),
                                                     style: CustomTextStyle
-                                                        .black_11_w400_171716
+                                                            .sf12w400(AppColors
+                                                                .blackSecondary)
                                                         .copyWith(
                                                       color: owner != null &&
                                                               owner!.cv !=
                                                                   null &&
                                                               owner!.cv!
                                                                   .isNotEmpty
-                                                          ? ColorStyles
-                                                              .blue336FEE
+                                                          ? AppColors
+                                                              .blueSecondary
                                                           : Colors.grey,
                                                     ),
                                                   ),
@@ -816,16 +852,17 @@ class _ProfileViewState extends State<ProfileView> {
                                   SizedBox(height: 30.h),
                                   Text(
                                     'work_experience'.tr(),
-                                    style: CustomTextStyle.black_17_w800,
+                                    style: CustomTextStyle.sf18w800(
+                                        AppColors.blackSecondary),
                                   ),
                                   SizedBox(height: 20.h),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: ColorStyles.whiteFFFFFF,
+                                      color: AppColors.whitePrimary,
                                       borderRadius: BorderRadius.circular(10.r),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: ColorStyles.shadowFC6554,
+                                          color: AppColors.shadowPrimary,
                                           offset: const Offset(0, 4),
                                           blurRadius: 45.r,
                                         )
@@ -845,8 +882,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                 ? owner!.activity!
                                                 : 'work_experience_is_not_specified'
                                                     .tr(),
-                                            style: CustomTextStyle
-                                                .black_12_w400_292D32,
+                                            style: CustomTextStyle.sf17w400(
+                                                AppColors.blackError),
                                           ),
                                           if (owner != null &&
                                               owner!.listPhoto.isNotEmpty)
@@ -909,8 +946,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                   Container(
                                                     height: 39.h,
                                                     decoration: BoxDecoration(
-                                                      color: ColorStyles
-                                                          .whiteF5F5F5,
+                                                      color: AppColors
+                                                          .whiteSecondary,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.r),
@@ -926,7 +963,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                           Text(
                                                             'translation'.tr(),
                                                             style: CustomTextStyle
-                                                                .blue14w400336FEE,
+                                                                .sf17w400(AppColors
+                                                                    .blueSecondary),
                                                           )
                                                         ],
                                                       ),
@@ -947,7 +985,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       children: [
                                         SvgPicture.asset(
                                             'assets/icons/warning-2.svg',
-                                            color: ColorStyles.redFC6554),
+                                            color: AppColors.redPrimary),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.of(context).pushNamed(
@@ -961,11 +999,11 @@ class _ProfileViewState extends State<ProfileView> {
                                             padding: EdgeInsets.only(left: 5.w),
                                             child: Text(
                                               'report_a_user'.tr(),
-                                              style: CustomTextStyle
-                                                  .black_11_w400_171716
+                                              style: CustomTextStyle.sf12w400(
+                                                      AppColors.blackSecondary)
                                                   .copyWith(
-                                                      color: ColorStyles
-                                                          .redFC6554),
+                                                      color:
+                                                          AppColors.redPrimary),
                                             ),
                                           ),
                                         )
@@ -977,7 +1015,8 @@ class _ProfileViewState extends State<ProfileView> {
                                       owner!.reviews!.isEmpty)
                                     Text(
                                       'reviews'.tr(),
-                                      style: CustomTextStyle.black_17_w800,
+                                      style: CustomTextStyle.sf18w800(
+                                          AppColors.blackSecondary),
                                     ),
                                   SizedBox(height: 15.h),
                                   if (owner?.reviews != [])
@@ -1015,7 +1054,7 @@ class _ProfileViewState extends State<ProfileView> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: ColorStyles.whiteFFFFFF,
+        color: AppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
       child: Row(
@@ -1029,7 +1068,7 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 34.h,
                       width: 34.h,
                       decoration:
-                          const BoxDecoration(color: ColorStyles.shadowFC6554),
+                          const BoxDecoration(color: AppColors.shadowPrimary),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -1052,13 +1091,16 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 150.w,
                       child: Text(
                         '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                        style: CustomTextStyle.black_14_w500_171716,
+                        style: CustomTextStyle.sf17w400(
+                          Colors.black,
+                        ).copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
                     if (review.date != '')
                       Text(
                         _textData(review.date),
-                        style: CustomTextStyle.grey12w400,
+                        style:
+                            CustomTextStyle.sf13w400(AppColors.greySecondary),
                       ),
                   ],
                 ),
@@ -1071,7 +1113,7 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style: CustomTextStyle.black14w400171716,
+                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -1080,7 +1122,7 @@ class _ProfileViewState extends State<ProfileView> {
                 width: 200.w,
                 child: Text(
                   review.message,
-                  style: CustomTextStyle.black_12_w400_515150,
+                  style: CustomTextStyle.sf13w400(AppColors.blackAccent),
                   maxLines: null,
                 ),
               ),
@@ -1095,7 +1137,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Container(
                         height: 39.h,
                         decoration: BoxDecoration(
-                          color: ColorStyles.whiteF5F5F5,
+                          color: AppColors.whiteSecondary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(
@@ -1106,7 +1148,8 @@ class _ProfileViewState extends State<ProfileView> {
                               SizedBox(width: 8.h),
                               Text(
                                 'translation'.tr(),
-                                style: CustomTextStyle.blue14w400336FEE,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blueSecondary),
                               )
                             ],
                           ),
@@ -1164,11 +1207,10 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             const Spacer(),
             Text(
-              user?.rus ?? true && context.locale.languageCode == 'ru'
-                  ? activitiy.description ?? ''
-                  : activitiy.engDescription ?? '',
-              style: CustomTextStyle.black_11_w400_171716,
-            ),
+                user?.rus ?? true && context.locale.languageCode == 'ru'
+                    ? activitiy.description ?? ''
+                    : activitiy.engDescription ?? '',
+                style: CustomTextStyle.sf12w400(AppColors.blackSecondary)),
           ],
         ),
       ),

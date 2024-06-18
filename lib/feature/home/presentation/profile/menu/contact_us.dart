@@ -35,7 +35,7 @@ class _ContactUsState extends State<ContactUs> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -78,7 +78,7 @@ class _ContactUsState extends State<ContactUs> {
                     width: 327.w,
                     hintText: 'contact_email'.tr(),
                     textEditingController: controllerEmail,
-                    fillColor: ColorStyles.greyF9F9F9,
+                    fillColor: AppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -91,7 +91,7 @@ class _ContactUsState extends State<ContactUs> {
                     hintText: 'subject_appeal'.tr(),
                     formatters: [UpperEveryTextInputFormatter()],
                     textEditingController: controllerTheme,
-                    fillColor: ColorStyles.greyF9F9F9,
+                    fillColor: AppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -104,14 +104,14 @@ class _ContactUsState extends State<ContactUs> {
                         height: 130.h,
                         width: 327.w,
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color: AppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: CustomTextField(
                           hintText: 'your_message'.tr(),
                           formatters: [UpperEveryTextInputFormatter()],
                           textEditingController: controllerMessage,
-                          fillColor: ColorStyles.greyF9F9F9,
+                          fillColor: AppColors.greyActive,
                           contentPadding: EdgeInsets.all(18.h),
                           maxLines: 6,
                         ),
@@ -158,7 +158,7 @@ class _ContactUsState extends State<ContactUs> {
                         controllerMessage.text = '';
                       }
                     },
-                    btnColor: ColorStyles.yellowFFD70B,
+                    btnColor: AppColors.yellowSecondary,
                     textLabel: Text(
                       'send'.tr(),
                       style: CustomTextStyle.black_16_w600_171716,

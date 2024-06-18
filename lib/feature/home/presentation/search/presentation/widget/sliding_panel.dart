@@ -192,7 +192,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           topLeft: Radius.circular(45.r),
           topRight: Radius.circular(45.r),
         ),
-        color: ColorStyles.whiteFFFFFF,
+        color: AppColors.whitePrimary,
       ),
       child: Stack(
         children: [
@@ -338,7 +338,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     coastMinController.text = coastMin ?? '';
                     coastMaxController.text = coastMax ?? '';
                   },
-                  btnColor: ColorStyles.yellowFFD70A,
+                  btnColor: AppColors.yellowPrimary,
                   textLabel: Text(
                     'show_tasks'.tr(),
                     style: CustomTextStyle.black_16_w600_171716,
@@ -425,7 +425,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -448,7 +448,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     },
                     child: Text(
                       'clear'.tr(),
-                      style: CustomTextStyle.red16w400,
+                      style: CustomTextStyle.sf17w400(AppColors.redSecondary),
                     ),
                   ),
                 ],
@@ -479,13 +479,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         });
                       },
                       checkColor: Colors.black,
-                      activeColor: ColorStyles.yellowFFD70A,
+                      activeColor: AppColors.yellowPrimary,
                     ),
                   ),
                   SizedBox(width: 2.w),
                   Text(
                     'tasks_from_the_customer'.tr(),
-                    style: CustomTextStyle.black_12_w400_515150
+                    style: CustomTextStyle.sf13w400(AppColors.blackAccent)
                         .copyWith(fontSize: 12.sp),
                   ),
                   const Spacer(),
@@ -502,14 +502,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         });
                       },
                       checkColor: Colors.black,
-                      activeColor: ColorStyles.yellowFFD70A,
+                      activeColor: AppColors.yellowPrimary,
                     ),
                   ),
                   SizedBox(width: 2.w),
                   Text(
                     'offers_from_executors'.tr(),
-                    style: CustomTextStyle.black_12_w400_515150
-                        .copyWith(fontSize: 12.sp),
+                    style: CustomTextStyle.sf12w400(AppColors.blackAccent),
                   ),
                 ],
               ),
@@ -525,7 +524,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -549,7 +548,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'no_categories_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black14w400171716,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -557,7 +557,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorStyles.greyBDBDBD,
+                        color: AppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -576,7 +576,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -600,7 +600,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'countries_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black14w400171716,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -608,7 +609,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorStyles.greyBDBDBD,
+                        color: AppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -627,7 +628,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -645,14 +646,15 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           SizedBox(height: 3.h),
                           Text(
                             date,
-                            style: CustomTextStyle.black14w400171716,
+                            style: CustomTextStyle.sf17w400(
+                                AppColors.blackSecondary),
                           ),
                         ],
                       ),
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorStyles.greyBDBDBD,
+                        color: AppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -671,7 +673,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.greyF9F9F9,
+                    color: AppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -696,7 +698,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : 'currency_not_selected'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.black14w400171716,
+                              style: CustomTextStyle.sf17w400(
+                                  AppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -704,7 +707,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorStyles.greyBDBDBD,
+                        color: AppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -725,7 +728,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color: AppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -764,9 +767,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   ],
                                   contentPadding: EdgeInsets.zero,
                                   hintText: '',
-                                  fillColor: ColorStyles.greyF9F9F9,
+                                  fillColor: AppColors.greyActive,
                                   maxLines: null,
-                                  style: CustomTextStyle.black14w400171716,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                   textEditingController: coastMinController,
                                 ),
                               ],
@@ -788,7 +792,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color: AppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -828,9 +832,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   ],
                                   contentPadding: EdgeInsets.zero,
                                   hintText: '',
-                                  fillColor: ColorStyles.greyF9F9F9,
+                                  fillColor: AppColors.greyActive,
                                   maxLines: null,
-                                  style: CustomTextStyle.black14w400171716,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                   textEditingController: coastMaxController,
                                 ),
                               ],
@@ -857,7 +862,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         padding:
                             EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.greyF9F9F9,
+                          color: AppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -910,10 +915,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           contentPadding: EdgeInsets.zero,
                                           hintText:
                                               'for_example_buying_oranges'.tr(),
-                                          fillColor: ColorStyles.greyF9F9F9,
+                                          fillColor: AppColors.greyActive,
                                           maxLines: 4,
-                                          style:
-                                              CustomTextStyle.black14w400171716,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.blackSecondary),
                                           textEditingController:
                                               keyWordController,
                                         ),
@@ -938,11 +943,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       Expanded(
                         child: Text(
                           'passport_data_uploaded'.tr(),
-                          style: CustomTextStyle.black14w400171716,
+                          style: CustomTextStyle.sf17w400(
+                              AppColors.blackSecondary),
                         ),
                       ),
                       Switch.adaptive(
-                        activeColor: ColorStyles.yellowFFD70B,
+                        activeColor: AppColors.yellowSecondary,
                         value: passport,
                         onChanged: (value) {
                           passport = !passport;
@@ -956,11 +962,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       Expanded(
                         child: Text(
                           'there_is_a_resume'.tr(),
-                          style: CustomTextStyle.black14w400171716,
+                          style: CustomTextStyle.sf17w400(
+                              AppColors.blackSecondary),
                         ),
                       ),
                       Switch.adaptive(
-                        activeColor: ColorStyles.yellowFFD70B,
+                        activeColor: AppColors.yellowSecondary,
                         value: cv,
                         onChanged: (value) {
                           cv = !cv;
@@ -1002,7 +1009,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: 81.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.r),
-                      color: ColorStyles.blueFC6554,
+                      color: AppColors.bluePrimary,
                     ),
                   ),
                 ],
@@ -1083,7 +1090,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       user?.rus ?? true && context.locale.languageCode == 'ru'
                           ? currency.name!
                           : currency.engName!,
-                      style: CustomTextStyle.black_14_w500_171716,
+                      style: CustomTextStyle.sf17w400(
+                        Colors.black,
+                      ).copyWith(fontWeight: FontWeight.w500),
                     ),
                     const Spacer(),
                     if (currency.id == selectCurrency?.id)
@@ -1126,7 +1135,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: ColorStyles.blueFC6554,
+                  color: AppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1169,11 +1178,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_categories'.tr(),
-                    style: CustomTextStyle.black14w400171716,
+                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: ColorStyles.yellowFFD70B,
+                    activeColor: AppColors.yellowSecondary,
                     value: allCategory,
                     onChanged: (value) {
                       allCategory = !allCategory;
@@ -1250,11 +1259,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-            color: ColorStyles.whiteFFFFFF,
+            color: AppColors.whitePrimary,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: ColorStyles.shadowFC6554,
+                color: AppColors.shadowPrimary,
                 offset: const Offset(0, -4),
                 blurRadius: 55.r,
               )
@@ -1272,7 +1281,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.black14w400171716,
+                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
               ),
               if (activities[currentIndex].isSelect)
                 Padding(
@@ -1321,7 +1330,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: ColorStyles.blueFC6554,
+                  color: AppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1362,11 +1371,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_subcategories'.tr(),
-                    style: CustomTextStyle.black14w400171716,
+                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: ColorStyles.yellowFFD70B,
+                    activeColor: AppColors.yellowSecondary,
                     value: allSubCategory,
                     onChanged: (value) {
                       selectActivity.isSelect = !selectActivity.isSelect;
@@ -1425,7 +1434,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           : selectActivities!
                                   .subcategory[index].engDescription ??
                               '',
-                      style: CustomTextStyle.black_14_w400_515150,
+                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
                     ),
                   ),
                   const Spacer(),
@@ -1464,7 +1473,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -1501,11 +1510,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_countries'.tr(),
-                  style: CustomTextStyle.black14w400171716,
+                  style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                 ),
                 const Spacer(),
                 Switch.adaptive(
-                  activeColor: ColorStyles.yellowFFD70B,
+                  activeColor: AppColors.yellowSecondary,
                   value: allCountrys,
                   onChanged: (value) async {
                     allCountrys = !allCountrys;
@@ -1573,7 +1582,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         user?.rus ?? true && context.locale.languageCode == 'ru'
                             ? countrySecond.name!
                             : countrySecond.engName!,
-                        style: CustomTextStyle.black_14_w500_171716,
+                        style: CustomTextStyle.sf17w400(
+                          Colors.black,
+                        ).copyWith(fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -1661,7 +1672,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -1698,11 +1709,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_regions'.tr(),
-                  style: CustomTextStyle.black14w400171716,
+                  style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                 ),
                 const Spacer(),
                 Switch.adaptive(
-                  activeColor: ColorStyles.yellowFFD70B,
+                  activeColor: AppColors.yellowSecondary,
                   value: allRegions,
                   onChanged: (value) async {
                     countries[selectCountriesIndex!].select = true;
@@ -1761,7 +1772,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   : countries[selectCountriesIndex!]
                                       .region[k]
                                       .engName!,
-                              style: CustomTextStyle.black_14_w500_171716,
+                              style: CustomTextStyle.sf17w400(
+                                Colors.black,
+                              ).copyWith(fontWeight: FontWeight.w500),
                             ),
                           ),
                           SizedBox(width: 10.w),
@@ -1866,7 +1879,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: ColorStyles.blueFC6554,
+                  color: AppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1903,11 +1916,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_districts'.tr(),
-                    style: CustomTextStyle.black14w400171716,
+                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: ColorStyles.yellowFFD70B,
+                    activeColor: AppColors.yellowSecondary,
                     value: allTowns,
                     onChanged: (value) {
                       countries[selectCountriesIndex!].select = true;
@@ -1979,7 +1992,9 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                         .region[selecRegionIndex!]
                                         .town[m]
                                         .engName!,
-                                style: CustomTextStyle.black_14_w500_171716,
+                                style: CustomTextStyle.sf17w400(
+                                  Colors.black,
+                                ).copyWith(fontWeight: FontWeight.w500),
                               ),
                             ),
                             SizedBox(width: 10.h),
@@ -2064,7 +2079,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: ColorStyles.blueFC6554,
+                color: AppColors.bluePrimary,
               ),
             ),
           ],
@@ -2097,7 +2112,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: ColorStyles.greyF9F9F9,
+              color: AppColors.greyActive,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -2114,7 +2129,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       startDate != null
                           ? DateFormat('dd.MM.yyyy').format(startDate!)
                           : 'select_the_start_date_of_the_execution'.tr(),
-                      style: CustomTextStyle.black14w400171716,
+                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                     ),
                   ],
                 ),
@@ -2138,7 +2153,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: ColorStyles.greyF9F9F9,
+              color: AppColors.greyActive,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -2155,7 +2170,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       endDate != null
                           ? DateFormat('dd.MM.yyyy').format(endDate!)
                           : 'select_the_task_completion_date'.tr(),
-                      style: CustomTextStyle.black14w400171716,
+                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                     ),
                   ],
                 ),
@@ -2191,7 +2206,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'done'.tr(),
-                                  style: CustomTextStyle.black_15,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0 && startDate == null) {

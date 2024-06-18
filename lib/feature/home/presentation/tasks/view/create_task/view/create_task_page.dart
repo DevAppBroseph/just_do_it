@@ -273,7 +273,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             backgroundColor: Colors.transparent,
             content: Container(
               decoration: BoxDecoration(
-                color: ColorStyles.whiteF5F5F5,
+                color: AppColors.whiteSecondary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
@@ -287,7 +287,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   ListTile(
                     title: Text(
                       'photo'.tr(),
-                      style: CustomTextStyle.black_14_w400_292D32,
+                      style: CustomTextStyle.sf17w400(AppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -297,7 +297,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   ListTile(
                     title: Text(
                       'document'.tr(),
-                      style: CustomTextStyle.black_14_w400_292D32,
+                      style: CustomTextStyle.sf17w400(AppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -349,7 +349,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: ColorStyles.whiteFFFFFF,
+        backgroundColor: AppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -385,7 +385,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.grey22w700,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.greySecondary),
                       )
                     ],
                   ),
@@ -396,7 +397,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   child: Container(
                     height: 40.h,
                     decoration: BoxDecoration(
-                      color: ColorStyles.greyE0E6EE,
+                      color: AppColors.greyError,
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Stack(
@@ -410,7 +411,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                             height: 40.h,
                             width: widthTabBarItem,
                             decoration: BoxDecoration(
-                              color: ColorStyles.yellowFFD70A,
+                              color: AppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topLeft: !state
                                     ? Radius.circular(20.r)
@@ -449,9 +450,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Center(
-                                    child: Text('as_a_customer'.tr(),
-                                        style:
-                                            CustomTextStyle.black14w400171716),
+                                    child: Text(
+                                      'as_a_customer'.tr(),
+                                      style: CustomTextStyle.sf17w400(
+                                          AppColors.blackSecondary),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -479,7 +482,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   child: Center(
                                     child: Text(
                                       'as_an_executor'.tr(),
-                                      style: CustomTextStyle.black14w400171716,
+                                      style: CustomTextStyle.sf17w400(
+                                          AppColors.blackSecondary),
                                     ),
                                   ),
                                 ),
@@ -588,7 +592,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         }
                       }
                     },
-                    btnColor: ColorStyles.yellowFFD70A,
+                    btnColor: AppColors.yellowPrimary,
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()

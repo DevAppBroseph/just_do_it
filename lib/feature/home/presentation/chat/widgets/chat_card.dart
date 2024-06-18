@@ -85,7 +85,7 @@ class ChatCard extends StatelessWidget {
                           height: 50.h,
                           width: 50.h,
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF6F7F7,
+                            color: AppColors.greyActive,
                             borderRadius: BorderRadius.circular(50.r),
                           ),
                           child: Stack(
@@ -118,7 +118,8 @@ class ChatCard extends StatelessWidget {
                                           chat.chatWith!.firstname!.isEmpty
                                       ? 'Аккаунт удален'
                                       : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
-                                  style: CustomTextStyle.black_14_w400_000000,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackPrimary),
                                   maxLines: 1,
                                 ),
                               ),
@@ -129,7 +130,8 @@ class ChatCard extends StatelessWidget {
                                         .toString()
                                         .substring(0, 10) ??
                                     '-'),
-                                style: CustomTextStyle.grey12w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.greySecondary),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -142,7 +144,8 @@ class ChatCard extends StatelessWidget {
                                   chat.lastMsg?.text ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: CustomTextStyle.black14w400171716,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                               ),
                               if (chat.lastMsg?.unread != null &&
@@ -154,13 +157,14 @@ class ChatCard extends StatelessWidget {
                                   height: 15.h,
                                   width: 15.h,
                                   decoration: BoxDecoration(
-                                    color: ColorStyles.yellowFFCA0D,
+                                    color: AppColors.yellowBackground,
                                     borderRadius: BorderRadius.circular(100.r),
                                   ),
                                   child: Center(
                                     child: Text(
                                       chat.countUnreadMessage?.toString() ?? '',
-                                      style: CustomTextStyle.white_10_w700,
+                                      style: CustomTextStyle.sf11w400(
+                                          AppColors.whitePrimary),
                                     ),
                                   ),
                                 ),
@@ -197,8 +201,8 @@ class ChatCard extends StatelessWidget {
                                                       'ru'
                                           ? category.description ?? '-'
                                           : category.engDescription ?? '-',
-                                      style:
-                                          CustomTextStyle.black_12_w400_292D32,
+                                      style: CustomTextStyle.sf17w400(
+                                          AppColors.blackSecondary),
                                       softWrap: true,
                                     ),
                                   ],
@@ -218,7 +222,7 @@ class ChatCard extends StatelessWidget {
                   Expanded(
                     child: Container(
                       height: 1.h,
-                      color: ColorStyles.greyF7F7F8,
+                      color: AppColors.greyAccent,
                     ),
                   ),
                 ],

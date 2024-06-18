@@ -505,13 +505,13 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
               },
               btnColor: page == 0
                   ? confirmTermsPolicy
-                      ? ColorStyles.yellowFFD70A
-                      : ColorStyles.greyE0E6EE
+                      ? AppColors.yellowPrimary
+                      : AppColors.greyError
                   : countryController.text.isNotEmpty &&
                           regionController.text.isNotEmpty &&
                           typeCategories.isNotEmpty
-                      ? ColorStyles.yellowFFD70A
-                      : ColorStyles.greyE0E6EE,
+                      ? AppColors.yellowPrimary
+                      : AppColors.greyError,
               textLabel: Text(
                 page == 0 ? 'further'.tr() : 'register'.tr(),
                 style: CustomTextStyle.black_16_w600_171716,
@@ -527,10 +527,10 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   Navigator.of(context).pop();
                 }
               },
-              btnColor: ColorStyles.greyE0E6EE,
+              btnColor: AppColors.greyError,
               textLabel: Text(
                 'back'.tr(),
-                style: CustomTextStyle.black16w600515150,
+                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
               ),
             ),
             SizedBox(height: 34.h),
@@ -749,7 +749,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_14_w400_515150,
+          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         Row(
@@ -765,7 +765,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: ColorStyles.yellowFFD70A,
+              activeColor: AppColors.yellowPrimary,
             ),
             Flexible(
               child: GestureDetector(
@@ -782,8 +782,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 },
                 child: Text(
                   'agree_to_the_processing'.tr(),
-                  style: CustomTextStyle.black_14_w400_515150
-                      .copyWith(fontSize: 14.sp)
+                  style: CustomTextStyle.sf14w400(AppColors.blackAccent)
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -1100,7 +1099,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         Container(
           height: 130.h,
           decoration: BoxDecoration(
-            color: ColorStyles.greyEAECEE,
+            color: AppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -1143,7 +1142,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '${aboutMeController.text.length}/250',
-                    style: CustomTextStyle.grey12w400,
+                    style: CustomTextStyle.sf13w400(AppColors.greySecondary),
                   ),
                 ),
               ),
@@ -1308,7 +1307,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                               SizedBox(width: 4.w),
                               Text(
                                 '${'images'.tr()} (10мб)',
-                                style: CustomTextStyle.black_12_w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.blackSecondary),
                               )
                             ],
                           ),
@@ -1330,7 +1330,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                             child: Center(
                                 child: Text(
                               photos.length.toString(),
-                              style: CustomTextStyle.white_11
+                              style: CustomTextStyle.sf12w400(
+                                      AppColors.whitePrimary)
                                   .copyWith(fontSize: 10.sp),
                             )),
                           ),
@@ -1371,11 +1372,9 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                                 child: SvgPicture.asset(SvgImg.documentText),
                               ),
                               SizedBox(width: 4.w),
-                              Text(
-                                'upload_a_resume'.tr(),
-                                style: CustomTextStyle.black_12_w400
-                                    .copyWith(fontSize: 12.sp),
-                              )
+                              Text('upload_a_resume'.tr(),
+                                  style: CustomTextStyle.sf12w400(
+                                      AppColors.blackSecondary))
                             ],
                           ),
                         ),
@@ -1403,7 +1402,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.black_14_w400_515150,
+          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         SizedBox(height: 2.h),
@@ -1420,13 +1419,13 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: ColorStyles.yellowFFD70A,
+              activeColor: AppColors.yellowPrimary,
             ),
             Flexible(
               child: Text(
                 'representative_of_a_legal_entity'.tr(),
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.black_14_w400_515150,
+                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
               ),
             ),
           ],
@@ -1567,7 +1566,7 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.red11w400171716,
+            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
           ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
@@ -1648,7 +1647,8 @@ class _ContractorRegisterPageState extends State<ContractorRegisterPage> {
                                 borderRadius: BorderRadius.zero,
                                 child: Text(
                                   'done'.tr(),
-                                  style: CustomTextStyle.black_15,
+                                  style: CustomTextStyle.sf17w400(
+                                      AppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

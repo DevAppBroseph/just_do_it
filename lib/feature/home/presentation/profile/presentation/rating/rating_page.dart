@@ -29,7 +29,7 @@ class _RatingPageState extends State<RatingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorStyles.greyF7F7F8,
+      backgroundColor: AppColors.greyAccent,
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           final user = context.read<ProfileBloc>().user;
@@ -53,7 +53,7 @@ class _RatingPageState extends State<RatingPage> {
                     Expanded(
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: ColorStyles.greyF7F7F8,
+                          color: AppColors.greyAccent,
                         ),
                         child: ListView(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -62,7 +62,8 @@ class _RatingPageState extends State<RatingPage> {
                             SizedBox(height: 30.h),
                             Text(
                               'reviews_of_your_work'.tr(),
-                              style: CustomTextStyle.black_17_w800,
+                              style: CustomTextStyle.sf18w800(
+                                  AppColors.blackSecondary),
                             ),
                             SizedBox(height: 30.h),
                             ListView.builder(
@@ -106,7 +107,7 @@ class _RatingPageState extends State<RatingPage> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: ColorStyles.whiteFFFFFF,
+        color: AppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
       child: Row(
@@ -120,7 +121,7 @@ class _RatingPageState extends State<RatingPage> {
                       height: 34.h,
                       width: 34.h,
                       decoration:
-                          const BoxDecoration(color: ColorStyles.shadowFC6554),
+                          const BoxDecoration(color: AppColors.shadowPrimary),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -141,11 +142,13 @@ class _RatingPageState extends State<RatingPage> {
                   children: [
                     Text(
                       '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                      style: CustomTextStyle.black_14_w500_171716,
+                      style: CustomTextStyle.sf17w400(
+                        Colors.black,
+                      ).copyWith(fontWeight: FontWeight.w500),
                     ),
                     Text(
                       '01.04.2023',
-                      style: CustomTextStyle.grey12w400,
+                      style: CustomTextStyle.sf13w400(AppColors.greySecondary),
                     ),
                   ],
                 ),
@@ -158,7 +161,7 @@ class _RatingPageState extends State<RatingPage> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style: CustomTextStyle.black14w400171716,
+                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -166,7 +169,7 @@ class _RatingPageState extends State<RatingPage> {
               SizedBox(
                 child: Text(
                   review.message,
-                  style: CustomTextStyle.black_12_w400_515150,
+                  style: CustomTextStyle.sf13w400(AppColors.blackAccent),
                   maxLines: null,
                 ),
               ),
@@ -181,7 +184,7 @@ class _RatingPageState extends State<RatingPage> {
                       Container(
                         height: 36.h,
                         decoration: BoxDecoration(
-                          color: ColorStyles.whiteF5F5F5,
+                          color: AppColors.whiteSecondary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(
@@ -192,7 +195,8 @@ class _RatingPageState extends State<RatingPage> {
                               SizedBox(width: 8.h),
                               Text(
                                 'Перевод',
-                                style: CustomTextStyle.blue14w400336FEE,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blueSecondary),
                               )
                             ],
                           ),
@@ -218,7 +222,7 @@ class _RatingPageState extends State<RatingPage> {
           EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: ColorStyles.whiteFFFFFF,
+        color: AppColors.whitePrimary,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,8 +234,8 @@ class _RatingPageState extends State<RatingPage> {
                     ? Container(
                         height: 34.h,
                         width: 34.h,
-                        decoration: const BoxDecoration(
-                            color: ColorStyles.shadowFC6554),
+                        decoration:
+                            const BoxDecoration(color: AppColors.shadowPrimary),
                       )
                     : CachedNetworkImage(
                         height: 34.h,
@@ -253,12 +257,15 @@ class _RatingPageState extends State<RatingPage> {
                         width: 150.w,
                         child: Text(
                           '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                          style: CustomTextStyle.black_14_w500_171716,
+                          style: CustomTextStyle.sf17w400(
+                            AppColors.blackSecondary,
+                          ).copyWith(fontWeight: FontWeight.w500),
                         ),
                       ),
                       Text(
                         _textData(review.date),
-                        style: CustomTextStyle.grey12w400,
+                        style:
+                            CustomTextStyle.sf13w400(AppColors.greySecondary),
                       ),
                     ],
                   ),
@@ -270,7 +277,8 @@ class _RatingPageState extends State<RatingPage> {
                       SizedBox(width: 4.w),
                       Text(
                         '${review.mark}/5',
-                        style: CustomTextStyle.black14w400171716,
+                        style:
+                            CustomTextStyle.sf17w400(AppColors.blackSecondary),
                       ),
                     ],
                   ),
@@ -279,7 +287,7 @@ class _RatingPageState extends State<RatingPage> {
                     width: width - (66 + 50),
                     child: Text(
                       review.message,
-                      style: CustomTextStyle.black_12_w400_515150,
+                      style: CustomTextStyle.sf13w400(AppColors.blackAccent),
                       maxLines: null,
                     ),
                   ),
@@ -292,7 +300,7 @@ class _RatingPageState extends State<RatingPage> {
                         Container(
                           height: 38.h,
                           decoration: BoxDecoration(
-                            color: ColorStyles.whiteF5F5F5,
+                            color: AppColors.whiteSecondary,
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Padding(
@@ -307,7 +315,8 @@ class _RatingPageState extends State<RatingPage> {
                                   height: 25.h,
                                   child: Text(
                                     'Перевод',
-                                    style: CustomTextStyle.blue14w400336FEE,
+                                    style: CustomTextStyle.sf17w400(
+                                        AppColors.blueSecondary),
                                   ),
                                 )
                               ],
@@ -349,7 +358,7 @@ class _RatingPageState extends State<RatingPage> {
                     Navigator.of(context).pop();
                   },
                   icon: SvgImg.arrowRight,
-                  color: ColorStyles.greyBDBDBD,
+                  color: AppColors.greySecondary,
                 ),
               ],
             ),
@@ -357,7 +366,7 @@ class _RatingPageState extends State<RatingPage> {
           SizedBox(height: 8.h),
           if (reviews != null) ...[
             Container(
-              color: ColorStyles.yellowFFD70A,
+              color: AppColors.yellowPrimary,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -370,7 +379,11 @@ class _RatingPageState extends State<RatingPage> {
                           width: 188.w,
                           child: AutoSizeText(
                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
-                            style: CustomTextStyle.black34w800171716,
+                            style: CustomTextStyle.sf19w800(
+                                    AppColors.blackSecondary)
+                                .copyWith(
+                              fontSize: 34,
+                            ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
@@ -381,7 +394,7 @@ class _RatingPageState extends State<RatingPage> {
                           padding: EdgeInsets.only(
                               left: 16.w, right: 16.w, top: 4.h, bottom: 4.h),
                           decoration: BoxDecoration(
-                            color: ColorStyles.greyF3F3F3,
+                            color: AppColors.greyActive,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10.r),
                               bottomLeft: Radius.circular(10.r),
@@ -393,7 +406,8 @@ class _RatingPageState extends State<RatingPage> {
                             children: [
                               Text(
                                 'your_rating'.tr(),
-                                style: CustomTextStyle.black_14_w400_515150,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blackAccent),
                               ),
                               SizedBox(height: 6.h),
                               Row(
@@ -404,7 +418,11 @@ class _RatingPageState extends State<RatingPage> {
                                     reviews.ranking == null
                                         ? '-'
                                         : (reviews.ranking!).toString(),
-                                    style: CustomTextStyle.black_20_w600,
+                                    style: CustomTextStyle.sf19w800(
+                                            AppColors.whitePrimary)
+                                        .copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -421,7 +439,8 @@ class _RatingPageState extends State<RatingPage> {
                         SizedBox(width: 24.w),
                         Text(
                           '${'you_have_completed'.tr()} ${user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString()} ${'taskss'.tr()}',
-                          style: CustomTextStyle.black_14_w400_515150,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.blackAccent),
                         ),
                       ],
                     ),

@@ -116,7 +116,13 @@ class _AuthPageState extends State<AuthPage> {
                     child: Center(
                       child: Text(
                         'jobyfine'.toUpperCase(),
-                        style: CustomTextStyle.black39w900171716,
+                        style:
+                            CustomTextStyle.sf22w700(AppColors.blackSecondary)
+                                .copyWith(
+                          fontSize: 39,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'SFBold',
+                        ),
                       ),
                     ),
                   ),
@@ -152,7 +158,7 @@ class _AuthPageState extends State<AuthPage> {
                           forgotPassword ? 'send'.tr() : 'sign_in'.tr(),
                           style: CustomTextStyle.black_16_w600_171716,
                         ),
-                        btnColor: ColorStyles.yellowFFD70A,
+                        btnColor: AppColors.yellowPrimary,
                       ),
                       SizedBox(height: 18.h),
                       CustomButton(
@@ -168,9 +174,10 @@ class _AuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'back'.tr() : 'registration'.tr(),
-                          style: CustomTextStyle.black16w600515150,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.blackAccent),
                         ),
-                        btnColor: ColorStyles.greyE0E6EE,
+                        btnColor: AppColors.greyError,
                       ),
                     ],
                   ),
@@ -248,7 +255,7 @@ class _AuthPageState extends State<AuthPage> {
               },
               child: Text(
                 '${'forgot_your_password'.tr()}?',
-                style: CustomTextStyle.black_14_w400_515150,
+                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
               ),
             ),
           ],
@@ -298,7 +305,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 85.h,
           child: Text(
             'to_reset_the_password_enter_the_phone_number_or_mail'.tr(),
-            style: CustomTextStyle.black_14_w400_515150,
+            style: CustomTextStyle.sf17w400(AppColors.blackAccent),
           ),
         )
       ],

@@ -132,7 +132,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                     ),
                   );
                 },
-                btnColor: ColorStyles.yellowFFD70A,
+                btnColor: AppColors.yellowPrimary,
                 textLabel: Text(
                   'Создать новое',
                   style: CustomTextStyle.black_16_w600_171716,
@@ -148,12 +148,12 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

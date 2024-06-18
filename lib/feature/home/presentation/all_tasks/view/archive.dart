@@ -39,10 +39,8 @@ class _ArchivePageState extends State<ArchivePage> {
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: Text(
-                        'В архиве',
-                        style: CustomTextStyle.black_21,
-                      ),
+                      child: Text('В архиве',
+                          style: CustomTextStyle.sf21w700(Colors.black)),
                     )
                   ],
                 ),
@@ -109,7 +107,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       ),
                     );
                   },
-                  btnColor: ColorStyles.yellowFFD70A,
+                  btnColor: AppColors.yellowPrimary,
                   textLabel: const Text('Создать новое'),
                 ),
               )

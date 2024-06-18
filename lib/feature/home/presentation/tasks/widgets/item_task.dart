@@ -19,8 +19,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
       child: Container(
         decoration: BoxDecoration(
           color: task.isBanned == null || !task.isBanned!
-              ? ColorStyles.whiteFFFFFF
-              : ColorStyles.grey939393.withOpacity(0.06),
+              ? AppColors.whitePrimary
+              : AppColors.greyBackdround.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
           // boxShadow: [
           // BoxShadow(
@@ -68,7 +68,9 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                               width: 230.w,
                               child: Text(
                                 task.name,
-                                style: CustomTextStyle.black_14_w500_171716,
+                                style: CustomTextStyle.sf17w400(
+                                  Colors.black,
+                                ).copyWith(fontWeight: FontWeight.w500),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -87,8 +89,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                     width: 230.w,
                                     child: Text(
                                       _textCountry(task, user),
-                                      style:
-                                          CustomTextStyle.black_12_w500_515150,
+                                      style: CustomTextStyle.sf17w400(
+                                          AppColors.blackAccent),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -96,7 +98,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                   SizedBox(height: 5.h),
                                   Text(
                                     _textData(task.dateStart, user),
-                                    style: CustomTextStyle.grey12w400,
+                                    style: CustomTextStyle.sf13w400(
+                                        AppColors.greySecondary),
                                   ),
                                 ],
                               ),
@@ -112,7 +115,9 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                               Text(
                                 '${"before".tr()} ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
                                 maxLines: 1,
-                                style: CustomTextStyle.black_14_w500_171716,
+                                style: CustomTextStyle.sf17w400(
+                                  Colors.black,
+                                ).copyWith(fontWeight: FontWeight.w500),
                               ),
                               SizedBox(width: 5.w),
                               SvgPicture.asset(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 
 class SearchList extends StatefulWidget {
@@ -44,7 +45,9 @@ class _SearchListState extends State<SearchList> {
                           horizontal: 24.w, vertical: 18.h),
                       child: Text(
                         widget.array[index],
-                        style: CustomTextStyle.black_13_w500_171716,
+                        style:
+                            CustomTextStyle.sf17w400(AppColors.blackSecondary)
+                                .copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
                     Padding(

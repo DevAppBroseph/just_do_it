@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,7 +29,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ContractorProfile extends StatefulWidget {
   final double padding;
@@ -139,12 +137,11 @@ class _ContractorProfileState extends State<ContractorProfile> {
     }
   }
 
-
   bool _isRequestingPermission = false;
 
   _selectCV() async {
     if (_isRequestingPermission) {
-      print('A permission request is already in progress.');
+      log('A permission request is already in progress.');
       return;
     }
 
@@ -169,24 +166,24 @@ class _ContractorProfileState extends State<ContractorProfile> {
 
           if (mounted) {
             // Notify the bloc about the profile update
-            BlocProvider.of<ProfileBloc>(context).add(UpdateProfileEvent(user!));
+            BlocProvider.of<ProfileBloc>(context)
+                .add(UpdateProfileEvent(user!));
 
             // Update the UI
             setState(() {});
           }
         } else {
-          print('User is null');
+          log('User is null');
         }
       } else {
-        print('File selection cancelled.');
+        log('File selection cancelled.');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
     } finally {
       _isRequestingPermission = false;
     }
   }
-
 
   int? proverkaBalance;
   bool change = false;
@@ -238,7 +235,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   child: Container(
                     // height: 270.h,
                     decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
+                      color: AppColors.whitePrimary,
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Column(
@@ -285,8 +282,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                         EdgeInsets.all(10.h),
                                                     decoration:
                                                         const BoxDecoration(
-                                                      color: ColorStyles
-                                                          .shadowFC6554,
+                                                      color: AppColors
+                                                          .shadowPrimary,
                                                     ),
                                                     child: Image.asset(
                                                         'assets/images/camera.png'),
@@ -363,8 +360,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               Text(
                                                 '${(user?.firstname ?? '')}\n${(user?.lastname ?? '')}',
                                                 textAlign: TextAlign.start,
-                                                style: CustomTextStyle
-                                                    .black_18_w800,
+                                                style: CustomTextStyle.sf19w800(
+                                                    AppColors.blackSecondary),
                                                 softWrap: true,
                                               ),
                                             ],
@@ -422,15 +419,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             height: 25.h,
                                             width: 70.h,
                                             decoration: BoxDecoration(
-                                              color: ColorStyles.greyEAECEE,
+                                              color: AppColors.greyPrimary,
                                               borderRadius:
                                                   BorderRadius.circular(30.r),
                                             ),
                                             child: Center(
                                               child: Text(
                                                 'grades'.tr(),
-                                                style: CustomTextStyle
-                                                    .purple12w400,
+                                                style: CustomTextStyle.sf12w400(
+                                                    AppColors.purplePrimary),
                                               ),
                                             ),
                                           ),
@@ -475,8 +472,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                             padding: EdgeInsets.only(top: 2.h),
                                             child: Text(
                                               user?.balance.toString() ?? '',
-                                              style:
-                                                  CustomTextStyle.purple15w600,
+                                              style: CustomTextStyle.sf17w400(
+                                                  AppColors.purplePrimary),
                                             ),
                                           ),
                                         ],
@@ -508,7 +505,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           height: 25.h,
                                           width: 90.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.yellowFFCA0D
+                                            color: AppColors.yellowBackground
                                                 .withOpacity(0.2),
                                             borderRadius:
                                                 BorderRadius.circular(30.r),
@@ -521,7 +518,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 Text(
                                                   'rating'.tr(),
                                                   style: CustomTextStyle
-                                                      .gold12w400,
+                                                      .sf12w400(AppColors
+                                                          .yellowBackground),
                                                 ),
                                                 SizedBox(width: 3.h),
                                                 Row(
@@ -551,8 +549,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           reviews?.ranking == null
                                               ? '0'
                                               : reviews!.ranking!.toString(),
-                                          style: CustomTextStyle
-                                              .gold_16_w600_171716,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.yellowBackground),
                                         ),
                                       ),
                                     ),
@@ -582,7 +580,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           height: 25.h,
                                           width: 75.h,
                                           decoration: BoxDecoration(
-                                            color: ColorStyles.blue336FEE
+                                            color: AppColors.blueSecondary
                                                 .withOpacity(0.2),
                                             borderRadius:
                                                 BorderRadius.circular(30.r),
@@ -590,7 +588,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                           child: Center(
                                             child: Text(
                                               'reviews'.tr(),
-                                              style: CustomTextStyle.blue12w400,
+                                              style: CustomTextStyle.sf12w400(
+                                                  AppColors.blueSecondary),
                                             ),
                                           ),
                                         ),
@@ -604,8 +603,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               ? ''
                                               : reviews!.reviewsDetail.length
                                                   .toString(),
-                                          style: CustomTextStyle
-                                              .blue_16_w600_171716,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.blueSecondary),
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
@@ -623,14 +622,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'tasks_created'.tr(),
-                                style: CustomTextStyle.grey12w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.greySecondary),
                               ),
                               Text(
                                 user?.countOrdersCreateAsCustomer == null
                                     ? '0'
                                     : user!.countOrdersCreateAsCustomer
                                         .toString(),
-                                style: CustomTextStyle.black_13_w500_171716,
+                                style: CustomTextStyle.sf17w400(
+                                        AppColors.blackSecondary)
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -641,14 +643,17 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               Text(
                                 'completed_tasks'.tr(),
-                                style: CustomTextStyle.grey12w400,
+                                style: CustomTextStyle.sf13w400(
+                                    AppColors.greySecondary),
                               ),
                               Text(
                                 user?.countOrdersCompleteAsExecutor == null
                                     ? '0'
                                     : user!.countOrdersCompleteAsExecutor!
                                         .toString(),
-                                style: CustomTextStyle.black_13_w500_171716,
+                                style: CustomTextStyle.sf17w400(
+                                        AppColors.blackSecondary)
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -666,7 +671,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   height: 40.h,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                    color: ColorStyles.redFC6554.withOpacity(0.19),
+                    color: AppColors.redPrimary.withOpacity(0.19),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Padding(
@@ -688,7 +693,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           child: Text(
                             "ban_reason".tr(),
                             textAlign: TextAlign.start,
-                            style: CustomTextStyle.red11w400171716,
+                            style: CustomTextStyle.sf12w400(
+                                AppColors.redSecondary),
                           ),
                         ),
                       ],
@@ -702,7 +708,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     width: 330.w,
                     duration: const Duration(milliseconds: 300),
                     decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
+                      color: AppColors.whitePrimary,
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Padding(
@@ -714,7 +720,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           (user?.verifyStatus == "Failed")
                               ? user?.banReason ?? "failed_verification".tr()
                               : user?.banReason ?? ("unknown_reason".tr()),
-                          style: CustomTextStyle.black_14_w400_515150,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.blackAccent),
                         ),
                       ),
                     ),
@@ -730,7 +737,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Container(
                   width: 100.w,
                   decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Column(
@@ -753,8 +760,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       style: user != null &&
                                               user!.docType != null &&
                                               user!.docType != ''
-                                          ? CustomTextStyle.black_11_w400_171716
-                                          : CustomTextStyle.grey12w400,
+                                          ? CustomTextStyle.sf12w400(
+                                              AppColors.blackSecondary)
+                                          : CustomTextStyle.sf13w400(
+                                              AppColors.greySecondary),
                                     ),
                                   ),
                                   if (user != null &&
@@ -796,11 +805,13 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     child: user?.verifyStatus != null &&
                                             user!.verifyStatus == 'Success'
                                         ? Text('your_account_is_verified'.tr(),
-                                            style: CustomTextStyle
-                                                .black_11_w400_171716)
-                                        : Text('re_verify'.tr(),
-                                            style: CustomTextStyle
-                                                .red11w400171716),
+                                            style: CustomTextStyle.sf12w400(
+                                                AppColors.blackSecondary))
+                                        : Text(
+                                            're_verify'.tr(),
+                                            style: CustomTextStyle.sf12w400(
+                                                AppColors.redSecondary),
+                                          ),
                                   ),
                                   if (user?.verifyStatus == 'Success') ...[
                                     const Icon(
@@ -816,15 +827,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         height: 22.h,
                                         width: 86.w,
                                         decoration: BoxDecoration(
-                                          color: ColorStyles.greyBDBDBD,
+                                          color: AppColors.greySecondary,
                                           borderRadius:
                                               BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
-                                          child: Text(
-                                            'on_inspection'.tr(),
-                                            style: CustomTextStyle.white_11,
-                                          ),
+                                          child: Text('on_inspection'.tr(),
+                                              style: CustomTextStyle.sf12w400(
+                                                  AppColors.whitePrimary)),
                                         ),
                                       ),
                                     )
@@ -859,16 +869,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         width: 86.w,
                                         decoration: BoxDecoration(
                                           color: user?.canAppellate ?? false
-                                              ? ColorStyles.yellowFFCA0D
-                                              : ColorStyles.greyBDBDBD,
+                                              ? AppColors.yellowBackground
+                                              : AppColors.greySecondary,
                                           borderRadius:
                                               BorderRadius.circular(30.r),
                                         ),
                                         child: Center(
                                           child: Text(
                                             'send'.tr(),
-                                            style: CustomTextStyle
-                                                .black_11_w400_171716
+                                            style: CustomTextStyle.sf12w400(
+                                                    AppColors.blackSecondary)
                                                 .copyWith(
                                                     color: user?.canAppellate ??
                                                             false
@@ -898,7 +908,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Container(
                   width: 100.w,
                   decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Column(
@@ -923,7 +933,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               SvgPicture.asset(
                                 'assets/icons/user-square.svg',
-                                color: ColorStyles.yellowFFCA0D,
+                                color: AppColors.yellowBackground,
                               ),
                               SizedBox(width: 3.w),
                               Padding(
@@ -936,14 +946,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       children: [
                                         Text(
                                           'basic_information'.tr(),
-                                          style: CustomTextStyle
-                                              .black_13_w400_171716,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.blackSecondary),
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
                                             'change_profile_name'.tr(),
-                                            style: CustomTextStyle.grey12w400,
+                                            style: CustomTextStyle.sf13w400(
+                                                AppColors.greySecondary),
                                           ),
                                         ),
                                       ],
@@ -953,7 +964,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios,
-                                      color: ColorStyles.greyBDBDBD,
+                                      color: AppColors.greySecondary,
                                       size: 16.h,
                                     ),
                                   ],
@@ -975,7 +986,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             children: [
                               SvgPicture.asset(
                                 'assets/icons/shield_tick.svg',
-                                color: ColorStyles.yellowFFCA0D,
+                                color: AppColors.yellowBackground,
                               ),
                               SizedBox(width: 3.w),
                               Padding(
@@ -988,14 +999,15 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       children: [
                                         Text(
                                           'security'.tr(),
-                                          style: CustomTextStyle
-                                              .black_13_w400_171716,
+                                          style: CustomTextStyle.sf17w400(
+                                              AppColors.blackSecondary),
                                         ),
                                         SizedBox(
                                           width: 235.w,
                                           child: Text(
                                             'change_phone_number'.tr(),
-                                            style: CustomTextStyle.grey12w400,
+                                            style: CustomTextStyle.sf13w400(
+                                                AppColors.greySecondary),
                                           ),
                                         ),
                                       ],
@@ -1005,7 +1017,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios,
-                                      color: ColorStyles.greyBDBDBD,
+                                      color: AppColors.greySecondary,
                                       size: 16.h,
                                     ),
                                   ],
@@ -1027,7 +1039,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                     margin: EdgeInsets.symmetric(horizontal: 20.w),
                     width: 335.w,
                     decoration: BoxDecoration(
-                      color: ColorStyles.whiteFFFFFF,
+                      color: AppColors.whitePrimary,
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Stack(
@@ -1051,20 +1063,22 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                   width: 14.h,
                                   child: SvgPicture.asset(
                                     SvgImg.documentText,
-                                    color: ColorStyles.blue336FEE,
+                                    color: AppColors.blueSecondary,
                                   ),
                                 ),
                                 SizedBox(width: 9.17.w),
                                 Text(
                                   'upload_a_resume'.tr(),
-                                  style: CustomTextStyle.blue12w400,
+                                  style: CustomTextStyle.sf12w400(
+                                      AppColors.blueSecondary),
                                 ),
                                 SizedBox(
                                   width: 80.h,
                                 ),
                                 Text(
                                   '.doc, .pdf',
-                                  style: CustomTextStyle.grey12w400,
+                                  style: CustomTextStyle.sf13w400(
+                                      AppColors.greySecondary),
                                 ),
                               ],
                             ),
@@ -1127,11 +1141,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                     SizedBox(
                                       width: 10.h,
                                     ),
-                                    Text(
-                                      'Rezume.pdf',
-                                      style:
-                                          CustomTextStyle.black_11_w400_171716,
-                                    ),
+                                    Text('Rezume.pdf',
+                                        style: CustomTextStyle.sf12w400(
+                                            AppColors.blackSecondary)),
                                   ],
                                 ),
                               ),
@@ -1192,7 +1204,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               ? 200.h
                               : 160.h,
                   decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Column(
@@ -1211,7 +1223,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               padding: EdgeInsets.only(right: 25.w),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  textStyle: CustomTextStyle.blue14w400336FEE,
+                                  textStyle: CustomTextStyle.sf17w400(
+                                      AppColors.blueSecondary),
                                 ),
                                 onPressed: () {
                                   showIconModalCategories(
@@ -1294,12 +1307,12 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   width: 327.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     boxShadow: [
                       BoxShadow(
                         offset: const Offset(0, 4),
                         blurRadius: 45.r,
-                        color: ColorStyles.shadowFC6554,
+                        color: AppColors.shadowPrimary,
                       ),
                     ],
                   ),
@@ -1322,7 +1335,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                 padding: EdgeInsets.only(right: 10.w),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
-                                    textStyle: CustomTextStyle.blue14w400336FEE,
+                                    textStyle: CustomTextStyle.sf17w400(
+                                        AppColors.blueSecondary),
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -1349,7 +1363,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             hintStyle: CustomTextStyle.grey14w400,
                           ),
                           controller: experienceController,
-                          style: CustomTextStyle.black_14_w400_515150,
+                          style:
+                              CustomTextStyle.sf17w400(AppColors.blackAccent),
                           maxLines: null,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(250)
@@ -1360,7 +1375,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           children: [
                             Text(
                               '${experienceController.text.length}/250',
-                              style: CustomTextStyle.grey12w400,
+                              style: CustomTextStyle.sf13w400(
+                                  AppColors.greySecondary),
                             )
                           ],
                         ),
@@ -1368,7 +1384,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                           SizedBox(
                             width: 400.w,
                             child: const Divider(
-                              color: ColorStyles.greyD9D9D9,
+                              color: AppColors.greyActive,
                               thickness: 1,
                             ),
                           ),
@@ -1403,7 +1419,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                               'assets/icons/x-circle.svg',
                                               height: 15.h,
                                               width: 15.w,
-                                              color: ColorStyles.redFC6554,
+                                              color: AppColors.redPrimary,
                                             ),
                                           ),
                                         ),
@@ -1495,8 +1511,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                           height: 65.h,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: ColorStyles
-                                                                .black
+                                                            color: AppColors
+                                                                .blackPrimary
                                                                 .withOpacity(
                                                                     0.4),
                                                           ),
@@ -1504,7 +1520,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                               child: Text(
                                                                   '+ ${user!.images!.length - 4}',
                                                                   style: CustomTextStyle
-                                                                      .white_16_w600)),
+                                                                      .sf17w400(
+                                                                          AppColors
+                                                                              .whitePrimary))),
                                                         ),
                                                       ),
                                                     ),
@@ -1537,7 +1555,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               padding: EdgeInsets.only(right: 10.w, top: 15),
                               child: Text(
                                 'save'.tr(),
-                                style: CustomTextStyle.blue14w400336FEE,
+                                style: CustomTextStyle.sf17w400(
+                                    AppColors.blueSecondary),
                               ),
                             ),
                           ),
@@ -1560,7 +1579,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         height: 45.h,
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
-                          color: ColorStyles.whiteFFFFFF,
+                          color: AppColors.whitePrimary,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Row(
@@ -1571,13 +1590,14 @@ class _ContractorProfileState extends State<ContractorProfile> {
                               width: 14.h,
                               child: SvgPicture.asset(
                                 SvgImg.addCircle,
-                                color: ColorStyles.blue336FEE,
+                                color: AppColors.blueSecondary,
                               ),
                             ),
                             SizedBox(width: 9.17.w),
                             Text(
                               'images'.tr(),
-                              style: CustomTextStyle.blue12w400,
+                              style: CustomTextStyle.sf12w400(
+                                  AppColors.blueSecondary),
                             ),
                           ],
                         ),
@@ -1598,7 +1618,8 @@ class _ContractorProfileState extends State<ContractorProfile> {
                             child: Center(
                               child: Text(
                                 user?.images?.length.toString() ?? '',
-                                style: CustomTextStyle.white_11
+                                style: CustomTextStyle.sf12w400(
+                                        AppColors.whitePrimary)
                                     .copyWith(fontSize: 10.sp),
                               ),
                             ),
@@ -1621,7 +1642,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 child: Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: ColorStyles.whiteFFFFFF,
+                    color: AppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -1637,7 +1658,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                         SizedBox(width: 12.w),
                         Text(
                           'log_out_of_your_account'.tr(),
-                          style: CustomTextStyle.black_14_w500_171716,
+                          style: CustomTextStyle.sf17w400(
+                            AppColors.blackSecondary,
+                          ).copyWith(fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -1649,7 +1672,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                 height: 50.h,
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
                 decoration: BoxDecoration(
-                  color: ColorStyles.whiteFFFFFF,
+                  color: AppColors.whitePrimary,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -1671,7 +1694,9 @@ class _ContractorProfileState extends State<ContractorProfile> {
                   child: Center(
                     child: Text(
                       'delete_account'.tr(),
-                      style: CustomTextStyle.black_14_w500_171716,
+                      style: CustomTextStyle.sf17w400(
+                        Colors.black,
+                      ).copyWith(fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -1712,11 +1737,10 @@ class _ContractorProfileState extends State<ContractorProfile> {
               ),
             SizedBox(width: 10.w),
             Text(
-              user?.rus ?? true
-                  ? activitiy.description ?? ''
-                  : activitiy.engDescription ?? '',
-              style: CustomTextStyle.black_11_w400_171716,
-            ),
+                user?.rus ?? true
+                    ? activitiy.description ?? ''
+                    : activitiy.engDescription ?? '',
+                style: CustomTextStyle.sf12w400(AppColors.blackSecondary)),
           ],
         ),
       ),

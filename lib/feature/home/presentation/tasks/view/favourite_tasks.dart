@@ -64,11 +64,12 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
           favouritesOrders = state.favourite!.favouriteOrder;
         }
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: Stack(
             children: [
               Scaffold(
-                backgroundColor: ColorStyles.greyEAECEE,
+                backgroundColor: AppColors.greyPrimary,
                 body: Stack(
                   children: [
                     SafeArea(
@@ -200,13 +201,13 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: ColorStyles.greyEAECEE,
+          backgroundColor: AppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
 
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: ColorStyles.greyEAECEE,
+        backgroundColor: AppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {
