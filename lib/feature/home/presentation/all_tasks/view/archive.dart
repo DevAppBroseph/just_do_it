@@ -107,7 +107,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       ),
                     );
                   },
-                  btnColor: AppColors.yellowPrimary,
+                  btnColor: LightAppColors.yellowPrimary,
                   textLabel: const Text('Создать новое'),
                 ),
               )

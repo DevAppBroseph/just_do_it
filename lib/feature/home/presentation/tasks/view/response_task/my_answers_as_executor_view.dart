@@ -54,7 +54,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.greyPrimary,
+      backgroundColor: LightAppColors.greyPrimary,
       body: Stack(
         children: [
           SafeArea(
@@ -63,7 +63,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
               data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: AppColors.greyPrimary,
+                  color: LightAppColors.greyPrimary,
                 ),
                 child: Column(
                   children: [
@@ -95,7 +95,7 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
                             child: Text(
                               widget.title,
                               style: CustomTextStyle.sf22w700(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           )
                         ],
@@ -146,12 +146,12 @@ class _MyAnswersAsExecutorViewState extends State<MyAnswersAsExecutorView> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

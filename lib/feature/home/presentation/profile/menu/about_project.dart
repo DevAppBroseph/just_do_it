@@ -38,7 +38,7 @@ class _AboutProjectState extends State<AboutProject> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -61,7 +61,7 @@ class _AboutProjectState extends State<AboutProject> {
                                 Navigator.of(context).pop();
                               },
                               icon: SvgImg.arrowRight,
-                              color: AppColors.greySecondary,
+                              color: LightAppColors.greySecondary,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +69,7 @@ class _AboutProjectState extends State<AboutProject> {
                                 Text(
                                   'about_the_project'.tr(),
                                   style: CustomTextStyle.sf22w700(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                               ],
                             ),
@@ -87,7 +87,7 @@ class _AboutProjectState extends State<AboutProject> {
                     padding: EdgeInsets.zero,
                     children: [
                       Container(
-                        color: AppColors.yellowPrimary,
+                        color: LightAppColors.yellowPrimary,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -100,7 +100,7 @@ class _AboutProjectState extends State<AboutProject> {
                                   child: Center(
                                     child: Text('jobyfine'.toUpperCase(),
                                         style: CustomTextStyle.sf22w700(
-                                                AppColors.blackPrimary)
+                                                LightAppColors.blackPrimary)
                                             .copyWith(
                                           fontSize: 39,
                                           fontWeight: FontWeight.w900,
@@ -120,7 +120,7 @@ class _AboutProjectState extends State<AboutProject> {
                                     ? about?.about ?? ''
                                     : about?.aboutEng ?? '',
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackAccent),
+                                    LightAppColors.blackAccent),
                               ),
                             ),
                             SizedBox(height: 40.h),
@@ -133,7 +133,7 @@ class _AboutProjectState extends State<AboutProject> {
                         child: Text(
                           'question_and_answer'.tr(),
                           style: CustomTextStyle.sf22w700(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                       SizedBox(height: 30.h),
@@ -175,7 +175,7 @@ class _AboutProjectState extends State<AboutProject> {
                           child: Text(
                             "user_agreement".tr(),
                             style: CustomTextStyle.sf17w400(
-                                    AppColors.blueSecondary)
+                                    LightAppColors.blueSecondary)
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -193,7 +193,7 @@ class _AboutProjectState extends State<AboutProject> {
                           child: Text(
                             "consent_to_the_processing_of_personal_data".tr(),
                             style: CustomTextStyle.sf17w400(
-                                    AppColors.blueSecondary)
+                                    LightAppColors.blueSecondary)
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
                         ),
@@ -256,17 +256,18 @@ class _AboutProjectState extends State<AboutProject> {
                 child: Text(
                   question,
                   textAlign: TextAlign.start,
-                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                 ),
               ),
               selectIndex == index
                   ? const Icon(
                       Icons.keyboard_arrow_up,
-                      color: AppColors.blueSecondary,
+                      color: LightAppColors.blueSecondary,
                     )
                   : const Icon(
                       Icons.keyboard_arrow_down,
-                      color: AppColors.greyActive,
+                      color: LightAppColors.greyActive,
                     ),
             ],
           ),
@@ -287,7 +288,7 @@ class _AboutProjectState extends State<AboutProject> {
         duration: const Duration(milliseconds: 300),
         child: Text(
           answer,
-          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+          style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
         ),
       ),
       SizedBox(height: 10.h),

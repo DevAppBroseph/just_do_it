@@ -45,9 +45,9 @@ class _SearchListState extends State<SearchList> {
                           horizontal: 24.w, vertical: 18.h),
                       child: Text(
                         widget.array[index],
-                        style:
-                            CustomTextStyle.sf17w400(AppColors.blackSecondary)
-                                .copyWith(fontWeight: FontWeight.w500),
+                        style: CustomTextStyle.sf17w400(
+                                LightAppColors.blackSecondary)
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
                     Padding(

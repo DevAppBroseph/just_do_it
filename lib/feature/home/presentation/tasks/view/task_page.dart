@@ -108,7 +108,7 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.greyPrimary,
+      backgroundColor: LightAppColors.greyPrimary,
       body: FutureBuilder(
           future: _data,
           builder: (context, snapshot) {
@@ -139,13 +139,13 @@ class _TaskPageState extends State<TaskPage> {
                                 ? 'close'.tr()
                                 : 'openly'.tr(),
                             style: CustomTextStyle.sf13w400(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           ),
                         if (task.isBanned != null && task.isBanned!)
                           Text(
                             'blocked'.tr(),
                             style: CustomTextStyle.sf12w400(
-                                AppColors.redSecondary),
+                                LightAppColors.redSecondary),
                           ),
                         const Spacer(),
                         if (user?.id != task.owner?.id)
@@ -223,7 +223,7 @@ class _TaskPageState extends State<TaskPage> {
                             'assets/icons/more-circle.svg',
                             key: globalKey,
                             height: 20.h,
-                            color: AppColors.greySecondary,
+                            color: LightAppColors.greySecondary,
                           ),
                         ),
                       ],
@@ -254,7 +254,7 @@ class _TaskPageState extends State<TaskPage> {
                               child: Text(
                                 'edit'.tr(),
                                 style: CustomTextStyle.sf13w400(
-                                    AppColors.blackSecondary),
+                                    LightAppColors.blackSecondary),
                               ),
                             ),
                           ],
@@ -287,7 +287,7 @@ class _TaskPageState extends State<TaskPage> {
                                           child: Text(
                                             'delete'.tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.redSecondary),
+                                                LightAppColors.redSecondary),
                                           ),
                                           onPressed: () async {
                                             final access =
@@ -321,13 +321,14 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                     Text(
                       '${DataFormatter.addSpacesToNumber(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
-                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary)
+                      style: CustomTextStyle.sf17w400(
+                              LightAppColors.blackSecondary)
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 12.h),
                     Text(task.name,
-                        style:
-                            CustomTextStyle.sf18w800(AppColors.blackSecondary)),
+                        style: CustomTextStyle.sf18w800(
+                            LightAppColors.blackSecondary)),
                     SizedBox(height: 18.h),
                     if (task.category != null)
                       Row(
@@ -345,7 +346,7 @@ class _TaskPageState extends State<TaskPage> {
                             child: Text(
                               '${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.category?.description ?? '-' : task.category?.engDescription ?? '-'}, ${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.subcategory?.description ?? '-' : task.subcategory?.engDescription}',
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackError),
+                                  LightAppColors.blackError),
                               softWrap: true,
                             ),
                           ),
@@ -355,11 +356,11 @@ class _TaskPageState extends State<TaskPage> {
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.shadowPrimary,
+                            color: LightAppColors.shadowPrimary,
                             offset: const Offset(0, 4),
                             blurRadius: 45.r,
                           )
@@ -375,7 +376,7 @@ class _TaskPageState extends State<TaskPage> {
                             Text(
                               'description'.tr(),
                               style: CustomTextStyle.sf18w800(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                             SizedBox(
                               height: 10.h,
@@ -385,7 +386,7 @@ class _TaskPageState extends State<TaskPage> {
                               overflow: TextOverflow.ellipsis,
                               maxLines: showMore ? 10000000 : 3,
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackError),
+                                  LightAppColors.blackError),
                             ),
                             if (!showMore) SizedBox(height: 8.h),
                             if (!showMore && task.description.length > 105)
@@ -398,7 +399,7 @@ class _TaskPageState extends State<TaskPage> {
                                 child: Text(
                                   'show_more'.tr(),
                                   style: CustomTextStyle.sf12w400(
-                                      AppColors.blueSecondary),
+                                      LightAppColors.blueSecondary),
                                 ),
                               ),
                             if (task.files != null && task.files!.isNotEmpty)
@@ -553,7 +554,7 @@ class _TaskPageState extends State<TaskPage> {
                                       Text(
                                         'term_of_execution'.tr(),
                                         style: CustomTextStyle.sf15w400(
-                                            AppColors.greySecondary),
+                                            LightAppColors.greySecondary),
                                       ),
                                       SizedBox(height: 6.h),
                                       FittedBox(
@@ -562,7 +563,7 @@ class _TaskPageState extends State<TaskPage> {
                                           "${_textData(task.dateStart)}-${_textData(task.dateEnd)}",
                                           maxLines: 1,
                                           style: CustomTextStyle.sf17w400(
-                                              AppColors.blackError),
+                                              LightAppColors.blackError),
                                         ),
                                       ),
                                     ],
@@ -574,7 +575,7 @@ class _TaskPageState extends State<TaskPage> {
                                 SizedBox(
                                   height: 40.h,
                                   child: const VerticalDivider(
-                                    color: AppColors.greyActive,
+                                    color: LightAppColors.greyActive,
                                     thickness: 1,
                                   ),
                                 ),
@@ -589,14 +590,14 @@ class _TaskPageState extends State<TaskPage> {
                                       Text(
                                         'region'.tr(),
                                         style: CustomTextStyle.sf15w400(
-                                            AppColors.greySecondary),
+                                            LightAppColors.greySecondary),
                                       ),
                                       SizedBox(height: 6.h),
                                       AutoSizeText(
                                         _textCountry(task, user),
                                         wrapWords: false,
                                         style: CustomTextStyle.sf17w400(
-                                            AppColors.blackError),
+                                            LightAppColors.blackError),
                                         maxLines: null,
                                       ),
                                     ],
@@ -632,11 +633,11 @@ class _TaskPageState extends State<TaskPage> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.whitePrimary,
+                            color: LightAppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(20.r),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.shadowPrimary,
+                                color: LightAppColors.shadowPrimary,
                                 offset: const Offset(0, 4),
                                 blurRadius: 45.r,
                               )
@@ -669,7 +670,7 @@ class _TaskPageState extends State<TaskPage> {
                                           ? 'customer'.tr()
                                           : 'executor'.tr(),
                                       style: CustomTextStyle.sf13w400(
-                                          AppColors.greySecondary),
+                                          LightAppColors.greySecondary),
                                     ),
                                     SizedBox(
                                       width: 260.w,
@@ -677,7 +678,7 @@ class _TaskPageState extends State<TaskPage> {
                                         "${task.owner?.firstname ?? '-'} ${task.owner?.lastname ?? '-'}",
                                         wrapWords: false,
                                         style: CustomTextStyle.sf18w800(
-                                                AppColors.blackSecondary)
+                                                LightAppColors.blackSecondary)
                                             .copyWith(
                                                 fontWeight: FontWeight.w600),
                                         maxLines: 2,
@@ -689,7 +690,7 @@ class _TaskPageState extends State<TaskPage> {
                                         Text(
                                           'rating'.tr(),
                                           style: CustomTextStyle.sf15w400(
-                                              AppColors.greySecondary),
+                                              LightAppColors.greySecondary),
                                         ),
                                         SizedBox(width: 8.w),
                                         SvgPicture.asset(
@@ -700,7 +701,7 @@ class _TaskPageState extends State<TaskPage> {
                                               ? '0'
                                               : task.owner!.ranking.toString(),
                                           style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary)
+                                                  LightAppColors.blackSecondary)
                                               .copyWith(
                                                   fontWeight: FontWeight.w500),
                                         ),
@@ -741,11 +742,11 @@ class _TaskPageState extends State<TaskPage> {
                             chatBloc.editChatId(null);
                           }
                         },
-                        btnColor: AppColors.yellowPrimary,
+                        btnColor: LightAppColors.yellowPrimary,
                         textLabel: Text(
                           'write'.tr(),
                           style: CustomTextStyle.sf17w600(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                     SizedBox(height: 18.h),

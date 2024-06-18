@@ -31,12 +31,12 @@ Widget itemButton(String title, String subtitle, String icon, Function onTap) {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.sf17w400(AppColors.blackPrimary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackPrimary),
               ),
               SizedBox(height: 6.h),
               Text(
                 subtitle,
-                style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                style: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               )
             ],
           ),
@@ -45,7 +45,7 @@ Widget itemButton(String title, String subtitle, String icon, Function onTap) {
             padding: EdgeInsets.only(top: 10.h),
             child: const Icon(
               Icons.keyboard_arrow_right_rounded,
-              color: AppColors.greySecondary,
+              color: LightAppColors.greySecondary,
             ),
           ),
         ],

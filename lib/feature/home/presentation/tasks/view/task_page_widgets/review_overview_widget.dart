@@ -47,7 +47,7 @@ class _ReviewOverviewWidgetState extends State<ReviewOverviewWidget> {
               !(widget.task.isBanned ?? false)) ...[
             Text(
               'responses'.tr(),
-              style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
+              style: CustomTextStyle.sf18w800(LightAppColors.blackSecondary),
             ),
             BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
               if (current is UpdateTask) {
@@ -119,7 +119,7 @@ class _ReviewOverviewWidgetState extends State<ReviewOverviewWidget> {
               !(widget.task.isBanned ?? false)) ...[
             Text(
               'responses'.tr(),
-              style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
+              style: CustomTextStyle.sf18w800(LightAppColors.blackSecondary),
             ),
             BlocBuilder<TasksBloc, TasksState>(buildWhen: (previous, current) {
               if (current is UpdateTask) {

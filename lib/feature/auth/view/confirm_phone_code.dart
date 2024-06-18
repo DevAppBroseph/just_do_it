@@ -162,13 +162,13 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: onTapBtn,
-                            btnColor: AppColors.yellowPrimary,
+                            btnColor: LightAppColors.yellowPrimary,
                             textLabel: Text(
                               confirmCode
                                   ? 'change_password'.tr()
                                   : 'confirm'.tr(),
                               style: CustomTextStyle.sf17w600(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                           SizedBox(height: 18.h),
@@ -183,11 +183,11 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                                 Navigator.of(context).pop();
                               }
                             },
-                            btnColor: AppColors.greyError,
+                            btnColor: LightAppColors.greyError,
                             textLabel: Text(
                               'back'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                         ],
@@ -257,7 +257,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
               Text(
                 // '${'confrim_phone'.tr()} ',
                 'restoring_access'.tr(),
-                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
               )
             ],
           ),
@@ -272,11 +272,13 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   text: TextSpan(children: [
                     TextSpan(
                       text: '${'code_confirm_sent'.tr()}\n',
-                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                     ),
                     TextSpan(
                       text: widget.phone,
-                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w400(
+                          LightAppColors.blackSecondary),
                     ),
                   ])),
               SizedBox(height: 18.h),
@@ -301,11 +303,12 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     width: 77.h,
                     height: 70.h,
                     decoration: BoxDecoration(
-                      color: AppColors.greyPrimary,
+                      color: LightAppColors.greyPrimary,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    textStyle: CustomTextStyle.sf22w700(AppColors.greySecondary)
-                        .copyWith(
+                    textStyle:
+                        CustomTextStyle.sf22w700(LightAppColors.greySecondary)
+                            .copyWith(
                       fontSize: 26,
                       fontWeight: FontWeight.w600,
                     ),
@@ -320,18 +323,19 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     children: [
                       TextSpan(
                         text: '${'resend_code'.tr()} ',
-                        style: CustomTextStyle.sf17w400(AppColors.greyTernary)
-                            .copyWith(
+                        style:
+                            CustomTextStyle.sf17w400(LightAppColors.greyTernary)
+                                .copyWith(
                           color: timer?.isActive ?? false
-                              ? AppColors.greyTernary
-                              : AppColors.blackError,
+                              ? LightAppColors.greyTernary
+                              : LightAppColors.blackError,
                         ),
                       ),
                       if (timer?.isActive ?? false)
                         TextSpan(
                           text: '$currentSecond ${'sec'.tr()}.',
                           style: CustomTextStyle.sf17w400(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                     ],
                   ),
@@ -354,7 +358,7 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
             children: [
               Text(
                 'Изменение пароля ',
-                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
               )
             ],
           ),
@@ -370,7 +374,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   children: [
                     TextSpan(
                       text: 'enter_new_password'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                     ),
                   ],
                 ),
@@ -382,7 +387,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePassword,
                 textEditingController: passwordController,
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),
@@ -393,7 +399,8 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                 obscureText: true,
                 focusNode: focusNodePasswordRepeat,
                 textEditingController: passwordRepeatController,
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
               ),

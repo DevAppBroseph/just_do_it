@@ -60,9 +60,9 @@ void iconSelectTranslate(
                         alignment: Alignment.center,
                         child: Text(
                           'show_original'.tr(),
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.whitePrimary)
-                                  .copyWith(fontWeight: FontWeight.w500),
+                          style: CustomTextStyle.sf17w400(
+                                  LightAppColors.whitePrimary)
+                              .copyWith(fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
@@ -131,7 +131,7 @@ void taskMoreDialog(
                             child: Text(
                               'share'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackError),
+                                  LightAppColors.blackError),
                             ),
                           ),
                           if (selectTask.owner?.id != user?.id)
@@ -146,7 +146,7 @@ void taskMoreDialog(
                               child: Text(
                                 'complain'.tr(),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackError),
+                                    LightAppColors.blackError),
                               ),
                             ),
                         ],
@@ -211,8 +211,8 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                       // '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
                       "thank_you_for_trust".tr(),
                       textAlign: TextAlign.center,
-                      style:
-                          CustomTextStyle.sf21w700(AppColors.blackSecondary)),
+                      style: CustomTextStyle.sf21w700(
+                          LightAppColors.blackSecondary)),
                   // SizedBox(
                   //   height: 15.h,
                   // ),
@@ -223,7 +223,8 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                     ),
                     child: Text(
                       'dialog_bonus_info'.tr(args: [score]),
-                      style: CustomTextStyle.sf17w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf17w400(
+                          LightAppColors.greySecondary),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -235,12 +236,13 @@ void scoreDialogRegistration(BuildContext context, String score, String action,
                       Navigator.of(context)
                           .pushReplacementNamed(AppRoute.about);
                     },
-                    btnColor: AppColors.purplePrimary,
+                    btnColor: LightAppColors.purplePrimary,
                     textLabel: Text(
                       // 'well'.tr(),
                       'about_project'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.whitePrimary)
-                          .copyWith(fontSize: 14.5.sp),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.whitePrimary)
+                              .copyWith(fontSize: 14.5.sp),
                     ),
                   ),
                 ],
@@ -298,19 +300,19 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                 if (context.locale.languageCode == 'en')
                                   Text('$score points ${'accrued'.tr()}',
                                       style: CustomTextStyle.sf21w700(
-                                          AppColors.blackSecondary)),
+                                          LightAppColors.blackSecondary)),
                                 if (context.locale.languageCode == 'ru')
                                   Text(
                                       '$score ${'points'.tr().toLowerCase()} ${'accrued'.tr()}',
                                       style: CustomTextStyle.sf21w700(
-                                          AppColors.blackSecondary)),
+                                          LightAppColors.blackSecondary)),
                                 SizedBox(
                                   height: 15.h,
                                 ),
                                 Text(
                                   '${'congratulations_you_are_credited'.tr()} $score ${'points_for'.tr()} $action',
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.greySecondary),
+                                      LightAppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -322,11 +324,11 @@ void scoreDialog(BuildContext context, String score, String action) =>
                                   .add(GetProfileEvent());
                               Navigator.of(context).pop();
                             },
-                            btnColor: AppColors.purplePrimary,
+                            btnColor: LightAppColors.purplePrimary,
                             textLabel: Text(
                               'well'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                      AppColors.whitePrimary)
+                                      LightAppColors.whitePrimary)
                                   .copyWith(fontSize: 14.5.sp),
                             ),
                           ),
@@ -383,18 +385,18 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/alert_circle.svg',
-                                  color: AppColors.yellowBackground,
+                                  color: LightAppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 30.h,
                                 ),
                                 Text('you_can_t'.tr(),
                                     style: CustomTextStyle.sf21w700(
-                                        AppColors.blackSecondary)),
+                                        LightAppColors.blackSecondary)),
                                 Text(
                                   action,
                                   style: CustomTextStyle.sf21w700(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -403,7 +405,7 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                                 Text(
                                   text,
                                   style: CustomTextStyle.sf15w400(
-                                      AppColors.greySecondary),
+                                      LightAppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -413,11 +415,11 @@ void noMoney(BuildContext context, String action, String text) => showDialog(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: AppColors.yellowBackground,
+                            btnColor: LightAppColors.yellowBackground,
                             textLabel: Text(
                               'back'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary,
+                                LightAppColors.blackSecondary,
                               ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
@@ -474,18 +476,18 @@ void banDialog(BuildContext context, String action) => showDialog(
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/alert_circle.svg',
-                                  color: AppColors.yellowBackground,
+                                  color: LightAppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 30.h,
                                 ),
                                 Text('unfortunately'.tr(),
                                     style: CustomTextStyle.sf21w700(
-                                        AppColors.blackSecondary)),
+                                        LightAppColors.blackSecondary)),
                                 Text(
                                   action,
                                   style: CustomTextStyle.sf21w700(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -494,7 +496,7 @@ void banDialog(BuildContext context, String action) => showDialog(
                                 Text(
                                   'your_profile_is_blocked'.tr(),
                                   style: CustomTextStyle.sf15w400(
-                                      AppColors.greySecondary),
+                                      LightAppColors.greySecondary),
                                 ),
                                 SizedBox(
                                   height: 18.h,
@@ -502,7 +504,7 @@ void banDialog(BuildContext context, String action) => showDialog(
                                 Text(
                                   'contact_the_administrator_to_unblock'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.greySecondary),
+                                      LightAppColors.greySecondary),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -515,11 +517,11 @@ void banDialog(BuildContext context, String action) => showDialog(
                                   AppRoute.contactus,
                                   arguments: ['', '']);
                             },
-                            btnColor: AppColors.yellowBackground,
+                            btnColor: LightAppColors.yellowBackground,
                             textLabel: Text(
                               'contact'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary,
+                                LightAppColors.blackSecondary,
                               ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
@@ -577,7 +579,7 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/help_circle.svg',
-                                  color: AppColors.yellowBackground,
+                                  color: LightAppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 18.h,
@@ -588,7 +590,7 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                                   child: Text(
                                     title,
                                     style: CustomTextStyle.sf21w700(
-                                        AppColors.blackSecondary),
+                                        LightAppColors.blackSecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -613,11 +615,11 @@ void helpOnTopDialog(BuildContext context, String title, String description) =>
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: AppColors.yellowBackground,
+                            btnColor: LightAppColors.yellowBackground,
                             textLabel: Text(
                               'i_see'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary,
+                                LightAppColors.blackSecondary,
                               ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
@@ -676,7 +678,7 @@ void onTopDialog(BuildContext context, String title, String action,
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/arrow_big_up_dash.svg',
-                                  color: AppColors.yellowBackground,
+                                  color: LightAppColors.yellowBackground,
                                 ),
                                 SizedBox(
                                   height: 18.h,
@@ -687,7 +689,7 @@ void onTopDialog(BuildContext context, String title, String action,
                                   child: Text(
                                     title,
                                     style: CustomTextStyle.sf21w700(
-                                        AppColors.blackSecondary),
+                                        LightAppColors.blackSecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -710,7 +712,7 @@ void onTopDialog(BuildContext context, String title, String action,
                                   child: Text(
                                     description,
                                     style: CustomTextStyle.sf13w400(
-                                        AppColors.greySecondary),
+                                        LightAppColors.greySecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -721,11 +723,11 @@ void onTopDialog(BuildContext context, String title, String action,
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            btnColor: AppColors.yellowBackground,
+                            btnColor: LightAppColors.yellowBackground,
                             textLabel: Text(
                               'i_see'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary,
+                                LightAppColors.blackSecondary,
                               ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
@@ -796,7 +798,7 @@ void taskMoreDialogForProfile(
                             child: Text(
                               'share'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackError),
+                                  LightAppColors.blackError),
                             ),
                           ),
                           if (owner?.id != user?.id)
@@ -811,7 +813,7 @@ void taskMoreDialogForProfile(
                               child: Text(
                                 'complain'.tr(),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackError),
+                                    LightAppColors.blackError),
                               ),
                             ),
                         ],

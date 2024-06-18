@@ -192,7 +192,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
           topLeft: Radius.circular(45.r),
           topRight: Radius.circular(45.r),
         ),
-        color: AppColors.whitePrimary,
+        color: LightAppColors.whitePrimary,
       ),
       child: Stack(
         children: [
@@ -338,10 +338,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     coastMinController.text = coastMin ?? '';
                     coastMaxController.text = coastMax ?? '';
                   },
-                  btnColor: AppColors.yellowPrimary,
+                  btnColor: LightAppColors.yellowPrimary,
                   textLabel: Text(
                     'show_tasks'.tr(),
-                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                   ),
                 ),
               ),
@@ -425,7 +426,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -439,7 +440,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'filters'.tr(),
-                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -448,7 +450,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     },
                     child: Text(
                       'clear'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.redSecondary),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.redSecondary),
                     ),
                   ),
                 ],
@@ -479,13 +482,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         });
                       },
                       checkColor: Colors.black,
-                      activeColor: AppColors.yellowPrimary,
+                      activeColor: LightAppColors.yellowPrimary,
                     ),
                   ),
                   SizedBox(width: 2.w),
                   Text(
                     'tasks_from_the_customer'.tr(),
-                    style: CustomTextStyle.sf13w400(AppColors.blackAccent)
+                    style: CustomTextStyle.sf13w400(LightAppColors.blackAccent)
                         .copyWith(fontSize: 12.sp),
                   ),
                   const Spacer(),
@@ -502,13 +505,13 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         });
                       },
                       checkColor: Colors.black,
-                      activeColor: AppColors.yellowPrimary,
+                      activeColor: LightAppColors.yellowPrimary,
                     ),
                   ),
                   SizedBox(width: 2.w),
                   Text(
                     'offers_from_executors'.tr(),
-                    style: CustomTextStyle.sf12w400(AppColors.blackAccent),
+                    style: CustomTextStyle.sf12w400(LightAppColors.blackAccent),
                   ),
                 ],
               ),
@@ -524,7 +527,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -538,7 +541,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           Text(
                             'categories'.tr(),
                             style: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -550,7 +553,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -558,7 +561,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.greySecondary,
+                        color: LightAppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -577,7 +580,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -591,7 +594,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           Text(
                             'countries'.tr(),
                             style: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -603,7 +606,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -611,7 +614,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.greySecondary,
+                        color: LightAppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -630,7 +633,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -644,20 +647,20 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           Text(
                             'start_and_end_dates'.tr(),
                             style: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             date,
                             style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           ),
                         ],
                       ),
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.greySecondary,
+                        color: LightAppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -676,7 +679,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Row(
@@ -690,7 +693,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           Text(
                             'currency'.tr(),
                             style: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           ),
                           SizedBox(height: 3.h),
                           SizedBox(
@@ -703,7 +706,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                         ],
@@ -711,7 +714,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: AppColors.greySecondary,
+                        color: LightAppColors.greySecondary,
                         size: 16.h,
                       ),
                     ],
@@ -732,7 +735,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: AppColors.greyActive,
+                          color: LightAppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -742,7 +745,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             Text(
                               '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
                               style: CustomTextStyle.sf15w400(
-                                  AppColors.greySecondary),
+                                  LightAppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -772,10 +775,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   ],
                                   contentPadding: EdgeInsets.zero,
                                   hintText: '',
-                                  fillColor: AppColors.greyActive,
+                                  fillColor: LightAppColors.greyActive,
                                   maxLines: null,
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                   textEditingController: coastMinController,
                                 ),
                               ],
@@ -797,7 +800,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         height: 55.h,
                         padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         decoration: BoxDecoration(
-                          color: AppColors.greyActive,
+                          color: LightAppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -807,7 +810,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                             Text(
                               '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
                               style: CustomTextStyle.sf15w400(
-                                  AppColors.greySecondary),
+                                  LightAppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -838,10 +841,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                   ],
                                   contentPadding: EdgeInsets.zero,
                                   hintText: '',
-                                  fillColor: AppColors.greyActive,
+                                  fillColor: LightAppColors.greyActive,
                                   maxLines: null,
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                   textEditingController: coastMaxController,
                                 ),
                               ],
@@ -868,7 +871,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         padding:
                             EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
                         decoration: BoxDecoration(
-                          color: AppColors.greyActive,
+                          color: LightAppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Column(
@@ -885,7 +888,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                     Text(
                                       'keywords'.tr(),
                                       style: CustomTextStyle.sf15w400(
-                                          AppColors.greySecondary),
+                                          LightAppColors.greySecondary),
                                     ),
                                     Row(
                                       children: [
@@ -922,10 +925,10 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                           contentPadding: EdgeInsets.zero,
                                           hintText:
                                               'for_example_buying_oranges'.tr(),
-                                          fillColor: AppColors.greyActive,
+                                          fillColor: LightAppColors.greyActive,
                                           maxLines: 4,
                                           style: CustomTextStyle.sf17w400(
-                                              AppColors.blackSecondary),
+                                              LightAppColors.blackSecondary),
                                           textEditingController:
                                               keyWordController,
                                         ),
@@ -951,11 +954,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         child: Text(
                           'passport_data_uploaded'.tr(),
                           style: CustomTextStyle.sf17w400(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                       Switch.adaptive(
-                        activeColor: AppColors.yellowSecondary,
+                        activeColor: LightAppColors.yellowSecondary,
                         value: passport,
                         onChanged: (value) {
                           passport = !passport;
@@ -970,11 +973,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                         child: Text(
                           'there_is_a_resume'.tr(),
                           style: CustomTextStyle.sf17w400(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                       Switch.adaptive(
-                        activeColor: AppColors.yellowSecondary,
+                        activeColor: LightAppColors.yellowSecondary,
                         value: cv,
                         onChanged: (value) {
                           cv = !cv;
@@ -1016,7 +1019,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: 81.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.r),
-                      color: AppColors.bluePrimary,
+                      color: LightAppColors.bluePrimary,
                     ),
                   ),
                 ],
@@ -1035,7 +1038,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   SizedBox(width: 12.h),
                   Text(
                     'currency'.tr(),
-                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -1142,7 +1146,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: AppColors.bluePrimary,
+                  color: LightAppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1164,7 +1168,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Text(
                 'categories'.tr(),
-                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
               ),
             ],
           ),
@@ -1185,11 +1189,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_categories'.tr(),
-                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: AppColors.yellowSecondary,
+                    activeColor: LightAppColors.yellowSecondary,
                     value: allCategory,
                     onChanged: (value) {
                       allCategory = !allCategory;
@@ -1266,11 +1271,11 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-            color: AppColors.whitePrimary,
+            color: LightAppColors.whitePrimary,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadowPrimary,
+                color: LightAppColors.shadowPrimary,
                 offset: const Offset(0, -4),
                 blurRadius: 55.r,
               )
@@ -1288,7 +1293,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
               ),
               if (activities[currentIndex].isSelect)
                 Padding(
@@ -1297,7 +1302,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                     width: title.length > 27 ? 20.w : 70.w,
                     child: Text(
                       '- $selectWork',
-                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -1337,7 +1343,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: AppColors.bluePrimary,
+                  color: LightAppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1359,7 +1365,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   user?.rus ?? true && context.locale.languageCode == 'ru'
                       ? selectActivities?.description ?? ''
                       : selectActivities?.engDescription ?? '',
-                  style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                 ),
               ),
             ],
@@ -1378,11 +1385,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_subcategories'.tr(),
-                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: AppColors.yellowSecondary,
+                    activeColor: LightAppColors.yellowSecondary,
                     value: allSubCategory,
                     onChanged: (value) {
                       selectActivity.isSelect = !selectActivity.isSelect;
@@ -1441,7 +1449,8 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                           : selectActivities!
                                   .subcategory[index].engDescription ??
                               '',
-                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                     ),
                   ),
                   const Spacer(),
@@ -1480,7 +1489,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -1499,7 +1508,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'countries'.tr(),
-              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+              style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
             ),
           ],
         ),
@@ -1517,11 +1526,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_countries'.tr(),
-                  style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 ),
                 const Spacer(),
                 Switch.adaptive(
-                  activeColor: AppColors.yellowSecondary,
+                  activeColor: LightAppColors.yellowSecondary,
                   value: allCountrys,
                   onChanged: (value) async {
                     allCountrys = !allCountrys;
@@ -1679,7 +1689,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -1698,7 +1708,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'regions'.tr(),
-              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+              style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
             ),
           ],
         ),
@@ -1716,11 +1726,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               children: [
                 Text(
                   'all_regions'.tr(),
-                  style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 ),
                 const Spacer(),
                 Switch.adaptive(
-                  activeColor: AppColors.yellowSecondary,
+                  activeColor: LightAppColors.yellowSecondary,
                   value: allRegions,
                   onChanged: (value) async {
                     countries[selectCountriesIndex!].select = true;
@@ -1886,7 +1897,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 width: 81.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.r),
-                  color: AppColors.bluePrimary,
+                  color: LightAppColors.bluePrimary,
                 ),
               ),
             ],
@@ -1905,7 +1916,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               SizedBox(width: 12.h),
               Text(
                 'districts'.tr(),
-                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
               ),
             ],
           ),
@@ -1923,11 +1934,12 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                 children: [
                   Text(
                     'all_districts'.tr(),
-                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   Switch.adaptive(
-                    activeColor: AppColors.yellowSecondary,
+                    activeColor: LightAppColors.yellowSecondary,
                     value: allTowns,
                     onChanged: (value) {
                       countries[selectCountriesIndex!].select = true;
@@ -2086,7 +2098,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -2105,7 +2117,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             SizedBox(width: 12.h),
             Text(
               'start_and_end_dates'.tr(),
-              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+              style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
             ),
           ],
         ),
@@ -2119,7 +2131,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: AppColors.greyActive,
+              color: LightAppColors.greyActive,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -2129,14 +2141,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'start_date'.tr(),
-                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       startDate != null
                           ? DateFormat('dd.MM.yyyy').format(startDate!)
                           : 'select_the_start_date_of_the_execution'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w400(
+                          LightAppColors.blackSecondary),
                     ),
                   ],
                 ),
@@ -2160,7 +2174,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
             height: 68.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: AppColors.greyActive,
+              color: LightAppColors.greyActive,
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Row(
@@ -2170,14 +2184,16 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                   children: [
                     Text(
                       'completion_date'.tr(),
-                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       endDate != null
                           ? DateFormat('dd.MM.yyyy').format(endDate!)
                           : 'select_the_task_completion_date'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w400(
+                          LightAppColors.blackSecondary),
                     ),
                   ],
                 ),
@@ -2214,7 +2230,7 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
                                 child: Text(
                                   'done'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0 && startDate == null) {

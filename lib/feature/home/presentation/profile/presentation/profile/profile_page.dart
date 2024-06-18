@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
         MediaQuery(
           data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
           child: Scaffold(
-            backgroundColor: AppColors.greyPrimary,
+            backgroundColor: LightAppColors.greyPrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
               return SafeArea(
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Text(
                                   'profile'.tr(),
                                   style: CustomTextStyle.sf22w700(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                               ),
                               CustomIconButton(
@@ -212,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         'done'.tr(),
                         style: CustomTextStyle.sf17w400(
-                          AppColors.blackPrimary,
+                          LightAppColors.blackPrimary,
                         ),
                       ),
                       onPressed: () {

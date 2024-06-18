@@ -22,7 +22,7 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: Column(
           children: [
             SizedBox(height: 60.h),
@@ -34,7 +34,8 @@ class _ViewProfileLinkState extends State<ViewProfileLink> {
                     alignment: Alignment.center,
                     child: Text(
                       'Профиль',
-                      style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf22w700(
+                          LightAppColors.blackSecondary),
                     ),
                   ),
                   CustomIconButton(

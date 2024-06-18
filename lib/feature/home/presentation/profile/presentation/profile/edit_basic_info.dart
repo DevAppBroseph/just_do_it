@@ -43,7 +43,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
       child: Stack(
         children: [
           Scaffold(
-            backgroundColor: AppColors.whitePrimary,
+            backgroundColor: LightAppColors.whitePrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
@@ -71,7 +71,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           Text(
                             'basic_information'.tr(),
                             style: CustomTextStyle.sf22w700(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           ),
                         ],
                       ),
@@ -91,7 +91,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50,
                             textEditingController: firstnameController,
                             hintStyle: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -111,7 +111,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textEditingController: lastnameController,
                             hintStyle: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                             formatters: [UpperTextInputFormatter()],
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
@@ -129,7 +129,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           child: Text(
                             'edit_email'.tr(),
                             style: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           ),
                         ),
                         SizedBox(height: 16.h),
@@ -141,7 +141,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
                             hintStyle: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                             formatters: [
                               // MaskTextInputFormatter(
                               //   initialText: '+ ',
@@ -176,7 +176,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             height: 50.h,
                             textEditingController: emailController,
                             hintStyle: CustomTextStyle.sf15w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 18.w, vertical: 18.h),
                             onChanged: (value) {
@@ -210,14 +210,14 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                                   });
                                 },
                                 checkColor: Colors.black,
-                                activeColor: AppColors.yellowPrimary,
+                                activeColor: LightAppColors.yellowPrimary,
                               ),
                               Flexible(
                                 child: Text(
                                   'representative_of_a_legal_entity'.tr(),
                                   textAlign: TextAlign.justify,
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackAccent),
+                                      LightAppColors.blackAccent),
                                 ),
                               ),
                             ],
@@ -276,11 +276,11 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                             Navigator.of(context).pop();
                           }
                         },
-                        btnColor: AppColors.yellowSecondary,
+                        btnColor: LightAppColors.yellowSecondary,
                         textLabel: Text(
                           'save'.tr(),
                           style: CustomTextStyle.sf17w600(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                     ),

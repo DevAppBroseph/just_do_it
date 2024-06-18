@@ -116,7 +116,7 @@ class _ContractorState extends State<Contractor> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -127,7 +127,7 @@ class _ContractorState extends State<Contractor> {
                             child: Text(
                               'my_tasks'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -146,7 +146,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/note2.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -160,7 +160,8 @@ class _ContractorState extends State<Contractor> {
                                             Text(
                                               'my_task'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -168,7 +169,8 @@ class _ContractorState extends State<Contractor> {
                                                 'created_by_me_as_a_customer'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -185,7 +187,8 @@ class _ContractorState extends State<Contractor> {
                                                     .countOrdersCreateAsCustomer
                                                     .toString(),
                                                 style: CustomTextStyle.sf17w400(
-                                                    AppColors.blackSecondary),
+                                                    LightAppColors
+                                                        .blackSecondary),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -215,7 +218,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/clipboard-tick.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -229,7 +232,8 @@ class _ContractorState extends State<Contractor> {
                                             Text(
                                               'performed'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -237,7 +241,8 @@ class _ContractorState extends State<Contractor> {
                                                 'tasks_for_which_responses'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -254,7 +259,8 @@ class _ContractorState extends State<Contractor> {
                                                     .countOrdersInProgressAsCustomer
                                                     .toString(),
                                                 style: CustomTextStyle.sf17w400(
-                                                    AppColors.blackSecondary),
+                                                    LightAppColors
+                                                        .blackSecondary),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -284,7 +290,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/document-like.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -298,14 +304,16 @@ class _ContractorState extends State<Contractor> {
                                             Text(
                                               'closed'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'completed_task'.tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -322,7 +330,8 @@ class _ContractorState extends State<Contractor> {
                                                     .countOrdersCompleteACustomer
                                                     .toString(),
                                                 style: CustomTextStyle.sf17w400(
-                                                    AppColors.blackSecondary),
+                                                    LightAppColors
+                                                        .blackSecondary),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -348,7 +357,7 @@ class _ContractorState extends State<Contractor> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -359,7 +368,7 @@ class _ContractorState extends State<Contractor> {
                             child: Text(
                               'responses_to_offers'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -380,7 +389,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/flash-circle.svg',
-                                    color: AppColors.blueSecondary,
+                                    color: LightAppColors.blueSecondary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -394,7 +403,8 @@ class _ContractorState extends State<Contractor> {
                                             Text(
                                               'accepted_offers'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -402,7 +412,8 @@ class _ContractorState extends State<Contractor> {
                                                 'i_made_a_response_to_the_offer'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -419,7 +430,8 @@ class _ContractorState extends State<Contractor> {
                                                     .length
                                                     .toString(),
                                                 style: CustomTextStyle.sf17w400(
-                                                    AppColors.blackSecondary),
+                                                    LightAppColors
+                                                        .blackSecondary),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -449,7 +461,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/verify.svg',
-                                    color: AppColors.purplePrimary,
+                                    color: LightAppColors.purplePrimary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -463,14 +475,16 @@ class _ContractorState extends State<Contractor> {
                                             Text(
                                               'closed_offers'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
                                               child: Text(
                                                 'completed_task'.tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -488,7 +502,8 @@ class _ContractorState extends State<Contractor> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -515,7 +530,7 @@ class _ContractorState extends State<Contractor> {
                       // height: 150.h,
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -526,7 +541,7 @@ class _ContractorState extends State<Contractor> {
                             child: Text(
                               'favourites'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -547,7 +562,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/edit.svg',
-                                    color: AppColors.greyActive,
+                                    color: LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -559,7 +574,7 @@ class _ContractorState extends State<Contractor> {
                                           child: Text(
                                             'offers'.tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackSecondary),
+                                                LightAppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -580,7 +595,7 @@ class _ContractorState extends State<Contractor> {
                                                       .toString(),
                                                   style:
                                                       CustomTextStyle.sf17w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -612,7 +627,7 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user1.svg',
-                                    color: AppColors.greyActive,
+                                    color: LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -624,7 +639,7 @@ class _ContractorState extends State<Contractor> {
                                           child: Text(
                                             'executors'.tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackSecondary),
+                                                LightAppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -644,7 +659,7 @@ class _ContractorState extends State<Contractor> {
                                                       .toString(),
                                                   style:
                                                       CustomTextStyle.sf17w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -875,10 +890,11 @@ class _ContractorState extends State<Contractor> {
                     }
                     getListTask();
                   },
-                  btnColor: AppColors.yellowPrimary,
+                  btnColor: LightAppColors.yellowPrimary,
                   textLabel: Text(
                     'сreate_a_task'.tr(),
-                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                   ),
                 ),
               ),

@@ -13,7 +13,7 @@ Widget itemFavouriteUser(
       onTap: () => onSelect(user),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.whitePrimary,
+          color: LightAppColors.whitePrimary,
           borderRadius: BorderRadius.circular(20.r),
           // boxShadow: [
           //   BoxShadow(
@@ -45,7 +45,8 @@ Widget itemFavouriteUser(
                     width: 260,
                     child: Text(
                       '${user.user!.firstname ?? '-'} ${user.user!.lastname ?? '-'}',
-                      style: CustomTextStyle.sf18w800(AppColors.blackSecondary)
+                      style: CustomTextStyle.sf18w800(
+                              LightAppColors.blackSecondary)
                           .copyWith(fontWeight: FontWeight.w600),
                       softWrap: true,
                     ),
@@ -60,7 +61,7 @@ Widget itemFavouriteUser(
               ),
               child: Icon(
                 Icons.arrow_forward_ios,
-                color: AppColors.greySecondary,
+                color: LightAppColors.greySecondary,
                 size: 15.h,
               ),
             ),

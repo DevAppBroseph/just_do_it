@@ -422,17 +422,17 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             },
             btnColor: page == 0
                 ? confirmTermsPolicy
-                    ? AppColors.yellowPrimary
-                    : AppColors.greyError
+                    ? LightAppColors.yellowPrimary
+                    : LightAppColors.greyError
                 : passwordController.text.isNotEmpty &&
                         repeatPasswordController.text.isNotEmpty &&
                         regionController.text.isNotEmpty &&
                         countryController.text.isNotEmpty
-                    ? AppColors.yellowPrimary
-                    : AppColors.greyError,
+                    ? LightAppColors.yellowPrimary
+                    : LightAppColors.greyError,
             textLabel: Text(
               page == 0 ? 'further'.tr() : 'register'.tr(),
-              style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+              style: CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
             ),
           ),
           SizedBox(height: 18.h),
@@ -445,10 +445,10 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 Navigator.of(context).pop();
               }
             },
-            btnColor: AppColors.greyError,
+            btnColor: LightAppColors.greyError,
             textLabel: Text(
               'back'.tr(),
-              style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+              style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
             ),
           ),
           SizedBox(height: 34.h),
@@ -468,7 +468,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         CustomTextField(
           hintText: '${'your_name'.tr()}*',
           focusNode: focusNodeName,
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           textEditingController: firstnameController,
           formatters: [
@@ -488,7 +488,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         CustomTextField(
           hintText: '${'your_last_name'.tr()}*',
           focusNode: focusNodeLastName,
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           textEditingController: lastnameController,
           formatters: [
@@ -507,7 +507,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: '${'phone_number'.tr()}*',
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           focusNode: focusNodePhone,
           textInputType: TextInputType.phone,
@@ -549,7 +549,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         ),
         CustomTextField(
           hintText: 'E-mail*',
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           focusNode: focusNodeEmail,
           textEditingController: emailController,
@@ -592,7 +592,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           onTap: _selectImage,
           child: CustomTextField(
             hintText: 'add_a_photo'.tr(),
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             enabled: false,
             contentPadding:
@@ -690,7 +690,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+          style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         Row(
@@ -706,7 +706,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: AppColors.yellowPrimary,
+              activeColor: LightAppColors.yellowPrimary,
             ),
             Flexible(
               child: GestureDetector(
@@ -723,7 +723,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 },
                 child: Text(
                   'agree_to_the_processing'.tr(),
-                  style: CustomTextStyle.sf14w400(AppColors.blackAccent)
+                  style: CustomTextStyle.sf14w400(LightAppColors.blackAccent)
                       .copyWith(decoration: TextDecoration.underline),
                 ),
               ),
@@ -749,7 +749,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
       children: [
         CustomTextField(
           hintText: '${'password'.tr()}*',
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           focusNode: focusNodePassword1,
           obscureText: !visiblePassword,
@@ -790,7 +790,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         SizedBox(height: 16.h),
         CustomTextField(
           hintText: '${'repeat_the_password'.tr()}*',
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           height: 50.h,
           focusNode: focusNodePassword2,
           obscureText: !visiblePasswordRepeat,
@@ -846,7 +846,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           ),
           child: CustomTextField(
             hintText: '${'country'.tr()}*',
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -880,7 +880,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           },
           child: CustomTextField(
             hintText: '${'region'.tr()}*',
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -919,7 +919,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             children: [
               CustomTextField(
                 hintText: 'document'.tr(),
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -963,7 +964,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         Text(
           '* - ${'required_fields_to_fill_in'.tr()}',
           textAlign: TextAlign.start,
-          style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+          style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
         ),
         SizedBox(height: 16.h),
         Row(
@@ -979,13 +980,13 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 });
               },
               checkColor: Colors.black,
-              activeColor: AppColors.yellowPrimary,
+              activeColor: LightAppColors.yellowPrimary,
             ),
             Flexible(
               child: Text(
                 'representative_of_a_legal_entity'.tr(),
                 textAlign: TextAlign.justify,
-                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
               ),
             ),
           ],
@@ -1007,7 +1008,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             if (user.docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -1037,7 +1039,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   ? 'number'.tr()
                   : 'id_number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -1076,7 +1078,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             textEditingController: whoGiveDocController,
             onFieldSubmitted: (value) {
@@ -1098,7 +1100,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,
               textEditingController: dateDocController,
               contentPadding:
@@ -1115,7 +1117,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             child: CustomTextField(
               hintText: 'validity_period'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -1126,7 +1128,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
+            style: CustomTextStyle.sf12w400(LightAppColors.redSecondary),
           ),
         if (user.docType == 'Resident_ID') SizedBox(height: 16.h),
         if (user.docType == 'Resident_ID')
@@ -1140,7 +1142,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             formatters: [
               LengthLimitingTextInputFormatter(35),
@@ -1208,7 +1210,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                                 child: Text(
                                   'done'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

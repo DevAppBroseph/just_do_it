@@ -82,19 +82,21 @@ class TaskStatusActionWidget extends StatelessWidget {
                 }
               },
               btnColor: task.verifyStatus == "Progress"
-                  ? AppColors.greyTernary
+                  ? LightAppColors.greyTernary
                   : task.canAppellate
-                      ? AppColors.yellowPrimary
-                      : AppColors.greyTernary,
+                      ? LightAppColors.yellowPrimary
+                      : LightAppColors.greyTernary,
               textLabel: Text(
                 task.verifyStatus == "Progress"
                     ? "on_inspection".tr()
                     : 'resend'.tr(),
                 style: task.verifyStatus == "Progress"
-                    ? CustomTextStyle.sf17w600(AppColors.blackSecondary)
+                    ? CustomTextStyle.sf17w600(LightAppColors.blackSecondary)
                     : task.canAppellate
-                        ? CustomTextStyle.sf17w600(AppColors.blackSecondary)
-                        : CustomTextStyle.sf17w400(AppColors.greyBackdround)
+                        ? CustomTextStyle.sf17w600(
+                            LightAppColors.blackSecondary)
+                        : CustomTextStyle.sf17w400(
+                                LightAppColors.greyBackdround)
                             .copyWith(fontSize: 16),
               ),
             ),
@@ -108,10 +110,10 @@ class TaskStatusActionWidget extends StatelessWidget {
           children: [
             CustomButton(
               onTap: () {},
-              btnColor: AppColors.greyPrimary,
+              btnColor: LightAppColors.greyPrimary,
               textLabel: Text(
                 'you_responded'.tr(),
-                style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
               ),
             ),
             if (task.isBanned!) ...[
@@ -138,10 +140,11 @@ class TaskStatusActionWidget extends StatelessWidget {
                     DataUpdater().updateTasksAndProfileData(context);
                   }
                 },
-                btnColor: AppColors.yellowPrimary,
+                btnColor: LightAppColors.yellowPrimary,
                 textLabel: Text(
                   'cance_response'.tr(),
-                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                 ),
               ),
             ]
@@ -151,10 +154,10 @@ class TaskStatusActionWidget extends StatelessWidget {
           task.status != TaskStatus.completed) {
         CustomButton(
           onTap: () async {},
-          btnColor: AppColors.greyPrimary,
+          btnColor: LightAppColors.greyPrimary,
           textLabel: Text(
             'you_have_been_chosen'.tr(),
-            style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+            style: CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
           ),
         );
       } else if (answer == null && !task.isBanned!) {
@@ -195,10 +198,10 @@ class TaskStatusActionWidget extends StatelessWidget {
               }
             }
           },
-          btnColor: AppColors.yellowPrimary,
+          btnColor: LightAppColors.yellowPrimary,
           textLabel: Text(
             task.isTask! ? 'respond'.tr() : 'accept_the_offer'.tr(),
-            style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+            style: CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
           ),
         );
       }

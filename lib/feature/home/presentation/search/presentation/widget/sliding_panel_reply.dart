@@ -148,7 +148,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: AppColors.whitePrimary,
+            color: LightAppColors.whitePrimary,
           ),
           child: Stack(
             children: [
@@ -242,11 +242,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                           }
                         }
                       },
-                      btnColor: AppColors.yellowPrimary,
+                      btnColor: LightAppColors.yellowPrimary,
                       textLabel: Text(
                         'done'.tr(),
-                        style:
-                            CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf17w600(
+                            LightAppColors.blackSecondary),
                       ),
                     ),
                   ),
@@ -305,7 +305,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -324,7 +324,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   widget.selectTask!.isTask!
                       ? 'become_a_performer'.tr()
                       : 'become_a_customer'.tr(),
-                  style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
@@ -332,7 +333,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   !widget.selectTask!.isTask!
                       ? 'to_accept_the_offer'.tr()
                       : 'to_complete_tasks'.tr(),
-                  style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                  style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                 ),
               SizedBox(height: 30.h),
               GestureDetector(
@@ -358,8 +359,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   children: [
                     CustomTextField(
                       hintText: 'document'.tr(),
-                      hintStyle:
-                          CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      hintStyle: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                       width: 350.w,
                       height: 50.h,
                       enabled: false,
@@ -421,7 +422,8 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 actionButton: false,
                 height: 50.h,
                 focusNode: focusNodeSerial,
@@ -453,7 +455,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               actionButton: false,
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -495,7 +497,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -522,7 +524,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,
               textEditingController: whoGiveDocumentController,
               contentPadding:
@@ -550,7 +552,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             textEditingController: dateDocumentController,
             contentPadding:
@@ -564,7 +566,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
+            style: CustomTextStyle.sf12w400(LightAppColors.redSecondary),
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -580,7 +582,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
             },
             actionButton: false,
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -649,7 +651,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                 child: Text(
                                   'done'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

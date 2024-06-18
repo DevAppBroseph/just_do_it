@@ -56,13 +56,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       TextSpan(
                         text: '${'registration'.tr()} ',
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.blackSecondary),
                       ),
                       TextSpan(
                         text: '$stageRegistration/2',
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.greySecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.greySecondary),
                       ),
                     ],
                   ),
@@ -76,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Container(
               height: 40.h,
               decoration: BoxDecoration(
-                color: AppColors.greyError,
+                color: LightAppColors.greyError,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Stack(
@@ -133,9 +133,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 'customer'.tr(),
                                 style: state
                                     ? CustomTextStyle.sf17w400(
-                                        AppColors.blackSecondary)
+                                        LightAppColors.blackSecondary)
                                     : CustomTextStyle.sf17w400(
-                                            AppColors.whitePrimary)
+                                            LightAppColors.whitePrimary)
                                         .copyWith(fontSize: 14.5.sp),
                               ),
                             ),
@@ -171,10 +171,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 'executor'.tr(),
                                 style: state
                                     ? CustomTextStyle.sf17w400(
-                                            AppColors.whitePrimary)
+                                            LightAppColors.whitePrimary)
                                         .copyWith(fontSize: 14.5.sp)
                                     : CustomTextStyle.sf17w400(
-                                        AppColors.blackSecondary),
+                                        LightAppColors.blackSecondary),
                               ),
                             ),
                           ),

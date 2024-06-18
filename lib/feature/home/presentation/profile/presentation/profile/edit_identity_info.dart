@@ -91,7 +91,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 60.h),
@@ -108,7 +108,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   SizedBox(width: 12.w),
                   Text(
                     'security'.tr(),
-                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -222,10 +223,11 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                     }
                   }
                 },
-                btnColor: AppColors.yellowSecondary,
+                btnColor: LightAppColors.yellowSecondary,
                 textLabel: Text(
                   'save'.tr(),
-                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                 ),
               ),
             ),
@@ -247,7 +249,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: AppColors.greyPrimary,
+            color: LightAppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -258,7 +260,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   CustomTextField(
                     hintText: '',
                     hintStyle:
-                        CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                     height: 30.h,
                     focusNode: focusNodePassword1,
                     obscureText: !visiblePassword,
@@ -281,7 +283,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'new_password'.tr(),
-                  style: CustomTextStyle.sf13w400(AppColors.greySecondary),
+                  style: CustomTextStyle.sf13w400(LightAppColors.greySecondary),
                 ),
               ),
               Align(
@@ -314,7 +316,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: AppColors.greyPrimary,
+            color: LightAppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -325,7 +327,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   CustomTextField(
                     hintText: '',
                     hintStyle:
-                        CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                     height: 30.h,
                     focusNode: focusNodePassword2,
                     obscureText: !visiblePasswordRepeat,
@@ -348,7 +350,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 padding: EdgeInsets.only(top: 10.h, left: 18.h),
                 child: Text(
                   'repeat_the_password'.tr(),
-                  style: CustomTextStyle.sf13w400(AppColors.greySecondary),
+                  style: CustomTextStyle.sf13w400(LightAppColors.greySecondary),
                 ),
               ),
               Align(
@@ -398,7 +400,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           ),
           child: CustomTextField(
             hintText: 'country'.tr(),
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: countryController,
@@ -433,7 +435,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           },
           child: CustomTextField(
             hintText: 'region'.tr(),
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             enabled: false,
             textEditingController: regionController,
@@ -467,7 +469,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             children: [
               CustomTextField(
                 hintText: 'document'.tr(),
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
@@ -545,7 +548,8 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             if (docType != 'Resident_ID')
               CustomTextField(
                 hintText: 'series'.tr(),
-                hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                hintStyle:
+                    CustomTextStyle.sf15w400(LightAppColors.greySecondary),
                 height: 50.h,
                 focusNode: focusNodeSerial,
                 onFieldSubmitted: (value) {
@@ -574,7 +578,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               hintText:
                   docType == 'Resident_ID' ? 'id_number'.tr() : 'number'.tr(),
               focusNode: focusNodeNumber,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               onFieldSubmitted: (value) {
                 requestNextEmptyFocusStage2();
               },
@@ -613,7 +617,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -640,7 +644,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             child: CustomTextField(
               hintText: 'date_of_issue'.tr(),
               enabled: false,
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,
               textEditingController: whoGiveDocController,
               contentPadding:
@@ -668,7 +672,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
           child: CustomTextField(
             hintText: 'validity_period'.tr(),
             enabled: false,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
             textEditingController: dateDocController,
             contentPadding:
@@ -682,7 +686,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         if (checkExpireDate(dateTimeEnd) != null)
           Text(
             checkExpireDate(dateTimeEnd)!,
-            style: CustomTextStyle.sf12w400(AppColors.redSecondary),
+            style: CustomTextStyle.sf12w400(LightAppColors.redSecondary),
           ),
         if (docType == 'Resident_ID') SizedBox(height: 16.w),
         if (docType == 'Resident_ID')
@@ -696,7 +700,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
               });
             },
             focusNode: focusNodeWhoTake,
-            hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+            hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             formatters: [
               LengthLimitingTextInputFormatter(35),
             ],
@@ -774,7 +778,7 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                                 child: Text(
                                   'done'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

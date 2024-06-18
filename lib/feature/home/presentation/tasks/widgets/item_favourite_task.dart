@@ -15,11 +15,11 @@ Widget itemFavouriteTask(
       onTap: () => onSelect(task),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.whitePrimary,
+          color: LightAppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: AppColors.shadowPrimary,
+              color: LightAppColors.shadowPrimary,
               offset: const Offset(0, -4),
               blurRadius: 55.r,
             )
@@ -82,7 +82,7 @@ Widget itemFavouriteTask(
                               child: Text(
                                 _textCountry(task),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackAccent),
+                                    LightAppColors.blackAccent),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -91,7 +91,7 @@ Widget itemFavouriteTask(
                             Text(
                               _textData(task.order!.dateStart!),
                               style: CustomTextStyle.sf13w400(
-                                  AppColors.greySecondary),
+                                  LightAppColors.greySecondary),
                             ),
                           ],
                         ),
@@ -108,7 +108,7 @@ Widget itemFavouriteTask(
                           'до ${DataFormatter.addSpacesToNumber(task.order!.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.order!.currency!.name)} ',
                           maxLines: 1,
                           style: CustomTextStyle.sf17w400(
-                            AppColors.blackSecondary,
+                            LightAppColors.blackSecondary,
                           ).copyWith(fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 5.w),

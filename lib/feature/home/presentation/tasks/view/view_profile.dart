@@ -71,12 +71,12 @@ class _ProfileViewState extends State<ProfileView> {
 
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      backgroundColor: AppColors.greyPrimary,
+      backgroundColor: LightAppColors.greyPrimary,
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())
           : Container(
-              color: AppColors.greyPrimary,
+              color: LightAppColors.greyPrimary,
               child: MediaQuery(
                 data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: SingleChildScrollView(
@@ -103,7 +103,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     'user_account_is_currently_blocked'.tr(),
                                     textAlign: TextAlign.center,
                                     style: CustomTextStyle.sf17w400(
-                                            AppColors.greyTernary)
+                                            LightAppColors.greyTernary)
                                         .copyWith(fontWeight: FontWeight.w800),
                                   ),
                                 ),
@@ -128,7 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         EdgeInsets.only(top: 8.h, bottom: 8.h),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: AppColors.whitePrimary,
+                                        color: LightAppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -173,7 +173,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             '${owner?.firstname ?? ''}\n${owner?.lastname ?? ''}',
                                                             style: CustomTextStyle
                                                                     .sf18w800(
-                                                                        AppColors
+                                                                        LightAppColors
                                                                             .blackSecondary)
                                                                 .copyWith(
                                                                     fontWeight:
@@ -319,7 +319,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 70.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: AppColors
+                                                              color: LightAppColors
                                                                   .greyPrimary,
                                                               borderRadius:
                                                                   BorderRadius
@@ -331,7 +331,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 'grade'.tr(),
                                                                 style: CustomTextStyle
                                                                     .sf12w400(
-                                                                        AppColors
+                                                                        LightAppColors
                                                                             .purplePrimary),
                                                               ),
                                                             ),
@@ -463,7 +463,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 90.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: AppColors
+                                                              color: LightAppColors
                                                                   .yellowBackground
                                                                   .withOpacity(
                                                                       0.2),
@@ -482,7 +482,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                     'rating'
                                                                         .tr(),
                                                                     style: CustomTextStyle.sf12w400(
-                                                                        AppColors
+                                                                        LightAppColors
                                                                             .yellowBackground),
                                                                   ),
                                                                   SizedBox(
@@ -523,8 +523,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 : owner!.ranking
                                                                     .toString(),
                                                             style: CustomTextStyle
-                                                                .sf17w400(AppColors
-                                                                    .yellowBackground),
+                                                                .sf17w400(
+                                                                    LightAppColors
+                                                                        .yellowBackground),
                                                           ),
                                                         ),
                                                       ),
@@ -553,7 +554,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             width: 75.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: AppColors
+                                                              color: LightAppColors
                                                                   .blueSecondary
                                                                   .withOpacity(
                                                                       0.2),
@@ -567,7 +568,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                 'reviews'.tr(),
                                                                 style: CustomTextStyle
                                                                     .sf12w400(
-                                                                        AppColors
+                                                                        LightAppColors
                                                                             .blueSecondary),
                                                               ),
                                                             ),
@@ -585,8 +586,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                                     .toString() ??
                                                                 '0',
                                                             style: CustomTextStyle
-                                                                .sf17w400(AppColors
-                                                                    .blueSecondary),
+                                                                .sf17w400(
+                                                                    LightAppColors
+                                                                        .blueSecondary),
                                                             textAlign:
                                                                 TextAlign.left,
                                                           ),
@@ -608,14 +610,14 @@ class _ProfileViewState extends State<ProfileView> {
                                                   'tasks_created'.tr(),
                                                   style:
                                                       CustomTextStyle.sf13w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .greySecondary),
                                                 ),
                                                 Text(
                                                   owner!.countOrdersCreate
                                                       .toString(),
-                                                  style: CustomTextStyle
-                                                          .sf17w400(AppColors
+                                                  style: CustomTextStyle.sf17w400(
+                                                          LightAppColors
                                                               .blackSecondary)
                                                       .copyWith(
                                                           fontWeight:
@@ -633,14 +635,14 @@ class _ProfileViewState extends State<ProfileView> {
                                                   'completed_tasks'.tr(),
                                                   style:
                                                       CustomTextStyle.sf13w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .greySecondary),
                                                 ),
                                                 Text(
                                                   owner!.countOrdersComplete
                                                       .toString(),
-                                                  style: CustomTextStyle
-                                                          .sf17w400(AppColors
+                                                  style: CustomTextStyle.sf17w400(
+                                                          LightAppColors
                                                               .blackSecondary)
                                                       .copyWith(
                                                           fontWeight:
@@ -660,7 +662,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Container(
                                       width: 100.w,
                                       decoration: BoxDecoration(
-                                        color: AppColors.whitePrimary,
+                                        color: LightAppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -693,11 +695,11 @@ class _ProfileViewState extends State<ProfileView> {
                                                                       .isPassportExist!
                                                               ? CustomTextStyle
                                                                   .sf12w400(
-                                                                      AppColors
+                                                                      LightAppColors
                                                                           .blackSecondary)
                                                               : CustomTextStyle
                                                                   .sf13w400(
-                                                                      AppColors
+                                                                      LightAppColors
                                                                           .greySecondary),
                                                         ),
                                                       ),
@@ -746,11 +748,11 @@ class _ProfileViewState extends State<ProfileView> {
                                                                       .isVerified!
                                                               ? CustomTextStyle
                                                                   .sf12w400(
-                                                                      AppColors
+                                                                      LightAppColors
                                                                           .blackSecondary)
                                                               : CustomTextStyle
                                                                   .sf13w400(
-                                                                      AppColors
+                                                                      LightAppColors
                                                                           .greySecondary),
                                                         ),
                                                       ),
@@ -779,7 +781,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           height: 45.h,
                                           width: 327.w,
                                           decoration: BoxDecoration(
-                                            color: AppColors.whitePrimary,
+                                            color: LightAppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                           ),
@@ -792,7 +794,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                 color: owner != null &&
                                                         owner!.cv != null &&
                                                         owner!.cv!.isNotEmpty
-                                                    ? AppColors.blueSecondary
+                                                    ? LightAppColors
+                                                        .blueSecondary
                                                     : Colors.grey,
                                               ),
                                               GestureDetector(
@@ -808,8 +811,8 @@ class _ProfileViewState extends State<ProfileView> {
                                                       left: 10.w),
                                                   child: Text(
                                                     'view_resume'.tr(),
-                                                    style: CustomTextStyle
-                                                            .sf12w400(AppColors
+                                                    style: CustomTextStyle.sf12w400(
+                                                            LightAppColors
                                                                 .blackSecondary)
                                                         .copyWith(
                                                       color: owner != null &&
@@ -817,7 +820,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                                   null &&
                                                               owner!.cv!
                                                                   .isNotEmpty
-                                                          ? AppColors
+                                                          ? LightAppColors
                                                               .blueSecondary
                                                           : Colors.grey,
                                                     ),
@@ -853,16 +856,16 @@ class _ProfileViewState extends State<ProfileView> {
                                   Text(
                                     'work_experience'.tr(),
                                     style: CustomTextStyle.sf18w800(
-                                        AppColors.blackSecondary),
+                                        LightAppColors.blackSecondary),
                                   ),
                                   SizedBox(height: 20.h),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: AppColors.whitePrimary,
+                                      color: LightAppColors.whitePrimary,
                                       borderRadius: BorderRadius.circular(10.r),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.shadowPrimary,
+                                          color: LightAppColors.shadowPrimary,
                                           offset: const Offset(0, 4),
                                           blurRadius: 45.r,
                                         )
@@ -883,7 +886,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                 : 'work_experience_is_not_specified'
                                                     .tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackError),
+                                                LightAppColors.blackError),
                                           ),
                                           if (owner != null &&
                                               owner!.listPhoto.isNotEmpty)
@@ -946,7 +949,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                   Container(
                                                     height: 39.h,
                                                     decoration: BoxDecoration(
-                                                      color: AppColors
+                                                      color: LightAppColors
                                                           .whiteSecondary,
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -963,8 +966,9 @@ class _ProfileViewState extends State<ProfileView> {
                                                           Text(
                                                             'translation'.tr(),
                                                             style: CustomTextStyle
-                                                                .sf17w400(AppColors
-                                                                    .blueSecondary),
+                                                                .sf17w400(
+                                                                    LightAppColors
+                                                                        .blueSecondary),
                                                           )
                                                         ],
                                                       ),
@@ -985,7 +989,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       children: [
                                         SvgPicture.asset(
                                             'assets/icons/warning-2.svg',
-                                            color: AppColors.redPrimary),
+                                            color: LightAppColors.redPrimary),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.of(context).pushNamed(
@@ -1000,10 +1004,11 @@ class _ProfileViewState extends State<ProfileView> {
                                             child: Text(
                                               'report_a_user'.tr(),
                                               style: CustomTextStyle.sf12w400(
-                                                      AppColors.blackSecondary)
+                                                      LightAppColors
+                                                          .blackSecondary)
                                                   .copyWith(
-                                                      color:
-                                                          AppColors.redPrimary),
+                                                      color: LightAppColors
+                                                          .redPrimary),
                                             ),
                                           ),
                                         )
@@ -1016,7 +1021,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     Text(
                                       'reviews'.tr(),
                                       style: CustomTextStyle.sf18w800(
-                                          AppColors.blackSecondary),
+                                          LightAppColors.blackSecondary),
                                     ),
                                   SizedBox(height: 15.h),
                                   if (owner?.reviews != [])
@@ -1054,7 +1059,7 @@ class _ProfileViewState extends State<ProfileView> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: AppColors.whitePrimary,
+        color: LightAppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
       child: Row(
@@ -1067,8 +1072,8 @@ class _ProfileViewState extends State<ProfileView> {
                   ? Container(
                       height: 34.h,
                       width: 34.h,
-                      decoration:
-                          const BoxDecoration(color: AppColors.shadowPrimary),
+                      decoration: const BoxDecoration(
+                          color: LightAppColors.shadowPrimary),
                     )
                   : CachedNetworkImage(
                       height: 34.h,
@@ -1099,8 +1104,8 @@ class _ProfileViewState extends State<ProfileView> {
                     if (review.date != '')
                       Text(
                         _textData(review.date),
-                        style:
-                            CustomTextStyle.sf13w400(AppColors.greySecondary),
+                        style: CustomTextStyle.sf13w400(
+                            LightAppColors.greySecondary),
                       ),
                   ],
                 ),
@@ -1113,7 +1118,8 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -1122,7 +1128,7 @@ class _ProfileViewState extends State<ProfileView> {
                 width: 200.w,
                 child: Text(
                   review.message,
-                  style: CustomTextStyle.sf13w400(AppColors.blackAccent),
+                  style: CustomTextStyle.sf13w400(LightAppColors.blackAccent),
                   maxLines: null,
                 ),
               ),
@@ -1137,7 +1143,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Container(
                         height: 39.h,
                         decoration: BoxDecoration(
-                          color: AppColors.whiteSecondary,
+                          color: LightAppColors.whiteSecondary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(
@@ -1149,7 +1155,7 @@ class _ProfileViewState extends State<ProfileView> {
                               Text(
                                 'translation'.tr(),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blueSecondary),
+                                    LightAppColors.blueSecondary),
                               )
                             ],
                           ),
@@ -1210,7 +1216,7 @@ class _ProfileViewState extends State<ProfileView> {
                 user?.rus ?? true && context.locale.languageCode == 'ru'
                     ? activitiy.description ?? ''
                     : activitiy.engDescription ?? '',
-                style: CustomTextStyle.sf12w400(AppColors.blackSecondary)),
+                style: CustomTextStyle.sf12w400(LightAppColors.blackSecondary)),
           ],
         ),
       ),

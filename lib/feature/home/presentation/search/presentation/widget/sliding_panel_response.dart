@@ -195,7 +195,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: AppColors.whitePrimary,
+            color: LightAppColors.whitePrimary,
           ),
           child: Stack(
             children: [
@@ -217,13 +217,13 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                         onTap: () async {
                           await respond(false);
                         },
-                        btnColor: AppColors.yellowPrimary,
+                        btnColor: LightAppColors.yellowPrimary,
                         textLabel: Text(
                           widget.selectTask?.isTask ?? false
                               ? 'respond'.tr()
                               : 'accept_the_offer'.tr(),
                           style: CustomTextStyle.sf17w600(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ),
                     ),
@@ -238,14 +238,14 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                               onTap: () async {
                                 await respond(true);
                               },
-                              btnColor: AppColors.purplePrimary,
+                              btnColor: LightAppColors.purplePrimary,
                               textLabel: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'respond_and_become_the_first'.tr(),
                                     style: CustomTextStyle.sf17w400(
-                                        AppColors.whitePrimary),
+                                        LightAppColors.whitePrimary),
                                   ),
                                   const SizedBox(
                                     width: 4,
@@ -322,7 +322,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
               width: 81.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.r),
-                color: AppColors.bluePrimary,
+                color: LightAppColors.bluePrimary,
               ),
             ),
           ],
@@ -340,7 +340,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                 widget.selectTask?.isTask ?? false
                     ? 'your_response_to_the_task'.tr()
                     : 'your_response_to_the_offer'.tr(),
-                style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
               ),
               SizedBox(height: 30.h),
               ScaleButton(
@@ -350,7 +350,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                   height: 55.h,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -359,8 +359,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.selectTask?.currency?.name)}',
-                        style:
-                            CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        style: CustomTextStyle.sf15w400(
+                            LightAppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       Row(
@@ -385,10 +385,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                             ],
                             contentPadding: EdgeInsets.zero,
                             hintText: '',
-                            fillColor: AppColors.greyActive,
+                            fillColor: LightAppColors.greyActive,
                             maxLines: null,
                             style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                             textEditingController: coastController,
                           ),
                         ],
@@ -405,7 +405,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.greyActive,
+                    color: LightAppColors.greyActive,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -414,8 +414,8 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                     children: [
                       Text(
                         'covering_letter'.tr(),
-                        style:
-                            CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        style: CustomTextStyle.sf15w400(
+                            LightAppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       CustomTextField(
@@ -429,10 +429,10 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           openSlidingEvent(700.h);
                           setState(() {});
                         },
-                        style:
-                            CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf17w400(
+                            LightAppColors.blackSecondary),
                         textEditingController: descriptionTextController,
-                        fillColor: AppColors.greyActive,
+                        fillColor: LightAppColors.greyActive,
                         onChanged: (value) {
                           setState(() {});
                         },
@@ -448,7 +448,7 @@ class _SlidingPanelResponseState extends State<SlidingPanelResponse> {
                           Text(
                             '${descriptionTextController.text.length}/100',
                             style: CustomTextStyle.sf13w400(
-                                AppColors.greySecondary),
+                                LightAppColors.greySecondary),
                           )
                         ],
                       ),

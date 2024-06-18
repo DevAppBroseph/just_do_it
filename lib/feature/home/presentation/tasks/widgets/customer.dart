@@ -105,7 +105,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -116,7 +116,7 @@ class _CustomerState extends State<Customer> {
                             child: Text(
                               'my_tasks'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -137,7 +137,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/note2.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -151,7 +151,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'all_responses'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -159,7 +160,8 @@ class _CustomerState extends State<Customer> {
                                                 'tasks_that_i_have_responded_to'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -176,7 +178,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -206,7 +209,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/clipboard-tick.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -220,7 +223,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'confirmed'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -228,7 +232,8 @@ class _CustomerState extends State<Customer> {
                                                 'i_was_chosen_as_a_performer'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -245,7 +250,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -275,7 +281,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/document-like.svg',
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -289,7 +295,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'closed'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -297,7 +304,8 @@ class _CustomerState extends State<Customer> {
                                                 'tasks_that_were_completed_by_me'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -314,7 +322,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -340,7 +349,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -357,7 +366,7 @@ class _CustomerState extends State<Customer> {
                               child: Text(
                                 'my_offers'.tr(),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackAccent),
+                                    LightAppColors.blackAccent),
                               ),
                             ),
                           ),
@@ -376,7 +385,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/flash-circle.svg',
-                                    color: AppColors.blueSecondary,
+                                    color: LightAppColors.blueSecondary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -390,7 +399,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'open'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -398,7 +408,8 @@ class _CustomerState extends State<Customer> {
                                                 'waiting_for_the_customer_response'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -413,7 +424,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -457,7 +469,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'accepted'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -465,7 +478,8 @@ class _CustomerState extends State<Customer> {
                                                 'there_is_a_response_from_the_customer'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -480,7 +494,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -510,7 +525,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/verify.svg',
-                                    color: AppColors.purplePrimary,
+                                    color: LightAppColors.purplePrimary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -524,7 +539,8 @@ class _CustomerState extends State<Customer> {
                                             Text(
                                               'closed'.tr(),
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -532,7 +548,8 @@ class _CustomerState extends State<Customer> {
                                                 'the_deal_has_been_implemented'
                                                     .tr(),
                                                 style: CustomTextStyle.sf13w400(
-                                                    AppColors.greySecondary),
+                                                    LightAppColors
+                                                        .greySecondary),
                                               ),
                                             ),
                                           ],
@@ -547,7 +564,8 @@ class _CustomerState extends State<Customer> {
                                                       .toString()
                                                   : '0',
                                               style: CustomTextStyle.sf17w400(
-                                                  AppColors.blackSecondary),
+                                                  LightAppColors
+                                                      .blackSecondary),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -573,7 +591,7 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: AppColors.whitePrimary,
+                        color: LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -584,7 +602,7 @@ class _CustomerState extends State<Customer> {
                             child: Text(
                               'favourites'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                           GestureDetector(
@@ -605,7 +623,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/edit.svg',
-                                    color: AppColors.greyActive,
+                                    color: LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -617,7 +635,7 @@ class _CustomerState extends State<Customer> {
                                           child: Text(
                                             'tasks'.tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackSecondary),
+                                                LightAppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -638,7 +656,7 @@ class _CustomerState extends State<Customer> {
                                                       .toString(),
                                                   style:
                                                       CustomTextStyle.sf17w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -670,7 +688,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user1.svg',
-                                    color: AppColors.greyActive,
+                                    color: LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -682,7 +700,7 @@ class _CustomerState extends State<Customer> {
                                           child: Text(
                                             'customers'.tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackSecondary),
+                                                LightAppColors.blackSecondary),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -702,7 +720,7 @@ class _CustomerState extends State<Customer> {
                                                       .toString(),
                                                   style:
                                                       CustomTextStyle.sf17w400(
-                                                          AppColors
+                                                          LightAppColors
                                                               .blackSecondary),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -756,10 +774,11 @@ class _CustomerState extends State<Customer> {
 
                     getListTask();
                   },
-                  btnColor: AppColors.yellowPrimary,
+                  btnColor: LightAppColors.yellowPrimary,
                   textLabel: Text(
                     'create_offer'.tr(),
-                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                   ),
                 ),
               ),

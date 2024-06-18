@@ -69,7 +69,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
           child: Stack(
             children: [
               Scaffold(
-                backgroundColor: AppColors.greyPrimary,
+                backgroundColor: LightAppColors.greyPrimary,
                 body: Stack(
                   children: [
                     SafeArea(
@@ -107,7 +107,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                                   child: Text(
                                     widget.title,
                                     style: CustomTextStyle.sf22w700(
-                                        AppColors.blackSecondary),
+                                        LightAppColors.blackSecondary),
                                   ),
                                 )
                               ],
@@ -202,13 +202,13 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
 
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

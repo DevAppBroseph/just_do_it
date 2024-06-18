@@ -34,7 +34,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -53,7 +53,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   const Spacer(),
                   Text(
                     'message'.tr(),
-                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),

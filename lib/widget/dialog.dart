@@ -64,7 +64,7 @@ class MessageDialogs {
                     minLeadingWidth: 10,
                     leading: SvgPicture.asset(
                       'assets/icons/chat.svg',
-                      color: AppColors.yellowBackground,
+                      color: LightAppColors.yellowBackground,
                       width: 30,
                       height: 30,
                     ),
@@ -80,8 +80,8 @@ class MessageDialogs {
                         SizedBox(width: 8.h),
                         Text(
                           'Показать оригинал',
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.blueSecondary),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.blueSecondary),
                         )
                       ],
                     ),
@@ -138,7 +138,7 @@ class TaskDialogs {
                     minLeadingWidth: 10,
                     leading: SvgPicture.asset(
                       'assets/icons/chat.svg',
-                      color: AppColors.yellowBackground,
+                      color: LightAppColors.yellowBackground,
                       width: 30,
                       height: 30,
                     ),
@@ -153,8 +153,8 @@ class TaskDialogs {
                         SizedBox(width: 8.h),
                         Text(
                           'Показать оригинал',
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.blueSecondary),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.blueSecondary),
                         )
                       ],
                     ),

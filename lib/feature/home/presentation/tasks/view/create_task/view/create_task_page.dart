@@ -273,7 +273,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             backgroundColor: Colors.transparent,
             content: Container(
               decoration: BoxDecoration(
-                color: AppColors.whiteSecondary,
+                color: LightAppColors.whiteSecondary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
@@ -282,12 +282,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   SizedBox(height: 10.h),
                   Text(
                     'choose_what_to_download'.tr(),
-                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                   ),
                   ListTile(
                     title: Text(
                       'photo'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackError),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -297,7 +299,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   ListTile(
                     title: Text(
                       'document'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackError),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -349,7 +352,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -377,18 +380,18 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         Text(
                           'creating_a_task'.tr(),
                           style: CustomTextStyle.sf22w700(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       if (!isTask)
                         Text(
                           'creating_an_offer'.tr(),
                           style: CustomTextStyle.sf22w700(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       Text(
                         ' ${page + 1}/2',
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.greySecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.greySecondary),
                       )
                     ],
                   ),
@@ -399,7 +402,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   child: Container(
                     height: 40.h,
                     decoration: BoxDecoration(
-                      color: AppColors.greyError,
+                      color: LightAppColors.greyError,
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Stack(
@@ -413,7 +416,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                             height: 40.h,
                             width: widthTabBarItem,
                             decoration: BoxDecoration(
-                              color: AppColors.yellowPrimary,
+                              color: LightAppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topLeft: !state
                                     ? Radius.circular(20.r)
@@ -455,7 +458,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                     child: Text(
                                       'as_a_customer'.tr(),
                                       style: CustomTextStyle.sf17w400(
-                                          AppColors.blackSecondary),
+                                          LightAppColors.blackSecondary),
                                     ),
                                   ),
                                 ),
@@ -485,7 +488,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                     child: Text(
                                       'as_an_executor'.tr(),
                                       style: CustomTextStyle.sf17w400(
-                                          AppColors.blackSecondary),
+                                          LightAppColors.blackSecondary),
                                     ),
                                   ),
                                 ),
@@ -594,14 +597,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         }
                       }
                     },
-                    btnColor: AppColors.yellowPrimary,
+                    btnColor: LightAppColors.yellowPrimary,
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()
                           : isTask
                               ? 'сreate_a_task'.tr()
                               : 'create_offer'.tr(),
-                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w600(
+                          LightAppColors.blackSecondary),
                     ),
                   ),
                 ),

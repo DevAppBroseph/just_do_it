@@ -78,7 +78,7 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                           child: Text(
                             'В архиве',
                             style: CustomTextStyle.sf22w700(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           ),
                         )
                       ],
@@ -133,10 +133,11 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
                     ),
                   );
                 },
-                btnColor: AppColors.yellowPrimary,
+                btnColor: LightAppColors.yellowPrimary,
                 textLabel: Text(
                   'Создать новое',
-                  style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                  style:
+                      CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                 ),
               ),
             ),
@@ -149,12 +150,12 @@ class _ArchiveTasksViewState extends State<ArchiveTasksView> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

@@ -58,11 +58,11 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whitePrimary,
+            color: LightAppColors.whitePrimary,
             borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadowPrimary,
+                color: LightAppColors.shadowPrimary,
                 offset: const Offset(0, 4),
                 blurRadius: 45.r,
               )
@@ -100,7 +100,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                     "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
                                     wrapWords: false,
                                     style: CustomTextStyle.sf18w800(
-                                            AppColors.blackSecondary)
+                                            LightAppColors.blackSecondary)
                                         .copyWith(fontWeight: FontWeight.w600),
                                     maxLines: 2,
                                   ),
@@ -110,7 +110,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                       Text(
                                         'rating'.tr(),
                                         style: CustomTextStyle.sf15w400(
-                                            AppColors.greySecondary),
+                                            LightAppColors.greySecondary),
                                       ),
                                       SizedBox(width: 8.w),
                                       SvgPicture.asset('assets/icons/star.svg'),
@@ -124,7 +124,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                                 .ranking
                                                 .toString(),
                                         style: CustomTextStyle.sf17w400(
-                                                AppColors.blackSecondary)
+                                                LightAppColors.blackSecondary)
                                             .copyWith(
                                                 fontWeight: FontWeight.w500),
                                       ),
@@ -136,7 +136,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                             Text(
                               'before'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary)
+                                      LightAppColors.blackSecondary)
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
@@ -145,7 +145,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                             Text(
                               '${DataFormatter.addSpacesToNumber(widget.task.answers[index].price ?? 0)} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.task.currency?.name)} ',
                               style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary)
+                                      LightAppColors.blackSecondary)
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -156,7 +156,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                             Text(
                               'completed_tasks'.tr(),
                               style: CustomTextStyle.sf13w400(
-                                  AppColors.greySecondary),
+                                  LightAppColors.greySecondary),
                             ),
                             SizedBox(width: 4.w),
                             if (widget.task.answers[index].owner != null)
@@ -165,7 +165,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                     .countOrdersComplete
                                     .toString(),
                                 style: CustomTextStyle.sf13w400(
-                                    AppColors.blackSecondary),
+                                    LightAppColors.blackSecondary),
                               ),
                           ],
                         ),
@@ -185,7 +185,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                     widget.task.answers[index].description!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: CustomTextStyle.sf17w400(AppColors.blackError),
+                    style: CustomTextStyle.sf17w400(LightAppColors.blackError),
                   ),
                 ),
               SizedBox(
@@ -210,7 +210,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                           chatBloc.editChatId(null);
                         }
                       },
-                      btnColor: AppColors.greyTernary,
+                      btnColor: LightAppColors.greyTernary,
                       textLabel: Text(
                         'write_to_the_chat'.tr(),
                         style: TextStyle(
@@ -252,7 +252,7 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                           DataUpdater().updateTasksAndProfileData(context);
                           Navigator.pop(context);
                         },
-                        btnColor: AppColors.yellowPrimary,
+                        btnColor: LightAppColors.yellowPrimary,
                         textLabel: Text(
                           'dones'.tr(),
                           style: TextStyle(

@@ -64,8 +64,8 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       Text(
                         'personal_account'.tr(),
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.blackSecondary),
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -85,7 +85,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                                       height: 10.w,
                                       width: 10.w,
                                       decoration: BoxDecoration(
-                                        color: AppColors.yellowSecondary,
+                                        color: LightAppColors.yellowSecondary,
                                         borderRadius:
                                             BorderRadius.circular(20.r),
                                       ),
@@ -120,13 +120,13 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               Text(
                                 'profile'.tr(),
                                 style: CustomTextStyle.sf19w800(
-                                        AppColors.blackSecondary)
+                                        LightAppColors.blackSecondary)
                                     .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: AppColors.greySecondary,
+                                color: LightAppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],
@@ -149,13 +149,13 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               Text(
                                 'grades'.tr(),
                                 style: CustomTextStyle.sf19w800(
-                                        AppColors.blackSecondary)
+                                        LightAppColors.blackSecondary)
                                     .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: AppColors.greySecondary,
+                                color: LightAppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],
@@ -178,13 +178,13 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               Text(
                                 'rating_and_reviews'.tr(),
                                 style: CustomTextStyle.sf19w800(
-                                        AppColors.blackSecondary)
+                                        LightAppColors.blackSecondary)
                                     .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
                                 Icons.arrow_forward_ios,
-                                color: AppColors.greySecondary,
+                                color: LightAppColors.greySecondary,
                                 size: 16.h,
                               ),
                             ],

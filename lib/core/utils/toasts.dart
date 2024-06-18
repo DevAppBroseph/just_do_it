@@ -38,7 +38,7 @@ class CustomAlert {
             padding: EdgeInsets.all(10.h),
             child: Text(
               text,
-              style: CustomTextStyle.sf17w400(AppColors.whitePrimary),
+              style: CustomTextStyle.sf17w400(LightAppColors.whitePrimary),
             ),
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_do_it/constants/colors.dart';
 
 import 'app_theme.dart';
 import 'settings_bloc.dart';
@@ -32,13 +33,21 @@ class _SettingsScopeState extends State<SettingsScope>
   @override
   void setThemeMode(ThemeMode themeMode) {
     widget.settingsBloc.add(UpdateThemeSettingsEvent(
-        appTheme: AppTheme(mode: themeMode, seed: theme.seed)));
+        appTheme: AppTheme(
+            mode: themeMode,
+            seed: theme.seed,
+            lightColors: LightAppColors(),
+            darkColors: DarkAppColors())));
   }
 
   @override
   void setThemeSeedColor(Color color) {
     widget.settingsBloc.add(UpdateThemeSettingsEvent(
-        appTheme: AppTheme(mode: theme.mode, seed: color)));
+        appTheme: AppTheme(
+            mode: theme.mode,
+            seed: color,
+            lightColors: LightAppColors(),
+            darkColors: DarkAppColors())));
   }
 
   @override
@@ -73,7 +82,6 @@ class _InheritedSettingsScope extends InheritedWidget {
   final SettingsState state;
 
   @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return true;
-  }
+  bool updateShouldNotify(_InheritedSettingsScope oldWidget) =>
+      state != oldWidget.state;
 }

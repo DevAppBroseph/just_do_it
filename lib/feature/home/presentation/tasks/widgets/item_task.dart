@@ -19,8 +19,8 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
       child: Container(
         decoration: BoxDecoration(
           color: task.isBanned == null || !task.isBanned!
-              ? AppColors.whitePrimary
-              : AppColors.greyBackdround.withOpacity(0.06),
+              ? LightAppColors.whitePrimary
+              : LightAppColors.greyBackdround.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
           // boxShadow: [
           // BoxShadow(
@@ -90,7 +90,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                     child: Text(
                                       _textCountry(task, user),
                                       style: CustomTextStyle.sf17w400(
-                                          AppColors.blackAccent),
+                                          LightAppColors.blackAccent),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -99,7 +99,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                   Text(
                                     _textData(task.dateStart, user),
                                     style: CustomTextStyle.sf13w400(
-                                        AppColors.greySecondary),
+                                        LightAppColors.greySecondary),
                                   ),
                                 ],
                               ),

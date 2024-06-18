@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_theme.dart';
@@ -22,6 +23,7 @@ final class ThemeDataSourceLocal implements ThemeDataSource {
   Future<void> setTheme(AppTheme theme) async {
     await _sharedPreferences.setInt('theme.seed_color', theme.seed.value);
     await _sharedPreferences.setString('theme.mode', codec.encode(theme.mode));
+    // Сохранение дополнительных параметров тем, если нужно
   }
 
   @override
@@ -31,7 +33,12 @@ final class ThemeDataSourceLocal implements ThemeDataSource {
 
     if (type == null || seedColor == null) return null;
 
-    return AppTheme(seed: Color(seedColor), mode: codec.decode(type));
+    return AppTheme(
+      seed: Color(seedColor),
+      mode: codec.decode(type),
+      lightColors: LightAppColors(),
+      darkColors: DarkAppColors(),
+    );
   }
 }
 

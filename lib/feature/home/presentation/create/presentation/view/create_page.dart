@@ -71,14 +71,14 @@ class _CreatePageState extends State<CreatePage> {
       return MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Container(
                 height: 130.h,
                 decoration: const BoxDecoration(
-                  color: AppColors.greyPrimary,
+                  color: LightAppColors.greyPrimary,
                   boxShadow: [],
                 ),
                 child: Column(
@@ -108,7 +108,7 @@ class _CreatePageState extends State<CreatePage> {
                                   width: 240.w,
                                   height: 36.h,
                                   child: CustomTextField(
-                                    fillColor: AppColors.greyAccent,
+                                    fillColor: LightAppColors.greyAccent,
                                     prefixIcon: Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -162,7 +162,7 @@ class _CreatePageState extends State<CreatePage> {
                                     },
                                     hintText: 'search'.tr(),
                                     hintStyle: CustomTextStyle.sf15w400(
-                                            AppColors.greySecondary)
+                                            LightAppColors.greySecondary)
                                         .copyWith(
                                             overflow: TextOverflow.ellipsis),
                                     textEditingController: searchController,
@@ -189,7 +189,7 @@ class _CreatePageState extends State<CreatePage> {
                                                       height: 10.w,
                                                       width: 10.w,
                                                       decoration: BoxDecoration(
-                                                        color: AppColors
+                                                        color: LightAppColors
                                                             .yellowSecondary,
                                                         borderRadius:
                                                             BorderRadius
@@ -302,11 +302,11 @@ class _CreatePageState extends State<CreatePage> {
                                     );
                                   }
                                 },
-                                btnColor: AppColors.yellowPrimary,
+                                btnColor: LightAppColors.yellowPrimary,
                                 textLabel: Text(
                                   'create'.tr(),
                                   style: CustomTextStyle.sf17w600(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                               ),
                             ),
@@ -329,7 +329,7 @@ class _CreatePageState extends State<CreatePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
           child: Text('what_needs_to_be_done'.tr(),
-              style: CustomTextStyle.sf19w800(AppColors.blackSecondary)),
+              style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.8,
@@ -402,11 +402,11 @@ class _CreatePageState extends State<CreatePage> {
         }),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whitePrimary,
+            color: LightAppColors.whitePrimary,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadowPrimary,
+                color: LightAppColors.shadowPrimary,
                 offset: const Offset(0, -4),
                 blurRadius: 55.r,
               )
@@ -426,7 +426,7 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
               ),
               if (choice.isNotEmpty && title.length < 20)
                 Padding(
@@ -435,7 +435,8 @@ class _CreatePageState extends State<CreatePage> {
                     width: 90.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -448,7 +449,8 @@ class _CreatePageState extends State<CreatePage> {
                     width: 20.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.sf15w400(AppColors.greySecondary),
+                      style: CustomTextStyle.sf15w400(
+                          LightAppColors.greySecondary),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -462,7 +464,7 @@ class _CreatePageState extends State<CreatePage> {
                     )
                   : const Icon(
                       Icons.keyboard_arrow_down,
-                      color: AppColors.greySecondary,
+                      color: LightAppColors.greySecondary,
                     ),
             ],
           ),
@@ -495,11 +497,11 @@ class _CreatePageState extends State<CreatePage> {
         duration: const Duration(milliseconds: 300),
         height: height,
         decoration: BoxDecoration(
-          color: AppColors.whitePrimary,
+          color: LightAppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: AppColors.shadowPrimary,
+              color: LightAppColors.shadowPrimary,
               offset: const Offset(0, -4),
               blurRadius: 55.r,
             )
@@ -570,7 +572,8 @@ class _CreatePageState extends State<CreatePage> {
                     width: 250.w,
                     child: Text(
                       label,
-                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                     ),
                   ),
                   const Spacer(),

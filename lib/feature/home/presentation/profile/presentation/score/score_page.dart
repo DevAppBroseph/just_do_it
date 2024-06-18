@@ -87,7 +87,7 @@ class _ScorePageState extends State<ScorePage> {
                     data: MediaQuery.of(context)
                         .copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: Scaffold(
-                      backgroundColor: AppColors.whitePrimary,
+                      backgroundColor: LightAppColors.whitePrimary,
                       resizeToAvoidBottomInset: false,
                       body: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -95,7 +95,7 @@ class _ScorePageState extends State<ScorePage> {
                         children: [
                           Container(
                             height: 300.h,
-                            color: AppColors.purplePrimary,
+                            color: LightAppColors.purplePrimary,
                             child: Stack(
                               children: [
                                 Stack(
@@ -127,8 +127,9 @@ class _ScorePageState extends State<ScorePage> {
                                                     Text(
                                                       'grades'.tr(),
                                                       style: CustomTextStyle
-                                                              .sf19w800(AppColors
-                                                                  .whitePrimary)
+                                                              .sf19w800(
+                                                                  LightAppColors
+                                                                      .whitePrimary)
                                                           .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -169,8 +170,9 @@ class _ScorePageState extends State<ScorePage> {
                                                         user.balance!
                                                             .toString(),
                                                         style: CustomTextStyle
-                                                                .sf19w800(AppColors
-                                                                    .whitePrimary)
+                                                                .sf19w800(
+                                                                    LightAppColors
+                                                                        .whitePrimary)
                                                             .copyWith(
                                                                 fontWeight:
                                                                     FontWeight
@@ -182,8 +184,9 @@ class _ScorePageState extends State<ScorePage> {
                                                       AutoSizeText(
                                                         'points'.tr(),
                                                         style: CustomTextStyle
-                                                                .sf19w800(AppColors
-                                                                    .whitePrimary)
+                                                                .sf19w800(
+                                                                    LightAppColors
+                                                                        .whitePrimary)
                                                             .copyWith(
                                                                 fontWeight:
                                                                     FontWeight
@@ -226,8 +229,9 @@ class _ScorePageState extends State<ScorePage> {
                                                   child: AutoSizeText(
                                                     gradeName,
                                                     style: CustomTextStyle
-                                                            .sf19w800(AppColors
-                                                                .whitePrimary)
+                                                            .sf19w800(
+                                                                LightAppColors
+                                                                    .whitePrimary)
                                                         .copyWith(
                                                             fontWeight:
                                                                 FontWeight.w700,
@@ -266,7 +270,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 : 'find_out_where_you_can_spend_points_and_how_to_earn_them'
                                                     .tr(),
                                             style: CustomTextStyle.sf17w400(
-                                                    AppColors.whitePrimary)
+                                                    LightAppColors.whitePrimary)
                                                 .copyWith(
                                               fontSize: 14.5.sp,
                                               decoration:
@@ -743,7 +747,7 @@ class _ScorePageState extends State<ScorePage> {
                                               ? 'Наша система грейдов создана для активных пользователей. Создавайте новые заказы или привлекайте друзей, а мы начислим Вам баллы.\n\nБаллы можно использовать для оплаты сервисов и заказов.  Чем больше баллов Вы потратите, тем выше будет Ваш грейд, тем больше доверия со стороны заказчиков и полезных бонусов и привилегий от приложения.\n\nИтак, будьте активными, создавайте новые заказы, привлекайте друзей и зарабатывайте баллы.\n\nБолее подробно о том как заработать баллы - смотрите в разделе «вопрос-ответ»'
                                               : 'Our grading system is designed for active users. Create new orders or refer friends, and we will reward you with points.\n\nThese points can be used to pay for services and orders. The more points you spend, the higher your grade will be, leading to increased trust from customers and valuable bonuses and privileges from the application.\n\nSo, be active, create new orders, refer friends, and earn points.\n\nFor more details on how to earn points, please refer to the "FAQ" section.',
                                           style: CustomTextStyle.sf17w400(
-                                              AppColors.blackSecondary),
+                                              LightAppColors.blackSecondary),
                                         ),
                                       ),
                                       ListView.separated(
@@ -841,9 +845,9 @@ class _ScorePageState extends State<ScorePage> {
               borderRadius: BorderRadius.circular(3),
               child: LinearProgressIndicator(
                 value: value,
-                backgroundColor: AppColors.greySecondary,
+                backgroundColor: LightAppColors.greySecondary,
                 valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.purplePrimary),
+                    LightAppColors.purplePrimary),
               ),
             ),
           ),
@@ -856,12 +860,12 @@ class _ScorePageState extends State<ScorePage> {
                 title,
                 style: score >= mustCoins || title == proverkaNext
                     ? CustomTextStyle.sf12w400(
-                        AppColors.purplePrimary,
+                        LightAppColors.purplePrimary,
                       ).copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       )
-                    : CustomTextStyle.sf12w400(AppColors.greySecondary),
+                    : CustomTextStyle.sf12w400(LightAppColors.greySecondary),
               ),
             ),
           ),
@@ -871,7 +875,7 @@ class _ScorePageState extends State<ScorePage> {
             child: Text(
               mustCoins.toString(),
               textAlign: TextAlign.center,
-              style: CustomTextStyle.sf13w400(AppColors.blackAccent)
+              style: CustomTextStyle.sf13w400(LightAppColors.blackAccent)
                   .copyWith(fontSize: 12.sp),
             ),
           ),
@@ -882,9 +886,9 @@ class _ScorePageState extends State<ScorePage> {
 
   Color? colorBoxDecoration(int score, int mustCoin, String title) {
     if (score >= mustCoin && proverka == title) {
-      return AppColors.purplePrimary;
+      return LightAppColors.purplePrimary;
     } else {
-      return AppColors.greySecondary;
+      return LightAppColors.greySecondary;
     }
   }
 
@@ -895,11 +899,11 @@ class _ScorePageState extends State<ScorePage> {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       margin: EdgeInsets.symmetric(horizontal: 24.w),
       decoration: BoxDecoration(
-        color: AppColors.whitePrimary,
+        color: LightAppColors.whitePrimary,
         borderRadius: BorderRadius.circular(10.r),
         boxShadow: const [
           BoxShadow(
-            color: AppColors.shadowPrimary,
+            color: LightAppColors.shadowPrimary,
             blurRadius: 45,
             offset: Offset(0, 4),
           )
@@ -921,7 +925,7 @@ class _ScorePageState extends State<ScorePage> {
             children: [
               Text(
                 title,
-                style: CustomTextStyle.sf17w400(AppColors.purplePrimary)
+                style: CustomTextStyle.sf17w400(LightAppColors.purplePrimary)
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 3.h),
@@ -929,7 +933,7 @@ class _ScorePageState extends State<ScorePage> {
                 width: 230.w,
                 child: Text(
                   desc,
-                  style: CustomTextStyle.sf13w400(AppColors.blackAccent),
+                  style: CustomTextStyle.sf13w400(LightAppColors.blackAccent),
                 ),
               ),
             ],

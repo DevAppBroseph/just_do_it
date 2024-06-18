@@ -78,11 +78,11 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color filColor = fillColor ?? AppColors.greyPrimary;
+    Color filColor = fillColor ?? LightAppColors.greyPrimary;
     // Color hintTextColor = Colors.grey[400]!;
     height = height ?? 175.h;
     hintStyle = hintStyle ??
-        CustomTextStyle.sf15w400(AppColors.greySecondary)
+        CustomTextStyle.sf15w400(LightAppColors.greySecondary)
             .copyWith(overflow: TextOverflow.ellipsis);
 
     style = style ??
@@ -132,7 +132,7 @@ class CustomTextField extends StatelessWidget {
               suffixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
                 overflow: TextOverflow.ellipsis,
               ),
-              errorStyle: CustomTextStyle.sf11w400(AppColors.blackPrimary),
+              errorStyle: CustomTextStyle.sf11w400(LightAppColors.blackPrimary),
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(
@@ -233,7 +233,7 @@ class CustomTextField extends StatelessWidget {
               suffixStyle: CustomTextStyle.sf17w400(Colors.grey[400]!).copyWith(
                 overflow: TextOverflow.ellipsis,
               ),
-              errorStyle: CustomTextStyle.sf12w400(AppColors.blackPrimary),
+              errorStyle: CustomTextStyle.sf12w400(LightAppColors.blackPrimary),
               contentPadding: contentPadding,
               filled: true,
               border: OutlineInputBorder(

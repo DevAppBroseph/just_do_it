@@ -181,7 +181,7 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                           Text(
                             title,
                             style: CustomTextStyle.sf22w700(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           )
                         ],
                       ),
@@ -198,12 +198,12 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                 TextSpan(
                                   text: '${'code_confirm_sent'.tr()}\n',
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackAccent),
+                                      LightAppColors.blackAccent),
                                 ),
                                 TextSpan(
                                   text: value,
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                               ],
                             ),
@@ -230,11 +230,11 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                 width: 77.h,
                                 height: 70.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.greyPrimary,
+                                  color: LightAppColors.greyPrimary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 textStyle: CustomTextStyle.sf22w700(
-                                        AppColors.greySecondary)
+                                        LightAppColors.greySecondary)
                                     .copyWith(
                                   fontSize: 26,
                                   fontWeight: FontWeight.w600,
@@ -251,18 +251,18 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                   TextSpan(
                                     text: '${'resend_code'.tr()} ',
                                     style: CustomTextStyle.sf17w400(
-                                            AppColors.greyTernary)
+                                            LightAppColors.greyTernary)
                                         .copyWith(
                                       color: timer?.isActive ?? false
-                                          ? AppColors.greyTernary
-                                          : AppColors.blackError,
+                                          ? LightAppColors.greyTernary
+                                          : LightAppColors.blackError,
                                     ),
                                   ),
                                   if (timer?.isActive ?? false)
                                     TextSpan(
                                       text: '$currentSecond ${'sec'.tr()}.',
                                       style: CustomTextStyle.sf17w400(
-                                          AppColors.blackSecondary),
+                                          LightAppColors.blackSecondary),
                                     ),
                                 ],
                               ),
@@ -279,21 +279,21 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                           SizedBox(height: 20.h),
                           CustomButton(
                             onTap: onTapConfirm,
-                            btnColor: AppColors.yellowPrimary,
+                            btnColor: LightAppColors.yellowPrimary,
                             textLabel: Text(
                               'confirm'.tr(),
                               style: CustomTextStyle.sf17w600(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                           SizedBox(height: 18.h),
                           CustomButton(
                             onTap: () => Navigator.of(context).pop(),
-                            btnColor: AppColors.greyError,
+                            btnColor: LightAppColors.greyError,
                             textLabel: Text(
                               'back'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackAccent),
+                                  LightAppColors.blackAccent),
                             ),
                           ),
                         ],

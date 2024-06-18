@@ -38,7 +38,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             final user = context.read<ProfileBloc>().user;
@@ -76,7 +76,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                 Text(
                                   'notifications'.tr(),
                                   style: CustomTextStyle.sf22w700(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                                 const Spacer(),
                                 SizedBox(width: 12.w)
@@ -127,7 +127,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: CustomTextStyle
-                                                          .sf17w400(AppColors
+                                                          .sf17w400(LightAppColors
                                                               .blackSecondary),
                                                     ),
                                                   ),
@@ -142,7 +142,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                                     0, 10) ??
                                                             '-'),
                                                     style: CustomTextStyle
-                                                        .sf15w400(AppColors
+                                                        .sf15w400(LightAppColors
                                                             .greySecondary),
                                                   ),
                                                 ],
@@ -150,7 +150,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                               SizedBox(height: 21.h),
                                               Container(
                                                 height: 1.h,
-                                                color: AppColors.greyAccent,
+                                                color:
+                                                    LightAppColors.greyAccent,
                                               )
                                             ],
                                           ),
@@ -180,12 +181,12 @@ class _NotificationPageState extends State<NotificationPage> {
                                 }));
                               },
                               btnColor: proverka
-                                  ? AppColors.greyError
-                                  : AppColors.yellowPrimary,
+                                  ? LightAppColors.greyError
+                                  : LightAppColors.yellowPrimary,
                               textLabel: Text(
                                 'clear'.tr(),
                                 style: CustomTextStyle.sf17w400(
-                                    AppColors.blackAccent),
+                                    LightAppColors.blackAccent),
                               ),
                             ),
                           ),

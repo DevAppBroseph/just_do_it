@@ -63,7 +63,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: Stack(
           children: [
             SafeArea(
@@ -98,7 +98,7 @@ class _TaskAdditionalState extends State<TaskAdditional> {
                           child: Text(
                             widget.title,
                             style: CustomTextStyle.sf22w700(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                           ),
                         )
                       ],
@@ -143,12 +143,12 @@ class _TaskAdditionalState extends State<TaskAdditional> {
   Widget view() {
     if (owner != null) {
       return Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           body: ProfileView(owner: owner!));
     }
     if (selectTask != null) {
       return Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: TaskPage(
           task: selectTask!,
           openOwner: (owner) {

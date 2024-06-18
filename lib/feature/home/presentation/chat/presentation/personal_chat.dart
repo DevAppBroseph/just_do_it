@@ -70,15 +70,15 @@ class _PersonalChatState extends State<PersonalChat> {
       builder: (context) {
         return Scaffold(
           body: Container(
-            color: AppColors.greyPrimary,
+            color: LightAppColors.greyPrimary,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                    color: AppColors.greyPrimary,
+                    color: LightAppColors.greyPrimary,
                     child: SizedBox(height: 66.h)),
                 Container(
-                  color: AppColors.greyPrimary,
+                  color: LightAppColors.greyPrimary,
                   child: Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: Row(
@@ -93,7 +93,7 @@ class _PersonalChatState extends State<PersonalChat> {
                         Text(
                           'profile'.tr(),
                           style: CustomTextStyle.sf22w700(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                         const Spacer(),
                         SizedBox(width: 30.w),
@@ -130,7 +130,7 @@ class _PersonalChatState extends State<PersonalChat> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 66.h),
@@ -158,8 +158,8 @@ class _PersonalChatState extends State<PersonalChat> {
                         widget.name.isEmpty
                             ? 'account_deleted'.tr()
                             : widget.name,
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.blackSecondary),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
@@ -233,7 +233,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                           height: 40.h,
                                           width: 40.h,
                                           decoration: BoxDecoration(
-                                            color: AppColors.greyError,
+                                            color: LightAppColors.greyError,
                                             borderRadius:
                                                 BorderRadius.circular(50.r),
                                           ),
@@ -260,7 +260,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                             CupertinoCard(
                                               radius:
                                                   BorderRadius.circular(25.r),
-                                              color: AppColors.greyActive,
+                                              color: LightAppColors.greyActive,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
                                               child: Padding(
@@ -291,7 +291,7 @@ class _PersonalChatState extends State<PersonalChat> {
                               children: [
                                 CupertinoCard(
                                   radius: BorderRadius.circular(25.r),
-                                  color: AppColors.greyActive,
+                                  color: LightAppColors.greyActive,
                                   margin: EdgeInsets.zero,
                                   elevation: 0,
                                   child: Padding(
@@ -322,11 +322,11 @@ class _PersonalChatState extends State<PersonalChat> {
                 height: 109.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: AppColors.whitePrimary,
+                  color: LightAppColors.whitePrimary,
                   boxShadow: [
                     BoxShadow(
                       offset: const Offset(0, -4),
-                      color: AppColors.shadowPrimary,
+                      color: LightAppColors.shadowPrimary,
                       blurRadius: 55.r,
                     ),
                   ],
@@ -338,8 +338,8 @@ class _PersonalChatState extends State<PersonalChat> {
                         child: Text(
                           'you_can_t_write_to_the_interlocutor_because_he_deleted_his_account'
                               .tr(),
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.blackAccent),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.blackAccent),
                           textAlign: TextAlign.center,
                         ),
                       ))
@@ -360,7 +360,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                     actionButton: false,
                                     hintText: 'enter_a_message'.tr(),
                                     textEditingController: textController,
-                                    fillColor: AppColors.greyActive,
+                                    fillColor: LightAppColors.greyActive,
                                     maxLines: 10,
                                     onTap: () {},
                                     contentPadding: EdgeInsets.only(
@@ -408,7 +408,7 @@ class _PersonalChatState extends State<PersonalChat> {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/icons/send-2.svg',
-                                              color: AppColors.blackAccent,
+                                              color: LightAppColors.blackAccent,
                                             ),
                                           ),
                                           SizedBox(width: 16.w),

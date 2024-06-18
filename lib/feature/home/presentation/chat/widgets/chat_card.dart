@@ -85,7 +85,7 @@ class ChatCard extends StatelessWidget {
                           height: 50.h,
                           width: 50.h,
                           decoration: BoxDecoration(
-                            color: AppColors.greyActive,
+                            color: LightAppColors.greyActive,
                             borderRadius: BorderRadius.circular(50.r),
                           ),
                           child: Stack(
@@ -119,7 +119,7 @@ class ChatCard extends StatelessWidget {
                                       ? 'Аккаунт удален'
                                       : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackPrimary),
+                                      LightAppColors.blackPrimary),
                                   maxLines: 1,
                                 ),
                               ),
@@ -131,7 +131,7 @@ class ChatCard extends StatelessWidget {
                                         .substring(0, 10) ??
                                     '-'),
                                 style: CustomTextStyle.sf13w400(
-                                    AppColors.greySecondary),
+                                    LightAppColors.greySecondary),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -145,7 +145,7 @@ class ChatCard extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: CustomTextStyle.sf17w400(
-                                      AppColors.blackSecondary),
+                                      LightAppColors.blackSecondary),
                                 ),
                               ),
                               if (chat.lastMsg?.unread != null &&
@@ -157,14 +157,14 @@ class ChatCard extends StatelessWidget {
                                   height: 15.h,
                                   width: 15.h,
                                   decoration: BoxDecoration(
-                                    color: AppColors.yellowBackground,
+                                    color: LightAppColors.yellowBackground,
                                     borderRadius: BorderRadius.circular(100.r),
                                   ),
                                   child: Center(
                                     child: Text(
                                       chat.countUnreadMessage?.toString() ?? '',
                                       style: CustomTextStyle.sf11w400(
-                                          AppColors.whitePrimary),
+                                          LightAppColors.whitePrimary),
                                     ),
                                   ),
                                 ),
@@ -202,7 +202,7 @@ class ChatCard extends StatelessWidget {
                                           ? category.description ?? '-'
                                           : category.engDescription ?? '-',
                                       style: CustomTextStyle.sf17w400(
-                                          AppColors.blackSecondary),
+                                          LightAppColors.blackSecondary),
                                       softWrap: true,
                                     ),
                                   ],
@@ -222,7 +222,7 @@ class ChatCard extends StatelessWidget {
                   Expanded(
                     child: Container(
                       height: 1.h,
-                      color: AppColors.greyAccent,
+                      color: LightAppColors.greyAccent,
                     ),
                   ),
                 ],

@@ -82,7 +82,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -93,8 +93,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'category'.tr(),
-                        style:
-                            CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        style: CustomTextStyle.sf15w400(
+                            LightAppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectCategory != null)
@@ -103,7 +103,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                               ? widget.selectCategory!.description!
                               : widget.selectCategory!.engDescription!,
                           style: CustomTextStyle.sf17w400(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                     ],
                   ),
@@ -122,11 +122,11 @@ class _CategorySelectorState extends State<CategorySelector> {
                     : 200.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: AppColors.whitePrimary,
+              color: LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.shadowPrimary,
+                  color: LightAppColors.shadowPrimary,
                   offset: const Offset(0, -4),
                   blurRadius: 55.r,
                 )
@@ -177,7 +177,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                                             ? e.description ?? '-'
                                             : e.engDescription ?? '',
                                         style: CustomTextStyle.sf17w400(
-                                            AppColors.blackAccent),
+                                            LightAppColors.blackAccent),
                                       ),
                                     ),
                                     const Spacer(),
@@ -214,7 +214,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -225,8 +225,8 @@ class _CategorySelectorState extends State<CategorySelector> {
                     children: [
                       Text(
                         'subcategory'.tr(),
-                        style:
-                            CustomTextStyle.sf15w400(AppColors.greySecondary),
+                        style: CustomTextStyle.sf15w400(
+                            LightAppColors.greySecondary),
                       ),
                       SizedBox(height: 3.h),
                       if (widget.selectSubCategory != null)
@@ -238,7 +238,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 : widget.selectSubCategory?.engDescription ??
                                     '-',
                             style: CustomTextStyle.sf17w400(
-                                AppColors.blackSecondary),
+                                LightAppColors.blackSecondary),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -259,11 +259,11 @@ class _CategorySelectorState extends State<CategorySelector> {
                     : 200.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: AppColors.whitePrimary,
+              color: LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.shadowPrimary,
+                  color: LightAppColors.shadowPrimary,
                   offset: const Offset(0, -4),
                   blurRadius: 55.r,
                 )
@@ -312,7 +312,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                                                 ? e.description ?? '-'
                                                 : e.engDescription ?? '-',
                                             style: CustomTextStyle.sf17w400(
-                                                AppColors.blackAccent),
+                                                LightAppColors.blackAccent),
                                           ),
                                         ),
                                         const Spacer(),
@@ -340,7 +340,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -349,11 +349,11 @@ class _CategorySelectorState extends State<CategorySelector> {
                   openCategory = false;
                   setState(() {});
                 },
-                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 hintText:
                     widget.customer ? 'task_name'.tr() : 'offer_name'.tr(),
                 textEditingController: widget.titleController,
-                fillColor: AppColors.greyActive,
+                fillColor: LightAppColors.greyActive,
                 onChanged: (value) {
                   widget.onEdit(
                     widget.selectCategory,
@@ -376,7 +376,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 130.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -390,9 +390,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                 hintText: widget.customer
                     ? 'description_task'.tr()
                     : 'description_offer'.tr(),
-                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 textEditingController: widget.aboutController,
-                fillColor: AppColors.greyActive,
+                fillColor: LightAppColors.greyActive,
                 onChanged: (value) {
                   widget.onEdit(
                     widget.selectCategory,
@@ -411,9 +411,9 @@ class _CategorySelectorState extends State<CategorySelector> {
           GestureDetector(
             onTap: () => widget.onAttach(),
             child: CustomTextField(
-              fillColor: AppColors.greyActive,
+              fillColor: LightAppColors.greyActive,
               hintText: 'attach_doc'.tr(),
-              hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,
               enabled: false,
               suffixIcon: Stack(

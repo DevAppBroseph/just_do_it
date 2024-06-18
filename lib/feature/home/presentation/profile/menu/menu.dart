@@ -64,7 +64,8 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   Text(
                     'menu'.tr(),
-                    style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
@@ -140,7 +141,7 @@ class _MenuPageState extends State<MenuPage> {
                         height: 40.h,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.whitePrimary,
+                            color: LightAppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
@@ -154,7 +155,7 @@ class _MenuPageState extends State<MenuPage> {
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: const Icon(
                                         Icons.keyboard_arrow_down_rounded,
-                                        color: AppColors.greySecondary,
+                                        color: LightAppColors.greySecondary,
                                       ),
                                     ),
                                     onChanged: (value) async {
@@ -241,7 +242,7 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.sf19w800(AppColors.blackSecondary)
+                style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)
                     .copyWith(fontWeight: FontWeight.w500),
               ),
             ],
@@ -268,7 +269,7 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.sf19w800(AppColors.blackSecondary)
+                style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)
                     .copyWith(fontWeight: FontWeight.w500),
               ),
             ],

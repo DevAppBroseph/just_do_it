@@ -35,7 +35,7 @@ class _TasksPageState extends State<TasksPage> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.greyPrimary,
+        backgroundColor: LightAppColors.greyPrimary,
         body: StreamBuilder<int>(
           stream: streamController.stream,
           initialData: widget.customer,
@@ -64,7 +64,7 @@ class _TasksPageState extends State<TasksPage> {
                             child: Text(
                               'my_task'.tr(),
                               style: CustomTextStyle.sf22w700(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                           Align(
@@ -113,8 +113,8 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: snapshot.data! == 1
-                                  ? AppColors.whitePrimary
-                                  : AppColors.yellowPrimary,
+                                  ? LightAppColors.whitePrimary
+                                  : LightAppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.r),
                                 bottomLeft: Radius.circular(20.r),
@@ -123,7 +123,7 @@ class _TasksPageState extends State<TasksPage> {
                             child: Text(
                               'i_am_the_customer'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                         ),
@@ -137,8 +137,8 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: snapshot.data! == 0
-                                  ? AppColors.whitePrimary
-                                  : AppColors.yellowPrimary,
+                                  ? LightAppColors.whitePrimary
+                                  : LightAppColors.yellowPrimary,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20.r),
                                 bottomRight: Radius.circular(20.r),
@@ -147,7 +147,7 @@ class _TasksPageState extends State<TasksPage> {
                             child: Text(
                               'i_am_executor'.tr(),
                               style: CustomTextStyle.sf17w400(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ),
                         ),

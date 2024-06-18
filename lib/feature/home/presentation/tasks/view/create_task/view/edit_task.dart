@@ -327,7 +327,7 @@ class _EditTasksState extends State<EditTasks> {
             backgroundColor: Colors.transparent,
             content: Container(
               decoration: BoxDecoration(
-                color: AppColors.whiteSecondary,
+                color: LightAppColors.whiteSecondary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
@@ -336,12 +336,14 @@ class _EditTasksState extends State<EditTasks> {
                   SizedBox(height: 10.h),
                   Text(
                     'choose_what_to_download'.tr(),
-                    style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                    style:
+                        CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
                   ),
                   ListTile(
                     title: Text(
                       'photo'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackError),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -351,7 +353,8 @@ class _EditTasksState extends State<EditTasks> {
                   ListTile(
                     title: Text(
                       'document'.tr(),
-                      style: CustomTextStyle.sf17w400(AppColors.blackError),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackError),
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -374,7 +377,7 @@ class _EditTasksState extends State<EditTasks> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -400,13 +403,13 @@ class _EditTasksState extends State<EditTasks> {
                       SizedBox(width: 12.w),
                       Text(
                         'edity'.tr(),
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.blackSecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.blackSecondary),
                       ),
                       Text(
                         ' ${page + 1}/2',
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.greySecondary),
+                        style: CustomTextStyle.sf22w700(
+                            LightAppColors.greySecondary),
                       )
                     ],
                   ),
@@ -510,14 +513,15 @@ class _EditTasksState extends State<EditTasks> {
                         }
                       }
                     },
-                    btnColor: AppColors.yellowPrimary,
+                    btnColor: LightAppColors.yellowPrimary,
                     textLabel: Text(
                       page == 0
                           ? 'further'.tr()
                           : widget.task.isTask!
                               ? 'edit_task'.tr()
                               : 'edit_offer'.tr(),
-                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w600(
+                          LightAppColors.blackSecondary),
                     ),
                   ),
                 ),

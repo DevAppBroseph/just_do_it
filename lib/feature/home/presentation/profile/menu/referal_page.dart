@@ -49,7 +49,7 @@ class _ReferalPageState extends State<ReferalPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -75,7 +75,7 @@ class _ReferalPageState extends State<ReferalPage> {
                         Text(
                           'referral_system'.tr(),
                           style: CustomTextStyle.sf22w700(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
                       ],
                     ),
@@ -88,7 +88,7 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'this_is_your_referral_link'.tr(),
-                style: CustomTextStyle.sf17w400(AppColors.whitePrimary)
+                style: CustomTextStyle.sf17w400(LightAppColors.whitePrimary)
                     .copyWith(fontWeight: FontWeight.w500),
               ),
             ),
@@ -97,14 +97,14 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'for_each_new_user'.tr(),
-                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
               ),
             ),
             SizedBox(height: 50.h),
             Container(
               height: 130.h,
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               margin: EdgeInsets.symmetric(horizontal: 24.w),
@@ -114,7 +114,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 children: [
                   Text(
                     'install_the_app'.tr(),
-                    style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                    style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                   ),
                 ],
               ),
@@ -140,7 +140,7 @@ class _ReferalPageState extends State<ReferalPage> {
                           '${'jobfine_is_an_application_for_finding_and_doing_work'.tr()}\n$res'));
 
                   final snackBar = SnackBar(
-                    backgroundColor: AppColors.yellowBackground,
+                    backgroundColor: LightAppColors.yellowBackground,
                     content: Text('copy'.tr()),
                     duration: const Duration(seconds: 1),
                   );
@@ -151,7 +151,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
-                    color: AppColors.purplePrimary,
+                    color: LightAppColors.purplePrimary,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
@@ -160,8 +160,8 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           user?.link ?? '-',
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.whitePrimary),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.whitePrimary),
                         ),
                         const Spacer(),
                         SvgPicture.asset('assets/icons/copy.svg')
@@ -193,7 +193,7 @@ class _ReferalPageState extends State<ReferalPage> {
                 child: Container(
                   height: 55.h,
                   decoration: BoxDecoration(
-                    color: AppColors.yellowBackground,
+                    color: LightAppColors.yellowBackground,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
@@ -203,8 +203,8 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           'share'.tr(),
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.whitePrimary),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.whitePrimary),
                         ),
                       ],
                     ),

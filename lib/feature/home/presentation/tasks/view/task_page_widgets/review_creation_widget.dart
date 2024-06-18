@@ -124,11 +124,11 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.whitePrimary,
+                    color: LightAppColors.whitePrimary,
                     borderRadius: BorderRadius.circular(20.r),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.shadowPrimary,
+                        color: LightAppColors.shadowPrimary,
                         offset: const Offset(0, 4),
                         blurRadius: 45.r,
                       )
@@ -161,7 +161,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                                   child: Text(
                                     '${agentOrCustomer?.firstname ?? '-'} ${agentOrCustomer?.lastname ?? '-'}',
                                     style: CustomTextStyle.sf17w400(
-                                            AppColors.blackSecondary)
+                                            LightAppColors.blackSecondary)
                                         .copyWith(fontWeight: FontWeight.w600),
                                     softWrap: true,
                                   ),
@@ -176,7 +176,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                                           ? '0'
                                           : agentOrCustomer!.ranking.toString(),
                                       style: CustomTextStyle.sf17w400(
-                                              AppColors.blackSecondary)
+                                              LightAppColors.blackSecondary)
                                           .copyWith(
                                               fontWeight: FontWeight.w500),
                                     ),
@@ -197,7 +197,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
           SizedBox(height: 30.h),
           Text(
             'leave_a_review'.tr(),
-            style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
+            style: CustomTextStyle.sf18w800(LightAppColors.blackSecondary),
           ),
           SizedBox(height: 15.h),
           Text(
@@ -214,7 +214,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.greyActive,
+                color: LightAppColors.greyActive,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -226,9 +226,9 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                   setState(() {});
                 },
                 hintStyle: const TextStyle(color: Colors.black),
-                style: CustomTextStyle.sf17w400(AppColors.blackSecondary),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 textEditingController: descriptionTextController,
-                fillColor: AppColors.greyActive,
+                fillColor: LightAppColors.greyActive,
                 onChanged: (value) {},
                 formatters: [
                   UpperEveryTextInputFormatter(),
@@ -245,7 +245,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                         ? 'rate_the_executor'
                         : 'evaluate_the_customer')
                     .tr(),
-                style: CustomTextStyle.sf18w800(AppColors.blackSecondary),
+                style: CustomTextStyle.sf18w800(LightAppColors.blackSecondary),
               ),
               SizedBox(width: 15.h),
               GestureDetector(
@@ -276,7 +276,7 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (context, _) => const Icon(
               Icons.star,
-              color: AppColors.yellowBackground,
+              color: LightAppColors.yellowBackground,
             ),
             onRatingUpdate: (rating) {
               reviewRating = rating;
@@ -287,10 +287,10 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
             onTap: () {
               sendReview();
             },
-            btnColor: AppColors.yellowPrimary,
+            btnColor: LightAppColors.yellowPrimary,
             textLabel: Text(
               'send_feedback'.tr(),
-              style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+              style: CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
             ),
           ),
           SizedBox(

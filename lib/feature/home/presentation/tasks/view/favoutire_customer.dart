@@ -44,7 +44,7 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
           data: MediaQuery.of(context)
               .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: Scaffold(
-            backgroundColor: AppColors.greyPrimary,
+            backgroundColor: LightAppColors.greyPrimary,
             body: Stack(
               children: [
                 SafeArea(
@@ -76,7 +76,7 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
                               child: Text(
                                 widget.title,
                                 style: CustomTextStyle.sf22w700(
-                                    AppColors.blackSecondary),
+                                    LightAppColors.blackSecondary),
                               ),
                             )
                           ],
@@ -140,7 +140,7 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
   Widget view() {
     if (selectOwner != null) {
       return Scaffold(
-          backgroundColor: AppColors.greyPrimary,
+          backgroundColor: LightAppColors.greyPrimary,
           body: ProfileView(owner: selectOwner!));
     }
     return Container();

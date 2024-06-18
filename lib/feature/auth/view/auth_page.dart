@@ -116,9 +116,9 @@ class _AuthPageState extends State<AuthPage> {
                     child: Center(
                       child: Text(
                         'jobyfine'.toUpperCase(),
-                        style:
-                            CustomTextStyle.sf22w700(AppColors.blackSecondary)
-                                .copyWith(
+                        style: CustomTextStyle.sf22w700(
+                                LightAppColors.blackSecondary)
+                            .copyWith(
                           fontSize: 39,
                           fontWeight: FontWeight.w900,
                           fontFamily: 'SFBold',
@@ -157,9 +157,9 @@ class _AuthPageState extends State<AuthPage> {
                         textLabel: Text(
                           forgotPassword ? 'send'.tr() : 'sign_in'.tr(),
                           style: CustomTextStyle.sf17w600(
-                              AppColors.blackSecondary),
+                              LightAppColors.blackSecondary),
                         ),
-                        btnColor: AppColors.yellowPrimary,
+                        btnColor: LightAppColors.yellowPrimary,
                       ),
                       SizedBox(height: 18.h),
                       CustomButton(
@@ -175,10 +175,10 @@ class _AuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'back'.tr() : 'registration'.tr(),
-                          style:
-                              CustomTextStyle.sf17w400(AppColors.blackAccent),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.blackAccent),
                         ),
-                        btnColor: AppColors.greyError,
+                        btnColor: LightAppColors.greyError,
                       ),
                     ],
                   ),
@@ -198,7 +198,7 @@ class _AuthPageState extends State<AuthPage> {
       children: [
         Text(
           'entrance'.tr(),
-          style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+          style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -206,7 +206,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeLogin,
           textEditingController: signinLoginController,
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           onFieldSubmitted: (value) {
             requestStage1();
           },
@@ -240,7 +240,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
           ),
           textEditingController: signinPasswordController,
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -256,7 +256,7 @@ class _AuthPageState extends State<AuthPage> {
               },
               child: Text(
                 '${'forgot_your_password'.tr()}?',
-                style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
               ),
             ),
           ],
@@ -287,7 +287,7 @@ class _AuthPageState extends State<AuthPage> {
           children: [
             Text(
               'restoring_access'.tr(),
-              style: CustomTextStyle.sf22w700(AppColors.blackSecondary),
+              style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
             ),
           ],
         ),
@@ -297,7 +297,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 50.h,
           focusNode: focusNodeResetLogin,
           textEditingController: loginController,
-          hintStyle: CustomTextStyle.sf15w400(AppColors.greySecondary),
+          hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
         ),
@@ -306,7 +306,7 @@ class _AuthPageState extends State<AuthPage> {
           height: 85.h,
           child: Text(
             'to_reset_the_password_enter_the_phone_number_or_mail'.tr(),
-            style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+            style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
           ),
         )
       ],

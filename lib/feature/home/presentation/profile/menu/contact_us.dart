@@ -35,7 +35,7 @@ class _ContactUsState extends State<ContactUs> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: AppColors.whitePrimary,
+        backgroundColor: LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -63,7 +63,7 @@ class _ContactUsState extends State<ContactUs> {
                             Text(
                               'contact_us'.tr(),
                               style: CustomTextStyle.sf22w700(
-                                  AppColors.blackSecondary),
+                                  LightAppColors.blackSecondary),
                             ),
                           ],
                         ),
@@ -79,7 +79,7 @@ class _ContactUsState extends State<ContactUs> {
                     width: 327.w,
                     hintText: 'contact_email'.tr(),
                     textEditingController: controllerEmail,
-                    fillColor: AppColors.greyActive,
+                    fillColor: LightAppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -92,7 +92,7 @@ class _ContactUsState extends State<ContactUs> {
                     hintText: 'subject_appeal'.tr(),
                     formatters: [UpperEveryTextInputFormatter()],
                     textEditingController: controllerTheme,
-                    fillColor: AppColors.greyActive,
+                    fillColor: LightAppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -105,14 +105,14 @@ class _ContactUsState extends State<ContactUs> {
                         height: 130.h,
                         width: 327.w,
                         decoration: BoxDecoration(
-                          color: AppColors.greyActive,
+                          color: LightAppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: CustomTextField(
                           hintText: 'your_message'.tr(),
                           formatters: [UpperEveryTextInputFormatter()],
                           textEditingController: controllerMessage,
-                          fillColor: AppColors.greyActive,
+                          fillColor: LightAppColors.greyActive,
                           contentPadding: EdgeInsets.all(18.h),
                           maxLines: 6,
                         ),
@@ -159,10 +159,11 @@ class _ContactUsState extends State<ContactUs> {
                         controllerMessage.text = '';
                       }
                     },
-                    btnColor: AppColors.yellowSecondary,
+                    btnColor: LightAppColors.yellowSecondary,
                     textLabel: Text(
                       'send'.tr(),
-                      style: CustomTextStyle.sf17w600(AppColors.blackSecondary),
+                      style: CustomTextStyle.sf17w600(
+                          LightAppColors.blackSecondary),
                     ),
                   ),
                 ),

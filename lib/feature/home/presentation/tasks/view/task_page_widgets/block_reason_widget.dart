@@ -31,7 +31,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                 width: 330.w,
                 duration: const Duration(milliseconds: 300),
                 decoration: BoxDecoration(
-                  color: AppColors.whitePrimary,
+                  color: LightAppColors.whitePrimary,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Padding(
@@ -41,7 +41,8 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                     width: 250.w,
                     child: Text(
                       widget.task.banReason ?? ("unknown_reason".tr()),
-                      style: CustomTextStyle.sf17w400(AppColors.blackAccent),
+                      style:
+                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
                     ),
                   ),
                 ),
@@ -49,7 +50,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
             Container(
               height: 42.h,
               decoration: BoxDecoration(
-                color: AppColors.redPrimary.withOpacity(0.19),
+                color: LightAppColors.redPrimary.withOpacity(0.19),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: InkWell(
@@ -79,8 +80,8 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                         child: Text(
                           "ban_reason".tr(),
                           textAlign: TextAlign.start,
-                          style:
-                              CustomTextStyle.sf12w400(AppColors.redSecondary),
+                          style: CustomTextStyle.sf12w400(
+                              LightAppColors.redSecondary),
                         ),
                       ),
                       const Spacer(),
@@ -90,7 +91,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                               child: const Icon(
                                 Icons.keyboard_arrow_up,
                                 size: 30,
-                                color: AppColors.redSecondary,
+                                color: LightAppColors.redSecondary,
                               ),
                             )
                           : Padding(
@@ -98,7 +99,7 @@ class _BlockReasonWidgetState extends State<BlockReasonWidget> {
                               child: const Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 30,
-                                color: AppColors.redSecondary,
+                                color: LightAppColors.redSecondary,
                               ),
                             ),
                     ],
