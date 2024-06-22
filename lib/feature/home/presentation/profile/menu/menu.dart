@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
-import 'package:just_do_it/feature/theme/settings_scope.dart';
+import 'package:just_do_it/feature/theme/settings_bloc.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -87,29 +87,29 @@ class _MenuPageState extends State<MenuPage> {
                   itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(),
                       () {
                     Navigator.pop(context, 'create');
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/search2.svg', 'find_tasks'.tr(), () {
                     Navigator.pop(context, 'search');
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/note.svg', 'my_task'.tr(), () {
                     if (widget.inTask) {
                       Navigator.pop(context);
                     } else {
                       Navigator.pop(context, "tasks");
                     }
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(),
                       () {
                     Navigator.pop(context, 'chat');
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/profile-circle.svg',
                       'personal_account'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.personalAccount);
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/user_circle_add.svg',
                       'referral_system'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.referal);
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(),
                       () {
                     showLoaderWrapperWhite(context);
@@ -117,21 +117,16 @@ class _MenuPageState extends State<MenuPage> {
                     Future.delayed(const Duration(seconds: 1), () {
                       Loader.hide();
                     });
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu(
                       'assets/icons/message-favorite.svg', 'contact_us'.tr(),
                       () {
                     Navigator.of(context)
                         .pushNamed(AppRoute.contactus, arguments: ['', '']);
-                  }),
+                  }, Theme.of(context).textTheme.labelLarge!),
                   itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {
-                    SettingsScope.themeOf(context).setThemeMode(
-                      SettingsScope.themeOf(context).theme.mode ==
-                              ThemeMode.dark
-                          ? ThemeMode.light
-                          : ThemeMode.dark,
-                    );
-                  }),
+                    BlocProvider.of<SettingsBloc>(context).toggleTheme();
+                  }, Theme.of(context).textTheme.labelLarge!),
                   SizedBox(height: 15.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +220,8 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget itemMenu(String icon, String title, Function() onTap) {
+  Widget itemMenu(
+      String icon, String title, Function() onTap, TextStyle style) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -242,8 +238,7 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)
-                    .copyWith(fontWeight: FontWeight.w500),
+                style: style,
               ),
             ],
           ),

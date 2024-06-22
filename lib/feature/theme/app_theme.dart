@@ -45,25 +45,39 @@ class AppTheme {
 
   static TextTheme _buildTextTheme(Brightness brightness) {
     return brightness == Brightness.dark
-        ? TextTheme(
-            // labelLarge: ,
-            // labelMedium: ,
-            // labelSmall: ,
-            // headlineLarge: ,
-            // headlineMedium: ,
-            // headlineSmall: ,
-            // displayLarge: ,
-            // displayMedium: ,
-            // displaySmall: ,
-            // titleLarge: ,
-            // titleMedium: ,titleSmall: ,
-            // bodySmall: ,
+        ? const TextTheme(
+            labelLarge: TextStyle(color: DarkAppColors.blackPrimary),
+            labelMedium: TextStyle(color: DarkAppColors.greyPrimary),
+            labelSmall: TextStyle(color: DarkAppColors.greyPrimary),
+            headlineLarge: TextStyle(color: DarkAppColors.whitePrimary),
+            headlineMedium: TextStyle(color: DarkAppColors.whitePrimary),
+            headlineSmall: TextStyle(color: DarkAppColors.whitePrimary),
+            displayLarge: TextStyle(color: DarkAppColors.whitePrimary),
+            displayMedium: TextStyle(color: DarkAppColors.whitePrimary),
+            displaySmall: TextStyle(color: DarkAppColors.whitePrimary),
+            titleLarge: TextStyle(color: DarkAppColors.whitePrimary),
+            titleMedium: TextStyle(color: DarkAppColors.whitePrimary),
+            titleSmall: TextStyle(color: DarkAppColors.whitePrimary),
             bodyLarge: TextStyle(color: DarkAppColors.whitePrimary),
             bodyMedium: TextStyle(color: DarkAppColors.greyPrimary),
+            bodySmall: TextStyle(color: DarkAppColors.greyPrimary),
           )
-        : TextTheme(
+        : const TextTheme(
+            labelLarge: TextStyle(color: LightAppColors.blackPrimary),
+            labelMedium: TextStyle(color: LightAppColors.blackPrimary),
+            labelSmall: TextStyle(color: LightAppColors.blackPrimary),
+            headlineLarge: TextStyle(color: LightAppColors.blackPrimary),
+            headlineMedium: TextStyle(color: LightAppColors.blackPrimary),
+            headlineSmall: TextStyle(color: LightAppColors.blackPrimary),
+            displayLarge: TextStyle(color: LightAppColors.blackPrimary),
+            displayMedium: TextStyle(color: LightAppColors.blackPrimary),
+            displaySmall: TextStyle(color: LightAppColors.blackPrimary),
+            titleLarge: TextStyle(color: LightAppColors.blackPrimary),
+            titleMedium: TextStyle(color: LightAppColors.blackPrimary),
+            titleSmall: TextStyle(color: LightAppColors.blackPrimary),
             bodyLarge: TextStyle(color: LightAppColors.blackPrimary),
             bodyMedium: TextStyle(color: LightAppColors.greySecondary),
+            bodySmall: TextStyle(color: LightAppColors.greySecondary),
           );
   }
 

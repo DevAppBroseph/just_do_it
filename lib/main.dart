@@ -23,7 +23,6 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/re
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/response_from_favourite/response_fav_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/search/search_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
-import 'package:just_do_it/feature/theme/app_theme.dart';
 import 'package:just_do_it/feature/theme/settings_bloc.dart';
 import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/feature/theme/theme_data_source.dart';
@@ -58,7 +57,6 @@ void main() async {
   } catch (e) {
     // Handle error
   }
-  //String? token = await FirebaseMessaging.instance.getToken();
 
   await getItSetup();
 
@@ -68,8 +66,6 @@ void main() async {
       codec: const ThemeModeCodec(),
     ),
   );
-  final initialTheme =
-      await themeRepository.getTheme() ?? AppTheme.defaultTheme;
 
   runApp(
     EasyLocalization(
@@ -80,10 +76,7 @@ void main() async {
       fallbackLocale: const Locale('en', 'US'),
       startLocale: const Locale('en', 'US'),
       child: SettingsScope(
-        settingsBloc: SettingsBloc(
-          themeRepository: themeRepository,
-          initialState: IdleSettingsState(appTheme: initialTheme),
-        ),
+        settingsBloc: SettingsBloc(),
         child: const MyApp(),
       ),
     ),
