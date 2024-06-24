@@ -10,8 +10,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   TasksBloc() : super(TasksLoading()) {
     on<GetTasksEvent>(_getAllTasks);
     on<UpdateTaskEvent>(_updateTask);
+    on<LoadMoreTasksEvent>(_loadMoreTasks);
   }
+
   List<Task> tasks = [];
+  String? nextPageUrl;
 
   void _updateTask(UpdateTaskEvent event, Emitter<TasksState> emit) async {
     emit(UpdateTask());
@@ -22,7 +25,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final regions = event.isSelectRegions.map((e) => e.id!).toList();
     final towns = event.isSelectTown.map((e) => e.id!).toList();
     final countries = event.isSelectCountry.map((e) => e.id!).toList();
-    tasks = await TaskRepository().getTaskList(
+    final response = await TaskRepository().getTaskList(
       event.query,
       event.priceFrom,
       event.priceTo,
@@ -37,8 +40,49 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       event.currency,
       event.passport,
       event.cv,
+      1,
+      null,
     );
 
-    emit(TasksLoaded(event.countFilter, tasks: tasks));
+    tasks = response['tasks'];
+    nextPageUrl = response['next'];
+
+    emit(
+      TasksLoaded(
+        event.countFilter,
+        tasks: tasks,
+        nextPageUrl: nextPageUrl,
+      ),
+    );
+  }
+
+  void _loadMoreTasks(
+      LoadMoreTasksEvent event, Emitter<TasksState> emit) async {
+    if (nextPageUrl == null) return;
+
+    emit(TasksLoadingMore());
+    final response = await TaskRepository().getTaskList(
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      [],
+      [],
+      [],
+      [],
+      null,
+      null,
+      null,
+      null,
+      null,
+      nextPageUrl,
+    );
+
+    tasks.addAll(response['tasks']);
+    nextPageUrl = response['next'];
+
+    emit(TasksLoaded(null, tasks: tasks, nextPageUrl: nextPageUrl));
   }
 }

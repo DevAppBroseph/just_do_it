@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/services/dio/dio_client.dart';
 
 class TaskRepository {
-  Future<List<Task>> getTaskList(
+  Future<Map<String, dynamic>> getTaskList(
     String? query,
     int? priceFrom,
     int? priceTo,
@@ -19,6 +18,8 @@ class TaskRepository {
     int? currency,
     bool? passport,
     bool? cv,
+    int? page,
+    String? nextPageUrl,
   ) async {
     Map<String, dynamic>? queryParameters = {
       if (query != null && query.isNotEmpty) "search": query,
@@ -34,22 +35,42 @@ class TaskRepository {
       if (subcategory.isNotEmpty) "subcategory": subcategory,
       if (cv != null && cv) "has_cv": cv,
       "as_customer": customer,
+      if (page != null) "page": page,
     };
+
     final response = await dio.get(
-      '$server/orders/',
-      queryParameters: queryParameters,
+      nextPageUrl ?? 'http://62.113.114.14/orders/',
+      queryParameters: nextPageUrl == null ? queryParameters : null,
       options: Options(
         headers: access != null ? {'Authorization': 'Bearer $access'} : null,
       ),
     );
+
     List<Task> tasks = [];
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      for (var element in response.data) {
-        final task = Task.fromJson(element);
-        tasks.add(task);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data['results'] is List) {
+        for (var element in response.data['results']) {
+          try {
+            final task = Task.fromJson(element);
+            tasks.add(task);
+          } catch (e) {
+            print("Error parsing task: $e");
+          }
+        }
+      } else {
+        print(
+            "Expected results to be a List, but got ${response.data['results'].runtimeType}");
       }
-      return tasks;
+
+      return {
+        "tasks": tasks,
+        "next": response.data['next'],
+      };
     }
-    return tasks;
+
+    return {
+      "tasks": tasks,
+      "next": null,
+    };
   }
 }

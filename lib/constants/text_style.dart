@@ -20,7 +20,7 @@ class CustomTextStyle {
     );
   }
 
-  static TextStyle sf13w400(Color color) {
+  static TextStyle sf13w400(Color? color) {
     return TextStyle(
       fontSize: 13.sp,
       fontWeight: FontWeight.w400,

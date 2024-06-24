@@ -21,7 +21,6 @@ import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
-import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -63,17 +62,6 @@ class _SearchPageState extends State<SearchPage> {
   List<String> searchChoose = [];
 
   double lastPosition = 0;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   searchController.text = widget.text;
-  //   initFunc();
-  //   getTaskList();
-  //   if (widget.taskId != null) getTask();
-  //   final access = BlocProvider.of<ProfileBloc>(context).access;
-  //   context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
-  //   user = BlocProvider.of<ProfileBloc>(context).user;
-  // }
 
   @override
   void initState() {
@@ -85,44 +73,26 @@ class _SearchPageState extends State<SearchPage> {
     final access = BlocProvider.of<ProfileBloc>(context).access;
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
     user = BlocProvider.of<ProfileBloc>(context).user;
+
+    // Add scroll listener
+    scrollController.addListener(_onScroll);
   }
 
-  void getTask() async {
-    final access = BlocProvider.of<ProfileBloc>(context).access;
-    final task = await Repository().getTaskById(widget.taskId!, access);
-    widget.clearId();
-    setState(() {
-      selectTask = task;
-    });
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
   }
 
-  void initFunc() {
-    BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
-    access = BlocProvider.of<ProfileBloc>(context).access;
+  void _onScroll() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent - 100) {
+      context.read<TasksBloc>().add(LoadMoreTasksEvent());
+    }
   }
 
-  void getHistoryList() async {
-    final List<String> list = await Storage().getListHistory();
-    final List<String> listReversed = list.reversed.toList();
-    searchChoose.clear();
-    searchChoose.addAll(listReversed);
-  }
-
-  void getTaskList() {
-    context.read<TasksBloc>().add(
-          GetTasksEvent(
-            query: searchController.text,
-            dateEnd: null,
-            dateStart: null,
-            priceFrom: null,
-            priceTo: null,
-            subcategory: [],
-            countFilter: null,
-            customer: null,
-            access: access,
-          ),
-        );
-  }
+  // Existing methods...
 
   @override
   Widget build(BuildContext context) {
@@ -487,27 +457,74 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           );
                         }
-                        return ListView(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          controller: scrollController,
-                          padding: EdgeInsets.zero,
-                          children: taskList
-                              .map((e) => itemTask(e, (task) {
-                                    if (Storage.isAuthorized) {
-                                      setState(() {
-                                        selectTask = task;
+                        if (state is TasksLoaded || state is TasksLoadingMore) {
+                          return ListView(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            controller: scrollController,
+                            padding: EdgeInsets.zero,
+                            children: taskList
+                                .map((e) => itemTask(
+                                      e,
+                                      (task) {
+                                        if (Storage.isAuthorized) {
+                                          setState(() {
+                                            selectTask = task;
 
-                                        lastPosition = scrollController.offset;
-                                      });
-                                    } else {
-                                      Navigator.of(context)
-                                          .pushNamed(AppRoute.auth);
-                                    }
-                                  }, BlocProvider.of<ProfileBloc>(context).user,
-                                      context))
-                              .toList(),
-                        );
+                                            lastPosition =
+                                                scrollController.offset;
+                                          });
+                                        } else {
+                                          Navigator.of(context)
+                                              .pushNamed(AppRoute.auth);
+                                        }
+                                      },
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .user,
+                                      context,
+                                    ))
+                                .toList(),
+                          );
+                        }
+                        if (state is TasksLoadingMore) {
+                          return Column(
+                            children: [
+                              ListView(
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                controller: scrollController,
+                                padding: EdgeInsets.zero,
+                                children: taskList
+                                    .map((e) => itemTask(
+                                          e,
+                                          (task) {
+                                            if (Storage.isAuthorized) {
+                                              setState(() {
+                                                selectTask = task;
+
+                                                lastPosition =
+                                                    scrollController.offset;
+                                              });
+                                            } else {
+                                              Navigator.of(context)
+                                                  .pushNamed(AppRoute.auth);
+                                            }
+                                          },
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .user,
+                                          context,
+                                        ))
+                                    .toList(),
+                              ),
+                              SizedBox(height: 10.h),
+                              Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              SizedBox(height: 20.h),
+                            ],
+                          );
+                        }
+                        return Container();
                       },
                     ),
                     view(),

@@ -38,3 +38,8 @@ class GetTasksEvent extends TasksEvent {
     this.cv,
   });
 }
+
+class LoadMoreTasksEvent extends TasksEvent {
+  final String nextPageUrl;
+  LoadMoreTasksEvent(this.nextPageUrl);
+}
