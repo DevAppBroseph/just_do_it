@@ -21,6 +21,7 @@ import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
+import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -74,7 +75,6 @@ class _SearchPageState extends State<SearchPage> {
     context.read<FavouritesBloc>().add(GetFavouritesEvent(access));
     user = BlocProvider.of<ProfileBloc>(context).user;
 
-    // Add scroll listener
     scrollController.addListener(_onScroll);
   }
 
@@ -88,11 +88,49 @@ class _SearchPageState extends State<SearchPage> {
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent - 100) {
-      context.read<TasksBloc>().add(LoadMoreTasksEvent());
+      final nextPageUrl = BlocProvider.of<TasksBloc>(context).nextPageUrl;
+      if (nextPageUrl != null) {
+        context.read<TasksBloc>().add(LoadMoreTasksEvent(nextPageUrl));
+      }
     }
   }
 
-  // Existing methods...
+  void initFunc() {
+    BlocProvider.of<TasksBloc>(context).emit(TasksLoading());
+    access = BlocProvider.of<ProfileBloc>(context).access;
+  }
+
+  void getTaskList() {
+    context.read<TasksBloc>().add(
+          GetTasksEvent(
+            query: searchController.text,
+            dateEnd: null,
+            dateStart: null,
+            priceFrom: null,
+            priceTo: null,
+            subcategory: [],
+            countFilter: null,
+            customer: null,
+            access: access,
+          ),
+        );
+  }
+
+  void getTask() async {
+    final access = BlocProvider.of<ProfileBloc>(context).access;
+    final task = await Repository().getTaskById(widget.taskId!, access);
+    widget.clearId();
+    setState(() {
+      selectTask = task;
+    });
+  }
+
+  void getHistoryList() async {
+    final List<String> list = await Storage().getListHistory();
+    final List<String> listReversed = list.reversed.toList();
+    searchChoose.clear();
+    searchChoose.addAll(listReversed);
+  }
 
   @override
   Widget build(BuildContext context) {
