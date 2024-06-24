@@ -146,7 +146,8 @@ class _WelcomPageState extends State<WelcomPage> {
                                       child: Row(
                                         children: [
                                           Padding(
-                                            padding: EdgeInsets.only(left: 5.w),
+                                            padding:
+                                                EdgeInsets.only(left: 3.6.w),
                                             child: DropdownButtonHideUnderline(
                                               child: DropdownButton(
                                                 value: selectLanguage,
@@ -227,108 +228,6 @@ class _WelcomPageState extends State<WelcomPage> {
                                       ),
                                     ),
                                   ),
-                            // SizedBox(
-                            //     height: 40,
-                            //     width: 102.w,
-                            //     child: Column(
-                            //       children: [
-                            //         ScaleButton(
-                            //           onTap: () {
-                            //             setState(() {
-                            //               openLanguage = true;
-                            //             });
-                            //           },
-                            //           child: Container(
-                            //             height: 36.h,
-                            //             width: 102.w,
-                            //             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                            //             decoration: BoxDecoration(
-                            //               color: ColorStyles.whiteFFFFFF,
-                            //               borderRadius: BorderRadius.circular(10.r),
-                            //             ),
-                            //             child: Row(
-                            //               children: [
-                            //                 SvgPicture.asset(listLanguage.first.icon),
-                            //                 const Spacer(),
-                            //                 Text(
-                            //                   listLanguage.first.title,
-                            //                   style: CustomTextStyle.CustomTextStyle.sf17w600(AppColors.blackSecondary),
-                            //                 ),
-                            //                 const Spacer(),
-                            //                 const Icon(
-                            //                   Icons.keyboard_arrow_down_rounded,
-                            //                   color: ColorStyles.greyBDBDBD,
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //         ),
-
-                            // if (openLanguage)
-                            //   AnimatedContainer(
-                            //     duration: const Duration(milliseconds: 300),
-                            //     height: openLanguage ? 50 : 0.h,
-                            //     decoration: BoxDecoration(
-                            //       color: ColorStyles.whiteFFFFFF,
-                            //       borderRadius: BorderRadius.circular(10.r),
-                            //       boxShadow: [
-                            //         BoxShadow(
-                            //           color: ColorStyles.shadowFC6554,
-                            //           offset: const Offset(0, -4),
-                            //           blurRadius: 55.r,
-                            //         )
-                            //       ],
-                            //     ),
-                            //     padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.w),
-                            //     child: Scrollbar(
-                            //       thumbVisibility: true,
-                            //       controller: _languageController,
-                            //       child: Column(
-                            //         children: listLanguage
-                            //             .map(
-                            //               (e) => Padding(
-                            //                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            //                 child: GestureDetector(
-                            //                   onTap: () {
-                            //                     if (e.id == selectLenguage?.id) {
-                            //                       selectLenguage = null;
-                            //                     } else {
-                            //                       selectLenguage = e;
-                            //                     }
-                            //                     openLanguage = false;
-
-                            //                     setState(() {});
-                            //                   },
-                            //                   child: Container(
-                            //                     color: Colors.transparent,
-                            //                     height: 20.h,
-                            //                     child: Column(
-                            //                       mainAxisAlignment: MainAxisAlignment.center,
-                            //                       children: [
-                            //                         Row(
-                            //                           children: [
-                            //                             SizedBox(
-                            //                               width: 250.w,
-                            //                               child: Text(
-                            //                                 e.title,
-                            //                                 style: CustomTextStyle.black_14_w400_515150,
-                            //                               ),
-                            //                             ),
-                            //                           ],
-                            //                         ),
-                            //                       ],
-                            //                     ),
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             )
-                            //             .toList(),
-                            //       ),
-                            //     ),
-                            //   ),
-                            //     ],
-                            //   ),
-                            // ),
                             searchList ? const SizedBox() : const Spacer(),
                             user == null
                                 ? const SizedBox()

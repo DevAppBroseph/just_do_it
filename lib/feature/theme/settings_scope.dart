@@ -56,15 +56,10 @@ class _SettingsScopeState extends State<SettingsScope>
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
           final currentTheme = theme;
-          return MaterialApp(
-            theme: currentTheme.lightTheme,
-            darkTheme: currentTheme.darkTheme,
-            themeMode: currentTheme.mode,
-            home: _InheritedSettingsScope(
-              controller: this,
-              state: state,
-              child: widget.child,
-            ),
+          return _InheritedSettingsScope(
+            controller: this,
+            state: state,
+            child: widget.child,
           );
         },
       ),

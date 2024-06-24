@@ -87,29 +87,29 @@ class _MenuPageState extends State<MenuPage> {
                   itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(),
                       () {
                     Navigator.pop(context, 'create');
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/search2.svg', 'find_tasks'.tr(), () {
                     Navigator.pop(context, 'search');
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/note.svg', 'my_task'.tr(), () {
                     if (widget.inTask) {
                       Navigator.pop(context);
                     } else {
                       Navigator.pop(context, "tasks");
                     }
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(),
                       () {
                     Navigator.pop(context, 'chat');
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/profile-circle.svg',
                       'personal_account'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.personalAccount);
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/user_circle_add.svg',
                       'referral_system'.tr(), () {
                     Navigator.of(context).pushNamed(AppRoute.referal);
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(),
                       () {
                     showLoaderWrapperWhite(context);
@@ -117,16 +117,16 @@ class _MenuPageState extends State<MenuPage> {
                     Future.delayed(const Duration(seconds: 1), () {
                       Loader.hide();
                     });
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu(
                       'assets/icons/message-favorite.svg', 'contact_us'.tr(),
                       () {
                     Navigator.of(context)
                         .pushNamed(AppRoute.contactus, arguments: ['', '']);
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {
                     BlocProvider.of<SettingsBloc>(context).toggleTheme();
-                  }, Theme.of(context).textTheme.labelLarge!),
+                  }, Theme.of(context).textTheme.displayMedium!),
                   SizedBox(height: 15.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +142,7 @@ class _MenuPageState extends State<MenuPage> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 5.w),
+                                padding: EdgeInsets.only(left: 3.w),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton(
                                     value: selectLanguage,

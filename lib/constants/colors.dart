@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 class LightAppColors {
-  static const Color yellowPrimary = Color(0xFFFFD70A);
+  static final Color yellowPrimary = Color(0xFFFFD70A);
   static const Color yellowSecondary = Color(0xFFFFD70B);
   static const Color yellowBackground = Color(0xFFFFCA0D);
 

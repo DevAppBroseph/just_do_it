@@ -357,9 +357,13 @@ class _SearchPageState extends State<SearchPage> {
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
                         child: Row(
                           children: [
-                            Text('all_tasks'.tr(),
-                                style: CustomTextStyle.sf19w800(
-                                    LightAppColors.blackSecondary)),
+                            Text(
+                              'all_tasks'.tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(color: Colors.black),
+                            ),
                             const Spacer(),
                             Flexible(
                               child: ScaleButton(

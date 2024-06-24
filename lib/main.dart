@@ -75,8 +75,13 @@ void main() async {
       path: 'assets/translations',
       fallbackLocale: const Locale('en', 'US'),
       startLocale: const Locale('en', 'US'),
-      child: SettingsScope(
-        settingsBloc: SettingsBloc(),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        useInheritedMediaQuery: true,
+        builder: (context, child) => SettingsScope(
+          settingsBloc: SettingsBloc(),
+          child: child!,
+        ),
         child: const MyApp(),
       ),
     ),
@@ -88,37 +93,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = SettingsScope.themeOf(context).theme;
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      useInheritedMediaQuery: true,
-      builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
-            BlocProvider<NotificationsBloc>(
-                create: (context) => NotificationsBloc()),
-            BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
-            BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
-            BlocProvider<ReplyFromFavBloc>(
-                create: (context) => ReplyFromFavBloc()),
-            BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
-            BlocProvider<ResponseBlocFromFav>(
-                create: (context) => ResponseBlocFromFav()),
-            BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
-            BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
-            BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
-            BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
-            BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
-            BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
-          ],
-          child: GestureDetector(
-            onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-            },
-            child: MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
+        BlocProvider<NotificationsBloc>(
+            create: (context) => NotificationsBloc()),
+        BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+        BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
+        BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),
+        BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
+        BlocProvider<ResponseBlocFromFav>(
+            create: (context) => ResponseBlocFromFav()),
+        BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
+        BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
+        BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
+        BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
+        BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
+        BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
+      ],
+      child: GestureDetector(
+        onTap: () {
+          WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+        },
+        child: Builder(
+          builder: (context) {
+            final theme = SettingsScope.themeOf(context).theme;
+            return MaterialApp(
               themeMode: theme.mode,
               theme: theme.lightTheme,
               darkTheme: theme.darkTheme,
@@ -129,10 +131,10 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }

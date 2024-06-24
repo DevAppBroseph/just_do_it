@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 
 @immutable
 class AppTheme {
@@ -45,39 +46,44 @@ class AppTheme {
 
   static TextTheme _buildTextTheme(Brightness brightness) {
     return brightness == Brightness.dark
-        ? const TextTheme(
-            labelLarge: TextStyle(color: DarkAppColors.blackPrimary),
-            labelMedium: TextStyle(color: DarkAppColors.greyPrimary),
-            labelSmall: TextStyle(color: DarkAppColors.greyPrimary),
-            headlineLarge: TextStyle(color: DarkAppColors.whitePrimary),
-            headlineMedium: TextStyle(color: DarkAppColors.whitePrimary),
-            headlineSmall: TextStyle(color: DarkAppColors.whitePrimary),
-            displayLarge: TextStyle(color: DarkAppColors.whitePrimary),
-            displayMedium: TextStyle(color: DarkAppColors.whitePrimary),
-            displaySmall: TextStyle(color: DarkAppColors.whitePrimary),
-            titleLarge: TextStyle(color: DarkAppColors.whitePrimary),
-            titleMedium: TextStyle(color: DarkAppColors.whitePrimary),
-            titleSmall: TextStyle(color: DarkAppColors.whitePrimary),
-            bodyLarge: TextStyle(color: DarkAppColors.whitePrimary),
-            bodyMedium: TextStyle(color: DarkAppColors.greyPrimary),
-            bodySmall: TextStyle(color: DarkAppColors.greyPrimary),
+        ? TextTheme(
+            labelLarge: CustomTextStyle.sf11w400(DarkAppColors.blackPrimary),
+            labelMedium: CustomTextStyle.sf12w400(DarkAppColors.blackPrimary),
+            labelSmall: CustomTextStyle.sf13w400(DarkAppColors.blackPrimary),
+            headlineLarge: CustomTextStyle.sf18w800(DarkAppColors.blackPrimary),
+            headlineMedium:
+                CustomTextStyle.sf17w600(DarkAppColors.blackPrimary),
+            headlineSmall: CustomTextStyle.sf16w600(DarkAppColors.blackPrimary),
+            displayLarge: CustomTextStyle.sf21w700(DarkAppColors.blackPrimary),
+            displayMedium: CustomTextStyle.sf19w800(DarkAppColors.blackPrimary),
+            displaySmall: CustomTextStyle.sf18w800(DarkAppColors.blackPrimary),
+            titleLarge: CustomTextStyle.sf22w700(DarkAppColors.blackPrimary),
+            titleMedium: CustomTextStyle.sf21w700(DarkAppColors.blackPrimary),
+            titleSmall: CustomTextStyle.sf19w800(DarkAppColors.blackPrimary),
+            bodyLarge: CustomTextStyle.sf18w800(DarkAppColors.blackPrimary),
+            bodyMedium: CustomTextStyle.sf16w400(DarkAppColors.blackPrimary),
+            bodySmall: CustomTextStyle.sf14w400(DarkAppColors.blackPrimary),
           )
-        : const TextTheme(
-            labelLarge: TextStyle(color: LightAppColors.blackPrimary),
-            labelMedium: TextStyle(color: LightAppColors.blackPrimary),
-            labelSmall: TextStyle(color: LightAppColors.blackPrimary),
-            headlineLarge: TextStyle(color: LightAppColors.blackPrimary),
-            headlineMedium: TextStyle(color: LightAppColors.blackPrimary),
-            headlineSmall: TextStyle(color: LightAppColors.blackPrimary),
-            displayLarge: TextStyle(color: LightAppColors.blackPrimary),
-            displayMedium: TextStyle(color: LightAppColors.blackPrimary),
-            displaySmall: TextStyle(color: LightAppColors.blackPrimary),
-            titleLarge: TextStyle(color: LightAppColors.blackPrimary),
-            titleMedium: TextStyle(color: LightAppColors.blackPrimary),
-            titleSmall: TextStyle(color: LightAppColors.blackPrimary),
-            bodyLarge: TextStyle(color: LightAppColors.blackPrimary),
-            bodyMedium: TextStyle(color: LightAppColors.greySecondary),
-            bodySmall: TextStyle(color: LightAppColors.greySecondary),
+        : TextTheme(
+            labelLarge: CustomTextStyle.sf11w400(LightAppColors.blackPrimary),
+            labelMedium: CustomTextStyle.sf12w400(LightAppColors.blackPrimary),
+            labelSmall: CustomTextStyle.sf13w400(LightAppColors.blackPrimary),
+            headlineLarge:
+                CustomTextStyle.sf18w800(LightAppColors.blackPrimary),
+            headlineMedium:
+                CustomTextStyle.sf17w600(LightAppColors.blackPrimary),
+            headlineSmall:
+                CustomTextStyle.sf16w600(LightAppColors.blackPrimary),
+            displayLarge: CustomTextStyle.sf21w700(LightAppColors.blackPrimary),
+            displayMedium:
+                CustomTextStyle.sf19w800(LightAppColors.blackPrimary),
+            displaySmall: CustomTextStyle.sf18w800(LightAppColors.blackPrimary),
+            titleLarge: CustomTextStyle.sf22w700(LightAppColors.blackPrimary),
+            titleMedium: CustomTextStyle.sf21w700(LightAppColors.blackPrimary),
+            titleSmall: CustomTextStyle.sf19w800(LightAppColors.blackPrimary),
+            bodyLarge: CustomTextStyle.sf18w800(LightAppColors.blackPrimary),
+            bodyMedium: CustomTextStyle.sf16w400(LightAppColors.greySecondary),
+            bodySmall: CustomTextStyle.sf14w400(LightAppColors.greySecondary),
           );
   }
 
