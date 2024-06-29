@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         pageController.jumpToPage(4);
                         page = 5;
                       }, selectTab),
-                      WelcomPage(selectTab)
+                      WelcomePage(selectTab)
                     ],
                   );
                 },

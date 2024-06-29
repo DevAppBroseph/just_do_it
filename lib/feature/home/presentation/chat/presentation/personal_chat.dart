@@ -162,8 +162,9 @@ class _PersonalChatState extends State<PersonalChat> {
                         widget.name.isEmpty
                             ? 'account_deleted'.tr()
                             : widget.name,
-                        style: CustomTextStyle.sf22w700(
-                            LightAppColors.blackSecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf22w700BlackSec,
+                            (darkStyles) => darkStyles.sf22w700BlackSec),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
@@ -177,7 +178,10 @@ class _PersonalChatState extends State<PersonalChat> {
                       (index) {},
                     ),
                     child: Container(
-                      color: Colors.white,
+                      color: SettingsScope.themeOf(context).theme.mode ==
+                              ThemeMode.dark
+                          ? DarkAppColors.whitePrimary
+                          : LightAppColors.whitePrimary,
                       width: 30.w,
                       height: 30.h,
                       child: Icon(
@@ -326,7 +330,10 @@ class _PersonalChatState extends State<PersonalChat> {
                 height: 109.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: LightAppColors.whitePrimary,
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.whitePrimary
+                      : LightAppColors.whitePrimary,
                   boxShadow: [
                     BoxShadow(
                       offset: const Offset(0, -4),
@@ -387,7 +394,6 @@ class _PersonalChatState extends State<PersonalChat> {
                                             onTap: () {
                                               if (textController
                                                   .text.isNotEmpty) {
-                                                // BlocProvider.of<ChatBloc>(context).messages.isEmpty
                                                 BlocProvider.of<ChatBloc>(
                                                         context)
                                                     .add(

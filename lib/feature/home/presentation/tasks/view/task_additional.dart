@@ -8,6 +8,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -63,7 +64,10 @@ class _TaskAdditionalState extends State<TaskAdditional> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.greyPrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.greyPrimary,
         body: Stack(
           children: [
             SafeArea(
