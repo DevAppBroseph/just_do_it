@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_theme.dart';
@@ -33,11 +34,17 @@ final class ThemeDataSourceLocal implements ThemeDataSource {
 
     if (type == null || seedColor == null) return null;
 
+    final themeMode = codec.decode(type);
+
     return AppTheme(
       seed: Color(seedColor),
-      mode: codec.decode(type),
+      mode: themeMode,
       lightColors: LightAppColors(),
       darkColors: DarkAppColors(),
+      textStyles: AppTextStyles(
+        lightTextStyles: LightTextStyles(),
+        darkTextStyles: DarkTextStyles(),
+      ),
     );
   }
 }

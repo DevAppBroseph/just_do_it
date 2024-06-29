@@ -1,5 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
+
+class LightTextStyles {
+  final TextStyle style1 =
+      CustomTextStyle.sf21w700(LightAppColors.blackPrimary);
+  final TextStyle style2 =
+      CustomTextStyle.sf19w800(LightAppColors.blackPrimary);
+  final TextStyle style3 =
+      CustomTextStyle.sf18w800(LightAppColors.blackPrimary);
+}
+
+class DarkTextStyles {
+  final TextStyle style1 = CustomTextStyle.sf21w700(DarkAppColors.blackPrimary);
+  final TextStyle style2 = CustomTextStyle.sf19w800(DarkAppColors.whitePrimary);
+  final TextStyle style3 = CustomTextStyle.sf18w800(DarkAppColors.whitePrimary);
+}
+
+class AppTextStyles {
+  final LightTextStyles lightTextStyles;
+  final DarkTextStyles darkTextStyles;
+
+  AppTextStyles({
+    required this.lightTextStyles,
+    required this.darkTextStyles,
+  });
+}
 
 class CustomTextStyle {
   static TextStyle sf11w400(Color? color) {

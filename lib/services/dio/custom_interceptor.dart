@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/services/dio/dio_client.dart';
@@ -13,7 +12,7 @@ class CustomInterceptors extends Interceptor {
       // Storage().getAccessToken() != null) {
       try {
         final newAccessToken = await getRefreshedToken();
-        debugPrint('new access token: $newAccessToken');
+        // debugPrint('new access token: $newAccessToken');
         await Storage().setAccessToken(newAccessToken);
         err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
         return handler.resolve(await dio.fetch(err.requestOptions));

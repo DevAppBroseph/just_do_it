@@ -100,7 +100,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _startSocket(StartSocket eventBloc, Emitter<ChatState> emit) async {
     debugPrint('starting socket...');
     final token = Storage().getAccessToken();
-    debugPrint('access token: $token');
+    //debugPrint('access token: $token');
     await channel?.sink.close();
     if (token == null) {
       return;

@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/theme/settings_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/language.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -119,14 +120,36 @@ class _MenuPageState extends State<MenuPage> {
                     });
                   }, Theme.of(context).textTheme.displayMedium!),
                   itemMenu(
-                      'assets/icons/message-favorite.svg', 'contact_us'.tr(),
-                      () {
-                    Navigator.of(context)
-                        .pushNamed(AppRoute.contactus, arguments: ['', '']);
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/moon.svg', 'dark_mode'.tr(), () {
-                    BlocProvider.of<SettingsBloc>(context).toggleTheme();
-                  }, Theme.of(context).textTheme.displayMedium!),
+                    'assets/icons/message-favorite.svg',
+                    'contact_us'.tr(),
+                    () {
+                      Navigator.of(context)
+                          .pushNamed(AppRoute.contactus, arguments: ['', '']);
+                    },
+                    SettingsScope.themeOf(context)
+                        .theme
+                        .textStyles
+                        .lightTextStyles
+                        .style1!,
+                  ),
+                  itemMenu(
+                    'assets/icons/moon.svg',
+                    'dark_mode'.tr(),
+                    () {
+                      BlocProvider.of<SettingsBloc>(context).toggleTheme();
+                    },
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? SettingsScope.themeOf(context)
+                            .theme
+                            .textStyles
+                            .darkTextStyles
+                            .style1!
+                        : SettingsScope.themeOf(context)
+                            .theme
+                            .textStyles
+                            .lightTextStyles
+                            .style1!,
+                  ),
                   SizedBox(height: 15.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

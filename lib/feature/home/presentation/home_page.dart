@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       log('home page state resumed');
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
-      log('access token: $accessToken');
+      // log('access token: $accessToken');
       if (accessToken != null) {
         BlocProvider.of<ChatBloc>(context)
             .add(StartSocket(context, accessToken, () {

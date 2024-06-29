@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/constants/text_style.dart';
 
 import 'app_theme.dart';
 import 'settings_bloc.dart';
@@ -46,6 +47,10 @@ class _SettingsScopeState extends State<SettingsScope>
       seed: Colors.blue,
       lightColors: LightAppColors(),
       darkColors: DarkAppColors(),
+      textStyles: AppTextStyles(
+        lightTextStyles: LightTextStyles(),
+        darkTextStyles: DarkTextStyles(),
+      ),
     );
   }
 
