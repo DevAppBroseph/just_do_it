@@ -40,9 +40,14 @@ class AppTheme {
   final ThemeData lightTheme;
 
   static TextTheme _buildTextTheme(dynamic textStyles) {
-    return TextTheme(
-        // Пустой TextTheme, так как мы не используем стандартные поля
-        );
+    return TextTheme();
+  }
+
+  TextStyle getStyle(TextStyle Function(LightTextStyles) lightStyle,
+      TextStyle Function(DarkTextStyles) darkStyle) {
+    return mode == ThemeMode.dark
+        ? darkStyle(textStyles.darkTextStyles)
+        : lightStyle(textStyles.lightTextStyles);
   }
 
   ThemeData computeTheme() {

@@ -3,15 +3,50 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/colors.dart';
 
 class LightTextStyles {
+  final TextStyle sf22w700BlackSec =
+      CustomTextStyle.sf22w700(LightAppColors.blackSecondary);
+
+  final TextStyle sf21w700BlackSec =
+      CustomTextStyle.sf21w700(LightAppColors.blackSecondary);
+
+  final TextStyle sf19w800BlackSec =
+      CustomTextStyle.sf19w800(LightAppColors.blackSecondary);
+
+  final TextStyle sf18w800BlackSec =
+      CustomTextStyle.sf18w800(LightAppColors.blackSecondary);
+
+  final TextStyle sf17w400BlackSec =
+      CustomTextStyle.sf17w400(LightAppColors.blackPrimary);
+
+  final TextStyle sf13w400BlackSec =
+      CustomTextStyle.sf13w400(LightAppColors.blackPrimary);
+
   final TextStyle style1 =
       CustomTextStyle.sf21w700(LightAppColors.blackPrimary);
-  final TextStyle style2 =
-      CustomTextStyle.sf19w800(LightAppColors.blackPrimary);
+
   final TextStyle style3 =
       CustomTextStyle.sf18w800(LightAppColors.blackPrimary);
 }
 
 class DarkTextStyles {
+  final TextStyle sf22w700BlackSec =
+      CustomTextStyle.sf22w700(DarkAppColors.blackSecondary);
+
+  final TextStyle sf21w700BlackSec =
+      CustomTextStyle.sf21w700(DarkAppColors.blackSecondary);
+
+  final TextStyle sf19w800BlackSec =
+      CustomTextStyle.sf19w800(DarkAppColors.blackSecondary);
+
+  final TextStyle sf18w800BlackSec =
+      CustomTextStyle.sf18w800(DarkAppColors.blackSecondary);
+
+  final TextStyle sf17w400BlackSec =
+      CustomTextStyle.sf17w400(DarkAppColors.blackPrimary);
+
+  final TextStyle sf13w400BlackSec =
+      CustomTextStyle.sf13w400(DarkAppColors.blackPrimary);
+
   final TextStyle style1 = CustomTextStyle.sf21w700(DarkAppColors.blackPrimary);
   final TextStyle style2 = CustomTextStyle.sf19w800(DarkAppColors.whitePrimary);
   final TextStyle style3 = CustomTextStyle.sf18w800(DarkAppColors.whitePrimary);

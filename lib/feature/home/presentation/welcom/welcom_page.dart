@@ -17,6 +17,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/rating
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/widgets/grade_mascot_image.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/language.dart';
@@ -52,10 +53,6 @@ class _WelcomPageState extends State<WelcomPage> {
   TextEditingController searchController = TextEditingController();
   ScrollController controller = ScrollController();
 
-  // Future<void> notificationInit() async {
-  //   await NotificationService().inject();
-  // }
-
   int? proverkaBalance;
   String? access;
 
@@ -63,7 +60,6 @@ class _WelcomPageState extends State<WelcomPage> {
   void initState() {
     super.initState();
     BlocProvider.of<AuthBloc>(context).add(GetCategoriesEvent());
-    // notificationInit();
     getScore();
   }
 
@@ -98,7 +94,6 @@ class _WelcomPageState extends State<WelcomPage> {
             BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
           }
         } else {
-          // Initialize with English if no user preference
           selectLanguage = 'EN';
           context.setLocale(const Locale('en', 'US'));
           BlocProvider.of<ChatBloc>(context).add(UpdateMenuEvent());
@@ -106,6 +101,10 @@ class _WelcomPageState extends State<WelcomPage> {
         return MediaQuery(
           data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
           child: Scaffold(
+            backgroundColor:
+                SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                    ? DarkAppColors.whitePrimary
+                    : LightAppColors.whitePrimary,
             resizeToAvoidBottomInset: false,
             body: Column(
               mainAxisSize: MainAxisSize.min,

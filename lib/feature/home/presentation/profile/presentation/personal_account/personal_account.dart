@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -45,6 +46,10 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         body:
             BlocBuilder<RatingBloc, RatingState>(builder: (context, snapshot) {
           return SafeArea(
@@ -64,8 +69,22 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                       const Spacer(),
                       Text(
                         'personal_account'.tr(),
-                        style: CustomTextStyle.sf22w700(
-                            LightAppColors.blackSecondary),
+                        // style: SettingsScope.themeOf(context).theme.mode ==
+                        //         ThemeMode.dark
+                        //     ? SettingsScope.themeOf(context)
+                        //         .theme
+                        //         .textStyles
+                        //         .darkTextStyles
+                        //         .sf21w700BlackSec
+                        //     : SettingsScope.themeOf(context)
+                        //         .theme
+                        //         .textStyles
+                        //         .lightTextStyles
+                        //         .sf21w700BlackSec,
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf21w700BlackSec,
+                              (darkStyles) => darkStyles.sf21w700BlackSec,
+                            ),
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -119,9 +138,21 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'profile'.tr(),
-                                style: CustomTextStyle.sf19w800(
-                                        LightAppColors.blackSecondary)
-                                    .copyWith(fontWeight: FontWeight.w500),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                      (darkStyles) =>
+                                          darkStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                    ),
+                                // CustomTextStyle.sf19w800(
+                                //         LightAppColors.blackSecondary)
+                                //     .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
@@ -148,9 +179,18 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'grades'.tr(),
-                                style: CustomTextStyle.sf19w800(
-                                        LightAppColors.blackSecondary)
-                                    .copyWith(fontWeight: FontWeight.w500),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                      (darkStyles) =>
+                                          darkStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                    ),
                               ),
                               const Spacer(),
                               Icon(
@@ -177,9 +217,18 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 'rating_and_reviews'.tr(),
-                                style: CustomTextStyle.sf19w800(
-                                        LightAppColors.blackSecondary)
-                                    .copyWith(fontWeight: FontWeight.w500),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                      (darkStyles) =>
+                                          darkStyles.sf21w700BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 19),
+                                    ),
                               ),
                               const Spacer(),
                               Icon(

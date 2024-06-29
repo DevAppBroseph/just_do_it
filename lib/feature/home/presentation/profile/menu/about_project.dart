@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/question.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -38,7 +39,10 @@ class _AboutProjectState extends State<AboutProject> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -68,8 +72,13 @@ class _AboutProjectState extends State<AboutProject> {
                               children: [
                                 Text(
                                   'about_the_project'.tr(),
-                                  style: CustomTextStyle.sf22w700(
-                                      LightAppColors.blackSecondary),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) =>
+                                              lightStyles.sf22w700BlackSec,
+                                          (darkStyles) =>
+                                              darkStyles.sf22w700BlackSec),
                                 ),
                               ],
                             ),
@@ -132,8 +141,9 @@ class _AboutProjectState extends State<AboutProject> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           'question_and_answer'.tr(),
-                          style: CustomTextStyle.sf22w700(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
                         ),
                       ),
                       SizedBox(height: 30.h),
@@ -207,10 +217,17 @@ class _AboutProjectState extends State<AboutProject> {
                           children: [
                             Text(
                               '${'app_version'.tr()}: ',
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.grey,
-                              ),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
+                              // style: const TextStyle(
+                              //   fontSize: 17,
+                              //   color: Colors.grey,
+                              // ),
                             ),
                             const Flexible(
                               child: Text(
@@ -256,8 +273,12 @@ class _AboutProjectState extends State<AboutProject> {
                 child: Text(
                   question,
                   textAlign: TextAlign.start,
-                  style:
-                      CustomTextStyle.sf17w600(LightAppColors.blackSecondary),
+                  style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf17w400BlackSec
+                            .copyWith(fontWeight: FontWeight.w600),
+                        (darkStyles) => darkStyles.sf17w400BlackSec
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                 ),
               ),
               selectIndex == index

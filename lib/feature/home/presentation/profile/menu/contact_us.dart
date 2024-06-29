@@ -7,6 +7,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/network/repository.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -35,7 +36,10 @@ class _ContactUsState extends State<ContactUs> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -62,8 +66,13 @@ class _ContactUsState extends State<ContactUs> {
                           children: [
                             Text(
                               'contact_us'.tr(),
-                              style: CustomTextStyle.sf22w700(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf22w700BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf22w700BlackSec),
                             ),
                           ],
                         ),

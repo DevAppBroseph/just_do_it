@@ -7,6 +7,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/notification/notifications_bloc/notifications_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/notofications.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 import 'package:scale_button/scale_button.dart';
@@ -38,7 +39,10 @@ class _NotificationPageState extends State<NotificationPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             final user = context.read<ProfileBloc>().user;
@@ -75,8 +79,14 @@ class _NotificationPageState extends State<NotificationPage> {
                                 const Spacer(),
                                 Text(
                                   'notifications'.tr(),
-                                  style: CustomTextStyle.sf22w700(
-                                      LightAppColors.blackSecondary),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf21w700BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf21w700BlackSec,
+                                      ),
                                 ),
                                 const Spacer(),
                                 SizedBox(width: 12.w)
@@ -185,8 +195,20 @@ class _NotificationPageState extends State<NotificationPage> {
                                   : LightAppColors.yellowPrimary,
                               textLabel: Text(
                                 'clear'.tr(),
-                                style: CustomTextStyle.sf17w400(
-                                    LightAppColors.blackAccent),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec.copyWith(
+                                              color:
+                                                  LightAppColors.whitePrimary),
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec.copyWith(
+                                              color:
+                                                  DarkAppColors.whitePrimary),
+                                    ),
+                                // style: CustomTextStyle.sf17w400(
+                                //    LightAppColors.blackAccent),
                               ),
                             ),
                           ),

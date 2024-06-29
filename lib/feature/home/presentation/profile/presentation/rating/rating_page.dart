@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/rating/bloc/rating_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/review.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -29,7 +30,10 @@ class _RatingPageState extends State<RatingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: LightAppColors.greyAccent,
+      backgroundColor:
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.whitePrimary
+              : LightAppColors.whitePrimary,
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           final user = context.read<ProfileBloc>().user;
@@ -52,8 +56,11 @@ class _RatingPageState extends State<RatingPage> {
                     header(reviews, user),
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: LightAppColors.greyAccent,
+                        decoration: BoxDecoration(
+                          color: SettingsScope.themeOf(context).theme.mode ==
+                                  ThemeMode.dark
+                              ? DarkAppColors.whitePrimary
+                              : LightAppColors.whitePrimary,
                         ),
                         child: ListView(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -62,8 +69,15 @@ class _RatingPageState extends State<RatingPage> {
                             SizedBox(height: 30.h),
                             Text(
                               'reviews_of_your_work'.tr(),
-                              style: CustomTextStyle.sf18w800(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf18w800BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf18w800BlackSec),
+                              // style: CustomTextStyle.sf18w800(
+                              //     LightAppColors.blackSecondary),
                             ),
                             SizedBox(height: 30.h),
                             ListView.builder(
@@ -142,14 +156,14 @@ class _RatingPageState extends State<RatingPage> {
                   children: [
                     Text(
                       '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                      style: CustomTextStyle.sf17w400(
-                        Colors.black,
-                      ).copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      '01.04.2023',
-                      style: CustomTextStyle.sf13w400(
-                          LightAppColors.greySecondary),
+                      // style: CustomTextStyle.sf17w400(
+                      //   Colors.black,
+                      // ).copyWith(fontWeight: FontWeight.w500),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf17w400BlackSec
+                              .copyWith(fontWeight: FontWeight.w500),
+                          (darkStyles) => darkStyles.sf17w400BlackSec
+                              .copyWith(fontWeight: FontWeight.w500)),
                     ),
                   ],
                 ),
@@ -162,8 +176,11 @@ class _RatingPageState extends State<RatingPage> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style:
-                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf17w400BlackSec,
+                        (darkStyles) => darkStyles.sf17w400BlackSec),
+                    //  style:
+                    //CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                   ),
                 ],
               ),
@@ -171,7 +188,10 @@ class _RatingPageState extends State<RatingPage> {
               SizedBox(
                 child: Text(
                   review.message,
-                  style: CustomTextStyle.sf13w400(LightAppColors.blackAccent),
+                  style: SettingsScope.themeOf(context).theme.getStyle(
+                      (lightStyles) => lightStyles.sf13w400BlackSec,
+                      (darkStyles) => darkStyles.sf13w400BlackSec),
+                  //style: CustomTextStyle.sf13w400(LightAppColors.blackAccent),
                   maxLines: null,
                 ),
               ),
@@ -259,15 +279,27 @@ class _RatingPageState extends State<RatingPage> {
                         width: 150.w,
                         child: Text(
                           '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                          style: CustomTextStyle.sf17w400(
-                            LightAppColors.blackSecondary,
-                          ).copyWith(fontWeight: FontWeight.w500),
+                          // style: CustomTextStyle.sf17w400(
+                          //   LightAppColors.blackSecondary,
+                          // ).copyWith(fontWeight: FontWeight.w500),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                                (lightStyles) => lightStyles.sf17w400BlackSec
+                                    .copyWith(fontWeight: FontWeight.w500),
+                                (darkStyles) => darkStyles.sf17w400BlackSec
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
                         ),
                       ),
                       Text(
                         _textData(review.date),
-                        style: CustomTextStyle.sf13w400(
-                            LightAppColors.greySecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf13w400BlackSec
+                                  .copyWith(
+                                      color: LightAppColors.greySecondary),
+                              (darkStyles) => darkStyles.sf13w400BlackSec,
+                            ),
+                        // style: CustomTextStyle.sf13w400(
+                        //     LightAppColors.greySecondary),
                       ),
                     ],
                   ),
@@ -279,8 +311,11 @@ class _RatingPageState extends State<RatingPage> {
                       SizedBox(width: 4.w),
                       Text(
                         '${review.mark}/5',
-                        style: CustomTextStyle.sf17w400(
-                            LightAppColors.blackSecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf17w400BlackSec,
+                            (darkStyles) => darkStyles.sf17w400BlackSec),
+                        // style: CustomTextStyle.sf17w400(
+                        //     LightAppColors.blackSecondary),
                       ),
                     ],
                   ),
@@ -289,8 +324,11 @@ class _RatingPageState extends State<RatingPage> {
                     width: width - (66 + 50),
                     child: Text(
                       review.message,
-                      style:
-                          CustomTextStyle.sf13w400(LightAppColors.blackAccent),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf13w400BlackSec,
+                          (darkStyles) => darkStyles.sf13w400BlackSec),
+                      // style:
+                      //CustomTextStyle.sf13w400(LightAppColors.blackAccent),
                       maxLines: null,
                     ),
                   ),
@@ -353,8 +391,11 @@ class _RatingPageState extends State<RatingPage> {
                   alignment: Alignment.center,
                   child: Text(
                     'rating'.tr(),
-                    style:
-                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                    // style:
+                    //     CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
                   ),
                 ),
                 CustomIconButton(
@@ -383,6 +424,13 @@ class _RatingPageState extends State<RatingPage> {
                           width: 188.w,
                           child: AutoSizeText(
                             '${bloc.user?.firstname}\n${bloc.user?.lastname}',
+                            // style: SettingsScope.themeOf(context)
+                            //     .theme
+                            //     .getStyle(
+                            //         (lightStyles) =>
+                            //             lightStyles.sf19w800BlackSec,
+                            //         (darkStyles) =>
+                            //             darkStyles.sf19w800BlackSec),
                             style: CustomTextStyle.sf19w800(
                                     LightAppColors.blackSecondary)
                                 .copyWith(
@@ -410,6 +458,13 @@ class _RatingPageState extends State<RatingPage> {
                             children: [
                               Text(
                                 'your_rating'.tr(),
+                                // style: SettingsScope.themeOf(context)
+                                //     .theme
+                                //     .getStyle(
+                                //         (lightStyles) =>
+                                //             lightStyles.sf17w400BlackSec,
+                                //         (darkStyles) =>
+                                //             darkStyles.sf17w400BlackSec),
                                 style: CustomTextStyle.sf17w400(
                                     LightAppColors.blackAccent),
                               ),
@@ -422,8 +477,22 @@ class _RatingPageState extends State<RatingPage> {
                                     reviews.ranking == null
                                         ? '-'
                                         : (reviews.ranking!).toString(),
+                                    // style: SettingsScope.themeOf(context)
+                                    //     .theme
+                                    //     .getStyle(
+                                    //       (lightStyles) => lightStyles
+                                    //           .sf19w800BlackSec
+                                    //           .copyWith(
+                                    //               fontWeight: FontWeight.w600,
+                                    //               fontSize: 20),
+                                    //       (darkStyles) => darkStyles
+                                    //           .sf19w800BlackSec
+                                    //           .copyWith(
+                                    //               fontWeight: FontWeight.w600,
+                                    //               fontSize: 20),
+                                    //     ),
                                     style: CustomTextStyle.sf19w800(
-                                            LightAppColors.whitePrimary)
+                                            LightAppColors.blackPrimary)
                                         .copyWith(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 20),
@@ -445,6 +514,9 @@ class _RatingPageState extends State<RatingPage> {
                           '${'you_have_completed'.tr()} ${user?.countOrdersCompleteAsExecutor == null ? '0' : user!.countOrdersCompleteAsExecutor!.toString()} ${'taskss'.tr()}',
                           style: CustomTextStyle.sf17w400(
                               LightAppColors.blackAccent),
+                          // style: SettingsScope.themeOf(context).theme.getStyle(
+                          //     (lightStyles) => lightStyles.sf17w400BlackSec,
+                          //     (darkStyles) => darkStyles.sf17w400BlackSec),
                         ),
                       ],
                     ),

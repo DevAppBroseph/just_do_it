@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/services/firebase_dynamic_links/firebase_dynamic_links_service.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -49,7 +50,10 @@ class _ReferalPageState extends State<ReferalPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -74,8 +78,9 @@ class _ReferalPageState extends State<ReferalPage> {
                       children: [
                         Text(
                           'referral_system'.tr(),
-                          style: CustomTextStyle.sf22w700(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
                         ),
                       ],
                     ),
@@ -97,7 +102,11 @@ class _ReferalPageState extends State<ReferalPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Text(
                 'for_each_new_user'.tr(),
-                style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf17w400BlackSec.copyWith(
+                          color: LightAppColors.blackAccent,
+                        ),
+                    (darkStyles) => darkStyles.sf17w400BlackSec),
               ),
             ),
             SizedBox(height: 50.h),

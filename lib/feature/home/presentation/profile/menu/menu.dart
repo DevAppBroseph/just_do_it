@@ -65,8 +65,9 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   Text(
                     'menu'.tr(),
-                    style:
-                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
                   ),
                   const Spacer(),
                   SizedBox(width: 23.w),
@@ -85,40 +86,80 @@ class _MenuPageState extends State<MenuPage> {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  itemMenu('assets/icons/add_circle.svg', 'сreate_a_task'.tr(),
-                      () {
-                    Navigator.pop(context, 'create');
-                  }, Theme.of(context).textTheme.displayMedium!),
+                  itemMenu(
+                    'assets/icons/add_circle.svg',
+                    'сreate_a_task'.tr(),
+                    () {
+                      Navigator.pop(context, 'create');
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
                   itemMenu('assets/icons/search2.svg', 'find_tasks'.tr(), () {
                     Navigator.pop(context, 'search');
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/note.svg', 'my_task'.tr(), () {
-                    if (widget.inTask) {
-                      Navigator.pop(context);
-                    } else {
-                      Navigator.pop(context, "tasks");
-                    }
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/messages1.svg', 'my_messages'.tr(),
-                      () {
-                    Navigator.pop(context, 'chat');
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/profile-circle.svg',
-                      'personal_account'.tr(), () {
-                    Navigator.of(context).pushNamed(AppRoute.personalAccount);
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/user_circle_add.svg',
-                      'referral_system'.tr(), () {
-                    Navigator.of(context).pushNamed(AppRoute.referal);
-                  }, Theme.of(context).textTheme.displayMedium!),
-                  itemMenu('assets/icons/mouse.svg', 'about_the_project'.tr(),
-                      () {
-                    showLoaderWrapperWhite(context);
-                    Navigator.of(context).pushNamed(AppRoute.about);
-                    Future.delayed(const Duration(seconds: 1), () {
-                      Loader.hide();
-                    });
-                  }, Theme.of(context).textTheme.displayMedium!),
+                  },
+                      SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf22w700BlackSec,
+                          (darkStyles) => darkStyles.sf22w700BlackSec)),
+                  itemMenu(
+                    'assets/icons/note.svg',
+                    'my_task'.tr(),
+                    () {
+                      if (widget.inTask) {
+                        Navigator.pop(context);
+                      } else {
+                        Navigator.pop(context, "tasks");
+                      }
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
+                  itemMenu(
+                    'assets/icons/messages1.svg',
+                    'my_messages'.tr(),
+                    () {
+                      Navigator.pop(context, 'chat');
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
+                  itemMenu(
+                    'assets/icons/profile-circle.svg',
+                    'personal_account'.tr(),
+                    () {
+                      Navigator.of(context).pushNamed(AppRoute.personalAccount);
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
+                  itemMenu(
+                    'assets/icons/user_circle_add.svg',
+                    'referral_system'.tr(),
+                    () {
+                      Navigator.of(context).pushNamed(AppRoute.referal);
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
+                  itemMenu(
+                    'assets/icons/mouse.svg',
+                    'about_the_project'.tr(),
+                    () {
+                      showLoaderWrapperWhite(context);
+                      Navigator.of(context).pushNamed(AppRoute.about);
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Loader.hide();
+                      });
+                    },
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
+                  ),
                   itemMenu(
                     'assets/icons/message-favorite.svg',
                     'contact_us'.tr(),
@@ -126,11 +167,9 @@ class _MenuPageState extends State<MenuPage> {
                       Navigator.of(context)
                           .pushNamed(AppRoute.contactus, arguments: ['', '']);
                     },
-                    SettingsScope.themeOf(context)
-                        .theme
-                        .textStyles
-                        .lightTextStyles
-                        .style1!,
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
                   ),
                   itemMenu(
                     'assets/icons/moon.svg',
@@ -138,17 +177,9 @@ class _MenuPageState extends State<MenuPage> {
                     () {
                       BlocProvider.of<SettingsBloc>(context).toggleTheme();
                     },
-                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
-                        ? SettingsScope.themeOf(context)
-                            .theme
-                            .textStyles
-                            .darkTextStyles
-                            .style1!
-                        : SettingsScope.themeOf(context)
-                            .theme
-                            .textStyles
-                            .lightTextStyles
-                            .style1!,
+                    SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
                   ),
                   SizedBox(height: 15.h),
                   Column(
@@ -159,7 +190,10 @@ class _MenuPageState extends State<MenuPage> {
                         height: 40.h,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: LightAppColors.whitePrimary,
+                            color: SettingsScope.themeOf(context).theme.mode ==
+                                    ThemeMode.dark
+                                ? DarkAppColors.whitePrimary
+                                : LightAppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
@@ -287,8 +321,14 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(width: 12.w),
               Text(
                 title,
-                style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)
-                    .copyWith(fontWeight: FontWeight.w500),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                      (lightStyles) => lightStyles.sf19w800BlackSec
+                          .copyWith(fontWeight: FontWeight.w500),
+                      (darkStyles) => darkStyles.sf19w800BlackSec
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                // style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)
+                //     .copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),

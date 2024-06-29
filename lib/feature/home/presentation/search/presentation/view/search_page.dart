@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -138,7 +139,10 @@ class _SearchPageState extends State<SearchPage> {
     double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: LightAppColors.greyPrimary,
+      backgroundColor:
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.whitePrimary
+              : LightAppColors.whitePrimary,
       body: MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
@@ -367,10 +371,13 @@ class _SearchPageState extends State<SearchPage> {
                           children: [
                             Text(
                               'all_tasks'.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium!
-                                  .copyWith(color: Colors.black),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf19w800BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf19w800BlackSec),
                             ),
                             const Spacer(),
                             Flexible(
@@ -389,7 +396,13 @@ class _SearchPageState extends State<SearchPage> {
                                         height: 36.h,
                                         width: 110.h,
                                         decoration: BoxDecoration(
-                                          color: LightAppColors.greyAccent,
+                                          color: SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? DarkAppColors.whitePrimary
+                                              : LightAppColors.whitePrimary,
+                                          //LightAppColors.greyAccent,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                         ),
@@ -407,9 +420,15 @@ class _SearchPageState extends State<SearchPage> {
                                               SizedBox(width: 4.w),
                                               Text(
                                                 'filter'.tr(),
-                                                style: CustomTextStyle.sf17w400(
-                                                    LightAppColors
-                                                        .blackSecondary),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec),
                                               ),
                                             ],
                                           ),
@@ -482,7 +501,11 @@ class _SearchPageState extends State<SearchPage> {
                                   left: 24.w, right: 24.w, bottom: 24.w),
                               height: 100.h,
                               decoration: BoxDecoration(
-                                color: LightAppColors.whitePrimary,
+                                color:
+                                    SettingsScope.themeOf(context).theme.mode ==
+                                            ThemeMode.dark
+                                        ? DarkAppColors.whitePrimary
+                                        : LightAppColors.whitePrimary,
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
@@ -555,8 +578,8 @@ class _SearchPageState extends State<SearchPage> {
                                     .toList(),
                               ),
                               SizedBox(height: 10.h),
-                              Center(
-                                child: CircularProgressIndicator(),
+                              const Center(
+                                child: const CircularProgressIndicator(),
                               ),
                               SizedBox(height: 20.h),
                             ],

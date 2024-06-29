@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:just_do_it/constants/server.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/services/dio/dio_client.dart';
 
@@ -39,7 +40,7 @@ class TaskRepository {
     };
 
     final response = await dio.get(
-      nextPageUrl ?? 'http://62.113.114.14/orders/',
+      nextPageUrl ?? '$server/orders/',
       queryParameters: nextPageUrl == null ? queryParameters : null,
       options: Options(
         headers: access != null ? {'Authorization': 'Bearer $access'} : null,
