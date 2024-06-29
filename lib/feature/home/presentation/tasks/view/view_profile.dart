@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/home/presentation/profile/presentation/rating
 import 'package:just_do_it/feature/home/presentation/profile/presentation/score/bloc_score/score_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/favourites_info.dart';
@@ -71,12 +72,18 @@ class _ProfileViewState extends State<ProfileView> {
 
     final user = BlocProvider.of<ProfileBloc>(context).user;
     return Scaffold(
-      backgroundColor: LightAppColors.greyPrimary,
+      backgroundColor:
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.whitePrimary
+              : LightAppColors.greyPrimary,
+      //LightAppColors.greyPrimary,
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())
           : Container(
-              color: LightAppColors.greyPrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.whitePrimary
+                  : LightAppColors.greyPrimary,
               child: MediaQuery(
                 data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: SingleChildScrollView(
@@ -855,8 +862,13 @@ class _ProfileViewState extends State<ProfileView> {
                                   SizedBox(height: 30.h),
                                   Text(
                                     'work_experience'.tr(),
-                                    style: CustomTextStyle.sf18w800(
-                                        LightAppColors.blackSecondary),
+                                    style: SettingsScope.themeOf(context)
+                                        .theme
+                                        .getStyle(
+                                            (lightStyles) =>
+                                                lightStyles.sf18w800BlackSec,
+                                            (darkStyles) =>
+                                                darkStyles.sf18w800BlackSec),
                                   ),
                                   SizedBox(height: 20.h),
                                   Container(

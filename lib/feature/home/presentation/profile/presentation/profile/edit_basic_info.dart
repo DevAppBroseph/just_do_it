@@ -8,6 +8,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/user_reg.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -28,12 +29,15 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
   ScrollController scrollController1 = ScrollController();
   late UserRegModel? user;
   bool isDataFilled = false;
+
   @override
   void initState() {
-    user = BlocProvider.of<ProfileBloc>(context).user!.duplicate();
-    fillData(user);
-
     super.initState();
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    if (profileBloc.user != null) {
+      user = profileBloc.user!.duplicate();
+      fillData(user);
+    }
   }
 
   @override
@@ -43,7 +47,10 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
       child: Stack(
         children: [
           Scaffold(
-            backgroundColor: LightAppColors.whitePrimary,
+            backgroundColor:
+                SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                    ? DarkAppColors.whitePrimary
+                    : LightAppColors.whitePrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {
               if (snapshot is LoadProfileState) {
@@ -70,8 +77,13 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           SizedBox(width: 12.w),
                           Text(
                             'basic_information'.tr(),
-                            style: CustomTextStyle.sf22w700(
-                                LightAppColors.blackSecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf22w700BlackSec,
+                                    (darkStyles) =>
+                                        darkStyles.sf22w700BlackSec),
                           ),
                         ],
                       ),
@@ -128,8 +140,17 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Text(
                             'edit_email'.tr(),
-                            style: CustomTextStyle.sf15w400(
-                                LightAppColors.greySecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf15w400BlackSec
+                                            .copyWith(
+                                                color:
+                                                    LightAppColors
+                                                        .greySecondary),
+                                    (darkStyles) =>
+                                        darkStyles.sf15w400BlackSec),
                           ),
                         ),
                         SizedBox(height: 16.h),
@@ -216,8 +237,17 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
                                 child: Text(
                                   'representative_of_a_legal_entity'.tr(),
                                   textAlign: TextAlign.justify,
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackAccent),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) => lightStyles
+                                                  .sf17w400BlackSec
+                                                  .copyWith(
+                                                color:
+                                                    LightAppColors.blackAccent,
+                                              ),
+                                          (darkStyles) =>
+                                              darkStyles.sf17w400BlackSec),
                                 ),
                               ),
                             ],
@@ -319,12 +349,12 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
 
   void requestNextEmptyFocusStage1() {}
 
-  fillData(UserRegModel? userRegModel) {
+  void fillData(UserRegModel? userRegModel) {
     if (userRegModel == null) return;
-    physics = userRegModel.isEntity!;
-    firstnameController.text = userRegModel.firstname!;
-    lastnameController.text = userRegModel.lastname!;
-    phoneController.text = userRegModel.phoneNumber!;
-    emailController.text = userRegModel.email!;
+    physics = userRegModel.isEntity ?? false;
+    firstnameController.text = userRegModel.firstname ?? '';
+    lastnameController.text = userRegModel.lastname ?? '';
+    phoneController.text = userRegModel.phoneNumber ?? '';
+    emailController.text = userRegModel.email ?? '';
   }
 }

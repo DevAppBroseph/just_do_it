@@ -103,7 +103,7 @@ class MoveTaskToTopButton extends StatelessWidget {
           children: [
             Text(
               'before'.tr(),
-              style: CustomTextStyle.sf18w800(LightAppColors.blackSecondary)
+              style: CustomTextStyle.sf18w800(LightAppColors.whitePrimary)
                   .copyWith(fontWeight: FontWeight.w500),
             ),
             GestureDetector(

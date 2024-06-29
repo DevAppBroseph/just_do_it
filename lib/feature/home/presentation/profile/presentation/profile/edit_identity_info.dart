@@ -11,6 +11,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -91,7 +92,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 60.h),
@@ -108,8 +112,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                   SizedBox(width: 12.w),
                   Text(
                     'security'.tr(),
-                    style:
-                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf22w700BlackSec,
+                        (darkStyles) => darkStyles.sf22w700BlackSec),
                   ),
                 ],
               ),

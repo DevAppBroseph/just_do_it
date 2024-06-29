@@ -18,6 +18,9 @@ class LightTextStyles {
   final TextStyle sf17w400BlackSec =
       CustomTextStyle.sf17w400(LightAppColors.blackPrimary);
 
+  final TextStyle sf15w400BlackSec =
+      CustomTextStyle.sf15w400(LightAppColors.blackPrimary);
+
   final TextStyle sf13w400BlackSec =
       CustomTextStyle.sf13w400(LightAppColors.blackPrimary);
 
@@ -43,6 +46,9 @@ class DarkTextStyles {
 
   final TextStyle sf17w400BlackSec =
       CustomTextStyle.sf17w400(DarkAppColors.blackPrimary);
+
+  final TextStyle sf15w400BlackSec =
+      CustomTextStyle.sf15w400(DarkAppColors.blackPrimary);
 
   final TextStyle sf13w400BlackSec =
       CustomTextStyle.sf13w400(DarkAppColors.blackPrimary);

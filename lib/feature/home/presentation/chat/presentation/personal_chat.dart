@@ -12,6 +12,7 @@ import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
@@ -130,7 +131,10 @@ class _PersonalChatState extends State<PersonalChat> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         body: Column(
           children: [
             SizedBox(height: 66.h),

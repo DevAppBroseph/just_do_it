@@ -142,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor:
           SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
               ? DarkAppColors.whitePrimary
-              : LightAppColors.whitePrimary,
+              : LightAppColors.greyPrimary,
       body: MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: BlocBuilder<ChatBloc, ChatState>(buildWhen: (previous, current) {
@@ -579,7 +579,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               SizedBox(height: 10.h),
                               const Center(
-                                child: const CircularProgressIndicator(),
+                                child: CircularProgressIndicator(),
                               ),
                               SizedBox(height: 20.h),
                             ],

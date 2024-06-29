@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widg
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_additional.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
@@ -352,7 +353,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -379,19 +383,23 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       if (isTask)
                         Text(
                           'creating_a_task'.tr(),
-                          style: CustomTextStyle.sf22w700(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
                         ),
                       if (!isTask)
                         Text(
                           'creating_an_offer'.tr(),
-                          style: CustomTextStyle.sf22w700(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
                         ),
                       Text(
                         ' ${page + 1}/2',
-                        style: CustomTextStyle.sf22w700(
-                            LightAppColors.greySecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf22w700BlackSec
+                                .copyWith(color: LightAppColors.greySecondary),
+                            (darkStyles) => darkStyles.sf22w700BlackSec),
                       )
                     ],
                   ),

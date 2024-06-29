@@ -10,6 +10,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/contractor.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/customer.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/widget/back_icon_button.dart';
 
@@ -35,7 +36,10 @@ class _TasksPageState extends State<TasksPage> {
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.greyPrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.whitePrimary
+                : LightAppColors.greyPrimary,
         body: StreamBuilder<int>(
           stream: streamController.stream,
           initialData: widget.customer,

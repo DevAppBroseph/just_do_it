@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search_list.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/view/create_task_page.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
 import 'package:just_do_it/models/task/task_category.dart';
@@ -71,14 +72,20 @@ class _CreatePageState extends State<CreatePage> {
       return MediaQuery(
         data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
         child: Scaffold(
-          backgroundColor: LightAppColors.greyPrimary,
+          backgroundColor:
+              SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.whitePrimary
+                  : LightAppColors.greyPrimary,
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Container(
                 height: 130.h,
-                decoration: const BoxDecoration(
-                  color: LightAppColors.greyPrimary,
+                decoration: BoxDecoration(
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.whitePrimary
+                      : LightAppColors.greyPrimary,
                   boxShadow: [],
                 ),
                 child: Column(
@@ -328,8 +335,13 @@ class _CreatePageState extends State<CreatePage> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.w),
-          child: Text('what_needs_to_be_done'.tr(),
-              style: CustomTextStyle.sf19w800(LightAppColors.blackSecondary)),
+          child: Text(
+            'what_needs_to_be_done'.tr(),
+            style: SettingsScope.themeOf(context).theme.getStyle(
+                  (lightStyles) => lightStyles.sf19w800BlackSec,
+                  (darkStyles) => darkStyles.sf19w800BlackSec,
+                ),
+          ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.8,

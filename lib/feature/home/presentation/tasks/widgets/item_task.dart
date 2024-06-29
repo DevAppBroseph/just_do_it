@@ -22,13 +22,6 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
               ? LightAppColors.whitePrimary
               : LightAppColors.greyBackdround.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
-          // boxShadow: [
-          // BoxShadow(
-          //   color: ColorStyles.shadowFC6554,
-          //   offset: const Offset(0, 8),
-          //   blurRadius: 5.r,
-          // )
-          // ],
         ),
         height: 145.h,
         width: 327.h,
@@ -98,7 +91,7 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                   SizedBox(height: 5.h),
                                   Text(
                                     _textData(task.dateStart, user),
-                                    style: CustomTextStyle.sf13w400(
+                                    style: CustomTextStyle.sf11w400(
                                         LightAppColors.greySecondary),
                                   ),
                                 ],

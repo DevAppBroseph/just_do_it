@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/task_page_widget
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page_widgets/task_status_action_widget.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/move_task_to_top_button.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -108,7 +109,10 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: LightAppColors.greyPrimary,
+      backgroundColor:
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.greyPrimary
+              : LightAppColors.greyPrimary,
       body: FutureBuilder(
           future: _data,
           builder: (context, snapshot) {
@@ -138,8 +142,13 @@ class _TaskPageState extends State<TaskPage> {
                             task.status.isInactive
                                 ? 'close'.tr()
                                 : 'openly'.tr(),
-                            style: CustomTextStyle.sf13w400(
-                                LightAppColors.blackSecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf13w400BlackSec,
+                                    (darkStyles) =>
+                                        darkStyles.sf13w400BlackSec),
                           ),
                         if (task.isBanned != null && task.isBanned!)
                           Text(
@@ -255,6 +264,9 @@ class _TaskPageState extends State<TaskPage> {
                                 'edit'.tr(),
                                 style: CustomTextStyle.sf13w400(
                                     LightAppColors.blackSecondary),
+                                //               style: SettingsScope.themeOf(context).theme.getStyle(
+                                // (lightStyles) => lightStyles.sf13w400BlackSec,
+                                // (darkStyles) => darkStyles.sf13w400BlackSec),
                               ),
                             ),
                           ],
@@ -321,14 +333,24 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                     Text(
                       '${DataFormatter.addSpacesToNumber(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
-                      style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary)
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) =>
+                                lightStyles.sf17w400BlackSec.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            (darkStyles) =>
+                                darkStyles.sf17w400BlackSec.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                     ),
                     SizedBox(height: 12.h),
-                    Text(task.name,
-                        style: CustomTextStyle.sf18w800(
-                            LightAppColors.blackSecondary)),
+                    Text(
+                      task.name,
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf18w800BlackSec,
+                          (darkStyles) => darkStyles.sf18w800BlackSec),
+                    ),
                     SizedBox(height: 18.h),
                     if (task.category != null)
                       Row(
@@ -345,8 +367,16 @@ class _TaskPageState extends State<TaskPage> {
                             width: 260,
                             child: Text(
                               '${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.category?.description ?? '-' : task.category?.engDescription ?? '-'}, ${user?.rus ?? true && context.locale.languageCode == 'ru' ? task.subcategory?.description ?? '-' : task.subcategory?.engDescription}',
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackError),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf17w400BlackSec.copyWith(
+                                            color: LightAppColors.blackError),
+                                    (darkStyles) => darkStyles.sf17w400BlackSec
+                                        .copyWith(
+                                            color: DarkAppColors.blackError),
+                                  ),
                               softWrap: true,
                             ),
                           ),
