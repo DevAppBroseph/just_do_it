@@ -55,6 +55,7 @@ class Repository {
     String email,
     String firstname,
     String lastname,
+    String fcmToken,
   ) async {
     try {
       final response = await _dio.post(
@@ -63,6 +64,7 @@ class Repository {
           'email': email,
           'firstname': firstname,
           'lastname': lastname,
+          'fcm_token': fcmToken,
         },
       );
 
@@ -77,11 +79,15 @@ class Repository {
     }
   }
 
-  Future<Map<String, dynamic>?> googleSignIn(String idToken) async {
+  Future<Map<String, dynamic>?> googleSignIn(
+      String idToken, String fcmToken) async {
     try {
       final response = await _dio.post(
         'http://95.142.45.4/social-auth/google-signin/',
-        data: {'id_token': idToken},
+        data: {
+          'id_token': idToken,
+          'fcm_token': fcmToken,
+        },
         options: Options(
           headers: {
             'Content-Type': 'application/json',

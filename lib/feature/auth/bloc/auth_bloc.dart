@@ -34,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         event.email,
         event.firstname,
         event.lastname,
+        event.fcmToken,
       );
       if (response != null) {
         emit(AppleSignInSuccessState(response['token']['access']));
@@ -47,7 +48,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _googleSignIn(GoogleSignInEvent event, Emitter<AuthState> emit) async {
     try {
-      final response = await Repository().googleSignIn(event.idToken);
+      final response =
+          await Repository().googleSignIn(event.idToken, event.fcmToken);
       if (response != null) {
         emit(GoogleSignInSuccessState(response['token']['access']));
       } else {

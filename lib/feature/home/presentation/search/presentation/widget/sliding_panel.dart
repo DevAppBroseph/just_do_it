@@ -415,583 +415,593 @@ class _SlidingPanelSearchState extends State<SlidingPanelSearch> {
     countryString = _countriesString();
     category = _categoryString();
 
-    return Column(
-      children: [
-        SizedBox(height: 8.h),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              height: 5.h,
-              width: 81.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.r),
-                color: LightAppColors.bluePrimary,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 27.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 8.h),
+          Stack(
+            alignment: Alignment.center,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'filters'.tr(),
-                    style:
-                        CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      clearFields();
-                    },
-                    child: Text(
-                      'clear'.tr(),
-                      style:
-                          CustomTextStyle.sf17w400(LightAppColors.redSecondary),
-                    ),
-                  ),
-                ],
+              Container(
+                height: 5.h,
+                width: 81.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.r),
+                  color: LightAppColors.bluePrimary,
+                ),
               ),
-              SizedBox(height: 20.h),
             ],
           ),
-        ),
-        SizedBox(
-          height: 510.h,
-          child: ListView(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
+          SizedBox(height: 27.h),
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 22.0,
-                    height: 24.0,
-                    child: Checkbox(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.r)),
-                      value: customerFlag,
-                      onChanged: (value) {
-                        setState(() {
-                          customerFlag = !customerFlag;
-                        });
-                      },
-                      checkColor: Colors.black,
-                      activeColor: LightAppColors.yellowPrimary,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'filters'.tr(),
+                      style: CustomTextStyle.sf22w700(
+                          LightAppColors.blackSecondary),
                     ),
-                  ),
-                  SizedBox(width: 2.w),
-                  Text(
-                    'tasks_from_the_customer'.tr(),
-                    style: CustomTextStyle.sf13w400(LightAppColors.blackAccent)
-                        .copyWith(fontSize: 12.sp),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 22.0,
-                    height: 24.0,
-                    child: Checkbox(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.r)),
-                      value: contractorFlag,
-                      onChanged: (value) {
-                        setState(() {
-                          contractorFlag = !contractorFlag;
-                        });
-                      },
-                      checkColor: Colors.black,
-                      activeColor: LightAppColors.yellowPrimary,
-                    ),
-                  ),
-                  SizedBox(width: 2.w),
-                  Text(
-                    'offers_from_executors'.tr(),
-                    style: CustomTextStyle.sf12w400(LightAppColors.blackAccent),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20.h),
-              ScaleButton(
-                onTap: () {
-                  BlocProvider.of<SearchBloc>(context)
-                      .add(OpenSlidingPanelToEvent(686.h));
-                  typeFilter = TypeFilter.category;
-                },
-                bound: 0.02,
-                child: Container(
-                  height: 55.h,
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                  decoration: BoxDecoration(
-                    color: LightAppColors.greyActive,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset('assets/icons/crown.svg'),
-                      SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'categories'.tr(),
-                            style: CustomTextStyle.sf15w400(
-                                LightAppColors.greySecondary),
-                          ),
-                          SizedBox(height: 3.h),
-                          SizedBox(
-                            width: 200.w,
-                            child: Text(
-                              category != null && category!.isNotEmpty
-                                  ? category!
-                                  : 'no_categories_selected'.tr(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackSecondary),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: LightAppColors.greySecondary,
-                        size: 16.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  BlocProvider.of<SearchBloc>(context)
-                      .add(OpenSlidingPanelToEvent(686.h));
-                  typeFilter = TypeFilter.country;
-                },
-                child: Container(
-                  height: 55.h,
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                  decoration: BoxDecoration(
-                    color: LightAppColors.greyActive,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset('assets/icons/location.svg'),
-                      SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'countries'.tr(),
-                            style: CustomTextStyle.sf15w400(
-                                LightAppColors.greySecondary),
-                          ),
-                          SizedBox(height: 3.h),
-                          SizedBox(
-                            width: 200.w,
-                            child: Text(
-                              countryString != null && countryString!.isNotEmpty
-                                  ? countryString!
-                                  : 'countries_not_selected'.tr(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackSecondary),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: LightAppColors.greySecondary,
-                        size: 16.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  BlocProvider.of<SearchBloc>(context)
-                      .add(OpenSlidingPanelToEvent(414.h));
-                  typeFilter = TypeFilter.date;
-                },
-                child: Container(
-                  height: 55.h,
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                  decoration: BoxDecoration(
-                    color: LightAppColors.greyActive,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset('assets/icons/calendar.svg'),
-                      SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'start_and_end_dates'.tr(),
-                            style: CustomTextStyle.sf15w400(
-                                LightAppColors.greySecondary),
-                          ),
-                          SizedBox(height: 3.h),
-                          Text(
-                            date,
-                            style: CustomTextStyle.sf17w400(
-                                LightAppColors.blackSecondary),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: LightAppColors.greySecondary,
-                        size: 16.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  BlocProvider.of<SearchBloc>(context)
-                      .add(OpenSlidingPanelToEvent(686.h));
-                  typeFilter = TypeFilter.currency;
-                },
-                child: Container(
-                  height: 55.h,
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                  decoration: BoxDecoration(
-                    color: LightAppColors.greyActive,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset('assets/icons/wallet-money.svg'),
-                      SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'currency'.tr(),
-                            style: CustomTextStyle.sf15w400(
-                                LightAppColors.greySecondary),
-                          ),
-                          SizedBox(height: 3.h),
-                          SizedBox(
-                            width: 200.w,
-                            child: Text(
-                              currencyString != null &&
-                                      currencyString!.isNotEmpty
-                                  ? currencyString!
-                                  : 'currency_not_selected'.tr(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackSecondary),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: LightAppColors.greySecondary,
-                        size: 16.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: ScaleButton(
-                      bound: 0.02,
+                    const Spacer(),
+                    GestureDetector(
                       onTap: () {
-                        focusCoastMin.requestFocus();
-                        openKeyboard();
+                        clearFields();
                       },
-                      child: Container(
-                        height: 55.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                        decoration: BoxDecoration(
-                          color: LightAppColors.greyActive,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Column(
+                      child: Text(
+                        'clear'.tr(),
+                        style: CustomTextStyle.sf17w400(
+                            LightAppColors.redSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 510.h,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 22.0,
+                      height: 24.0,
+                      child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.r)),
+                        value: customerFlag,
+                        onChanged: (value) {
+                          setState(() {
+                            customerFlag = !customerFlag;
+                          });
+                        },
+                        checkColor: Colors.black,
+                        activeColor: LightAppColors.yellowPrimary,
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Text(
+                      'tasks_from_the_customer'.tr(),
+                      style:
+                          CustomTextStyle.sf13w400(LightAppColors.blackAccent)
+                              .copyWith(fontSize: 12.sp),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: 22.0,
+                      height: 24.0,
+                      child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.r)),
+                        value: contractorFlag,
+                        onChanged: (value) {
+                          setState(() {
+                            contractorFlag = !contractorFlag;
+                          });
+                        },
+                        checkColor: Colors.black,
+                        activeColor: LightAppColors.yellowPrimary,
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Text(
+                      'offers_from_executors'.tr(),
+                      style:
+                          CustomTextStyle.sf12w400(LightAppColors.blackAccent),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                ScaleButton(
+                  onTap: () {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
+                    typeFilter = TypeFilter.category;
+                  },
+                  bound: 0.02,
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: LightAppColors.greyActive,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/crown.svg'),
+                        SizedBox(width: 10.w),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
+                              'categories'.tr(),
                               style: CustomTextStyle.sf15w400(
                                   LightAppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
-                            Row(
-                              children: [
-                                CustomTextField(
-                                  height: 20.h,
-                                  width: 80.w,
-                                  textInputType: TextInputType.number,
-                                  focusNode: focusCoastMin,
-                                  actionButton: false,
-                                  onTap: () {
-                                    proverka = true;
-                                    slide = true;
-                                    mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1),
-                                        curve: Curves.linear);
-                                    setState(() {});
-                                  },
-                                  onChanged: (value) {},
-                                  onFieldSubmitted: (value) {
-                                    slide = false;
-                                    setState(() {});
-                                  },
-                                  formatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    FormatterCurrency(),
-                                  ],
-                                  contentPadding: EdgeInsets.zero,
-                                  hintText: '',
-                                  fillColor: LightAppColors.greyActive,
-                                  maxLines: null,
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary),
-                                  textEditingController: coastMinController,
-                                ),
-                              ],
+                            SizedBox(
+                              width: 200.w,
+                              child: Text(
+                                category != null && category!.isNotEmpty
+                                    ? category!
+                                    : 'no_categories_selected'.tr(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTextStyle.sf17w400(
+                                    LightAppColors.blackSecondary),
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: LightAppColors.greySecondary,
+                          size: 16.h,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(width: 21.w),
-                  Expanded(
-                    child: ScaleButton(
-                      bound: 0.02,
-                      onTap: () {
-                        focusCoastMax.requestFocus();
-                        openKeyboard();
-                      },
-                      child: Container(
-                        height: 55.h,
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                        decoration: BoxDecoration(
-                          color: LightAppColors.greyActive,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Column(
+                ),
+                SizedBox(height: 20.h),
+                ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
+                    typeFilter = TypeFilter.country;
+                  },
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: LightAppColors.greyActive,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/location.svg'),
+                        SizedBox(width: 10.w),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
+                              'countries'.tr(),
                               style: CustomTextStyle.sf15w400(
                                   LightAppColors.greySecondary),
                             ),
                             SizedBox(height: 3.h),
-                            Row(
-                              children: [
-                                CustomTextField(
-                                  height: 20.h,
-                                  width: 80.w,
-                                  focusNode: focusCoastMax,
-                                  actionButton: false,
-                                  textInputType: TextInputType.number,
-                                  onTap: () {
-                                    proverka = true;
-
-                                    slide = true;
-                                    mainScrollController.animateTo(heightPanel,
-                                        duration: const Duration(seconds: 1),
-                                        curve: Curves.linear);
-                                    setState(() {});
-                                  },
-                                  onChanged: (value) {},
-                                  onFieldSubmitted: (value) {
-                                    slide = false;
-                                    setState(() {});
-                                  },
-                                  formatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    FormatterCurrency(),
-                                  ],
-                                  contentPadding: EdgeInsets.zero,
-                                  hintText: '',
-                                  fillColor: LightAppColors.greyActive,
-                                  maxLines: null,
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary),
-                                  textEditingController: coastMaxController,
-                                ),
-                              ],
+                            SizedBox(
+                              width: 200.w,
+                              child: Text(
+                                countryString != null &&
+                                        countryString!.isNotEmpty
+                                    ? countryString!
+                                    : 'countries_not_selected'.tr(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTextStyle.sf17w400(
+                                    LightAppColors.blackSecondary),
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: LightAppColors.greySecondary,
+                          size: 16.h,
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 20.h),
-              ScaleButton(
-                bound: 0.02,
-                onTap: () {
-                  focusCoastKeyWord.requestFocus();
-                  openKeyboard();
-                },
-                child: Row(
+                ),
+                SizedBox(height: 20.h),
+                ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(414.h));
+                    typeFilter = TypeFilter.date;
+                  },
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: LightAppColors.greyActive,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/calendar.svg'),
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'start_and_end_dates'.tr(),
+                              style: CustomTextStyle.sf15w400(
+                                  LightAppColors.greySecondary),
+                            ),
+                            SizedBox(height: 3.h),
+                            Text(
+                              date,
+                              style: CustomTextStyle.sf17w400(
+                                  LightAppColors.blackSecondary),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: LightAppColors.greySecondary,
+                          size: 16.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(OpenSlidingPanelToEvent(686.h));
+                    typeFilter = TypeFilter.currency;
+                  },
+                  child: Container(
+                    height: 55.h,
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    decoration: BoxDecoration(
+                      color: LightAppColors.greyActive,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/wallet-money.svg'),
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'currency'.tr(),
+                              style: CustomTextStyle.sf15w400(
+                                  LightAppColors.greySecondary),
+                            ),
+                            SizedBox(height: 3.h),
+                            SizedBox(
+                              width: 200.w,
+                              child: Text(
+                                currencyString != null &&
+                                        currencyString!.isNotEmpty
+                                    ? currencyString!
+                                    : 'currency_not_selected'.tr(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTextStyle.sf17w400(
+                                    LightAppColors.blackSecondary),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: LightAppColors.greySecondary,
+                          size: 16.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: 99.h,
-                        padding:
-                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
-                        decoration: BoxDecoration(
-                          color: LightAppColors.greyActive,
-                          borderRadius: BorderRadius.circular(10.r),
+                      child: ScaleButton(
+                        bound: 0.02,
+                        onTap: () {
+                          focusCoastMin.requestFocus();
+                          openKeyboard();
+                        },
+                        child: Container(
+                          height: 55.h,
+                          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                          decoration: BoxDecoration(
+                            color: LightAppColors.greyActive,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)} ',
+                                style: CustomTextStyle.sf15w400(
+                                    LightAppColors.greySecondary),
+                              ),
+                              SizedBox(height: 3.h),
+                              Row(
+                                children: [
+                                  CustomTextField(
+                                    height: 20.h,
+                                    width: 80.w,
+                                    textInputType: TextInputType.number,
+                                    focusNode: focusCoastMin,
+                                    actionButton: false,
+                                    onTap: () {
+                                      proverka = true;
+                                      slide = true;
+                                      mainScrollController.animateTo(
+                                          heightPanel,
+                                          duration: const Duration(seconds: 1),
+                                          curve: Curves.linear);
+                                      setState(() {});
+                                    },
+                                    onChanged: (value) {},
+                                    onFieldSubmitted: (value) {
+                                      slide = false;
+                                      setState(() {});
+                                    },
+                                    formatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      FormatterCurrency(),
+                                    ],
+                                    contentPadding: EdgeInsets.zero,
+                                    hintText: '',
+                                    fillColor: LightAppColors.greyActive,
+                                    maxLines: null,
+                                    style: CustomTextStyle.sf17w400(
+                                        LightAppColors.blackSecondary),
+                                    textEditingController: coastMinController,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                    'assets/icons/quote-up-square.svg'),
-                                SizedBox(width: 10.w),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'keywords'.tr(),
-                                      style: CustomTextStyle.sf15w400(
-                                          LightAppColors.greySecondary),
-                                    ),
-                                    Row(
-                                      children: [
-                                        CustomTextField(
-                                          height: 60.h,
-                                          width: 250.w,
-                                          actionButton: false,
-                                          formatters: [
-                                            UpperEveryTextInputFormatter(),
-                                          ],
-                                          textInputType: TextInputType.name,
-                                          focusNode: focusCoastKeyWord,
-                                          onTap: () {
-                                            proverka = true;
+                      ),
+                    ),
+                    SizedBox(width: 21.w),
+                    Expanded(
+                      child: ScaleButton(
+                        bound: 0.02,
+                        onTap: () {
+                          focusCoastMax.requestFocus();
+                          openKeyboard();
+                        },
+                        child: Container(
+                          height: 55.h,
+                          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                          decoration: BoxDecoration(
+                            color: LightAppColors.greyActive,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(currencyString)}',
+                                style: CustomTextStyle.sf15w400(
+                                    LightAppColors.greySecondary),
+                              ),
+                              SizedBox(height: 3.h),
+                              Row(
+                                children: [
+                                  CustomTextField(
+                                    height: 20.h,
+                                    width: 80.w,
+                                    focusNode: focusCoastMax,
+                                    actionButton: false,
+                                    textInputType: TextInputType.number,
+                                    onTap: () {
+                                      proverka = true;
 
-                                            slide = true;
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              mainScrollController.animateTo(
-                                                heightPanel,
-                                                duration:
-                                                    const Duration(seconds: 1),
-                                                curve: Curves.linear,
-                                              );
-                                            });
-                                            setState(() {});
-                                          },
-                                          onChanged: (value) {},
-                                          onFieldSubmitted: (value) {
-                                            slide = false;
-                                            setState(() {});
-                                          },
-                                          contentPadding: EdgeInsets.zero,
-                                          hintText:
-                                              'for_example_buying_oranges'.tr(),
-                                          fillColor: LightAppColors.greyActive,
-                                          maxLines: 4,
-                                          style: CustomTextStyle.sf17w400(
-                                              LightAppColors.blackSecondary),
-                                          textEditingController:
-                                              keyWordController,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                      slide = true;
+                                      mainScrollController.animateTo(
+                                          heightPanel,
+                                          duration: const Duration(seconds: 1),
+                                          curve: Curves.linear);
+                                      setState(() {});
+                                    },
+                                    onChanged: (value) {},
+                                    onFieldSubmitted: (value) {
+                                      slide = false;
+                                      setState(() {});
+                                    },
+                                    formatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      FormatterCurrency(),
+                                    ],
+                                    contentPadding: EdgeInsets.zero,
+                                    hintText: '',
+                                    fillColor: LightAppColors.greyActive,
+                                    maxLines: null,
+                                    style: CustomTextStyle.sf17w400(
+                                        LightAppColors.blackSecondary),
+                                    textEditingController: coastMaxController,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Column(
-                children: [
-                  Row(
+                SizedBox(height: 20.h),
+                ScaleButton(
+                  bound: 0.02,
+                  onTap: () {
+                    focusCoastKeyWord.requestFocus();
+                    openKeyboard();
+                  },
+                  child: Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          'passport_data_uploaded'.tr(),
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                        child: Container(
+                          height: 99.h,
+                          padding: EdgeInsets.only(
+                              left: 16.w, right: 16.w, top: 16.w),
+                          decoration: BoxDecoration(
+                            color: LightAppColors.greyActive,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                      'assets/icons/quote-up-square.svg'),
+                                  SizedBox(width: 10.w),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'keywords'.tr(),
+                                        style: CustomTextStyle.sf15w400(
+                                            LightAppColors.greySecondary),
+                                      ),
+                                      Row(
+                                        children: [
+                                          CustomTextField(
+                                            height: 60.h,
+                                            width: 250.w,
+                                            actionButton: false,
+                                            formatters: [
+                                              UpperEveryTextInputFormatter(),
+                                            ],
+                                            textInputType: TextInputType.name,
+                                            focusNode: focusCoastKeyWord,
+                                            onTap: () {
+                                              proverka = true;
+
+                                              slide = true;
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 200), () {
+                                                mainScrollController.animateTo(
+                                                  heightPanel,
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  curve: Curves.linear,
+                                                );
+                                              });
+                                              setState(() {});
+                                            },
+                                            onChanged: (value) {},
+                                            onFieldSubmitted: (value) {
+                                              slide = false;
+                                              setState(() {});
+                                            },
+                                            contentPadding: EdgeInsets.zero,
+                                            hintText:
+                                                'for_example_buying_oranges'
+                                                    .tr(),
+                                            fillColor:
+                                                LightAppColors.greyActive,
+                                            maxLines: 4,
+                                            style: CustomTextStyle.sf17w400(
+                                                LightAppColors.blackSecondary),
+                                            textEditingController:
+                                                keyWordController,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Switch.adaptive(
-                        activeColor: LightAppColors.yellowSecondary,
-                        value: passport,
-                        onChanged: (value) {
-                          passport = !passport;
-                          setState(() {});
-                        },
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'there_is_a_resume'.tr(),
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                ),
+                SizedBox(height: 20.h),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'passport_data_uploaded'.tr(),
+                            style: CustomTextStyle.sf17w400(
+                                LightAppColors.blackSecondary),
+                          ),
                         ),
-                      ),
-                      Switch.adaptive(
-                        activeColor: LightAppColors.yellowSecondary,
-                        value: cv,
-                        onChanged: (value) {
-                          cv = !cv;
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                        Switch.adaptive(
+                          activeColor: LightAppColors.yellowSecondary,
+                          value: passport,
+                          onChanged: (value) {
+                            passport = !passport;
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'there_is_a_resume'.tr(),
+                            style: CustomTextStyle.sf17w400(
+                                LightAppColors.blackSecondary),
+                          ),
+                        ),
+                        Switch.adaptive(
+                          activeColor: LightAppColors.yellowSecondary,
+                          value: cv,
+                          onChanged: (value) {
+                            cv = !cv;
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,11 +19,18 @@ class GoogleSignInButton extends StatelessWidget {
           final GoogleSignInAuthentication googleAuth =
               await googleUser.authentication;
           final String idToken = googleAuth.idToken!;
+          final String fcmToken = await getFCMToken();
+
           if (!context.mounted) return;
 
-          context.read<AuthBloc>().add(GoogleSignInEvent(idToken));
+          context.read<AuthBloc>().add(GoogleSignInEvent(idToken, fcmToken));
         }
       },
     );
+  }
+
+  Future<String> getFCMToken() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    return fcmToken ?? '';
   }
 }

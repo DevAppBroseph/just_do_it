@@ -6,18 +6,21 @@ class AppleSignInEvent extends AuthEvent {
   final String email;
   final String firstname;
   final String lastname;
+  final String fcmToken;
 
   AppleSignInEvent({
     required this.email,
     required this.firstname,
     required this.lastname,
+    required this.fcmToken,
   });
 }
 
 class GoogleSignInEvent extends AuthEvent {
   final String idToken;
+  final String fcmToken;
 
-  GoogleSignInEvent(this.idToken);
+  GoogleSignInEvent(this.idToken, this.fcmToken);
 }
 
 class SendProfileEvent extends AuthEvent {

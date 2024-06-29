@@ -44,8 +44,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       null,
     );
 
-    tasks = response['tasks'];
-    nextPageUrl = response['next'];
+    if (response['tasks'] != null) {
+      tasks = List<Task>.from(response['tasks']);
+    }
+    nextPageUrl = response['next'] as String?;
 
     emit(
       TasksLoaded(
@@ -80,8 +82,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       nextPageUrl,
     );
 
-    tasks.addAll(response['tasks']);
-    nextPageUrl = response['next'];
+    tasks.addAll(List<Task>.from(response['tasks']));
+    nextPageUrl = response['next'] as String?;
 
     emit(TasksLoaded(null, tasks: tasks, nextPageUrl: nextPageUrl));
   }
