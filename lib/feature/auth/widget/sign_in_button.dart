@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 
 enum ButtonType { google, apple }
 
@@ -22,10 +24,11 @@ class SignInButton extends StatelessWidget {
         : SvgPicture.asset('assets/icons/apple.svg', width: 20, height: 20);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(32),
+        color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? DarkAppColors.whitePrimary
+            : LightAppColors.whitePrimary,
+        borderRadius: BorderRadius.circular(40),
       ),
       child: ElevatedButton(
         onPressed: onPressed,

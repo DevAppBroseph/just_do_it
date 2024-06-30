@@ -402,7 +402,6 @@ class _SearchPageState extends State<SearchPage> {
                                                   ThemeMode.dark
                                               ? DarkAppColors.whitePrimary
                                               : LightAppColors.whitePrimary,
-                                          //LightAppColors.greyAccent,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                         ),
@@ -518,73 +517,48 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           );
                         }
+
                         if (state is TasksLoaded || state is TasksLoadingMore) {
-                          return ListView(
+                          return ListView.builder(
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
                             controller: scrollController,
-                            padding: EdgeInsets.zero,
-                            children: taskList
-                                .map((e) => itemTask(
-                                      e,
-                                      (task) {
-                                        if (Storage.isAuthorized) {
-                                          setState(() {
-                                            selectTask = task;
-
-                                            lastPosition =
-                                                scrollController.offset;
-                                          });
-                                        } else {
-                                          Navigator.of(context)
-                                              .pushNamed(AppRoute.auth);
-                                        }
-                                      },
-                                      BlocProvider.of<ProfileBloc>(context)
-                                          .user,
-                                      context,
-                                    ))
-                                .toList(),
+                            itemCount: taskList.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == taskList.length) {
+                                if (state is TasksLoadingMore) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 16.h),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              }
+                              final task = taskList[index];
+                              return itemTask(
+                                task,
+                                (selectedTask) {
+                                  if (Storage.isAuthorized) {
+                                    setState(() {
+                                      selectTask = selectedTask;
+                                      lastPosition = scrollController.offset;
+                                    });
+                                  } else {
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoute.auth);
+                                  }
+                                },
+                                BlocProvider.of<ProfileBloc>(context).user,
+                                context,
+                              );
+                            },
                           );
                         }
-                        if (state is TasksLoadingMore) {
-                          return Column(
-                            children: [
-                              ListView(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                controller: scrollController,
-                                padding: EdgeInsets.zero,
-                                children: taskList
-                                    .map((e) => itemTask(
-                                          e,
-                                          (task) {
-                                            if (Storage.isAuthorized) {
-                                              setState(() {
-                                                selectTask = task;
 
-                                                lastPosition =
-                                                    scrollController.offset;
-                                              });
-                                            } else {
-                                              Navigator.of(context)
-                                                  .pushNamed(AppRoute.auth);
-                                            }
-                                          },
-                                          BlocProvider.of<ProfileBloc>(context)
-                                              .user,
-                                          context,
-                                        ))
-                                    .toList(),
-                              ),
-                              SizedBox(height: 10.h),
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              SizedBox(height: 20.h),
-                            ],
-                          );
-                        }
                         return Container();
                       },
                     ),

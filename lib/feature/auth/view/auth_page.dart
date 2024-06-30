@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/view/apple_sign_in.dart';
 import 'package:just_do_it/feature/auth/view/google_sign_in.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/widget/back_icon_button_black.dart';
 
@@ -116,13 +117,20 @@ class _AuthPageState extends State<AuthPage> {
                     child: Center(
                       child: Text(
                         'jobyfine'.toUpperCase(),
-                        style: CustomTextStyle.sf22w700(
-                                LightAppColors.blackSecondary)
-                            .copyWith(
-                          fontSize: 39,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'SFBold',
-                        ),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) =>
+                                  lightStyles.sf22w700BlackSec.copyWith(
+                                fontSize: 39,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'SFBold',
+                              ),
+                              (darkStyles) =>
+                                  darkStyles.sf22w700BlackSec.copyWith(
+                                fontSize: 39,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'SFBold',
+                              ),
+                            ),
                       ),
                     ),
                   ),
@@ -175,8 +183,15 @@ class _AuthPageState extends State<AuthPage> {
                         },
                         textLabel: Text(
                           forgotPassword ? 'back'.tr() : 'registration'.tr(),
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackAccent),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                                (lightStyles) =>
+                                    lightStyles.sf17w400BlackSec.copyWith(
+                                  color: LightAppColors.blackAccent,
+                                ),
+                                (darkStyles) => darkStyles.sf17w400BlackSec
+                                    .copyWith(
+                                        color: LightAppColors.blackPrimary),
+                              ),
                         ),
                         btnColor: LightAppColors.greyError,
                       ),
@@ -198,7 +213,9 @@ class _AuthPageState extends State<AuthPage> {
       children: [
         Text(
           'entrance'.tr(),
-          style: CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
+          style: SettingsScope.themeOf(context).theme.getStyle(
+              (lightStyles) => lightStyles.sf22w700BlackSec,
+              (darkStyles) => darkStyles.sf22w700BlackSec),
         ),
         SizedBox(height: 18.h),
         CustomTextField(
@@ -256,7 +273,11 @@ class _AuthPageState extends State<AuthPage> {
               },
               child: Text(
                 '${'forgot_your_password'.tr()}?',
-                style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf17w400BlackSec.copyWith(
+                          color: LightAppColors.blackAccent,
+                        ),
+                    (darkStyles) => darkStyles.sf17w400BlackSec),
               ),
             ),
           ],

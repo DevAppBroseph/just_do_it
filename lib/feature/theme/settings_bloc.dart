@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc() : super(const SettingsInitial()) {
+  SettingsBloc() : super(const SettingsInitial(isDarkMode: true)) {
     on<ToggleThemeEvent>((event, emit) {
       if (state is SettingsInitial) {
         final currentState = state as SettingsInitial;

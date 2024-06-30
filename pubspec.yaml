@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 1.6.8
+version: 1.6.9
 # ! Change also in /lib/constans/server.dart appVersion
 
 environment:
