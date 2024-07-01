@@ -15,6 +15,7 @@ import 'package:just_do_it/feature/auth/widget/loader.dart';
 import 'package:just_do_it/feature/auth/widget/textfield.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -203,9 +204,11 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
           Text(
             'points_are_credited_to_your_account_for_leaving_reviews_and_rating'
                 .tr(),
-            style: CustomTextStyle.sf17w400(
-              Colors.black,
-            ).copyWith(fontWeight: FontWeight.w500),
+            style: SettingsScope.themeOf(context).theme.getStyle(
+                (lightStyles) => lightStyles.sf17w400BlackSec
+                  ..copyWith(fontWeight: FontWeight.w500),
+                (darkStyles) => darkStyles.sf17w400BlackSec
+                    .copyWith(fontWeight: FontWeight.w500)),
           ),
           SizedBox(height: 30.h),
           ScaleButton(
@@ -225,7 +228,12 @@ class _ReviewCreationWidgetState extends State<ReviewCreationWidget> {
                 onTap: () {
                   setState(() {});
                 },
-                hintStyle: const TextStyle(color: Colors.black),
+                hintStyle: TextStyle(
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.whitePrimary
+                      : LightAppColors.greyPrimary,
+                ),
                 style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
                 textEditingController: descriptionTextController,
                 fillColor: LightAppColors.greyActive,

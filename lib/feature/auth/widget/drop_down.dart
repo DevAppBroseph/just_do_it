@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -403,9 +405,16 @@ void iconSelectModalCategories(
                                                 ? list[index].description ?? ''
                                                 : list[index].engDescription ??
                                                     ''))
-                                              const Icon(
+                                              Icon(
                                                 Icons.check,
-                                                color: Colors.black,
+                                                color: SettingsScope.themeOf(
+                                                                context)
+                                                            .theme
+                                                            .mode ==
+                                                        ThemeMode.dark
+                                                    ? DarkAppColors.whitePrimary
+                                                    : DarkAppColors
+                                                        .whitePrimary,
                                               )
                                           ],
                                         ),

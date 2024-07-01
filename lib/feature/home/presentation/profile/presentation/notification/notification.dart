@@ -136,9 +136,19 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       maxLines: 3,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: CustomTextStyle
-                                                          .sf17w400(LightAppColors
-                                                              .blackSecondary),
+                                                      style: SettingsScope
+                                                              .themeOf(context)
+                                                          .theme
+                                                          .getStyle(
+                                                              (lightStyles) =>
+                                                                  lightStyles
+                                                                      .sf17w400BlackSec,
+                                                              (darkStyles) =>
+                                                                  darkStyles
+                                                                      .sf17w400BlackSec),
+                                                      // style: CustomTextStyle
+                                                      //     .sf17w400(LightAppColors
+                                                      //         .blackSecondary),
                                                     ),
                                                   ),
                                                   const Spacer(),

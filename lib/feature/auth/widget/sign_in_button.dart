@@ -19,10 +19,19 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget icon = buttonType == ButtonType.google
-        ? SvgPicture.asset('assets/icons/google.svg', width: 20, height: 20)
-        : SvgPicture.asset('assets/icons/apple.svg', width: 20, height: 20);
-
+    Widget icon;
+    if (buttonType == ButtonType.google) {
+      icon = SvgPicture.asset('assets/icons/google.svg', width: 20, height: 20);
+    } else {
+      bool isDarkMode =
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark;
+      icon = SvgPicture.asset(
+        isDarkMode ? 'assets/icons/apple_dark.svg' : 'assets/icons/apple.svg',
+        color: isDarkMode ? null : Colors.white,
+        width: 20,
+        height: 20,
+      );
+    }
     return Container(
       decoration: BoxDecoration(
         color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark

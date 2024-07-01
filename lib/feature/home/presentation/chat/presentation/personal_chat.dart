@@ -277,6 +277,18 @@ class _PersonalChatState extends State<PersonalChat> {
                                                   vertical: 16.w,
                                                 ),
                                                 child: Text(
+                                                  style: TextStyle(
+                                                    color:
+                                                        SettingsScope.themeOf(
+                                                                        context)
+                                                                    .theme
+                                                                    .mode ==
+                                                                ThemeMode.dark
+                                                            ? DarkAppColors
+                                                                .whitePrimary
+                                                            : LightAppColors
+                                                                .greyActive,
+                                                  ),
                                                   messages[index].text,
                                                 ),
                                               ),
@@ -308,6 +320,14 @@ class _PersonalChatState extends State<PersonalChat> {
                                       vertical: 16.w,
                                     ),
                                     child: Text(
+                                      style: TextStyle(
+                                        color: SettingsScope.themeOf(context)
+                                                    .theme
+                                                    .mode ==
+                                                ThemeMode.dark
+                                            ? DarkAppColors.whitePrimary
+                                            : LightAppColors.greyActive,
+                                      ),
                                       messages[index].text,
                                     ),
                                   ),
