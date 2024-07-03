@@ -254,7 +254,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: LightAppColors.greyPrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackSurface
+                : LightAppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -321,7 +323,9 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
         Container(
           height: 50.h,
           decoration: BoxDecoration(
-            color: LightAppColors.greyPrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackSurface
+                : LightAppColors.greyPrimary,
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Stack(
@@ -407,6 +411,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
             hintText: 'country'.tr(),
             hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
             height: 50.h,
+            fillColor:
+                SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                    ? DarkAppColors.blackSurface
+                    : LightAppColors.greyAccent,
             enabled: false,
             textEditingController: countryController,
             contentPadding:
@@ -479,7 +487,10 @@ class _EditIdentityInfoState extends State<EditIdentityInfo> {
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                fillColor: Colors.grey[200],
+                fillColor:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyAccent,
                 textEditingController: documentTypeController,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),

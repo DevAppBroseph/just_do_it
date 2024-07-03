@@ -435,14 +435,25 @@ class _WelcomePageState extends State<WelcomePage> {
                                         child: Center(
                                           child: Text(
                                             'jobyfine'.toUpperCase(),
-                                            style: CustomTextStyle.sf22w700(
-                                                    LightAppColors
-                                                        .blackSecondary)
-                                                .copyWith(
-                                              fontSize: 39,
-                                              fontWeight: FontWeight.w900,
-                                              fontFamily: 'SFBold',
-                                            ),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                  (lightStyles) => lightStyles
+                                                      .sf22w700BlackSec
+                                                      .copyWith(
+                                                    fontSize: 39,
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily: 'SFBold',
+                                                  ),
+                                                  (darkStyles) => darkStyles
+                                                      .sf22w700BlackSec
+                                                      .copyWith(
+                                                    fontSize: 39,
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily: 'SFBold',
+                                                  ),
+                                                ),
                                           ),
                                         ),
                                       ),

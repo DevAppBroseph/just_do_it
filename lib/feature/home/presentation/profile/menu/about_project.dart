@@ -108,13 +108,24 @@ class _AboutProjectState extends State<AboutProject> {
                                       EdgeInsets.symmetric(horizontal: 50.w),
                                   child: Center(
                                     child: Text('jobyfine'.toUpperCase(),
-                                        style: CustomTextStyle.sf22w700(
-                                                LightAppColors.blackPrimary)
-                                            .copyWith(
-                                          fontSize: 39,
-                                          fontWeight: FontWeight.w900,
-                                          fontFamily: 'SFBold',
-                                        )),
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                              (lightStyles) => lightStyles
+                                                  .sf22w700BlackSec
+                                                  .copyWith(
+                                                fontSize: 39,
+                                                fontWeight: FontWeight.w900,
+                                                fontFamily: 'SFBold',
+                                              ),
+                                              (darkStyles) => darkStyles
+                                                  .sf22w700BlackSec
+                                                  .copyWith(
+                                                fontSize: 39,
+                                                fontWeight: FontWeight.w900,
+                                                fontFamily: 'SFBold',
+                                              ),
+                                            )),
                                   ),
                                 ),
                               ],

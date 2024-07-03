@@ -88,6 +88,10 @@ class _AuthPageState extends State<AuthPage> {
         return false;
       }, builder: (context, snapshot) {
         return Scaffold(
+          backgroundColor:
+              SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackPrima
+                  : LightAppColors.greyPrimary,
           resizeToAvoidBottomInset: false,
           body: Center(
             child: Padding(
@@ -107,7 +111,13 @@ class _AuthPageState extends State<AuthPage> {
                             Navigator.of(context).pop();
                           }
                         },
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                        icon: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: SettingsScope.themeOf(context).theme.mode ==
+                                  ThemeMode.dark
+                              ? LightAppColors.whitePrimary
+                              : LightAppColors.greyPrimary,
+                        ),
                       ),
                     ],
                   ),

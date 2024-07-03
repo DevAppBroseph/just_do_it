@@ -57,7 +57,10 @@ void iconSelectModal(
               width: MediaQuery.of(context).size.width - 20.w,
               height: 200.h,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyAccent,
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -236,7 +239,10 @@ void iconSelectModalCategories(
               width: MediaQuery.of(context).size.width - 20.w,
               height: 200.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyAccent,
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -266,8 +272,18 @@ void iconSelectModalCategories(
                                   children: [
                                     Text(
                                       label,
-                                      style: CustomTextStyle.sf17w400(
-                                          Colors.grey[400]!),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                              (lightStyles) => lightStyles
+                                                  .sf17w400BlackSec
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                              (darkStyles) =>
+                                                  darkStyles.sf17w400BlackSec)
+                                          .copyWith(
+                                              fontWeight: FontWeight.w300),
                                     ),
                                     const Spacer(),
                                     Icon(
@@ -377,9 +393,14 @@ void iconSelectModalCategories(
                                     style: ButtonStyle(
                                         padding: const WidgetStatePropertyAll(
                                             EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const WidgetStatePropertyAll(
-                                                Colors.white),
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? DarkAppColors.blackSurface
+                                              : LightAppColors.whitePrimary,
+                                        ),
                                         elevation:
                                             const WidgetStatePropertyAll(0),
                                         overlayColor:
@@ -398,18 +419,23 @@ void iconSelectModalCategories(
                                         child: Row(
                                           children: [
                                             Text(
-                                              user?.rus ??
-                                                      true &&
-                                                          context.locale
-                                                                  .languageCode ==
-                                                              'ru'
-                                                  ? list[index].description!
-                                                  : list[index].engDescription!,
-                                              style: CustomTextStyle.sf17w400(
-                                                Colors.black,
-                                              ).copyWith(
-                                                  fontWeight: FontWeight.w300),
-                                            ),
+                                                user?.rus ??
+                                                        true &&
+                                                            context.locale
+                                                                    .languageCode ==
+                                                                'ru'
+                                                    ? list[index].description!
+                                                    : list[index]
+                                                        .engDescription!,
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec)),
                                             const Spacer(),
                                             if (selectCategories.contains(user
                                                         ?.rus ??
@@ -501,7 +527,10 @@ void showCountryWidget(
                   ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
                   : 200.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyAccent,
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -572,9 +601,14 @@ void showCountryWidget(
                                     style: ButtonStyle(
                                         padding: const WidgetStatePropertyAll(
                                             EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const WidgetStatePropertyAll(
-                                                Colors.white),
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? DarkAppColors.blackSurface
+                                              : LightAppColors.whitePrimary,
+                                        ),
                                         elevation:
                                             const WidgetStatePropertyAll(0),
                                         overlayColor:
@@ -600,10 +634,22 @@ void showCountryWidget(
                                                               'ru'
                                                   ? list[index].name ?? "-"
                                                   : list[index].engName ?? "-",
-                                              style: CustomTextStyle.sf17w400(
-                                                Colors.black,
-                                              ).copyWith(
-                                                  fontWeight: FontWeight.w300),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec)
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w300),
                                             ),
                                             const Spacer(),
                                           ],
@@ -677,7 +723,10 @@ void showRegionWidget(
                   ? (list.isEmpty ? 1 : list.length) * 50.h + 50.h
                   : 200.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyAccent,
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -748,9 +797,14 @@ void showRegionWidget(
                                     style: ButtonStyle(
                                         padding: const WidgetStatePropertyAll(
                                             EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const WidgetStatePropertyAll(
-                                                Colors.white),
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? DarkAppColors.blackSurface
+                                              : LightAppColors.whitePrimary,
+                                        ),
                                         elevation:
                                             const WidgetStatePropertyAll(0),
                                         overlayColor:
@@ -779,11 +833,21 @@ void showRegionWidget(
                                                     ? list[index].name ?? '-'
                                                     : list[index].engName ??
                                                         '-',
-                                                style: CustomTextStyle.sf17w400(
-                                                  Colors.black,
-                                                ).copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w300),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) => lightStyles
+                                                            .sf17w400BlackSec
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300),
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec)
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w300),
                                                 maxLines: null,
                                               ),
                                             ),
