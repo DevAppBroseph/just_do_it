@@ -23,6 +23,8 @@ dependencies:
   cached_network_image: ^3.3.0
   cupertino_rounded_corners: ^2.1.1
   pinput: ^2.2.31
+  sentry_flutter: ^8.3.0
+
   mask_text_input_formatter: ^2.4.0
   flutter_svg: ^1.0.3
   dio: ^4.0.6

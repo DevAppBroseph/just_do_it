@@ -49,7 +49,7 @@ class _EditBasicInfoState extends State<EditBasicInfo> {
           Scaffold(
             backgroundColor:
                 SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
-                    ? DarkAppColors.whitePrimary
+                    ? DarkAppColors.blackPrima
                     : LightAppColors.whitePrimary,
             body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, snapshot) {

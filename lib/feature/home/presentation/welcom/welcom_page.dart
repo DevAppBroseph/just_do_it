@@ -129,7 +129,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       height: 60.h,
                       color: SettingsScope.themeOf(context).theme.mode ==
                               ThemeMode.dark
-                          ? DarkAppColors.whitePrimary
+                          ? Color(0xff3f3e3b)
+                          //DarkAppColors.whitePrimary
                           : LightAppColors.greyPrimary,
                     ),
                     Padding(
@@ -454,7 +455,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                       child: Container(
                                         height: 200.h,
                                         decoration: BoxDecoration(
-                                          color: LightAppColors.whitePrimary,
+                                          color: SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? Color(0xff3f3e3b)
+                                              //DarkAppColors.whitePrimary
+                                              : LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(30.r),
                                         ),
@@ -994,7 +1001,15 @@ class _WelcomePageState extends State<WelcomePage> {
                                                 100) -
                                             25.w,
                                         decoration: BoxDecoration(
-                                          color: LightAppColors.whitePrimary,
+                                          color: SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? Color(0xff6a6d6e)
+                                              //DarkAppColors.whitePrimary
+                                              : LightAppColors.whitePrimary,
+                                          //Color(0xff161A1D),
+                                          //LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                           boxShadow: [
@@ -1089,7 +1104,14 @@ class _WelcomePageState extends State<WelcomePage> {
                                                 100) -
                                             25.w,
                                         decoration: BoxDecoration(
-                                          color: LightAppColors.whitePrimary,
+                                          color: SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? Color(0xff3f3e3b)
+                                              //DarkAppColors.whitePrimary
+                                              : LightAppColors.greyPrimary,
+                                          // LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                           boxShadow: [

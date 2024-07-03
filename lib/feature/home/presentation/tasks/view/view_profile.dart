@@ -76,7 +76,6 @@ class _ProfileViewState extends State<ProfileView> {
           SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
               ? DarkAppColors.whitePrimary
               : LightAppColors.greyPrimary,
-      //LightAppColors.greyPrimary,
       resizeToAvoidBottomInset: false,
       body: owner == null
           ? const Center(child: CupertinoActivityIndicator())
@@ -135,7 +134,14 @@ class _ProfileViewState extends State<ProfileView> {
                                         EdgeInsets.only(top: 8.h, bottom: 8.h),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: LightAppColors.whitePrimary,
+                                        color: SettingsScope.themeOf(context)
+                                                    .theme
+                                                    .mode ==
+                                                ThemeMode.dark
+                                            ? Color(0xff3f3e3b)
+                                            //DarkAppColors.whitePrimary
+                                            : LightAppColors.whitePrimary,
+                                        // color: LightAppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -669,7 +675,14 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Container(
                                       width: 100.w,
                                       decoration: BoxDecoration(
-                                        color: LightAppColors.whitePrimary,
+                                        color: SettingsScope.themeOf(context)
+                                                    .theme
+                                                    .mode ==
+                                                ThemeMode.dark
+                                            ? Color(0xff3f3e3b)
+                                            //DarkAppColors.whitePrimary
+                                            : LightAppColors.whitePrimary,
+                                        //color: LightAppColors.whitePrimary,
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -788,7 +801,15 @@ class _ProfileViewState extends State<ProfileView> {
                                           height: 45.h,
                                           width: 327.w,
                                           decoration: BoxDecoration(
-                                            color: LightAppColors.whitePrimary,
+                                            color: SettingsScope.themeOf(
+                                                            context)
+                                                        .theme
+                                                        .mode ==
+                                                    ThemeMode.dark
+                                                ? Color(0xff3f3e3b)
+                                                //DarkAppColors.whitePrimary
+                                                : LightAppColors.whitePrimary,
+                                            //color: LightAppColors.whitePrimary,
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                           ),
@@ -873,7 +894,14 @@ class _ProfileViewState extends State<ProfileView> {
                                   SizedBox(height: 20.h),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: LightAppColors.whitePrimary,
+                                      color: SettingsScope.themeOf(context)
+                                                  .theme
+                                                  .mode ==
+                                              ThemeMode.dark
+                                          ? Color(0xff3f3e3b)
+                                          //DarkAppColors.whitePrimary
+                                          : LightAppColors.whitePrimary,
+                                      // color: LightAppColors.whitePrimary,
                                       borderRadius: BorderRadius.circular(10.r),
                                       boxShadow: [
                                         BoxShadow(
@@ -961,8 +989,18 @@ class _ProfileViewState extends State<ProfileView> {
                                                   Container(
                                                     height: 39.h,
                                                     decoration: BoxDecoration(
-                                                      color: LightAppColors
-                                                          .whiteSecondary,
+                                                      color: SettingsScope
+                                                                      .themeOf(
+                                                                          context)
+                                                                  .theme
+                                                                  .mode ==
+                                                              ThemeMode.dark
+                                                          ? Color(0xff3f3e3b)
+                                                          //DarkAppColors.whitePrimary
+                                                          : LightAppColors
+                                                              .whitePrimary,
+                                                      // color: LightAppColors
+                                                      //     .whiteSecondary,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.r),
@@ -1071,7 +1109,11 @@ class _ProfileViewState extends State<ProfileView> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: LightAppColors.whitePrimary,
+        //color: LightAppColors.whitePrimary,
+        color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? Color(0xff3f3e3b)
+            //DarkAppColors.whitePrimary
+            : LightAppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
       child: Row(
@@ -1155,7 +1197,12 @@ class _ProfileViewState extends State<ProfileView> {
                       Container(
                         height: 39.h,
                         decoration: BoxDecoration(
-                          color: LightAppColors.whiteSecondary,
+                          color: SettingsScope.themeOf(context).theme.mode ==
+                                  ThemeMode.dark
+                              ? Color(0xff3f3e3b)
+                              //DarkAppColors.whitePrimary
+                              : LightAppColors.whitePrimary,
+                          //  color: LightAppColors.whiteSecondary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(

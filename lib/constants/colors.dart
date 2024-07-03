@@ -41,6 +41,8 @@ class DarkAppColors {
   static const Color blackSecondary = Color(0xFFEAECEE);
   static const Color blackAccent = Color(0xFFBDBDBD);
   static const Color blackError = Color(0xFFF7F7F8);
+  static const Color blackPrima = Color(0xff121212);
+  static const Color blackSurface = Color(0xff1E1E1E);
 
   static const Color greyPrimary = Color(0xFF171716);
   static const Color greySecondary = Color(0xFF292D32);

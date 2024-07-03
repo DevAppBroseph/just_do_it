@@ -31,9 +31,23 @@ import 'package:just_do_it/firebaseApi.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/services/get_it/get_it_initializer.dart';
 import 'package:just_do_it/services/language/main_config_app.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://a8c13a71870809a4e2d63b7d5d3fd841@o4507531554455552.ingest.us.sentry.io/4507537035034624';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+      // The sampling rate for profiling is relative to tracesSampleRate
+      // Setting to 1.0 will profile 100% of sampled transactions:
+      options.profilesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(MyApp()),
+  );
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   await SystemChrome.setPreferredOrientations([

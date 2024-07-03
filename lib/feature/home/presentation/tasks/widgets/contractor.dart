@@ -16,6 +16,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/or
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_complete_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_in_progress_view_as_customer.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/response_tasks_view.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
 
@@ -527,7 +528,6 @@ class _ContractorState extends State<Contractor> {
                       right: 20.w,
                     ),
                     child: Container(
-                      // height: 150.h,
                       width: 100.w,
                       decoration: BoxDecoration(
                         color: LightAppColors.whitePrimary,
@@ -562,7 +562,12 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/edit.svg',
-                                    color: LightAppColors.greyActive,
+                                    color: SettingsScope.themeOf(context)
+                                                .theme
+                                                .mode ==
+                                            ThemeMode.dark
+                                        ? DarkAppColors.whitePrimary
+                                        : LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -627,7 +632,12 @@ class _ContractorState extends State<Contractor> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user1.svg',
-                                    color: LightAppColors.greyActive,
+                                    color: SettingsScope.themeOf(context)
+                                                .theme
+                                                .mode ==
+                                            ThemeMode.dark
+                                        ? DarkAppColors.whitePrimary
+                                        : LightAppColors.greyActive,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
