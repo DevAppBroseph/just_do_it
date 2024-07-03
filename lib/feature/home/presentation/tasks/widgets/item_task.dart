@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -19,7 +20,9 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
       child: Container(
         decoration: BoxDecoration(
           color: task.isBanned == null || !task.isBanned!
-              ? LightAppColors.whitePrimary
+              ? SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary
               : LightAppColors.greyBackdround.withOpacity(0.06),
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -61,9 +64,16 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                               width: 230.w,
                               child: Text(
                                 task.name,
-                                style: CustomTextStyle.sf17w400(
-                                  Colors.black,
-                                ).copyWith(fontWeight: FontWeight.w500),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                    ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -82,8 +92,13 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                                     width: 230.w,
                                     child: Text(
                                       _textCountry(task, user),
-                                      style: CustomTextStyle.sf17w400(
-                                          LightAppColors.blackAccent),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                              (lightStyles) =>
+                                                  lightStyles.sf17w400BlackSec,
+                                              (darkStyles) =>
+                                                  darkStyles.sf17w400BlackSec),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -108,9 +123,16 @@ Widget itemTask(Task task, Function(Task) onSelect, UserRegModel? user,
                               Text(
                                 '${"before".tr()} ${_textCurrency(task.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.currency?.name)} ',
                                 maxLines: 1,
-                                style: CustomTextStyle.sf17w400(
-                                  Colors.black,
-                                ).copyWith(fontWeight: FontWeight.w500),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                    ),
                               ),
                               SizedBox(width: 5.w),
                               SvgPicture.asset(

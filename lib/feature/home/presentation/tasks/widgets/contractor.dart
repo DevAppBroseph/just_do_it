@@ -117,7 +117,10 @@ class _ContractorState extends State<Contractor> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -127,8 +130,13 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'my_tasks'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackAccent),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                           ),
                           GestureDetector(
@@ -160,9 +168,15 @@ class _ContractorState extends State<Contractor> {
                                           children: [
                                             Text(
                                               'my_task'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -232,9 +246,15 @@ class _ContractorState extends State<Contractor> {
                                           children: [
                                             Text(
                                               'performed'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -259,9 +279,15 @@ class _ContractorState extends State<Contractor> {
                                                 user!
                                                     .countOrdersInProgressAsCustomer
                                                     .toString(),
-                                                style: CustomTextStyle.sf17w400(
-                                                    LightAppColors
-                                                        .blackSecondary),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -304,9 +330,15 @@ class _ContractorState extends State<Contractor> {
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -330,9 +362,15 @@ class _ContractorState extends State<Contractor> {
                                                 user!
                                                     .countOrdersCompleteACustomer
                                                     .toString(),
-                                                style: CustomTextStyle.sf17w400(
-                                                    LightAppColors
-                                                        .blackSecondary),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -358,7 +396,10 @@ class _ContractorState extends State<Contractor> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -368,8 +409,13 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'responses_to_offers'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackAccent),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                           ),
                           GestureDetector(
@@ -403,9 +449,15 @@ class _ContractorState extends State<Contractor> {
                                           children: [
                                             Text(
                                               'accepted_offers'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -430,9 +482,15 @@ class _ContractorState extends State<Contractor> {
                                                 user!.selectedOffersAsCustomer!
                                                     .length
                                                     .toString(),
-                                                style: CustomTextStyle.sf17w400(
-                                                    LightAppColors
-                                                        .blackSecondary),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -475,9 +533,15 @@ class _ContractorState extends State<Contractor> {
                                           children: [
                                             Text(
                                               'closed_offers'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -502,9 +566,15 @@ class _ContractorState extends State<Contractor> {
                                                       .length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -530,7 +600,10 @@ class _ContractorState extends State<Contractor> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -540,8 +613,13 @@ class _ContractorState extends State<Contractor> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'favourites'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackAccent),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                           ),
                           GestureDetector(
@@ -560,15 +638,8 @@ class _ContractorState extends State<Contractor> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/edit.svg',
-                                    color: SettingsScope.themeOf(context)
-                                                .theme
-                                                .mode ==
-                                            ThemeMode.dark
-                                        ? DarkAppColors.whitePrimary
-                                        : LightAppColors.greyActive,
-                                  ),
+                                  SvgPicture.asset('assets/icons/edit.svg',
+                                      color: LightAppColors.blueSecondary),
                                   SizedBox(width: 3.w),
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.w),
@@ -578,8 +649,14 @@ class _ContractorState extends State<Contractor> {
                                           width: 235.w,
                                           child: Text(
                                             'offers'.tr(),
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackSecondary),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -598,10 +675,15 @@ class _ContractorState extends State<Contractor> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style:
-                                                      CustomTextStyle.sf17w400(
-                                                          LightAppColors
-                                                              .blackSecondary),
+                                                  style: SettingsScope.themeOf(
+                                                          context)
+                                                      .theme
+                                                      .getStyle(
+                                                          (lightStyles) =>
+                                                              lightStyles
+                                                                  .sf17w400BlackSec,
+                                                          (darkStyles) => darkStyles
+                                                              .sf17w400BlackSec),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -630,15 +712,8 @@ class _ContractorState extends State<Contractor> {
                               padding: EdgeInsets.only(top: 20.h, left: 20.w),
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/user1.svg',
-                                    color: SettingsScope.themeOf(context)
-                                                .theme
-                                                .mode ==
-                                            ThemeMode.dark
-                                        ? DarkAppColors.whitePrimary
-                                        : LightAppColors.greyActive,
-                                  ),
+                                  SvgPicture.asset('assets/icons/user1.svg',
+                                      color: LightAppColors.blueSecondary),
                                   SizedBox(width: 3.w),
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.w),
@@ -648,8 +723,14 @@ class _ContractorState extends State<Contractor> {
                                           width: 235.w,
                                           child: Text(
                                             'executors'.tr(),
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackSecondary),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -667,10 +748,15 @@ class _ContractorState extends State<Contractor> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style:
-                                                      CustomTextStyle.sf17w400(
-                                                          LightAppColors
-                                                              .blackSecondary),
+                                                  style: SettingsScope.themeOf(
+                                                          context)
+                                                      .theme
+                                                      .getStyle(
+                                                          (lightStyles) =>
+                                                              lightStyles
+                                                                  .sf17w400BlackSec,
+                                                          (darkStyles) => darkStyles
+                                                              .sf17w400BlackSec),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),

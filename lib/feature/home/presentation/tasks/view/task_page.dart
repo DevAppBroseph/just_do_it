@@ -386,7 +386,10 @@ class _TaskPageState extends State<TaskPage> {
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                         boxShadow: [
                           BoxShadow(
@@ -405,8 +408,13 @@ class _TaskPageState extends State<TaskPage> {
                           children: [
                             Text(
                               'description'.tr(),
-                              style: CustomTextStyle.sf18w800(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf18w800BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf18w800BlackSec),
                             ),
                             SizedBox(
                               height: 10.h,
@@ -415,8 +423,13 @@ class _TaskPageState extends State<TaskPage> {
                               task.description,
                               overflow: TextOverflow.ellipsis,
                               maxLines: showMore ? 10000000 : 3,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackError),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                             if (!showMore) SizedBox(height: 8.h),
                             if (!showMore && task.description.length > 105)
@@ -592,8 +605,13 @@ class _TaskPageState extends State<TaskPage> {
                                         child: Text(
                                           "${_textData(task.dateStart)}-${_textData(task.dateEnd)}",
                                           maxLines: 1,
-                                          style: CustomTextStyle.sf17w400(
-                                              LightAppColors.blackError),
+                                          style: SettingsScope.themeOf(context)
+                                              .theme
+                                              .getStyle(
+                                                  (lightStyles) => lightStyles
+                                                      .sf17w400BlackSec,
+                                                  (darkStyles) => darkStyles
+                                                      .sf17w400BlackSec),
                                         ),
                                       ),
                                     ],
@@ -626,8 +644,13 @@ class _TaskPageState extends State<TaskPage> {
                                       AutoSizeText(
                                         _textCountry(task, user),
                                         wrapWords: false,
-                                        style: CustomTextStyle.sf17w400(
-                                            LightAppColors.blackError),
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf17w400BlackSec,
+                                                (darkStyles) => darkStyles
+                                                    .sf17w400BlackSec),
                                         maxLines: null,
                                       ),
                                     ],
@@ -663,7 +686,10 @@ class _TaskPageState extends State<TaskPage> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: LightAppColors.whitePrimary,
+                            color: SettingsScope.themeOf(context).theme.mode ==
+                                    ThemeMode.dark
+                                ? DarkAppColors.blackSurface
+                                : LightAppColors.whitePrimary,
                             borderRadius: BorderRadius.circular(20.r),
                             boxShadow: [
                               BoxShadow(
@@ -707,8 +733,16 @@ class _TaskPageState extends State<TaskPage> {
                                       child: AutoSizeText(
                                         "${task.owner?.firstname ?? '-'} ${task.owner?.lastname ?? '-'}",
                                         wrapWords: false,
-                                        style: CustomTextStyle.sf18w800(
-                                                LightAppColors.blackSecondary)
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf18w800BlackSec
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                (darkStyles) =>
+                                                    darkStyles.sf18w800BlackSec)
                                             .copyWith(
                                                 fontWeight: FontWeight.w600),
                                         maxLines: 2,
@@ -730,10 +764,20 @@ class _TaskPageState extends State<TaskPage> {
                                           task.owner?.ranking == null
                                               ? '0'
                                               : task.owner!.ranking.toString(),
-                                          style: CustomTextStyle.sf17w400(
-                                                  LightAppColors.blackSecondary)
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w500),
+                                          style: SettingsScope.themeOf(context)
+                                              .theme
+                                              .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf17w400BlackSec
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                (darkStyles) => darkStyles
+                                                    .sf17w400BlackSec
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                              ),
                                         ),
                                       ],
                                     ),

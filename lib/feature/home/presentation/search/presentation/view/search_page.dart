@@ -493,7 +493,11 @@ class _SearchPageState extends State<SearchPage> {
                         if (state is TasksLoading) {
                           return SkeletonLoader(
                             items: 4,
-                            baseColor: LightAppColors.whitePrimary,
+                            baseColor:
+                                SettingsScope.themeOf(context).theme.mode ==
+                                        ThemeMode.dark
+                                    ? DarkAppColors.blackSurface
+                                    : LightAppColors.whitePrimary,
                             highlightColor: LightAppColors.greyActive,
                             builder: Container(
                               margin: EdgeInsets.only(
@@ -530,12 +534,12 @@ class _SearchPageState extends State<SearchPage> {
                                   return Padding(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 16.h),
-                                    child: Center(
+                                    child: const Center(
                                       child: CircularProgressIndicator(),
                                     ),
                                   );
                                 } else {
-                                  return SizedBox.shrink();
+                                  return const SizedBox.shrink();
                                 }
                               }
                               final task = taskList[index];

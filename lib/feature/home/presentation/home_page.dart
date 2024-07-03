@@ -30,7 +30,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/widget/
 import 'package:just_do_it/feature/home/presentation/search/presentation/widget/sliding_panel_response.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
-import 'package:just_do_it/feature/home/presentation/welcom/welcom_page.dart';
+import 'package:just_do_it/feature/home/presentation/welcom/welcome_page.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';

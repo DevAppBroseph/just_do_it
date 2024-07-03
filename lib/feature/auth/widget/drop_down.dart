@@ -57,7 +57,7 @@ void iconSelectModal(
               width: MediaQuery.of(context).size.width - 20.w,
               height: 200.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.black,
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -87,8 +87,6 @@ void iconSelectModal(
                                   children: [
                                     Text(
                                       label,
-
-                                      ///May be null check issue
                                       style: CustomTextStyle.sf17w400(
                                           Colors.grey[400]!),
                                     ),
@@ -125,9 +123,14 @@ void iconSelectModal(
                                     style: ButtonStyle(
                                         padding: const WidgetStatePropertyAll(
                                             EdgeInsets.all(0)),
-                                        backgroundColor:
-                                            const WidgetStatePropertyAll(
-                                                Colors.white),
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          SettingsScope.themeOf(context)
+                                                      .theme
+                                                      .mode ==
+                                                  ThemeMode.dark
+                                              ? DarkAppColors.blackSurface
+                                              : LightAppColors.whitePrimary,
+                                        ),
                                         elevation:
                                             const WidgetStatePropertyAll(0),
                                         overlayColor:
@@ -146,10 +149,22 @@ void iconSelectModal(
                                           children: [
                                             Text(
                                               list[index],
-                                              style: CustomTextStyle.sf17w400(
-                                                Colors.black,
-                                              ).copyWith(
-                                                  fontWeight: FontWeight.w300),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec)
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w300),
                                             ),
                                             const Spacer(),
                                           ],

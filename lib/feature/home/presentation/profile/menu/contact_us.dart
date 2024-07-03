@@ -88,7 +88,10 @@ class _ContactUsState extends State<ContactUs> {
                     width: 327.w,
                     hintText: 'contact_email'.tr(),
                     textEditingController: controllerEmail,
-                    fillColor: LightAppColors.greyActive,
+                    fillColor: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -101,7 +104,10 @@ class _ContactUsState extends State<ContactUs> {
                     hintText: 'subject_appeal'.tr(),
                     formatters: [UpperEveryTextInputFormatter()],
                     textEditingController: controllerTheme,
-                    fillColor: LightAppColors.greyActive,
+                    fillColor: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.greyActive,
                     contentPadding: EdgeInsets.all(18.h),
                   ),
                 ),
@@ -114,14 +120,21 @@ class _ContactUsState extends State<ContactUs> {
                         height: 130.h,
                         width: 327.w,
                         decoration: BoxDecoration(
-                          color: LightAppColors.greyActive,
+                          color: SettingsScope.themeOf(context).theme.mode ==
+                                  ThemeMode.dark
+                              ? DarkAppColors.blackSurface
+                              : LightAppColors.greyActive,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: CustomTextField(
                           hintText: 'your_message'.tr(),
                           formatters: [UpperEveryTextInputFormatter()],
                           textEditingController: controllerMessage,
-                          fillColor: LightAppColors.greyActive,
+                          fillColor:
+                              SettingsScope.themeOf(context).theme.mode ==
+                                      ThemeMode.dark
+                                  ? DarkAppColors.blackSurface
+                                  : LightAppColors.greyActive,
                           contentPadding: EdgeInsets.all(18.h),
                           maxLines: 6,
                         ),

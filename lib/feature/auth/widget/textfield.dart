@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -78,17 +79,24 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color filColor = fillColor ?? LightAppColors.greyPrimary;
-    // Color hintTextColor = Colors.grey[400]!;
+    Color filColor = fillColor ??
+        (SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? DarkAppColors.blackSurface
+            : LightAppColors.greyPrimary);
     height = height ?? 175.h;
     hintStyle = hintStyle ??
         CustomTextStyle.sf15w400(LightAppColors.greySecondary)
             .copyWith(overflow: TextOverflow.ellipsis);
 
     style = style ??
-        CustomTextStyle.sf13w400(Colors.black).copyWith(
-          overflow: TextOverflow.ellipsis,
-        );
+        SettingsScope.themeOf(context).theme.getStyle(
+              (lightStyles) => lightStyles.sf13w400BlackSec.copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
+              (darkStyles) => darkStyles.sf13w400BlackSec.copyWith(
+                overflow: TextOverflow.ellipsis,
+              ),
+            );
 
     var widthOfScreen = width ?? MediaQuery.of(context).size.width;
 

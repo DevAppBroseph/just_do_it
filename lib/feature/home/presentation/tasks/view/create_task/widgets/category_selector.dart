@@ -9,6 +9,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/formatter_upper.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/task/task_category.dart';
 import 'package:just_do_it/models/task/task_subcategory.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -82,7 +83,10 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -102,8 +106,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                           user?.rus ?? true
                               ? widget.selectCategory!.description!
                               : widget.selectCategory!.engDescription!,
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec,
+                              (darkStyles) => darkStyles.sf17w400BlackSec),
                         ),
                     ],
                   ),
@@ -122,7 +127,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                     : 200.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: LightAppColors.whitePrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
@@ -176,8 +183,13 @@ class _CategorySelectorState extends State<CategorySelector> {
                                         user?.rus ?? true
                                             ? e.description ?? '-'
                                             : e.engDescription ?? '',
-                                        style: CustomTextStyle.sf17w400(
-                                            LightAppColors.blackAccent),
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf17w400BlackSec,
+                                                (darkStyles) => darkStyles
+                                                    .sf17w400BlackSec),
                                       ),
                                     ),
                                     const Spacer(),
@@ -214,7 +226,10 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -237,8 +252,13 @@ class _CategorySelectorState extends State<CategorySelector> {
                                 ? widget.selectSubCategory?.description ?? '-'
                                 : widget.selectSubCategory?.engDescription ??
                                     '-',
-                            style: CustomTextStyle.sf17w400(
-                                LightAppColors.blackSecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf17w400BlackSec,
+                                    (darkStyles) =>
+                                        darkStyles.sf17w400BlackSec),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -259,7 +279,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                     : 200.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: LightAppColors.whitePrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
@@ -311,8 +333,14 @@ class _CategorySelectorState extends State<CategorySelector> {
                                             user?.rus ?? true
                                                 ? e.description ?? '-'
                                                 : e.engDescription ?? '-',
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackAccent),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         const Spacer(),
@@ -340,7 +368,10 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 50.h,
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -349,11 +380,16 @@ class _CategorySelectorState extends State<CategorySelector> {
                   openCategory = false;
                   setState(() {});
                 },
-                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf17w400BlackSec,
+                    (darkStyles) => darkStyles.sf17w400BlackSec),
                 hintText:
                     widget.customer ? 'task_name'.tr() : 'offer_name'.tr(),
                 textEditingController: widget.titleController,
-                fillColor: LightAppColors.greyActive,
+                fillColor:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 onChanged: (value) {
                   widget.onEdit(
                     widget.selectCategory,
@@ -376,7 +412,10 @@ class _CategorySelectorState extends State<CategorySelector> {
               height: 130.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: CustomTextField(
@@ -390,9 +429,14 @@ class _CategorySelectorState extends State<CategorySelector> {
                 hintText: widget.customer
                     ? 'description_task'.tr()
                     : 'description_offer'.tr(),
-                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf17w400BlackSec,
+                    (darkStyles) => darkStyles.sf17w400BlackSec),
                 textEditingController: widget.aboutController,
-                fillColor: LightAppColors.greyActive,
+                fillColor:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 onChanged: (value) {
                   widget.onEdit(
                     widget.selectCategory,
@@ -411,7 +455,10 @@ class _CategorySelectorState extends State<CategorySelector> {
           GestureDetector(
             onTap: () => widget.onAttach(),
             child: CustomTextField(
-              fillColor: LightAppColors.greyActive,
+              fillColor:
+                  SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                      ? DarkAppColors.blackSurface
+                      : LightAppColors.whitePrimary,
               hintText: 'attach_doc'.tr(),
               hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
               height: 50.h,

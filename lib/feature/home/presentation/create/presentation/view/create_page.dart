@@ -414,7 +414,9 @@ class _CreatePageState extends State<CreatePage> {
         }),
         child: Container(
           decoration: BoxDecoration(
-            color: LightAppColors.whitePrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackSurface
+                : LightAppColors.whitePrimary,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
@@ -438,7 +440,9 @@ class _CreatePageState extends State<CreatePage> {
               SizedBox(width: 9.w),
               Text(
                 title,
-                style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
+                style: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf17w400BlackSec,
+                    (darkStyles) => darkStyles.sf17w400BlackSec),
               ),
               if (choice.isNotEmpty && title.length < 20)
                 Padding(
@@ -447,8 +451,12 @@ class _CreatePageState extends State<CreatePage> {
                     width: 90.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.sf15w400(
-                          LightAppColors.greySecondary),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf15w400BlackSec
+                                .copyWith(color: LightAppColors.greySecondary),
+                            (darkStyles) => darkStyles.sf15w400BlackSec
+                                .copyWith(color: LightAppColors.whitePrimary),
+                          ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -461,8 +469,12 @@ class _CreatePageState extends State<CreatePage> {
                     width: 20.w,
                     child: Text(
                       selectWork,
-                      style: CustomTextStyle.sf15w400(
-                          LightAppColors.greySecondary),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf15w400BlackSec
+                                .copyWith(color: LightAppColors.greySecondary),
+                            (darkStyles) => darkStyles.sf15w400BlackSec
+                                .copyWith(color: LightAppColors.whitePrimary),
+                          ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -509,7 +521,9 @@ class _CreatePageState extends State<CreatePage> {
         duration: const Duration(milliseconds: 300),
         height: height,
         decoration: BoxDecoration(
-          color: LightAppColors.whitePrimary,
+          color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.blackSurface
+              : LightAppColors.whitePrimary,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
@@ -584,8 +598,9 @@ class _CreatePageState extends State<CreatePage> {
                     width: 250.w,
                     child: Text(
                       label,
-                      style:
-                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf17w400BlackSec,
+                          (darkStyles) => darkStyles.sf17w400BlackSec),
                     ),
                   ),
                   const Spacer(),

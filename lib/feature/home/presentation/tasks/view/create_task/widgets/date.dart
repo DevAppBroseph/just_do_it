@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/currency_bloc/currency_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -98,8 +99,13 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'done'.tr(),
-                            style: CustomTextStyle.sf17w400(
-                                LightAppColors.blackSecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf17w400BlackSec,
+                                    (darkStyles) =>
+                                        darkStyles.sf17w400BlackSec),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -283,8 +289,13 @@ class _DatePickerState extends State<DatePicker> {
                                     ? widget.allCountries[i].region[index].name!
                                     : widget
                                         .allCountries[i].region[index].engName!,
-                                style: CustomTextStyle.sf17w400(
-                                    LightAppColors.blackAccent),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf17w400BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf17w400BlackSec),
                               ),
                             ),
                             const Spacer(),
@@ -353,8 +364,13 @@ class _DatePickerState extends State<DatePicker> {
                                               .town[index3].name!
                                           : widget.allCountries[i].region[index]
                                               .town[index3].engName!,
-                                      style: CustomTextStyle.sf17w400(
-                                          LightAppColors.blackAccent),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                              (lightStyles) =>
+                                                  lightStyles.sf17w400BlackSec,
+                                              (darkStyles) =>
+                                                  darkStyles.sf17w400BlackSec),
                                     ),
                                   ),
                                   const Spacer(),
@@ -398,7 +414,10 @@ class _DatePickerState extends State<DatePicker> {
               height: 68.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -408,15 +427,18 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'start_date'.tr(),
-                        style: CustomTextStyle.sf15w400(
-                            LightAppColors.greySecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf15w400BlackSec,
+                              (darkStyles) => darkStyles.sf15w400BlackSec,
+                            ),
                       ),
                       SizedBox(height: 0.h),
                       if (widget.startDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec,
+                              (darkStyles) => darkStyles.sf17w400BlackSec),
                         ),
                     ],
                   ),
@@ -445,7 +467,10 @@ class _DatePickerState extends State<DatePicker> {
               height: 68.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
-                color: LightAppColors.greyActive,
+                color:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -455,15 +480,18 @@ class _DatePickerState extends State<DatePicker> {
                     children: [
                       Text(
                         'completion_date'.tr(),
-                        style: CustomTextStyle.sf15w400(
-                            LightAppColors.greySecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf15w400BlackSec,
+                              (darkStyles) => darkStyles.sf15w400BlackSec,
+                            ),
                       ),
                       SizedBox(height: 0.h),
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec,
+                              (darkStyles) => darkStyles.sf17w400BlackSec),
                         ),
                     ],
                   ),
@@ -494,10 +522,18 @@ class _DatePickerState extends State<DatePicker> {
               });
             },
             child: CustomTextField(
-              style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
-              fillColor: LightAppColors.greyActive,
+              style: SettingsScope.themeOf(context).theme.getStyle(
+                  (lightStyles) => lightStyles.sf17w400BlackSec,
+                  (darkStyles) => darkStyles.sf17w400BlackSec),
+              fillColor:
+                  SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                      ? DarkAppColors.blackSurface
+                      : LightAppColors.whitePrimary,
               hintText: 'currency_paid'.tr(),
-              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
+              hintStyle: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf15w400BlackSec,
+                    (darkStyles) => darkStyles.sf15w400BlackSec,
+                  ),
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -529,7 +565,10 @@ class _DatePickerState extends State<DatePicker> {
                 duration: const Duration(milliseconds: 300),
                 height: openCurrency ? 160.h : 0.h,
                 decoration: BoxDecoration(
-                  color: LightAppColors.whitePrimary,
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.blackSurface
+                      : LightAppColors.whitePrimary,
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
@@ -584,8 +623,14 @@ class _DatePickerState extends State<DatePicker> {
                                             user?.rus ?? true
                                                 ? e.name!
                                                 : e.engName!,
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackAccent),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         const Spacer(),
@@ -622,7 +667,10 @@ class _DatePickerState extends State<DatePicker> {
                     height: 55.h,
                     padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     decoration: BoxDecoration(
-                      color: LightAppColors.greyActive,
+                      color: SettingsScope.themeOf(context).theme.mode ==
+                              ThemeMode.dark
+                          ? DarkAppColors.blackSurface
+                          : LightAppColors.whitePrimary,
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Column(
@@ -631,8 +679,10 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_from'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.sf15w400(
-                              LightAppColors.greySecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                                (lightStyles) => lightStyles.sf15w400BlackSec,
+                                (darkStyles) => darkStyles.sf15w400BlackSec,
+                              ),
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -664,10 +714,19 @@ class _DatePickerState extends State<DatePicker> {
                               ],
                               contentPadding: EdgeInsets.zero,
                               hintText: '',
-                              fillColor: LightAppColors.greyActive,
+                              fillColor:
+                                  SettingsScope.themeOf(context).theme.mode ==
+                                          ThemeMode.dark
+                                      ? DarkAppColors.blackSurface
+                                      : LightAppColors.whitePrimary,
                               maxLines: null,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                               textEditingController: widget.coastMinController,
                             ),
                           ],
@@ -691,7 +750,10 @@ class _DatePickerState extends State<DatePicker> {
                     height: 55.h,
                     padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     decoration: BoxDecoration(
-                      color: LightAppColors.greyActive,
+                      color: SettingsScope.themeOf(context).theme.mode ==
+                              ThemeMode.dark
+                          ? DarkAppColors.blackSurface
+                          : LightAppColors.whitePrimary,
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Column(
@@ -700,8 +762,10 @@ class _DatePickerState extends State<DatePicker> {
                       children: [
                         Text(
                           '${'budget_up_to'.tr()} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.currecy?.name)}',
-                          style: CustomTextStyle.sf15w400(
-                              LightAppColors.greySecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                                (lightStyles) => lightStyles.sf15w400BlackSec,
+                                (darkStyles) => darkStyles.sf15w400BlackSec,
+                              ),
                         ),
                         SizedBox(height: 3.h),
                         Row(
@@ -733,10 +797,19 @@ class _DatePickerState extends State<DatePicker> {
                               ],
                               contentPadding: EdgeInsets.zero,
                               hintText: '',
-                              fillColor: LightAppColors.greyActive,
+                              fillColor:
+                                  SettingsScope.themeOf(context).theme.mode ==
+                                          ThemeMode.dark
+                                      ? DarkAppColors.blackSurface
+                                      : LightAppColors.whitePrimary,
                               maxLines: null,
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                               textEditingController: widget.coastMaxController,
                             ),
                           ],
@@ -769,10 +842,18 @@ class _DatePickerState extends State<DatePicker> {
               });
             },
             child: CustomTextField(
-              style: CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
-              fillColor: LightAppColors.greyActive,
+              style: SettingsScope.themeOf(context).theme.getStyle(
+                  (lightStyles) => lightStyles.sf17w400BlackSec,
+                  (darkStyles) => darkStyles.sf17w400BlackSec),
+              fillColor:
+                  SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                      ? DarkAppColors.blackSurface
+                      : LightAppColors.whitePrimary,
               hintText: 'select_country'.tr(),
-              hintStyle: CustomTextStyle.sf15w400(LightAppColors.greySecondary),
+              hintStyle: SettingsScope.themeOf(context).theme.getStyle(
+                    (lightStyles) => lightStyles.sf15w400BlackSec,
+                    (darkStyles) => darkStyles.sf15w400BlackSec,
+                  ),
               height: 55.h,
               enabled: false,
               suffixIcon: Stack(
@@ -808,7 +889,9 @@ class _DatePickerState extends State<DatePicker> {
                     : 170.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: LightAppColors.whitePrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
@@ -876,8 +959,13 @@ class _DatePickerState extends State<DatePicker> {
                                     width: 250.w,
                                     child: Text(
                                       user?.rus ?? true ? e.name! : e.engName!,
-                                      style: CustomTextStyle.sf17w400(
-                                          LightAppColors.blackAccent),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                              (lightStyles) =>
+                                                  lightStyles.sf17w400BlackSec,
+                                              (darkStyles) =>
+                                                  darkStyles.sf17w400BlackSec),
                                     ),
                                   ),
                                   const Spacer(),
@@ -916,12 +1004,18 @@ class _DatePickerState extends State<DatePicker> {
                     });
                   },
                   child: CustomTextField(
-                    style:
-                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
-                    fillColor: LightAppColors.greyActive,
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf17w400BlackSec,
+                        (darkStyles) => darkStyles.sf17w400BlackSec),
+                    fillColor: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                     hintText: 'select_a_region'.tr(),
-                    hintStyle:
-                        CustomTextStyle.sf15w400(LightAppColors.greySecondary),
+                    hintStyle: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf15w400BlackSec,
+                          (darkStyles) => darkStyles.sf15w400BlackSec,
+                        ),
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(
@@ -958,7 +1052,9 @@ class _DatePickerState extends State<DatePicker> {
                     : 170.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: LightAppColors.whitePrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
@@ -1018,12 +1114,18 @@ class _DatePickerState extends State<DatePicker> {
                     });
                   },
                   child: CustomTextField(
-                    style:
-                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
-                    fillColor: LightAppColors.greyActive,
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf17w400BlackSec,
+                        (darkStyles) => darkStyles.sf17w400BlackSec),
+                    fillColor: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                     hintText: 'select_an_area'.tr(),
-                    hintStyle:
-                        CustomTextStyle.sf15w400(LightAppColors.greySecondary),
+                    hintStyle: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf15w400BlackSec,
+                          (darkStyles) => darkStyles.sf15w400BlackSec,
+                        ),
                     height: 55.h,
                     enabled: false,
                     suffixIcon: Stack(
@@ -1060,7 +1162,9 @@ class _DatePickerState extends State<DatePicker> {
                     : 170.h
                 : 0.h,
             decoration: BoxDecoration(
-              color: LightAppColors.whitePrimary,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(

@@ -17,6 +17,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/my
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/open_offers_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/orders_complete_as_executor_view.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/response_task/selected_offers_view.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -105,7 +106,10 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -115,8 +119,13 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'my_tasks'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackAccent),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                           ),
                           GestureDetector(
@@ -150,9 +159,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'all_responses'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -177,9 +192,15 @@ class _CustomerState extends State<Customer> {
                                                       .countMyAnswersAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -222,9 +243,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'confirmed'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -249,9 +276,15 @@ class _CustomerState extends State<Customer> {
                                                       .countMyAnswersSelectedAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -294,9 +327,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -321,9 +360,15 @@ class _CustomerState extends State<Customer> {
                                                       .countOrdersCompleteAsExecutor
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -349,7 +394,10 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -365,8 +413,13 @@ class _CustomerState extends State<Customer> {
                               },
                               child: Text(
                                 'my_offers'.tr(),
-                                style: CustomTextStyle.sf17w400(
-                                    LightAppColors.blackAccent),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf17w400BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf17w400BlackSec),
                               ),
                             ),
                           ),
@@ -398,9 +451,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'open'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -423,9 +482,15 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.openOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -468,9 +533,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'accepted'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -493,9 +564,15 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.selectedOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -538,9 +615,15 @@ class _CustomerState extends State<Customer> {
                                           children: [
                                             Text(
                                               'closed'.tr(),
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                             ),
                                             SizedBox(
                                               width: 235.w,
@@ -563,9 +646,15 @@ class _CustomerState extends State<Customer> {
                                                   ? user!.finishedOffers!.length
                                                       .toString()
                                                   : '0',
-                                              style: CustomTextStyle.sf17w400(
-                                                  LightAppColors
-                                                      .blackSecondary),
+                                              style: SettingsScope.themeOf(
+                                                      context)
+                                                  .theme
+                                                  .getStyle(
+                                                      (lightStyles) =>
+                                                          lightStyles
+                                                              .sf17w400BlackSec,
+                                                      (darkStyles) => darkStyles
+                                                          .sf17w400BlackSec),
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -591,7 +680,10 @@ class _CustomerState extends State<Customer> {
                     child: Container(
                       width: 100.w,
                       decoration: BoxDecoration(
-                        color: LightAppColors.whitePrimary,
+                        color: SettingsScope.themeOf(context).theme.mode ==
+                                ThemeMode.dark
+                            ? DarkAppColors.blackSurface
+                            : LightAppColors.whitePrimary,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
@@ -601,8 +693,13 @@ class _CustomerState extends State<Customer> {
                             padding: EdgeInsets.only(top: 20.h, left: 20.w),
                             child: Text(
                               'favourites'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                  LightAppColors.blackAccent),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec),
                             ),
                           ),
                           GestureDetector(
@@ -623,7 +720,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/edit.svg',
-                                    color: LightAppColors.greyActive,
+                                    color: LightAppColors.blueSecondary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -634,8 +731,14 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'tasks'.tr(),
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackSecondary),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -654,10 +757,15 @@ class _CustomerState extends State<Customer> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style:
-                                                      CustomTextStyle.sf17w400(
-                                                          LightAppColors
-                                                              .blackSecondary),
+                                                  style: SettingsScope.themeOf(
+                                                          context)
+                                                      .theme
+                                                      .getStyle(
+                                                          (lightStyles) =>
+                                                              lightStyles
+                                                                  .sf17w400BlackSec,
+                                                          (darkStyles) => darkStyles
+                                                              .sf17w400BlackSec),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),
@@ -688,7 +796,7 @@ class _CustomerState extends State<Customer> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user1.svg',
-                                    color: LightAppColors.greyActive,
+                                    color: LightAppColors.blueSecondary,
                                   ),
                                   SizedBox(width: 3.w),
                                   Padding(
@@ -699,8 +807,14 @@ class _CustomerState extends State<Customer> {
                                           width: 235.w,
                                           child: Text(
                                             'customers'.tr(),
-                                            style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackSecondary),
+                                            style: SettingsScope.themeOf(
+                                                    context)
+                                                .theme
+                                                .getStyle(
+                                                    (lightStyles) => lightStyles
+                                                        .sf17w400BlackSec,
+                                                    (darkStyles) => darkStyles
+                                                        .sf17w400BlackSec),
                                           ),
                                         ),
                                         BlocBuilder<FavouritesBloc,
@@ -718,10 +832,15 @@ class _CustomerState extends State<Customer> {
                                                 child: Text(
                                                   favouritesOrders.length
                                                       .toString(),
-                                                  style:
-                                                      CustomTextStyle.sf17w400(
-                                                          LightAppColors
-                                                              .blackSecondary),
+                                                  style: SettingsScope.themeOf(
+                                                          context)
+                                                      .theme
+                                                      .getStyle(
+                                                          (lightStyles) =>
+                                                              lightStyles
+                                                                  .sf17w400BlackSec,
+                                                          (darkStyles) => darkStyles
+                                                              .sf17w400BlackSec),
                                                   textAlign: TextAlign.end,
                                                 ),
                                               ),

@@ -12,6 +12,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/search/presentation/bloc/reply/reply_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_category.dart';
@@ -148,7 +149,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
               topLeft: Radius.circular(45.r),
               topRight: Radius.circular(45.r),
             ),
-            color: LightAppColors.whitePrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackPrima
+                : LightAppColors.whitePrimary,
           ),
           child: Stack(
             children: [
@@ -324,8 +327,9 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   widget.selectTask!.isTask!
                       ? 'become_a_performer'.tr()
                       : 'become_a_customer'.tr(),
-                  style:
-                      CustomTextStyle.sf22w700(LightAppColors.blackSecondary),
+                  style: SettingsScope.themeOf(context).theme.getStyle(
+                      (lightStyles) => lightStyles.sf22w700BlackSec,
+                      (darkStyles) => darkStyles.sf22w700BlackSec),
                 ),
               SizedBox(height: 12.h),
               if (widget.selectTask != null)
@@ -333,7 +337,11 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   !widget.selectTask!.isTask!
                       ? 'to_accept_the_offer'.tr()
                       : 'to_complete_tasks'.tr(),
-                  style: CustomTextStyle.sf17w400(LightAppColors.blackAccent),
+                  style: SettingsScope.themeOf(context).theme.getStyle(
+                      (lightStyles) => lightStyles.sf17w400BlackSec.copyWith(
+                            color: LightAppColors.blackAccent,
+                          ),
+                      (darkStyles) => darkStyles.sf17w400BlackSec),
                 ),
               SizedBox(height: 30.h),
               GestureDetector(
@@ -359,6 +367,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                   children: [
                     CustomTextField(
                       hintText: 'document'.tr(),
+                      mainColor: Colors.black,
                       hintStyle: CustomTextStyle.sf15w400(
                           LightAppColors.greySecondary),
                       width: 350.w,

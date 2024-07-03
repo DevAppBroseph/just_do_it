@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage> {
       return Scaffold(
         backgroundColor:
             SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
-                ? DarkAppColors.whitePrimary
+                ? DarkAppColors.blackPrima
                 : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: MediaQuery(
@@ -112,8 +112,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 decoration: BoxDecoration(
                   color: SettingsScope.themeOf(context).theme.mode ==
                           ThemeMode.dark
-                      ? DarkAppColors.whitePrimary
-                      : LightAppColors.greyPrimary,
+                      ? DarkAppColors.blackPrima
+                      : LightAppColors.whitePrimary,
                   boxShadow: [
                     BoxShadow(
                       color: LightAppColors.shadowPrimary,
@@ -129,9 +129,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       height: 60.h,
                       color: SettingsScope.themeOf(context).theme.mode ==
                               ThemeMode.dark
-                          ? Color(0xff3f3e3b)
-                          //DarkAppColors.whitePrimary
-                          : LightAppColors.greyPrimary,
+                          ? DarkAppColors.blackPrima
+                          : LightAppColors.whitePrimary,
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 25.w, right: 28.w),
@@ -144,7 +143,12 @@ class _WelcomePageState extends State<WelcomePage> {
                                   height: 40.h,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: LightAppColors.whitePrimary,
+                                      color: SettingsScope.themeOf(context)
+                                                  .theme
+                                                  .mode ==
+                                              ThemeMode.dark
+                                          ? DarkAppColors.blackPrima
+                                          : LightAppColors.whitePrimary,
                                       borderRadius: BorderRadius.circular(10.r),
                                     ),
                                     child: Row(
@@ -403,7 +407,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Container(
                           color: SettingsScope.themeOf(context).theme.mode ==
                                   ThemeMode.dark
-                              ? DarkAppColors.whitePrimary
+                              ? DarkAppColors.blackPrima
                               : LightAppColors.greyPrimary,
                           child: ListView(
                             physics: const ClampingScrollPhysics(),
@@ -414,7 +418,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                 color:
                                     SettingsScope.themeOf(context).theme.mode ==
                                             ThemeMode.dark
-                                        ? DarkAppColors.whitePrimary
+                                        ? DarkAppColors.blackPrima
                                         : LightAppColors.greyPrimary,
                               ),
                               BlocBuilder<ProfileBloc, ProfileState>(
@@ -459,8 +463,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                                       .theme
                                                       .mode ==
                                                   ThemeMode.dark
-                                              ? Color(0xff3f3e3b)
-                                              //DarkAppColors.whitePrimary
+                                              ? DarkAppColors.blackSurface
                                               : LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(30.r),
@@ -974,9 +977,17 @@ class _WelcomePageState extends State<WelcomePage> {
                                 padding: EdgeInsets.only(left: 24.w),
                                 child: Row(
                                   children: [
-                                    Text('see_how'.tr(),
-                                        style: CustomTextStyle.sf19w800(
-                                            LightAppColors.blackSecondary)),
+                                    Text(
+                                      'see_how'.tr(),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                            (lightStyles) =>
+                                                lightStyles.sf19w800BlackSec,
+                                            (darkStyles) =>
+                                                darkStyles.sf19w800BlackSec,
+                                          ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1005,11 +1016,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                                       .theme
                                                       .mode ==
                                                   ThemeMode.dark
-                                              ? Color(0xff6a6d6e)
-                                              //DarkAppColors.whitePrimary
+                                              ? DarkAppColors.blackSurface
                                               : LightAppColors.whitePrimary,
-                                          //Color(0xff161A1D),
-                                          //LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                           boxShadow: [
@@ -1050,14 +1058,23 @@ class _WelcomePageState extends State<WelcomePage> {
                                                     children: [
                                                       Text(
                                                         'customer'.tr(),
-                                                        style: CustomTextStyle
-                                                                .sf17w400(
-                                                                    LightAppColors
-                                                                        .blackSecondary)
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                        style:
+                                                            SettingsScope
+                                                                    .themeOf(
+                                                                        context)
+                                                                .theme
+                                                                .getStyle(
+                                                                  (lightStyles) => lightStyles
+                                                                      .sf17w400BlackSec
+                                                                      .copyWith(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                  (darkStyles) => darkStyles
+                                                                      .sf17w400BlackSec
+                                                                      .copyWith(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                ),
                                                       ),
                                                       Padding(
                                                         padding:
@@ -1108,10 +1125,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                                       .theme
                                                       .mode ==
                                                   ThemeMode.dark
-                                              ? Color(0xff3f3e3b)
-                                              //DarkAppColors.whitePrimary
-                                              : LightAppColors.greyPrimary,
-                                          // LightAppColors.whitePrimary,
+                                              ? DarkAppColors.blackSurface
+                                              : LightAppColors.whitePrimary,
                                           borderRadius:
                                               BorderRadius.circular(10.r),
                                           boxShadow: [
@@ -1152,14 +1167,23 @@ class _WelcomePageState extends State<WelcomePage> {
                                                     children: [
                                                       Text(
                                                         'executor'.tr(),
-                                                        style: CustomTextStyle
-                                                                .sf17w400(
-                                                                    LightAppColors
-                                                                        .blackSecondary)
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                        style:
+                                                            SettingsScope
+                                                                    .themeOf(
+                                                                        context)
+                                                                .theme
+                                                                .getStyle(
+                                                                  (lightStyles) => lightStyles
+                                                                      .sf17w400BlackSec
+                                                                      .copyWith(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                  (darkStyles) => darkStyles
+                                                                      .sf17w400BlackSec
+                                                                      .copyWith(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                ),
                                                       ),
                                                       Padding(
                                                         padding:
