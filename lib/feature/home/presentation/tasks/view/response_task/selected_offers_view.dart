@@ -7,6 +7,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_task.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/user_reg.dart';
@@ -42,7 +43,10 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
   Widget build(BuildContext context) {
     taskList = BlocProvider.of<TasksBloc>(context).tasks;
     return Scaffold(
-      backgroundColor: LightAppColors.greyPrimary,
+      backgroundColor:
+          SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.blackPrima
+              : LightAppColors.greyPrimary,
       body: Stack(
         children: [
           SafeArea(
@@ -50,8 +54,11 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
             child: MediaQuery(
               data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
               child: Container(
-                decoration: const BoxDecoration(
-                  color: LightAppColors.greyPrimary,
+                decoration: BoxDecoration(
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.blackPrima
+                      : LightAppColors.greyPrimary,
                 ),
                 child: Column(
                   children: [
@@ -82,8 +89,13 @@ class _SelectedOffersViewState extends State<SelectedOffersView> {
                             alignment: Alignment.center,
                             child: Text(
                               widget.title,
-                              style: CustomTextStyle.sf22w700(
-                                  LightAppColors.blackSecondary),
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf22w700BlackSec,
+                                      (darkStyles) =>
+                                          darkStyles.sf22w700BlackSec),
                             ),
                           )
                         ],
