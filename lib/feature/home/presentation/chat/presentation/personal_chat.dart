@@ -268,7 +268,13 @@ class _PersonalChatState extends State<PersonalChat> {
                                             CupertinoCard(
                                               radius:
                                                   BorderRadius.circular(25.r),
-                                              color: LightAppColors.greyActive,
+                                              color: SettingsScope.themeOf(
+                                                              context)
+                                                          .theme
+                                                          .mode ==
+                                                      ThemeMode.dark
+                                                  ? DarkAppColors.blackSurface
+                                                  : LightAppColors.greyActive,
                                               margin: EdgeInsets.zero,
                                               elevation: 0,
                                               child: Padding(
@@ -285,9 +291,9 @@ class _PersonalChatState extends State<PersonalChat> {
                                                                     .mode ==
                                                                 ThemeMode.dark
                                                             ? DarkAppColors
-                                                                .whitePrimary
+                                                                .blackPrimary
                                                             : LightAppColors
-                                                                .greyActive,
+                                                                .blackPrimary,
                                                   ),
                                                   messages[index].text,
                                                 ),
@@ -311,7 +317,12 @@ class _PersonalChatState extends State<PersonalChat> {
                               children: [
                                 CupertinoCard(
                                   radius: BorderRadius.circular(25.r),
-                                  color: LightAppColors.greyActive,
+                                  color: SettingsScope.themeOf(context)
+                                              .theme
+                                              .mode ==
+                                          ThemeMode.dark
+                                      ? DarkAppColors.blackSurface
+                                      : LightAppColors.greyActive,
                                   margin: EdgeInsets.zero,
                                   elevation: 0,
                                   child: Padding(
@@ -325,8 +336,8 @@ class _PersonalChatState extends State<PersonalChat> {
                                                     .theme
                                                     .mode ==
                                                 ThemeMode.dark
-                                            ? DarkAppColors.whitePrimary
-                                            : LightAppColors.greyActive,
+                                            ? DarkAppColors.blackPrimary
+                                            : LightAppColors.blackPrimary,
                                       ),
                                       messages[index].text,
                                     ),
@@ -391,7 +402,13 @@ class _PersonalChatState extends State<PersonalChat> {
                                     actionButton: false,
                                     hintText: 'enter_a_message'.tr(),
                                     textEditingController: textController,
-                                    fillColor: LightAppColors.greyActive,
+                                    fillColor: SettingsScope.themeOf(context)
+                                                .theme
+                                                .mode ==
+                                            ThemeMode.dark
+                                        ? DarkAppColors.blackSurface
+                                        : LightAppColors.greyActive,
+                                    //LightAppColors.greyActive,
                                     maxLines: 10,
                                     onTap: () {},
                                     contentPadding: EdgeInsets.only(

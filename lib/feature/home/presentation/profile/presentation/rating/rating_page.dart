@@ -89,14 +89,6 @@ class _RatingPageState extends State<RatingPage> {
                                 }
                                 return null;
                               }),
-
-                              // ListView.builder(
-                              //   physics: const NeverScrollableScrollPhysics(),
-                              //   shrinkWrap: true,
-                              //   itemCount: _reviews.length,
-                              //   itemBuilder: ((context, index) {
-                              //     return itemCommentNew(_reviews[index]);
-                              //   }),
                             ),
                             SizedBox(height: 50.h),
                           ],
@@ -119,7 +111,9 @@ class _RatingPageState extends State<RatingPage> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: LightAppColors.whitePrimary,
+        color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? DarkAppColors.blackSurface
+            : LightAppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
       child: Row(
@@ -236,7 +230,9 @@ class _RatingPageState extends State<RatingPage> {
           EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: LightAppColors.whitePrimary,
+        color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? DarkAppColors.blackSurface
+            : LightAppColors.whitePrimary,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

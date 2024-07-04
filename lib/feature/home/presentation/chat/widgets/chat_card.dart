@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/chat.dart';
 import 'package:scale_button/scale_button.dart';
@@ -118,8 +119,13 @@ class ChatCard extends StatelessWidget {
                                           chat.chatWith!.firstname!.isEmpty
                                       ? 'Аккаунт удален'
                                       : '${chat.chatWith?.firstname} ${chat.chatWith?.lastname}',
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackPrimary),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) =>
+                                              lightStyles.sf17w400BlackSec,
+                                          (darkStyles) =>
+                                              darkStyles.sf17w400BlackSec),
                                   maxLines: 1,
                                 ),
                               ),
@@ -130,8 +136,18 @@ class ChatCard extends StatelessWidget {
                                         .toString()
                                         .substring(0, 10) ??
                                     '-'),
-                                style: CustomTextStyle.sf13w400(
-                                    LightAppColors.greySecondary),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf13w400BlackSec.copyWith(
+                                              color:
+                                                  LightAppColors.greySecondary),
+                                      (darkStyles) =>
+                                          darkStyles.sf13w400BlackSec.copyWith(
+                                        color: LightAppColors.whitePrimary,
+                                      ),
+                                    ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -144,8 +160,13 @@ class ChatCard extends StatelessWidget {
                                   chat.lastMsg?.text ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) =>
+                                              lightStyles.sf17w400BlackSec,
+                                          (darkStyles) =>
+                                              darkStyles.sf17w400BlackSec),
                                 ),
                               ),
                               if (chat.lastMsg?.unread != null &&
