@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/constants.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:scale_button/scale_button.dart';
 
-Widget itemFavouriteUser(
-    FavoriteCustomers user, Function(FavoriteCustomers) onSelect) {
+Widget itemFavouriteUser(BuildContext context, FavoriteCustomers user,
+    Function(FavoriteCustomers) onSelect) {
   return Padding(
     padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 15.w),
     child: ScaleButton(
@@ -13,7 +14,9 @@ Widget itemFavouriteUser(
       onTap: () => onSelect(user),
       child: Container(
         decoration: BoxDecoration(
-          color: LightAppColors.whitePrimary,
+          color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+              ? DarkAppColors.blackSurface
+              : LightAppColors.whitePrimary,
           borderRadius: BorderRadius.circular(20.r),
           // boxShadow: [
           //   BoxShadow(
@@ -45,8 +48,12 @@ Widget itemFavouriteUser(
                     width: 260,
                     child: Text(
                       '${user.user!.firstname ?? '-'} ${user.user!.lastname ?? '-'}',
-                      style: CustomTextStyle.sf18w800(
-                              LightAppColors.blackSecondary)
+                      style: SettingsScope.themeOf(context)
+                          .theme
+                          .getStyle(
+                              (lightStyles) => lightStyles.sf18w800BlackSec
+                                  .copyWith(fontWeight: FontWeight.w600),
+                              (darkStyles) => darkStyles.sf18w800BlackSec)
                           .copyWith(fontWeight: FontWeight.w600),
                       softWrap: true,
                     ),

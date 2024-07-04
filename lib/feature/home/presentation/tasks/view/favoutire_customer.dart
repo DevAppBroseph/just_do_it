@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/svg_and_images.dart';
-import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/profile/presentation/favourites/bloc_favourites/favourites_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_favourite_user.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/network/repository.dart';
@@ -44,7 +44,10 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
           data: MediaQuery.of(context)
               .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: Scaffold(
-            backgroundColor: LightAppColors.greyPrimary,
+            backgroundColor:
+                SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                    ? DarkAppColors.blackPrima
+                    : LightAppColors.greyPrimary,
             body: Stack(
               children: [
                 SafeArea(
@@ -75,8 +78,13 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
                               alignment: Alignment.center,
                               child: Text(
                                 widget.title,
-                                style: CustomTextStyle.sf22w700(
-                                    LightAppColors.blackSecondary),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf22w700BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf22w700BlackSec),
                               ),
                             )
                           ],
@@ -98,6 +106,7 @@ class _FavouriteCustomerState extends State<FavouriteCustomer> {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return itemFavouriteUser(
+                                    context,
                                     favouritesPeople![index],
                                     (user) {
                                       setState(() {

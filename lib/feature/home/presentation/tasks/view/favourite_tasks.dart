@@ -13,6 +13,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/widget/
 import 'package:just_do_it/feature/home/presentation/tasks/view/task_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/item_favourite_task.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/favourites_info.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
@@ -69,7 +70,10 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
           child: Stack(
             children: [
               Scaffold(
-                backgroundColor: LightAppColors.greyPrimary,
+                backgroundColor:
+                    SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                        ? DarkAppColors.blackPrima
+                        : LightAppColors.greyPrimary,
                 body: Stack(
                   children: [
                     SafeArea(
@@ -106,8 +110,13 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     widget.title,
-                                    style: CustomTextStyle.sf22w700(
-                                        LightAppColors.blackSecondary),
+                                    style: SettingsScope.themeOf(context)
+                                        .theme
+                                        .getStyle(
+                                            (lightStyles) =>
+                                                lightStyles.sf22w700BlackSec,
+                                            (darkStyles) =>
+                                                darkStyles.sf22w700BlackSec),
                                   ),
                                 )
                               ],
@@ -129,6 +138,7 @@ class _FavouriteTasksState extends State<FavouriteTasks> {
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       return itemFavouriteTask(
+                                        context,
                                         favouritesOrders![index],
                                         (task) {
                                           setState(() {
