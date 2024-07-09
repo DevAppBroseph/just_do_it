@@ -288,7 +288,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                           });
                                           getHistoryList();
                                         },
-                                        fillColor: LightAppColors.greyAccent,
+                                        fillColor:
+                                            SettingsScope.themeOf(context)
+                                                        .theme
+                                                        .mode ==
+                                                    ThemeMode.dark
+                                                ? DarkAppColors.blackSurface
+                                                : LightAppColors.greyAccent,
                                         prefixIcon: Stack(
                                           alignment: Alignment.center,
                                           children: [

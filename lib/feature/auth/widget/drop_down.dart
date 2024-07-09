@@ -453,7 +453,8 @@ void iconSelectModalCategories(
                                                             .theme
                                                             .mode ==
                                                         ThemeMode.dark
-                                                    ? DarkAppColors.whitePrimary
+                                                    ? LightAppColors
+                                                        .whitePrimary
                                                     : DarkAppColors
                                                         .whitePrimary,
                                               )

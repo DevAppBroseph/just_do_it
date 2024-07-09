@@ -201,9 +201,15 @@ class _ContractorState extends State<Contractor> {
                                                 user!
                                                     .countOrdersCreateAsCustomer
                                                     .toString(),
-                                                style: CustomTextStyle.sf17w400(
-                                                    LightAppColors
-                                                        .blackSecondary),
+                                                style: SettingsScope.themeOf(
+                                                        context)
+                                                    .theme
+                                                    .getStyle(
+                                                        (lightStyles) =>
+                                                            lightStyles
+                                                                .sf17w400BlackSec,
+                                                        (darkStyles) => darkStyles
+                                                            .sf17w400BlackSec),
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),

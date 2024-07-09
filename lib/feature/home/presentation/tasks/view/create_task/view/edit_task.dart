@@ -18,6 +18,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/bloc_tasks/bloc_tasks
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/category_selector.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/create_task/widgets/date.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/models/countries.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
@@ -377,7 +378,10 @@ class _EditTasksState extends State<EditTasks> {
     return MediaQuery(
       data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
       child: Scaffold(
-        backgroundColor: LightAppColors.whitePrimary,
+        backgroundColor:
+            SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackPrima
+                : LightAppColors.whitePrimary,
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -403,8 +407,9 @@ class _EditTasksState extends State<EditTasks> {
                       SizedBox(width: 12.w),
                       Text(
                         'edity'.tr(),
-                        style: CustomTextStyle.sf22w700(
-                            LightAppColors.blackSecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf22w700BlackSec,
+                            (darkStyles) => darkStyles.sf22w700BlackSec),
                       ),
                       Text(
                         ' ${page + 1}/2',

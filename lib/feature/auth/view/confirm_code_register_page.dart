@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/auth/widget/phone_confirmation_method_selecti
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -197,13 +198,23 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                               children: [
                                 TextSpan(
                                   text: '${'code_confirm_sent'.tr()}\n',
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackAccent),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) =>
+                                              lightStyles.sf17w400BlackSec,
+                                          (darkStyles) =>
+                                              darkStyles.sf17w400BlackSec),
                                 ),
                                 TextSpan(
                                   text: value,
-                                  style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary),
+                                  style: SettingsScope.themeOf(context)
+                                      .theme
+                                      .getStyle(
+                                          (lightStyles) =>
+                                              lightStyles.sf17w400BlackSec,
+                                          (darkStyles) =>
+                                              darkStyles.sf17w400BlackSec),
                                 ),
                               ],
                             ),
@@ -250,19 +261,29 @@ class _ConfirmCodeRegisterPageState extends State<ConfirmCodeRegisterPage> {
                                 children: [
                                   TextSpan(
                                     text: '${'resend_code'.tr()} ',
-                                    style: CustomTextStyle.sf17w400(
-                                            LightAppColors.greyTernary)
+                                    style: SettingsScope.themeOf(context)
+                                        .theme
+                                        .getStyle(
+                                            (lightStyles) =>
+                                                lightStyles.sf17w400BlackSec,
+                                            (darkStyles) =>
+                                                darkStyles.sf17w400BlackSec)
                                         .copyWith(
-                                      color: timer?.isActive ?? false
-                                          ? LightAppColors.greyTernary
-                                          : LightAppColors.blackError,
-                                    ),
+                                          color: timer?.isActive ?? false
+                                              ? LightAppColors.greyTernary
+                                              : LightAppColors.blackError,
+                                        ),
                                   ),
                                   if (timer?.isActive ?? false)
                                     TextSpan(
                                       text: '$currentSecond ${'sec'.tr()}.',
-                                      style: CustomTextStyle.sf17w400(
-                                          LightAppColors.blackSecondary),
+                                      style: SettingsScope.themeOf(context)
+                                          .theme
+                                          .getStyle(
+                                              (lightStyles) =>
+                                                  lightStyles.sf17w400BlackSec,
+                                              (darkStyles) =>
+                                                  darkStyles.sf17w400BlackSec),
                                     ),
                                 ],
                               ),

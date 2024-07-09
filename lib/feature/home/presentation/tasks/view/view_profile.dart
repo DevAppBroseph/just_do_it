@@ -989,18 +989,16 @@ class _ProfileViewState extends State<ProfileView> {
                                                   Container(
                                                     height: 39.h,
                                                     decoration: BoxDecoration(
-                                                      color: SettingsScope
-                                                                      .themeOf(
+                                                      color:
+                                                          SettingsScope.themeOf(
                                                                           context)
-                                                                  .theme
-                                                                  .mode ==
-                                                              ThemeMode.dark
-                                                          ? Color(0xff3f3e3b)
-                                                          //DarkAppColors.whitePrimary
-                                                          : LightAppColors
-                                                              .whitePrimary,
-                                                      // color: LightAppColors
-                                                      //     .whiteSecondary,
+                                                                      .theme
+                                                                      .mode ==
+                                                                  ThemeMode.dark
+                                                              ? DarkAppColors
+                                                                  .blackSurface
+                                                              : LightAppColors
+                                                                  .whitePrimary,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.r),
@@ -1109,10 +1107,8 @@ class _ProfileViewState extends State<ProfileView> {
       margin: EdgeInsets.only(bottom: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        //color: LightAppColors.whitePrimary,
         color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
-            ? Color(0xff3f3e3b)
-            //DarkAppColors.whitePrimary
+            ? DarkAppColors.blackSurface
             : LightAppColors.whitePrimary,
       ),
       padding: EdgeInsets.all(16.w),
@@ -1150,9 +1146,12 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 150.w,
                       child: Text(
                         '${review.reviewerDetails.firstname} ${review.reviewerDetails.lastname}',
-                        style: CustomTextStyle.sf17w400(
-                          Colors.black,
-                        ).copyWith(fontWeight: FontWeight.w500),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec
+                                  .copyWith(fontWeight: FontWeight.w600),
+                              (darkStyles) => darkStyles.sf17w400BlackSec
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
                       ),
                     ),
                     if (review.date != '')
@@ -1172,8 +1171,9 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(width: 4.w),
                   Text(
                     '${review.mark}/5',
-                    style:
-                        CustomTextStyle.sf17w400(LightAppColors.blackSecondary),
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf17w400BlackSec,
+                        (darkStyles) => darkStyles.sf17w400BlackSec),
                   ),
                 ],
               ),
@@ -1182,7 +1182,9 @@ class _ProfileViewState extends State<ProfileView> {
                 width: 200.w,
                 child: Text(
                   review.message,
-                  style: CustomTextStyle.sf13w400(LightAppColors.blackAccent),
+                  style: SettingsScope.themeOf(context).theme.getStyle(
+                      (lightStyles) => lightStyles.sf13w400BlackSec,
+                      (darkStyles) => darkStyles.sf13w400BlackSec),
                   maxLines: null,
                 ),
               ),
@@ -1199,10 +1201,8 @@ class _ProfileViewState extends State<ProfileView> {
                         decoration: BoxDecoration(
                           color: SettingsScope.themeOf(context).theme.mode ==
                                   ThemeMode.dark
-                              ? Color(0xff3f3e3b)
-                              //DarkAppColors.whitePrimary
+                              ? DarkAppColors.blackSurface
                               : LightAppColors.whitePrimary,
-                          //  color: LightAppColors.whiteSecondary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(

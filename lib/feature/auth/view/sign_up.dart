@@ -6,6 +6,7 @@ import 'package:just_do_it/constants/constants.dart';
 import 'package:just_do_it/feature/auth/view/contractor_register_page.dart';
 import 'package:just_do_it/feature/auth/view/customer_register_page.dart';
 import 'package:just_do_it/feature/home/data/bloc/countries_bloc/countries_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -56,8 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       TextSpan(
                         text: '${'registration'.tr()} ',
-                        style: CustomTextStyle.sf22w700(
-                            LightAppColors.blackSecondary),
+                        style: SettingsScope.themeOf(context).theme.getStyle(
+                            (lightStyles) => lightStyles.sf22w700BlackSec,
+                            (darkStyles) => darkStyles.sf22w700BlackSec),
                       ),
                       TextSpan(
                         text: '$stageRegistration/2',

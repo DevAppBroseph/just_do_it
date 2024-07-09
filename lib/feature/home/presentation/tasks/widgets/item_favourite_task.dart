@@ -117,9 +117,11 @@ Widget itemFavouriteTask(BuildContext context, FavouriteOffers task,
                         Text(
                           'до ${DataFormatter.addSpacesToNumber(task.order!.priceTo)} ${DataFormatter.convertCurrencyNameIntoSymbol(task.order!.currency!.name)} ',
                           maxLines: 1,
-                          style: CustomTextStyle.sf17w400(
-                            LightAppColors.blackSecondary,
-                          ).copyWith(fontWeight: FontWeight.w500),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec
+                                  .copyWith(fontWeight: FontWeight.w500),
+                              (darkStyles) => darkStyles.sf17w400BlackSec
+                                  .copyWith(fontWeight: FontWeight.w500)),
                         ),
                         SizedBox(width: 5.w),
                         SvgPicture.asset(

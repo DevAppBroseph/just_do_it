@@ -812,7 +812,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                                 user!.docType != null &&
                                                 user!.docType != ''
                                             ? CustomTextStyle.sf12w400(
-                                                LightAppColors.blackSecondary)
+                                                LightAppColors.whitePrimary)
                                             : CustomTextStyle.sf13w400(
                                                 LightAppColors.greySecondary),
                                       ),
@@ -1231,9 +1231,16 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                       SizedBox(
                                         width: 10.h,
                                       ),
-                                      Text('Rezume.pdf',
-                                          style: CustomTextStyle.sf12w400(
-                                              LightAppColors.blackSecondary)),
+                                      Text(
+                                        'Rezume.pdf',
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf13w400BlackSec,
+                                                (darkStyles) => darkStyles
+                                                    .sf13w400BlackSec),
+                                      ),
                                     ],
                                   ),
                                 ),

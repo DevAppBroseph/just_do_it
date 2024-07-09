@@ -13,6 +13,7 @@ import 'package:just_do_it/core/utils/toasts.dart';
 import 'package:just_do_it/feature/auth/bloc/auth_bloc.dart';
 import 'package:just_do_it/feature/auth/widget/widgets.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -272,13 +273,15 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                   text: TextSpan(children: [
                     TextSpan(
                       text: '${'code_confirm_sent'.tr()}\n',
-                      style:
-                          CustomTextStyle.sf17w400(LightAppColors.blackAccent),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf17w400BlackSec,
+                          (darkStyles) => darkStyles.sf17w400BlackSec),
                     ),
                     TextSpan(
                       text: widget.phone,
-                      style: CustomTextStyle.sf17w400(
-                          LightAppColors.blackSecondary),
+                      style: SettingsScope.themeOf(context).theme.getStyle(
+                          (lightStyles) => lightStyles.sf17w400BlackSec,
+                          (darkStyles) => darkStyles.sf17w400BlackSec),
                     ),
                   ])),
               SizedBox(height: 18.h),
@@ -323,19 +326,23 @@ class _ConfirmCodePhonePageState extends State<ConfirmCodePhonePage> {
                     children: [
                       TextSpan(
                         text: '${'resend_code'.tr()} ',
-                        style:
-                            CustomTextStyle.sf17w400(LightAppColors.greyTernary)
-                                .copyWith(
-                          color: timer?.isActive ?? false
-                              ? LightAppColors.greyTernary
-                              : LightAppColors.blackError,
-                        ),
+                        style: SettingsScope.themeOf(context)
+                            .theme
+                            .getStyle(
+                                (lightStyles) => lightStyles.sf17w400BlackSec,
+                                (darkStyles) => darkStyles.sf17w400BlackSec)
+                            .copyWith(
+                              color: timer?.isActive ?? false
+                                  ? LightAppColors.greyTernary
+                                  : LightAppColors.blackError,
+                            ),
                       ),
                       if (timer?.isActive ?? false)
                         TextSpan(
                           text: '$currentSecond ${'sec'.tr()}.',
-                          style: CustomTextStyle.sf17w400(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf17w400BlackSec,
+                              (darkStyles) => darkStyles.sf17w400BlackSec),
                         ),
                     ],
                   ),

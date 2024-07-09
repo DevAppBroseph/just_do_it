@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 
 class SearchList extends StatefulWidget {
-  double heightScreen;
-  double bottomInsets;
-  Function(String) onSelect;
+  final double heightScreen;
+  final double bottomInsets;
+  final Function(String) onSelect;
   List<String> array = [];
 
   SearchList(this.heightScreen, this.bottomInsets, this.onSelect, this.array,
@@ -24,7 +25,9 @@ class _SearchListState extends State<SearchList> {
           .copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Container(
         height: widget.heightScreen - 152.h - 220.h,
-        color: Colors.white,
+        color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+            ? DarkAppColors.blackSurface
+            : LightAppColors.whitePrimary,
         child: ListView.builder(
           itemCount: widget.array.length,
           padding: EdgeInsets.only(bottom: 96.h),

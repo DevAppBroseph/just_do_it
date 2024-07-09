@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_do_it/constants/colors.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 
 class UsedForRegistrationCheckbox extends StatelessWidget {
   const UsedForRegistrationCheckbox(
@@ -12,7 +14,7 @@ class UsedForRegistrationCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8.h,bottom: 16.h),
+      padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
       child: GestureDetector(
         onTap: onSelected,
         child: Row(
@@ -46,7 +48,15 @@ class UsedForRegistrationCheckbox extends StatelessWidget {
               'is_used_for_registration'.tr(),
               style: TextStyle(
                 fontSize: 12,
-                color: isSelected ? Colors.black : const Color(0xffDADADA),
+                color: isSelected
+                    ? SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? LightAppColors.whitePrimary
+                        : DarkAppColors.blackPrima
+                    : SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? LightAppColors.whitePrimary
+                        : DarkAppColors.blackPrima,
               ),
             )
           ],

@@ -10,6 +10,7 @@ import 'package:just_do_it/feature/auth/widget/button.dart';
 import 'package:just_do_it/feature/home/data/bloc/profile_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/chat/presentation/bloc/chat_bloc.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/models/order_task.dart';
@@ -58,7 +59,9 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: LightAppColors.whitePrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackSurface
+                : LightAppColors.whitePrimary,
             borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
@@ -99,8 +102,16 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                   AutoSizeText(
                                     "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
                                     wrapWords: false,
-                                    style: CustomTextStyle.sf18w800(
-                                            LightAppColors.blackSecondary)
+                                    style: SettingsScope.themeOf(context)
+                                        .theme
+                                        .getStyle(
+                                            (lightStyles) => lightStyles
+                                                .sf18w800BlackSec
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                            (darkStyles) =>
+                                                darkStyles.sf18w800BlackSec)
                                         .copyWith(fontWeight: FontWeight.w600),
                                     maxLines: 2,
                                   ),
@@ -123,8 +134,16 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                             : widget.task.answers[index].owner!
                                                 .ranking
                                                 .toString(),
-                                        style: CustomTextStyle.sf17w400(
-                                                LightAppColors.blackSecondary)
+                                        style: SettingsScope.themeOf(context)
+                                            .theme
+                                            .getStyle(
+                                                (lightStyles) => lightStyles
+                                                    .sf17w400BlackSec
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                (darkStyles) =>
+                                                    darkStyles.sf17w400BlackSec)
                                             .copyWith(
                                                 fontWeight: FontWeight.w500),
                                       ),
@@ -135,8 +154,14 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                             ),
                             Text(
                               'before'.tr(),
-                              style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary)
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec)
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
@@ -144,8 +169,14 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                             ),
                             Text(
                               '${DataFormatter.addSpacesToNumber(widget.task.answers[index].price ?? 0)} ${DataFormatter.convertCurrencyNameIntoSymbol(widget.task.currency?.name)} ',
-                              style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary)
+                              style: SettingsScope.themeOf(context)
+                                  .theme
+                                  .getStyle(
+                                      (lightStyles) =>
+                                          lightStyles.sf17w400BlackSec.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                      (darkStyles) =>
+                                          darkStyles.sf17w400BlackSec)
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -164,8 +195,13 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                                 widget.task.answers[index].owner!
                                     .countOrdersComplete
                                     .toString(),
-                                style: CustomTextStyle.sf13w400(
-                                    LightAppColors.blackSecondary),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf13w400BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf13w400BlackSec),
                               ),
                           ],
                         ),
@@ -185,7 +221,13 @@ class _OfferRespondActionWidgetState extends State<OfferRespondActionWidget> {
                     widget.task.answers[index].description!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: CustomTextStyle.sf17w400(LightAppColors.blackError),
+                    style: SettingsScope.themeOf(context)
+                        .theme
+                        .getStyle(
+                            (lightStyles) => lightStyles.sf17w400BlackSec
+                                .copyWith(fontWeight: FontWeight.w600),
+                            (darkStyles) => darkStyles.sf17w400BlackSec)
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               SizedBox(

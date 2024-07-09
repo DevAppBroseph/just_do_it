@@ -207,7 +207,12 @@ class _SearchPageState extends State<SearchPage> {
                                   width: 240.w,
                                   height: 36.h,
                                   child: CustomTextField(
-                                    fillColor: LightAppColors.greyAccent,
+                                    fillColor: SettingsScope.themeOf(context)
+                                                .theme
+                                                .mode ==
+                                            ThemeMode.dark
+                                        ? DarkAppColors.blackSurface
+                                        : LightAppColors.greyAccent,
                                     prefixIcon: Stack(
                                       alignment: Alignment.center,
                                       children: [

@@ -924,7 +924,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                 height: 50.h,
                 enabled: false,
                 onTap: () {},
-                fillColor: Colors.grey[200],
                 textEditingController: documentTypeController,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),

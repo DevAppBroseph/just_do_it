@@ -262,11 +262,15 @@ class _TaskPageState extends State<TaskPage> {
                               },
                               child: Text(
                                 'edit'.tr(),
-                                style: CustomTextStyle.sf13w400(
-                                    LightAppColors.blackSecondary),
-                                //               style: SettingsScope.themeOf(context).theme.getStyle(
-                                // (lightStyles) => lightStyles.sf13w400BlackSec,
-                                // (darkStyles) => darkStyles.sf13w400BlackSec),
+                                // style: CustomTextStyle.sf13w400(
+                                //     LightAppColors.blackSecondary),
+                                style: SettingsScope.themeOf(context)
+                                    .theme
+                                    .getStyle(
+                                        (lightStyles) =>
+                                            lightStyles.sf13w400BlackSec,
+                                        (darkStyles) =>
+                                            darkStyles.sf13w400BlackSec),
                               ),
                             ),
                           ],
