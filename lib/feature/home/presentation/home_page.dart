@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     BlocProvider.of<CountriesBloc>(context).add(GetCountryEvent());
     BlocProvider.of<CurrencyBloc>(context).add(GetCurrencyEvent());
 
-    Timer.periodic(const Duration(seconds: 1000), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       String? accessToken = BlocProvider.of<ProfileBloc>(context).access;
       if (accessToken != null && accessToken.isNotEmpty) {
         timer.cancel();
