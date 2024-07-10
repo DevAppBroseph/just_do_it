@@ -660,7 +660,7 @@ class _SlidingPanelReplyState extends State<SlidingPanelReply> {
                                 child: Text(
                                   'done'.tr(),
                                   style: CustomTextStyle.sf17w400(
-                                      LightAppColors.blackSecondary),
+                                      LightAppColors.whitePrimary),
                                 ),
                                 onPressed: () {
                                   if (index == 0) {

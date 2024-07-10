@@ -71,7 +71,9 @@ class _PersonalChatState extends State<PersonalChat> {
       builder: (context) {
         return Scaffold(
           body: Container(
-            color: LightAppColors.greyPrimary,
+            color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                ? DarkAppColors.blackSurface
+                : LightAppColors.whitePrimary,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

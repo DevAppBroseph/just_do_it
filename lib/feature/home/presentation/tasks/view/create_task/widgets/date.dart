@@ -99,13 +99,8 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'done'.tr(),
-                            style: SettingsScope.themeOf(context)
-                                .theme
-                                .getStyle(
-                                    (lightStyles) =>
-                                        lightStyles.sf17w400BlackSec,
-                                    (darkStyles) =>
-                                        darkStyles.sf17w400BlackSec),
+                            style: CustomTextStyle.sf17w400(
+                                LightAppColors.blackSecondary),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {

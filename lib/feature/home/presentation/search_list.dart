@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_do_it/constants/colors.dart';
-import 'package:just_do_it/constants/text_style.dart';
 import 'package:just_do_it/feature/theme/settings_scope.dart';
 
 class SearchList extends StatefulWidget {
@@ -48,8 +47,12 @@ class _SearchListState extends State<SearchList> {
                           horizontal: 24.w, vertical: 18.h),
                       child: Text(
                         widget.array[index],
-                        style: CustomTextStyle.sf17w400(
-                                LightAppColors.blackSecondary)
+                        style: SettingsScope.themeOf(context)
+                            .theme
+                            .getStyle(
+                                (lightStyles) => lightStyles.sf17w400BlackSec
+                                    .copyWith(fontWeight: FontWeight.w500),
+                                (darkStyles) => darkStyles.sf17w400BlackSec)
                             .copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
