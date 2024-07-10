@@ -1055,8 +1055,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                                   top: 20.h),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
-                                                child: Image.asset(
-                                                  'assets/images/contractor1.png',
+                                                child: SvgPicture.asset(
+                                                  'assets/images/key.svg',
                                                   height: 90.h,
                                                 ),
                                               ),
@@ -1164,8 +1164,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                                   top: 23.h),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
-                                                child: Image.asset(
-                                                  'assets/images/customer1.png',
+                                                child: SvgPicture.asset(
+                                                  'assets/images/good-feedback.svg',
                                                   height: 90.h,
                                                 ),
                                               ),

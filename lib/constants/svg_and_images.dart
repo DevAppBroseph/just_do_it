@@ -22,7 +22,7 @@ class SvgImg {
 }
 
 class Img {
-  static const String customer = 'assets/images/Customer.png';
+  static const String customer = 'assets/images/good-feedback.svg';
   static const String executor = 'assets/images/Executor.png';
   static const String molotMain = 'assets/images/molot_main.png';
   static const String automobile = 'assets/images/Automobile.png';
