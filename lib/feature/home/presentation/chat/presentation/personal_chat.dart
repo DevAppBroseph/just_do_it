@@ -35,7 +35,6 @@ class _PersonalChatState extends State<PersonalChat> {
   ScrollController scrollController = ScrollController();
   TextEditingController textController = TextEditingController();
   FocusNode focusNode = FocusNode();
-
   GlobalKey iconBtn = GlobalKey();
 
   @override
@@ -53,6 +52,9 @@ class _PersonalChatState extends State<PersonalChat> {
         final chatId = chatBloc.chatList[chatElementIndex].id;
         widget.id = chatId.toString();
         chatBloc.editChatId(chatId);
+        widget.name =
+            chatBloc.chatList[chatElementIndex].chatWith?.firstname ?? '';
+        widget.image = chatBloc.chatList[chatElementIndex].chatWith?.photo;
       } else {
         chatBloc.editChatId(null);
       }
@@ -64,6 +66,10 @@ class _PersonalChatState extends State<PersonalChat> {
       BlocProvider.of<ChatBloc>(context).add(GetListMessage());
     }
     chatBloc.editShowPersonChat(false);
+
+    // Отладочное сообщение
+    print(
+        'Chat ID: ${widget.id}, Name: ${widget.name}, ID with Chat: ${widget.idWithChat}, Image: ${widget.image}');
   }
 
   void openProfile() {
@@ -159,18 +165,17 @@ class _PersonalChatState extends State<PersonalChat> {
                       }
                     },
                     child: SizedBox(
-                      width: 240.w,
-                      child: AutoSizeText(
-                        widget.name.isEmpty
-                            ? 'account_deleted'.tr()
-                            : widget.name,
-                        style: SettingsScope.themeOf(context).theme.getStyle(
-                            (lightStyles) => lightStyles.sf22w700BlackSec,
-                            (darkStyles) => darkStyles.sf22w700BlackSec),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
+                        width: 240.w,
+                        child: AutoSizeText(
+                          widget.name.isEmpty
+                              ? 'account_deleted'.tr()
+                              : widget.name,
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        )),
                   ),
                   const Spacer(),
                   GestureDetector(

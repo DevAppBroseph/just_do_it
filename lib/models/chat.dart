@@ -48,6 +48,8 @@ class ChatWith {
         lastname: json['lastname'],
         photo: json['photo'],
       );
+
+  String get fullName => '$firstname $lastname';
 }
 
 class LastMsg {

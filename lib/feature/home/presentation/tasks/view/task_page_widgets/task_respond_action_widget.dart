@@ -14,6 +14,7 @@ import 'package:just_do_it/feature/home/presentation/tasks/widgets/dialogs.dart'
 import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_formatter.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
+import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/models/order_task.dart';
 import 'package:just_do_it/models/task/task.dart';
 import 'package:just_do_it/models/task/task_status.dart';
@@ -252,10 +253,27 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                         print(
                             "Chat id through button is ${widget.task.chatId}");
                         final chatBloc = BlocProvider.of<ChatBloc>(context);
+
                         chatBloc.editShowPersonChat(false);
-                        chatBloc.editChatId(widget.task.answers[index].chatId);
+
+                        final chatId = widget.task.answers[index].chatId;
+                        final chatWithId = widget.task.owner?.id ?? '';
+                        final chatWithPhoto = widget.task.owner?.photo ?? '';
+
+                        chatBloc.editChatId(chatId);
                         chatBloc.messages = [];
                         chatBloc.add(GetListMessageItem());
+
+                        await Navigator.of(context).pushNamed(
+                          AppRoute.personalChat,
+                          arguments: [
+                            '$chatId',
+                            "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
+                            '$chatWithId',
+                            '$chatWithPhoto',
+                          ],
+                        );
+
                         chatBloc.editShowPersonChat(true);
                         chatBloc.editChatId(null);
                       }
@@ -264,9 +282,10 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
                     textLabel: Text(
                       'write_to_the_chat'.tr(),
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.black,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   SizedBox(
