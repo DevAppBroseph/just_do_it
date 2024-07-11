@@ -1232,7 +1232,7 @@ class _ContractorProfileState extends State<ContractorProfile> {
                                         width: 10.h,
                                       ),
                                       Text(
-                                        'Rezume.pdf',
+                                        'Resume.pdf',
                                         style: SettingsScope.themeOf(context)
                                             .theme
                                             .getStyle(
