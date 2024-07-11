@@ -90,7 +90,10 @@ class _DatePickerState extends State<DatePicker> {
                 Expanded(
                   child: Container(
                     height: 40.h,
-                    color: Colors.white,
+                    color: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                     child: Row(
                       children: [
                         const Spacer(),
@@ -99,8 +102,13 @@ class _DatePickerState extends State<DatePicker> {
                           borderRadius: BorderRadius.zero,
                           child: Text(
                             'done'.tr(),
-                            style: CustomTextStyle.sf17w400(
-                                LightAppColors.blackSecondary),
+                            style: SettingsScope.themeOf(context)
+                                .theme
+                                .getStyle(
+                                    (lightStyles) =>
+                                        lightStyles.sf17w400BlackSec,
+                                    (darkStyles) =>
+                                        darkStyles.sf17w400BlackSec),
                           ),
                           onPressed: () {
                             if (index == 0 && widget.startDate == null) {
@@ -136,7 +144,9 @@ class _DatePickerState extends State<DatePicker> {
             ),
             Container(
               height: 200.h,
-              color: Colors.white,
+              color: SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
+                  ? DarkAppColors.blackSurface
+                  : LightAppColors.whitePrimary,
               child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.date,
                   initialDateTime: index == 0
@@ -309,8 +319,6 @@ class _DatePickerState extends State<DatePicker> {
       }
     }
 
-    // widget.allCountries[index1].region[index2].town.length,
-
     List<Widget> townsListWidget = [];
     if (openTown) {
       for (int i = 0; i < widget.allCountries.length; i++) {
@@ -432,8 +440,9 @@ class _DatePickerState extends State<DatePicker> {
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.startDate!),
                           style: SettingsScope.themeOf(context).theme.getStyle(
-                              (lightStyles) => lightStyles.sf17w400BlackSec,
-                              (darkStyles) => darkStyles.sf17w400BlackSec),
+                                (lightStyles) => lightStyles.sf15w400BlackSec,
+                                (darkStyles) => darkStyles.sf15w400BlackSec,
+                              ),
                         ),
                     ],
                   ),
@@ -484,9 +493,8 @@ class _DatePickerState extends State<DatePicker> {
                       if (widget.endDate != null)
                         Text(
                           DateFormat('dd.MM.yyyy').format(widget.endDate!),
-                          style: SettingsScope.themeOf(context).theme.getStyle(
-                              (lightStyles) => lightStyles.sf17w400BlackSec,
-                              (darkStyles) => darkStyles.sf17w400BlackSec),
+                          style: CustomTextStyle.sf17w400(
+                              LightAppColors.blackSecondary),
                         ),
                     ],
                   ),

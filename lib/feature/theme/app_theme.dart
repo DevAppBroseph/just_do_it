@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:just_do_it/constants/colors.dart';
 import 'package:just_do_it/constants/text_style.dart';
@@ -38,6 +39,21 @@ class AppTheme {
   final AppTextStyles textStyles;
   final ThemeData darkTheme;
   final ThemeData lightTheme;
+  CupertinoThemeData _buildCupertinoTheme(Brightness brightness) {
+    return CupertinoThemeData(
+      brightness: brightness,
+      textTheme: CupertinoTextThemeData(
+        dateTimePickerTextStyle: TextStyle(
+          color: brightness == Brightness.dark ? Colors.white : Colors.black,
+          fontSize: 17,
+        ),
+      ),
+      barBackgroundColor:
+          brightness == Brightness.dark ? Colors.black : Colors.white,
+      scaffoldBackgroundColor:
+          brightness == Brightness.dark ? Colors.black : Colors.white,
+    );
+  }
 
   static TextTheme _buildTextTheme(dynamic textStyles) {
     return TextTheme();
