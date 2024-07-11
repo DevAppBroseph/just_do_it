@@ -31,6 +31,7 @@ import 'package:just_do_it/feature/home/presentation/search/presentation/widget/
 import 'package:just_do_it/feature/home/presentation/tasks/view/tasks_page.dart';
 import 'package:just_do_it/feature/home/presentation/tasks/view/view_profile_link.dart';
 import 'package:just_do_it/feature/home/presentation/welcom/welcome_page.dart';
+import 'package:just_do_it/feature/theme/settings_scope.dart';
 import 'package:just_do_it/helpers/data_updater.dart';
 import 'package:just_do_it/helpers/router.dart';
 import 'package:just_do_it/helpers/storage.dart';
@@ -244,7 +245,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackSurface
+                        : LightAppColors.whitePrimary,
                     boxShadow: [
                       BoxShadow(
                         color: LightAppColors.shadowPrimary,
@@ -376,14 +380,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 children: [
                   SvgPicture.asset(
                     icon,
-                    color: index == page
-                        ? LightAppColors.yellowPrimary
-                        : Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? (index == page
+                            ? DarkAppColors.yellowPrimary
+                            : LightAppColors.whitePrimary)
+                        : (index == page
+                            ? LightAppColors.yellowPrimary
+                            : DarkAppColors.whitePrimary),
                   ),
                   SizedBox(height: 4.h),
-                  Text(label,
-                      style:
-                          CustomTextStyle.sf12w400(LightAppColors.blackError)),
+                  Text(
+                    label,
+                    style: SettingsScope.themeOf(context).theme.getStyle(
+                        (lightStyles) => lightStyles.sf12w400BlackSec,
+                        (darkStyles) => darkStyles.sf12w400BlackSec),
+                  ),
                 ],
               ),
               if (counderMessage != null)
