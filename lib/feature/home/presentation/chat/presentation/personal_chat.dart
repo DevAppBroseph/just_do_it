@@ -67,7 +67,6 @@ class _PersonalChatState extends State<PersonalChat> {
     }
     chatBloc.editShowPersonChat(false);
 
-    // Отладочное сообщение
     print(
         'Chat ID: ${widget.id}, Name: ${widget.name}, ID with Chat: ${widget.idWithChat}, Image: ${widget.image}');
   }
@@ -84,10 +83,16 @@ class _PersonalChatState extends State<PersonalChat> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                    color: LightAppColors.greyPrimary,
+                    color: SettingsScope.themeOf(context).theme.mode ==
+                            ThemeMode.dark
+                        ? DarkAppColors.blackPrima
+                        : LightAppColors.whitePrimary,
                     child: SizedBox(height: 66.h)),
                 Container(
-                  color: LightAppColors.greyPrimary,
+                  color: SettingsScope.themeOf(context).theme.mode ==
+                          ThemeMode.dark
+                      ? DarkAppColors.blackSurface
+                      : LightAppColors.whitePrimary,
                   child: Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 28.w),
                     child: Row(
@@ -101,8 +106,9 @@ class _PersonalChatState extends State<PersonalChat> {
                         const Spacer(),
                         Text(
                           'profile'.tr(),
-                          style: CustomTextStyle.sf22w700(
-                              LightAppColors.blackSecondary),
+                          style: SettingsScope.themeOf(context).theme.getStyle(
+                              (lightStyles) => lightStyles.sf22w700BlackSec,
+                              (darkStyles) => darkStyles.sf22w700BlackSec),
                         ),
                         const Spacer(),
                         SizedBox(width: 30.w),
@@ -117,9 +123,9 @@ class _PersonalChatState extends State<PersonalChat> {
                   child: ProfileView(
                       owner: Owner(
                           id: int.parse(widget.idWithChat),
-                          firstname: null,
-                          lastname: null,
-                          photo: null)),
+                          firstname: widget.name.split(' ')[0],
+                          lastname: widget.name.split(' ')[1],
+                          photo: widget.image)),
                 ),
               ],
             ),
@@ -141,7 +147,7 @@ class _PersonalChatState extends State<PersonalChat> {
         resizeToAvoidBottomInset: true,
         backgroundColor:
             SettingsScope.themeOf(context).theme.mode == ThemeMode.dark
-                ? DarkAppColors.whitePrimary
+                ? DarkAppColors.blackSurface
                 : LightAppColors.whitePrimary,
         body: Column(
           children: [

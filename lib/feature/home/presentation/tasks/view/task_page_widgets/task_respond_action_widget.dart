@@ -245,53 +245,58 @@ class _TaskRespondActionWidgetState extends State<TaskRespondActionWidget> {
               Row(
                 children: [
                   SizedBox(
-                    height: 50.h,
-                    width: 140.w,
-                    child: CustomButton(
-                      onTap: () async {
-                        if (user!.isBanned!) {
-                          banDialog(context,
-                              'access_to_chat_is_currently_restricted'.tr());
-                        } else {
-                          print(
-                              "Chat id through button is ${widget.task.chatId}");
-                          final chatBloc = BlocProvider.of<ChatBloc>(context);
+                      height: 50.h,
+                      width: 140.w,
+                      child: CustomButton(
+                        onTap: () async {
+                          try {
+                            if (user!.isBanned!) {
+                              banDialog(
+                                  context,
+                                  'access_to_chat_is_currently_restricted'
+                                      .tr());
+                            } else {
+                              final chatBloc =
+                                  BlocProvider.of<ChatBloc>(context);
+                              chatBloc.editShowPersonChat(false);
 
-                          chatBloc.editShowPersonChat(false);
+                              final chatId = widget.task.answers[index].chatId;
+                              final chatWithId =
+                                  widget.task.answers[index].owner?.id ?? '';
+                              final chatWithPhoto =
+                                  widget.task.answers[index].owner?.photo ?? '';
 
-                          final chatId = widget.task.answers[index].chatId;
-                          final chatWithId = widget.task.owner?.id ?? '';
-                          final chatWithPhoto = widget.task.owner?.photo ?? '';
+                              chatBloc.editChatId(chatId);
+                              chatBloc.messages = [];
+                              chatBloc.add(GetListMessageItem());
 
-                          chatBloc.editChatId(chatId);
-                          chatBloc.messages = [];
-                          chatBloc.add(GetListMessageItem());
+                              await Navigator.of(context).pushNamed(
+                                AppRoute.personalChat,
+                                arguments: [
+                                  '$chatId',
+                                  "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
+                                  '$chatWithId',
+                                  '$chatWithPhoto',
+                                ],
+                              );
 
-                          await Navigator.of(context).pushNamed(
-                            AppRoute.personalChat,
-                            arguments: [
-                              '$chatId',
-                              "${widget.task.answers[index].owner?.firstname ?? '-'} ${widget.task.answers[index].owner?.lastname ?? '-'}",
-                              '$chatWithId',
-                              '$chatWithPhoto',
-                            ],
-                          );
-
-                          chatBloc.editShowPersonChat(true);
-                          chatBloc.editChatId(null);
-                        }
-                      },
-                      btnColor: LightAppColors.greyTernary,
-                      textLabel: Text(
-                        'write_to_the_chat'.tr(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
+                              chatBloc.editShowPersonChat(true);
+                              chatBloc.editChatId(null);
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
+                        },
+                        btnColor: LightAppColors.greyTernary,
+                        textLabel: Text(
+                          'write_to_the_chat'.tr(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
                   SizedBox(
                     width: 10.w,
                   ),

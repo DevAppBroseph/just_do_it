@@ -128,7 +128,10 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                           Navigator.of(context).pushNamed(AppRoute.profile);
                         },
                         child: Container(
-                          color: Colors.transparent,
+                          color: SettingsScope.themeOf(context).theme.mode ==
+                                  ThemeMode.dark
+                              ? DarkAppColors.blackPrima
+                              : LightAppColors.whitePrimary,
                           height: 50.h,
                           child: Row(
                             children: [
@@ -150,9 +153,6 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                                               fontWeight: FontWeight.w500,
                                               fontSize: 19),
                                     ),
-                                // CustomTextStyle.sf19w800(
-                                //         LightAppColors.blackSecondary)
-                                //     .copyWith(fontWeight: FontWeight.w500),
                               ),
                               const Spacer(),
                               Icon(
