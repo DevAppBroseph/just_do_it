@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -32,25 +31,27 @@ import 'package:just_do_it/services/language/main_config_app.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await EasyLocalization.ensureInitialized();
+
   await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://a8c13a71870809a4e2d63b7d5d3fd841@o4507531554455552.ingest.us.sentry.io/4507537035034624';
+        (options) {
+      options.dsn = 'https://a8c13a71870809a4e2d63b7d5d3fd841@o4507531554455552.ingest.us.sentry.io/4507537035034624';
       options.tracesSampleRate = 1.0;
       options.profilesSampleRate = 1.0;
     },
-    appRunner: () => runApp(const MyApp()),
   );
-  WidgetsFlutterBinding.ensureInitialized();
-  DartPluginRegistrant.ensureInitialized();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await EasyLocalization.ensureInitialized();
+
+  await Firebase.initializeApp();
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   try {
-    await Firebase.initializeApp();
-
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: false,
@@ -63,8 +64,11 @@ void main() async {
     await FirebaseApi().initNotifications();
   } catch (e) {
     // Handle error
+    print('Error initializing Firebase: $e');
   }
 
+  String? token = await messaging.getToken();
+  print('FCM Token: $token');
   await getItSetup();
 
   runApp(
@@ -75,15 +79,7 @@ void main() async {
       path: 'assets/translations',
       fallbackLocale: const Locale('en', 'US'),
       startLocale: const Locale('en', 'US'),
-      child: ScreenUtilInit(
-        designSize: const Size(375, 812),
-        useInheritedMediaQuery: true,
-        builder: (context, child) => SettingsScope(
-          settingsBloc: SettingsBloc(),
-          child: child!,
-        ),
-        child: const MyApp(),
-      ),
+      child: const MyApp(),
     ),
   );
 }
@@ -93,48 +89,55 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
-        BlocProvider<NotificationsBloc>(
-            create: (context) => NotificationsBloc()),
-        BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
-        BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
-        BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),
-        BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
-        BlocProvider<ResponseBlocFromFav>(
-            create: (context) => ResponseBlocFromFav()),
-        BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
-        BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
-        BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
-        BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
-        BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
-        BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
-      ],
-      child: GestureDetector(
-        onTap: () {
-          WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-        },
-        child: Builder(
-          builder: (context) {
-            final theme = SettingsScope.themeOf(context).theme;
-            return MaterialApp(
-              themeMode: theme.mode,
-              theme: theme.lightTheme,
-              darkTheme: theme.darkTheme,
-              builder: FlutterSmartDialog.init(),
-              debugShowCheckedModeBanner: false,
-              initialRoute: AppRoute.home,
-              onGenerateRoute: AppRoute.onGenerateRoute,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-            );
-          },
-        ),
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      useInheritedMediaQuery: true,
+      builder: (context, child) {
+        return SettingsScope(
+          settingsBloc: SettingsBloc(),
+          child: Builder(
+            builder: (context) {
+              final theme = SettingsScope.themeOf(context).theme;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider<FavouritesBloc>(create: (context) => FavouritesBloc()),
+                  BlocProvider<NotificationsBloc>(create: (context) => NotificationsBloc()),
+                  BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+                  BlocProvider<ReplyBloc>(create: (context) => ReplyBloc()),
+                  BlocProvider<ReplyFromFavBloc>(create: (context) => ReplyFromFavBloc()),
+                  BlocProvider<ResponseBloc>(create: (context) => ResponseBloc()),
+                  BlocProvider<ResponseBlocFromFav>(create: (context) => ResponseBlocFromFav()),
+                  BlocProvider<CountriesBloc>(create: (context) => CountriesBloc()),
+                  BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
+                  BlocProvider<TasksBloc>(create: (context) => TasksBloc()),
+                  BlocProvider<ScoreBloc>(create: (context) => ScoreBloc()),
+                  BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+                  BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
+                  BlocProvider<RatingBloc>(create: (context) => RatingBloc()),
+                  BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
+                ],
+                child: GestureDetector(
+                  onTap: () {
+                    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                  },
+                  child: MaterialApp(
+                    themeMode: theme.mode,
+                    theme: theme.lightTheme,
+                    darkTheme: theme.darkTheme,
+                    builder: FlutterSmartDialog.init(),
+                    debugShowCheckedModeBanner: false,
+                    initialRoute: AppRoute.home,
+                    onGenerateRoute: AppRoute.onGenerateRoute,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

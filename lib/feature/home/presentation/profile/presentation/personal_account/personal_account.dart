@@ -128,10 +128,7 @@ class _PersonalAccountPageState extends State<PersonalAccountPage> {
                           Navigator.of(context).pushNamed(AppRoute.profile);
                         },
                         child: Container(
-                          color: SettingsScope.themeOf(context).theme.mode ==
-                                  ThemeMode.dark
-                              ? DarkAppColors.blackPrima
-                              : LightAppColors.whitePrimary,
+                          color: Colors.transparent,
                           height: 50.h,
                           child: Row(
                             children: [
