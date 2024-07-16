@@ -399,7 +399,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.6.7;
-				PRODUCT_BUNDLE_IDENTIFIER = aigam.com.jobyfine;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.broseph.justDoIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -539,7 +539,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.6.7;
-				PRODUCT_BUNDLE_IDENTIFIER = aigam.com.jobyfine;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.broseph.justDoIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -573,7 +573,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.6.7;
-				PRODUCT_BUNDLE_IDENTIFIER = aigam.com.jobyfine;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.broseph.justDoIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

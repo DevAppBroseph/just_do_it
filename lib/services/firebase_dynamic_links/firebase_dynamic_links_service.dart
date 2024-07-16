@@ -8,7 +8,7 @@ class FirebaseDynamicLinksService {
   // );
   // String urlPrefix = 'https://justdoit.page.link';
   final IOSParameters iosParams = const IOSParameters(
-    bundleId: 'aigam.com.jobyfine',
+    bundleId: 'dev.broseph.justDoIt',
     appStoreId: '6466744212',
     // minimumVersion: '1.6.3',
   );
@@ -20,7 +20,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?ref_code=$refCode'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
+          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
       iosParameters: iosParams,
     );
     final dynamicLink =
@@ -35,7 +35,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?user_profile=$id'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
+          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
       iosParameters: iosParams,
     );
     final dynamicLink =
@@ -50,7 +50,7 @@ class FirebaseDynamicLinksService {
       link: Uri.parse('$urlPrefix/referal/?task_id=$id'),
       googleAnalyticsParameters: const GoogleAnalyticsParameters(),
       androidParameters:
-          const AndroidParameters(packageName: 'aigam.com.jobyfine'),
+          const AndroidParameters(packageName: 'dev.broseph.justDoIt'),
       iosParameters: iosParams,
     );
     final dynamicLink =

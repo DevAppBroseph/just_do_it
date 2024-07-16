@@ -1,25 +1,21 @@
 {
   "project_info": {
-    "project_number": "1065752035386",
-    "project_id": "jobyfine-d10e3",
-    "storage_bucket": "jobyfine-d10e3.appspot.com"
+    "project_number": "897432149892",
+    "project_id": "jobyfine-8ea7d",
+    "storage_bucket": "jobyfine-8ea7d.appspot.com"
   },
   "client": [
     {
-      "client_id": "1065752035386-dgquegoolbtns0cbee7t0qtauu7fh23v.apps.googleusercontent.com",
-      "client_type": 3
-    },
-    {
       "client_info": {
-        "mobilesdk_app_id": "1:1065752035386:android:07324b22e7bf4d3d75b503",
+        "mobilesdk_app_id": "1:897432149892:android:6c2a60fc0d18943c3f07d1",
         "android_client_info": {
-          "package_name": "aigam.com.jobyfine"
+          "package_name": "dev.broseph.justDoIt"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDP6z7p17J6-bcEin-kSx6G-0BIJcLttpY"
+          "current_key": "AIzaSyAjSrhgM9BQ-CVB_30ShYhL4Zrv1QElVS0"
         }
       ],
       "services": {

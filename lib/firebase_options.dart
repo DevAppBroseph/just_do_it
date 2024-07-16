@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '897432149892',
     projectId: 'jobyfine-8ea7d',
     storageBucket: 'jobyfine-8ea7d.appspot.com',
-    iosBundleId: 'aigam.com.jobyfine',
+    iosBundleId: 'dev.broseph.justDoIt',
   );
 }

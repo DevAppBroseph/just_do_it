@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyC1J52m6851A8XHGQVNR8h4xMICNzz1Utw</string>
+	<string>AIzaSyCwDfp4_D4I6sZD1toCImDxH7FUg9ozhZA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1065752035386</string>
+	<string>897432149892</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>aigam.com.jobyfine</string>
+	<string>dev.broseph.justDoIt</string>
 	<key>PROJECT_ID</key>
-	<string>jobyfine-d10e3</string>
+	<string>jobyfine-8ea7d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>jobyfine-d10e3.appspot.com</string>
+	<string>jobyfine-8ea7d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1065752035386:ios:f33e0aea26b88db675b503</string>
+	<string>1:897432149892:ios:40f7b1a9b78b10df3f07d1</string>
 </dict>
 </plist>
